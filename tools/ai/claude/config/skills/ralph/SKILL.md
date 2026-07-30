@@ -85,11 +85,11 @@ If you have any `## Scaffolding Tests` from the issue:
     - Skill name: `review`
     - Args: `ref:dirty` and `spec:<issue_path>`
     - DO NOT use the Bash tool to run `review`
-2. Categorize ALL findings (from both Standards and Spec) into two buckets:
+2. Categorize ALL findings (from both Code Review and Spec Review) into two buckets:
    - **skipped** — out of scope or not relevant, with one-line reason per item
    - **fixable** — actionable and in scope
-3. Display the two buckets as a summary
-4. Move to the next step (FIX). Do not stop or wait for user input.
+3. Display the two buckets as a summary.
+4. **Immediately** move to Step 5 (FIX) in the same response. Do not stop, do not wait for user input, do not end your turn.
 
 ---
 
@@ -179,6 +179,7 @@ Issue XX/YY
 | "I should commit so the review has something to diff" | Do not commit. That's the user's job. |
 | "I should run `review` via the Bash tool" | Use the `/review` skill instead, Bash will go to the background and we need to wait for the review. |
 | "I mentioned an issue COMMIT_HINT.md to be specific" | Issue are ephemeral and internal. Describe what was built, not which issue was closed. |
+| "I should present review findings and wait for user input" | Steps 4→5 are continuous. Categorize, display, fix. No pause between REVIEW and FIX. |
 
 ## Checklist
 

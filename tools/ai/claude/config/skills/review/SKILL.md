@@ -1,6 +1,6 @@
 ---
 name: review
-description: Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X". Reviews changes along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match the originating issue/PRD?). Runs both axes as parallel sub-agents and reports them side by side.
+description: Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X". Reviews changes along two axes — Code Review (does the code follow this repo's documented coding standards?) and Spec Review (does the code match the originating issue/PRD?). Runs both axes as parallel sub-agents and reports them side by side.
 ---
 
 # Review
@@ -21,7 +21,7 @@ Two-axis review of the diff between `HEAD` and a fixed point. Both axes run as p
 | Param | Meaning |
 |---|---|
 | `ref:<ref>` | Diff base; passed to `review-diff` |
-| `spec:<path>` | Path to the spec file (issue or PRD); passed to the Spec agent |
+| `spec:<path>` | Path to the spec file (issue or PRD); passed to the Spec Review agent |
 
 
 **`ref:` values:**
@@ -39,14 +39,14 @@ If `spec:` or `ref:` is absent and cannot be inferred from context, ask the user
 
 ### Step 2 — Spawn sub-agents
 
-**Goal:** Run Standards and Spec reviews in parallel without polluting each other's context.
+**Goal:** Run Code Review and Spec Review in parallel without polluting each other's context.
 
 **Exit criterion:** Both sub-agents have returned their reports.
 
 Send a single message with two `Agent` tool calls. Use the `general-purpose` subagent for both.
 
-- **Standards agent:** read `references/standards-agent.md` for the full brief;
-- **Spec agent:** read `references/specs-agent.md` for the full brief;
+- **Code Review agent:** read `references/code-agent.md` for the full brief;
+- **Spec Review agent:** read `references/spec-agent.md` for the full brief;
 
 ### Step 3 — Aggregate
 
@@ -54,7 +54,7 @@ Send a single message with two `Agent` tool calls. Use the `general-purpose` sub
 
 **Exit criterion:** Both reports displayed; one-line summary given.
 
-Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings — the two axes are deliberately separate.
+Present the two reports under `## Code Review` and `## Spec Review` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings — the two axes are deliberately separate.
 
 End with a one-line summary: total findings per axis, and the worst single issue (if any) flagged.
 
@@ -70,5 +70,5 @@ End with a one-line summary: total findings per axis, and the worst single issue
 - [ ] Args determined from user intent
 - [ ] Both sub-agents spawned in a single parallel message
 - [ ] Each sub-agent ran `review-diff` itself — no diff pasted inline
-- [ ] Reports presented under separate `## Standards` and `## Spec` headings
+- [ ] Reports presented under separate `## Code Review` and `## Spec Review` headings
 - [ ] One-line summary at the end
