@@ -122,6 +122,7 @@
   "git-directory-root",
   "git-file-lint",
   "git-file-test",
+  "git-github-open",
   "git-github-project-name",
   "git-github-repo-description",
   "git-github-repo-exists",
