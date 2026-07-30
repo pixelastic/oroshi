@@ -22,8 +22,9 @@
   {
     "id": "03",
     "issue": "issues/03-gdocs2md.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "gdocs2md CLI fetches Google Doc via Docs API, converts structural elements (headings, bold, italic, links, lists) to Markdown, outputs to stdout"
   },
   {
     "id": "04",

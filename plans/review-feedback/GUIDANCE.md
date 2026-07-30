@@ -43,6 +43,10 @@
 - HTML upload via Drive API (`media: { mimeType: 'text/html' }` + `mimeType: 'application/vnd.google-apps.document'`) is simpler than building Google Docs API batchUpdate requests — Google handles HTML-to-Doc conversion
 - `splitBlocks` needs line-by-line reduce (not split on `\n\n`) because headings must be their own block even without blank line separators
 
+### Issue 03 — gdocs2md
+- Google Docs API paragraphs with `bullet` property reference `lists[listId].listProperties.nestingLevels[n].glyphType` — falsy glyphType means unordered, truthy (e.g. `DECIMAL`) means ordered
+- Consecutive non-list paragraphs need explicit blank-line separation (`\n\n`) — joining `text\n` lines without it produces no visible paragraph breaks
+
 ### Issue 01 — Google Login
 - OAuth2Client needs clientId+clientSecret for automatic token refresh — passing zero args creates a crippled client
 - Token file stores full token object (access_token, refresh_token, expiry_date) but `googleAuth` should only set `refresh_token` as credential to avoid stale access tokens

@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+set -e
+
+node ${0:A:h}/gdocs2md.js "$@"

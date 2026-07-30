@@ -50,3 +50,31 @@ if (titleIndex !== -1) {
 ```
 **Problem:** Imperative mutation with `splice` diverges from functional style standards favor.
 **Reason skipped:** CLI entry is a thin script runner, not core logic. Functional rewrite adds complexity without benefit for a 5-line arg parser.
+
+## Issue 03 — gdocs2md
+### toContain vs toEqual in convertToMarkdown tests
+```javascript
+expect(actual).toContain('# Title');
+```
+**Problem:** Reviewer flagged `toContain` as weaker than `toEqual` when full output is deterministic.
+**Reason skipped:** Facet tests on a shared rich context — each test observes one aspect. `toEqual` on the full string would make every test brittle to unrelated fixture changes.
+
+### Empty JSDoc bodies on test helpers
+```javascript
+/**
+ *
+ * @param content
+ * @param style
+ */
+function textRun(content, style = {}) {
+```
+**Problem:** JSDoc blocks have empty descriptions.
+**Reason skipped:** Test-local helpers, not exported. Lint auto-generated the empty JSDoc blocks; adding prose would be noise.
+
+### Side-effecting _.map in convertToMarkdown
+```javascript
+const lines = _.map(elements, (element) => {
+  // mutates listCounters and previousType
+```
+**Problem:** `_.map` callback mutates outer variables; `_.reduce` would be more idiomatic.
+**Reason skipped:** State (`listCounters`, `previousType`) is inherently sequential — `_.reduce` would move mutation into accumulator but not eliminate it. Current form is readable.
