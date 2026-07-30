@@ -1,21 +1,21 @@
 ## TLDR
 
-The `/review-article` skill that orchestrates the full capture-triage-synthesize workflow.
+The `/review-blog` skill that orchestrates the full capture-triage-synthesize workflow.
 
 ## What to build
 
 A Claude skill that takes a Markdown file or Google Docs URL, prepares a Google Doc for annotation, waits for the user to finish commenting, then synthesizes structured feedback and publishes it as a shareable Google Doc.
 
-End-to-end: user says "review this article ./draft.md" → skill calls `review-article-start` → presents URL → user annotates → user says "done" → skill calls `gdocs2md` + `gdocs-comments-json` → synthesizes feedback → calls `md2gdocs --title "Draft (review)"` → returns shareable URL.
+End-to-end: user says "review this article ./draft.md" → skill calls `review-blog-start` → presents URL → user annotates → user says "done" → skill calls `gdocs2md` + `gdocs-comments-json` → synthesizes feedback → calls `md2gdocs --title "Draft (review)"` → returns shareable URL.
 
 ### Files to create
 
-- `tools/ai/claude/config/skills/review-article/SKILL.md` — skill definition
-- `tools/ai/claude/config/skills/review-article/references/output-format.md` — the validated feedback format (derived from `feedback-article-monolithic-agents.md`)
+- `tools/ai/claude/config/skills/review-blog/SKILL.md` — skill definition
+- `tools/ai/claude/config/skills/review-blog/references/output-format.md` — the validated feedback format (derived from `feedback-article-monolithic-agents.md`)
 
 ### Skill steps
 
-**Step 1 — Prepare:** Extract file path or URL from user input. Call `review-article-start <input>`. Parse JSON output. Present the Google Docs URL to the user: "Here's the doc, go annotate. Tell me when you're done."
+**Step 1 — Prepare:** Extract file path or URL from user input. Call `review-blog-start <input>`. Parse JSON output. Present the Google Docs URL to the user: "Here's the doc, go annotate. Tell me when you're done."
 
 **Step 2 — Wait:** User comes back and says they're done (or indicates comments were already left).
 
@@ -36,9 +36,9 @@ End-to-end: user says "review this article ./draft.md" → skill calls `review-a
 
 ## Acceptance criteria
 
-- [ ] Skill triggers on "review article", "review this article", or `/review-article`
+- [ ] Skill triggers on "review blog", "review this blog", or `/review-blog`
 - [ ] Accepts both Markdown file paths and Google Docs URLs
-- [ ] Calls `review-article-start` and presents the URL to the user
+- [ ] Calls `review-blog-start` and presents the URL to the user
 - [ ] Waits for user confirmation before synthesizing
 - [ ] Calls `gdocs2md` and `gdocs-comments-json` to fetch inputs
 - [ ] Produces feedback in the validated format (TL;DR, Strengths, Improvements with grouped axes)

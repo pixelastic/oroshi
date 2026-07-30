@@ -13,8 +13,8 @@
 - Google tools: `scripts/bin/google/`
 - Shared auth helper: `scripts/bin/google/googleAuth.js`
 - Markdown tools: `scripts/bin/markdown/`
-- AI skill scripts: `scripts/bin/ai/review-article/`
-- Skill definition: `tools/ai/claude/config/skills/review-article/`
+- AI skill scripts: `scripts/bin/ai/review-blog/`
+- Skill definition: `tools/ai/claude/config/skills/review-blog/`
 - Token storage: `~/.oroshi/private/config/google/tokens.json`
 - Feedback format reference: `/home/tim/local/www/projects/dashboard/data/feedback-article-monolithic-agents.md`
 

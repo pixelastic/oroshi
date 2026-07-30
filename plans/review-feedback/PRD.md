@@ -6,7 +6,7 @@ When reviewing colleagues' blog posts, the user generates stream-of-consciousnes
 
 A skill-driven workflow that uses Google Docs as the annotation layer and Claude as the synthesis engine:
 
-1. User invokes `/review-article` with a Markdown file path or Google Docs URL
+1. User invokes `/review-blog` with a Markdown file path or Google Docs URL
 2. A deterministic script prepares a Google Doc in the shared `Automation/Docs/` folder on the professional Drive, and returns the URL
 3. User opens the Google Doc, highlights passages, and dictates comments in French via speech-to-text
 4. User tells the agent they're done annotating
@@ -21,7 +21,7 @@ A skill-driven workflow that uses Google Docs as the annotation layer and Claude
 3. As a reviewer, I want the Google Doc created in my professional shared folder so that I don't have to move it manually
 4. As a reviewer, I want to specify a custom title for the Google Doc so that it's identifiable in Drive
 5. As a reviewer, I want to highlight text in Google Docs and dictate comments in French so that capturing feedback is fast and doesn't interrupt my reading flow
-6. As a reviewer, I want to invoke `/review-article` with either a Markdown path or a Google Docs URL so that I can start fresh or resume an existing review
+6. As a reviewer, I want to invoke `/review-blog` with either a Markdown path or a Google Docs URL so that I can start fresh or resume an existing review
 7. As a reviewer, I want the skill to detect whether my input is a file path or a URL and handle both transparently so that I don't need to think about it
 8. As a reviewer, I want to be told "go annotate, tell me when done" so that I can take my time reviewing without the agent waiting in context
 9. As a reviewer, I want the agent to fetch only unresolved comments so that already-handled feedback is excluded
@@ -75,17 +75,17 @@ A skill-driven workflow that uses Google Docs as the annotation layer and Claude
 - Outputs JSON array to stdout: `[{"anchor": "...", "comment": "..."}]`
 - No author field, no resolved comments
 
-**Module 6 — `review-article-start` (ZSH)**
-- Lives in `scripts/bin/ai/review-article/`
+**Module 6 — `review-blog-start` (ZSH)**
+- Lives in `scripts/bin/ai/review-blog/`
 - Takes one argument: a file path or Google Docs URL (as passed by the user in natural language, extracted by the skill)
 - If file path: calls `md2gdocs` to create a Google Doc, returns JSON with URL
 - If Google Docs URL: returns JSON with URL as-is
 - Returns JSON: `{"url": "https://docs.google.com/..."}`
 
-### Skill: `/review-article`
+### Skill: `/review-blog`
 
-- Lives in `tools/ai/claude/config/skills/review-article/SKILL.md`
-- Step 1: Extract file path or URL from user's natural language input. Call `review-article-start` with it. Present the Google Docs URL to the user.
+- Lives in `tools/ai/claude/config/skills/review-blog/SKILL.md`
+- Step 1: Extract file path or URL from user's natural language input. Call `review-blog-start` with it. Present the Google Docs URL to the user.
 - Step 2: Wait for user to say they're done annotating.
 - Step 3: Call `gdocs2md <url>` to get article content. Call `gdocs-comments-json <url>` to get comments. Read both.
 - Step 4: Synthesize feedback — cross-reference comments with article, auto-resolve stale notes, translate French to article language, group by severity. Follow the output format from the reference example.
@@ -121,7 +121,7 @@ Tests should verify the transformation chain while mocking all Google API calls.
 
 - **`gdocs2md`**: Mock the API response (a Google Docs JSON document structure). Test that the conversion to Markdown is correct — headings, paragraphs, bold/italic, links, lists.
 
-- **`review-article-start`**: ZSH script with deterministic logic. Test URL detection vs file path detection. Mock `md2gdocs` via `bats_mock`. Verify JSON output structure.
+- **`review-blog-start`**: ZSH script with deterministic logic. Test URL detection vs file path detection. Mock `md2gdocs` via `bats_mock`. Verify JSON output structure.
 
 **Prior art:** `scripts/bin/git/commit/git-commit-message/__tests__/` for Node.js test patterns with mocked external calls; `scripts/bin/ai/deprecate/__tests__/` for ZSH script tests with `bats_mock`.
 
@@ -136,7 +136,7 @@ Tests should verify the transformation chain while mocking all Google API calls.
 - **Slides**: reviewing Google Slides or PDF slide decks (review-slide already handles design review)
 - **Multiple Google accounts**: only one professional account for now
 - **Configurable Drive folder**: hardcoded `Automation/Docs/` — configurable later via flag
-- **`review-article-end`**: cleaning up raw comments after synthesis — future enhancement
+- **`review-blog-end`**: cleaning up raw comments after synthesis — future enhancement
 - **Google Docs MCP server**: all tools are CLI-first, no MCP integration
 - **Integration tests**: no real Google API calls in tests — unit tests with mocks only
 - **Updating existing Docs**: `md2gdocs` always creates new, never updates

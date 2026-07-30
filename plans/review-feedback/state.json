@@ -36,16 +36,16 @@
   },
   {
     "id": "05",
-    "issue": "issues/05-review-article-start.md",
+    "issue": "issues/05-review-blog-start.md",
     "done": true,
     "blocked_by": ["02"],
-    "recap": "review-article-start ZSH script resolves file path (via md2gdocs) or Google Docs URL into JSON {url} output"
+    "recap": "review-blog-start ZSH script resolves file path (via md2gdocs) or Google Docs URL into JSON {url} output"
   },
   {
     "id": "06",
-    "issue": "issues/06-review-article-skill.md",
+    "issue": "issues/06-review-blog-skill.md",
     "done": true,
     "blocked_by": ["03", "04", "05"],
-    "recap": "review-article skill orchestrates the full workflow: upload, annotate, fetch article+comments, synthesize structured feedback, publish as Google Doc"
+    "recap": "review-blog skill orchestrates the full workflow: upload, annotate, fetch article+comments, synthesize structured feedback, publish as Google Doc"
   }
 ]

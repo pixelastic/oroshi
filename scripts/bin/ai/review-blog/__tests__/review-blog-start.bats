@@ -19,7 +19,7 @@ setup() {
   }
   bats_mock md2gdocs
 
-  bats_run_zsh "review-article-start $BATS_TMP_DIR/article.md"
+  bats_run_zsh "review-blog-start $BATS_TMP_DIR/article.md"
   [[ "$status" -eq 0 ]]
   # Passes --no-open and the file path
   [[ "$(cat "$BATS_TMP_DIR/md2gdocs-args.txt")" == "--no-open $BATS_TMP_DIR/article.md" ]]
@@ -31,7 +31,7 @@ setup() {
 @test "Google Docs URL passes through unchanged" {
   local url="https://docs.google.com/document/d/xyz789/edit"
 
-  bats_run_zsh "review-article-start $url"
+  bats_run_zsh "review-blog-start $url"
   [[ "$status" -eq 0 ]]
   expect_json '.url' "$url"
 }
@@ -41,7 +41,7 @@ setup() {
 @test "output is valid JSON with url field" {
   echo "# Test" > "$BATS_TMP_DIR/test.md"
 
-  bats_run_zsh "review-article-start $BATS_TMP_DIR/test.md"
+  bats_run_zsh "review-blog-start $BATS_TMP_DIR/test.md"
   [[ "$status" -eq 0 ]]
   echo "$output" | jq -e '.url' > /dev/null
 }
@@ -49,6 +49,6 @@ setup() {
 # --- Missing file ---
 
 @test "non-existent file path exits with error" {
-  bats_run_zsh "review-article-start /nonexistent/file.md"
+  bats_run_zsh "review-blog-start /nonexistent/file.md"
   [[ "$status" -ne 0 ]]
 }

@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 # Resolve file path or Google Docs URL into a Google Docs URL
 # Usage:
-# $ review-article-start ./article.md                          # Upload then return URL
-# $ review-article-start https://docs.google.com/document/d/x  # Passthrough
+# $ review-blog-start ./article.md                          # Upload then return URL
+# $ review-blog-start https://docs.google.com/document/d/x  # Passthrough
 set -e
 
 local input="$1"

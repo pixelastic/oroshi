@@ -4,14 +4,14 @@ Deterministic script that resolves user input (file path or URL) into a Google D
 
 ## What to build
 
-A `review-article-start` ZSH script that takes a file path or Google Docs URL, ensures a Google Doc exists in the right folder, and returns JSON with the URL. This is the entry point called by the `/review-article` skill.
+A `review-blog-start` ZSH script that takes a file path or Google Docs URL, ensures a Google Doc exists in the right folder, and returns JSON with the URL. This is the entry point called by the `/review-blog` skill.
 
-End-to-end: skill calls `review-article-start ./article.md` → detects file path → calls `md2gdocs` → returns `{"url": "https://docs.google.com/..."}`. Or: skill calls `review-article-start https://docs.google.com/document/d/xxx/edit` → detects URL → returns `{"url": "https://docs.google.com/document/d/xxx/edit"}`.
+End-to-end: skill calls `review-blog-start ./article.md` → detects file path → calls `md2gdocs` → returns `{"url": "https://docs.google.com/..."}`. Or: skill calls `review-blog-start https://docs.google.com/document/d/xxx/edit` → detects URL → returns `{"url": "https://docs.google.com/document/d/xxx/edit"}`.
 
 ### Files to create
 
-- `scripts/bin/ai/review-article/review-article-start` — ZSH script
-- `scripts/bin/ai/review-article/__tests__/review-article-start.bats` — bats tests
+- `scripts/bin/ai/review-blog/review-blog-start` — ZSH script
+- `scripts/bin/ai/review-blog/__tests__/review-blog-start.bats` — bats tests
 
 ### Behavior
 

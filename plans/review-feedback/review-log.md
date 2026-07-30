@@ -115,7 +115,7 @@ const response = await drive.comments.list({
 **Problem:** Reviewer flagged that `includeDeleted` is not set on `comments.list`
 **Reason skipped:** Spec doesn't mention deleted comments; API default (exclude deleted) is correct behavior — deleted comments have no actionable content
 
-## Issue 06 — review-article skill
+## Issue 06 — review-blog skill
 ### Step separators between sections
 ```markdown
 ---
