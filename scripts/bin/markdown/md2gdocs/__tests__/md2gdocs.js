@@ -25,9 +25,9 @@ describe('md2gdocs', () => {
     );
   });
 
-  it('uploads to hardcoded Automation/Docs/ folder', async () => {
-    expect(__.FOLDER_ID).toBeTruthy();
-    expect(typeof __.FOLDER_ID).toEqual('string');
+  it('reads folder ID from environment variable', async () => {
+    process.env.OROSHI_GOOGLE_DRIVE_DOCS_FOLDER_ID = 'test-folder-id';
+    expect(__.FOLDER_ID).toEqual('test-folder-id');
   });
 
   it('returns Google Docs URL', async () => {
@@ -94,6 +94,27 @@ describe('markdownToHtml', () => {
       input: 'First\n\nSecond',
       expected: '<p>First</p><p>Second</p>',
     },
+    {
+      title: 'image',
+      input: '![alt text](https://example.com/img.png)',
+      expected: '<p><img src="https://example.com/img.png" alt="alt text"></p>',
+    },
+    {
+      title: 'table',
+      input: '| A | B |\n|---|---|\n| 1 | 2 |',
+      expected:
+        '<table><thead><tr><th>A</th><th>B</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table>',
+    },
+    {
+      title: 'blockquote',
+      input: '> This is a quote',
+      expected: '<blockquote><p>This is a quote</p></blockquote>',
+    },
+    {
+      title: 'multiline blockquote',
+      input: '> First line\n> Second line',
+      expected: '<blockquote><p>First line Second line</p></blockquote>',
+    },
   ])('$title', ({ input, expected }) => {
     const actual = __.markdownToHtml(input);
     expect(actual).toEqual(expected);
@@ -105,5 +126,15 @@ describe('markdownToHtml', () => {
     expect(actual).toEqual(
       '<h1>Title</h1><p>Some <strong>bold</strong> text.</p><ul><li>Item 1</li><li>Item 2</li></ul>',
     );
+  });
+});
+
+describe('wrapInDocument', () => {
+  it('wraps body in HTML document with CSS', () => {
+    const actual = __.wrapInDocument('<p>Hello</p>');
+    expect(actual).toContain('<html>');
+    expect(actual).toContain('line-height: 1.6');
+    expect(actual).toContain('<p>Hello</p>');
+    expect(actual).toContain('</body></html>');
   });
 });
