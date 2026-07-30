@@ -16,12 +16,6 @@
     "icon": " ",
     "path": "~/local/www/projects/algolia-indexing"
   },
-  "alme": {
-    "background": "pink-8",
-    "foreground": "gray-3",
-    "icon": "(.) ",
-    "path": "~/local/www/projects/alme"
-  },
   "aoinan": {
     "background": "orange-8",
     "foreground": "gray-3",
@@ -120,12 +114,6 @@
     "icon": " ",
     "path": "~/local/www/algolia/commitology-data"
   },
-  "contentsquare": {
-    "background": "white",
-    "foreground": "blue-8",
-    "icon": " ",
-    "path": "~/local/www/contentsquare"
-  },
   "crafting": {
     "background": "yellow-9",
     "icon": " "
@@ -153,11 +141,6 @@
     "foreground": "green-3",
     "icon": " ",
     "path": "~/local/www/projects/dashboard"
-  },
-  "devrel": {
-    "background": "teal-6",
-    "foreground": "gray-3",
-    "icon": " "
   },
   "dropbox": {
     "background": "blue-9",
@@ -195,12 +178,6 @@
     "icon": " ",
     "path": "~/local/www/projects/ensure-url-trailing-slash"
   },
-  "esmify": {
-    "background": "yellow",
-    "foreground": "black",
-    "icon": " ",
-    "path": "~/local/www/projects/esmify"
-  },
   "firost": {
     "background": "green",
     "foreground": "gray-2",
@@ -224,12 +201,6 @@
     "foreground": "yellow-1",
     "icon": "✨ ",
     "path": "~/local/www/projects/gilmore"
-  },
-  "gitinx": {
-    "background": "gray-3",
-    "foreground": "blue",
-    "icon": " ",
-    "path": "~/local/www/projects/gitinx"
   },
   "golgoth": {
     "background": "orange",
@@ -262,16 +233,6 @@
     "icon": "  ",
     "path": "~/local/www/projects/imoen"
   },
-  "indexing": {
-    "background": "blue-3",
-    "icon": " "
-  },
-  "irori": {
-    "background": "teal",
-    "foreground": "white",
-    "icon": " ",
-    "path": "~/local/www/projects/irori"
-  },
   "items": {
     "background": "orange-9",
     "foreground": "white",
@@ -283,12 +244,6 @@
     "foreground": "white",
     "icon": "ﰤ ",
     "path": "~/local/www/pixelastic.com/gamemaster/items/items-data"
-  },
-  "jekyll": {
-    "background": "blue-5",
-    "foreground": "white",
-    "icon": " ",
-    "path": "~/local/www/algolia/jekyll-algolia"
   },
   "keyleth": {
     "background": "amber-9",
@@ -380,18 +335,6 @@
     "icon": " ",
     "path": "~/local/www/algolia/meetups/meetups-teasers-generator"
   },
-  "megadungeon": {
-    "background": "yellow-8",
-    "foreground": "gray-1",
-    "icon": " ",
-    "path": "~/local/www/pixelastic.com/gamemaster/megadungeon"
-  },
-  "monorepoify": {
-    "background": "gray",
-    "foreground": "white",
-    "icon": "  ",
-    "path": "~/local/www/projects/monorepoify"
-  },
   "monsters": {
     "background": "gray-8",
     "foreground": "red-8",
@@ -415,12 +358,6 @@
   },
   "music": {
     "icon": " "
-  },
-  "netlify-minutes": {
-    "background": "green-8",
-    "foreground": "white",
-    "icon": "神",
-    "path": "~/local/www/projects/netlify-minutes"
   },
   "norska": {
     "background": "blue-3",
@@ -482,12 +419,6 @@
     "background": "green",
     "foreground": "gray-2",
     "icon": " "
-  },
-  "prst": {
-    "background": "blue-8",
-    "foreground": "gray-2",
-    "icon": " ",
-    "path": "~/local/www/projects/prst"
   },
   "reddinx": {
     "background": "orange-6",
@@ -574,9 +505,6 @@
     "icon": " ",
     "path": "~/local/www/projects/solkan"
   },
-  "sov": {
-    "icon": "蠟"
-  },
   "speaker-program": {
     "background": "teal-6",
     "foreground": "gray-3",
@@ -647,15 +575,6 @@
     "background": "gray",
     "icon": " "
   },
-  "transparentify": {
-    "background": "white",
-    "foreground": "gray",
-    "icon": "頋",
-    "path": "~/local/www/projects/transparentify"
-  },
-  "twitter": {
-    "icon": " "
-  },
   "videogames": {
     "background": "blue-8",
     "foreground": "gray-2",
@@ -677,23 +596,11 @@
     "foreground": "white",
     "icon": "  "
   },
-  "wikinx": {
-    "background": "white",
-    "foreground": "black",
-    "icon": "  ",
-    "path": "~/local/www/projects/wikinx"
-  },
   "www": {
     "background": "green",
     "foreground": "gray-2",
     "icon": " ",
     "path": "~/local/www/pixelastic.com/www.pixelastic.com"
-  },
-  "youtinx": {
-    "background": "gray-4",
-    "foreground": "red-8",
-    "icon": " ",
-    "path": "~/local/www/projects/youtinx"
   },
   "zsh": {
     "icon": " "

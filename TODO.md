@@ -108,3 +108,4 @@ I'd love an icon to see:
 
 - Update gamemaster/armory to renew the design, and to incorporate items from more games.
 - Update blog.pixelastic.com. Find a blogging cadence, better UI
+- Finish crsearch: search Critical Role video subtitles and jump to the exact moment something was said
