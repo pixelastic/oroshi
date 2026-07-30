@@ -14,7 +14,7 @@
     "recap": "md2gdocs CLI converts markdown to HTML, uploads via Drive API with Google Docs conversion to Automation/Docs/ folder"
   },
   {
-    "id": "07",
+    "id": "02b",
     "issue": "issues/07-md2gdocs-docx.md",
     "done": false,
     "blocked_by": ["02"]
