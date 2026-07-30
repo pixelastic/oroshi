@@ -11,8 +11,10 @@ New `git-commit-create-all-auto` function + `vcaa` alias: stage all, auto-genera
    - Call `git-commit-create-all [--repo repoPath] "$message" $@` — converts repo to `--repo` flag (since `git-commit-create-all`'s first positional arg is the commit message) and forwards all remaining flags.
    - Uses `setopt local_options err_return` — if message generation fails, the function aborts before committing.
 
-2. **Alias** in `tools/term/zsh/config/aliases/git/commit.zsh`:
+2. **Aliases** in `tools/term/zsh/config/aliases/git/commit.zsh`:
    - `vcaa='git-commit-create-all-auto'`
+   - `vcaaf='git-commit-create-all-auto -n'` (skip hooks)
+   - `vcaar='git-commit-create-all-auto && ralph'` (auto-commit then ralph)
 
 3. **Cleanup**: remove the "vcaa auto-fill the commit message" line from `TODO.md`.
 
@@ -37,5 +39,6 @@ New `git-commit-create-all-auto` function + `vcaa` alias: stage all, auto-genera
 - [ ] Extra flags like `-n` are forwarded to the underlying git commit
 - [ ] Repo path as first arg targets the correct repository for both message generation and commit
 - [ ] If message generation fails, no commit is created
+- [ ] `vcaaf` and `vcaar` aliases added
 - [ ] TODO.md entry removed
 - [ ] Bats tests pass for all behavioral tests above
