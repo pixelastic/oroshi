@@ -14,7 +14,7 @@
     // zsh-lint disable=missingIconsLoad
     "tab-separator":  "",
     "tab-attention-stop":  " ",
-    "tab-attention-notification": "󱖒 ",
+    "tab-attention-notification": "󱖒",
     "tab-fullscreen": "󰈈"
   },
 
