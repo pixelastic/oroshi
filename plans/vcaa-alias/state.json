@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-commit-message-repo-arg.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Threaded optional repoPath through entire git-commit-message stack: ZSH wrapper, JS entry point, getDiff, getDeletedPlanName, getCommitHint, and both strategy objects"
   },
   {
     "id": "02",

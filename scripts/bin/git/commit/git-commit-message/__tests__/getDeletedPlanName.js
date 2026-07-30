@@ -1,7 +1,7 @@
-import Gilmore from 'gilmore';
+import { getRepo } from '../config.js';
 import { getDeletedPlanName } from '../getDeletedPlanName.js';
 
-vi.mock('gilmore', () => ({ default: vi.fn() }));
+vi.mock('../config.js', () => ({ getRepo: vi.fn() }));
 
 describe('getDeletedPlanName', () => {
   it.each([
@@ -37,7 +37,7 @@ describe('getDeletedPlanName', () => {
       expected: null,
     },
   ])('$title', async ({ fileStatuses, expected }) => {
-    Gilmore.mockReturnValue({
+    getRepo.mockReturnValue({
       status: vi.fn().mockReturnValue(fileStatuses),
     });
     const actual = await getDeletedPlanName();

@@ -1,7 +1,7 @@
-import Gilmore from 'gilmore';
 import { commitWithHint } from '../commitWithHint.js';
+import { getRepo } from '../config.js';
 
-vi.mock('gilmore', () => ({ default: vi.fn() }));
+vi.mock('../config.js', () => ({ getRepo: vi.fn() }));
 vi.mock('../getPlanDir.js', () => ({
   getPlanDir: vi.fn().mockReturnValue('/some/plans/commit-message-binary'),
 }));
@@ -65,7 +65,7 @@ describe('commitWithHint', () => {
           'diff text\n\nFiles renamed:\n- old/path.js \u2192 new/path.js',
       },
     ])('$title', async ({ stagedFilesWithStatus, diffs, expected }) => {
-      Gilmore.mockReturnValue({
+      getRepo.mockReturnValue({
         stagedFilesWithStatus: vi.fn().mockReturnValue(stagedFilesWithStatus),
         run: vi
           .fn()
@@ -76,7 +76,7 @@ describe('commitWithHint', () => {
     });
 
     it('plan-noise files do not appear in binary fallback', async () => {
-      Gilmore.mockReturnValue({
+      getRepo.mockReturnValue({
         stagedFilesWithStatus: vi.fn().mockReturnValue([
           { name: 'file.nes', status: 'added' },
           {
@@ -100,7 +100,7 @@ describe('commitWithHint', () => {
     });
 
     it('plan-noise files excluded from rename fallback', async () => {
-      Gilmore.mockReturnValue({
+      getRepo.mockReturnValue({
         stagedFilesWithStatus: vi.fn().mockReturnValue([
           {
             name: 'new/path.js',

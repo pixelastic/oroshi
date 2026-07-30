@@ -1,12 +1,12 @@
 import { _ } from 'golgoth';
-import Gilmore from 'gilmore';
+import { getRepo } from './config.js';
 
 /**
  * Retrieves the name of a deleted plan by checking staged files for removed plan sentinels.
  * @returns {Promise<string|null>} The name of the deleted plan if found, or null if no deleted plan is detected.
  */
 export async function getDeletedPlanName() {
-  const repo = Gilmore();
+  const repo = getRepo();
   const allStatus = await repo.status();
   if (!allStatus) return null;
 

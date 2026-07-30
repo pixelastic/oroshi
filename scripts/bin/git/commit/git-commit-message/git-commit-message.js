@@ -1,9 +1,12 @@
 import { callApi } from './callApi.js';
 import { commitWithHint } from './commitWithHint.js';
 import { commitWithoutHint } from './commitWithoutHint.js';
+import { init } from './config.js';
 import { formatMessage } from './format.js';
 import { getCommitHint } from './getCommitHint.js';
 import { getDeletedPlanName } from './getDeletedPlanName.js';
+
+init(process.argv[2]);
 
 // Short-circuit for plan deletion commits — no API call needed
 const deletedPlanName = await getDeletedPlanName();

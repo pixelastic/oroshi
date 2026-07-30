@@ -1,7 +1,7 @@
-import Gilmore from 'gilmore';
+import { getRepo } from '../config.js';
 import { getDiff } from '../getDiff.js';
 
-vi.mock('gilmore', () => ({ default: vi.fn() }));
+vi.mock('../config.js', () => ({ getRepo: vi.fn() }));
 
 describe('getDiff', () => {
   let mockRun;
@@ -10,7 +10,7 @@ describe('getDiff', () => {
   beforeEach(() => {
     mockRun = vi.fn();
     mockStagedFilesWithStatus = vi.fn();
-    Gilmore.mockReturnValue({
+    getRepo.mockReturnValue({
       stagedFilesWithStatus: mockStagedFilesWithStatus,
       run: mockRun,
     });

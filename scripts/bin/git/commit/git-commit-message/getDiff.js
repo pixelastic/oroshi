@@ -1,5 +1,5 @@
 import { _, pMap } from 'golgoth';
-import Gilmore from 'gilmore';
+import { getRepo } from './config.js';
 
 /**
  * Returns git diff of staged files, excluding specified files.
@@ -8,7 +8,7 @@ import Gilmore from 'gilmore';
  * @returns {Promise<string>} Diff output with optional rename/binary fallback blocks
  */
 export async function getDiff(excludedFiles) {
-  const repo = Gilmore();
+  const repo = getRepo();
   const allFiles = await repo.stagedFilesWithStatus();
 
   const cleanFiles = _.reject(allFiles, (file) => {

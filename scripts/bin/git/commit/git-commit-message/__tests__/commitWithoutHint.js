@@ -1,7 +1,7 @@
-import Gilmore from 'gilmore';
 import { commitWithoutHint } from '../commitWithoutHint.js';
+import { getRepo } from '../config.js';
 
-vi.mock('gilmore', () => ({ default: vi.fn() }));
+vi.mock('../config.js', () => ({ getRepo: vi.fn() }));
 
 describe('commitWithoutHint', () => {
   describe('getDiff', () => {
@@ -56,7 +56,7 @@ describe('commitWithoutHint', () => {
           'diff text\n\nFiles renamed:\n- old/path.js \u2192 new/path.js',
       },
     ])('$title', async ({ stagedFilesWithStatus, diffs, expected }) => {
-      Gilmore.mockReturnValue({
+      getRepo.mockReturnValue({
         stagedFilesWithStatus: vi.fn().mockReturnValue(stagedFilesWithStatus),
         run: vi
           .fn()
@@ -68,7 +68,7 @@ describe('commitWithoutHint', () => {
 
     it('excludes yarn.lock from staged files', async () => {
       const mockRun = vi.fn().mockReturnValue('diff text');
-      Gilmore.mockReturnValue({
+      getRepo.mockReturnValue({
         stagedFilesWithStatus: vi.fn().mockReturnValue([
           { name: 'yarn.lock', status: 'modified' },
           { name: 'src/index.js', status: 'modified' },
@@ -81,7 +81,7 @@ describe('commitWithoutHint', () => {
     });
 
     it('excludes yarn.lock from rename processing', async () => {
-      Gilmore.mockReturnValue({
+      getRepo.mockReturnValue({
         stagedFilesWithStatus: vi.fn().mockReturnValue([
           {
             name: 'yarn.lock',
