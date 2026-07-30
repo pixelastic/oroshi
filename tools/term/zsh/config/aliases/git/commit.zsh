@@ -1,6 +1,9 @@
 # [c]ommit
 alias vcRa='git-commit-remove-all'
 alias vcR='git-commit-remove'
+alias vcaaf='git-commit-create-all-auto -n'
+alias vcaa='git-commit-create-all-auto'
+alias vcaar='git-commit-create-all-auto && ralph'
 alias vcaf='git-commit-create-all -n'
 alias vca='git-commit-create-all'
 alias vcar='git-commit-create-all && ralph'

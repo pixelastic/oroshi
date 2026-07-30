@@ -39,7 +39,6 @@ I'd love an icon to see:
   might be able to do that
 - How to mark that a tab is blocked until a sidequest is resolved?
 - Fix the fullscreen icon being too small if followed by an attention icon
-- vcaa auto-fill the commit message
 
 
 ---

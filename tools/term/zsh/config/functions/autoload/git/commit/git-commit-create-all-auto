@@ -1,0 +1,34 @@
+# Stage all, auto-generate commit message, and commit
+# Usage:
+# $ git-commit-create-all-auto              # Auto-commit in current repo
+# $ git-commit-create-all-auto /path        # Auto-commit in given repo
+# $ git-commit-create-all-auto -n           # Skip hooks
+# $ git-commit-create-all-auto /path -n     # Both
+setopt local_options err_return
+
+local repoPath=""
+
+# First arg is repo path if it exists and doesn't start with -
+if [[ $# -gt 0 && "$1" != -* ]]; then
+  repoPath="$1"
+  shift
+fi
+
+# Thread --repo to sub-calls if provided
+local repoArgs=()
+[[ "$repoPath" != "" ]] && repoArgs=(--repo "$repoPath")
+
+# Stage all files first so git-commit-message sees the diff
+git-file-add "${repoArgs[@]}"
+
+# Generate commit message from staged diff
+local messageArgs=()
+[[ "$repoPath" != "" ]] && messageArgs=("$repoPath")
+local message="$(git-commit-message "${messageArgs[@]}")"
+# Abort if message generation failed
+[[ "$message" == "" ]] && return 1
+
+echo "$message"
+
+# Commit staged files (not git-commit-create-all, files are already staged)
+git-commit-create "${repoArgs[@]}" "$message" "$@"

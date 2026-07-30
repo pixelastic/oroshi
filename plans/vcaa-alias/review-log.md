@@ -22,3 +22,15 @@ it.each([
 ```
 **Problem:** Reviewer flagged mock setup inside each test body instead of shared `beforeEach`.
 **Reason skipped:** The two `it.each` rows assert different call signatures (with arg vs undefined). A shared `beforeEach` would still need per-case call logic, so extracting adds no clarity.
+
+## Issue 02 — commit-create-all-auto
+### Missing guard comment on if block
+```zsh
+# First arg is repo path if it exists and doesn't start with -
+if [[ $# -gt 0 && "$1" != -* ]]; then
+  repoPath="$1"
+  shift
+fi
+```
+**Problem:** Reviewer flagged the `if` block as missing a guard comment.
+**Reason skipped:** The comment on line 11 directly above the `if` already explains the guard.
