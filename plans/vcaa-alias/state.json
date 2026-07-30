@@ -1,0 +1,14 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-commit-message-repo-arg.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-commit-create-all-auto.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
