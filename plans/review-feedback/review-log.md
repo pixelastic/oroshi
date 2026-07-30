@@ -114,3 +114,26 @@ const response = await drive.comments.list({
 ```
 **Problem:** Reviewer flagged that `includeDeleted` is not set on `comments.list`
 **Reason skipped:** Spec doesn't mention deleted comments; API default (exclude deleted) is correct behavior — deleted comments have no actionable content
+
+## Issue 06 — review-article skill
+### Step separators between sections
+```markdown
+---
+```
+**Problem:** `---` separators between steps inconsistent with some skills (review-slide, review)
+**Reason skipped:** `deprecate/SKILL.md` uses the same pattern; not a universal convention
+
+### Step 2 "Wait" has no substantive work
+```markdown
+### Step 2 — Wait
+Do nothing until the user comes back.
+```
+**Problem:** Step has no agent work — just "do nothing"
+**Reason skipped:** Inherently interactive; the skill must pause for user annotation, there's no way to avoid a wait step
+
+### Blockquote message templates
+```markdown
+> Here's the doc: {url}
+```
+**Problem:** No existing skill uses blockquotes for user-facing message templates
+**Reason skipped:** Makes expected output clearer and visually distinct from instructions; stylistic choice

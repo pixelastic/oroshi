@@ -44,7 +44,8 @@
   {
     "id": "06",
     "issue": "issues/06-review-article-skill.md",
-    "done": false,
-    "blocked_by": ["03", "04", "05"]
+    "done": true,
+    "blocked_by": ["03", "04", "05"],
+    "recap": "review-article skill orchestrates the full workflow: upload, annotate, fetch article+comments, synthesize structured feedback, publish as Google Doc"
   }
 ]
