@@ -47,10 +47,10 @@ Apply these principles, by priority:
 
 **Exit criterion:** Zero errors. Warnings and suggestions addressed as best effort.
 
-Pipe the draft (without the code block fences) to `prose-lint`:
+Pass the draft (without the code block fences) to `prose-lint`:
 
 ```bash
-echo "<draft>" | prose-lint
+prose-lint "<draft>"
 ```
 
 `prose-lint` outputs a JSON array of violations with `line`, `rule`, `severity`, `match`, and `message` fields.

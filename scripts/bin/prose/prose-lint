@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
 # Lint prose with Vale and output a minimal JSON array of violations
 # Usage:
-# $ prose-lint file.md                  # Lint with default profile
+# $ prose-lint file.md                  # Lint a file
+# $ prose-lint "some text to check"     # Lint a string
 # $ prose-lint --profile blog file.md   # Lint with blog profile
-# $ echo "text" | prose-lint            # Lint from stdin
 set -e
 
 zparseopts -E -D \
@@ -16,19 +16,18 @@ JQ_FILTER='[.[][]] | map({line: .Line, rule: .Check, severity: .Severity, match:
 
 local valeOutput=""
 
-# Piped stdin: write to temp file, lint, clean up
-if [[ ! -t 0 ]]; then
-  local tmpFile="$(mktemp)"
-  cat > "$tmpFile"
-  valeOutput="$(vale --config "$VALE_CONFIG" --output=JSON "$tmpFile" 2>/dev/null || true)"
-  rm --force "$tmpFile"
-  # File argument
-elif [[ $# -gt 0 ]]; then
-  valeOutput="$(vale --config "$VALE_CONFIG" --output=JSON "$1" 2>/dev/null || true)"
-  # No input
-else
+if [[ $# -eq 0 ]]; then
   printf '[]\n'
   exit 0
+fi
+
+if [[ -f "$1" ]]; then
+  valeOutput="$(vale --config "$VALE_CONFIG" --output=JSON "$1" 2>/dev/null || true)"
+else
+  local tmpFile="$(mktemp)"
+  printf '%s' "$1" > "$tmpFile"
+  valeOutput="$(vale --config "$VALE_CONFIG" --output=JSON "$tmpFile" 2>/dev/null || true)"
+  rm --force "$tmpFile"
 fi
 
 local result="$(printf '%s' "$valeOutput" | jq --compact-output "$JQ_FILTER")"
