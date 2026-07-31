@@ -2,22 +2,25 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  DRAFT_PATH="$BATS_TMP_DIR/draft.md"
+  printf '%s' "hello world" > "$DRAFT_PATH"
 }
 
-@test "passes argument text to clipboard-write" {
+@test "copies draft file content to clipboard" {
   clipboard-write() { echo "$1" > "$BATS_TMP_DIR/clipboard.txt"; }
   bats_mock clipboard-write
 
-  bats_run_zsh "slack-writer-end 'hello world'"
+  bats_run_zsh "slack-writer-end '$DRAFT_PATH'"
   [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "hello world" ]]
 }
 
-@test "passes stdin text to clipboard-write" {
-  clipboard-write() { echo "$1" > "$BATS_TMP_DIR/clipboard.txt"; }
-  bats_mock clipboard-write
+@test "fails without argument" {
+  bats_run_zsh "slack-writer-end"
+  [[ "$status" -eq 1 ]]
+}
 
-  bats_run_zsh "echo 'hello world' | slack-writer-end"
-  [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "hello world" ]]
+@test "fails if file does not exist" {
+  bats_run_zsh "slack-writer-end '/nonexistent/path.md'"
+  [[ "$status" -eq 1 ]]
 }

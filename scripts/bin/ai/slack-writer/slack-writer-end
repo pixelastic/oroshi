@@ -1,13 +1,19 @@
 #!/usr/bin/env zsh
-# Copy draft text to clipboard
+# Copy a slack-writer draft file to clipboard
 # Usage:
-# $ slack-writer-end "some text"
-# $ echo "some text" | slack-writer-end
+# $ slack-writer-end /path/to/draft.md
 set -e
 
-local input="$1"
+local draftPath="$1"
 
-# If no argument, read from stdin
-[[ "$input" == "" ]] && input="$(cat)"
+# Draft file is required
+if [[ "$draftPath" == "" ]]; then
+  echoerr "Usage: slack-writer-end <draft-path>"
+  return 1
+fi
+if [[ ! -f "$draftPath" ]]; then
+  echoerr "Draft file not found: $draftPath"
+  return 1
+fi
 
-clipboard-write "$input"
+clipboard-write "$(cat "$draftPath")"

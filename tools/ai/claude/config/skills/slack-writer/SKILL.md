@@ -11,7 +11,15 @@ Transform a brain dump (often speech-to-text) into a clear, concise Slack messag
 
 ## Core Workflow
 
-### Step 1 — Assess context
+### Step 1 — Setup
+
+**Goal:** Initialize a draft session.
+
+**Exit criterion:** `draftPath` obtained.
+
+Run `slack-writer-start` and parse the JSON output to get the `draftPath`.
+
+### Step 2 — Assess context
 
 **Goal:** Determine if you have enough information to write the message.
 
@@ -21,15 +29,15 @@ Read the user's input (brain dump, file, conversation context). Identify the mod
 - **Reply** — answering a colleague's question or sharing info in DM/thread
 - **Announce** — posting an event, project, or news to a channel
 
-If critical info is missing (who's the audience, what's the key message, a date for an event), ask 1-2 targeted questions. If the input is complete, move directly to Step 2.
+If critical info is missing (who's the audience, what's the key message, a date for an event), ask 1-2 targeted questions. If the input is complete, move directly to Step 3.
 
 Bias: ask rather than guess. A wrong draft wastes more time than a quick question.
 
-### Step 2 — Write draft
+### Step 3 — Write draft
 
-**Goal:** Produce a single Slack-ready message in English (French only if explicitly requested).
+**Goal:** Produce a single Slack-ready message in English (French only if explicitly requested), saved to `draftPath`.
 
-**Exit criterion:** A message the user could post in Slack.
+**Exit criterion:** Draft file written to disk.
 
 Apply these principles, by priority:
 
@@ -41,35 +49,26 @@ Apply these principles, by priority:
 
 4. **Complete in one message.** Don't make them pull information out of you — give the answer, the why, and a reference if useful, all upfront. But stay open: inform, don't close the conversation.
 
-### Step 3 — Lint
+Write the draft to `draftPath` using the Write tool.
+
+### Step 4 — Lint
 
 **Goal:** Ensure the draft passes prose linting.
 
 **Exit criterion:** Zero errors. Warnings and suggestions addressed as best effort.
 
-Pass the draft (without the code block fences) to `prose-lint`:
+Run `prose-lint <draftPath>` to get a a JSON array of violations with `line`, `rule`, `severity`, `match`, and `message` fields.
 
-```bash
-prose-lint "<draft>"
-```
+Loop: fix `draftPath` (using the Edit tool), re-lint. Repeat until zero errors remain. Warnings may stay if justified.
 
-`prose-lint` outputs a JSON array of violations with `line`, `rule`, `severity`, `match`, and `message` fields.
+### Step 5 — Finalize
 
-Loop: fix errors, fix warnings and suggestions where possible, re-lint. Repeat until zero errors remain. Warnings may stay if justified.
+**Goal:** Display the final message.
 
-### Step 4 — Present
+**Exit criterion:** Message displayed and `slack-writer-end` called.
 
-**Goal:** Copy to clipboard and display the final draft.
-
-**Exit criterion:** Draft in clipboard and displayed.
-
-First, copy to clipboard:
-
-```bash
-echo "<draft>" | slack-writer-end
-```
-
-Then display the message.
+1. Run `slack-writer-end <draftPath>`
+2. Display the message (read `draftPath` and show it).
 
 ## Common Rationalizations
 
@@ -79,8 +78,9 @@ Then display the message.
 
 ## Checklist
 
+- [ ] `<draftPath>` obtained from `slack-writer-start`
 - [ ] Important info is in the first sentence
 - [ ] No repeated information
 - [ ] Language is English unless French was explicitly requested
 - [ ] `prose-lint` returns zero errors
-- [ ] Message copied to clipboard via `slack-writer-end`
+- [ ] `slack-writer-end` called with `<draftPath>`
