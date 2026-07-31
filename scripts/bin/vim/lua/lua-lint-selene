@@ -4,7 +4,7 @@
 # $ lua-lint-selene file.lua
 set -e
 
-local SELENE_CONFIG="$OROSHI_ROOT/config/_languages/lua/selene/selene.toml"
+local SELENE_CONFIG="$OROSHI_ROOT/tools/_languages/lua/selene/selene.toml"
 
 local rawOutput="$(selene --display-style json --config "$SELENE_CONFIG" "$1" || true)"
 
