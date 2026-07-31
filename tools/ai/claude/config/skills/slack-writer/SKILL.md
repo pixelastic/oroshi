@@ -51,7 +51,7 @@ Apply these principles, by priority:
 
 5. **Sound human.** Write like a colleague, not a report. Softeners are fine ("I think", "not sure", "..."). Light emoji is OK when it takes the edge off. Avoid categorical phrasing that sounds robotic ("I have zero context." → "No idea what these are about...").
 
-Write the draft to `draftPath` using the Write tool.
+Write the draft to `draftPath` using the **Create** tool.
 
 ### Step 4 — Lint
 

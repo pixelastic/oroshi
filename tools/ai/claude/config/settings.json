@@ -34,7 +34,7 @@
         ]
       },
       {
-        "matcher": "Write|Edit",
+        "matcher": "Create|Write|Edit",
         "hooks": [
           {
             "type": "command",
