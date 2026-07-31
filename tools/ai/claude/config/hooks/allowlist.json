@@ -296,6 +296,7 @@
   "unset",
   "unzip",
   "uptime",
+  "vale",
   "vitals",
   "vmstat",
   "wait",
