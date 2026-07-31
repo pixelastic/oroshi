@@ -1,0 +1,7 @@
+extends: existence
+message: "Don't use em dashes or en dashes. Restructure the sentence instead."
+level: error
+nonword: true
+tokens:
+  - '—'
+  - '–'

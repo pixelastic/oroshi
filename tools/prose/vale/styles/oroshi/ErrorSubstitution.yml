@@ -1,0 +1,13 @@
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: error
+ignorecase: true
+action:
+  name: replace
+swap:
+  utilize: use
+  leverage: use
+  in order to: to
+  "(?:e-mail|Email|E-mail)": email
+  file name: filename
+  open-source: open source

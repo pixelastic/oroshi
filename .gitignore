@@ -32,8 +32,9 @@ plans/*/ralph.json
 plans/*/scaffold
 plans/*/COMMIT_HINT.md
 
-# Synced packages
-tools/prose/vale/styles/
+# Synced packages (except custom oroshi rules)
+tools/prose/vale/styles/*
+!tools/prose/vale/styles/oroshi/
 
 # Tool directories
 .claude/

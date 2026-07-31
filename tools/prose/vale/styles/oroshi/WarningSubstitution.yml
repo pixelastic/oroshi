@@ -1,0 +1,21 @@
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: warning
+ignorecase: true
+action:
+  name: replace
+swap:
+  "(?:file ?path|path ?name)": path
+  "(?:cell ?phone|smart ?phone)": phone|mobile phone
+  "(?:WiFi|wifi)": Wi-Fi
+  "(?:ok|Okay)": OK|okay
+  '3\-D': 3D
+  click on: click
+  functionality: capability|feature
+  grayed-out: unavailable
+  regex: regular expression
+  synch: sync
+  stylesheet: style sheet
+  autoupdate: automatically update
+  a\.k\.a|aka: also known as
+  approx\.: approximately
