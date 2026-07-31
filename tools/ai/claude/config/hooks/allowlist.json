@@ -222,6 +222,7 @@
   "project-exists",
   "project-name",
   "project-remove",
+  "prose-lint",
   "ps",
   "pup",
   "pwd",
