@@ -45,3 +45,11 @@ git commit --message "$commitMessage"
 ```
 **Problem:** Multiple args on one line
 **Reason skipped:** Only two args; the standard's example shows continuation for 3+ args — borderline judgement call
+
+## Issue 04 — Cleanup
+### Stale prd test path in GUIDANCE.md
+```markdown
+- **Existing tests**: `scripts/bin/ai/prd/__tests__/prd-end.bats` — migrate to `plan-start.bats`, don't rewrite from scratch
+```
+**Problem:** References now-deleted `scripts/bin/ai/prd/__tests__/prd-end.bats`
+**Reason skipped:** Plan-internal artifact, not an invocable skill reference; guidance is consumed by agents during this plan only and the migration already happened in earlier issues

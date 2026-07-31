@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-cleanup.md",
-    "done": false,
-    "blocked_by": ["03"]
+    "done": true,
+    "blocked_by": ["03"],
+    "recap": "Deleted old /prd and /issues skills and prd-end script, updated grill-me to reference /plan, cleaned stale TODO references"
   }
 ]

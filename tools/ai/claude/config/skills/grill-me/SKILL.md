@@ -15,6 +15,6 @@ instead.
 
 Once all questions are answered, present three options:
 
-1. Write a glossary (/glossary)
-2. Write a PRD (/prd)
+1. Write a plan (/plan)
+2. Write a glossary (/glossary)
 3. Quick implementation (/quick-implementation)

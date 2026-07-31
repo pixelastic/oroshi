@@ -13,7 +13,7 @@
 - `local firstField="${lines[0]%%▮*}"` is bad, use a split array
 - json-lint doesn't work on files outside of oroshi
 - Make some slack-* commands to read updated in a specific channel
-- Find a way to display in kitty how "deep" a tab is. That would allow me to focus on the tabs that are close to being done, in order to close them, rather than going deep into grill me/prd into new ideas
+- Find a way to display in kitty how "deep" a tab is. That would allow me to focus on the tabs that are close to being done, in order to close them, rather than going deep into grill me/plan into new ideas
 - Update `j` so it only suggests through the projects list, no longer manually marking dirs, or maybe in addition to marking dirs?
 - /debug-script skill doesn't work well with nodejs scripts that require a dependency. Need to see if it can use package.json for the deps?
 - Change the color of the `!` bash mode in claude
@@ -48,7 +48,6 @@ I'd love an icon to see:
 
 - Run claude on all history, analyzing common review issues, improve skills accordingly
 - Ensure GUIDANCE uses the right test/lint commands, even outside of oroshi
-- Ensure /prd calls prd-end from its path, not `bash /path/prd`, not `.claude/prd`, etc
 - Ensure skill run `review-diff` from the path
 - Maybe re-evaluate if we need to commit the plans. It sure adds some noise, and
   is only needed during implementation.
