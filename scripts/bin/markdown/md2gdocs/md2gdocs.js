@@ -158,21 +158,21 @@ __ = {
 const currentFile = fileURLToPath(import.meta.url);
 if (process.argv[1] === currentFile) {
   const args = process.argv.slice(2);
+  const options = {};
+
   const noOpenIndex = args.indexOf('--no-open');
-  let open;
   if (noOpenIndex !== -1) {
-    open = false;
+    options.open = false;
     args.splice(noOpenIndex, 1);
   }
 
   const titleIndex = args.indexOf('--title');
-  let title;
   if (titleIndex !== -1) {
-    title = args[titleIndex + 1];
+    options.title = args[titleIndex + 1];
     args.splice(titleIndex, 2);
   }
-  const filepath = args[0];
 
+  const filepath = args[0];
   if (!filepath) {
     console.error(
       'Usage: md2gdocs <file.md> [--title "Custom Title"] [--no-open]',
@@ -180,6 +180,6 @@ if (process.argv[1] === currentFile) {
     process.exit(1);
   }
 
-  const url = await md2gdocs(filepath, { title, open });
+  const url = await md2gdocs(filepath, options);
   console.log(url);
 }
