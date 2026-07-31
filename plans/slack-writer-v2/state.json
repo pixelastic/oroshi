@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-prose-lint.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "prose-lint script wraps Vale, accepts file arg or stdin, outputs flat JSON array with {line,rule,severity,match,message}, exits 0/1"
   },
   {
     "id": "03",

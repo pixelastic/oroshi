@@ -1,0 +1,113 @@
+#!/usr/bin/env zsh
+# Merge Vale profiles: default.ini + per-profile overrides → generated/*.ini
+# Usage:
+# $ prose-vale-build              # Rebuild all generated profiles
+set -e
+
+VALE_DIR="$OROSHI_ROOT/tools/prose/vale"
+PROFILES_DIR="$VALE_DIR/profiles"
+GENERATED_DIR="$VALE_DIR/generated"
+
+local defaultFile="$PROFILES_DIR/default.ini"
+
+# No default profile
+if [[ ! -f "$defaultFile" ]]; then
+  echo "Missing $defaultFile"
+  exit 1
+fi
+
+mkdir -p "$GENERATED_DIR"
+
+# Sanitize section headers to avoid glob issues in associative array keys
+# [*] → __STAR__, [*.md] → __STAR__.md, etc.
+function _sanitize_section() {
+  printf '%s' "${1//\*/__STAR__}"
+}
+
+# For each profile (including default), merge with default and write to generated/
+for profileFile in "$PROFILES_DIR"/*.ini; do
+  local profileName="${profileFile:t:r}"
+  local outputFile="$GENERATED_DIR/$profileName.ini"
+
+  # Default profile: just copy
+  if [[ "$profileName" == "default" ]]; then
+    cp "$defaultFile" "$outputFile"
+    continue
+  fi
+
+  # Parse overrides into associative array
+  local -A overrides=()
+  local currentSection=""
+  local line=""
+  for line in "${(@f)$(cat "$profileFile")}"; do
+    [[ "$line" =~ '^[[:space:]]*(#|$)' ]] && continue
+    if [[ "$line" =~ '^\[' ]]; then
+      currentSection="$(_sanitize_section "$line")"
+      continue
+    fi
+    local key="${line%% =*}"
+    overrides[${currentSection}/${key}]="$line"
+  done
+
+  # Walk default line by line, apply overrides, track which were used
+  local -A used=()
+  local -a result=()
+  currentSection=""
+  for line in "${(@f)$(cat "$defaultFile")}"; do
+    # Track section
+    if [[ "$line" =~ '^\[' ]]; then
+      currentSection="$(_sanitize_section "$line")"
+    fi
+    # Replace matching key=value lines
+    if [[ "$line" =~ '^[A-Za-z]' ]]; then
+      local key="${line%% =*}"
+      local lookupKey="${currentSection}/${key}"
+      if (( ${+overrides[$lookupKey]} )); then
+        result+=("${overrides[$lookupKey]}")
+        used[$lookupKey]=1
+        continue
+      fi
+    fi
+    result+=("$line")
+  done
+
+  # Collect unused overrides grouped by section
+  local -A pendingSections=()
+  local overrideKey=""
+  for overrideKey in "${(@k)overrides}"; do
+    (( ${+used[$overrideKey]} )) && continue
+    local section="${overrideKey%%/*}"
+    pendingSections[$section]+="${overrides[$overrideKey]}
+"
+  done
+
+  # Append unused overrides at end of their section
+  if [[ ${#pendingSections} -gt 0 ]]; then
+    local -a finalResult=()
+    local prevSection=""
+    for line in "${result[@]}"; do
+      # Section change → flush previous section's pending lines
+      if [[ "$line" =~ '^\[' && "$prevSection" != "" ]] && (( ${+pendingSections[$prevSection]} )); then
+        local appendLine=""
+        for appendLine in "${(f)pendingSections[$prevSection]}"; do
+          [[ "$appendLine" != "" ]] && finalResult+=("$appendLine")
+        done
+        unset "pendingSections[$prevSection]"
+      fi
+      if [[ "$line" =~ '^\[' ]]; then
+        prevSection="$(_sanitize_section "$line")"
+      fi
+      finalResult+=("$line")
+    done
+    # Flush last section
+    if [[ "$prevSection" != "" ]] && (( ${+pendingSections[$prevSection]} )); then
+      local appendLine=""
+      for appendLine in "${(f)pendingSections[$prevSection]}"; do
+        [[ "$appendLine" != "" ]] && finalResult+=("$appendLine")
+      done
+    fi
+    result=("${finalResult[@]}")
+  fi
+
+  printf '%s\n' "${result[@]}" > "$outputFile"
+done

@@ -5,3 +5,18 @@ ln --force --symbolic "${INSTALL_PATH}/${BINARY_NAME}" .
 ```
 **Problem:** Spec says "downloads the Vale binary to `~/local/bin/vale`" but implementation uses `~/local/etc/vale/` + symlink.
 **Reason skipped:** Follows established repo pattern (taplo, jq, etc. all use `~/local/etc/` + symlink to `~/local/bin/`). Functional outcome matches spec intent.
+
+## Issue 02 — prose-lint
+### `local` at script level
+```zsh
+local valeOutput=""
+```
+**Problem:** Reviewer questioned whether `local` should be used at script (non-function) scope vs UPPER_CASE without `local`.
+**Reason skipped:** Prior art (`zsh-lint`) uses `local` at script level throughout. The variables doc says "Use `local` for all variables, even if not in a function". Consistent with codebase.
+
+### No explicit empty guard on valeOutput
+```zsh
+local result="$(printf '%s' "$valeOutput" | jq --compact-output "$JQ_FILTER")"
+```
+**Problem:** Reviewer flagged that `valeOutput` could be empty and lacks an explicit guard.
+**Reason skipped:** Vale returns `{}` for clean files (never empty string). jq's `[.[][]]` on `{}` produces `[]`, which is correct. No silent failure path exists.

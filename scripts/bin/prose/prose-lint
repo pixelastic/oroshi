@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+# Lint prose with Vale and output a minimal JSON array of violations
+# Usage:
+# $ prose-lint file.md                  # Lint with default profile
+# $ prose-lint --profile blog file.md   # Lint with blog profile
+# $ echo "text" | prose-lint            # Lint from stdin
+set -e
+
+zparseopts -E -D \
+  -profile:=flagProfile
+
+local profile="${flagProfile[2]:-default}"
+VALE_CONFIG="$OROSHI_ROOT/tools/prose/vale/generated/$profile.ini"
+# jq filter: flatten Vale's keyed-by-filename object into a flat array with 5 fields
+JQ_FILTER='[.[][]] | map({line: .Line, rule: .Check, severity: .Severity, match: .Match, message: .Message})'
+
+local valeOutput=""
+
+# Piped stdin: write to temp file, lint, clean up
+if [[ ! -t 0 ]]; then
+  local tmpFile="$(mktemp)"
+  cat > "$tmpFile"
+  valeOutput="$(vale --config "$VALE_CONFIG" --output=JSON "$tmpFile" 2>/dev/null || true)"
+  rm --force "$tmpFile"
+  # File argument
+elif [[ $# -gt 0 ]]; then
+  valeOutput="$(vale --config "$VALE_CONFIG" --output=JSON "$1" 2>/dev/null || true)"
+  # No input
+else
+  printf '[]\n'
+  exit 0
+fi
+
+local result="$(printf '%s' "$valeOutput" | jq --compact-output "$JQ_FILTER")"
+
+printf '%s\n' "$result"
+[[ "$(printf '%s' "$result" | jq 'length')" -gt 0 ]] && exit 1
+exit 0
