@@ -12,6 +12,7 @@ tmp/
 !tools/cli/bat/config/dist/
 !tools/cli/rg/config/dist/
 !tools/git/git/config/dist/
+!tools/prose/vale/dist/
 # Some bats tests can't use the usual $BATS_TMP_DIR because it's in /tmp/ and
 # some scripts (like aberlaas) exlude anything that is in /tmp/ by default.
 # So we use .bats-tmp instead
