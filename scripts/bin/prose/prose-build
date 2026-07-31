@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
-# Merge Vale profiles: default.ini + per-profile overrides → generated/*.ini
+# Merge Vale profiles: default.ini + per-profile overrides → dist/*.ini
 # Usage:
-# $ prose-vale-build              # Rebuild all generated profiles
+# $ prose-build              # Rebuild all profiles
 set -e
 
 VALE_DIR="$OROSHI_ROOT/tools/prose/vale"
-PROFILES_DIR="$VALE_DIR/profiles"
-GENERATED_DIR="$VALE_DIR/generated"
+SRC_DIR="$VALE_DIR/src"
+DIST_DIR="$VALE_DIR/dist"
 
-local defaultFile="$PROFILES_DIR/default.ini"
+local defaultFile="$SRC_DIR/default.ini"
 
 # No default profile
 if [[ ! -f "$defaultFile" ]]; then
@@ -16,7 +16,7 @@ if [[ ! -f "$defaultFile" ]]; then
   exit 1
 fi
 
-mkdir -p "$GENERATED_DIR"
+mkdir -p "$DIST_DIR"
 
 # Sanitize section headers to avoid glob issues in associative array keys
 # [*] → __STAR__, [*.md] → __STAR__.md, etc.
@@ -25,9 +25,9 @@ function _sanitize_section() {
 }
 
 # For each profile (including default), merge with default and write to generated/
-for profileFile in "$PROFILES_DIR"/*.ini; do
+for profileFile in "$SRC_DIR"/*.ini; do
   local profileName="${profileFile:t:r}"
-  local outputFile="$GENERATED_DIR/$profileName.ini"
+  local outputFile="$DIST_DIR/$profileName.ini"
 
   # Default profile: just copy
   if [[ "$profileName" == "default" ]]; then

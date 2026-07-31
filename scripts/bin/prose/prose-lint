@@ -10,7 +10,7 @@ zparseopts -E -D \
   -profile:=flagProfile
 
 local profile="${flagProfile[2]:-default}"
-VALE_CONFIG="$OROSHI_ROOT/tools/prose/vale/generated/$profile.ini"
+VALE_CONFIG="$OROSHI_ROOT/tools/prose/vale/dist/$profile.ini"
 # jq filter: flatten Vale's keyed-by-filename object into a flat array with 5 fields
 JQ_FILTER='[.[][]] | map({line: .Line, rule: .Check, severity: .Severity, match: .Match, message: .Message})'
 

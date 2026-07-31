@@ -18,6 +18,9 @@ export default {
   '**/*.js': ['yarn run lint:fix --js', 'yarn run test --fail-fast --related'],
   'scripts/yarn/**/*': ['yarn run lint:zsh'],
 
+  // Vale profiles rebuild
+  'tools/prose/vale/src/*.ini': 'yarn run prose-build',
+
   // Colors reload
   'tools/term/zsh/config/theming/**/{colors,filetypes,icons,projects}.jsonc':
     'yarn run colors-reload',

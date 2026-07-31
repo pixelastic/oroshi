@@ -29,6 +29,8 @@ M.onInit = function()
   F.onWrite("*autoload/filetypes/filetypes-build", executeCommand("colors-reload"))
   F.onWrite("*autoload/project/projects-build", executeCommand("colors-reload"))
 
+  F.onWrite("*tools/prose/vale/src/*.ini", executeCommand("prose-build")) -- Vale
+
   F.onWrite("*tools/cli/bat/config/src/oroshi.xml", executeCommand("$OROSHI_ROOT/tools/cli/bat/config/generate-theme")) -- Bat
   F.onWrite("*tools/cli/rg/config/src/rgrc.conf", executeCommand("$OROSHI_ROOT/tools/cli/rg/config/generate-config")) -- Rg
   F.onWrite("*tools/git/git/config/src/gitconfig", executeCommand("$OROSHI_ROOT/tools/git/git/config/generate-config")) -- Git
