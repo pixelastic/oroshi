@@ -32,6 +32,9 @@ plans/*/ralph.json
 plans/*/scaffold
 plans/*/COMMIT_HINT.md
 
+# Synced packages
+tools/prose/vale/styles/
+
 # Tool directories
 .claude/
 .cursor/
