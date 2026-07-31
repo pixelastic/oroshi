@@ -10,5 +10,6 @@ mkdir --parents "$sessionDir"
 
 local id="$(uuidgen)"
 local draftPath="$sessionDir/$id.md"
+touch "$draftPath"
 
 jo draftPath="$draftPath"

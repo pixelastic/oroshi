@@ -19,6 +19,13 @@ setup() {
   [[ "$draftPath" == "$BATS_TMP_DIR/slack-writer/"*.md ]]
 }
 
+@test "creates an empty draft file at draftPath" {
+  bats_run_zsh "slack-writer-start"
+  local draftPath="$(echo "$output" | jq --raw-output '.draftPath')"
+  [[ -f "$draftPath" ]]
+  [[ ! -s "$draftPath" ]]
+}
+
 @test "returns unique draftPaths on successive calls" {
   bats_run_zsh "slack-writer-start"
   local first="$(echo "$output" | jq --raw-output '.draftPath')"
