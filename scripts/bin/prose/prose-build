@@ -18,6 +18,17 @@ fi
 
 mkdir -p "$DIST_DIR"
 
+# Sync third-party style packages if any are missing
+local stylesDir="$VALE_DIR/styles"
+local packagesLine="$(grep '^Packages' "$defaultFile")"
+local packages=(${(s:,:)packagesLine#*= })
+local needsSync="0"
+for pkg in "${packages[@]}"; do
+  pkg="${pkg// /}"
+  [[ ! -d "$stylesDir/$pkg" ]] && needsSync="1"
+done
+[[ "$needsSync" == "1" ]] && vale sync --config "$defaultFile"
+
 # Sanitize section headers to avoid glob issues in associative array keys
 # [*] → __STAR__, [*.md] → __STAR__.md, etc.
 function _sanitize_section() {
