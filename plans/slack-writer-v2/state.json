@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-skill-lint-end-steps.md",
-    "done": false,
-    "blocked_by": ["02", "03"]
+    "done": true,
+    "blocked_by": ["02", "03"],
+    "recap": "Added Step 3 (Lint via prose-lint) and Step 4 (End via slack-writer-end) to slack-writer SKILL.md with checklist items"
   }
 ]
