@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-plan-skill.md",
-    "done": false,
-    "blocked_by": ["01", "02"]
+    "done": true,
+    "blocked_by": ["01", "02"],
+    "recap": "Created merged /plan skill (SKILL.md + 4 reference templates) combining PRD and Issues workflows into 7-step continuous flow"
   },
   {
     "id": "04",
