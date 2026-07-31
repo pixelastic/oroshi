@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-conversational-tone.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added 5th writing principle 'Sound human' with Reply/DM warmth (softeners, emoji, no categorical phrasing) and Announce neutrality"
   }
 ]

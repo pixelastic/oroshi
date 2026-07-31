@@ -49,6 +49,8 @@ Apply these principles, by priority:
 
 4. **Complete in one message.** Don't make them pull information out of you — give the answer, the why, and a reference if useful, all upfront. But stay open: inform, don't close the conversation.
 
+5. **Sound human.** Write like a colleague, not a report. Softeners are fine ("I think", "not sure", "..."). Light emoji is OK when it takes the edge off. Avoid categorical phrasing that sounds robotic ("I have zero context." → "No idea what these are about...").
+
 Write the draft to `draftPath` using the Write tool.
 
 ### Step 4 — Lint
