@@ -28,3 +28,19 @@ local input="$1"
 ```
 **Problem:** `local` used outside a function in a standalone script; zsh-writer checklist says "script constants UPPER_CASE without `local`"
 **Reason skipped:** `variables.md` explicitly endorses `local` even outside functions; prior art (`clipboard-write:8`) uses the same pattern; `input` is not a constant
+
+## Issue 05 — Vale profile strategy
+### HITL gate not verifiable from diff
+**Problem:** Spec requires analysis presented to user and user approval before implementing
+**Reason skipped:** HITL gate was satisfied in conversation — analysis presented, user chose option C
+
+### write-good.ThereIs not in spec
+**Problem:** Rule disabled but not explicitly named in spec's target rules
+**Reason skipped:** Discussed with user as part of the suggestion-level analysis; included in the "disable everywhere" decision
+
+### Pre-existing oroshi.NoContractions anomaly in blog.ini
+```ini
+oroshi.NoContractions = error
+```
+**Problem:** Set to `error` under `# Disabled` heading — inconsistent with section semantics
+**Reason skipped:** Pre-existing, outside this diff's scope

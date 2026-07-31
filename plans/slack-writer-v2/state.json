@@ -30,8 +30,9 @@
   {
     "id": "05",
     "issue": "issues/05-vale-profile-strategy.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Disabled Google.Passive, Google.Timeless, write-good.ThereIs in all Vale profiles — suggestion-level rules caused noisy false positives in Slack and blog contexts"
   },
   {
     "id": "06",
