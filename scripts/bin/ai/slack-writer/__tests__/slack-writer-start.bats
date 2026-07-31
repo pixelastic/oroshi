@@ -2,13 +2,12 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR"
 }
 
 @test "creates slack-writer subdirectory" {
   bats_run_zsh "slack-writer-start"
   [[ "$status" -eq 0 ]]
-  [[ -d "$BATS_TMP_DIR/slack-writer" ]]
+  [[ -d "/tmp/oroshi/claude/slack-writer" ]]
 }
 
 @test "outputs valid JSON with draftPath key" {
@@ -16,7 +15,7 @@ setup() {
   [[ "$status" -eq 0 ]]
   local draftPath="$(echo "$output" | jq --raw-output '.draftPath')"
   [[ "$draftPath" != "null" ]]
-  [[ "$draftPath" == "$BATS_TMP_DIR/slack-writer/"*.md ]]
+  [[ "$draftPath" == "/tmp/oroshi/claude/slack-writer/"*.md ]]
 }
 
 @test "returns unique draftPaths on successive calls" {

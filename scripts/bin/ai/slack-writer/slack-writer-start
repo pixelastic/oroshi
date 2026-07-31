@@ -2,10 +2,10 @@
 # Initialize a slack-writer session and output JSON with the draft filepath
 # Usage:
 # $ slack-writer-start
-# {"draftPath":"/home/user/local/tmp/oroshi/slack-writer/e8d0442d.md"}
+# {"draftPath":"/tmp/oroshi/claude/slack-writer/e8d0442d.md"}
 set -e
 
-local sessionDir="$OROSHI_TMP_FOLDER/slack-writer"
+local sessionDir="/tmp/oroshi/claude/slack-writer"
 mkdir --parents "$sessionDir"
 
 local id="$(uuidgen)"
