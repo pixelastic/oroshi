@@ -26,5 +26,17 @@
     "done": true,
     "blocked_by": ["02", "03"],
     "recap": "Added Step 3 (Lint via prose-lint) and Step 4 (End via slack-writer-end) to slack-writer SKILL.md with checklist items"
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-vale-profile-strategy.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-conversational-tone.md",
+    "done": false,
+    "blocked_by": []
   }
 ]
