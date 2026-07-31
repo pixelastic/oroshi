@@ -149,7 +149,7 @@ Fix **every** violation, (including pre-existing ones not introduced by the curr
 - [ ] Quick documentation and usage at top of script
 - [ ] Return early — no avoidable nesting
 - [ ] Comments for each guard clause
-- [ ] All function vars `local`; script constants UPPER_CASE without `local`
+- [ ] All function vars `local`; script constants UPPER_CASE
 - [ ] External commands use long-form args, one per line
 - [ ] Use existing helpers over porcelain (e.g. `git-branch-list-raw` not `git branch`)
 - [ ] Use `zparseopts` for --named arguments

@@ -20,3 +20,11 @@ local result="$(printf '%s' "$valeOutput" | jq --compact-output "$JQ_FILTER")"
 ```
 **Problem:** Reviewer flagged that `valeOutput` could be empty and lacks an explicit guard.
 **Reason skipped:** Vale returns `{}` for clean files (never empty string). jq's `[.[][]]` on `{}` produces `[]`, which is correct. No silent failure path exists.
+
+## Issue 03 — slack-writer-end
+### `local` in script-level code
+```zsh
+local input="$1"
+```
+**Problem:** `local` used outside a function in a standalone script; zsh-writer checklist says "script constants UPPER_CASE without `local`"
+**Reason skipped:** `variables.md` explicitly endorses `local` even outside functions; prior art (`clipboard-write:8`) uses the same pattern; `input` is not a constant

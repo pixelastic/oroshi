@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-slack-writer-end.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "slack-writer-end script copies draft text to clipboard via clipboard-write; supports argument and stdin input"
   },
   {
     "id": "04",

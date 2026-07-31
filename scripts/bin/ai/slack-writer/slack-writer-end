@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Copy draft text to clipboard
+# Usage:
+# $ slack-writer-end "some text"
+# $ echo "some text" | slack-writer-end
+set -e
+
+local input="$1"
+
+# If no argument, read from stdin
+[[ "$input" == "" ]] && input="$(cat)"
+
+clipboard-write "$input"
