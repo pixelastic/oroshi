@@ -1,10 +1,12 @@
 #!/usr/bin/env zsh
 # PreToolUse hook for Create/Write/Edit
 # Auto-allow file operations on whitelisted paths
+set -e
 
-# Allowlist
+# Allowlist (glob patterns)
 local -a allowlist=(
-  "/tmp/oroshi/claude/"
+  "/tmp/oroshi/claude/**"
+  "*/plans/**"
 )
 
 local inputJson="$(cat)"
@@ -12,9 +14,10 @@ local filePath="$(json-get '.tool_input.file_path' <<<"$inputJson")"
 
 [[ "$filePath" == "" ]] && exit 0
 
-for prefix in "${allowlist[@]}"; do
-  # Skip if not in allowlist
-  [[ "${filePath#"$prefix"}" == "$filePath" ]] && continue
+for glob in "${allowlist[@]}"; do
+  # Skip if not matching
+  # shellcheck disable=SC2053
+  [[ "$filePath" != ${~glob} ]] && continue
 
   jo -d. \
     hookSpecificOutput.hookEventName="PreToolUse" \
