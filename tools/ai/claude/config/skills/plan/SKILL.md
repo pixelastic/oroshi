@@ -41,9 +41,8 @@ Read [03-issues.md](./references/03-issues.md) and follow all sub-steps.
 
 **Exit criterion:** `plan-end` called, user told to run ralph.
 
-1. Ask the user for permission to commit.
-2. Run `plan-end <planDir>` — it stages all plan files and commits.
-3. Tell the user to stop and run `/ralph <planDir>` to begin implementation.
+1. Run `plan-end <planDir>` — it stages all plan files and commits.
+2. Tell the user to stop and run `/ralph <planDir>` to begin implementation.
 
 ---
 
