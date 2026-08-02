@@ -1,4 +1,7 @@
 #!/usr/bin/env zsh
+# zsh-lint disable-file=missingSetE
+# Hook must always exit 0 — non-zero exits bypass permission logic
+#
 # Orchestrate Bash hook: run solkan (allow/ask) then rtk (rewrite) sequentially
 # Reads hook JSON from stdin, writes hookSpecificOutput JSON to stdout
 #
@@ -44,6 +47,10 @@ fi
 
 # RTK: Rewritten command
 local updatedInputCommand="$(preToolUse-Bash-rtk "$inputCommand")"
+
+# Subagent detection: prefix with env export when agent_id is present
+local agentId="$(json-get '.agent_id' <<<"$inputJson")"
+[[ "$agentId" != "" ]] && updatedInputCommand="export CLAUDE_IS_SUBAGENT=1; $updatedInputCommand"
 
 if [[ "$isAllowed" == "1" ]]; then
   autoApprove "$updatedInputCommand"

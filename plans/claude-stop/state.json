@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-subagent-detection.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "preToolUse-Bash injects CLAUDE_IS_SUBAGENT=1 when agent_id present; is-claude-subagent helper checks it"
   },
   {
     "id": "03",

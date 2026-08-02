@@ -208,6 +208,43 @@ setup() {
   expect_json_null '.hookSpecificOutput.permissionDecisionReason'
 }
 
+@test "prefixes command with CLAUDE_IS_SUBAGENT export when agent_id present" {
+  preToolUse-Bash-solkan() {
+    print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'
+  }
+  preToolUse-Bash-rtk() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"},"agent_id":"sub-123"}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.updatedInput.command' 'export CLAUDE_IS_SUBAGENT=1; echo hello'
+}
+
+@test "prefixes command with CLAUDE_IS_SUBAGENT export on rejected path" {
+  preToolUse-Bash-solkan() {
+    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget"]}}'
+    return 1
+  }
+  preToolUse-Bash-rtk() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"},"agent_id":"sub-123"}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.updatedInput.command' 'export CLAUDE_IS_SUBAGENT=1; wget evil.com'
+}
+
+@test "no CLAUDE_IS_SUBAGENT prefix when agent_id absent" {
+  preToolUse-Bash-solkan() {
+    print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'
+  }
+  preToolUse-Bash-rtk() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
+}
+
 @test "multi-reject mixed: ask with only new rejected in reason" {
   preToolUse-Bash-solkan() {
     print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'
