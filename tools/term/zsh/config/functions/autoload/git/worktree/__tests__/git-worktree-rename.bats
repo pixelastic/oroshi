@@ -5,9 +5,6 @@ setup() {
   bats_git_worktree 'feature'
 
   bats_mock_env OROSHI_WORKTREES_DIR "$BATS_GIT_WORKTREES"
-
-  # bats_mock_env "OROSHI_ROOT" "$OROSHI_ROOT"
-  # echo "oroshi-reload-fpath \$OROSHI_ROOT" >> "$BATS_TMP_DIR/mock.zsh"
 }
 
 # 1-argument form
@@ -113,4 +110,30 @@ setup() {
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-rename feature refactor && echo \$PWD"
   [[ "$status" -eq 0 ]]
   [[ "${lines[-1]}" = "$BATS_GIT_DIR" ]]
+}
+
+# OROSHI_ROOT reload
+@test "updates OROSHI_ROOT when it pointed to the renamed worktree" {
+  oroshi-reload-fpath() { :; }
+  oroshi-reload-path() { :; }
+  bats_mock oroshi-reload-fpath oroshi-reload-path
+
+  local worktreePath="${BATS_GIT_WORKTREES}my-repo--feature"
+  bats_run_zsh "export OROSHI_ROOT='$worktreePath' && cd $worktreePath && git-worktree-rename refactor && echo \$OROSHI_ROOT"
+  bats_debug "$output"
+  [[ "$status" -eq 0 ]]
+  # newDir inherits OROSHI_WORKTREES_DIR trailing slash
+  [[ "${lines[-1]}" = "${BATS_GIT_WORKTREES}/my-repo--refactor" ]]
+}
+
+@test "does not touch OROSHI_ROOT when it pointed elsewhere" {
+  oroshi-reload-fpath() { :; }
+  oroshi-reload-path() { :; }
+  bats_mock oroshi-reload-fpath oroshi-reload-path
+
+  local worktreePath="${BATS_GIT_WORKTREES}my-repo--feature"
+  bats_run_zsh "export OROSHI_ROOT='/some/other/path' && cd $worktreePath && git-worktree-rename refactor && echo \$OROSHI_ROOT"
+  bats_debug "$output"
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[-1]}" = "/some/other/path" ]]
 }

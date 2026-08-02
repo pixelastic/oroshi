@@ -58,5 +58,12 @@ git -C "$mainPath" worktree prune
 
 # Navigate to new directory if currently inside the old worktree
 if [[ "$PWD" == "$oldDir"* ]]; then
+  # If the shell loaded its functions from the old worktree, reload from the
+  # new path before cd, so chpwd hooks can resolve autoloaded functions
+  if [[ "$OROSHI_ROOT" == "$oldDir"* ]]; then
+    export OROSHI_ROOT="$newDir"
+    oroshi-reload-fpath "$OROSHI_ROOT"
+    oroshi-reload-path "$OROSHI_ROOT"
+  fi
   cd "$newDir"
 fi
