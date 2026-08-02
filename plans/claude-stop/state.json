@@ -1,0 +1,20 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-is-claude.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-subagent-detection.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-claude-stop.md",
+    "done": false,
+    "blocked_by": ["01", "02"]
+  }
+]
