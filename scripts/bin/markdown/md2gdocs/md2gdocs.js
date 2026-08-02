@@ -76,7 +76,7 @@ __ = {
    */
   async runPandoc(filepath, outputPath, cwd) {
     const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-    const referencePath = path.join(scriptDir, 'reference.docx');
+    const referencePath = path.join(scriptDir, '__config', 'reference.docx');
     await mkdirp(TMP_DIR);
     const command = `pandoc -f markdown-auto_identifiers "${filepath}" -o "${outputPath}" --reference-doc="${referencePath}" --extract-media=${TMP_DIR}/`;
     await run(command, { shell: true, stdout: false, stderr: false, cwd });

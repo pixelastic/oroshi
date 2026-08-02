@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-cleanup-stray-files.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Moved 9 stray resource files (GLOSSARY.md, image defaults, session.conf, reference.docx) into __docs/ and __config/ dirs, updated all references"
   },
   {
     "id": "02",

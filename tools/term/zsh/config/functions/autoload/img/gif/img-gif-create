@@ -2,13 +2,15 @@
 # Usage:
 # $ img-gif-create ./path/to/file.gif
 setopt local_options err_return
+
 local input="$1"
 
+# No path provided
 if [[ $input == "" ]]; then
-	echo "You need to pass the path of the file to create"
-	return 1
+  echo "You need to pass the path of the file to create"
+  return 1
 fi
 
 cp \
-	$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/img/gif/default.gif \
-	$1
+  "$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/img/gif/__config/default.gif" \
+  "$1"

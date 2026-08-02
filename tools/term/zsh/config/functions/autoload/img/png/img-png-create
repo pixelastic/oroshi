@@ -2,13 +2,15 @@
 # Usage:
 # $ img-png-create ./path/to/file.png
 setopt local_options err_return
+
 local input="$1"
 
+# No path provided
 if [[ $input == "" ]]; then
-	echo "You need to pass the path of the file to create"
-	return 1
+  echo "You need to pass the path of the file to create"
+  return 1
 fi
 
 cp \
-	$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/img/png/default.png \
-	$1
+  "$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/img/png/__config/default.png" \
+  "$1"

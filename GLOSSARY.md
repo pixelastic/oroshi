@@ -20,10 +20,10 @@ _Avoid_: refresh, repaint
 
 - [BATS Helper](tools/term/bats/GLOSSARY.md) — Worktree-aware, Deep Mocking, Root Override — the 3 guarantees of the test helper
 - [preToolUse Bash Hook](tools/ai/claude/config/hooks/GLOSSARY.md) — Solkan/RTK decision layers, auto-approve vs ask-user, the 4 hook cases
-- [Git Worktree Toolbox](tools/term/zsh/config/functions/autoload/git/worktree/GLOSSARY.md) — Worktrees, branch slugs, worktrees store, dirty state, and design decisions
-- [Project Display](tools/term/zsh/config/functions/autoload/project/GLOSSARY.md) — Projects, Contexts, Context Badges, Project Badges, Worktree Badges
+- [Git Worktree Toolbox](tools/term/zsh/config/functions/autoload/git/worktree/__docs/GLOSSARY.md) — Worktrees, branch slugs, worktrees store, dirty state, and design decisions
+- [Project Display](tools/term/zsh/config/functions/autoload/project/__docs/GLOSSARY.md) — Projects, Contexts, Context Badges, Project Badges, Worktree Badges
 - [FZF](scripts/bin/fzf/__docs/GLOSSARY.md) — FZF Scripts, Lifecycle Functions, FZF Helpers, Neovim API, Legacy FZF
 - [FZF ctrl-r](scripts/bin/fzf/__docs/GLOSSARY-ctrl-r.md) — Eager/Lazy colorization strategies, History diff, Cache, Mutex
 - [Kitty Tab Bar](tools/term/kitty/config/GLOSSARY.md) — Tab Bar, Statusbar, Redraw, Reload, Reload Beacon, Attention
-- [npm](tools/term/zsh/config/functions/autoload/npm/GLOSSARY.md) — Published, Deprecated — registry states and their relationship
+- [npm](tools/term/zsh/config/functions/autoload/npm/__docs/GLOSSARY.md) — Published, Deprecated — registry states and their relationship
 - [Prose Linting](tools/prose/GLOSSARY.md) — Error, Warning, Suggestion — severity levels for agent-driven prose correction
