@@ -1227,6 +1227,10 @@
     "ansi": 210,
     "hex": "#0f141e"
   },
+  "socket": {
+    "ansi": 57,
+    "hex": "#2c5282"
+  },
   "special-char": {
     "ansi": 45,
     "hex": "#d69e2e"
