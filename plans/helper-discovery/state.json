@@ -23,8 +23,9 @@
   {
     "id": "04",
     "issue": "issues/04-update-calling-commands.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Replaced !tree dump in calling-commands.md with helper-list-raw discovery guidance and output format docs"
   },
   {
     "id": "05",

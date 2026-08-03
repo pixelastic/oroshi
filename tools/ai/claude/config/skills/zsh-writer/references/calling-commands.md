@@ -42,5 +42,16 @@ Calling porcelain bypasses that work and creates duplication.
 | And more... | Check in `tools/term/zsh/config/functions/autoload/` |
 
 
-All helpers:
-!`tree ~/.oroshi/tools/term/zsh/config/functions/autoload/`
+## Discovering helpers
+
+Before falling back to porcelain, run `helper-list-raw` to discover available helpers.
+
+```
+Example:
+```zsh
+helper-list-raw git
+git-branch-copy▮Copy a branch▮{filepath}
+git-branch-pull▮Pull a branch▮{filepath}
+git-branch-list▮Display the list of local branches▮{filepath}
+# ...
+```
