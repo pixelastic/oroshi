@@ -19,21 +19,21 @@ setup() {
   echo "new" > "$BATS_GIT_DIR/untracked.txt"
   bats_run_zsh "cd $BATS_GIT_DIR && git-status-raw"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "untracked.txt▮A" ]]
+  [[ "$output" = "untracked.txt▮ ▮A" ]]
 }
 
 @test "lists unstaged modified files as M" {
   echo "modified" > "$BATS_GIT_DIR/tracked.txt"
   bats_run_zsh "cd $BATS_GIT_DIR && git-status-raw"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "tracked.txt▮M" ]]
+  [[ "$output" = "tracked.txt▮ ▮M" ]]
 }
 
 @test "lists unstaged deleted files as D" {
   rm "$BATS_GIT_DIR/tracked.txt"
   bats_run_zsh "cd $BATS_GIT_DIR && git-status-raw"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "tracked.txt▮D" ]]
+  [[ "$output" = "tracked.txt▮ ▮D" ]]
 }
 
 @test "lists staged new files as A" {
@@ -41,7 +41,7 @@ setup() {
   bats_git add staged.txt
   bats_run_zsh "cd $BATS_GIT_DIR && git-status-raw"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "staged.txt▮A" ]]
+  [[ "$output" = "staged.txt▮A▮ " ]]
 }
 
 @test "lists staged modifications as M" {
@@ -49,14 +49,14 @@ setup() {
   bats_git add tracked.txt
   bats_run_zsh "cd $BATS_GIT_DIR && git-status-raw"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "tracked.txt▮M" ]]
+  [[ "$output" = "tracked.txt▮M▮ " ]]
 }
 
 @test "lists staged deletions as D" {
   bats_git rm --quiet tracked.txt
   bats_run_zsh "cd $BATS_GIT_DIR && git-status-raw"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "tracked.txt▮D" ]]
+  [[ "$output" = "tracked.txt▮D▮ " ]]
 }
 
 # Spaces in paths
@@ -65,14 +65,14 @@ setup() {
   echo "new" > "$BATS_GIT_DIR/my dir/file.txt"
   bats_run_zsh "cd $BATS_GIT_DIR && git-status-raw"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "my dir/file.txt▮A" ]]
+  [[ "$output" = "my dir/file.txt▮ ▮A" ]]
 }
 
 @test "lists file with spaces in filename without quotes" {
   echo "new" > "$BATS_GIT_DIR/my file.txt"
   bats_run_zsh "cd $BATS_GIT_DIR && git-status-raw"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "my file.txt▮A" ]]
+  [[ "$output" = "my file.txt▮ ▮A" ]]
 }
 
 # Multiple files
@@ -93,7 +93,7 @@ setup() {
   echo "new" > "$otherDir/newfile.txt"
   bats_run_zsh "git-status-raw '$otherDir'"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "newfile.txt▮A" ]]
+  [[ "$output" = "newfile.txt▮ ▮A" ]]
 }
 
 @test "returns empty output for a clean path argument" {
@@ -107,10 +107,10 @@ setup() {
 }
 
 # Output format
-@test "first column is filepath, second column is status letter, separated by ▮" {
+@test "columns are filepath▮X▮Y separated by ▮" {
   echo "new" > "$BATS_GIT_DIR/file.txt"
   bats_run_zsh "cd $BATS_GIT_DIR && git-status-raw"
   [[ "$status" -eq 0 ]]
   [[ "$output" == *"▮"* ]]
-  [[ "$output" == "file.txt▮A" ]]
+  [[ "$output" == "file.txt▮ ▮A" ]]
 }

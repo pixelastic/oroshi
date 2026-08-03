@@ -1,4 +1,6 @@
-# Normalize git status --porcelain into filepath▮STATUS format
+# Normalize git status --porcelain into filepath▮X▮Y format
+# X = index status, Y = work-tree status
+# Renames output filepath▮X▮Y▮oldpath
 # Usage:
 # $ git-status-raw          # current repo
 # $ git-status-raw /path    # repo at given path
@@ -23,17 +25,13 @@ for line in ${(f)rawOutput}; do
   [[ "$stagedStatus" == "?" ]] && stagedStatus=" "
   [[ "$workTreeStatus" == "?" ]] && workTreeStatus="A"
 
-  # Prefer work-tree status (more recent) over index status
-  local gitStatus="$workTreeStatus"
-  [[ "$gitStatus" == " " ]] && gitStatus="$stagedStatus"
-
-  # Renames: git outputs "old -> new" — output new-path▮R▮old-path
+  # Renames: git outputs "old -> new" — output new-path▮X▮Y▮old-path
   if [[ "$filePath" == *" -> "* ]]; then
     local oldPath="${filePath%% -> *}"
     local newPath="${filePath##* -> }"
-    echo "${newPath}▮${gitStatus}▮${oldPath}"
+    echo "${newPath}▮${stagedStatus}▮${workTreeStatus}▮${oldPath}"
     continue
   fi
 
-  echo "${filePath}▮${gitStatus}"
+  echo "${filePath}▮${stagedStatus}▮${workTreeStatus}"
 done
