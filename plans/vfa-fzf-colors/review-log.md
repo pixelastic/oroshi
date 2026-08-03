@@ -23,3 +23,20 @@ esac
 ```
 **Problem:** Reviewer initially flagged missing `$` invocation prefix
 **Reason skipped:** Fixed during FIX step; matches sibling `fzf-colorize-path.zsh` format
+
+## Issue 02 — Wire helper into dirty pickers
+### Missing scaffolding tests in diff
+```bats
+# Tests in plans/vfa-fzf-colors/scaffold/02-wire-helper-into-dirty-pickers.bats
+@test "dirty --source: modified file has ~ prefix" { ... }
+@test "stageable --source: modified file has ~ prefix" { ... }
+```
+**Problem:** Spec review flagged missing --source prefix tests in __tests__/ dirs
+**Reason skipped:** Tests live in scaffold/ per TDD scaffolding convention — review-diff only sees __tests__/ dirs
+
+### Linter/test pass not visible in diff
+```
+# git-file-lint and git-file-test ran clean during implementation
+```
+**Problem:** Cannot confirm linter/tests pass from diff alone
+**Reason skipped:** Process artifacts, not code — confirmed during implementation step

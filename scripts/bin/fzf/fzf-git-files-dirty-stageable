@@ -10,10 +10,9 @@ set -e
 source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
 source "${0:h}/__lib/fzf-fs-preview.zsh"
+source "${0:h}/__lib/fzf-colorize-git-status-path.zsh"
 
 function fzf-source() {
-  colors-load-definitions
-
   local rawFiles="$(git-file-list-dirty-stageable-raw)"
   [[ "$rawFiles" == "" ]] && return 0
 
@@ -23,12 +22,8 @@ function fzf-source() {
     local filepath=$splitLine[1]
     local gitStatus=$splitLine[2]
 
-    local displayedLine=""
-    [[ $gitStatus == "D" ]] && displayedLine="$(colorize "$filepath" $COLORS[git-removed])"
-    [[ $gitStatus == "M" ]] && displayedLine="$(colorize "$filepath" $COLORS[git-modified])"
-    [[ $gitStatus == "A" ]] && displayedLine="$(colorize "$filepath" $COLORS[git-added])"
-
-    echo "${filepath}▮${displayedLine}"
+    fzf-colorize-git-status-path "$filepath" "$gitStatus"
+    echo "${filepath}▮${REPLY}"
   done
 }
 
