@@ -1,0 +1,41 @@
+# Walk ancestor chain as PID▮name lines, self first, excluding init
+# Usage:
+# $ process-tree-raw              # Current process
+# $ process-tree-raw 1234         # One line per ancestor
+# $ process-tree-raw --reply 1234 # Write to $REPLY, no echo
+setopt local_options err_return
+
+zparseopts -E -D \
+  -reply=flagReply
+
+local isReply=${#flagReply}
+# Default to current process
+local pid="${1:-$$}"
+
+# PID must be provided and alive
+[[ ! -f "/proc/$pid/stat" ]] && return 1
+
+local result=""
+local currentPid="$pid"
+
+# Walk until we hit init (PID 1)
+while [[ "$currentPid" != "1" ]]; do
+  # Stop if this process no longer exists
+  [[ ! -f "/proc/$currentPid/stat" ]] && break
+
+  process-name --reply "$currentPid"
+  local name="$REPLY"
+
+  [[ "$result" != "" ]] && result+=$'\n'
+  result+="${currentPid}▮${name}"
+
+  # Walk up to parent
+  process-parent --reply "$currentPid"
+  currentPid="$REPLY"
+done
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$result"
+  return
+fi
+echo "$result"

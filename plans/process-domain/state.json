@@ -23,8 +23,9 @@
   {
     "id": "04",
     "issue": "issues/04-process-tree-raw.md",
-    "done": false,
-    "blocked_by": ["01", "02", "03"]
+    "done": true,
+    "blocked_by": ["01", "02", "03"],
+    "recap": "Added process-tree-raw that walks ancestor chain via process-parent/process-name loop, outputs PID▮name lines, stops before init"
   },
   {
     "id": "05",

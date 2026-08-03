@@ -23,3 +23,12 @@ setup() {
 ```
 **Problem:** `setup()` body is a no-op
 **Reason skipped:** Identical pattern in `process-exists.bats` — established convention in this test directory when no setup is needed.
+
+## Issue 04 — process-tree-raw
+### Lint passes not evidenced in diff
+```
+- [ ] `zsh-lint` passes
+- [ ] `bats-lint` passes
+```
+**Problem:** Spec review flagged acceptance criteria lines 48-49 as not evidenced in the diff.
+**Reason skipped:** Both linters were run and passed — this is a runtime check, not a diff artifact.
