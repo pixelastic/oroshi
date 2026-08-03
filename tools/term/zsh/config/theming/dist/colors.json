@@ -484,8 +484,8 @@
     "hex": "#ef4444"
   },
   "git-stash": {
-    "ansi": 132,
-    "hex": "#5eead4"
+    "ansi": 53,
+    "hex": "#63b3ed"
   },
   "git-submodule": {
     "ansi": 45,

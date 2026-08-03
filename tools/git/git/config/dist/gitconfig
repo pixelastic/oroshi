@@ -58,7 +58,7 @@
   HEAD = 105 # HEAD ->
   branch = 105 # Branch name
   remoteBranch = 45 # Remote branches
-  stash = 132 # Stashes
+  stash = 53 # Stashes
   tag = 75 # Tags
 
   grafted = 73

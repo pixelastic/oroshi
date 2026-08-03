@@ -125,7 +125,7 @@
     "remote-pixelastic": "green",
     "remote-upstream": "blue",
     "removed":         "red-4",
-    "stash":           "teal-2",
+    "stash":           "blue-3",
     "submodule":       "yellow",
     "tag":             "cyan",
     "tag-closest":     "cyan",
