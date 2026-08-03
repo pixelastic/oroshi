@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-process-name.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added process-name function that reads /proc/PID/comm to get executable name, with --reply support"
   },
   {
     "id": "03",

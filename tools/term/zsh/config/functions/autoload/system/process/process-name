@@ -1,0 +1,25 @@
+# Get executable name for a PID from /proc
+# Usage:
+# $ process-name 1234         # "zsh"
+# $ process-name --reply 1234 # Write to $REPLY, no echo
+setopt local_options err_return
+
+zparseopts -E -D \
+  -reply=flagReply
+
+local isReply=${#flagReply}
+local pid="$1"
+
+# No PID provided
+[[ "$pid" == "" ]] && return 1
+
+# PID not running
+[[ ! -f "/proc/$pid/comm" ]] && return 1
+
+local result="$(</proc/$pid/comm)"
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$result"
+  return
+fi
+echo "$result"

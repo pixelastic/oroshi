@@ -1,9 +1,5 @@
 bats_load_library 'helper'
 
-setup() {
-  :
-}
-
 @test "returns 0 for current shell PID" {
   bats_run_zsh "process-exists $$"
   [[ "$status" -eq 0 ]]
