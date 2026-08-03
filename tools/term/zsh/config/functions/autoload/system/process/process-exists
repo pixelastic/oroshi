@@ -1,0 +1,12 @@
+# Check if a process with the given PID is alive
+# Usage:
+# $ process-exists 1234
+setopt local_options err_return
+
+local pid="$1"
+
+# No PID provided
+[[ "$pid" == "" ]] && return 1
+
+# Check /proc entry
+[[ -d "/proc/$pid" ]]

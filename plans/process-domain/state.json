@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-process-exists.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added process-exists guard function that checks /proc/PID existence"
   },
   {
     "id": "02",
