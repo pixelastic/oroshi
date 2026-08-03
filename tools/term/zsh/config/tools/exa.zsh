@@ -7,7 +7,7 @@ function exa-configure-colors() {
   EXA_COLORS=""
   EXA_COLORS="${EXA_COLORS}:xx=38;5;$COLORS[ui]" # Punctuation
 
-  EXA_COLORS="${EXA_COLORS}:fi=38;5;$COLORS[gray-white]" # Default file color
+  EXA_COLORS="${EXA_COLORS}:fi=38;5;$COLORS[white]" # Default file color
 
   EXA_COLORS="${EXA_COLORS}:ur=38;5;$COLORS[gray-7]"       # User read
   EXA_COLORS="${EXA_COLORS}:uw=38;5;$COLORS[gray-7]"       # User write
@@ -42,9 +42,11 @@ function exa-configure-colors() {
   EXA_COLORS="${EXA_COLORS}:lp=38;5;$COLORS[link]"  # Symlink destination
   EXA_COLORS="${EXA_COLORS}:or=38;5;$COLORS[error]" # Broken symlink
 
+  # Socket
+  EXA_COLORS="${EXA_COLORS}:so=38;5;$COLORS[socket]" # Socket
+
   EXA_COLORS="${EXA_COLORS}:pi=48;5;$COLORS[unknown]" # Named pipe (unstyled)
   EXA_COLORS="${EXA_COLORS}:cd=48;5;$COLORS[unknown]" # Character device (unstyled)
-  EXA_COLORS="${EXA_COLORS}:so=48;5;$COLORS[unknown]" # Socket (unstyled)
   EXA_COLORS="${EXA_COLORS}:bd=48;5;$COLORS[unknown]" # Block device (unstyled)
 
   export EXA_COLORS

@@ -29,12 +29,12 @@
   },
   "scripts": {
     "colors-reload": "./scripts/bin/colors-reload",
-    "prose-build": "./scripts/bin/prose/prose-build",
     "lint": "./scripts/yarn/lint",
     "lint:bats": "./scripts/yarn/lint-bats",
     "lint:fix": "./scripts/yarn/lint-fix",
     "lint:python": "./scripts/yarn/lint-python",
     "lint:zsh": "./scripts/yarn/lint-zsh",
+    "prose-build": "./scripts/bin/prose/prose-build",
     "test": "./scripts/yarn/test",
     "test:bats": "./scripts/yarn/test-bats",
     "test:python": "./scripts/yarn/test-python"

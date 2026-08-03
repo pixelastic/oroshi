@@ -27,6 +27,7 @@
   "keybinding":   "blue",
   "keyword":      "green",
   "link":         "blue-3",
+  "socket":       "blue-7",
   "local-dependency": "yellow",
   "marker":       "cyan",
   "match":        "orange-2",
