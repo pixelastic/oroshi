@@ -40,6 +40,10 @@ _Avoid_: ask user — first time, first-ask, new-ask, warn-ask
 The hook output when Solkan **reject**s one or more commands and all have already been seen in the current session. The user sees a 3-option dialog: Allow / Allow for session / Deny. No reason is shown — the user has already been informed. Maps to `permissionDecision: "defer"`.
 _Avoid_: ask user, escalate, defer, session-ask
 
+**subagent injection**:
+The mechanism by which the preToolUse-Bash hook detects that a command runs inside a subagent (`agent_id` present in hook input JSON) and prefixes the command with `export CLAUDE_IS_SUBAGENT=1;`. This is NOT a native Claude Code feature — it is a hook-level workaround because upstream closed requests for native subagent env vars (issues #35447, #36981, #46696).
+_Avoid_: subagent detection, agent env var, subagent flag
+
 ## Relationships
 
 - **Solkan** is binary: **allow** or **reject**. Never a partial decision.
