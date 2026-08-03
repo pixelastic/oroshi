@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-remove-process-color.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Removed process color key from theme, replaced with executable in completion styling"
   }
 ]

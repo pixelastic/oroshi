@@ -42,7 +42,6 @@
   "package-version":     "cyan",
   "package-version-mismatch": "violet-3",
   "pointer":      "green",
-  "process":      "cyan",
   "punctuation":  "teal-6",
   "regexp":       "blue",
   "selected-background": "gray-8",

@@ -1011,10 +1011,6 @@
     "ansi": 35,
     "hex": "#38a169"
   },
-  "process": {
-    "ansi": 75,
-    "hex": "#0891b2"
-  },
   "punctuation": {
     "ansi": 136,
     "hex": "#0f766e"
