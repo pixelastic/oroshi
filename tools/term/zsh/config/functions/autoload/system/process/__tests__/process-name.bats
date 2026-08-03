@@ -6,6 +6,12 @@ bats_load_library 'helper'
   [[ "$output" = "bash" ]]
 }
 
+@test "defaults to current process when called without arguments" {
+  bats_run_zsh "process-name"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "zsh" ]]
+}
+
 @test "--reply sets REPLY without echoing" {
   bats_run_zsh "process-name --reply $$ && echo \$REPLY"
   [[ "$status" -eq 0 ]]

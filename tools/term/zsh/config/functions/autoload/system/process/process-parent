@@ -1,0 +1,29 @@
+# Get parent PID for a process from /proc
+# Usage:
+# $ process-parent              # Current process
+# $ process-parent 1234         # "567"
+# $ process-parent --reply 1234 # Write to $REPLY, no echo
+setopt local_options err_return
+
+zparseopts -E -D \
+  -reply=flagReply
+
+local isReply=${#flagReply}
+# Default to current process
+local pid="${1:-$$}"
+
+# PID not running
+[[ ! -f "/proc/$pid/stat" ]] && return 1
+
+# Parse PPID from /proc/PID/stat
+# Strip PID and comm (comm can contain spaces, so skip past last ")")
+local stat="$(</proc/$pid/stat)"
+local rest="${stat##*) }"
+# Fields after comm: state PPID … — PPID is field 2
+local result="${${(s/ /)rest}[2]}"
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$result"
+  return
+fi
+echo "$result"

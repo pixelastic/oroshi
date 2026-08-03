@@ -10,7 +10,7 @@ bats_load_library 'helper'
   [[ "$status" -eq 1 ]]
 }
 
-@test "returns 1 when called without arguments" {
+@test "defaults to current process when called without arguments" {
   bats_run_zsh "process-exists"
-  [[ "$status" -eq 1 ]]
+  [[ "$status" -eq 0 ]]
 }

@@ -19,3 +19,6 @@
 - Rebuild theme: run `colors-build`
 
 ## Discoveries
+
+### Issue 03 — process-parent
+- /proc/PID/stat comm field (field 2) can contain spaces; must strip past last `)` before splitting fields to get PPID

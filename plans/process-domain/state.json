@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-process-parent.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added process-parent function that reads PPID from /proc/PID/stat field 4, with --reply support"
   },
   {
     "id": "04",
