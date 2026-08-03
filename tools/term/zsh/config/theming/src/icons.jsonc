@@ -134,6 +134,9 @@
   "ruby":                   "",
   "ruby-install-in-progress": "",
 
+  // Process
+  "process-current": "󰜱",
+
   // Common
   "unknown":           "",
   "package":           "",

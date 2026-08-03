@@ -30,8 +30,9 @@
   {
     "id": "05",
     "issue": "issues/05-process-tree.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Added process-tree display function with └── connectors, executable/number colorize calls, and graceful empty-input handling"
   },
   {
     "id": "06",

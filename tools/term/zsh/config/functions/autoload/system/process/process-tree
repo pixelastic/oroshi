@@ -1,0 +1,46 @@
+# Display process ancestry as a colored tree with └── connectors
+# Ancestors at top, current process at bottom with green pointer marker
+# Usage:
+# $ process-tree        # Current process
+# $ process-tree 1234   # From specific PID
+setopt local_options err_return
+
+local pid="${1:-$$}"
+
+local rawOutput="$(process-tree-raw "$pid" 2>/dev/null || true)"
+
+# Nothing to display if process-tree-raw failed
+[[ "$rawOutput" == "" ]] && return 0
+
+colors-load-definitions
+icons-load-definitions
+
+local lines=(${(f)rawOutput})
+local totalLines=${#lines}
+local depth=0
+
+# Reverse: ancestors first, self last
+for (( i = totalLines; i >= 1; i-- )); do
+  local fields=(${(@ps/▮/)lines[$i]})
+  local linePid=$fields[1]
+  local name=$fields[2]
+
+  local coloredName="$(colorize "$name" executable)"
+  local coloredPid="$(colorize "$linePid" number)"
+  local entry="${coloredName} (${coloredPid})"
+
+  # Current process (last line) gets a green pointer marker after PID
+  if [[ $i -eq 1 ]]; then
+    local arrow="$(colorize "$ICONS[process-current]" pointer)"
+    entry="${entry} ${arrow}"
+  fi
+
+  if [[ $depth -eq 0 ]]; then
+    echo "$entry"
+  else
+    local indent="${(l:$(( (depth - 1) * 4 )):: :)}"
+    echo "${indent}└── ${entry}"
+  fi
+
+  (( depth++ )) || true
+done
