@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-claude-stop.md",
-    "done": false,
-    "blocked_by": ["01", "02"]
+    "done": true,
+    "blocked_by": ["01", "02"],
+    "recap": "claude-stop walks process tree via proc-ppid/proc-comm helpers, SIGTERMs first claude ancestor"
   }
 ]

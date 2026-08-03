@@ -20,3 +20,7 @@
 - `json-get` returns empty string (not `"null"`) for missing JSON keys — safe to check `!= ""`
 - Prefixing `inputCommand` before Solkan would break: Solkan parses `export` as a command and rejects. Injection must happen after Solkan/RTK, before output helpers
 - `preToolUse-Bash` must NOT have `set -e` — non-zero exit bypasses permission logic (Claude treats exit 1 as non-blocking error). Use `# zsh-lint disable-file=missingSetE` to suppress the lint rule
+
+### Issue 03 — claude-stop
+- `$PPID` is readonly in bash/bats — can't set it in tests. Workaround: start walk from `$$` and use `proc-ppid $$` as the first hop; mock's `*)` default case catches the unpredictable `$$` value
+- Internal functions pattern: `(( $+functions[fn] )) || function fn { ... }` + `ZSH_EVAL_CONTEXT` guard — keeps helpers internal to the script while allowing `bats_mock` to override them (mock.zsh is sourced by zshenv before the script runs, so the conditional skips redefinition)

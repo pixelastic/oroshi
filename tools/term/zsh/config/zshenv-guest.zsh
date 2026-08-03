@@ -23,7 +23,10 @@ typeset -aU fpath
 source $OROSHI_ROOT/tools/term/zsh/config/functions/oroshi-reload-fpath.zsh
 oroshi-reload-fpath $OROSHI_ROOT
 
-# Allow tests to override anything done previously in this file through mock
-if [[ $MOCK_OVERRIDE != "" ]]; then
-  source $MOCK_OVERRIDE
-fi
+# Allow tests to override functions by sourcing $MOCK_OVERRIDE
+function _load_test_mocks() {
+  if [[ "$MOCK_OVERRIDE" != "" ]]; then
+    source "$MOCK_OVERRIDE"
+  fi
+}
+_load_test_mocks

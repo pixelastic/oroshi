@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+# Terminate the calling Claude Code main session
+# Walks up the process tree to find the first "claude" ancestor and SIGTERMs it
+# Usage:
+# $ claude-stop
+set -e
+
+# Not in Claude — nothing to stop
+is-claude || exit 0
+
+# Subagents must not kill the main session
+is-claude-subagent && exit 0
+
+local ancestors="$(process-tree-raw $$)"
+local claudeLine="$(echo "$ancestors" | grep "▮claude$" | head -1)"
+
+if [[ "$claudeLine" == "" ]]; then
+  echoerr "claude process not found in ancestor chain"
+  exit 1
+fi
+
+kill -TERM "${claudeLine%%▮*}"

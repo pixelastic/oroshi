@@ -31,3 +31,11 @@ local agentId="$(json-get '.agent_id' <<<"$inputJson")"
 ```
 **Problem:** Spec says injection should happen before Solkan/RTK
 **Reason skipped:** Prefixing before Solkan would cause it to parse `export` as a command and reject; current position (after RTK, before output helpers) achieves the spec's goal of all output paths carrying the prefix
+
+## Issue 03 — claude-stop
+### `local` keyword at script top-level
+```zsh
+local currentPid="$$"
+```
+**Problem:** `local` outside a function body is a zsh-ism with no effect in scripts
+**Reason skipped:** `variables.md` explicitly says "Use `local` for all variables, even if not in a function" — judgement call, following the documented standard

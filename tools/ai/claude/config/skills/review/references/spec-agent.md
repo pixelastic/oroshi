@@ -38,8 +38,6 @@ Report:
 
 **(b) Implemented but wrong** — requirements that appear implemented but where the implementation contradicts the spec. Quote the spec line.
 
-Under 400 words.
-
 ## Common Rationalizations
 
 | Rationalization | Reality |
