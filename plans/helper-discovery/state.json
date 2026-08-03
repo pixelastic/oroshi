@@ -25,5 +25,11 @@
     "issue": "issues/04-update-calling-commands.md",
     "done": false,
     "blocked_by": ["02"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-move-js-to-lib.md",
+    "done": false,
+    "blocked_by": []
   }
 ]
