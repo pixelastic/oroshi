@@ -34,6 +34,24 @@ describe('getDiff', () => {
       );
       expect(mockRun).not.toHaveBeenCalled();
     });
+
+    it('handles renames with spaces in filenames', async () => {
+      mockStagedFilesWithStatus.mockReturnValue([
+        {
+          name: 'Super Mario Bros 3/game.rom',
+          status: 'renamed',
+          from: 'Super Mario Bros/game.rom',
+          similarity: 100,
+        },
+      ]);
+
+      const actual = await getDiff([]);
+
+      expect(actual).toEqual(
+        'Files renamed:\n- Super Mario Bros/game.rom → Super Mario Bros 3/game.rom',
+      );
+      expect(mockRun).not.toHaveBeenCalled();
+    });
   });
 
   describe('content-only', () => {
@@ -47,6 +65,17 @@ describe('getDiff', () => {
 
       expect(actual).toEqual('diff --git a/src/app.js');
     });
+
+    it('handles filenames with spaces', async () => {
+      mockStagedFilesWithStatus.mockReturnValue([
+        { name: 'Super Mario Bros 3/save.bin', status: 'modified' },
+      ]);
+      mockRun.mockReturnValue('diff --git a/Super Mario Bros 3/save.bin');
+
+      const actual = await getDiff([]);
+
+      expect(actual).toEqual('diff --git a/Super Mario Bros 3/save.bin');
+    });
   });
 
   describe('binary-only', () => {
@@ -59,6 +88,19 @@ describe('getDiff', () => {
       const actual = await getDiff([]);
 
       expect(actual).toEqual('Binary files added:\n- image.png');
+    });
+
+    it('handles binary filenames with spaces', async () => {
+      mockStagedFilesWithStatus.mockReturnValue([
+        { name: 'Super Mario Bros 3/cover.png', status: 'added' },
+      ]);
+      mockRun.mockReturnValue('');
+
+      const actual = await getDiff([]);
+
+      expect(actual).toEqual(
+        'Binary files added:\n- Super Mario Bros 3/cover.png',
+      );
     });
   });
 
@@ -141,6 +183,18 @@ describe('getDiff', () => {
       expect(actual).toEqual(
         'diff keep.js\n\nFiles renamed:\n- old.js \u2192 new.js',
       );
+    });
+
+    it('excludes files with spaces in filenames', async () => {
+      mockStagedFilesWithStatus.mockReturnValue([
+        { name: 'keep.js', status: 'modified' },
+        { name: 'Super Mario Bros 3/skip.rom', status: 'modified' },
+      ]);
+      mockRun.mockReturnValue('diff keep.js');
+
+      const actual = await getDiff(['Super Mario Bros 3/skip.rom']);
+
+      expect(actual).toEqual('diff keep.js');
     });
   });
 });

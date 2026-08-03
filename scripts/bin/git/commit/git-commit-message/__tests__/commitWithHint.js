@@ -67,9 +67,7 @@ describe('commitWithHint', () => {
     ])('$title', async ({ stagedFilesWithStatus, diffs, expected }) => {
       getRepo.mockReturnValue({
         stagedFilesWithStatus: vi.fn().mockReturnValue(stagedFilesWithStatus),
-        run: vi
-          .fn()
-          .mockImplementation((cmd) => diffs[cmd.split(' ').at(-1)] ?? ''),
+        run: vi.fn().mockImplementation((cmd) => diffs[cmd.at(-1)] ?? ''),
       });
       const actual = await commitWithHint.getDiff();
       expect(actual).toEqual(expected);

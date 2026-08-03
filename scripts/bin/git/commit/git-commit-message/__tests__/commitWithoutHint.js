@@ -58,9 +58,7 @@ describe('commitWithoutHint', () => {
     ])('$title', async ({ stagedFilesWithStatus, diffs, expected }) => {
       getRepo.mockReturnValue({
         stagedFilesWithStatus: vi.fn().mockReturnValue(stagedFilesWithStatus),
-        run: vi
-          .fn()
-          .mockImplementation((cmd) => diffs[cmd.split(' ').at(-1)] ?? ''),
+        run: vi.fn().mockImplementation((cmd) => diffs[cmd.at(-1)] ?? ''),
       });
       const actual = await commitWithoutHint.getDiff();
       expect(actual).toEqual(expected);
@@ -76,8 +74,20 @@ describe('commitWithoutHint', () => {
         run: mockRun,
       });
       await commitWithoutHint.getDiff();
-      expect(mockRun).not.toHaveBeenCalledWith('diff --cached -M -- yarn.lock');
-      expect(mockRun).toHaveBeenCalledWith('diff --cached -M -- src/index.js');
+      expect(mockRun).not.toHaveBeenCalledWith([
+        'diff',
+        '--cached',
+        '-M',
+        '--',
+        'yarn.lock',
+      ]);
+      expect(mockRun).toHaveBeenCalledWith([
+        'diff',
+        '--cached',
+        '-M',
+        '--',
+        'src/index.js',
+      ]);
     });
 
     it('excludes yarn.lock from rename processing', async () => {

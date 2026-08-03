@@ -28,7 +28,7 @@ export async function getDiff(excludedFiles) {
 
   // Diff non-rename files
   const arrayDiff = await pMap(diffable, async (file) => {
-    return repo.run(`diff --cached -M -- ${file.name}`);
+    return repo.run(['diff', '--cached', '-M', '--', file.name]);
   });
   const contentDiff = _.join(arrayDiff, '\n').trim();
 
