@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-helper-list-raw.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Created helper-list-raw autoload function: scans autoload/ and scripts/bin/, extracts descriptions, fuzzy-filters via fzf, outputs name▮description▮filepath"
   },
   {
     "id": "03",

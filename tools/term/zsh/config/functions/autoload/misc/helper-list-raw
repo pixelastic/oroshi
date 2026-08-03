@@ -1,0 +1,77 @@
+# List helpers matching a query, with descriptions and filepaths
+# Usage:
+# $ helper-list-raw git branch   # Fuzzy-match "git branch" across all helpers
+# Output format: name▮description▮filepath
+setopt local_options err_return
+
+# At least one argument required
+[[ $# -eq 0 ]] && return 1
+
+local query="$*"
+
+local autoloadDir="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload"
+local scriptsDir="$OROSHI_ROOT/scripts/bin"
+
+# Internal helper: extract description from a file
+# Scripts (line 2, after shebang), autoloaded functions (line 1).
+function _extract_description() {
+  local file="$1"
+
+  # Autoloaded functions have description on line 1
+  # Scripts have a shebang on line 1, description on line 2
+  local lineNum
+  [[ "$file" == "$autoloadDir"/* ]] && lineNum=1
+  [[ "$file" == "$scriptsDir"/* ]] && lineNum=2
+
+  local descLine="$(sed -n "${lineNum}p" "$file")"
+
+  # Strip comment prefix
+  [[ "$descLine" == "# "* ]] && descLine="${descLine#\# }"
+  [[ "$descLine" == "#"* ]] && descLine=""
+
+  echo "$descLine"
+}
+
+
+# Collect all helper files from both directories
+local allFiles="$(
+  {
+    find "$autoloadDir" \
+      -type f \
+      ! -path '*__*'
+    find "$scriptsDir" \
+      -type f \
+      ! -path '*__*'
+  } 2>/dev/null
+)"
+
+# Extract names and pipe through fzf for fuzzy matching
+local allNames="$(
+  for filepath in ${(f)allFiles}; do
+    echo "${filepath:t}"
+  done
+)"
+
+local matchedNames=""
+matchedNames="$(echo "$allNames" | fzf --filter="$query" 2>/dev/null)" || true
+
+# No matches for query
+[[ "$matchedNames" == "" ]] && return 0
+
+# Build output for matched names
+for name in ${(f)matchedNames}; do
+  # Find the filepath for this name (first match wins)
+  local filepath=""
+  for candidate in ${(f)allFiles}; do
+    if [[ "${candidate:t}" == "$name" ]]; then
+      filepath="$candidate"
+      break
+    fi
+  done
+
+  # Name matched but file not found in scan results
+  [[ "$filepath" == "" ]] && continue
+
+  local description="$(_extract_description "$filepath")"
+  echo "${name}▮${description}▮${filepath}"
+done

@@ -4,10 +4,11 @@
 - Prefer existing helpers over raw commands (`git-branch-current`)
 - One arg per line when multiple args
 - Exception: common short-form idioms are fine:
-    - `jq -r`
     - `head -1`
-    - `tail -1`
+    - `jq -r`
     - `mkdir -p`
+    - `sed -n`
+    - `tail -1`
 
 ## Example
 ```zsh
