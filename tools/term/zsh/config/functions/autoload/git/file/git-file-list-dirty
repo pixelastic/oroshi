@@ -3,9 +3,9 @@ setopt local_options err_return
 local rawFiles="$(git-file-list-dirty-raw)"
 
 for rawLine in ${(f)rawFiles}; do
-  local splitLine=(${(@s/:/)rawLine})
-  local gitStatus=$splitLine[1]
-  local filepath=$splitLine[2]
+  local splitLine=(${(@ps/▮/)rawLine})
+  local filepath=$splitLine[1]
+  local gitStatus=$splitLine[2]
 
   local displayedLine=""
   [[ $gitStatus == "D" ]] && displayedLine="$(colorize "$filepath" "ALIAS_GIT_REMOVED")"

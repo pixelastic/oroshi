@@ -11,14 +11,14 @@ local rawFiles="$(git-file-list-dirty-raw)"
 local suggestions=()
 local -A fileStatus
 for rawLine in ${(f)rawFiles}; do
-  local splitLine=(${(@s/:/)rawLine})
-  local gitStatus=$splitLine[1]
-  local filePath=$splitLine[2]
+  local splitLine=(${(@ps/▮/)rawLine})
+  local filepath=$splitLine[1]
+  local gitStatus=$splitLine[2]
 
-  suggestions+=($filePath)
+  suggestions+=($filepath)
 
   # We keep the status of each file
-  fileStatus[$filePath]=$gitStatus
+  fileStatus[$filepath]=$gitStatus
 done
 
 # Sort by putting closest files first

@@ -14,29 +14,26 @@ local allowedGroups=(text script config)
 
 local fileList=()
 for rawLine in ${(f)rawFiles}; do
-  local splitLine=(${(@s/:/)rawLine})
-  local gitStatus=$splitLine[1]
-  local filePath=$splitLine[2]
+  local splitLine=(${(@ps/▮/)rawLine})
+  local filepath=$splitLine[1]
+  local gitStatus=$splitLine[2]
 
   # Skip deleted files (can't open them)
   [[ "$gitStatus" == "D" ]] && continue
 
-  # For renames, git outputs "old-path -> new-path" — extract the new path
-  [[ "$gitStatus" == "R" ]] && filePath="${filePath##* -> }"
-
   # Skip if file no longer exists on disk (safety net for unexpected statuses)
-  [[ ! -f "${gitRoot}/${filePath}" ]] && continue
+  [[ ! -f "${gitRoot}/${filepath}" ]] && continue
 
   # Skip plan artifacts
-  [[ "$filePath" == plans/*/state.json ]] && continue
-  [[ "$filePath" == plans/*/scaffold/* ]] && continue
+  [[ "$filepath" == plans/*/state.json ]] && continue
+  [[ "$filepath" == plans/*/scaffold/* ]] && continue
 
   # Skip files whose group is not in the allowlist (empty group = accepted)
-  filetypes-group --reply "$filePath"
+  filetypes-group --reply "$filepath"
   local group="$REPLY"
   [[ "$group" != "" && ${allowedGroups[(Ie)$group]} -eq 0 ]] && continue
 
-  fileList+=("${gitRoot}/${filePath}")
+  fileList+=("${gitRoot}/${filepath}")
 done
 
 [[ ${#fileList} -eq 0 ]] && return 0

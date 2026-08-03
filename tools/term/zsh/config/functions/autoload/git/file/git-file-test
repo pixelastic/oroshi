@@ -12,10 +12,10 @@ local batsPaths=()
 local jsPaths=()
 local pythonPaths=()
 for rawLine in ${(f)rawFiles}; do
-  local splitLine=(${(@s/:/)rawLine})
-  local gitStatus=$splitLine[1]
-  local filePath=$splitLine[2]
-  local fullPath="${gitRoot}/${filePath}"
+  local splitLine=(${(@ps/▮/)rawLine})
+  local filepath=$splitLine[1]
+  local gitStatus=$splitLine[2]
+  local fullPath="${gitRoot}/${filepath}"
 
   # Skip deleted files
   [[ "$gitStatus" == "D" ]] && continue

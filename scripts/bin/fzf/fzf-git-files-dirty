@@ -11,7 +11,7 @@ source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
 source "${0:h}/__lib/fzf-fs-preview.zsh"
 
-fzf-source() {
+function fzf-source() {
   colors-load-definitions
 
   local rawFiles="$(git-file-list-dirty-raw)"
@@ -19,9 +19,9 @@ fzf-source() {
 
   local rawLine
   for rawLine in ${(f)rawFiles}; do
-    local splitLine=(${(@s/:/)rawLine})
-    local gitStatus=$splitLine[1]
-    local filepath=$splitLine[2]
+    local splitLine=(${(@ps/▮/)rawLine})
+    local filepath=$splitLine[1]
+    local gitStatus=$splitLine[2]
 
     local displayedLine=""
     [[ $gitStatus == "D" ]] && displayedLine="$(colorize "$filepath" $COLORS[git-removed])"
@@ -32,7 +32,7 @@ fzf-source() {
   done
 }
 
-fzf-preview() {
+function fzf-preview() {
   local gitRoot="$(git-directory-root)"
   local filepath="${gitRoot}/$1"
   local diff="$(git diff HEAD --color=always -- "$filepath")"
@@ -75,7 +75,7 @@ fzf-preview() {
   echo "$diff"
 }
 
-fzf-options() {
+function fzf-options() {
   local gitRoot="$(git-directory-root)"
   [[ "$gitRoot" == "" ]] && gitRoot="$PWD"
   local prompt="$(fzf-options-prompt-directory "$gitRoot")"

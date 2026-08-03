@@ -16,10 +16,10 @@ local -A results=(
   zsh-files ""
 )
 for rawLine in ${(f)rawFiles}; do
-  local splitLine=(${(@s/:/)rawLine})
-  local gitStatus=$splitLine[1]
-  local filePath=$splitLine[2]
-  local fullPath="${gitRoot}/${filePath}"
+  local splitLine=(${(@ps/▮/)rawLine})
+  local filepath=$splitLine[1]
+  local gitStatus=$splitLine[2]
+  local fullPath="${gitRoot}/${filepath}"
 
   # Skip deleted files
   [[ "$gitStatus" == "D" ]] && continue
@@ -48,7 +48,7 @@ done
 local hasViolations="0"
 
 # Display ZSH/BATS lint errors — input is JSON from zsh-lint/bats-lint
-displayZshAndBatsLintErrors() {
+function displayZshAndBatsLintErrors() {
   local label="$1"
   local output="$2"
 
@@ -64,7 +64,7 @@ displayZshAndBatsLintErrors() {
 }
 
 # Display JS lint errors — input is plain text from aberlaas
-displayJsLintErrors() {
+function displayJsLintErrors() {
   local output="$1"
 
   [[ "$output" == "" ]] && return 0
@@ -75,7 +75,7 @@ displayJsLintErrors() {
 }
 
 # Display Python lint errors — input is plain text from python-lint
-displayPythonLintErrors() {
+function displayPythonLintErrors() {
   local output="$1"
 
   [[ "$output" == "" ]] && return 0

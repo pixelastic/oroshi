@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-migrate-dirty-raw-consumers.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Migrated 6 dirty-raw consumers from STATUS:filepath to filepath▮STATUS parsing; removed dead rename arrow extraction from git-file-edit"
   },
   {
     "id": "04",
