@@ -146,6 +146,7 @@
   "gsettings list-recursively",
   "gsettings list-schemas",
   "head",
+  "helper-list-raw",
   "hexdump",
   "hostname",
   "icons-build",

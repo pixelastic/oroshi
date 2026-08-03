@@ -44,6 +44,7 @@ I'd love an icon to see:
 - Define a glossary of why some scripts are scripts or autoloaded functions.
 Have a clear defintiion, encode it in zsh-writer so it can choose, and cleanup
 the existing list
+- Add a skill to brainstorm talk titles
 
 
 ---
