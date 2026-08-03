@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-skill-instructions.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added Language step, formatting allowlist, finalize loop, and rationalization to slack-writer skill"
   }
 ]

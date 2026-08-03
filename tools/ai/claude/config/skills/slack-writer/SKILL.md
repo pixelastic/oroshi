@@ -33,9 +33,19 @@ If critical info is missing (who's the audience, what's the key message, a date 
 
 Bias: ask rather than guess. A wrong draft wastes more time than a quick question.
 
-### Step 3 — Write draft
+### Step 3 — Language
 
-**Goal:** Produce a single Slack-ready message in English (French only if explicitly requested), saved to `draftPath`.
+**Goal:** Determine output language.
+
+**Exit criterion:** Language stated (e.g., "Language: English").
+
+Default to English.
+Switch only on explicit user request.
+Input language is not a valid signal to change output language.
+
+### Step 4 — Write draft
+
+**Goal:** Produce a single Slack-ready message in the chosen language, saved to `draftPath`.
 
 **Exit criterion:** Draft file written to disk.
 
@@ -45,7 +55,8 @@ Apply these principles, by priority:
 
 2. **Important thing first.** Inverted pyramid: lead with the answer or key info, never build up to a conclusion. If the reader stops after the first sentence, they have the essential. The more they read, the more detail they get. If the answer is yes or no, say it first, then explain.
 
-3. **Scannable.** People scan, they don't read. Structure should guide the eye so the reader gets the gist without reading every word. Use bullets for 2+ points. No wall of text. Use `code` for commands terms. Let whitespace breathe.
+3. **Scannable.** People scan, they don't read. Structure should guide the eye so the reader gets the gist without reading every word.
+Formatting allowlist: bullets, numbered lists, `code` backticks. Nothing else — no bold, no links, no headers. Let whitespace breathe.
 
 4. **Complete in one message.** Don't make them pull information out of you — give the answer, the why, and a reference if useful, all upfront. But stay open: inform, don't close the conversation.
 
@@ -53,17 +64,17 @@ Apply these principles, by priority:
 
 Write the draft to `draftPath` using the **Create** tool.
 
-### Step 4 — Lint
+### Step 5 — Lint
 
 **Goal:** Ensure the draft passes prose linting.
 
 **Exit criterion:** Zero errors. Warnings and suggestions addressed as best effort.
 
-Run `prose-lint <draftPath>` to get a a JSON array of violations with `line`, `rule`, `severity`, `match`, and `message` fields.
+Run `prose-lint <draftPath>` to get a JSON array of violations with `line`, `rule`, `severity`, `match`, and `message` fields.
 
 Loop: fix `draftPath` (using the Edit tool), re-lint. Repeat until zero errors remain. Warnings may stay if justified.
 
-### Step 5 — Finalize
+### Step 6 — Finalize
 
 **Goal:** Display the final message.
 
@@ -72,17 +83,19 @@ Loop: fix `draftPath` (using the Edit tool), re-lint. Repeat until zero errors r
 1. Run `slack-writer-end <draftPath>`
 2. Display the message (read `draftPath` and show it).
 
+If the user requests changes, edit the draft, then re-run Steps 5-6.
+
 ## Common Rationalizations
 
 | Rationalization | Reality |
 |---|---|
-| "The user prompted in French so I'll write in French" | Default English. French only if explicitly requested. |
+| "The user prompted in French so I'll write in French" | Default to English. French only if explicitly requested. |
 
 ## Checklist
 
 - [ ] `<draftPath>` obtained from `slack-writer-start`
 - [ ] Important info is in the first sentence
 - [ ] No repeated information
-- [ ] Language is English unless French was explicitly requested
+- [ ] Language verified (English unless explicitly requested otherwise)
 - [ ] `prose-lint` returns zero errors
 - [ ] `slack-writer-end` called with `<draftPath>`
