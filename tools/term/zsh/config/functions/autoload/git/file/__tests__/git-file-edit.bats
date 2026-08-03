@@ -205,6 +205,39 @@ setup() {
   [[ "${lines[3]}" == *"/src/__tests__/utils.test.js" ]]
 }
 
+@test "opens both source and test when test-path returns self for test files" {
+  mkdir -p "$BATS_GIT_DIR/lib/__tests__"
+  echo "x" > "$BATS_GIT_DIR/lib/readFile.js"
+  echo "x" > "$BATS_GIT_DIR/lib/__tests__/readFile.js"
+  bats_git add .
+  bats_git commit --quiet -m "add files"
+  echo "modified" > "$BATS_GIT_DIR/lib/readFile.js"
+  echo "modified" > "$BATS_GIT_DIR/lib/__tests__/readFile.js"
+
+  filetypes-load-definitions() { :; }
+  filetypes-group() { REPLY="script"; }
+  # Mimic real js-test-path: test files return themselves, source files return their test
+  test-path() {
+    local parentDir="${1:h:t}"
+    if [[ "$parentDir" == "__tests__" ]]; then
+      echo "$1"
+      return
+    fi
+    local testFile="${1:h}/__tests__/${1:t}"
+    [[ -f "$testFile" ]] && echo "$testFile" || return 1
+  }
+  nvim() {
+    shift
+    printf '%s\n' "$@"
+  }
+  bats_mock filetypes-load-definitions filetypes-group test-path nvim
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"lib/readFile.js"* ]]
+  [[ "$output" == *"lib/__tests__/readFile.js"* ]]
+}
+
 @test "keeps test file when only test is dirty" {
   mkdir -p "$BATS_GIT_DIR/src/__tests__"
   echo "x" > "$BATS_GIT_DIR/src/app.js"

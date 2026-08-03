@@ -50,6 +50,9 @@ for file in "${fileList[@]}"; do
   # Skip files with no test companion
   [[ "$testFile" == "" ]] && continue
 
+  # Skip test files that resolve to themselves (not a source file)
+  [[ "$testFile" == "$file" ]] && continue
+
   # Skip if test file is not in the dirty list
   [[ ${fileList[(Ie)$testFile]} -eq 0 ]] && continue
 
