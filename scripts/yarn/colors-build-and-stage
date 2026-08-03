@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Rebuild theming dist files and stage them for commit
+# Usage:
+# $ yarn run colors-build-and-stage  # Called by lint-staged
+set -e
+
+colors-reload
+
+git add \
+  tools/term/zsh/config/theming/dist/ \
+  tools/cli/bat/config/dist/ \
+  tools/cli/rg/config/dist/ \
+  tools/git/git/config/dist/

@@ -21,9 +21,9 @@ export default {
   // Vale profiles rebuild
   'tools/prose/vale/src/*.ini': 'yarn run prose-build',
 
-  // Colors reload
+  // Colors rebuild + stage dist
   'tools/term/zsh/config/theming/**/{colors,filetypes,icons,projects}.jsonc':
-    'yarn run colors-reload',
+    'yarn run colors-build-and-stage',
   'tools/term/zsh/config/functions/autoload/**/{colors,filetypes,icons,project}-build':
-    'yarn run colors-reload',
+    'yarn run colors-build-and-stage',
 };

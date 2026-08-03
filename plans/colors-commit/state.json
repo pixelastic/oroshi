@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-build-and-stage.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created colors-build-and-stage yarn script, wired it into lint-staged and package.json, deleted dead filetypes-build"
   }
 ]
