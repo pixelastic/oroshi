@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-helper-list.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Created helper-list autoload function: colorized wrapper around helper-list-raw with executable/comment colors and table alignment"
   },
   {
     "id": "04",

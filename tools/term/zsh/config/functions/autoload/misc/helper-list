@@ -1,0 +1,25 @@
+# List helpers matching a query, with colorized output
+# Usage:
+# $ helper-list git branch   # Fuzzy-match "git branch" across all helpers
+setopt local_options err_return
+
+colors-load-definitions
+local rawHelpers="$(helper-list-raw "$@")"
+
+# Nothing to display
+[[ "$rawHelpers" == "" ]] && return 0
+
+local output=""
+for rawLine in ${(f)rawHelpers}; do
+  local fields=(${(@ps/▮/)rawLine})
+  local name=$fields[1]
+  local description=$fields[2]
+
+  local row=""
+  row+="$(colorize "$name" $COLORS[executable])▮"
+  row+="$(colorize "$description" $COLORS[comment])▮"
+
+  output+="$row\n"
+done
+
+table $output
