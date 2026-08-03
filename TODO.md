@@ -41,6 +41,9 @@ I'd love an icon to see:
 - Fix the fullscreen icon being too small if followed by an attention icon
 - Make a keybinding to automatically fix the text I have under my cursor
 - Refactor prose-build; the code is ugly
+- Define a glossary of why some scripts are scripts or autoloaded functions.
+Have a clear defintiion, encode it in zsh-writer so it can choose, and cleanup
+the existing list
 
 
 ---

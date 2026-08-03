@@ -226,6 +226,7 @@
   "project-remove",
   "prose-build",
   "prose-lint",
+  "pstree",
   "ps",
   "pup",
   "pwd",
