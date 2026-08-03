@@ -215,6 +215,7 @@
       "js.map",
       "lock",
       "log",
+      "raw",
       "min.css",
       "min.js",
       "part",
