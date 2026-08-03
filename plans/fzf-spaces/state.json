@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-migrate-stageable-staged-consumers.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Migrated 4 stageable/staged consumers from STATUS:filepath to filepath▮STATUS parsing; fzf picker now handles paths with spaces correctly"
   }
 ]

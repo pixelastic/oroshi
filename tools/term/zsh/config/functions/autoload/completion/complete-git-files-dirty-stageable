@@ -6,9 +6,9 @@ local rawFiles="$(git-file-list-dirty-stageable-raw)"
 local suggestions=()
 local -A fileStatus
 for rawLine in ${(f)rawFiles}; do
-  local splitLine=(${(@s/:/)rawLine})
-  local gitStatus=$splitLine[1]
-  local filePath=$splitLine[2]
+  local splitLine=(${(@ps/▮/)rawLine})
+  local filePath=$splitLine[1]
+  local gitStatus=$splitLine[2]
 
   suggestions+=($filePath)
 
