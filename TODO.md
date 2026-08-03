@@ -45,6 +45,7 @@ I'd love an icon to see:
 Have a clear defintiion, encode it in zsh-writer so it can choose, and cleanup
 the existing list
 - Add a skill to brainstorm talk titles
+- Make the /plan mode call claude-stop after committing
 
 
 ---
