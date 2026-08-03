@@ -12,3 +12,6 @@
 - Renames: `git status --porcelain` shows `old -> new` — split on ` -> ` to extract both paths
 
 ## Discoveries
+
+### Issue 01 — git-status-raw
+- `core.quotePath=false` prevents C-style escaping of non-ASCII chars but git porcelain still wraps paths containing spaces in double quotes — must strip them with `${filePath#\"}` / `${filePath%\"}`
