@@ -1,0 +1,50 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-reorg-context-domain.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-context-slug.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-dependencies-in-progress-lockfile.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-submodule-update-all.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-file-has-changed-repo.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-dependencies-update-chain.md",
+    "done": false,
+    "blocked_by": ["03", "04", "05"]
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-wire-callers.md",
+    "done": false,
+    "blocked_by": ["06"]
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-yarn-in-progress-and-cleanup.md",
+    "done": false,
+    "blocked_by": ["03"]
+  }
+]
