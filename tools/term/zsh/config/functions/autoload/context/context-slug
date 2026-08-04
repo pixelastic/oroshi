@@ -1,0 +1,28 @@
+# Return a filesystem-safe identifier for the current context
+# Repo Name from main, repoName--branchSlug from a worktree
+# Usage:
+# $ context-slug              # oroshi
+# $ context-slug /some/path   # oroshi--yarn-sync
+setopt local_options err_return
+
+local targetPath="${1:-$PWD}"
+
+# Get repo name from GitHub remote
+local repoName="$(git-github-project-name "$targetPath" 2>/dev/null; true)"
+
+# Fallback to git root basename with leading dots stripped
+if [[ "$repoName" == "" ]]; then
+  local rootDir="$(git-directory-root "$targetPath")"
+  local baseName="${rootDir:t}"
+  repoName="${baseName#.}"
+fi
+
+# Not a worktree: return just repo name
+if ! git-directory-is-worktree "$targetPath"; then
+  echo "$repoName"
+  return 0
+fi
+
+# Worktree: append branch slug
+local branchSlug="$(git-branch-slug)"
+echo "${repoName}--${branchSlug}"
