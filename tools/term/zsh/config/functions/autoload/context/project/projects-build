@@ -24,7 +24,7 @@ function generateDistJson() {
   jq -n \
     --argjson projects "$srcJson" \
     --argjson colors "$(cat "$distDir/colors.json")" \
-    '$projects | to_entries | map(
+  '$projects | to_entries | map(
       .key as $projectName | .value as $projectData |
 
       ($projectData.path // "") as $projectPath |
@@ -72,7 +72,7 @@ function generateDistJson() {
         )
       }
     ) | from_entries' |
-    jq --sort-keys '.' >"$distJson"
+  jq --sort-keys '.' >"$distJson"
 }
 
 # Generate dist/projects.zsh from dist/projects.json

@@ -9,7 +9,7 @@ setup() {
 
 @test "fails when no project name given" {
   bats_run_zsh "project-remove"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "removes entry and preserves surrounding comments" {
@@ -31,7 +31,7 @@ setup() {
 EOF
 
   bats_run_zsh "OROSHI_ROOT=$BATS_TMP_DIR/oroshi project-remove beta"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 
   local expected='{
   // First project
@@ -43,7 +43,7 @@ EOF
     "icon": "G"
   }
 }'
-  [ "$(cat "$PROJECTS_JSONC")" = "$expected" ]
+  [[ "$(cat "$PROJECTS_JSONC")" = "$expected" ]]
 }
 
 @test "exits 0 when project does not exist (idempotent)" {
@@ -56,12 +56,12 @@ EOF
 EOF
 
   bats_run_zsh "OROSHI_ROOT=$BATS_TMP_DIR/oroshi project-remove nonexistent"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 
   local expected='{
   "alpha": {
     "icon": "A"
   }
 }'
-  [ "$(cat "$PROJECTS_JSONC")" = "$expected" ]
+  [[ "$(cat "$PROJECTS_JSONC")" = "$expected" ]]
 }

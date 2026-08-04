@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-reorg-context-domain.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Moved project/ autoload domain to context/, with project/ as subdomain, updated GLOSSARY.md and fixed pre-existing lint errors"
   },
   {
     "id": "02",
