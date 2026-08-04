@@ -1,9 +1,12 @@
-# Push current worktree into main
+# Push current worktree into main and sync dependencies
 # Usage:
 # $ git-worktree-push
 setopt local_options err_return
 
 local currentBranch="$(git-branch-current)"
 local mainPath="$(git-worktree-main)"
+local previousCommit="$(git -C "$mainPath" rev-parse HEAD)"
 
 git -C "$mainPath" merge --ff-only "$currentBranch"
+
+git-dependencies-update --repo "$mainPath" "$previousCommit"

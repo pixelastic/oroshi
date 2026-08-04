@@ -1,6 +1,10 @@
-# Pull main into current worktree
+# Pull main into current worktree and sync dependencies
 # Usage:
 # $ git-worktree-pull
 setopt local_options err_return
 
+local previousCommit="$(git rev-parse HEAD)"
+
 git rebase main
+
+git-dependencies-update "$previousCommit"

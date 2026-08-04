@@ -71,48 +71,13 @@ setup() {
   [[ -d "$MOCK_OROSHI_WORKTREES_DIR/dot-repo--fix_bug" ]]
 }
 
-@test "runs yarn install when yarn.lock is present" {
-  yarn() { mkdir -p node_modules; }
-  bats_mock yarn
-  touch "$BATS_GIT_DIR/yarn.lock"
-  bats_git add .
-  bats_git commit --quiet -m "add yarn.lock"
-  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/yarn"
+@test "calls git-dependencies-update without origin commit" {
+  git-dependencies-update() { echo "called:$*" >> "$BATS_TMP_DIR/dep-update-calls"; }
+  bats_mock git-dependencies-update
+  bats_disable_worktree_aware
+  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/deps"
   [[ "$status" -eq 0 ]]
-  [[ -d "$MOCK_OROSHI_WORKTREES_DIR/my-repo--fix_yarn/node_modules" ]]
-}
-
-@test "does not run yarn install when yarn.lock is absent" {
-  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/no-yarn"
-  [[ "$status" -eq 0 ]]
-  [[ ! -d "$MOCK_OROSHI_WORKTREES_DIR/my-repo--fix_no-yarn/node_modules" ]]
-}
-
-@test "failing yarn install does not prevent worktree creation" {
-  yarn() { return 1; }
-  bats_mock yarn
-  touch "$BATS_GIT_DIR/yarn.lock"
-  bats_git add .
-  bats_git commit --quiet -m "add yarn.lock"
-  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/yarn"
-  [[ "$status" -eq 0 ]]
-  [[ -d "$MOCK_OROSHI_WORKTREES_DIR/my-repo--fix_yarn" ]]
-}
-
-@test "re-entering existing worktree does not re-run yarn install" {
-  yarn() {
-    echo called >> "$BATS_TMP_DIR/yarn-calls"
-    mkdir -p node_modules
-  }
-  bats_mock yarn
-  touch "$BATS_GIT_DIR/yarn.lock"
-  bats_git add .
-  bats_git commit --quiet -m "add yarn.lock"
-  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/yarn"
-  local calls_first
-  calls_first="$(wc -l < "$BATS_TMP_DIR/yarn-calls" 2>/dev/null || echo 0)"
-  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/yarn"
-  local calls_second
-  calls_second="$(wc -l < "$BATS_TMP_DIR/yarn-calls" 2>/dev/null || echo 0)"
-  [[ "$calls_second" -eq "$calls_first" ]]
+  [[ -f "$BATS_TMP_DIR/dep-update-calls" ]]
+  # Called with no arguments (no origin commit)
+  [[ "$(cat "$BATS_TMP_DIR/dep-update-calls")" == "called:" ]]
 }

@@ -13,7 +13,7 @@
 - Use `bats_run_zsh "command-to-test"`
     - If you need to `cd` inside a specific directory, make it as part of the command passed to `bats_run_zsh`
 - Use `bats_mock` to mock commands
-- Use `bats_disable_worktree_aware` when the test `cd`s outside the worktree — keeps PATH/fpath from the current worktree so autoloaded functions defined only in this worktree remain available
+- Use `bats_disable_worktree_aware` to freeze PATH/fpath — prevents `cd` to a non-worktree dir from triggering `oroshi-reload-fpath` (see `bats_mock` and `bats_disable_worktree_aware` sections)
 - Full helper code available at `tools/term/bats/config/helper`
 
 ## Example
@@ -84,6 +84,7 @@ Overwrites existing commands with custom one, only for that test.
 - Start by defining a function with the same name
 - Then call `bats_mock` with that function name
 - Tip: To capture calls, write to a file in `$BATS_TMP_DIR` in the mock
+- **When combined with `bats_run_zsh "cd $dir && ..."`**: add `bats_disable_worktree_aware` — otherwise the `cd` triggers fpath reload which overwrites your mock with a fresh autoload stub
 
 ```bash
 @test "passes slugified name to clipboard" {
@@ -94,6 +95,25 @@ Overwrites existing commands with custom one, only for that test.
   [[ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "helloWorld" ]]
 }
 ```
+
+```bash
+@test "calls dependency-update after rebase" {
+  git-dependencies-update() { echo "$@" >> "$BATS_TMP_DIR/calls"; }
+  bats_mock git-dependencies-update
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-pull"
+  [[ -f "$BATS_TMP_DIR/calls" ]]
+}
+```
+
+## `bats_disable_worktree_aware`
+
+Freezes PATH/fpath for the test — prevents `cd` to a non-worktree directory from triggering `oroshi-reload-fpath`, which would:
+1. Overwrite any `bats_mock` with fresh autoload stubs
+2. Drop functions that only exist in the current worktree
+
+Call it after `bats_mock` in any test that uses mocks **and** `cd`s to a temp dir (like `$BATS_GIT_DIR`).
 
 ## `bats_strip_ansi`
 

@@ -22,6 +22,39 @@ setup() {
   [[ "$output" == *"main work"* ]]
 }
 
+@test "calls git-dependencies-update with pre-rebase commit after successful rebase" {
+  git-dependencies-update() { echo "$@" >> "$BATS_TMP_DIR/dep-update-calls"; }
+  bats_mock git-dependencies-update
+  bats_disable_worktree_aware
+
+  cd "$BATS_GIT_DIR"
+  local preRebaseCommit="$(git rev-parse HEAD)"
+  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-pull"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/dep-update-calls")" == "$preRebaseCommit" ]]
+}
+
+@test "does not call git-dependencies-update when rebase fails" {
+  git-dependencies-update() { echo "called" >> "$BATS_TMP_DIR/dep-update-calls"; }
+  bats_mock git-dependencies-update
+  bats_disable_worktree_aware
+
+  # Create a conflict: modify same file on main and fix/bug
+  cd "$BATS_GIT_DIR"
+  git checkout --quiet main
+  echo "main content" > conflict.txt
+  git add conflict.txt
+  git commit --quiet -m "main change"
+  git checkout --quiet fix/bug
+  echo "bug content" > conflict.txt
+  git add conflict.txt
+  git commit --quiet -m "bug change"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-pull"
+  [[ "$status" -ne 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/dep-update-calls" ]]
+}
+
 @test "returns 1 if main does not exist" {
   git init --quiet "$BATS_TMP_DIR/no-main"
   git -C "$BATS_TMP_DIR/no-main" config user.email "bats@oroshi"

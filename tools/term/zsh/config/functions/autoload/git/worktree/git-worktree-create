@@ -25,7 +25,10 @@ local branchSlug="$(git-branch-slug "$branch")"
 local worktreeDir="${OROSHI_WORKTREES_DIR}/${repoName}--${branchSlug}"
 
 # If worktree already exists, cd into it (idempotent)
-[[ -d "$worktreeDir" ]] && cd "$worktreeDir" && return 0
+if [[ -d "$worktreeDir" ]]; then
+  cd "$worktreeDir"
+  return 0
+fi
 
 # Create branch from main if it does not exist
 git-branch-exists "$branch" || git branch "$branch" main
@@ -35,7 +38,5 @@ git worktree add "$worktreeDir" "$branch" &> /dev/null
 
 cd "$worktreeDir"
 
-# Run yarn install if yarn.lock is present (failure is non-fatal)
-if [[ -f "yarn.lock" ]]; then
-  yarn install || true
-fi
+# Sync all dependencies (node, ruby, submodules)
+git-dependencies-update

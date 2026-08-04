@@ -44,8 +44,9 @@
   {
     "id": "07",
     "issue": "issues/07-wire-callers.md",
-    "done": false,
-    "blocked_by": ["06"]
+    "done": true,
+    "blocked_by": ["06"],
+    "recap": "Wired git-dependencies-update into worktree-pull (post-rebase), worktree-push (--repo main post-merge), and worktree-create (replacing inline yarn install)"
   },
   {
     "id": "08",
