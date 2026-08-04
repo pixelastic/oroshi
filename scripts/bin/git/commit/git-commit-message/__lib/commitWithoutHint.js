@@ -6,7 +6,7 @@ export const commitWithoutHint = {
    * @returns {Promise<string>} System prompt for diff-only mode
    */
   async getPrompt() {
-    return read(absolute(dirname(), '__prompts/prompt-without-hint.md'));
+    return read(absolute(dirname(), '../__prompts/prompt-without-hint.md'));
   },
 
   /**

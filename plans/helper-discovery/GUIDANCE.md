@@ -11,3 +11,6 @@
 - Use `$OROSHI_ROOT` for all oroshi paths, never hardcoded `~/.oroshi`
 
 ## Discoveries
+
+### Issue 05 — Move JS to __lib
+- JS files using `dirname()` / `import.meta.url` to resolve sibling dirs (`__prompts/`, `__config/`) need path adjustment when moved into `__lib/` — add `../` prefix to go up one level

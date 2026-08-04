@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-move-js-to-lib.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Moved 16 .js files from scripts/bin/ into __lib/ subdirs, updated ZSH wrappers, JS imports, and test paths so helper-list-raw no longer surfaces them"
   }
 ]

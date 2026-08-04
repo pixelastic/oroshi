@@ -1,8 +1,8 @@
 import { exists, read } from 'firost';
-import { getCommitHint } from '../getCommitHint.js';
-import { getPlanDir } from '../getPlanDir.js';
+import { getCommitHint } from '../__lib/getCommitHint.js';
+import { getPlanDir } from '../__lib/getPlanDir.js';
 
-vi.mock('../getPlanDir.js', () => ({
+vi.mock('../__lib/getPlanDir.js', () => ({
   getPlanDir: vi.fn(),
 }));
 vi.mock('firost', async () => {

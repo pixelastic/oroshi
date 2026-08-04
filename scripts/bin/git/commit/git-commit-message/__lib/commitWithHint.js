@@ -10,7 +10,7 @@ export const commitWithHint = {
    */
   async getPrompt() {
     const template = await read(
-      absolute(dirname(), '__prompts/prompt-with-hint.md'),
+      absolute(dirname(), '../__prompts/prompt-with-hint.md'),
     );
     const commitHint = await getCommitHint();
     return template.replace('{{COMMIT_HINT}}', commitHint);

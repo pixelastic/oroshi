@@ -1,4 +1,4 @@
-import { __, gdocs2md } from '../gdocs2md.js';
+import { __, gdocs2md } from '../__lib/gdocs2md.js';
 
 // Helper to build a Google Docs paragraph element
 /**

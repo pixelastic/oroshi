@@ -1,5 +1,5 @@
 import { consoleError } from 'firost';
-import { __, googleAuth } from '../googleAuth.js';
+import { __, googleAuth } from '../__lib/googleAuth.js';
 
 vi.mock('firost', () => ({ consoleError: vi.fn() }));
 

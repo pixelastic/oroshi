@@ -1,4 +1,4 @@
-import { __, gdocsCommentsJson } from '../gdocs-comments-json.js';
+import { __, gdocsCommentsJson } from '../__lib/gdocs-comments-json.js';
 
 describe('extractDocId', () => {
   it.each([

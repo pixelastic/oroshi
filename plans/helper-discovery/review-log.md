@@ -27,3 +27,13 @@ table $output
 ```
 **Problem:** Reviewer questioned whether `table` alone satisfies column alignment requirement
 **Reason skipped:** `table` is the same approach used by `skills-list` and other existing list wrappers — matches the established pattern
+
+## Issue 05 — Move JS files into __lib/ subdirectories
+### Scaffolding tests absent from diff
+```bats
+@test "jsonc-remove-key.js exists in __lib/" {
+  [[ -f "$SCRIPTS_BIN/json/__lib/jsonc-remove-key.js" ]]
+}
+```
+**Problem:** Spec review flagged that 7 scaffolding tests were missing from the diff
+**Reason skipped:** False positive — tests exist at `plans/helper-discovery/scaffold/05-move-js-to-lib.bats` but are untracked, so `review-diff dirty` didn't include them

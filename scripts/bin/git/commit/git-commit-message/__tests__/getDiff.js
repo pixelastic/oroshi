@@ -1,7 +1,7 @@
-import { getRepo } from '../config.js';
-import { getDiff } from '../getDiff.js';
+import { getRepo } from '../__lib/config.js';
+import { getDiff } from '../__lib/getDiff.js';
 
-vi.mock('../config.js', () => ({ getRepo: vi.fn() }));
+vi.mock('../__lib/config.js', () => ({ getRepo: vi.fn() }));
 
 describe('getDiff', () => {
   let mockRun;

@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mkdirp, remove, run } from 'firost';
 import { google } from 'googleapis';
-import { googleAuth } from '../../google/googleAuth.js';
+import { googleAuth } from '../../../google/__lib/googleAuth.js';
 
 export let __;
 
@@ -76,7 +76,12 @@ __ = {
    */
   async runPandoc(filepath, outputPath, cwd) {
     const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-    const referencePath = path.join(scriptDir, '__config', 'reference.docx');
+    const referencePath = path.join(
+      scriptDir,
+      '..',
+      '__config',
+      'reference.docx',
+    );
     await mkdirp(TMP_DIR);
     const command = `pandoc -f markdown-auto_identifiers "${filepath}" -o "${outputPath}" --reference-doc="${referencePath}" --extract-media=${TMP_DIR}/`;
     await run(command, { shell: true, stdout: false, stderr: false, cwd });

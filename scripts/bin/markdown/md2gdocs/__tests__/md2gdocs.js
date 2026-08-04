@@ -1,6 +1,6 @@
 import { run } from 'firost';
 import { google } from 'googleapis';
-import { __, md2gdocs } from '../md2gdocs.js';
+import { __, md2gdocs } from '../__lib/md2gdocs.js';
 
 vi.mock('node:fs', () => ({
   createReadStream: vi.fn().mockReturnValue('mock-stream'),

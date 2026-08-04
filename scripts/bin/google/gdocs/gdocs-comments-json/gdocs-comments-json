@@ -1,4 +1,4 @@
 #!/usr/bin/env zsh
 set -e
 
-node ${0:A:h}/gdocs-comments-json.js "$@"
+node ${0:A:h}/__lib/gdocs-comments-json.js "$@"

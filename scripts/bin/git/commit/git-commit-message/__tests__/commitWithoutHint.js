@@ -1,7 +1,7 @@
-import { commitWithoutHint } from '../commitWithoutHint.js';
-import { getRepo } from '../config.js';
+import { commitWithoutHint } from '../__lib/commitWithoutHint.js';
+import { getRepo } from '../__lib/config.js';
 
-vi.mock('../config.js', () => ({ getRepo: vi.fn() }));
+vi.mock('../__lib/config.js', () => ({ getRepo: vi.fn() }));
 
 describe('commitWithoutHint', () => {
   describe('getDiff', () => {

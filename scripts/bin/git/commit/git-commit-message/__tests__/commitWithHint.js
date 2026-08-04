@@ -1,8 +1,8 @@
-import { commitWithHint } from '../commitWithHint.js';
-import { getRepo } from '../config.js';
+import { commitWithHint } from '../__lib/commitWithHint.js';
+import { getRepo } from '../__lib/config.js';
 
-vi.mock('../config.js', () => ({ getRepo: vi.fn() }));
-vi.mock('../getPlanDir.js', () => ({
+vi.mock('../__lib/config.js', () => ({ getRepo: vi.fn() }));
+vi.mock('../__lib/getPlanDir.js', () => ({
   getPlanDir: vi.fn().mockReturnValue('/some/plans/commit-message-binary'),
 }));
 

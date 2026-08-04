@@ -1,5 +1,5 @@
 import { consoleError } from 'firost';
-import { callApi } from '../callApi.js';
+import { callApi } from '../__lib/callApi.js';
 
 vi.mock('firost', () => ({ consoleError: vi.fn() }));
 

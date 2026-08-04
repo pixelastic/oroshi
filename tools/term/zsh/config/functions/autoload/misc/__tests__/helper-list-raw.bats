@@ -53,3 +53,13 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" == *"sort-filepaths"* ]]
 }
+
+# JS file exclusion
+@test "does not return .js files as helper names" {
+  bats_run_zsh "helper-list-raw jsonc-remove-key"
+  [[ "$status" -eq 0 ]]
+  for line in "${lines[@]}"; do
+    local name="${line%%▮*}"
+    [[ "$name" != *".js" ]]
+  done
+}

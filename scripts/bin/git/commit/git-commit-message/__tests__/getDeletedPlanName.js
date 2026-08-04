@@ -1,7 +1,7 @@
-import { getRepo } from '../config.js';
-import { getDeletedPlanName } from '../getDeletedPlanName.js';
+import { getRepo } from '../__lib/config.js';
+import { getDeletedPlanName } from '../__lib/getDeletedPlanName.js';
 
-vi.mock('../config.js', () => ({ getRepo: vi.fn() }));
+vi.mock('../__lib/config.js', () => ({ getRepo: vi.fn() }));
 
 describe('getDeletedPlanName', () => {
   it.each([
