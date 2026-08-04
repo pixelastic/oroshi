@@ -12,6 +12,7 @@ function oroshiSlowCommandPreexec() {
     claude
     git-commit-create
     git-commit-create-all
+    git-commit-create-all-auto
     git-commit-list
     git-file-diff
     git-file-edit
