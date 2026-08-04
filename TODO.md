@@ -46,8 +46,6 @@ Have a clear defintiion, encode it in zsh-writer so it can choose, and cleanup
 the existing list
 - Add a skill to brainstorm talk titles
 - Make the /plan mode call claude-stop after committing
-- When deleting a worktree and package.json has changed, we should run yarn on the main
-- Same when doing vwpl to pull from main and package.json changed
 - I want Claude to know how to put things in the clipboard, using clipboard-write
 - /plan creates a worktree, but doesn't move to it
 

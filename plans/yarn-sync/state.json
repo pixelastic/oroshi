@@ -51,7 +51,8 @@
   {
     "id": "08",
     "issue": "issues/08-yarn-in-progress-and-cleanup.md",
-    "done": false,
-    "blocked_by": ["03"]
+    "done": true,
+    "blocked_by": ["03"],
+    "recap": "Switched yarn-install-in-progress to use git-dependencies-in-progress-lockfile, removed false TODO entries about worktree yarn sync"
   }
 ]

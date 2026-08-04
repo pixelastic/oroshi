@@ -67,3 +67,18 @@ fi
 ```
 **Problem:** Could be a one-liner per conditions.md, since it's a single assignment.
 **Reason skipped:** The linter rejects `[[ cond ]] && var="cd $x && cmd"` as `noChainedAnd` because of the inner `&&` in the string value. The `if/fi` form is the only lint-clean option here.
+
+## Issue 08 — yarn-in-progress-and-cleanup
+### $REPLY unquoted in [[ ]]
+```zsh
+[[ -r $REPLY ]] && return 0
+```
+**Problem:** `$REPLY` not quoted inside `[[ ]]`
+**Reason skipped:** ZSH `[[ ]]` does not perform word splitting; quoting is optional and no explicit standard mandates it
+
+### Prompt indicator not tested
+```bats
+# no prompt integration test
+```
+**Problem:** Spec says "Prompt indicator still shows when yarn is installing" but no test covers prompt behavior
+**Reason skipped:** `yarn-install-in-progress` is unchanged in its contract (returns 0/1); prompt already calls it, and no prompt code was modified — integration concern, not a unit test gap
