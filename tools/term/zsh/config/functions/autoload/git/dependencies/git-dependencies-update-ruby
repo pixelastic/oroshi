@@ -1,33 +1,40 @@
 # Update ruby dependencies if they changed since the specified commit
+# Usage:
+# $ git-dependencies-update-ruby d34db33f
+# $ git-dependencies-update-ruby d34db33f --repo /path/to/repo
+# $ git-dependencies-update-ruby --repo /path/to/repo
 setopt local_options err_return
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+# Default to current repo when --repo is not provided
+local repoPath="${flagRepo[2]:-$(git-directory-root)}"
 local originCommit="$1"
 
-local gitRoot="$(git-directory-root)"
+local gitRoot="$(git-directory-root "$repoPath")"
 local beaconPatterns=("${gitRoot}/Gemfile" "${gitRoot}/*.gemspec")
-
-local updateCommand="bundle install"
-local lockfilePath="${gitRoot}/.git/oroshi_bundle_install_in_progress"
+local lockfilePath="$(git-dependencies-in-progress-lockfile ruby --repo "$repoPath")"
+local updateCommand="cd ${gitRoot} && bundle install"
 
 # Convert all glob patterns to exact filepaths
 local beaconFilepaths=()
 for beaconPattern in $beaconPatterns; do
-	beaconFilepaths+=($(glob $beaconPattern))
+  beaconFilepaths+=($(glob $beaconPattern))
 done
 
 for beaconFilepath in $beaconFilepaths; do
-	# Skip if the file doesn't exist
-	if [[ ! -f "$beaconFilepath" ]]; then
-		continue
-	fi
+  # Skip if the file doesn't exist
+  [[ ! -f "$beaconFilepath" ]] && continue
 
-	# Skip if the file didn't change
-	if ! git-file-has-changed $beaconFilepath $originCommit; then
-		continue
-	fi
+  # Skip if the file didn't change since the commit
+  if [[ "$originCommit" != "" ]] && ! git-file-has-changed "$beaconFilepath" "$originCommit" --repo "$repoPath"; then
+    continue
+  fi
 
-	# Update dependencies and write a lockfile while doing it
-	fork "$updateCommand" "$lockfilePath"
+  # Update dependencies and write a lockfile while doing it
+  fork "$updateCommand" "$lockfilePath"
 
-	# Stop once the update has been done once
-	break
+  # Stop once the update has been done once
+  break
 done

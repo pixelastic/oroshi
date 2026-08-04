@@ -1,20 +1,27 @@
 # Update node dependencies if they changed since the specified commit
+# Usage:
+# $ git-dependencies-update-node d34db33f
+# $ git-dependencies-update-node d34db33f --repo /path/to/repo
+# $ git-dependencies-update-node --repo /path/to/repo
 setopt local_options err_return
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+# Default to current repo when --repo is not provided
+local repoPath="${flagRepo[2]:-$(git-directory-root)}"
 local originCommit="$1"
 
-local gitRoot="$(git-directory-root)"
+local gitRoot="$(git-directory-root "$repoPath")"
 local beaconFilepath="${gitRoot}/yarn.lock"
+local lockfilePath="$(git-dependencies-in-progress-lockfile node --repo "$repoPath")"
+local updateCommand="cd ${gitRoot} && yarn install"
 
-local updateCommand="yarn install"
-local lockfilePath="${gitRoot}/.git/oroshi_yarn_install_in_progress"
-
-# Fail quickly if no such beacon file
-if [[ ! -f "$beaconFilepath" ]]; then
-  return 0
-fi
+# No beacon file in this repo
+[[ ! -f "$beaconFilepath" ]] && return 0
 
 # Beacon file didn't change since the commit
-if ! git-file-has-changed $beaconFilepath $originCommit; then
+if [[ "$originCommit" != "" ]] && ! git-file-has-changed "$beaconFilepath" "$originCommit" --repo "$repoPath"; then
   return 0
 fi
 

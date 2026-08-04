@@ -37,8 +37,9 @@
   {
     "id": "06",
     "issue": "issues/06-dependencies-update-chain.md",
-    "done": false,
-    "blocked_by": ["03", "04", "05"]
+    "done": true,
+    "blocked_by": ["03", "04", "05"],
+    "recap": "Added --repo, lockfile via git-dependencies-in-progress-lockfile, and no-commit unconditional mode to git-dependencies-update chain (3 functions)"
   },
   {
     "id": "07",

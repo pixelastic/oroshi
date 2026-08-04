@@ -50,3 +50,20 @@ git() { echo "$@" > "$BATS_TMP_DIR/git-args.txt"; }
 ```
 **Problem:** Same mock defined in multiple tests, could be in setup()
 **Reason skipped:** No rule requires mock deduplication; tests are self-contained
+
+## Issue 06 — dependencies-update-chain
+### --repo "" passed unconditionally
+```zsh
+local lockfilePath="$(git-dependencies-in-progress-lockfile node --repo "$repoPath")"
+```
+**Problem:** When `repoPath` is empty, `--repo ""` is passed to downstream functions.
+**Reason skipped:** Downstream functions handle empty `--repo` correctly (zparseopts sets empty string, which falls through to default behavior). Parent `git-dependencies-update` uses conditional `repoArgs` for a different reason (positional args ordering).
+
+### if/fi for single assignment with inner &&
+```zsh
+if [[ "$repoPath" != "" ]]; then
+  updateCommand="cd ${gitRoot} && yarn install"
+fi
+```
+**Problem:** Could be a one-liner per conditions.md, since it's a single assignment.
+**Reason skipped:** The linter rejects `[[ cond ]] && var="cd $x && cmd"` as `noChainedAnd` because of the inner `&&` in the string value. The `if/fi` form is the only lint-clean option here.
