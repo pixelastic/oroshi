@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-dependencies-in-progress-lockfile.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Created git-dependencies-in-progress-lockfile returning context-aware lockfile path under OROSHI_TMP_FOLDER with --repo and --reply support"
   },
   {
     "id": "04",

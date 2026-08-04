@@ -1,0 +1,32 @@
+# Return the semaphore lockfile path for dependency updates
+# Usage:
+# $ git-dependencies-in-progress-lockfile node               # echo path
+# $ git-dependencies-in-progress-lockfile ruby --reply        # write to $REPLY
+# $ git-dependencies-in-progress-lockfile node --repo /path   # target repo
+setopt local_options err_return
+
+zparseopts -E -D \
+  -repo:=flagRepo \
+  -reply=flagReply
+
+local isReply=${#flagReply}
+local repoPath="${flagRepo[2]}"
+local language="$1"
+
+# Language is required
+[[ "$language" == "" ]] && return 1
+
+# Resolve context slug for the target repo
+local slug="$(context-slug "$repoPath")"
+
+# Ensure parent directory exists
+local parentDir="${OROSHI_TMP_FOLDER}/git-dependencies-update"
+mkdir -p "$parentDir"
+
+local result="${parentDir}/${slug}--${language}.lock"
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$result"
+  return
+fi
+echo "$result"
