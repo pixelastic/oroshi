@@ -54,7 +54,8 @@ Ask the user:
 - Should any slices be merged or split further?
 - Are the correct slices marked as HITL and AFK?
 
-Iterate until the user approves the breakdown.
+If the user suggests changes, present the new breakdown again. Only move to
+writing issue files once the user approves the breakdown.
 
 ---
 
