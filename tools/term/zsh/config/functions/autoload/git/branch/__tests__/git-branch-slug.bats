@@ -48,3 +48,38 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" = "feat_my-feature" ]]
 }
+
+# --- With --repo ---
+
+@test "--repo resolves current branch of specified repo" {
+  git-branch-current() { echo "fix/remote.branch"; }
+  bats_mock git-branch-current
+
+  bats_run_zsh "git-branch-slug --repo /some/repo"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "fix_remote-branch" ]]
+}
+
+@test "--repo passes path to git-branch-current" {
+  git-branch-current() {
+    echo "called-with:$1" > "$BATS_TMP_DIR/called.txt"
+    echo "main"
+  }
+  bats_mock git-branch-current
+
+  bats_run_zsh "git-branch-slug --repo /some/repo"
+  [[ "$(cat "$BATS_TMP_DIR/called.txt")" = "called-with:/some/repo" ]]
+}
+
+@test "explicit branch takes precedence over --repo" {
+  git-branch-current() {
+    echo "should-not-be-called" > "$BATS_TMP_DIR/called.txt"
+    echo "wrong"
+  }
+  bats_mock git-branch-current
+
+  bats_run_zsh "git-branch-slug feat/explicit --repo /some/repo"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "feat_explicit" ]]
+  [[ ! -f "$BATS_TMP_DIR/called.txt" ]]
+}

@@ -17,23 +17,21 @@ local commitEnd="$3"
 local gitCmd=(git)
 [[ "$repoPath" != "" ]] && gitCmd=(git -C "$repoPath")
 
-local changed=""
-
 # Changes in working directory
 if [[ "$commitStart" == "" && "$commitEnd" == "" ]]; then
-  changed="$("${gitCmd[@]}" diff --name-only "$filepath")"
+  local changed="$("${gitCmd[@]}" diff --name-only "$filepath")"
+  [[ "$changed" != "" ]] && return 0
+  return 1
 fi
 
 # Changes since specific commit
-if [[ "$commitStart" != "" && "$commitEnd" == "" ]]; then
-  changed="$("${gitCmd[@]}" diff --name-only "${commitStart}.." -- "$filepath")"
+if [[ "$commitEnd" == "" ]]; then
+  local changed="$("${gitCmd[@]}" diff --name-only "${commitStart}.." -- "$filepath")"
+  [[ "$changed" != "" ]] && return 0
+  return 1
 fi
 
 # Changes between two commits
-if [[ "$commitStart" != "" && "$commitEnd" != "" ]]; then
-  changed="$("${gitCmd[@]}" diff --name-only "${commitStart}..${commitEnd}" -- "$filepath")"
-fi
-
-# The file hasn't been changed, so we fail the script
-[[ "$changed" == "" ]] && return 1
-return 0
+local changed="$("${gitCmd[@]}" diff --name-only "${commitStart}..${commitEnd}" -- "$filepath")"
+[[ "$changed" != "" ]] && return 0
+return 1

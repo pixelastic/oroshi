@@ -1,12 +1,25 @@
 # Return filesystem-safe slug: / → _, . → -
 # Usage:
-# $ git-branch-slug feat/my-feature   # feat_my-feature
-# $ git-branch-slug feat/scope/deep   # feat_scope_deep
-# $ git-branch-slug progress.json     # progress-json
-# $ git-branch-slug                   # uses current branch
+# $ git-branch-slug feat/my-feature              # feat_my-feature
+# $ git-branch-slug feat/scope/deep              # feat_scope_deep
+# $ git-branch-slug progress.json                # progress-json
+# $ git-branch-slug                              # current branch of current repo
+# $ git-branch-slug --repo /path/to/repo         # current branch of specified repo
 setopt local_options err_return
 
-local branch="${1:-$(git-branch-current)}"
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local repoPath="${flagRepo[2]}"
+local branch="$1"
+
+# No explicit branch: resolve from repo (current or --repo target)
+if [[ "$branch" == "" ]]; then
+  local currentArgs=()
+  [[ "$repoPath" != "" ]] && currentArgs=("$repoPath")
+  branch="$(git-branch-current "${currentArgs[@]}")"
+fi
+
 [[ "$branch" == "" ]] && return 1
 
 local slug="${branch//\//_}"

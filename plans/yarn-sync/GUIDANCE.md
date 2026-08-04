@@ -42,3 +42,7 @@
 - `git/worktree/GLOSSARY.md` — Worktree, Git Repo Main, Branch Slug, Worktree Directory Name, Repo Name definitions
 
 ## Discoveries
+
+### Issue 05 — file-has-changed-repo
+- `git-branch-slug` now accepts `--repo` to resolve current branch of a specified repo — no need for two-step `git-branch-current` + `git-branch-slug`
+- `zsh-lint` moves comments before `elif`/`else` to be indented inside the previous branch — accept its style

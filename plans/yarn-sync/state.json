@@ -30,8 +30,9 @@
   {
     "id": "05",
     "issue": "issues/05-file-has-changed-repo.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Already implemented in prior commit; review found and fixed context-slug passing wrong path to git-branch-slug, and refactored git-file-has-changed to if/elif/else"
   },
   {
     "id": "06",

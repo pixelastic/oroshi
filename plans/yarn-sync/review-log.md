@@ -21,3 +21,32 @@ git() { echo "$@" > "$BATS_TMP_DIR/git-args.txt"; }
 ```
 **Problem:** No comments on assertion lines
 **Reason skipped:** "Comments for guard clauses" targets production early-return guards, not test assertions
+
+## Issue 05 — file-has-changed-repo
+### `; true` vs `|| true` in context-slug
+```zsh
+local repoName="$(git-github-project-name "$targetPath" 2>/dev/null; true)"
+```
+**Problem:** `; true` is unconventional, typically `|| true` is used
+**Reason skipped:** No documented standard prohibits either form; both suppress err_return in subshell
+
+### `git -C` short form
+```zsh
+gitCmd=(git -C "$repoPath")
+```
+**Problem:** calling-commands standard says prefer long-form args
+**Reason skipped:** `git -C` has no long-form equivalent
+
+### `_mock_defaults` helper at file scope in context-slug.bats
+```bats
+_mock_defaults() {
+```
+**Problem:** feedback_bats_setup_vars says vars go in setup()
+**Reason skipped:** Rule targets variable declarations, not helper function definitions; helper varies per test
+
+### Mock duplication in git-submodule-update-all.bats
+```bats
+git() { echo "$@" > "$BATS_TMP_DIR/git-args.txt"; }
+```
+**Problem:** Same mock defined in multiple tests, could be in setup()
+**Reason skipped:** No rule requires mock deduplication; tests are self-contained
