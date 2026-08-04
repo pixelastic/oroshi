@@ -23,8 +23,9 @@
   {
     "id": "04",
     "issue": "issues/04-submodule-update-all.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created git-submodule-update-all wrapping git -C <path> submodule update with optional path argument defaulting to current directory"
   },
   {
     "id": "05",

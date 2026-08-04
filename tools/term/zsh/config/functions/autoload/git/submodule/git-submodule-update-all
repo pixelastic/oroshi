@@ -1,0 +1,9 @@
+# Update all submodules in a repo
+# Usage:
+# $ git-submodule-update-all         # Current directory
+# $ git-submodule-update-all /path   # Specific path
+setopt local_options err_return
+
+local repoPath="${1:-.}"
+
+git -C "$repoPath" submodule update
