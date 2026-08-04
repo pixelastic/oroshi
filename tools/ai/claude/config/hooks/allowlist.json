@@ -120,6 +120,7 @@
   "git-branch-current",
   "git-branch-list",
   "git-branch-slug",
+  "git-depedencies-update",
   "git-directory-gitdir",
   "git-directory-is-worktree",
   "git-directory-root",
