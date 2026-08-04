@@ -1,33 +1,39 @@
 # Check if a specific file changed, relative to commits
 # Usage:
-# $ git-file-has-changed package.json  # Checks working dir against last commit
-# $ git-file-has-changed package.json abcdef # Checks working dir against specific commit
-# $ git-file-has-changed package.json abcdef d34db33f # Checks between two specific commits
+# $ git-file-has-changed package.json                       # Working dir against last commit
+# $ git-file-has-changed package.json abcdef                # Since specific commit
+# $ git-file-has-changed package.json abcdef d34db33f       # Between two commits
+# $ git-file-has-changed package.json --repo /path/to/repo  # In a different repo
 setopt local_options err_return
 
-local filepath=$1
-local commitStart=$2
-local commitEnd=$3
+zparseopts -E -D \
+  -repo:=flagRepo
 
-local changed=''
+local repoPath="${flagRepo[2]}"
+local filepath="$1"
+local commitStart="$2"
+local commitEnd="$3"
+
+local gitCmd=(git)
+[[ "$repoPath" != "" ]] && gitCmd=(git -C "$repoPath")
+
+local changed=""
 
 # Changes in working directory
-if [[ $commitStart == '' && $commitEnd == '' ]]; then
-  changed="$(git diff --name-only $filepath)"
+if [[ "$commitStart" == "" && "$commitEnd" == "" ]]; then
+  changed="$("${gitCmd[@]}" diff --name-only "$filepath")"
 fi
 
 # Changes since specific commit
-if [[ $commitStart != '' && $commitEnd == '' ]]; then
- changed="$(git diff --name-only ${commitStart}.. -- $filepath)"
+if [[ "$commitStart" != "" && "$commitEnd" == "" ]]; then
+  changed="$("${gitCmd[@]}" diff --name-only "${commitStart}.." -- "$filepath")"
 fi
 
 # Changes between two commits
-if [[ $commitStart != '' && $commitEnd != '' ]]; then
-  diff="$(git diff --name-only ${commitStart}..${commitEnd} -- $filepath)"
+if [[ "$commitStart" != "" && "$commitEnd" != "" ]]; then
+  changed="$("${gitCmd[@]}" diff --name-only "${commitStart}..${commitEnd}" -- "$filepath")"
 fi
 
 # The file hasn't been changed, so we fail the script
-if [[ $changed == '' ]]; then
-  return 1
-fi
+[[ "$changed" == "" ]] && return 1
 return 0
