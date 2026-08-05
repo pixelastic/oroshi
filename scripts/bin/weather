@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-# Display the current weather in the specified city
-set -e
-local city=$1
-[[ $city == '' ]] && city='Nantes';
-
-curl http://wttr.in/$city

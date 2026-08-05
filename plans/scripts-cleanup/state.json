@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-delete-dead-code.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Deleted 90+ dead scripts, __pdf/ dir, dead aliases (cpv, mvv, tr?, trl), remark config + npm deps, and fixed stale cheat-sheet reference"
   },
   {
     "id": "02",

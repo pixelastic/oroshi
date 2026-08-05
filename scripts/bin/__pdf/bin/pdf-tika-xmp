@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-java \
-  -jar ~/local/src/tika/tika.jar \
-  --xmlp \
-  "$1" \
-  2>/dev/null

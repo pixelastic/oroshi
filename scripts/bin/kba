@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-# Add a shortcut to a command
-set -e
-local key="$1"
-local shortcut="$2"
-
-kbR "$shortcut"
-dconf write "$key" "['${shortcut}']"

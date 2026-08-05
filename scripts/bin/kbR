@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-# Remove all commands bound to this shortcut
-set -e
-local shortcut="$1"
-
-for key in $(kbl $shortcut); do
-  dconf write "$key" '@as []'
-done

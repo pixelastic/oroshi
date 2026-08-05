@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-# Read from arg
-set -e
-input=$1
-# Read from pipe
-[[ -p /dev/stdin ]] && input="$(cat -)"
-
-# /path/subdir/file.ext => ext
-echo ".${input:a:e}"

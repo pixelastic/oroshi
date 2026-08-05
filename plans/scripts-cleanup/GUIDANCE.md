@@ -44,3 +44,11 @@ A script must stay as a script if called from any of these:
 ## Discoveries
 
 (append-only, updated by agents after each issue)
+
+### Issue 01 — Delete dead code
+- `scripts/etc/` directory doesn't exist — no orphan cleanup needed
+- `bats-echo` was already deleted before this issue
+- `cpv` (copy-verbose) and `mvv` (move-verbose) aliases in cp.zsh/mv.zsh also needed removal — not listed in issue but caught by broken-reference grep
+- `trr` (trash-restore) alias was a duplicate of `rmz` — removed alongside `tr?`/`trl`
+- Remark npm packages in package.json needed cleanup alongside the config files
+- `cheats/zsh/parse-args.zsh` had a stale `(argsf, argsp)` parenthetical

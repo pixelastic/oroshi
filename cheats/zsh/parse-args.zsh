@@ -1,4 +1,4 @@
-# Parse arguments (argsf, argsp)
+# Parse arguments
 
 # ====
 # https://xpmo.gitlab.io/post/using-zparseopts/
