@@ -35,14 +35,14 @@ Read [03-issues.md](./references/03-issues.md) and follow all sub-steps.
 
 ---
 
-## Step 4 — Commit and stop
+## Step 4 — End the planning session
 
-**Goal:** Commit plan artifacts and hand off to user.
+**Goal:** End the planning session and hand off to user.
 
-**Exit criterion:** `plan-end` called, user told to run ralph.
+**Exit criterion:** user told to run ralph, `plan-end` called,
 
-1. Run `plan-end <planDir>` — it stages all plan files and commits.
-2. Tell the user to stop and run `/ralph <planDir>` to begin implementation.
+1. Tell the user to run `ralph` to begin implementation.
+2. Run `plan-end <planDir>` — it stages all plan files, commits and quit claude
 
 ---
 
