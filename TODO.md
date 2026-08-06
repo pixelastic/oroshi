@@ -48,6 +48,9 @@ the existing list
 - Make the /plan mode call claude-stop after committing
 - I want Claude to know how to put things in the clipboard, using clipboard-write
 - /plan creates a worktree, but doesn't move to it
+- Make a git push/pull/clone wrapper that displays only relevant info
+- Make a better trash-restore, that uses fzf and preview to pick which file to restore
+- Use hunk to see work done by claude in realtime
 
 
 ---

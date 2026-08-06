@@ -26,7 +26,7 @@ setup() {
   local preMergeHead="$(git -C "$mainPath" rev-parse HEAD)"
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/dep-update-calls")" == "--repo $mainPath $preMergeHead" ]]
+  [[ "$(cat "$BATS_TMP_DIR/dep-update-calls")" == "--repo $mainPath $preMergeHead --async" ]]
 }
 
 @test "returns 1 if history has diverged" {

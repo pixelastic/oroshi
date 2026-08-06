@@ -9,4 +9,4 @@ local previousCommit="$(git -C "$mainPath" rev-parse HEAD)"
 
 git -C "$mainPath" merge --ff-only "$currentBranch"
 
-git-dependencies-update --repo "$mainPath" "$previousCommit"
+git-dependencies-update --repo "$mainPath" "$previousCommit" --async

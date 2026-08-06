@@ -6,7 +6,8 @@
 setopt local_options err_return
 
 zparseopts -E -D \
-  -repo:=flagRepo
+  -repo:=flagRepo \
+  -async=flagAsync
 
 # Default to current repo when --repo is not provided
 local repoPath="${flagRepo[2]:-$(git-directory-root)}"
@@ -32,8 +33,13 @@ for beaconFilepath in $beaconFilepaths; do
     continue
   fi
 
-  # Update dependencies and write a lockfile while doing it
-  fork "$updateCommand" "$lockfilePath"
+  # Either update deps right now, or in the background
+  if [[ "$flagAsync" != "" ]]; then
+    # Update dependencies and write a lockfile while doing it
+    fork "$updateCommand" "$lockfilePath"
+  else
+    eval "$updateCommand"
+  fi
 
   # Stop once the update has been done once
   break

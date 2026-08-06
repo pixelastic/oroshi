@@ -31,7 +31,7 @@ setup() {
   local preRebaseCommit="$(git rev-parse HEAD)"
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-pull"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/dep-update-calls")" == "$preRebaseCommit" ]]
+  [[ "$(cat "$BATS_TMP_DIR/dep-update-calls")" == "$preRebaseCommit --async" ]]
 }
 
 @test "does not call git-dependencies-update when rebase fails" {

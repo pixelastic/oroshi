@@ -7,4 +7,4 @@ local previousCommit="$(git rev-parse HEAD)"
 
 git rebase main
 
-git-dependencies-update "$previousCommit"
+git-dependencies-update "$previousCommit" --async

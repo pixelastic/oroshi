@@ -34,7 +34,7 @@ if [[ $targetBranch == "$currentBranch" ]]; then
   git pull $currentRemote $targetBranch
 
   # Update dependencies
-  git-dependencies-update $currentCommit
+  git-dependencies-update $currentCommit --async
 
   echo "$colorizedBranch branch updated"
 

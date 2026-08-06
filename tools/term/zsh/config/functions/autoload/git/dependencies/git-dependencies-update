@@ -8,7 +8,8 @@
 setopt local_options err_return
 
 zparseopts -E -D \
-  -repo:=flagRepo
+  -repo:=flagRepo \
+  -async=flagAsync
 
 # Default to current repo when --repo is not provided
 local repoPath="${flagRepo[2]:-$(git-directory-root)}"
@@ -16,7 +17,7 @@ local originCommit="$1"
 
 git-submodule-update-all "$repoPath"
 
-git-dependencies-update-node "$originCommit" --repo "$repoPath"
-git-dependencies-update-ruby "$originCommit" --repo "$repoPath"
+git-dependencies-update-node "$originCommit" --repo "$repoPath" $flagAsync
+git-dependencies-update-ruby "$originCommit" --repo "$repoPath" $flagAsync
 
 return 0
