@@ -7,6 +7,6 @@ function _git-worktrees() {
 
   local suggestions=(${(f)"$(complete-git-worktrees)"})
   local label=" $ICONS[git-worktree] Worktrees "
-  local header="$(completion-header $COLORS[git-worktree] $COLORS[white] "$label")"
+  local header="$(completion-header git-worktree white "$label")"
   _describe -V "$header" suggestions
 }

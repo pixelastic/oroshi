@@ -7,6 +7,6 @@ function _git-branches-local() {
 
   local suggestions=(${(f)"$(complete-git-branches-local)"})
   local label=" $ICONS[git-branch] Local branches "
-  local header="$(completion-header $COLORS[git-branch] $COLORS[white] "$label")"
+  local header="$(completion-header git-branch white "$label")"
   _describe -V "$header" suggestions
 }

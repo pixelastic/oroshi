@@ -9,7 +9,7 @@ function _yarn-link-global() {
   if ! yarn-version-is-berry; then
     local suggestions=(${(f)"$(complete-yarn-link-global)"})
     local label=" $ICONS[node-link] globally available modules "
-    local header="$(completion-header $COLORS[yarn-package-global] $COLORS[white] "$label")"
+    local header="$(completion-header yarn-package-global white "$label")"
     _describe -V "$header" suggestions
     return
   fi

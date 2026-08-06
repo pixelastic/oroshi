@@ -7,6 +7,6 @@ function _git-submodules() {
 
   local suggestions=(${(f)"$(complete-git-submodules)"})
   local label=" $ICONS[git-submodule] Git Submodules "
-  local header="$(completion-header $COLORS[git-submodule] $COLORS[black] "$label")"
+  local header="$(completion-header git-submodule black "$label")"
   _describe -V "$header" suggestions
 }

@@ -9,6 +9,6 @@ function _image-resize() {
 
   local suggestions=(${(f)"$(img-resize --completion)"})
   local label=" $ICONS[flag] Flags "
-  local header="$(completion-header $COLORS[flag] $COLORS[white] "$label")"
+  local header="$(completion-header flag white "$label")"
   _describe -V "$header" suggestions
 }

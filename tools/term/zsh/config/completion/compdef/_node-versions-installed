@@ -9,6 +9,6 @@ function _node-versions-installed() {
 
   local suggestions=(${(f)"$(complete-node-versions-installed)"})
   local label=" $ICONS[node] node versions "
-  local header="$(completion-header $COLORS[language-node] $COLORS[white] "$label")"
+  local header="$(completion-header language-node white "$label")"
   _describe -V "$header" suggestions
 }

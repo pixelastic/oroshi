@@ -7,6 +7,6 @@ function _git-tags-remote() {
 
   local suggestions=(${(f)"$(complete-git-tags-remote)"})
   local label=" $ICONS[git-tag] Remote tags "
-  local header="$(completion-header $COLORS[git-remote] $COLORS[black] "$label")"
+  local header="$(completion-header git-remote black "$label")"
   _describe -V "$header" suggestions
 }

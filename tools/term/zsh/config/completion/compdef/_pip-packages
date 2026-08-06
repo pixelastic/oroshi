@@ -7,6 +7,6 @@ function _pip-packages() {
 
   local suggestions=(${(f)"$(complete-pip-packages)"})
   local label=" $ICONS[python] pip packages "
-  local header="$(completion-header $COLORS[language-python] $COLORS[black] "$label")"
+  local header="$(completion-header language-python black "$label")"
   _describe -V "$header" suggestions
 }

@@ -7,6 +7,6 @@ function _git-remotes() {
 
   local suggestions=(${(f)"$(complete-git-remotes)"})
   local label=" $ICONS[git-remote]  Remotes "
-  local header="$(completion-header $COLORS[git-remote] $COLORS[black] "$label")"
+  local header="$(completion-header git-remote black "$label")"
   _describe -V "$header" suggestions
 }

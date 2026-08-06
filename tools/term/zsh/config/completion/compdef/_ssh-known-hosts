@@ -7,6 +7,6 @@ function _ssh-known-hosts() {
 
   local suggestions=(${(f)"$(complete-ssh-known-hosts)"})
   local label=" $ICONS[ssh] SSH hosts "
-  local header="$(completion-header $COLORS[directory] $COLORS[white] "$label")"
+  local header="$(completion-header directory white "$label")"
   _describe -V "$header" suggestions
 }

@@ -7,6 +7,6 @@ function _yarn-dependencies-recursive() {
 
   local suggestions=(${(f)"$(complete-yarn-dependencies-recursive)"})
   local label=" $ICONS[node-package] package.json subdependencies "
-  local header="$(completion-header $COLORS[language-javascript] $COLORS[black] "$label")"
+  local header="$(completion-header language-javascript black "$label")"
   _describe -V "$header" suggestions
 }

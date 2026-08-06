@@ -7,6 +7,6 @@ function _bats-test() {
 
   local suggestions=(${(f)"$(complete-bats-test-files)"})
   local label=" $ICONS[bats] Bats Tests "
-  local header="$(completion-header $COLORS[language-bats] $COLORS[black] "$label")"
+  local header="$(completion-header language-bats black "$label")"
   _describe -V "$header" suggestions
 }

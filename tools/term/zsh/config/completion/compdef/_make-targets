@@ -7,6 +7,6 @@ function _make-targets() {
 
   local suggestions=(${(f)"$(complete-make-targets)"})
   local label=" $ICONS[make] Make "
-  local header="$(completion-header $COLORS[language-javascript] $COLORS[black] "$label")"
+  local header="$(completion-header language-javascript black "$label")"
   _describe -V "$header" suggestions
 }

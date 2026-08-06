@@ -7,6 +7,6 @@ function _node-modules() {
 
   local suggestions=(${(f)"$(complete-node-modules)"})
   local label=" $ICONS[node] global node modules "
-  local header="$(completion-header $COLORS[yarn-package-global] $COLORS[white] "$label")"
+  local header="$(completion-header yarn-package-global white "$label")"
   _describe -V "$header" suggestions
 }

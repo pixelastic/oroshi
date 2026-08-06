@@ -7,6 +7,6 @@ function _plans() {
 
   local suggestions=(${(f)"$(complete-plans)"})
   local label=" $ICONS[plan] Plans "
-  local header="$(completion-header $COLORS[ai] $COLORS[gray-2] "$label")"
+  local header="$(completion-header ai gray-2 "$label")"
   _describe -V "$header" suggestions
 }

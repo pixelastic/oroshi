@@ -7,6 +7,6 @@ function _docker-containers-running() {
 
   local suggestions=(${(f)"$(complete-docker-containers-running)"})
   local label=" $ICONS[docker-container-run] Docker containers running "
-  local header="$(completion-header $COLORS[docker-container-run] $COLORS[white] "$label")"
+  local header="$(completion-header docker-container-run white "$label")"
   _describe -V "$header" suggestions
 }

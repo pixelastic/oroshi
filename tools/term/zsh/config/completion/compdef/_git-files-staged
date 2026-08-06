@@ -7,6 +7,6 @@ function _git-files-staged() {
 
   local suggestions=(${(f)"$(complete-git-files-staged)"})
   local label=" $ICONS[git-commit] Staged files "
-  local header="$(completion-header $COLORS[git-modified] $COLORS[white] "$label")"
+  local header="$(completion-header git-modified white "$label")"
   _describe -V "$header" suggestions
 }

@@ -7,6 +7,6 @@ function _jumps() {
 
   local suggestions=(${(f)"$(complete-jumps)"})
   local label=" $ICONS[jump] Jump to "
-  local header="$(completion-header $COLORS[directory] $COLORS[white] "$label")"
+  local header="$(completion-header directory white "$label")"
   _describe -V "$header" suggestions
 }

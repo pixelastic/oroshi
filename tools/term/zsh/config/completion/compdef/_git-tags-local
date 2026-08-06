@@ -7,6 +7,6 @@ function _git-tags-local() {
 
   local suggestions=(${(f)"$(complete-git-tags-local)"})
   local label=" $ICONS[git-tag] Local tags "
-  local header="$(completion-header $COLORS[git-tag] $COLORS[white] "$label")"
+  local header="$(completion-header git-tag white "$label")"
   _describe -V "$header" suggestions
 }

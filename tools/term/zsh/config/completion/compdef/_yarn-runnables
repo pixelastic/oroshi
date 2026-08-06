@@ -1,40 +1,14 @@
 #compdef
 
-# Suggest list of all subcommands of yarn run
-# - scripts defined in package.json
-# - local binaries installed in node_modules
-#
-# Note:
-# _describe is a helper function that, it seems, should only be called once in
-# a completion function. Calling it twice groups the headers at the top instead
-# of adding them between completion groups.
-#
-# To work around that here, we will display the results of the second group
-# (binaries) using the low-level compadd. compadd works well when you need to
-# simply add elements. To also pass descriptions, it requires a bit more work
-# (passing two arrays, one with suggestions and one with descriptions), so this
-# is why we stick with the higher level _describe here for the first group, and
-# the low-level compadd for the second one.
+# Suggest scripts defined in package.json for yarn run
 function _yarn-runnables() {
-	colors-load-definitions
-	icons-load-definitions
+  colors-load-definitions
+  icons-load-definitions
 
-	# package.json scripts
-	local scriptSuggestions=(${(f)"$(complete-yarn-scripts)"})
-	if [[ $scriptSuggestions != "" ]]; then
-		local scriptLabel=" $ICONS[node-package] package.json scripts "
-		local scriptHeader="$(completion-header $COLORS[language-javascript] $COLORS[black] "$scriptLabel")"
-		_describe -V "$scriptHeader" scriptSuggestions
-	fi
+  local suggestions=(${(f)"$(complete-yarn-scripts)"})
+  [[ "$suggestions" == "" ]] && return 0
 
-	# local node_modules/.bin binaries
-	local binarySuggestions=(${(f)"$(complete-yarn-binaries)"})
-	if [[ $binarySuggestions != "" ]]; then
-		local binaryLabel=" $ICONS[node] node_modules binaries "
-		local binaryHeader="$(completion-header $COLORS[language-javascript] $COLORS[black] "$binaryLabel")"
-		compadd \
-			-J group2 \
-			-x "$binaryHeader" \
-			-a binarySuggestions
-	fi
+  local label=" $ICONS[node-package] package.json scripts "
+  local header="$(completion-header language-javascript black "$label")"
+  _describe -V "$header" suggestions
 }

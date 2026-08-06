@@ -7,6 +7,6 @@ function _git-files-dirty() {
 
   local suggestions=(${(f)"$(complete-git-files-dirty)"})
   local label=" $ICONS[git-file-dirty] Dirty files "
-  local header="$(completion-header $COLORS[git-modified] $COLORS[black] "$label")"
+  local header="$(completion-header git-modified black "$label")"
   _describe -V "$header" suggestions
 }

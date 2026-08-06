@@ -7,6 +7,6 @@ function _git-branches-remote() {
 
   local suggestions=(${(f)"$(complete-git-branches-remote)"})
   local label=" $ICONS[git-branch] Remote branches "
-  local header="$(completion-header $COLORS[git-remote] $COLORS[black] "$label")"
+  local header="$(completion-header git-remote black "$label")"
   _describe -V "$header" suggestions
 }

@@ -7,6 +7,6 @@ function _yarn-dependencies() {
 
   local suggestions=(${(f)"$(complete-yarn-dependencies)"})
   local label=" $ICONS[node-package] package.json dependencies "
-  local header="$(completion-header $COLORS[language-javascript] $COLORS[black] "$label")"
+  local header="$(completion-header language-javascript black "$label")"
   _describe -V "$header" suggestions
 }

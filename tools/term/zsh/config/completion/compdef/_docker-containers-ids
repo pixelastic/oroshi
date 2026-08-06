@@ -7,6 +7,6 @@ function _docker-containers-ids() {
 
   local suggestions=(${(f)"$(complete-docker-containers-ids)"})
   local label=" $ICONS[docker-stop] Docker containers "
-  local header="$(completion-header $COLORS[docker-container] $COLORS[black] "$label")"
+  local header="$(completion-header docker-container black "$label")"
   _describe -V "$header" suggestions
 }

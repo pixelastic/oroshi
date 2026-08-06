@@ -7,6 +7,6 @@ function _yarn-link-classic-enabled() {
 
   local suggestions=(${(f)"$(complete-yarn-link-classic-enabled)"})
   local label=" $ICONS[node-link] Yarn links "
-  local header="$(completion-header $COLORS[yarn-link-classic] $COLORS[white] "$label")"
+  local header="$(completion-header yarn-link-classic white "$label")"
   _describe -V "$header" suggestions
 }
