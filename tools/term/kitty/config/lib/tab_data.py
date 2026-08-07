@@ -40,8 +40,6 @@ def build_tab_data(tab: TabBarData, draw_data: DrawData):
     if isAttention:
         attentionType = tabState["attentionIds"][str(id)]
         title = f"{title}{_icons[f'kitty-tab-attention-{attentionType}']}"
-    if isFullscreen:
-        title = f"{title} "
 
     tabData = {
         "id": id,

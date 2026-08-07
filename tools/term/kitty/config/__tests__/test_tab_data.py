@@ -99,7 +99,7 @@ def test_build_tab_data_is_active(mocker):
 def test_build_tab_data_is_fullscreen_when_stack(mocker):
     mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
     mocker.patch("lib.tab_data.projects.get", return_value={})
-    tab_data._icons = {"kitty-tab-fullscreen": "F"}
+    tab_data._icons = {"kitty-tab-fullscreen": "F "}
     result = tab_data.build_tab_data(_make_tab(layout_name="stack"), _make_draw())
     assert result["isFullscreen"] is True
 
@@ -145,16 +145,16 @@ def test_title_without_project_icon(mocker):
 def test_title_appends_attention_icon(mocker):
     mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
     mocker.patch("lib.tab_data.projects.get", return_value={})
-    tab_data._icons = {"kitty-tab-attention-stop": "!"}
+    tab_data._icons = {"kitty-tab-attention-stop": "! "}
     tabState["attentionIds"] = {"1": "stop"}
     result = tab_data.build_tab_data(_make_tab(tab_id=1, title="neovim"), _make_draw())
-    assert result["title"] == " neovim !"
+    assert result["title"] == " neovim ! "
 
 
 def test_title_appends_fullscreen_icon_with_trailing_space(mocker):
     mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
     mocker.patch("lib.tab_data.projects.get", return_value={})
-    tab_data._icons = {"kitty-tab-fullscreen": "F"}
+    tab_data._icons = {"kitty-tab-fullscreen": "F "}
     result = tab_data.build_tab_data(
         _make_tab(title="neovim", layout_name="stack"), _make_draw()
     )
@@ -164,36 +164,36 @@ def test_title_appends_fullscreen_icon_with_trailing_space(mocker):
 def test_title_fullscreen_icon_before_attention_icon(mocker):
     mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
     mocker.patch("lib.tab_data.projects.get", return_value={})
-    tab_data._icons = {"kitty-tab-attention-stop": "!", "kitty-tab-fullscreen": "F"}
+    tab_data._icons = {"kitty-tab-attention-stop": "! ", "kitty-tab-fullscreen": "F "}
     tabState["attentionIds"] = {"1": "stop"}
     result = tab_data.build_tab_data(
         _make_tab(tab_id=1, title="neovim", layout_name="stack"), _make_draw()
     )
-    assert result["title"] == " neovim F! "
+    assert result["title"] == " neovim F ! "
 
 
 def test_title_stop_attention_uses_stop_icon(mocker):
     mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
     mocker.patch("lib.tab_data.projects.get", return_value={})
     tab_data._icons = {
-        "kitty-tab-attention-stop": "!",
-        "kitty-tab-attention-notification": "N",
+        "kitty-tab-attention-stop": "! ",
+        "kitty-tab-attention-notification": "N ",
     }
     tabState["attentionIds"] = {"1": "stop"}
     result = tab_data.build_tab_data(_make_tab(tab_id=1, title="neovim"), _make_draw())
-    assert result["title"] == " neovim !"
+    assert result["title"] == " neovim ! "
 
 
 def test_title_notification_attention_uses_notification_icon(mocker):
     mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
     mocker.patch("lib.tab_data.projects.get", return_value={})
     tab_data._icons = {
-        "kitty-tab-attention-stop": "!",
-        "kitty-tab-attention-notification": "N",
+        "kitty-tab-attention-stop": "! ",
+        "kitty-tab-attention-notification": "N ",
     }
     tabState["attentionIds"] = {"1": "notification"}
     result = tab_data.build_tab_data(_make_tab(tab_id=1, title="neovim"), _make_draw())
-    assert result["title"] == " neovim N"
+    assert result["title"] == " neovim N "
 
 
 # --- build_tab_data: active tab colors ---
