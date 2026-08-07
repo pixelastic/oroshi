@@ -1,18 +1,19 @@
 #!/usr/bin/env zsh
-# Helper: run Claude in a kitty window, with optional initial prompt
+# Helper: run Claude in a kitty window, forwarding all args to claude
 # Usage:
-# $ kitty-helper-claude-start              # interactive Claude, falls back to zsh
-# $ kitty-helper-claude-start "@/file.md"  # Claude with initial prompt
+# $ kitty-helper-claude-start
+# $ kitty-helper-claude-start "@/file.md"
+# $ kitty-helper-claude-start --permission-mode acceptEdits "@/file.md"
 set -e
 
 # Start from the git root to make resuming sessions easier
 local projectRoot="$(git-directory-root)"
 
-local prompt="$1"
-
-# Build the claude command with safe quoting for the prompt argument
+# Build the claude command with safe quoting for all arguments
 local cmd="claude"
-[[ "$prompt" != "" ]] && cmd="claude ${(q)prompt}"
+for arg in "$@"; do
+  cmd+=" ${(q)arg}"
+done
 
 # Launch inside interactive zsh so Claude inherits env vars from the .zshrc
 # chain (NOTION_TOKEN, etc.) that aren't available in non-interactive context.
