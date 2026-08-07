@@ -3,12 +3,15 @@ from lib import files, projects
 from lib.state import tabState
 
 _ICONS_PATH = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/icons.json"
+_COLORS_PATH = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/colors.json"
 _icons = {}
+_colors = {}
 
 
 def init():
-    global _icons
+    global _icons, _colors
     _icons = files.read_json(_ICONS_PATH)
+    _colors = files.read_json(_COLORS_PATH)
 
 
 # Parses raw data about the tab, as returned by kitty, into a flat object
@@ -33,18 +36,22 @@ def build_tab_data(tab: TabBarData, draw_data: DrawData):
     # Check attention state from tabState (populated once per render cycle)
     isAttention = str(id) in tabState["attentionIds"]
 
-    # Build the title with icon, name, and suffix icons (fullscreen before attention)
+    # Build the title with icon, name, and fullscreen suffix
     title = f" {icon}{name} "
     if isFullscreen:
         title = f"{title}{_icons['kitty-tab-fullscreen']}"
+
+    # Attention icon drawn separately with its own color
+    attentionIcon = ""
     if isAttention:
         attentionType = tabState["attentionIds"][str(id)]
-        title = f"{title}{_icons[f'kitty-tab-attention-{attentionType}']}"
+        attentionIcon = _icons[f"kitty-tab-attention-{attentionType}"]
 
     tabData = {
         "id": id,
         "name": name,
         "title": title,
+        "attentionIcon": attentionIcon,
         "isFullscreen": isFullscreen,
         "icon": icon,
         "isActive": isActive,

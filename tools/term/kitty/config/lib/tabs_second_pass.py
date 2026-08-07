@@ -1,6 +1,7 @@
 from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData
-from lib import redraw, tab_switch
+from lib import redraw, tab_data, tab_switch
+from lib.helper import ansi_to_kitty
 from lib.statusbar import draw_statusbar
 from lib.state import tabState
 
@@ -20,15 +21,15 @@ def second_pass(
     extra_data: ExtraData,
 ) -> int:
     tab_id = tab.tab_id
-    tab_data = tabState["manifest"][tab_id]
+    tab_item = tabState["manifest"][tab_id]
 
     # Track active tab as we encounter it
-    if tab_data.get("isActive"):
+    if tab_item.get("isActive"):
         tabState["activeTabId"] = tab_id
 
     # Display only if we have enough room
     if tab_id in tabState["displayedTabIds"]:
-        draw_tab_item(tab_data, screen)
+        draw_tab_item(tab_item, screen)
 
     # Once we've drawn the last tab, our job is almost done
     if is_last:
@@ -43,13 +44,18 @@ def second_pass(
 
 
 # Draw a tab
-def draw_tab_item(tab_data, screen):
+def draw_tab_item(tab_item, screen):
     # Draw tab
-    screen.cursor.fg = tab_data["fg"]
-    screen.cursor.bg = tab_data["bg"]
-    screen.draw(tab_data["title"])
+    screen.cursor.fg = tab_item["fg"]
+    screen.cursor.bg = tab_item["bg"]
+    screen.draw(tab_item["title"])
+
+    # Draw attention icon in ai color
+    if tab_item["attentionIcon"]:
+        screen.cursor.fg = ansi_to_kitty(tab_data._colors["ai"]["ansi"])
+        screen.draw(tab_item["attentionIcon"])
 
     # Draw separator
-    screen.cursor.bg = tab_data["separatorBg"]
-    screen.cursor.fg = tab_data["separatorFg"]
+    screen.cursor.bg = tab_item["separatorBg"]
+    screen.cursor.fg = tab_item["separatorFg"]
     screen.draw("")

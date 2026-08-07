@@ -8,6 +8,7 @@ from lib.state import tabState
 @pytest.fixture(autouse=True)
 def reset_state():
     tab_data._icons = {}
+    tab_data._colors = {}
     tabState["attentionIds"] = {}
     yield
 
@@ -15,7 +16,10 @@ def reset_state():
 def test_init_loads_icons(mocker):
     mocker.patch(
         "lib.tab_data.files.read_json",
-        return_value={"kitty-tab-attention-stop": "!", "kitty-tab-fullscreen": "F"},
+        side_effect=[
+            {"kitty-tab-attention-stop": "!", "kitty-tab-fullscreen": "F"},
+            {"ai": {"ansi": 146}},
+        ],
     )
     tab_data.init()
     assert tab_data._icons == {
@@ -26,12 +30,15 @@ def test_init_loads_icons(mocker):
 
 def test_init_overwrites_on_second_call(mocker):
     mocker.patch(
-        "lib.tab_data.files.read_json", return_value={"kitty-tab-attention-stop": "!"}
+        "lib.tab_data.files.read_json",
+        side_effect=[
+            {"kitty-tab-attention-stop": "!"},
+            {"ai": {"ansi": 146}},
+            {"kitty-tab-fullscreen": "F"},
+            {"ai": {"ansi": 146}},
+        ],
     )
     tab_data.init()
-    mocker.patch(
-        "lib.tab_data.files.read_json", return_value={"kitty-tab-fullscreen": "F"}
-    )
     tab_data.init()
     assert tab_data._icons == {"kitty-tab-fullscreen": "F"}
 
@@ -148,7 +155,8 @@ def test_title_appends_attention_icon(mocker):
     tab_data._icons = {"kitty-tab-attention-stop": "! "}
     tabState["attentionIds"] = {"1": "stop"}
     result = tab_data.build_tab_data(_make_tab(tab_id=1, title="neovim"), _make_draw())
-    assert result["title"] == " neovim ! "
+    assert result["title"] == " neovim "
+    assert result["attentionIcon"] == "! "
 
 
 def test_title_appends_fullscreen_icon_with_trailing_space(mocker):
@@ -169,7 +177,8 @@ def test_title_fullscreen_icon_before_attention_icon(mocker):
     result = tab_data.build_tab_data(
         _make_tab(tab_id=1, title="neovim", layout_name="stack"), _make_draw()
     )
-    assert result["title"] == " neovim F ! "
+    assert result["title"] == " neovim F "
+    assert result["attentionIcon"] == "! "
 
 
 def test_title_stop_attention_uses_stop_icon(mocker):
@@ -181,7 +190,7 @@ def test_title_stop_attention_uses_stop_icon(mocker):
     }
     tabState["attentionIds"] = {"1": "stop"}
     result = tab_data.build_tab_data(_make_tab(tab_id=1, title="neovim"), _make_draw())
-    assert result["title"] == " neovim ! "
+    assert result["attentionIcon"] == "! "
 
 
 def test_title_notification_attention_uses_notification_icon(mocker):
@@ -193,7 +202,7 @@ def test_title_notification_attention_uses_notification_icon(mocker):
     }
     tabState["attentionIds"] = {"1": "notification"}
     result = tab_data.build_tab_data(_make_tab(tab_id=1, title="neovim"), _make_draw())
-    assert result["title"] == " neovim N "
+    assert result["attentionIcon"] == "N "
 
 
 # --- build_tab_data: active tab colors ---
