@@ -35,6 +35,7 @@ function zsh-lint-custom() {
   source "${_zshLintRulesDir}/rule-missing-filetypes-load.zsh"
   source "${_zshLintRulesDir}/rule-use-echoerr.zsh"
   source "${_zshLintRulesDir}/rule-no-local-subshell-guard.zsh"
+  source "${_zshLintRulesDir}/rule-missing-doc-comment.zsh"
 
   lint-custom-run \
     --disable-prefix 'zsh-lint' \
@@ -61,5 +62,6 @@ function zsh-lint-custom() {
     zshLintRule_missingFiletypesLoad \
     zshLintRule_useEchoerr \
     zshLintRule_noLocalSubshellGuard \
+    zshLintRule_missingDocComment \
     -- "$@"
 }

@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-lint-rules.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Added missingDocComment zsh-lint rule: checks line 1 (autoloaded) or line 2 (script) for doc comment, skips __lib/__rules/__tests__ dirs"
   },
   {
     "id": "03b",
