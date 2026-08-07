@@ -17,3 +17,12 @@ Skip files in __lib/, __rules/, __tests/ directories
 ```
 **Problem:** Spec uses `__tests/` (single trailing underscore) but implementation checks `__tests__/` (double).
 **Reason skipped:** Codebase convention is `__tests__/` (double underscore). Spec typo, not a real discrepancy.
+
+## Issue 03b — bin-zsh dispatcher
+### Call-site migration not performed
+**Problem:** Spec requires updating callers in NeoVim, Kitty, Ubuntu keybindings, Argos to use `bin-zsh <function>`.
+**Reason skipped:** Repo-wide grep found zero references to `colorize-bin` or `git-directory-root-bin` outside plan docs — callers already removed in prior commit (ac086c2ab). Nothing to migrate.
+
+### Broader -bin grep not evidenced
+**Problem:** Spec asks to grep for any other `-bin` scripts beyond the two named.
+**Reason skipped:** `find` + `grep` were both run during implementation — only `colorize-bin` and `git-directory-root-bin` existed. No gap.

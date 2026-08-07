@@ -23,8 +23,9 @@
   {
     "id": "03b",
     "issue": "issues/03b-bin-zsh-dispatcher.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Created bin-zsh dispatcher script, deleted colorize-bin and git-directory-root-bin wrappers (no active callers)"
   },
   {
     "id": "04",

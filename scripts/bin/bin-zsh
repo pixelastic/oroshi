@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Call any autoloaded ZSH function from non-ZSH contexts
+# Usage:
+# $ bin-zsh git-branch-current           # Call function
+# $ bin-zsh git-branch-current --verbose  # With args
+set -e
+
+# No arguments provided
+if [[ $1 == "" ]]; then
+  echoerr "Usage: bin-zsh <function> [args...]"
+  exit 1
+fi
+
+"$@"

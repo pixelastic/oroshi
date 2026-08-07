@@ -57,3 +57,7 @@ After migrating a script to autoloaded function, grep for call sites in:
 - `trr` (trash-restore) alias was a duplicate of `rmz` — removed alongside `tr?`/`trl`
 - Remark npm packages in package.json needed cleanup alongside the config files
 - `cheats/zsh/parse-args.zsh` had a stale `(argsf, argsp)` parenthetical
+
+### Issue 03b — bin-zsh dispatcher
+- Both existing `-bin` wrappers (`colorize-bin`, `git-directory-root-bin`) had zero external callers — call-site migration was a no-op
+- `echoerr` helper exists and is enforced by zsh-lint rule `useEchoerr` — use it instead of `echo ... >&2`
