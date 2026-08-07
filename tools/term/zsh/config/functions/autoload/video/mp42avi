@@ -1,0 +1,9 @@
+# Convert an MP4 file to AVI format
+# Usage:
+# $ mp42avi file.mp4
+setopt local_options err_return
+
+local input=$1
+local output="${input:a:r}.avi"
+
+ffmpeg -i "$input" -c copy "$output"

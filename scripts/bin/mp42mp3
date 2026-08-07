@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-set -e
-local input=$1
-local output="${input:a:r}.mp3"
-
-ffmpeg -i "$input" -vn -acodec mp3 "$output"

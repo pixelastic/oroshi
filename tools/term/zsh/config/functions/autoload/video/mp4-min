@@ -1,0 +1,22 @@
+# Compress MP4 files using H.264 and MP3
+# Usage:
+# $ mp4-min file.mp4            # Compress one file
+# $ mp4-min file1.mp4 file2.mp4 # Compress several files
+setopt local_options err_return
+
+for file in $@; do
+  # Skip missing files
+  if [[ ! -r "$file" ]]; then
+    echo "✘ $file not found!"
+    continue
+  fi
+
+  local fullPath=${file:a}
+  local output=${fullPath:r}_compress.mp4
+  ffmpeg \
+    -i "$fullPath" \
+    -acodec libmp3lame \
+    -vcodec libx264 \
+    "$output"
+  echo "✔ Converted ${fullPath:t}"
+done

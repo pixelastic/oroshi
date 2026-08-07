@@ -1,0 +1,37 @@
+# Check if a video file has an audio stream
+# Usage:
+# $ video-has-sound file.mkv        # Exit 0 if sound, 1 if not
+# $ video-has-sound file1 file2     # Print check/cross per file
+setopt local_options err_return
+
+local inputs=($@)
+
+# Single file: exit code only
+if [[ ${#inputs} -eq 1 ]]; then
+  local file=${inputs[1]:a}
+  local raw="$(ffprobe \
+		-i "$file" \
+		-show_streams \
+		-select_streams a \
+		-loglevel error)"
+  [[ "$raw" != "" ]]
+  return
+fi
+
+# Multiple files: print result per file
+for input in $inputs; do
+  local file=${input:a}
+
+  # Skip missing files
+  [[ ! -f "$file" ]] && continue
+
+  local raw="$(ffprobe \
+		-i "$file" \
+		-show_streams \
+		-select_streams a \
+		-loglevel error)"
+
+  local prefix="✘"
+  [[ "$raw" != "" ]] && prefix="✔"
+  echo "$prefix ${file:t}"
+done

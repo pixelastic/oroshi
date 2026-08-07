@@ -1,0 +1,14 @@
+# Convert DDS texture files to PNG format
+# Usage:
+# $ dds2png file.dds            # Convert one file
+# $ dds2png file1.dds file2.dds # Convert several files
+setopt local_options err_return
+
+for dds in $@; do
+  convert \
+    -rotate 180 \
+    -flop \
+    "$dds" \
+    "${dds:a:r}.png"
+  echo "✔ ${dds:r} converted to png"
+done

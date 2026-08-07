@@ -1,17 +1,15 @@
-#!/usr/bin/env zsh
-# Removes streams from a video file
+# Remove streams from a video file
 # Usage:
-# $ video-stream-remove file.mkv 1 2 4   # Remove streams 1 2 and 4 from file.mkv
-set -e
+# $ video-stream-remove file.mkv 1 2 4   # Remove streams 1 2 and 4
+setopt local_options err_return
 
-# Parse args
 local fileInput=${@[1]}
 local streamsToRemove=(${@[@]:2})
 
 # Get a list of all streams in the file
 local allStreams="$(video-info ${fileInput} | jq -r '.streams[] | "\(.index):\(.codec_type)"')"
 
-# mkvmerge expect streams/tracks to be defined as an allowlist for each type
+# mkvmerge expects streams/tracks to be defined as an allowlist for each type
 local audioStreamsToKeep=()
 local videoStreamsToKeep=()
 local subtitleStreamsToKeep=()
@@ -22,7 +20,7 @@ for streamLine in ${(f)allStreams}; do
   local streamIndex=$splitLine[1]
   local streamType=$splitLine[2]
 
-  # We check if the current streamIndex is not in the list of streamsToRemove
+  # Keep streams not in the removal list
   if [[ ${streamsToRemove[(ie)${streamIndex}]} -gt ${#streamsToRemove} ]]; then
     [[ $streamType == "audio" ]] && audioStreamsToKeep+=($streamIndex)
     [[ $streamType == "video" ]] && videoStreamsToKeep+=($streamIndex)
@@ -30,8 +28,6 @@ for streamLine in ${(f)allStreams}; do
   fi
 done
 
-# By default mkvmerge keeps all streams of a given type is none is specified, we
-# need to overwrite that with --no-{streamType}
 local videoArgument="--video-tracks ${(j/,/)videoStreamsToKeep}"
 [[ $videoStreamsToKeep == "" ]] && videoArgument="--no-video"
 
@@ -41,7 +37,6 @@ local audioArgument="--audio-tracks ${(j/,/)audioStreamsToKeep}"
 local subtitleArgument="--subtitle-tracks ${(j/,/)subtitleStreamsToKeep}"
 [[ $subtitleStreamsToKeep == "" ]] && subtitleArgument="--no-subtitles"
 
-# Output in a file, and overwrite aftewards
 local tmpOutputFile=${fileInput:a:r}.tmp.${fileInput:e}
 
 mkvmerge \

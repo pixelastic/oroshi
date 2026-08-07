@@ -1,0 +1,25 @@
+# Repair a video file by fixing its index
+# Usage:
+# $ video-index-fix file.avi            # Fix one file
+# $ video-index-fix file1.avi file2.avi # Fix several files
+setopt local_options err_return
+
+# mencoder is required
+if [[ "$(which mencoder)" == "" ]]; then
+  echo "mencoder not found, installing it."
+  sudo apt-get install mencoder
+  return
+fi
+
+for file in $@; do
+  echo "Repairing $file"
+  mv "$file" "${file}.bak"
+  mencoder \
+    -really-quiet \
+    -forceidx \
+    -oac copy \
+    -ovc copy \
+    "${file}.bak" \
+    -o "$file" \
+    2>/dev/null
+done

@@ -61,3 +61,11 @@ After migrating a script to autoloaded function, grep for call sites in:
 ### Issue 03b — bin-zsh dispatcher
 - Both existing `-bin` wrappers (`colorize-bin`, `git-directory-root-bin`) had zero external callers — call-site migration was a no-op
 - `echoerr` helper exists and is enforced by zsh-lint rule `useEchoerr` — use it instead of `echo ... >&2`
+
+### Issue 05 — Video/media domain
+- Rename map was wrong for conversions: `X2Y` is the established convention (not `X-to-Y`). Rename map updated.
+- `-min` is the compression suffix (matches `html-min`, `gifmin`, `pngmin`), not `-compress`
+- `compdef.zsh` had a pre-existing typo: `video-increase-volume` instead of `video-volume-increase` — fixed as part of reference updates
+- `dds2png` belongs in `img/` root (not `img/png/`, not `video/`)
+- `bin2iso` belongs in `misc/` (disc image, not video)
+- ffmpeg/ffprobe/mencoder/vcdxrip only have single-dash flags — long-form arg rule doesn't apply

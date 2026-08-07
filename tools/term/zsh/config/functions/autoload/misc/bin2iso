@@ -1,0 +1,45 @@
+# Convert a .bin disc image to .iso format
+# Usage:
+# $ bin2iso file.bin
+setopt local_options err_return
+
+# bchunk is required
+if [[ "$(which bchunk)" == "" ]]; then
+  echo "You need bchunk to convert bin files to iso"
+  sudo apt-get install bchunk
+  return
+fi
+
+local binFile=${1:a}
+
+# Input must be a .bin, .raw, or .img file
+if [[ ! ${binFile:e} =~ '(bin|raw|img)' ]]; then
+  echo "You must select a .bin file as input"
+  return 1
+fi
+
+# Find a matching .cue file, or create a temporary one
+local cueFile=${binFile:r}.cue
+local isCueTemporary=0
+if [[ ! -r $cueFile ]]; then
+  echo "WARNING : Unable to find matching .cue file, creating one"
+  {
+    echo "FILE \"${binFile:t}\" BINARY"
+    echo "TRACK 01 MODE1/2352"
+    echo "INDEX 01 00:00:00"
+  } > $cueFile
+  isCueTemporary=1
+fi
+
+# Convert bin to iso
+local outputPrefix=${binFile:t:r}
+cd ${binFile:h}
+bchunk $binFile $cueFile $outputPrefix
+
+# bchunk creates files suffixed with 01, remove that
+mv "${binFile:r}01.iso" "${binFile:r}.iso"
+
+# Clean up temporary cue file
+if [[ $isCueTemporary == "1" ]]; then
+  rm $cueFile
+fi

@@ -34,3 +34,38 @@ local image=$(cat $iconPath | base64 -w 0)
 ```
 **Problem:** `base64 -w 0` uses short-form flag instead of `--wrap=0` per calling-commands convention.
 **Reason skipped:** Line not modified in this diff — only surrounding lines changed. Argos config widgets are not core zsh functions; borderline scope for the long-form convention.
+
+## Issue 05 — Video/media domain
+### ffmpeg/mencoder/vcdxrip short flags
+```zsh
+ffmpeg \
+  -i "$file" \
+  -vcodec copy \
+  -acodec libmp3lame \
+```
+**Problem:** Short-form flags violate calling-commands.md long-form rule
+**Reason skipped:** ffmpeg/mencoder/vcdxrip only expose single-dash flags — no GNU-style `--long` equivalents exist
+
+### jq -r in video-stream-remove
+```zsh
+jq -r '.streams[] | ...'
+```
+**Problem:** Short-form flag `-r`
+**Reason skipped:** `jq -r` is explicitly listed as allowed exception in calling-commands.md
+
+### local inside loop in vcd2mpg
+```zsh
+for file in $@; do
+  local fileDir=${file:h}
+  local tmpDir="${file:h}/__tmp${$}__"
+```
+**Problem:** `local` declared inside loop body
+**Reason skipped:** ZSH `local` is function-scoped; standard doesn't prohibit declaration inside loops
+
+### dds2png placement in img/ vs video/
+**Problem:** Spec groups dds2png with video/media domain
+**Reason skipped:** `dds2png` outputs PNG — `img/` is the correct domain, consistent with other format converters there
+
+### bin2iso placement in misc/ vs video/
+**Problem:** Spec groups bin2iso with video/media domain
+**Reason skipped:** Disc image conversion is not video — `misc/` is appropriate

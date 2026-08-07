@@ -1,0 +1,13 @@
+# Extract audio from an MP4 file as MP3
+# Usage:
+# $ mp42mp3 file.mp4
+setopt local_options err_return
+
+local input=$1
+local output="${input:a:r}.mp3"
+
+ffmpeg \
+  -i "$input" \
+  -vn \
+  -acodec mp3 \
+  "$output"

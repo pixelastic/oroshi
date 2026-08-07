@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-set -e
-
-for dds in $@; do
-  convert -rotate 180 -flop "$dds" "${dds:a:r}.png";
-  echo "✔ ${dds:r} converted to png"
-done;

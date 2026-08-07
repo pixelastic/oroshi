@@ -1,0 +1,39 @@
+# Convert VCD .bin files to .mpg format
+# Usage:
+# $ vcd2mpg file.bin            # Convert one file
+# $ vcd2mpg file1.bin file2.bin # Convert several files
+setopt local_options err_return
+
+# vcdxrip is required
+if [[ "$(which vcdxrip)" == "" ]]; then
+  echo "vcdxrip not found, installing it"
+  sudo apt-get install vcdimager
+  return
+fi
+
+for file in $@; do
+  file=${file:a}
+  local fileDir=${file:h}
+  local tmpDir="${file:h}/__tmp${$}__"
+  local cueFile=${file:r}.cue
+  local basename=${file:t:r}
+
+  # Create a subdir for the conversion
+  mkdir $tmpDir
+  cd $tmpDir
+
+  echo "Converting $basename in $tmpDir"
+  vcdxrip -v -p -b "$file" -c "$cueFile"
+
+  # Rename each created mpg
+  local i=0
+  for mpg in $tmpDir/*.mpg; do
+    i=$(($i+1))
+    local loopName="${fileDir}/${basename} - ${(l:2:0)i}.mpg"
+    echo "Renaming extracted file #$i"
+    mv $mpg $loopName
+  done
+
+  # Clean up
+  rm -drf $tmpDir
+done

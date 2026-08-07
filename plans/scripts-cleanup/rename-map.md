@@ -25,12 +25,12 @@ Naming convention: `domain-action` with hyphens. Conversion scripts use `source-
 
 | Current | Proposed | Notes |
 |---|---|---|
-| `mp4min` | `mp4-compress` | ffmpeg re-encode |
-| `mp42avi` | `mp4-to-avi` | |
-| `mp42mp3` | `mp4-to-mp3` | |
-| `bin2iso` | `bin-to-iso` | disc image conversion |
-| `dds2png` | `dds-to-png` | texture conversion |
-| `vcd2mpg` | `vcd-to-mpg` | VCD extraction |
+| `mp4min` | `mp4-min` | ffmpeg re-encode; `-min` matches `html-min`, `gifmin`, `pngmin` |
+| `mp42avi` | `mp42avi` | no rename; `X2Y` is the conversion convention |
+| `mp42mp3` | `mp42mp3` | no rename; `X2Y` is the conversion convention |
+| `bin2iso` | `bin2iso` | no rename; `X2Y` is the conversion convention |
+| `dds2png` | `dds2png` | no rename; `X2Y` is the conversion convention |
+| `vcd2mpg` | `vcd2mpg` | no rename; `X2Y` is the conversion convention |
 
 ## Text/Encoding
 

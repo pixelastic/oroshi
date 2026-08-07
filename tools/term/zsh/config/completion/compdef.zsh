@@ -196,7 +196,7 @@ compdef "_files -g '*.{avi,mkv,mp4,mpg}'" \
   better-vlc \
   video-dimensions \
   video-has-sound \
-  video-increase-volume \
+  video-volume-increase \
   video-index-fix \
   video-info \
   video-split \

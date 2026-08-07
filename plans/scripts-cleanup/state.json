@@ -37,8 +37,9 @@
   {
     "id": "05",
     "issue": "issues/05-domain-video-media.md",
-    "done": false,
-    "blocked_by": ["03", "03b"]
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Migrated 10 video/media scripts to autoloaded functions, rewrote video-has-sound from Ruby to ZSH, renamed mp4min to mp4-min, fixed compdef typo video-increase-volume"
   },
   {
     "id": "06",
