@@ -6,6 +6,7 @@
 # The best way to know which values to update is to run dconf-watch, then to
 # change values in the Settings UI, then save it here, so I only have to run
 # this script later to find my config back.
+set -e
 
 # Disable Dock on the left side
 gnome-extensions disable ubuntu-dock@ubuntu.com
@@ -44,6 +45,11 @@ fi
 # Files {{{
 # Increase number of opened file handles
 ulimit -n 4096
+# }}}
+
+# Services {{{
+# Disable fingerprint reader daemon
+sudo systemctl mask fprintd.service
 # }}}
 
 # Appearance {{{
