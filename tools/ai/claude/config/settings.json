@@ -5,6 +5,7 @@
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75"
   },
   "permissions": {
+    "defaultMode": "acceptEdits",
     "allow": [
       "BashOutput",
       "Fetch",
