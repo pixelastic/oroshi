@@ -3401,7 +3401,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:4.0.3":
+"chokidar@npm:4.0.3, chokidar@npm:^4.0.3":
   version: 4.0.3
   resolution: "chokidar@npm:4.0.3"
   dependencies:
@@ -6972,66 +6972,57 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hunkdiff-darwin-arm64@npm:0.17.7":
-  version: 0.17.7
-  resolution: "hunkdiff-darwin-arm64@npm:0.17.7"
-  bin:
-    hunk: bin/hunk
+"hunkdiff-darwin-arm64@npm:0.18.0-beta.0":
+  version: 0.18.0-beta.0
+  resolution: "hunkdiff-darwin-arm64@npm:0.18.0-beta.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"hunkdiff-darwin-x64@npm:0.17.7":
-  version: 0.17.7
-  resolution: "hunkdiff-darwin-x64@npm:0.17.7"
-  bin:
-    hunk: bin/hunk
+"hunkdiff-darwin-x64@npm:0.18.0-beta.0":
+  version: 0.18.0-beta.0
+  resolution: "hunkdiff-darwin-x64@npm:0.18.0-beta.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"hunkdiff-linux-arm64@npm:0.17.7":
-  version: 0.17.7
-  resolution: "hunkdiff-linux-arm64@npm:0.17.7"
-  bin:
-    hunk: bin/hunk
+"hunkdiff-linux-arm64@npm:0.18.0-beta.0":
+  version: 0.18.0-beta.0
+  resolution: "hunkdiff-linux-arm64@npm:0.18.0-beta.0"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"hunkdiff-linux-x64@npm:0.17.7":
-  version: 0.17.7
-  resolution: "hunkdiff-linux-x64@npm:0.17.7"
-  bin:
-    hunk: bin/hunk
+"hunkdiff-linux-x64@npm:0.18.0-beta.0":
+  version: 0.18.0-beta.0
+  resolution: "hunkdiff-linux-x64@npm:0.18.0-beta.0"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"hunkdiff-windows-x64@npm:0.17.7":
-  version: 0.17.7
-  resolution: "hunkdiff-windows-x64@npm:0.17.7"
-  bin:
-    hunk: bin/hunk.exe
+"hunkdiff-windows-x64@npm:0.18.0-beta.0":
+  version: 0.18.0-beta.0
+  resolution: "hunkdiff-windows-x64@npm:0.18.0-beta.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"hunkdiff@npm:0.17.7":
-  version: 0.17.7
-  resolution: "hunkdiff@npm:0.17.7"
+"hunkdiff@npm:0.18.0-beta.0":
+  version: 0.18.0-beta.0
+  resolution: "hunkdiff@npm:0.18.0-beta.0"
   dependencies:
     "@pierre/diffs": "npm:1.2.2"
     bun: "npm:^1.3.14"
+    chokidar: "npm:^4.0.3"
     commander: "npm:^14.0.3"
     diff: "npm:^8.0.3"
     get-east-asian-width: "npm:^1.5.0"
-    hunkdiff-darwin-arm64: "npm:0.17.7"
-    hunkdiff-darwin-x64: "npm:0.17.7"
-    hunkdiff-linux-arm64: "npm:0.17.7"
-    hunkdiff-linux-x64: "npm:0.17.7"
-    hunkdiff-windows-x64: "npm:0.17.7"
-    shell-quote: "npm:1.8.4"
+    hunkdiff-darwin-arm64: "npm:0.18.0-beta.0"
+    hunkdiff-darwin-x64: "npm:0.18.0-beta.0"
+    hunkdiff-linux-arm64: "npm:0.18.0-beta.0"
+    hunkdiff-linux-x64: "npm:0.18.0-beta.0"
+    hunkdiff-windows-x64: "npm:0.18.0-beta.0"
+    shell-quote: "npm:1.9.0"
     string-width: "npm:^8.2.1"
     zod: "npm:^4.3.6"
   peerDependencies:
@@ -7052,7 +7043,7 @@ __metadata:
   bin:
     hunk: bin/hunk.cjs
     hunkdiff: bin/hunk.cjs
-  checksum: 10c0/845aeb56525f640f1a306c4ec8ad3dfd7197dc7f68134906001242d859aec66dfcf18ac731e6842553704d7d8a5a4c50a21928d9b5ac861758ac59102917f13f
+  checksum: 10c0/a2eaf34883edb6b3453dc2c5b2e55777ea2c79206f2ed8fa799d834a1b25b9b2fcb0a8511d551c57660322cf3e7495b230e8ea68816fb663b31f91a6b250a776
   languageName: node
   linkType: hard
 
@@ -9322,7 +9313,7 @@ __metadata:
     gilmore: "npm:1.4.0"
     golgoth: "npm:3.1.0"
     googleapis: "npm:173.0.0"
-    hunkdiff: "npm:0.17.7"
+    hunkdiff: "npm:0.18.0-beta.0"
     jsonc-parser: "npm:3.3.1"
     pietro: "npm:0.6.1"
     prettier: "npm:3.6.2"
@@ -11383,10 +11374,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shell-quote@npm:1.8.4":
-  version: 1.8.4
-  resolution: "shell-quote@npm:1.8.4"
-  checksum: 10c0/86c93678bc394cb81f5ddcdc87df9c95d279ef9652775cd1cd1eed361404169a8d8cbaacaeed232ab09919e36ee1e5363863570390d78571f8c22b7f6312fb40
+"shell-quote@npm:1.9.0":
+  version: 1.9.0
+  resolution: "shell-quote@npm:1.9.0"
+  checksum: 10c0/a39960107eb086b02394cfceb3c732bd3bf567b568719ff47101448fc3f1bf4a59ecfdd8960ff7ea564d749ef8bda70f2c82a768f22d8c7aeeabf2b64f53b7e8
   languageName: node
   linkType: hard
 

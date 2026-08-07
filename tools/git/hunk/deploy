@@ -4,7 +4,10 @@ set -ex
 CONFIG_DIR="$(dirname "$0")/config"
 DEST_DIR=~/.config/hunk
 
+# Generate the final config from a template
+$CONFIG_DIR/generate-config
+
 mkdir -p $DEST_DIR
 ln -fs \
-	$CONFIG_DIR/config.toml \
+	$CONFIG_DIR/dist/config.toml \
 	$DEST_DIR/config.toml

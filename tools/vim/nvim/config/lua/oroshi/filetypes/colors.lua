@@ -34,6 +34,7 @@ M.onInit = function()
   F.onWrite("*tools/cli/bat/config/src/oroshi.xml", executeCommand("$OROSHI_ROOT/tools/cli/bat/config/generate-theme")) -- Bat
   F.onWrite("*tools/cli/rg/config/src/rgrc.conf", executeCommand("$OROSHI_ROOT/tools/cli/rg/config/generate-config")) -- Rg
   F.onWrite("*tools/git/git/config/src/gitconfig", executeCommand("$OROSHI_ROOT/tools/git/git/config/generate-config")) -- Git
+  F.onWrite("*tools/git/hunk/config/src/config.toml", executeCommand("$OROSHI_ROOT/tools/git/hunk/config/generate-config")) -- Hunk
   F.onWrite("*tools/term/kitty/config/colors.conf", executeCommand("colors-reload")) -- Kitty
 end
 

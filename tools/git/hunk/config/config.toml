@@ -1,6 +1,0 @@
-mode = "unified"
-watch = true
-line_numbers = false
-hunk_headers = false
-transparent_background = true
-exclude_untracked = true

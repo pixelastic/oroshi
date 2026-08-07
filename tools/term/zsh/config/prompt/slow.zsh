@@ -16,6 +16,7 @@ function oroshiSlowCommandPreexec() {
     git-commit-list
     git-file-diff
     git-file-edit
+    git-file-watch
     gws
     htop
     less
