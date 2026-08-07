@@ -30,8 +30,9 @@
   {
     "id": "04",
     "issue": "issues/04-domain-audio.md",
-    "done": false,
-    "blocked_by": ["03", "03b"]
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Migrated audio-duration, mic2txt-autosubmit-mode-toggle, mic2txt-language-toggle to autoloaded functions; updated Ubuntu keybindings and Argos configs to use bin-zsh; fixed pre-existing lint errors in Argos configs"
   },
   {
     "id": "05",

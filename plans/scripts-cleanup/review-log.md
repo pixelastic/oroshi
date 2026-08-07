@@ -26,3 +26,11 @@ Skip files in __lib/, __rules/, __tests/ directories
 ### Broader -bin grep not evidenced
 **Problem:** Spec asks to grep for any other `-bin` scripts beyond the two named.
 **Reason skipped:** `find` + `grep` were both run during implementation — only `colorize-bin` and `git-directory-root-bin` existed. No gap.
+
+## Issue 04 — Domain audio
+### base64 short-form flag in Argos configs
+```zsh
+local image=$(cat $iconPath | base64 -w 0)
+```
+**Problem:** `base64 -w 0` uses short-form flag instead of `--wrap=0` per calling-commands convention.
+**Reason skipped:** Line not modified in this diff — only surrounding lines changed. Argos config widgets are not core zsh functions; borderline scope for the long-form convention.
