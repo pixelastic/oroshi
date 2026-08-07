@@ -208,3 +208,44 @@ def test_clear_marks_tab_bar_dirty(mocker):
     redraw.clear_attention("1")
 
     mock_boss().active_tab_manager.mark_tab_bar_dirty.assert_called_once()
+
+
+def test_clear_clears_memory_when_file_has_no_entry(mocker):
+    """Deadlock bug: if attentionIds has tab but file doesn't, clear must still
+    pop from memory and repaint."""
+    mock_boss = mocker.patch("lib.redraw.get_boss")
+    tabState["attentionIds"] = {"1": "notification"}
+    with open(redraw.ATTENTION_FILE, "w") as f:
+        f.write("2:stop\n")
+
+    redraw.clear_attention("1")
+
+    assert "1" not in tabState["attentionIds"]
+    mock_boss().active_tab_manager.mark_tab_bar_dirty.assert_called_once()
+
+
+def test_clear_clears_memory_when_attention_file_missing(mocker):
+    """Same deadlock but file doesn't exist at all."""
+    mock_boss = mocker.patch("lib.redraw.get_boss")
+    tabState["attentionIds"] = {"1": "stop"}
+
+    redraw.clear_attention("1")
+
+    assert "1" not in tabState["attentionIds"]
+    mock_boss().active_tab_manager.mark_tab_bar_dirty.assert_called_once()
+
+
+# --- cleanup memory ---
+
+
+def test_cleanup_removes_stale_entries_from_memory():
+    with open(redraw.ATTENTION_FILE, "w") as f:
+        f.write("1:stop\n2:notification\n3:stop\n")
+    tabState["allTabIds"] = [1, 3]
+    tabState["attentionIds"] = {"1": "stop", "2": "notification", "3": "stop"}
+
+    redraw.cleanup()
+
+    assert "2" not in tabState["attentionIds"]
+    assert tabState["attentionIds"]["1"] == "stop"
+    assert tabState["attentionIds"]["3"] == "stop"

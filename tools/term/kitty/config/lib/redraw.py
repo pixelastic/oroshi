@@ -56,8 +56,6 @@ def clear_attention(tab_id):
     if not _remove_attention_entries(lambda tid: tid != tab_id_str):
         return
 
-    tabState["attentionIds"].pop(tab_id, None)
-
     # Force kitty to repaint the tab bar
     tab_manager = get_boss().active_tab_manager
     tab_manager.mark_tab_bar_dirty()
@@ -74,15 +72,19 @@ def _read_attention_entries():
     return [line for line in files.read(ATTENTION_FILE).splitlines() if line.strip()]
 
 
-# Remove lines from the attention file based on a callback
+# Remove entries from disk and memory based on a keep predicate.
+# Returns True when in-memory state changed (= repaint needed).
 def _remove_attention_entries(keep):
+    # Disk: best-effort
     entries = _read_attention_entries()
-    if entries is None:
-        return False
+    if entries is not None:
+        kept = [e for e in entries if keep(e.split(":", 1)[0])]
+        if len(kept) != len(entries):
+            files.write(ATTENTION_FILE, "\n".join(kept) + "\n" if kept else "")
 
-    kept = [e for e in entries if keep(e.split(":", 1)[0])]
-    if len(kept) == len(entries):
-        return False
+    # Memory: authoritative
+    stale = [k for k in tabState["attentionIds"] if not keep(k)]
+    for k in stale:
+        del tabState["attentionIds"][k]
 
-    files.write(ATTENTION_FILE, "\n".join(kept) + "\n" if kept else "")
-    return True
+    return len(stale) > 0
