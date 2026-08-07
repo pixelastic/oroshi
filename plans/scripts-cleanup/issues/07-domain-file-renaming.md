@@ -16,16 +16,15 @@ These scripts all modify filenames. The rename map (issue 02) will determine the
 
 For each script:
 1. Rewrite from Ruby to ZSH if needed
-2. Apply domain naming from rename map
-3. Check if called from non-ZSH context
-4. Migrate to autoloaded function or justify as script
-5. Ensure doc comment present
-6. Update aliases and references
+2. Migrate to autoloaded function
+3. Apply domain naming from rename map
+4. If called from external context, update call site to `bin-zsh <function>`
+5. Update aliases and references
 
 ## Acceptance criteria
 
 - [ ] All Ruby scripts rewritten to ZSH
+- [ ] All scripts migrated to autoloaded functions
 - [ ] Domain naming applied per rename map
-- [ ] Each script migrated to autoloaded function or has `# Script because:`
-- [ ] All scripts/functions have doc comments
+- [ ] External call sites updated to use `bin-zsh`
 - [ ] `zsh-lint` passes on all touched files

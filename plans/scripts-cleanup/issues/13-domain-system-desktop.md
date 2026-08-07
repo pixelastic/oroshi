@@ -11,18 +11,17 @@ Scripts in scope (5):
 - `dconf-watch` — listen to dconf/gsettings changes
 - `statusbar-clock` — Kitty statusbar clock (must stay script — called by Python)
 
-Note: `better-keepass` is called by Ubuntu keybindings (Super+K) — must stay as script. `statusbar-clock` is called by Kitty statusbar Python code — must stay as script.
+Note: `better-keepass` is called by Ubuntu keybindings (Super+K) — call site becomes `bin-zsh better-keepass`. `statusbar-clock` is called by Kitty statusbar Python code — call site becomes `bin-zsh statusbar-clock`.
 
 For each script:
-1. Apply renames from rename map (issue 02)
-2. Check if called from non-ZSH context
-3. Migrate to autoloaded function or justify as script
-4. Ensure doc comment present
-5. Update aliases and references
+1. Migrate to autoloaded function
+2. Apply renames from rename map (issue 02)
+3. Update external call sites to `bin-zsh <function>`
+4. Update aliases and references
 
 ## Acceptance criteria
 
+- [ ] All scripts migrated to autoloaded functions
 - [ ] Renames applied per rename map
-- [ ] Each script migrated to autoloaded function or has `# Script because:`
-- [ ] All scripts/functions have doc comments
+- [ ] External call sites updated to use `bin-zsh`
 - [ ] `zsh-lint` passes on all touched files

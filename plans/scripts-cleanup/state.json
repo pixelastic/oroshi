@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-rules-glossary-naming.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Added Script/Autoloaded Function/Binary Wrapper glossary entries, CLAUDE.md rules for script vs function, and rename map covering 30+ scripts"
   },
   {
     "id": "03",
@@ -19,82 +20,88 @@
     "blocked_by": ["02"]
   },
   {
+    "id": "03b",
+    "issue": "issues/03b-bin-zsh-dispatcher.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
     "id": "04",
     "issue": "issues/04-domain-audio.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "05",
     "issue": "issues/05-domain-video-media.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "06",
     "issue": "issues/06-domain-image.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "07",
     "issue": "issues/07-domain-file-renaming.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "08",
     "issue": "issues/08-domain-git.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "09",
     "issue": "issues/09-domain-docker.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "10",
     "issue": "issues/10-domain-fzf.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "11",
     "issue": "issues/11-domain-json.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "12",
     "issue": "issues/12-domain-ruby-gem.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "13",
     "issue": "issues/13-domain-system-desktop.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "14",
     "issue": "issues/14-domain-text-encoding.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "15",
     "issue": "issues/15-domain-misc-dev-tools.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "16",
     "issue": "issues/16-domain-misc-personal.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "03b"]
   },
   {
     "id": "17",

@@ -16,13 +16,12 @@ Scripts in scope (9):
 - `docker-run`
 
 For each script:
-1. Check if called from non-ZSH context
-2. Migrate to autoloaded function or justify as script
-3. Ensure doc comment present
-4. Update aliases and references
+1. Migrate to autoloaded function
+2. If called from external context, update call site to `bin-zsh <function>`
+3. Update aliases and references
 
 ## Acceptance criteria
 
-- [ ] Each script migrated to autoloaded function or has `# Script because:`
-- [ ] All scripts/functions have doc comments
+- [ ] All scripts migrated to autoloaded functions
+- [ ] External call sites updated to use `bin-zsh`
 - [ ] `zsh-lint` passes on all touched files

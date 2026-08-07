@@ -2,6 +2,7 @@
 theme = "custom"
 mode = "unified"
 watch = true
+menu_bar = false
 line_numbers = false
 hunk_headers = false
 transparent_background = false
@@ -15,6 +16,7 @@ exclude_untracked = true
 "hunk.view.openThemeSelector" = "t"
 "hunk.view.toggleLineWrap" = "f9"
 "hunk.view.toggleSidebar" = "s"
+"hunk.view.toggleMenuBar" = "m"
 "hunk.review.toggleHunkGap" = "z"
 "hunk.review.startNote" = "enter"
 "hunk.review.editSelectedFile" = "e"
@@ -37,7 +39,6 @@ exclude_untracked = true
 "hunk.view.toggleAgentNotes" = false
 "hunk.view.layoutAuto" = false
 "hunk.app.refresh" = false
-"hunk.view.toggleMenuBar" = false
 "hunk.app.toggleFocusArea" = false
 "hunk.review.focusFilter" = false
 "hunk.review.nextAnnotatedHunk" = false
@@ -76,11 +77,11 @@ noteTitleText = "{{ui:hex}}"
 noteTitleBackground = "{{ai:hex}}"   # [+] Overlay to add a note
 
 # Diff
-removedBg = "{{red-9:hex}}"              # Delete lines bg
-removedContentBg = "{{pink-7:hex}}"      # Delete lines highlight
+removedBg = "{{red-dark:hex}}"           # Delete lines bg
+removedContentBg = "{{red-dark:hex}}"    # Delete lines highlight
 removedSignColor = "{{git-removed:hex}}" # - symbol color
-addedBg = "{{green-9:hex}}"              # Added lines bg
-addedContentBg = "{{emerald-8:hex}}"     # Added lines highlight
+addedBg = "{{green-dark:hex}}"           # Added lines bg
+addedContentBg = "{{green-dark:hex}}"    # Added lines highlight
 addedSignColor = "{{git-added:hex}}"     # + symbol color
 
 

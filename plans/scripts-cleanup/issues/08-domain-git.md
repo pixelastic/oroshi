@@ -23,18 +23,18 @@ Scripts in scope (17):
 - `git-submodule-remove` — remove submodules
 - `git-submodule-create` (Ruby → ZSH rewrite)
 
-Note: `git-directory-root-bin` is the exemplar of the `-bin` wrapper pattern. It must stay as a script (called by NeoVim).
+Note: `git-directory-root-bin` is a legacy `-bin` wrapper (called by NeoVim). Migrate to autoloaded function, update NeoVim call site to `bin-zsh git-directory-root`, delete the wrapper.
 
 For each script:
 1. Rewrite from Ruby to ZSH if needed
-2. Check if called from non-ZSH context
-3. Migrate to autoloaded function or justify as script
-4. Ensure doc comment present
-5. Update aliases and references
+2. Migrate to autoloaded function
+3. If called from external context, update call site to `bin-zsh <function>`
+4. Update aliases and references
 
 ## Acceptance criteria
 
 - [ ] Ruby script rewritten to ZSH
-- [ ] Each script migrated to autoloaded function or has `# Script because:`
-- [ ] All scripts/functions have doc comments
+- [ ] All scripts migrated to autoloaded functions
+- [ ] External call sites updated to use `bin-zsh`
+- [ ] Legacy `-bin` wrappers deleted
 - [ ] `zsh-lint` passes on all touched files

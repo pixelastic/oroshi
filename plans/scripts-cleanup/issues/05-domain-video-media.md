@@ -18,16 +18,15 @@ Scripts in scope:
 
 For each script:
 1. Rewrite from Ruby/Bash to ZSH if needed
-2. Check if called from non-ZSH context
-3. Migrate to autoloaded function or justify as script
-4. Apply renames from rename map (issue 02)
-5. Ensure doc comment present
-6. Update aliases and references
+2. Migrate to autoloaded function
+3. Apply renames from rename map (issue 02)
+4. If called from external context, update call site to `bin-zsh <function>`
+5. Update aliases and references
 
 ## Acceptance criteria
 
 - [ ] All Ruby/Bash scripts rewritten to ZSH
-- [ ] Each script migrated to autoloaded function or has `# Script because:`
+- [ ] All scripts migrated to autoloaded functions
 - [ ] Renames applied per rename map
-- [ ] All scripts/functions have doc comments
+- [ ] External call sites updated to use `bin-zsh`
 - [ ] `zsh-lint` passes on all touched files
