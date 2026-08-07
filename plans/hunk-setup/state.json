@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-install-and-wire-hunk.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Installed hunkdiff, created config + deploy script, wired git-file-watch autoload and vfw alias"
-  }
-]
