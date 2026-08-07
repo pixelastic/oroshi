@@ -4,134 +4,135 @@ mode = "unified"
 watch = true
 line_numbers = false
 hunk_headers = false
-transparent_background = true
+transparent_background = false
 exclude_untracked = true
 
+# Keybindings {{{
 [keybindings]
-"hunk.app.refresh" = false
-"hunk.app.toggleFocusArea" = false
-"hunk.review.focusFilter" = false
-# App
+# General
 "hunk.app.quit" = "q"
 "hunk.app.toggleHelp" = "?"
-# Review navigation
+"hunk.view.openThemeSelector" = "t"
+"hunk.view.toggleLineWrap" = "f9"
+"hunk.view.toggleSidebar" = "s"
+"hunk.review.toggleHunkGap" = "z"
 "hunk.review.startNote" = "enter"
 "hunk.review.editSelectedFile" = "e"
-"hunk.review.nextHunk" = "j"
-"hunk.review.previousHunk" = "k"
-"hunk.review.nextFile" = false
-"hunk.review.previousFile" = false
-"hunk.review.nextAnnotatedHunk" = false
-"hunk.review.previousAnnotatedHunk" = false
-"hunk.review.toggleHunkGap" = "z"
+"hunk.view.layoutSplit" = "i"
+"hunk.view.layoutStack" = "o"
+
 # Scrolling
-"hunk.review.pageDown" = false
-"hunk.review.pageUp" = false
-"hunk.review.halfPageDown" = "pagedown"
-"hunk.review.halfPageUp" = "pageup"
-"hunk.review.stepDown" = "down"
-"hunk.review.stepUp" = "up"
+"hunk.review.nextHunk" = ["l", "J"]
+"hunk.review.previousHunk" = ["h", "K"]
+"hunk.review.stepDown" = "j"
+"hunk.review.stepUp" = "k"
+"hunk.review.halfPageDown" = "d"
+"hunk.review.halfPageUp" = "u"
 "hunk.review.jumpToTop" = "g"
 "hunk.review.jumpToBottom" = "G"
 "hunk.review.scrollCodeLeft" = ["left", "shift+left"]
 "hunk.review.scrollCodeRight" = ["right", "shift+right"]
-# View
-"hunk.view.toggleSidebar" = "s"
-"hunk.view.toggleMenuBar" = "M"
+
+# Disabled
+"hunk.view.toggleAgentNotes" = false
+"hunk.view.layoutAuto" = false
+"hunk.app.refresh" = false
+"hunk.view.toggleMenuBar" = false
+"hunk.app.toggleFocusArea" = false
+"hunk.review.focusFilter" = false
+"hunk.review.nextAnnotatedHunk" = false
+"hunk.review.nextFile" = false
+"hunk.review.pageDown" = false
+"hunk.review.pageUp" = false
+"hunk.review.previousAnnotatedHunk" = false
+"hunk.review.previousFile" = false
 "hunk.view.toggleHunkHeaders" = false
 "hunk.view.toggleLineNumbers" = false
-"hunk.view.toggleLineWrap" = "w"
-"hunk.view.toggleAgentNotes" = "a"
-"hunk.view.openThemeSelector" = "t"
-"hunk.view.cursorLineRow" = "n"
-"hunk.view.cursorLineNumber" = false
-"hunk.view.cursorLineOff" = false
-"hunk.view.layoutSplit" = "1"
-"hunk.view.layoutStack" = "2"
-"hunk.view.layoutAuto" = "0"
+# }}}
 
+# Custom theme {{{
+# All tokens set to unknown (cyan) to identify hardcoded colors
 [custom_theme]
 base = "github-dark-default"
 label = "Oroshi"
 
-# UI chrome
-accent = "{{cyan:hex}}"
-panel = "{{terminal:hex}}"
-background = "{{terminal:hex}}"
-surface = "{{terminal:hex}}"
-border = "{{ui:hex}}"
-text = "{{header:hex}}"
-muted = "{{ui:hex}}"
-header = "{{ui:hex}}"
-gutter = "{{ui:hex}}"
-noteBorder = "{{ui:hex}}"
+text = "{{header:hex}}" # File names, window titles
+# UI
+background = "{{terminal:hex}}"      # Borders around the UI
+accentMuted = "{{gray-4:hex}}"       # Scrollbar handle
+accent = "{{punctuation:hex}}"       # Window borders, keybindings
+badgeNeutral = "{{key:hex}}"         # [Esc]
+border = "{{gray-6:hex}}"            # Between files
+muted = "{{gray:hex}}"               # Comments, descriptions
+panel = "{{black:hex}}"              # Window background
+panelAlt = "{{terminal:hex}}"        # Menu bg, "X unchanged files" bg
+lineNumberBg = "{{terminal:hex}}"    # +/- gutter bg
+lineNumberFg = "{{ui:hex}}"          # Default gutter color
+contextBg = "{{terminal:hex}}"       # Unchanged lines bg
+badgeAdded = "{{git-added:hex}}"     # + files added
+badgeRemoved = "{{git-removed:hex}}" # - files deleted
+noteBorder = "{{ai:hex}}"
+noteTitleText = "{{ui:hex}}"
+noteTitleBackground = "{{ai:hex}}"   # [+] Overlay to add a note
 
-# Selection and focus — none of these have visible effect yet
-cursor = "{{unknown:hex}}"
-selection = "{{unknown:hex}}"
+# Diff
+removedBg = "{{red-9:hex}}"              # Delete lines bg
+removedContentBg = "{{pink-7:hex}}"      # Delete lines highlight
+removedSignColor = "{{git-removed:hex}}" # - symbol color
+addedBg = "{{green-9:hex}}"              # Added lines bg
+addedContentBg = "{{emerald-8:hex}}"     # Added lines highlight
+addedSignColor = "{{git-added:hex}}"     # + symbol color
+
+
+# Unknown
+contextContentBg = "{{unknown:hex}}"
+fileDeleted = "{{unknown:hex}}"
+fileModified = "{{unknown:hex}}"
+fileNew = "{{unknown:hex}}"
+fileRenamed = "{{unknown:hex}}"
+fileUntracked = "{{unknown:hex}}"
+movedAddedBg = "{{unknown:hex}}"
+movedRemovedBg = "{{unknown:hex}}"
+noteBackground = "{{unknown:hex}}"
 selectedHunk = "{{unknown:hex}}"
-focusBorder = "{{unknown:hex}}"
-"editor.lineHighlightBackground" = "{{unknown:hex}}"
-"editor.lineHighlightBorder" = "{{unknown:hex}}"
-"list.activeSelectionBackground" = "{{unknown:hex}}"
-"list.focusBackground" = "{{unknown:hex}}"
-"editorCursor.foreground" = "{{unknown:hex}}"
-
-# Diff colors
-addedBg = "{{green-8:hex}}"
-addedContentBg = "{{git-added:hex}}"
-addedSignColor = "{{git-added:hex}}"
-removedBg = "{{red-8:hex}}"
-removedContentBg = "{{red-7:hex}}"
-removedSignColor = "{{git-removed:hex}}"
-contextBg = "{{terminal:hex}}"
-contextContentBg = "{{terminal:hex}}"
 
 [custom_theme.syntax_scopes]
-# Comments
 "comment" = "{{comment:hex}}"
-"punctuation.definition.comment" = "{{comment:hex}}"
-# Keywords & control flow
-"keyword" = "{{keyword:hex}}"
-"keyword.control" = "{{keyword:hex}}"
-"keyword.operator" = "{{punctuation:hex}}"
-"storage" = "{{variable-type:hex}}"
-"storage.type" = "{{variable-type:hex}}"
-"storage.modifier" = "{{variable-type:hex}}"
-# Strings & literals
-"string" = "{{string:hex}}"
-"constant.numeric" = "{{number:hex}}"
-"constant.language" = "{{constant:hex}}"
 "constant.character.escape" = "{{special-char:hex}}"
+"constant.language" = "{{constant:hex}}"
+"constant.language.boolean" = "{{boolean:hex}}"
+"constant.numeric" = "{{number:hex}}"
 "constant.regexp" = "{{special-char:hex}}"
-# Functions
-"entity.name.function" = "{{function:hex}}"
-"support.function" = "{{statement:hex}}"
-"meta.function-call" = "{{function:hex}}"
-# Types & classes
-"entity.name.type" = "{{variable-type:hex}}"
 "entity.name.class" = "{{variable-type:hex}}"
-"support.type" = "{{variable-type:hex}}"
-"entity.other.inherited-class" = "{{variable-type:hex}}"
-# Variables & parameters
-"variable" = "{{variable:hex}}"
-"variable.parameter" = "{{variable:hex}}"
-"variable.other" = "{{variable:hex}}"
-"support.variable" = "{{variable:hex}}"
-# Tags & attributes (HTML/XML)
-"entity.name.tag" = "{{variable-type:hex}}"
-"entity.other.attribute-name" = "{{variable-type:hex}}"
-# Punctuation
-"punctuation" = "{{punctuation:hex}}"
-# Imports & namespaces
+"entity.name.function" = "{{function:hex}}"
 "entity.name.namespace" = "{{import:hex}}"
-"keyword.control.import" = "{{import:hex}}"
-# Properties
-"variable.other.property" = "{{variable:hex}}"
-"support.type.property-name" = "{{variable:hex}}"
-# Invalid & deprecated
+"entity.name.section" = "{{header:hex}}"
+"entity.name.tag" = "{{variable-type:hex}}"
+"entity.name.type" = "{{variable-type:hex}}"
+"entity.other.attribute-name" = "{{variable-type:hex}}"
+"entity.other.inherited-class" = "{{variable-type:hex}}"
 "invalid" = "{{git-removed:hex}}"
 "invalid.deprecated" = "{{git-removed:hex}}"
-# Misc
-"meta" = "{{comment:hex}}"
+"keyword" = "{{keyword:hex}}"
+"keyword.control" = "{{keyword:hex}}"
+"keyword.control.import" = "{{import:hex}}"
+"keyword.operator" = "{{punctuation:hex}}"
 "markup.underline.link" = "{{string:hex}}"
+"meta" = "{{comment:hex}}"
+"meta.function-call" = "{{function:hex}}"
+"punctuation" = "{{punctuation:hex}}"
+"punctuation.definition.comment" = "{{comment:hex}}"
+"punctuation.definition.string" = "{{string:hex}}"
+"storage" = "{{variable-type:hex}}"
+"storage.modifier" = "{{variable-type:hex}}"
+"storage.type" = "{{variable-type:hex}}"
+"string" = "{{string:hex}}"
+"support.function" = "{{statement:hex}}"
+"support.type" = "{{variable-type:hex}}"
+"support.type.property-name" = "{{variable:hex}}"
+"support.variable" = "{{variable:hex}}"
+"variable" = "{{variable:hex}}"
+"variable.other" = "{{variable:hex}}"
+"variable.other.property" = "{{variable:hex}}"
+"variable.parameter" = "{{variable:hex}}"
+# }}}
