@@ -1,0 +1,8 @@
+# Watch live diff of dirty tracked files
+# Usage:
+# $ git-file-watch   # Open hunk diff in watch mode
+setopt local_options err_return
+
+local gitRoot="$(git-directory-root)"
+cd "$gitRoot"
+hunk diff --watch

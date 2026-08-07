@@ -1,0 +1,8 @@
+# Wrapper around hunkdiff binary
+# Usage:
+# $ hunk diff             # Show diff
+# $ hunk diff --watch     # Watch mode
+# $ hunk diff --staged    # Staged changes
+setopt local_options err_return
+
+$OROSHI_ROOT/node_modules/.bin/hunk "$@"

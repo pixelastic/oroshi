@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -ex
+
+CONFIG_DIR="$(dirname "$0")/config"
+DEST_DIR=~/.config/hunk
+
+mkdir -p $DEST_DIR
+ln -fs \
+	$CONFIG_DIR/config.toml \
+	$DEST_DIR/config.toml
