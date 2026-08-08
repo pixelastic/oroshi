@@ -1,0 +1,29 @@
+# Add a new submodule to a repo
+# Arguments can be passed in any order — the git URL is auto-detected
+# Usage:
+# $ git-submodule-create url@to:repo.git
+# $ git-submodule-create url@to:repo.git ./filepath
+# $ git-submodule-create ./filepath url@to:repo.git
+setopt local_options err_return
+
+# A repository URL is required
+if [[ $# -eq 0 ]]; then
+  echoerr "You must pass at least the repository url"
+  return 1
+fi
+
+local repoUrl="$1"
+local submodulePath="$2"
+
+# Swap if first arg is a path and second is a git URL
+if [[ "$submodulePath" == *.git ]]; then
+  repoUrl="$2"
+  submodulePath="$1"
+fi
+
+# Derive path from URL if not provided
+if [[ "$submodulePath" == "" ]]; then
+  submodulePath="${PWD}/${${repoUrl:t}%.git}"
+fi
+
+git submodule add "$repoUrl" "$submodulePath"

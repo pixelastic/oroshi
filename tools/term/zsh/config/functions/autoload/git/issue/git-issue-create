@@ -1,0 +1,9 @@
+# Create a new GitHub issue
+# Usage:
+# $ git-issue-create
+setopt local_options err_return
+
+# Stop if not in a GitHub repo
+git-directory-is-github || return 1
+
+gh issue create

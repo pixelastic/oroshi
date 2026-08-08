@@ -1,0 +1,9 @@
+# Stash current files with optional message
+# Usage:
+# $ git-stash-create            # Stash with default message
+# $ git-stash-create "WIP fix"  # Stash with custom message
+setopt local_options err_return
+
+local message=$1
+
+git stash save --include-untracked $message

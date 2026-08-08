@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-set -e
-git remote rename $@

@@ -1,0 +1,36 @@
+# Remove submodules from a repo
+# Usage:
+# $ git-submodule-remove ./path/to/submodule # Removes the submodule
+# $ git-submodule-remove ./one ./two         # Removes multiple submodules
+setopt local_options err_return
+
+cd "$(git-directory-root)" || return 0
+
+local submoduleName
+for submoduleName in $@; do
+  local absolutePath="${submoduleName:a}"
+
+  # Skip missing directories
+  if [[ ! -d $absolutePath ]]; then
+    echo "✘ ${absolutePath} does not exist"
+    continue
+  fi
+  # Skip non-submodules
+  if ! git-is-submodule $absolutePath; then
+    echo "✘ ${submoduleName} is not a submodule"
+    continue
+  fi
+
+  # Tell git to stop tracking the files
+  git rm --quiet $absolutePath
+
+  # Remove the submodule from the config
+  git config \
+    --file .git/config \
+    --remove-section "submodule.${submoduleName}"
+
+  # Delete the .git/modules cache
+  rm -rf .git/modules/${submoduleName}
+
+  echo "✔ $submoduleName deleted"
+done

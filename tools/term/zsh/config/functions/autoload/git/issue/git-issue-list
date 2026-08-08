@@ -1,11 +1,10 @@
-#!/usr/bin/env zsh
 # List all issues of current repo
 # Usage:
 # $ git-issue-list
-set -e
+setopt local_options err_return
 
 # Stop if not in a GitHub repo
-git-directory-is-github || exit 1
+git-directory-is-github || return 1
 
 gh issue list
 

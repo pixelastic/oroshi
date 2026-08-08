@@ -1,0 +1,18 @@
+# Remove one or more git remotes
+# Usage:
+# $ git-remote-remove pixelastic         # Removes the pixelastic remote
+# $ git-remote-remove hades superliminal # Removes both remotes
+setopt local_options err_return
+
+# A remote name is needed
+if [[ "$1" == "" ]]; then
+  echoerr "You must pass the name of at least one remote"
+  return 1
+fi
+
+local remoteName
+for remoteName in $@; do
+  local displayRemoteName="$(git-remote-colorize "$remoteName" --with-icon)"
+  git remote rm "$remoteName"
+  echo "Remote $displayRemoteName removed"
+done

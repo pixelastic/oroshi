@@ -93,3 +93,22 @@ mv -- "$file" "$dirname/$newBasename.$extension"
 ```
 **Problem:** Original `filename-valid` wrote sanitized names to stdout without renaming; `filename-sanitize` renames in place.
 **Reason skipped:** Intentional domain alignment — all other filename-* tools rename in place. The rename map groups it with rename-in-place tools.
+
+## Issue 08 — Git domain
+### git stash save deprecated
+```zsh
+git stash save --include-untracked $message
+```
+**Problem:** `git stash save` is deprecated in favor of `git stash push`
+**Reason skipped:** Behavioral concern, not a coding-standard violation. Out of scope for this migration — can be updated separately.
+
+### git-stash-apply two commands with &&
+```zsh
+git stash apply && git stash drop
+```
+**Problem:** Two commands joined with `&&` on one line
+**Reason skipped:** Per convention, `&&` is valid for single-action one-liners; two sequential git ops read as one logical "pop" action.
+
+### git-submodule-list.bats mocks in test body
+**Problem:** All mocks defined inline in the single `@test` block rather than extracted to a helper
+**Reason skipped:** Only one test case — extracting to a helper would be premature abstraction.

@@ -80,3 +80,8 @@ After migrating a script to autoloaded function, grep for call sites in:
 - `filename-valid` changed behavior: original wrote sanitized names to stdout, new `filename-sanitize` renames files in place — intentional alignment with other rename-in-place tools in the domain
 - Curly quote replacement in zsh `${//}` needs `$'\u2019'` for pattern and a variable for replacement — `\'` in replacement produces literal backslash
 - `${var:h}` returns `.` for bare filenames — compare basenames, not full paths, when checking if rename is a no-op
+
+### Issue 08 — Git domain
+- `git-directory-root-bin` was already deleted in issue 03b — no work needed
+- Submodule aliases had a pre-existing bug: `git commit-submodule` (space) instead of `git-commit-submodule` (dash) — fixed alongside migration
+- No external callers (NeoVim, Kitty, Ubuntu keybindings) reference any of the 16 git scripts — call-site migration was a no-op

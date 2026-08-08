@@ -58,8 +58,45 @@
   {
     "id": "08",
     "issue": "issues/08-domain-git.md",
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Migrated 16 git scripts to autoloaded functions, rewrote git-submodule-create from Ruby to ZSH, fixed submodule aliases using wrong 'git commit-submodule' form, moved git-submodule-list test to autoload location"
+  },
+  {
+    "id": "08a",
+    "issue": "issues/08a-git-completion-remotes.md",
     "done": false,
-    "blocked_by": ["03", "03b"]
+    "blocked_by": ["08"]
+  },
+  {
+    "id": "08b",
+    "issue": "issues/08b-git-submodule-list-raw-completion.md",
+    "done": false,
+    "blocked_by": ["08"]
+  },
+  {
+    "id": "08c",
+    "issue": "issues/08c-git-stash-list-completion-fixes.md",
+    "done": false,
+    "blocked_by": ["08"]
+  },
+  {
+    "id": "08d",
+    "issue": "issues/08d-git-commit-completion-resurrect.md",
+    "done": false,
+    "blocked_by": ["08"]
+  },
+  {
+    "id": "08e",
+    "issue": "issues/08e-git-remote-rename-validation.md",
+    "done": false,
+    "blocked_by": ["08"]
+  },
+  {
+    "id": "08f",
+    "issue": "issues/08f-git-issue-pr-cache-location.md",
+    "done": false,
+    "blocked_by": ["08"]
   },
   {
     "id": "09",
@@ -113,6 +150,6 @@
     "id": "17",
     "issue": "issues/17-doc-autoloaded-functions.md",
     "done": false,
-    "blocked_by": ["04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"]
+    "blocked_by": ["04", "05", "06", "07", "08", "08a", "08b", "08c", "08d", "08e", "08f", "09", "10", "11", "12", "13", "14", "15", "16"]
   }
 ]

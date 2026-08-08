@@ -1,0 +1,6 @@
+# Rename a git remote
+# Usage:
+# $ git-remote-rename old-name new-name
+setopt local_options err_return
+
+git remote rename $@

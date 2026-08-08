@@ -1,0 +1,12 @@
+# List all pull requests of current repo
+# Usage:
+# $ git-pullrequest-list
+setopt local_options err_return
+
+# Stop if not in a GitHub repo
+git-directory-is-github || return 1
+
+gh pr list
+
+# Update local cache of PR count
+git-pullrequest-count > "$(git-directory-root)/.git/oroshi_pr_count"

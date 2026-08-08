@@ -1,0 +1,12 @@
+# Restore a deleted file from git history
+# Usage:
+# $ git-file-resurrect path/to/file
+setopt local_options err_return
+
+local filename=$1
+
+# We first find the commit where the file was deleted
+local commitHash="$(git log --diff-filter=D --format=format:%H -- $filename | head -n1)"
+
+# We then bring it back from the dead
+git checkout $commitHash~1 $filename

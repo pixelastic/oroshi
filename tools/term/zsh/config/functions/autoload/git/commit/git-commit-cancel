@@ -1,0 +1,6 @@
+# Cancel last commit, keeping changes staged
+# Usage:
+# $ git-commit-cancel
+setopt local_options err_return
+
+git reset --soft HEAD~1

@@ -1,0 +1,12 @@
+# Commit the content of a specific submodule with a chore() message
+# Usage:
+# $ git-commit-submodule ./scripts/bin/img
+setopt local_options err_return
+
+local submodulePath="$1"
+local submoduleName="${submodulePath:t}"
+local gitRoot="$(git-directory-root --force)"
+
+cd "$gitRoot"
+git add $submodulePath
+git commit --message "chore(${submoduleName}): Update $submodulePath submodule"

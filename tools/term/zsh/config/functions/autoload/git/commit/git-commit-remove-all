@@ -1,0 +1,14 @@
+# Remove local commits until the one specified (included)
+# Usage:
+# $ git-commit-remove-all abcdef
+setopt local_options err_return
+
+local commitHash=$1
+
+# A commit hash is required
+if [[ "$commitHash" == "" ]]; then
+  echoerr "You must pass the hash to the commit you want to delete (included)"
+  return 1
+fi
+
+git reset --hard "${commitHash}~1"

@@ -1,0 +1,6 @@
+# Apply last stash and delete it
+# Usage:
+# $ git-stash-apply
+setopt local_options err_return
+
+git stash apply && git stash drop

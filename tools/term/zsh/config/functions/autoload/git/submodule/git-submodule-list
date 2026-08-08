@@ -1,8 +1,7 @@
-#!/usr/bin/env zsh
 # Display the list of submodules
 # Usage:
-# $ git-submodule-list          # Display all submodules
-set -e
+# $ git-submodule-list
+setopt local_options err_return
 
 local rawList="$(git submodule status)"
 local gitRoot="$(git-directory-root)"
@@ -10,6 +9,7 @@ local gitRoot="$(git-directory-root)"
 typeset -A submoduleList
 
 # Build an associative array of all submodules
+local rawSubmoduleLine
 for rawSubmoduleLine in ${(f)rawList}; do
   # Split the line
   local splitLine=(${(@s/ /)rawSubmoduleLine})
@@ -50,4 +50,3 @@ done
 
 # Output as columns
 table $output
-

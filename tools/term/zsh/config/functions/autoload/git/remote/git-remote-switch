@@ -1,21 +1,21 @@
-#!/usr/bin/env zsh
 # Change the remote of the current branch
 # Usage:
-# $ git-remote-switch pixelastic    # Make pixelastic the branch remote
-set -e
+# $ git-remote-switch pixelastic
+setopt local_options err_return
 
 local remoteName="$1"
+
 # A remote name is needed
-if [[ "$remoteName" == '' ]]; then
-  echo "✘ You must pass a remote name"
-  exit 1
+if [[ "$remoteName" == "" ]]; then
+  echoerr "You must pass a remote name"
+  return 1
 fi
 
 # Stop if remote doesn't exist
 local displayRemoteName="$(git-remote-colorize "$remoteName" --with-icon)"
 if ! git-remote-exists "$remoteName"; then
-  echo "✘ Remote $displayRemoteName does not exist"
-  exit 1
+  echoerr "Remote $displayRemoteName does not exist"
+  return 1
 fi
 
 # We change the remote name directly in the config
