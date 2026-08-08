@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-migrate-feedbacks.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added 4 feedback conventions as DO/DO NOT items to global and oroshi CLAUDE.md files"
   },
   {
     "id": "03",
