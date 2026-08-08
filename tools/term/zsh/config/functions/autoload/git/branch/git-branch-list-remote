@@ -9,7 +9,7 @@ zparseopts -E -D \
   a=flagAll \
   -all=flagAll \
 
-local isAll=${#flagAll}
+  local isAll=${#flagAll}
 
 # Init values {{{
 local output=""
@@ -82,7 +82,7 @@ for remoteName in $remoteNames; do
     # Building the row display {{{
     # Currently tracked branch {{{
     if [[ "$remoteBranchName" == "$currentRemoteBranch" ]]; then
-      row+="$(colorize $ICONS[git-branch-current] ALIAS_SUCCESS)▮"
+      row+="$(colorize $ICONS[git-branch-current] success)▮"
     else
       row+="▮"
     fi
@@ -100,12 +100,12 @@ for remoteName in $remoteNames; do
     local aheadCount="${distanceParsed%%▮*}"
     local behindCount="${distanceParsed##*▮}"
     if [[ "$aheadCount" != "0" ]]; then
-      row+="$(colorize "${aheadCount}${ICONS[git-branch-ahead]}" ALIAS_GIT_AHEAD)▮"
+      row+="$(colorize "${aheadCount}${ICONS[git-branch-ahead]}" git-ahead)▮"
     else
       row+="▮"
     fi
     if [[ "$behindCount" != "0" ]]; then
-      row+="$(colorize "${behindCount}${ICONS[git-branch-behind]}" ALIAS_GIT_BEHIND)▮"
+      row+="$(colorize "${behindCount}${ICONS[git-branch-behind]}" git-behind)▮"
     else
       row+="▮"
     fi
@@ -115,7 +115,7 @@ for remoteName in $remoteNames; do
     if [[ "$localBranchName" != "" ]]; then
       row+="$(git-branch-colorize "$localBranchName" --with-icon)▮"
     else
-      row+="$(colorize "~untracked~" ALIAS_COMMENT)▮"
+      row+="$(colorize "~untracked~" comment)▮"
     fi
     # }}}
     # Date {{{

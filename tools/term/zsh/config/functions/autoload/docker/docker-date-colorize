@@ -4,7 +4,7 @@
 # $ docker-date-colorize "3 months, 2 days ago" --with-icon #  3m., 2d.
 setopt local_options err_return
 zparseopts -E -D \
-	-with-icon=flagWithIcon
+  -with-icon=flagWithIcon
 
 local isWithIcon=${#flagWithIcon}
 
@@ -12,7 +12,7 @@ local isWithIcon=${#flagWithIcon}
 local rawDate="$1"
 # We need a date passed
 if [[ $rawDate == '' ]]; then
-	return 0
+  return 0
 fi
 local displayDate="$rawDate"
 displayDate="${displayDate/ ago/}"
@@ -26,10 +26,10 @@ displayDate="${displayDate/ minutes/mn}"
 
 # If --with-icon is not passed, we simply display the colored date
 if [[ "$isWithIcon" != 1 ]]; then
-	colorize "$displayDate" ALIAS_DATE
-	return
+  colorize "$displayDate" date
+  return
 fi
 
 # Otherwise we add the icon
-colorize " $displayDate" ALIAS_DATE
+colorize " $displayDate" date
 return

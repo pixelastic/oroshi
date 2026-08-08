@@ -1,0 +1,9 @@
+#compdef
+
+# Suggest remotes for first arg, free text for second
+function _git-remote-rename() {
+  # Second arg is the new name — no completion needed
+  [[ $CURRENT -ne 2 ]] && return 0
+
+  _git-remotes
+}

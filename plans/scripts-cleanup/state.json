@@ -65,8 +65,9 @@
   {
     "id": "08a",
     "issue": "issues/08a-git-completion-remotes.md",
-    "done": false,
-    "blocked_by": ["08"]
+    "done": true,
+    "blocked_by": ["08"],
+    "recap": "Created _git-remote-rename positional completer (remotes for 1st arg only), split git-remote-rename out of shared _git-remotes compdef group"
   },
   {
     "id": "08b",

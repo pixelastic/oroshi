@@ -17,7 +17,7 @@ for rawLine in ${(f)rawList}; do
 
   # Current remote
   if [[ "$remoteName" == "$currentRemote" ]]; then
-    row+="$(colorize "$ICONS[git-remote-current]" GREEN)▮"
+    row+="$(colorize "$ICONS[git-remote-current]" green)▮"
   else
     row+="▮"
   fi
@@ -28,7 +28,7 @@ for rawLine in ${(f)rawList}; do
   # }}}
 
   # Remote url {{{
-  row+="$(colorize "$remoteUrl" ALIAS_TEXT)▮"
+  row+="$(colorize "$remoteUrl" comment)▮"
   # }}}
 
   output+="$row\n"

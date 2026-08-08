@@ -16,10 +16,10 @@ for rawLine in ${(f)rawList}; do
   local videoTitle=$split[3]
   local videoDuration=$split[4]
 
-  row+="$(colorize "#${videoIndex}" ALIAS_YOUTUBE_VIDEO_INDEX)▮"
-  row+="$(colorize "$videoId" ALIAS_YOUTUBE_VIDEO_ID)▮"
-  row+="$(colorize "$videoTitle" ALIAS_YOUTUBE_VIDEO_TITLE)▮"
-  row+="$(colorize "$videoDuration" ALIAS_YOUTUBE_VIDEO_DURATION)▮"
+  row+="$(colorize "#${videoIndex}" youtube-video-index)▮"
+  row+="$(colorize "$videoId" youtube-video-id)▮"
+  row+="$(colorize "$videoTitle" youtube-video-title)▮"
+  row+="$(colorize "$videoDuration" youtube-video-duration)▮"
 
   output+="$row\n"
 done

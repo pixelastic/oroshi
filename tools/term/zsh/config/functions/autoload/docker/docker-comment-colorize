@@ -10,4 +10,4 @@ if [[ $message == '' ]]; then
 fi
 # }}}
 
-colorize "$message" ALIAS_DOCKER_COMMENT
+colorize "$message" docker-comment

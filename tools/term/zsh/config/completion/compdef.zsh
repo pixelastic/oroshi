@@ -101,7 +101,8 @@ compdef _git-submodules \
   git-submodule-remove
 compdef _git-remotes \
   git-remote-switch \
-  git-remote-remove \
+  git-remote-remove
+compdef _git-remote-rename \
   git-remote-rename
 compdef _git-worktrees \
   git-worktree-switch
