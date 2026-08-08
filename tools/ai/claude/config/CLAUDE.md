@@ -11,6 +11,10 @@ grammar for the sake of concision.
 - DO: Apply the "return early" pattern in code
 - DO: When editing code, preserve its comments. When deleting code, delete its comments with it.
 
+## Output
+
+- DO: When writing text for the user (messages, drafts, etc.), pipe it to `clipboard-write` so it's ready to paste
+
 ## Throw-away scripts
 
 Use the `/debug-script` skill when writing complex or multi-step Bash commands.

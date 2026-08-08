@@ -73,5 +73,6 @@
   "effortLevel": "high",
   "theme": "dark",
   "skipAutoPermissionPrompt": true,
-  "preferredNotifChannel": "notifications_disabled"
+  "preferredNotifChannel": "notifications_disabled",
+  "autoMemoryEnabled": false
 }
