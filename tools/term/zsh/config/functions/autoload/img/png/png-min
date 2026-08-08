@@ -1,0 +1,7 @@
+# Compress PNG files using img-min
+# Usage:
+# $ png-min ./path/to/file.png
+# $ png-min ./*.png
+setopt local_options err_return
+
+img-min "$@"

@@ -145,7 +145,7 @@ compdef "_files -g '*.png'" \
   png2ico \
   png2jpg \
   png2svg \
-  pngmin \
+  png-min \
   png-alpha-add \
   png-alpha-remove \
   png-silhouette \
