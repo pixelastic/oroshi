@@ -51,6 +51,7 @@ the existing list
 - Make a git push/pull/clone wrapper that displays only relevant info
 - Make a better trash-restore, that uses fzf and preview to pick which file to restore
 - Use hunk to see work done by claude in realtime
+- Kitty keybinding to "mark" a tab with a specific icon (like re-adding an attention, or marking it as "to come back once other tab is done")
 
 
 ---
