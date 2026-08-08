@@ -1,0 +1,20 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-review-other-projects.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-migrate-feedbacks.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-delete-and-disable.md",
+    "done": false,
+    "blocked_by": ["01", "02"]
+  }
+]
