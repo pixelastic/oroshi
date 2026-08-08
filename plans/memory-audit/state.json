@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-review-other-projects.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Reviewed 26 memories across 11 projects; migrated 10 to project CLAUDE.md files, deleted all 26 memory files and cleared indexes"
   },
   {
     "id": "02",
