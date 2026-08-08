@@ -1,0 +1,22 @@
+# Remove transparency by replacing with a color (default: white)
+# Usage:
+# $ png-alpha-remove ./input.png                              # → ./input.opaque.png (white bg)
+# $ png-alpha-remove --color black ./input.png                # → ./input.opaque.png (black bg)
+# $ png-alpha-remove --output ./out.png ./input.png           # → ./out.png
+setopt local_options err_return
+
+zparseopts -E -D \
+  -output:=flagOutput \
+  -color:=flagColor
+
+local output="${flagOutput[2]}"
+local color="${flagColor[2]:-white}"
+local input="$1"
+
+# Input file is required
+[[ "$input" == "" ]] && return 1
+
+# Default output: input.opaque.png
+[[ "$output" == "" ]] && output="${input:a:r}.opaque.png"
+
+magick "$input" -background "$color" -alpha remove "$output"

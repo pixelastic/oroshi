@@ -3,14 +3,8 @@ alias eog='img-open'
 alias pinta='process-detach pinta'
 alias resize="img-resize"
 
+# Backward compat (aberlaas checks for imgmin)
+alias imgmin="img-min"
+
 # ImageMagick 7 aliases
 alias convert="magick"
-
-# PNG
-alias ipc="img-png-create"
-# JPG
-alias ijc="img-jpg-create"
-alias jpgmin="imgmin"
-
-alias igc="img-gif-create"
-alias isc="img-svg-create"

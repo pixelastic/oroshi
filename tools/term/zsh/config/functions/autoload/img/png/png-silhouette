@@ -1,0 +1,27 @@
+# Replace all opaque pixels with a solid color, keep transparency
+# Usage:
+# $ png-silhouette ./icon.png                              # → ./icon.silhouette.png (black)
+# $ png-silhouette --color red ./icon.png                  # → ./icon.silhouette.png (red)
+# $ png-silhouette --output ./out.png ./icon.png           # → ./out.png
+setopt local_options err_return
+
+zparseopts -E -D \
+  -output:=flagOutput \
+  -color:=flagColor
+
+local output="${flagOutput[2]}"
+local color="${flagColor[2]:-black}"
+local input="$1"
+
+# Input file is required
+[[ "$input" == "" ]] && return 1
+
+# Default output: input.silhouette.png
+[[ "$output" == "" ]] && output="${input:a:r}.silhouette.png"
+
+magick "${input:a}" \
+  -alpha off \
+  -fill "$color" \
+  -colorize 100 \
+  -alpha on \
+  "$output"

@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Note this is a wrapper around the img-min function because aberlaas expect
+# Note this is a wrapper around the img-min function because aberlaas expects
 # `pngmin` to be findable through `which`
 set -e
-imgmin $@
+img-min $@

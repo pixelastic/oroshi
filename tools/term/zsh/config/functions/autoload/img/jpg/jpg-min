@@ -1,0 +1,7 @@
+# Compress JPG files using img-min
+# Usage:
+# $ jpg-min ./path/to/file.jpg
+# $ jpg-min ./*.jpg
+setopt local_options err_return
+
+img-min "$@"

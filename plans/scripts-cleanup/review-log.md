@@ -69,3 +69,19 @@ for file in $@; do
 ### bin2iso placement in misc/ vs video/
 **Problem:** Spec groups bin2iso with video/media domain
 **Reason skipped:** Disc image conversion is not video — `misc/` is appropriate
+
+## Issue 06 — Image domain
+### ImageMagick single-dash flags
+```zsh
+magick identify -format "%[fx:w/h]" "$filepath"
+```
+**Problem:** `-format` uses single-dash flag instead of `--format` per calling-commands convention
+**Reason skipped:** ImageMagick only exposes single-dash flags — no GNU-style `--long` equivalents exist (same as ffmpeg)
+
+### Rename map vs issue inline names disagree
+**Problem:** Issue says `gif-min`/`jpg-min`/`png-alpha`/`png-black`/`png-unalpha` but rename map says `gif-compress`/`jpg-compress`/`png-add-alpha`/`png-fill-black`/`png-remove-alpha`
+**Reason skipped:** Issue 05 established `-min` convention (post rename-map). The simpler png names are unambiguous and shorter. Rename map img section is stale — the issue spec and `-min` convention take precedence.
+
+### pngmask → png-make-mask vs issue's png-mask
+**Problem:** Issue says `pngmask` → `png-mask` but implementation uses `png-make-mask`
+**Reason skipped:** `png-mask` already exists as autoloaded function with different semantics (applies mask vs creates mask). Rename map correctly resolves the collision with `png-make-mask`.

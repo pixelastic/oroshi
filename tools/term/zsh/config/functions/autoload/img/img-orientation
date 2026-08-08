@@ -1,0 +1,19 @@
+# Display orientation (portrait/landscape) for each image
+# Usage:
+# $ img-orientation ./photo.jpg           # landscape
+# $ img-orientation ./a.png ./b.png       # One line per image
+setopt local_options err_return
+
+for file in "$@"; do
+  local filepath="${file:a}"
+
+  # Skip non-existent files
+  [[ ! -f "$filepath" ]] && continue
+
+  local ratio="$(magick identify -format "%[fx:w/h]" "$filepath")"
+  if [[ "$(echo "$ratio < 1" | bc)" == "1" ]]; then
+    echo "portrait"
+  else
+    echo "landscape"
+  fi
+done

@@ -44,8 +44,9 @@
   {
     "id": "06",
     "issue": "issues/06-domain-image.md",
-    "done": false,
-    "blocked_by": ["03", "03b"]
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Migrated 7 image scripts to autoloaded functions, rewrote image-orientation from Ruby to ZSH, renamed pngmask to png-mask-create (collision with existing png-mask), removed jpgmin alias, updated compdef"
   },
   {
     "id": "07",

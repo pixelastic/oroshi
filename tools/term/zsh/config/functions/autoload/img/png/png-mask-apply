@@ -1,15 +1,22 @@
 # Apply a mask on an image, like a cookie cutter
 # Usage:
-# $ png-mask ./image.png ./mask.png ./output.png
+# $ png-mask-apply ./image.png ./mask.png                       # → ./image.masked.png
+# $ png-mask-apply --output ./out.png ./image.png ./mask.png    # → ./out.png
 setopt local_options err_return
 
+zparseopts -E -D \
+  -output:=flagOutput
+
+local output="${flagOutput[2]}"
 local image="$1"
 local mask="$2"
-local output="$3"
+
+# Default output: image.masked.png
+[[ "$output" == "" ]] && output="${image:a:r}.masked.png"
 
 local dims="$(img-dimensions "$image")"
 [[ "$dims" == "" ]] && return 1
-local tmpMask="$(mktemp /tmp/png-mask-XXXXXX.png)"
+local tmpMask="$(mktemp /tmp/png-mask-apply-XXXXXX.png)"
 [[ "$tmpMask" == "" ]] && return 1
 cp "$mask" "$tmpMask"
 

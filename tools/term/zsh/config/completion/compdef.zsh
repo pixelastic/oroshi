@@ -137,7 +137,8 @@ compdef "_files -g '*.{avif,bmp,gif,jpg,jpeg,png,svg,tiff,webp}'" \
   img-open \
   img-resize \
   img-width \
-  imgmin
+  img-orientation \
+  img-min
 compdef "_files -g '*.png'" \
   png2bmp \
   png2gif \
@@ -145,20 +146,24 @@ compdef "_files -g '*.png'" \
   png2jpg \
   png2svg \
   pngmin \
-  png-mask \
+  png-alpha-add \
+  png-alpha-remove \
+  png-silhouette \
+  png-mask-apply \
+  png-mask-create \
   png-trim
 compdef "_files -g '*.{jpg,jpeg}'" \
   jpg2bmp \
   jpg2gif \
   jpg2png \
   jpg2svg \
-  jpgmin
+  jpg-min
 compdef "_files -g '*.gif'" \
   gif2bmp \
   gif2jpg \
   gif2png \
   gif2svg \
-  gifmin \
+  gif-min \
   gif-is-animated \
   gif-is-looping
 compdef "_files -g '*.svg'" \

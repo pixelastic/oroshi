@@ -69,3 +69,9 @@ After migrating a script to autoloaded function, grep for call sites in:
 - `dds2png` belongs in `img/` root (not `img/png/`, not `video/`)
 - `bin2iso` belongs in `misc/` (disc image, not video)
 - ffmpeg/ffprobe/mencoder/vcdxrip only have single-dash flags — long-form arg rule doesn't apply
+
+### Issue 06 — Image domain
+- `pngmask` → `png-mask-create` (not `png-mask`) — `png-mask` already exists as an autoloaded function with different semantics (applies mask vs creates mask)
+- Rename map img section used `-compress` suffix but issue 05 established `-min` — followed `-min` convention (`gif-min`, `jpg-min`)
+- ImageMagick (`magick`/`identify`) uses single-dash flags natively — long-form arg rule doesn't apply (same as ffmpeg)
+- Old scripts used `convert` command; autoloaded functions use `magick` (ImageMagick 7)

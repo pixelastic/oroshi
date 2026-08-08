@@ -1,0 +1,21 @@
+# Make specified color transparent in a PNG
+# Usage:
+# $ png-alpha-add ./input.png red                        # → ./input.transparent.png
+# $ png-alpha-add --output ./out.png ./input.png red     # → ./out.png
+setopt local_options err_return
+
+zparseopts -E -D \
+  -output:=flagOutput
+
+local output="${flagOutput[2]}"
+local input="$1"
+local color="$2"
+
+# Both input file and color are required
+[[ "$input" == "" ]] && return 1
+[[ "$color" == "" ]] && return 1
+
+# Default output: input.transparent.png
+[[ "$output" == "" ]] && output="${input:a:r}.transparent.png"
+
+magick "$input" -transparent "$color" -fuzz 10% "$output"

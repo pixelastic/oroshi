@@ -1,25 +1,24 @@
-#!/usr/bin/env zsh
 # Compress GIF files in-place using gifsicle
 # Usage:
-# $ gifmin ./path/to/file.gif
-# $ gifmin ./*.gif
-set -e
+# $ gif-min ./path/to/file.gif
+# $ gif-min ./*.gif
+setopt local_options err_return
 
-local inputs=($@)
-
-for input in $inputs; do
+for input in "$@"; do
   local filepath="${input:a}"
-  local before="$(stat -c%s "$filepath")"
+  local before="$(stat --format=%s "$filepath")"
+  # Bail if stat failed
   [[ "$before" == "" ]] && return 1
 
   gifsicle \
     --batch \
-    -O3 \
+    --optimize=3 \
     --colors 256 \
     "$filepath" \
     2>/dev/null
 
-  local after="$(stat -c%s "$filepath")"
+  local after="$(stat --format=%s "$filepath")"
+  # Bail if stat failed
   [[ "$after" == "" ]] && return 1
   echo "${filepath:t}: ${before}B → ${after}B"
 done

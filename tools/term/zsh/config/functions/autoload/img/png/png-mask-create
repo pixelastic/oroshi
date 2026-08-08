@@ -1,0 +1,21 @@
+# Invert transparency to create a mask from a PNG
+# Usage:
+# $ png-mask-create ./photo.png                       # → ./photo.mask.png
+# $ png-mask-create --output ./out.png ./photo.png    # → ./out.png
+setopt local_options err_return
+
+zparseopts -E -D \
+  -output:=flagOutput
+
+local output="${flagOutput[2]}"
+local input="$1"
+
+# Default output: input.mask.png
+[[ "$output" == "" ]] && output="${input:a:r}.mask.png"
+
+magick "${input:a}" \
+  -channel a \
+  -negate +channel \
+  -fill white \
+  -colorize 100% \
+  "$output"
