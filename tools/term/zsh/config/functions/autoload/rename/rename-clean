@@ -1,0 +1,35 @@
+# Clean up filenames: transliterate accents, remove forbidden chars, FAT32-safe
+# Usage:
+# $ rename-clean "résumé.txt"       # Renames to "resume.txt"
+# $ rename-clean "song:title.mp3"   # Renames to "songtitle.mp3"
+# $ rename-clean *.txt              # Clean multiple files
+setopt local_options err_return
+
+for file in "$@"; do
+  # Skip nonexistent files
+  [[ ! -f "$file" ]] && continue
+
+  local dirname="${file:h}"
+  local extension="${file:e}"
+  local basename="${file:t:r}"
+
+  # Transliterate accented characters to ASCII
+  local newBasename="$(echo "$basename" | iconv -f utf-8 -t ascii//TRANSLIT)"
+
+  # Remove forbidden characters: ? / * | : ; " ' \ < >
+  newBasename="${newBasename//[?\/\*|:;\"\'\<\>\\]/}"
+
+  # Remove control characters (0x00-0x1F)
+  newBasename="$(echo "$newBasename" | tr -d '\000-\037')"
+
+  # Replace remaining non-alphanumeric characters (except . - _ and space) with underscore
+  newBasename="${newBasename//[^A-Za-z0-9._[:space:]-]/_}"
+
+  # Strip trailing spaces
+  newBasename="${newBasename%% }"
+
+  # Skip if unchanged
+  [[ "$basename" == "$newBasename" ]] && continue
+
+  mv -- "$file" "$dirname/$newBasename.$extension"
+done

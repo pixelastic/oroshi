@@ -1,0 +1,20 @@
+# Wrap each file in a same-name directory
+# Usage:
+# $ rename-to-directory song.mp3       # Creates song/song.mp3
+# $ rename-to-directory a.txt b.txt    # Wraps multiple files
+setopt local_options err_return
+
+for file in "$@"; do
+  # Skip nonexistent files
+  [[ ! -f "$file" ]] && continue
+
+  local fullpath="${file:A}"
+  local extension="${file:e}"
+  local basename="${file:t:r}"
+  local dirname="${file:h}"
+
+  local newDirectory="$dirname/$basename"
+  [[ ! -d "$newDirectory" ]] && mkdir "$newDirectory"
+
+  mv -- "$fullpath" "$newDirectory/$basename.$extension"
+done

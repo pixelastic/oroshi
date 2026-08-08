@@ -75,3 +75,8 @@ After migrating a script to autoloaded function, grep for call sites in:
 - Rename map img section used `-compress` suffix but issue 05 established `-min` — followed `-min` convention (`gif-min`, `jpg-min`)
 - ImageMagick (`magick`/`identify`) uses single-dash flags natively — long-form arg rule doesn't apply (same as ffmpeg)
 - Old scripts used `convert` command; autoloaded functions use `magick` (ImageMagick 7)
+
+### Issue 07 — File-renaming domain
+- `filename-valid` changed behavior: original wrote sanitized names to stdout, new `filename-sanitize` renames files in place — intentional alignment with other rename-in-place tools in the domain
+- Curly quote replacement in zsh `${//}` needs `$'\u2019'` for pattern and a variable for replacement — `\'` in replacement produces literal backslash
+- `${var:h}` returns `.` for bare filenames — compare basenames, not full paths, when checking if rename is a no-op

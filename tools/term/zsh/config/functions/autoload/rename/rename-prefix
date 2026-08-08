@@ -1,0 +1,24 @@
+# Prefix a file with a string, separated by " - "
+# Usage:
+# $ rename-prefix file.mp3 2024   # Renames to "2024 - file.mp3"
+setopt local_options err_return
+
+local file="$1"
+local prefix="$2"
+
+if [[ "$prefix" == "" ]]; then
+  echoerr "Usage: rename-prefix <file> <prefix>"
+  return 1
+fi
+
+if [[ ! -f "$file" ]]; then
+  echoerr "$file does not exist"
+  return 1
+fi
+
+local basename="${file:t}"
+local dirname="${file:h}"
+local newBasename="$prefix - $basename"
+
+mv -- "$file" "$dirname/$newBasename"
+echo "Renamed to $newBasename"

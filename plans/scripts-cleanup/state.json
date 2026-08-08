@@ -51,8 +51,9 @@
   {
     "id": "07",
     "issue": "issues/07-domain-file-renaming.md",
-    "done": false,
-    "blocked_by": ["03", "03b"]
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Rewrote 4 Ruby scripts to ZSH, migrated 6 file-renaming scripts to 5 autoloaded functions in rename/ domain (rename-to-directory, rename-prefix, rename-clean, rename-capitalize, rename-sequential); merged rename-fat32 + filename-valid into single rename-clean with iconv transliteration"
   },
   {
     "id": "08",

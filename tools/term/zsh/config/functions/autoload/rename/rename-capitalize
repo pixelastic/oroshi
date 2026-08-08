@@ -1,0 +1,22 @@
+# Capitalize each word in filenames
+# Usage:
+# $ rename-capitalize "hello world.mp3"          # Renames to "Hello World.mp3"
+# $ rename-capitalize "01 - the last of us.mp3"  # Renames to "01 - The Last Of Us.mp3"
+setopt local_options err_return
+
+for file in "$@"; do
+  # Skip nonexistent files
+  [[ ! -f "$file" ]] && continue
+
+  local dirname="${file:h}"
+  local extension="${file:e}"
+  local basename="${file:t:r}"
+
+  # Capitalize each word
+  local newBasename="${(C)basename}"
+
+  # Skip if unchanged
+  [[ "$basename" == "$newBasename" ]] && continue
+
+  mv -- "$file" "$dirname/$newBasename.$extension"
+done

@@ -85,3 +85,11 @@ magick identify -format "%[fx:w/h]" "$filepath"
 ### pngmask → png-make-mask vs issue's png-mask
 **Problem:** Issue says `pngmask` → `png-mask` but implementation uses `png-make-mask`
 **Reason skipped:** `png-mask` already exists as autoloaded function with different semantics (applies mask vs creates mask). Rename map correctly resolves the collision with `png-make-mask`.
+
+## Issue 07 — File-renaming domain
+### filename-sanitize behavior change from stdout to in-place rename
+```zsh
+mv -- "$file" "$dirname/$newBasename.$extension"
+```
+**Problem:** Original `filename-valid` wrote sanitized names to stdout without renaming; `filename-sanitize` renames in place.
+**Reason skipped:** Intentional domain alignment — all other filename-* tools rename in place. The rename map groups it with rename-in-place tools.

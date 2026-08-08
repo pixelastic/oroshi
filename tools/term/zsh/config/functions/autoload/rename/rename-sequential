@@ -1,0 +1,13 @@
+# Rename files with zero-padded sequential numbers
+# Usage:
+# $ rename-sequential *.jpg   # Renames to 0000.jpg, 0001.jpg, ...
+setopt local_options err_return
+
+local index=0
+for file in "$@"; do
+  local extension="${file:e}"
+  local newFile="$(printf "%04d.$extension" "$index")"
+
+  mv -- "$file" "$newFile"
+  index=$((index + 1))
+done
