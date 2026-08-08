@@ -11,9 +11,9 @@ grammar for the sake of concision.
 - DO: Apply the "return early" pattern in code
 - DO: When editing code, preserve its comments. When deleting code, delete its comments with it.
 
-## Output
+## Text
 
-- DO: When writing text for the user (messages, drafts, etc.), pipe it to `clipboard-write` so it's ready to paste
+- DO: When writing mails or Slack messages, copy it to the clipboard using `clipboard-write`.
 
 ## Throw-away scripts
 
