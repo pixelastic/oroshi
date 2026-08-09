@@ -93,8 +93,9 @@
   {
     "id": "08e",
     "issue": "issues/08e-git-remote-rename-validation.md",
-    "done": false,
-    "blocked_by": ["08"]
+    "done": true,
+    "blocked_by": ["08"],
+    "recap": "Added input validation to git-remote-rename: arg count guard, source-exists/dest-not-exists checks via git-remote-exists, colorized error messages, success confirmation; pre-rename colorize to avoid stale remote lookup"
   },
   {
     "id": "08f",

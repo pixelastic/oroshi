@@ -104,3 +104,8 @@ After migrating a script to autoloaded function, grep for call sites in:
 - One issue = one feature or one domain. Don't bundle unrelated features (e.g. commit completion + resurrect robustness + deleted files completion)
 - Migration issues: split by domain, not by language. Each domain (git/commit, git/file, docker, etc.) is its own issue
 - If an issue touches 3+ unrelated subsystems (completion, keybindings, fzf pickers, core logic), it's too big — split it
+
+### Issue 08e — git-remote-rename validation
+- Global gitconfig `remote.origin.prune=true` makes `git remote` list "origin" even in repos without a local origin — use `git-remote-exists` (URL-based check) instead of `git remote` + grep for remote existence checks
+- `git-remote-colorize` on a renamed-away remote still works (returns RED color) but should be called before the rename for correct color
+- In bats tests, verify remote rename via `git config --local --get remote.<name>.url` to avoid global config noise from `git remote`

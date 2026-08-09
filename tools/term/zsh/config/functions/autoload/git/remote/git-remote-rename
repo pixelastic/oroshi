@@ -3,4 +3,31 @@
 # $ git-remote-rename old-name new-name
 setopt local_options err_return
 
-git remote rename $@
+# Two arguments required
+if [[ $# -lt 2 ]]; then
+  echoerr "You must pass two arguments: source and destination"
+  return 1
+fi
+
+local source="$1"
+local destination="$2"
+
+# Source remote must exist
+if ! git-remote-exists "$source"; then
+  local displaySource="$(git-remote-colorize "$source" --with-icon)"
+  echoerr "Remote $displaySource does not exist"
+  return 1
+fi
+
+# Destination remote must not exist
+if git-remote-exists "$destination"; then
+  local displayDestination="$(git-remote-colorize "$destination" --with-icon)"
+  echoerr "Remote $displayDestination already exists"
+  return 1
+fi
+
+git remote rename "$source" "$destination"
+
+local displaySource="$(git-remote-colorize "$source" --with-icon)"
+local displayDestination="$(git-remote-colorize "$destination" --with-icon)"
+echo "Remote $displaySource renamed to $displayDestination"

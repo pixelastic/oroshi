@@ -11,7 +11,10 @@ branchName="${branchName:l}"
 
 # Look up directly in COLORS array by branch name (e.g. COLORS[git-branch-main])
 local branchColor=$COLORS[git-branch-${branchName}]
-[[ $branchColor != '' ]] && echo $branchColor && return
+if [[ $branchColor != '' ]]; then
+  echo $branchColor
+  return
+fi
 
 # Default branch color
 echo $COLORS[git-branch]
