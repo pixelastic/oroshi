@@ -1,0 +1,12 @@
+#compdef
+
+# Suggest git commits
+function _git-commits() {
+  colors-load-definitions
+  icons-load-definitions
+
+  local suggestions=(${(f)"$(complete-git-commits)"})
+  local label=" $ICONS[git-commit] Commits "
+  local header="$(completion-header git-commit white "$label")"
+  _describe -V "$header" suggestions
+}

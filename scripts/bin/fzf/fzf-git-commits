@@ -1,0 +1,71 @@
+#!/usr/bin/env zsh
+# Search for git commits with colorized display and preview
+# Usage:
+# $ fzf-git-commits                  # Interactive search
+# $ fzf-git-commits --source         # Print commits (hash▮colored display)
+# $ fzf-git-commits --options        # Print FZF options
+# $ fzf-git-commits --preview <hash> # Show commit details
+set -e
+source "${0:h}/__lib/init.zsh"
+source "${0:h}/__lib/fzf-options-prompt-label.zsh"
+
+function fzf-source() {
+  local rawList="$(git-commit-list-raw | head -200)"
+  [[ "$rawList" == "" ]] && return 0
+
+  colors-load-definitions
+  icons-load-definitions
+
+  local rawLine
+  for rawLine in ${(f)rawList}; do
+    [[ "$rawLine" == "" ]] && continue
+    local fields=("${(@ps/▮/)rawLine}")
+    local hash=$fields[1]
+    local subject=$fields[4]
+
+    local coloredHash="$(colorize "${ICONS[git-commit]} ${hash}" git-commit)"
+    local coloredSubject="$(colorize "$subject" git-message)"
+    echo "${hash}▮${coloredHash} ${coloredSubject}"
+  done
+}
+
+function fzf-preview() {
+  local commitHash="$1"
+  colors-load-definitions
+  icons-load-definitions
+
+  # Header: icon + hash in purple
+  colorize " ${ICONS[git-commit]} ${commitHash}" git-commit
+  echo ""
+
+  # Date
+  local date="$(git log -1 --format='%cd, %cr' --date=format:'%Y-%m-%d %H:%M' "$commitHash")"
+  colorize " ${date}" date
+  echo ""
+
+  # Author
+  local author="$(git log -1 --format=%an "$commitHash")"
+  colorize " ${author}" comment
+  echo ""
+  echo ""
+
+  # Commit message in purple-0
+  local message="$(git log -1 --format=%B "$commitHash")"
+  colorize "$message" git-message-accent
+  echo ""
+  echo ""
+
+  # Diff with syntax highlighting
+  git diff "${commitHash}~1..${commitHash}" --color=always 2>/dev/null
+}
+
+function fzf-options() {
+  local prompt="$(fzf-options-prompt-label git-commit Commits git-commit white)"
+  echo "--prompt=${prompt}"
+  echo "--with-nth=2"
+  echo "--preview=fzf-git-commits --preview {1}"
+  echo "--preview-window=nowrap"
+  echo "--ansi"
+}
+
+fzf-dispatch

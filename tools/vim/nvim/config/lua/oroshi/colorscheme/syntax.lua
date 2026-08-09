@@ -51,6 +51,8 @@ hl("gitcommitHeader", "comment")
 hl("gitcommitSelectedFile", "file")
 hl("gitcommitSummary", "text")
 hl("gitcommitOverflow", "text")
+hl("gitcommitDiscardedFile", "violet-2")
+hl("gitcommitUntrackedFile", "git-added")
 -- }}}
 
 -- Treesitter groups {{{

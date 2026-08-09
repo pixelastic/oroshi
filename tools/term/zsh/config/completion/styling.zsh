@@ -80,6 +80,11 @@ function oroshi-completion-styling() {
   listColorsGitRemote+=("${(f)$(♣ "*" $COLORS[git-remote])}")
   listColorsGitRemote+=($listColorsDefault)
 
+  # Color git commits
+  local listColorsGitCommit=()
+  listColorsGitCommit+=("${(f)$(♣ "*" $COLORS[git-commit])}")
+  listColorsGitCommit+=($listColorsDefault)
+
   # Color git submodules
   local listColorsGitSubmodule=()
   listColorsGitSubmodule+=("${(f)$(♣ "*" $COLORS[git-submodule])}")
@@ -182,6 +187,10 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-tag-remove:*:*' list-colors $listColorsGitTag
   zstyle ':completion:*:complete:git-tag-remove-remote:*:*' list-colors $listColorsGitTag
   zstyle ':completion:*:complete:git-tag-status:*:*' list-colors $listColorsGitTag
+
+  # Commits
+  zstyle ':completion:*:complete:git-commit-remove:*:*' list-colors $listColorsGitCommit
+  zstyle ':completion:*:complete:git-commit-remove-all:*:*' list-colors $listColorsGitCommit
 
   # Remotes
   zstyle ':completion:*:complete:git-remote-remove:*:*' list-colors $listColorsGitRemote

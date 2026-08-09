@@ -1,0 +1,18 @@
+# Suggest git commits as shortHash:subject pairs
+# Usage:
+# $ complete-git-commits
+setopt local_options err_return
+
+local rawList="$(git-commit-list-raw | head -200)"
+
+# No commits
+[[ "$rawList" == "" ]] && return 0
+
+for rawLine in ${(f)rawList}; do
+  [[ "$rawLine" == "" ]] && continue
+  local fields=("${(@ps/▮/)rawLine}")
+  local hash=$fields[1]
+  local subject=$fields[4]
+  [[ "$hash" == "" ]] && continue
+  echo "${hash}:${subject}"
+done
