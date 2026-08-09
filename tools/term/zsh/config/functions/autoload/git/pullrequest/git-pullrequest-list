@@ -8,5 +8,8 @@ git-directory-is-github || return 1
 
 gh pr list
 
-# Update local cache of PR count
-git-pullrequest-count > "$(git-directory-root)/.git/oroshi_pr_count"
+# Update shared cache of PR count
+local projectName="$(git-github-project)"
+local cacheDirectory="${OROSHI_TMP_FOLDER}/github/${projectName}"
+mkdir -p "$cacheDirectory"
+git-pullrequest-count > "${cacheDirectory}/pullrequests"

@@ -109,3 +109,7 @@ After migrating a script to autoloaded function, grep for call sites in:
 - Global gitconfig `remote.origin.prune=true` makes `git remote` list "origin" even in repos without a local origin — use `git-remote-exists` (URL-based check) instead of `git remote` + grep for remote existence checks
 - `git-remote-colorize` on a renamed-away remote still works (returns RED color) but should be called before the rename for correct color
 - In bats tests, verify remote rename via `git config --local --get remote.<name>.url` to avoid global config noise from `git remote`
+
+### Issue 08f — issue/PR cache location
+- `.git/oroshi_*_count` files were zombie writes — written by `git-issue-list`/`git-pullrequest-list` but never read by anything. The prompt already maintained its own cache at `$OROSHI_TMP_FOLDER/github/<project>/issues|pullrequests`
+- The spec's "migrate readers" step was a no-op — `git-issue-count` and `git-pullrequest-count` call the API directly, they never read from cache

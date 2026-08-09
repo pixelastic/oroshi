@@ -174,3 +174,11 @@ git log --diff-filter=D --since="3 months ago" --name-only --format=""
 ### --oneline vs custom format in fzf commands
 **Problem:** Spec says `git log --oneline` but implementation uses `--format='%H▮%C(green)%cr%C(reset)▮...'`
 **Reason skipped:** `--oneline` produces `shortHash subject` — no structured columns for fzf field parsing or ANSI coloring. Custom format is the necessary adaptation.
+
+## Issue 08f — issue/PR cache location
+### Migrate readers (git-issue-count, git-pullrequest-count)
+```markdown
+4. **Migrate readers** — update `git-issue-count` and `git-pullrequest-count` to read from new location
+```
+**Problem:** Spec says to update `git-issue-count` and `git-pullrequest-count` to read from new cache location, but neither was modified.
+**Reason skipped:** These functions never read from cache — they call the GitHub API directly via `gh`. The `.git/oroshi_*_count` files were zombie writes (written but never read). The prompt maintains its own independent cache. No reader migration needed.

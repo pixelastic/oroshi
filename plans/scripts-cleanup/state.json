@@ -100,8 +100,9 @@
   {
     "id": "08f",
     "issue": "issues/08f-git-issue-pr-cache-location.md",
-    "done": false,
-    "blocked_by": ["08"]
+    "done": true,
+    "blocked_by": ["08"],
+    "recap": "Migrated git-issue-list and git-pullrequest-list cache writes from .git/oroshi_*_count to $OROSHI_TMP_FOLDER/github/<project>/, matching the existing prompt cache pattern"
   },
   {
     "id": "09",
