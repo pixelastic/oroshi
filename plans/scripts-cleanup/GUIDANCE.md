@@ -91,3 +91,9 @@ After migrating a script to autoloaded function, grep for call sites in:
 - `git-directory-root-bin` was already deleted in issue 03b — no work needed
 - Submodule aliases had a pre-existing bug: `git commit-submodule` (space) instead of `git-commit-submodule` (dash) — fixed alongside migration
 - No external callers (NeoVim, Kitty, Ubuntu keybindings) reference any of the 16 git scripts — call-site migration was a no-op
+
+### Issue 08d — Commit completion and resurrect
+- fzf `change:reload` runs in a non-interactive shell — autoloaded functions aren't available, so raw git commands are required in reload strings
+- `git-commit-list-raw` stays plain (machine-readable), but `complete-git-commits` uses git's `%C(...)` format tokens for ANSI-colorized fzf display
+- `bats_git_dir` creates a repo with one initial commit — tests must account for it (can't test "no commits" scenario with `bats_git_dir`)
+- zsh-lint `noAndBlock` rule prohibits `[[ cond ]] && { ...; }` for multi-statement guards — use `if/then/fi` instead

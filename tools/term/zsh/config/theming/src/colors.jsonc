@@ -104,6 +104,7 @@
     "added":           "green",
     "ahead":           "green-5",
     "author":          "neutral",
+    "commit-message":  "violet-3",
     "behind":          "red-6",
     "branch":          "orange",
     "branch-dependabot": "cyan",

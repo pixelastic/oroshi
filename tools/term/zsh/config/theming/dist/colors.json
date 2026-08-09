@@ -431,6 +431,10 @@
     "ansi": 65,
     "hex": "#805ad5"
   },
+  "git-commit-message": {
+    "ansi": 173,
+    "hex": "#a78bfa"
+  },
   "git-dirty": {
     "ansi": 24,
     "hex": "#ef4444"
