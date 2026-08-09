@@ -93,7 +93,14 @@ After migrating a script to autoloaded function, grep for call sites in:
 - No external callers (NeoVim, Kitty, Ubuntu keybindings) reference any of the 16 git scripts — call-site migration was a no-op
 
 ### Issue 08d — Commit completion and resurrect
-- fzf `change:reload` runs in a non-interactive shell — autoloaded functions aren't available, so raw git commands are required in reload strings
-- `git-commit-list-raw` stays plain (machine-readable), but `complete-git-commits` uses git's `%C(...)` format tokens for ANSI-colorized fzf display
-- `bats_git_dir` creates a repo with one initial commit — tests must account for it (can't test "no commits" scenario with `bats_git_dir`)
+- fzf-tab can't colorize individual items — ZSH `compadd`/`_describe` strips ANSI ESC chars. Use `list-colors` zstyle with `♣` patterns for uniform color, or custom fzf pickers (scripts/bin/fzf/) for full control
+- Custom fzf pickers (like Ctrl-P) bypass ZSH completion entirely: `fzf-source` → colorize → `fzf` → `fzf-postprocess`. Wire into shift-tab via `specialPickers` dispatch in the widget
+- fzf preview: inline `git show` commands work; recursive script calls (`fzf-foo --preview {1}`) need the script in PATH. Prefer inline for simple previews
+- `list-colors` glob patterns (`*.zsh`) don't match full paths (`dir/file.zsh`) in `_describe` items — `*` doesn't match `/`. Use uniform color for path-based completions
+- `bats_git_dir` creates a repo with one initial commit — tests must account for it
 - zsh-lint `noAndBlock` rule prohibits `[[ cond ]] && { ...; }` for multi-statement guards — use `if/then/fi` instead
+
+### Issue sizing
+- One issue = one feature or one domain. Don't bundle unrelated features (e.g. commit completion + resurrect robustness + deleted files completion)
+- Migration issues: split by domain, not by language. Each domain (git/commit, git/file, docker, etc.) is its own issue
+- If an issue touches 3+ unrelated subsystems (completion, keybindings, fzf pickers, core logic), it's too big — split it
