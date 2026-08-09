@@ -1,0 +1,15 @@
+# List all marks as name▮resolvedPath lines
+# Usage:
+# $ mark-list-raw
+setopt local_options err_return
+
+# Nothing to list if OROSHI_MARKPATH doesn't exist or is empty
+[[ ! -d "$OROSHI_MARKPATH" ]] && return 0
+local files=("$OROSHI_MARKPATH"/*(N))
+[[ ${#files} -eq 0 ]] && return 0
+
+for symlink in "${files[@]}"; do
+  local name="${symlink:t}"
+  local resolved="$(readlink "$symlink")"
+  echo "${name}▮${resolved}"
+done

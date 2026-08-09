@@ -7,7 +7,7 @@ Create `mark-create` — save current directory as a named symlink, warn if proj
 Create `tools/term/zsh/config/functions/autoload/misc/mark/mark-create`:
 1. Name defaults to current dirname if no argument given
 2. Remove existing mark if one exists with same name
-3. Create symlink `$MARKPATH/$name` → `$PWD`
+3. Create symlink `$OROSHI_MARKPATH/$name` → `$PWD`
 4. Before creating, check if any `PROJECTS[*:path]` resolves to the same directory — if so, print warning but still create the mark
 
 Calls `projects-load-definitions` before checking.
@@ -17,13 +17,13 @@ Prior art: current `scripts/bin/mark` for symlink creation logic.
 ## Behavioral Tests
 
 **mark-create with explicit name:**
-- creates symlink $MARKPATH/myname → $PWD
+- creates symlink $OROSHI_MARKPATH/myname → $PWD
 
 **mark-create with no argument:**
 - uses current dirname as mark name
 
 **mark-create overwrites existing mark:**
-- given $MARKPATH/foo already exists
+- given $OROSHI_MARKPATH/foo already exists
 - mark-create foo replaces it
 
 **mark-create warns on project match:**
@@ -41,5 +41,5 @@ Prior art: current `scripts/bin/mark` for symlink creation logic.
 - [ ] Overwrites existing mark silently
 - [ ] Warns on stderr when directory matches a project path
 - [ ] Creates symlink despite warning
-- [ ] Creates `$MARKPATH` directory if missing
+- [ ] Creates `$OROSHI_MARKPATH` directory if missing
 - [ ] All behavioral tests pass

@@ -6,7 +6,7 @@ Create `mark-delete`, `complete-marks`, and `_marks` compdef — marks-only dele
 
 Create `tools/term/zsh/config/functions/autoload/misc/mark/mark-delete`:
 1. Require one argument (mark name), error if missing
-2. Check `$MARKPATH/$name` exists as symlink, error if not
+2. Check `$OROSHI_MARKPATH/$name` exists as symlink, error if not
 3. Remove the symlink
 
 Create `tools/term/zsh/config/functions/autoload/completion/complete-marks`:
@@ -22,7 +22,7 @@ Prior art: current `scripts/bin/unmark` for deletion logic, `_jumps` for compdef
 ## Behavioral Tests
 
 **mark-delete removes a symlink:**
-- given $MARKPATH/foo exists
+- given $OROSHI_MARKPATH/foo exists
 - mark-delete foo removes it
 
 **mark-delete errors on missing name:**

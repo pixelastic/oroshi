@@ -25,7 +25,7 @@ Unify jump targets so that `J` autocompletion suggests **all projects from proje
 - **Naming convention**: All functions use the `mark-` prefix. Aliases (`j`, `m`, `mR`, `ml`) preserved for muscle memory.
 - **Function locations**: All `mark-*` autoloaded functions live in `misc/mark/` subdirectory under the autoload tree.
 - **`mark-list-raw` output format**: `name▮path` using the `▮` separator, consistent with other `*-list-raw` functions in the codebase (e.g., `helper-list-raw`).
-- **`mark-list-raw` scope**: Only lists real marks (symlinks in `$MARKPATH`), not projects. `complete-jumps` is responsible for merging in project entries.
+- **`mark-list-raw` scope**: Only lists real marks (symlinks in `$OROSHI_MARKPATH`), not projects. `complete-jumps` is responsible for merging in project entries.
 - **`MARKPATH` location**: Moves from `$HOME/.marks` to `$OROSHI_TMP_FOLDER/marks`.
 - **Priority**: When a name exists as both a mark and a project, `mark-jump` resolves via PROJECTS first, then falls back to marks.
 - **`mark-jump` tilde expansion**: Project paths stored as `~/local/www/...` require `${~var}` expansion in ZSH to resolve the tilde.
@@ -38,7 +38,7 @@ Unify jump targets so that `J` autocompletion suggests **all projects from proje
 
 ## Testing Decisions
 
-- Test external behavior via BATS, mocking `$MARKPATH` with temp dirs and `PROJECTS` array with test data.
+- Test external behavior via BATS, mocking `$OROSHI_MARKPATH` with temp dirs and `PROJECTS` array with test data.
 - Prior art: `misc/__tests__/helper-list-raw.bats` — same pattern of mocking directories and checking output format.
 - **Tested modules**:
   - `mark-list-raw` — output format, empty dir, multiple marks
@@ -59,6 +59,6 @@ Unify jump targets so that `J` autocompletion suggests **all projects from proje
 
 ## Further Notes
 
-- The one-time cleanup script compares each symlink in `$MARKPATH` against `PROJECTS[name:path]` and removes matches. Should be run interactively with confirmation.
+- The one-time cleanup script compares each symlink in `$OROSHI_MARKPATH` against `PROJECTS[name:path]` and removes matches. Should be run interactively with confirmation.
 - Projects without a `path` key in `projects.jsonc` (15 out of 107) are excluded from jump targets — this is correct since they have no navigable directory.
-- The `ml` alias changes from `ls $MARKPATH` to `mark-list`, which calls `mark-list-raw` and formats with colors using `colorize` and `table`.
+- The `ml` alias changes from `ls $OROSHI_MARKPATH` to `mark-list`, which calls `mark-list-raw` and formats with colors using `colorize` and `table`.

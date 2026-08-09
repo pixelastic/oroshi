@@ -4,7 +4,7 @@ Create the `mark-list-raw` primitive and the `mark.zsh` alias file with new MARK
 
 ## What to build
 
-Create `tools/term/zsh/config/functions/autoload/misc/mark/mark-list-raw` — an autoloaded function that lists all symlinks in `$MARKPATH` using `▮` separator (`name▮path`).
+Create `tools/term/zsh/config/functions/autoload/misc/mark/mark-list-raw` — an autoloaded function that lists all symlinks in `$OROSHI_MARKPATH` using `▮` separator (`name▮path`).
 
 Create `tools/term/zsh/config/aliases/mark.zsh` with:
 - `export MARKPATH=$OROSHI_TMP_FOLDER/marks`
@@ -13,7 +13,7 @@ Create `tools/term/zsh/config/aliases/mark.zsh` with:
 - `alias mR='mark-delete'`
 - `alias ml='mark-list'`
 
-The `mark-list-raw` function iterates over `$MARKPATH/*`, resolves each symlink target, and outputs one line per mark in `name▮resolvedPath` format.
+The `mark-list-raw` function iterates over `$OROSHI_MARKPATH/*`, resolves each symlink target, and outputs one line per mark in `name▮resolvedPath` format.
 
 Prior art: `helper-list-raw` uses the same `▮` separator convention.
 
