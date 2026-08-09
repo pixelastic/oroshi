@@ -1,0 +1,23 @@
+# Resolve a project or mark name to a directory and cd into it
+# Usage:
+# $ mark-jump myproject
+setopt local_options err_return
+
+local name="$1"
+
+# Check if known project
+local projectPath="$(project-path "$name")"
+if [[ "$projectPath" != "" ]]; then
+  cd "$projectPath"
+  return 0
+fi
+
+# Check if manually marked dir
+if [[ -e "$OROSHI_MARKPATH/$name" ]]; then
+  cd -P "$OROSHI_MARKPATH/$name"
+  return 0
+fi
+
+# No match
+echoerr "No such mark: $name"
+return 1

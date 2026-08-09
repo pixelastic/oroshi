@@ -37,4 +37,5 @@
 
 ## Discoveries
 
-(none yet)
+### Issue 02 — mark-jump
+- `project-path` already handles PROJECTS lookup + tilde expansion — reuse it instead of accessing PROJECTS directly
