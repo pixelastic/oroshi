@@ -1,0 +1,50 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-mark-list-raw-scaffold.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-mark-jump.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-complete-jumps-merge-projects.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-mark-create.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-mark-delete-complete-marks.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-mark-list.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-migration-cleanup.md",
+    "done": false,
+    "blocked_by": ["02", "03", "04", "05", "06"]
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-redundant-marks-cleanup.md",
+    "done": false,
+    "blocked_by": ["07"]
+  }
+]
