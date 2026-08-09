@@ -42,7 +42,10 @@ Read [03-issues.md](./references/03-issues.md) and follow all sub-steps.
 **Exit criterion:** user told to run ralph, `plan-end` called,
 
 1. Tell the user to run `ralph` to begin implementation.
-2. Run `plan-end <planDir>` — it stages all plan files, commits and quit claude
+2. Run `plan-end <planDir>` — it stages all plan files, commits and exits claude.
+
+Do NOT manually commit or ask for commit permission — `plan-end` handles staging
+and committing. Just run it.
 
 ---
 
@@ -61,6 +64,5 @@ Read [03-issues.md](./references/03-issues.md) and follow all sub-steps.
 - [ ] Step 1 checklist complete (see [01-understand.md](./references/01-understand.md))
 - [ ] Step 2 checklist complete (see [02-prd.md](./references/02-prd.md))
 - [ ] Step 3 checklist complete (see [03-issues.md](./references/03-issues.md))
-- [ ] User gave permission to commit
 - [ ] `plan-end <planDir>` called
 - [ ] User told to run `/ralph <planDir>`
