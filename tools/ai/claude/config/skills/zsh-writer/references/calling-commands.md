@@ -1,14 +1,10 @@
 # Calling commands
 
-- Prefer long-form args (`--type`, not `-t`)
-- Prefer existing helpers over raw commands (`git-branch-current`)
-- One arg per line when multiple args
-- Exception: common short-form idioms are fine:
-    - `head -1`
-    - `jq -r`
-    - `mkdir -p`
-    - `sed -n`
-    - `tail -1`
+## Prefer long-form args
+
+- Prefer long-form args (`--type`, not `-t`) for readability
+    - Exception: common short-form idioms are fine (`head -1`, `jq -r`, `mkdir -p`, `sed -n`, `tail -1`, etc)
+- If multiple args, display one arg per line for better readability
 
 ## Example
 ```zsh
@@ -25,7 +21,7 @@ fd -t f -g "*.md" /path
 
 ## Prefer existing helpers
 
-Before calling a porcelain command, check if an existing helper wraps it.
+Prefer existing helpers over raw commands
 Helpers expose a stable interface and handle edge cases already.
 Calling porcelain bypasses that work and creates duplication.
 
@@ -39,10 +35,8 @@ Calling porcelain bypasses that work and creates duplication.
 | `docker-container-is-running web` | `docker inspect -f '{{.State.Running}}' web` |
 | `docker-container-stop web` | `docker stop $(docker ps -q --filter name=web)` |
 | `node-module-list-raw` | `npm list --global --depth=0` |
-| And more... | Check in `tools/term/zsh/config/functions/autoload/` |
+| And more... | Check `helper-list-raw ...` |
 
-
-## Discovering helpers
 
 Before falling back to porcelain, run `helper-list-raw` to discover available helpers.
 
@@ -55,3 +49,7 @@ git-branch-pull▮Pull a branch▮{filepath}
 git-branch-list▮Display the list of local branches▮{filepath}
 # ...
 ```
+
+## Stderr suppression in subshells
+
+- Only add `2>/dev/null` when the command is known to write to stderr
