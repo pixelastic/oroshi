@@ -150,3 +150,27 @@ function _git-stash() {
 ```
 **Problem:** explicit `function` keyword usage
 **Reason skipped:** all existing compdef wrappers use `function _name() {` — codebase convention for completion functions
+
+## Issue 08d — Commit completion and resurrect
+### Multi-condition if block for uncommitted deletion guard
+```zsh
+if [[ "$trackedEntry" != "" ]] && [[ ! -f "$repoRoot/$filepath" ]]; then
+  git checkout -- "$filepath"
+  return 0
+fi
+```
+**Problem:** Could use one-liner return-early instead of if block
+**Reason skipped:** Compound condition (two `[[ ]]` tests) plus two statements — one-liner would sacrifice readability. `if/then/fi` IS the return-early pattern here.
+
+### Raw git porcelain where no helper exists
+```zsh
+git ls-files -- "$filepath"
+git checkout -- "$filepath"
+git log --diff-filter=D --since="3 months ago" --name-only --format=""
+```
+**Problem:** calling-commands.md says prefer existing helpers over raw commands
+**Reason skipped:** These are low-level git primitives for which no wrappers exist. Creating single-use wrappers would be over-engineering.
+
+### --oneline vs custom format in fzf commands
+**Problem:** Spec says `git log --oneline` but implementation uses `--format='%H▮%C(green)%cr%C(reset)▮...'`
+**Reason skipped:** `--oneline` produces `shortHash subject` — no structured columns for fzf field parsing or ANSI coloring. Custom format is the necessary adaptation.

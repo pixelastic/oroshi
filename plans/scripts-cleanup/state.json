@@ -86,8 +86,9 @@
   {
     "id": "08d",
     "issue": "issues/08d-git-commit-completion-resurrect.md",
-    "done": false,
-    "blocked_by": ["08"]
+    "done": true,
+    "blocked_by": ["08"],
+    "recap": "Created git-commit-list-raw, fzf-powered complete-git-commits with colorized reload, complete-git-files-deleted, made git-file-resurrect robust (guards, absolute paths, uncommitted deletions), added compdef mappings"
   },
   {
     "id": "08e",
