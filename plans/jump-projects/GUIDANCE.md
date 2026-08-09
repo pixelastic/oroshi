@@ -39,3 +39,6 @@
 
 ### Issue 02 — mark-jump
 - `project-path` already handles PROJECTS lookup + tilde expansion — reuse it instead of accessing PROJECTS directly
+
+### Issue 03 — complete-jumps merge projects
+- `path` is a reserved variable in ZSH (tied to `$PATH`) — never use `local path=...`, use `target` or similar instead

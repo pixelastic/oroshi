@@ -1,15 +1,35 @@
-# Display list of jumps and their paths
+# List merged marks + projects for completion
+# Projects win on name collision
+# Usage:
+# $ complete-jumps
 setopt local_options err_return
-local suggestions=()
-local projectIcon=""
-local description=""
 
+typeset -A entries
+
+# Collect marks
+local rawMarks="$(mark-list-raw)"
+for line in ${(f)rawMarks}; do
+  local fields=(${(@ps/▮/)line})
+  local name=$fields[1]
+  local target=$fields[2]
+  entries[$name]="$target"
+done
+
+# Merge projects — overwrite marks on collision
 projects-load-definitions
+for key in ${(k)PROJECTS}; do
+  [[ "$key" != *:path ]] && continue
+  local name="${key%:path}"
+  entries[$name]="${PROJECTS[$key]}"
+done
 
-for item in "$MARKPATH"/*; do
-  projectIcon="${PROJECTS[${item:t}:icon]}"
-  description="${item:A:s_/home/tim/__}"
-  [[ "$projectIcon" != "" ]] && description="${projectIcon}${item:t}"
+# Format output
+for name in ${(ko)entries}; do
+  local description=""
+  local icon="${PROJECTS[$name:icon]}"
 
-  echo "${item:t}:${description}"
+  [[ "$icon" != "" ]] && description="${icon}${name}"
+  [[ "$description" == "" ]] && description="${entries[$name]/$HOME\//}"
+
+  echo "${name}:${description}"
 done
