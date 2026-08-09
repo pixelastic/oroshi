@@ -55,7 +55,7 @@ hl("NoiceFormatConfirmDefault", "red", { bg = "red-0" })
 hl("LineNr", "gray") --	Line number column
 hl("SignColumn", "gray") --	Sign column
 -- Git coloring
-hl("GitSignsAddNr", "green-9", { bg = "green-0" })
+hl("GitSignsAddNr", "green-7", { bg = "green-0" })
 hl("GitSignsChangeNr", "purple", { bg = "purple-0" })
 hl("GitSignsChangedeleteNr", "purple", { bg = "purple-0" })
 hl("GitSignsTopdeleteNr", "red-8", { bg = "red-0" })

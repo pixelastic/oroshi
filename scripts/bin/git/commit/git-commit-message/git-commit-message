@@ -2,4 +2,10 @@
 # Node wrapper around git-commit-message.js to ensure that the script is run in a Node environment.
 set -e
 
-node ${0:A:h}/__lib/git-commit-message.js "$@"
+local output=$(node ${0:A:h}/__lib/git-commit-message.js "$@")
+
+if [[ $output == "" ]]; then
+  exit 1
+fi
+
+echo "$output"
