@@ -1,5 +1,6 @@
 [
   "adb",
+  "alias",
   "apt-cache search",
   "apt-cache show",
   "apt-cache",
@@ -83,6 +84,7 @@
   "ghostscript",
   "gh api",
   "gh auth status",
+  "gh help",
   "gh issue list",
   "gh issue view",
   "gh pr list",
