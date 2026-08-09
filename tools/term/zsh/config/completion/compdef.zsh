@@ -90,6 +90,9 @@ compdef _git-tags-local \
   git-tag-switch
 compdef _git-tags-remote \
   git-tag-remove-remote
+compdef _git-commits \
+  git-commit-remove \
+  git-commit-remove-all
 compdef _git-files-dirty-stageable \
   git-file-add
 compdef _git-files-dirty \
@@ -97,6 +100,8 @@ compdef _git-files-dirty \
   git-file-revert
 compdef _git-files-staged \
   git-file-unstage
+compdef _git-files-deleted \
+  git-file-resurrect
 compdef _git-stash \
   git-stash-apply
 compdef _git-submodules \

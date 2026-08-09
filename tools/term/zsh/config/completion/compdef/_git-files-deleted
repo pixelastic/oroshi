@@ -1,0 +1,12 @@
+#compdef
+
+# Suggest recently deleted files
+function _git-files-deleted() {
+  colors-load-definitions
+  icons-load-definitions
+
+  local suggestions=(${(f)"$(complete-git-files-deleted)"})
+  local label=" $ICONS[git-file-dirty] Deleted files "
+  local header="$(completion-header red-6 red-1 "$label")"
+  _describe -V "$header" suggestions
+}

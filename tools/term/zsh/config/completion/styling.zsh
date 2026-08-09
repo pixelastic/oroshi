@@ -197,6 +197,10 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-remote-rename:*:*' list-colors $listColorsGitRemote
   zstyle ':completion:*:complete:git-remote-switch:*:*' list-colors $listColorsGitRemote
 
+  # Deleted files
+  local listColorsGitDeleted="=*=38;5;${COLORS[git-removed]}"
+  zstyle ':completion:*:complete:git-file-resurrect:*:*' list-colors $listColorsGitDeleted
+
   # Submodules
   zstyle ':completion:*:complete:git-submodule-remove:*:*' list-colors $listColorsGitSubmodule
   # }}}

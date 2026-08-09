@@ -1,12 +1,36 @@
-# Restore a deleted file from git history
+# Restore a deleted file from git history or working tree
 # Usage:
 # $ git-file-resurrect path/to/file
+# $ git-file-resurrect /absolute/path/to/file
 setopt local_options err_return
 
-local filename=$1
+# No path given
+if [[ "$1" == "" ]]; then
+  echoerr "Usage: git-file-resurrect <filepath>"
+  return 1
+fi
 
-# We first find the commit where the file was deleted
-local commitHash="$(git log --diff-filter=D --format=format:%H -- $filename | head -n1)"
+local filepath=$1
 
-# We then bring it back from the dead
-git checkout $commitHash~1 $filename
+# Normalize absolute path to repo-relative
+local repoRoot="$(git-directory-root)"
+[[ "$filepath" == /* ]] && filepath="${filepath#"$repoRoot"/}"
+
+# Uncommitted deletion: file is tracked but missing from working tree
+local trackedEntry="$(git ls-files -- "$filepath")"
+if [[ "$trackedEntry" != "" ]] && [[ ! -f "$repoRoot/$filepath" ]]; then
+  git checkout -- "$filepath"
+  return 0
+fi
+
+# Find the commit where the file was deleted
+local commitHash="$(git log --diff-filter=D --format=format:%H -- "$filepath" | head -n1)"
+
+# File was never deleted in history
+if [[ "$commitHash" == "" ]]; then
+  echoerr "File '$filepath' was never deleted in git history"
+  return 1
+fi
+
+# Bring it back from the commit before deletion
+git checkout "$commitHash~1" -- "$filepath"

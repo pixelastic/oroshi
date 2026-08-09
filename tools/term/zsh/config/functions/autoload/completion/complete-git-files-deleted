@@ -1,0 +1,17 @@
+# Suggest files deleted in the last 3 months
+# Usage:
+# $ complete-git-files-deleted
+setopt local_options err_return
+
+local rawList="$(git log \
+  --diff-filter=D \
+  --since="3 months ago" \
+  --name-only \
+  --format="" \
+)"
+
+# No deleted files
+[[ "$rawList" == "" ]] && return 0
+
+# Deduplicate and remove blank lines
+echo "$rawList" | sort --unique | sed '/^$/d'

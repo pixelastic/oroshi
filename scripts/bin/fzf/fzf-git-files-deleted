@@ -1,0 +1,82 @@
+#!/usr/bin/env zsh
+# Search for recently deleted git files with colorized paths and preview
+# Usage:
+# $ fzf-git-files-deleted                  # Interactive search
+# $ fzf-git-files-deleted --source         # Print deleted files (path▮colored path)
+# $ fzf-git-files-deleted --options        # Print FZF options
+# $ fzf-git-files-deleted --preview <file> # Show file content before deletion
+set -e
+source "${0:h}/__lib/init.zsh"
+source "${0:h}/__lib/fzf-options-prompt-label.zsh"
+source "${0:h}/__lib/fzf-colorize-path.zsh"
+
+function fzf-source() {
+  local rawList="$(complete-git-files-deleted)"
+  [[ "$rawList" == "" ]] && return 0
+
+  local filepath
+  for filepath in ${(f)rawList}; do
+    [[ "$filepath" == "" ]] && continue
+    fzf-colorize-path "$filepath"
+    echo "${filepath}▮${REPLY}"
+  done
+}
+
+function fzf-preview() {
+  local filepath="$1"
+
+  # Find the commit where the file was deleted
+  local commitHash="$(git log \
+    --diff-filter=D \
+    --format=format:%H \
+    -- "$filepath" \
+  | head -n1)"
+  [[ "$commitHash" == "" ]] && return 0
+
+  local ref="${commitHash}~1"
+
+  # Header: directory + filename with icon and color
+  colors-load-definitions
+  icons-load-definitions
+  filetypes-load-definitions
+
+  local dirPath="${filepath:h}"
+  [[ "$dirPath" == "." ]] && dirPath=""
+  [[ "$dirPath" != "" ]] && dirPath="$(colorize "${dirPath}/" directory)"
+
+  filetypes-key "$filepath"
+  local key="$REPLY"
+  local icon="$FILETYPES[${key}:icon]"
+  local color="$FILETYPES[${key}:color]"
+  [[ "$color" == "" ]] && color="text"
+
+  echo " ${dirPath}"
+  colorize " ${icon} ${filepath:t}" "$color"
+  echo ""
+
+  # Metadata: line count + deletion commit
+  local lineCount="$(git show "${ref}:${filepath}" 2>/dev/null | wc -l)"
+  local deletedDate="$(git log -1 --format=%cr "$commitHash")"
+  colorize " ${lineCount} lines, deleted ${deletedDate}" comment
+  echo ""
+  echo ""
+
+  # File content with syntax highlighting
+  git show "${ref}:${filepath}" 2>/dev/null \
+    | bat \
+    --paging=never \
+    --style=numbers \
+    --color=always \
+    --file-name="$filepath"
+}
+
+function fzf-options() {
+  local prompt="$(fzf-options-prompt-label git-file-dirty 'Deleted files' red-6 red-1)"
+  echo "--prompt=${prompt}"
+  echo "--with-nth=2"
+  echo "--preview=fzf-git-files-deleted --preview {1}"
+  echo "--preview-window=nowrap"
+  echo "--ansi"
+}
+
+fzf-dispatch
