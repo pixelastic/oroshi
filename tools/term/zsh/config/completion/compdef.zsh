@@ -98,6 +98,7 @@ compdef _git-files-dirty \
 compdef _git-files-staged \
   git-file-unstage
 compdef _git-submodules \
+  git-commit-submodule \
   git-submodule-remove
 compdef _git-remotes \
   git-remote-switch \

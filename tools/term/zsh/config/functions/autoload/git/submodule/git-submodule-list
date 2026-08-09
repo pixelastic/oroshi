@@ -3,47 +3,29 @@
 # $ git-submodule-list
 setopt local_options err_return
 
-local rawList="$(git submodule status)"
-local gitRoot="$(git-directory-root)"
+local rawList="$(git-submodule-list-raw)"
 
-typeset -A submoduleList
+# Nothing to display
+[[ "$rawList" == "" ]] && return 0
 
-# Build an associative array of all submodules
-local rawSubmoduleLine
-for rawSubmoduleLine in ${(f)rawList}; do
-  # Split the line
-  local splitLine=(${(@s/ /)rawSubmoduleLine})
-  local submoduleHash=${splitLine[1]}
-  submoduleHash=${submoduleHash:0:8}
-
-  local submoduleName=${splitLine[2]}
-  submoduleName="$(path-relative ${submoduleName:a} $gitRoot)"
-
-  local submoduleBranch=${splitLine[3]}
-  submoduleBranch=${submoduleBranch[2,-2]}
-
-  submoduleList[$submoduleName]="${submoduleHash}▮${submoduleBranch}"
-done
-
-local sortedList="$(sort-filepaths ${(k)submoduleList})"
 local output=""
-for submoduleName in ${(f)sortedList}; do
-  local submoduleValue=$submoduleList[$submoduleName]
-  local splitValue=(${(@s/▮/)submoduleValue})
-  local submoduleHash=$splitValue[1]
-  local submoduleBranch=$splitValue[2]
+local rawLine
+for rawLine in ${(f)rawList}; do
+  local fields=(${(@ps/▮/)rawLine})
+  local name=$fields[1]
+  local hash=$fields[2]
+  local branch=$fields[3]
 
-  # Build each part
   local row=""
 
   # Name
-  row+="$(git-submodule-colorize "$submoduleName" --with-icon)▮"
+  row+="$(git-submodule-colorize "$name" --with-icon)▮"
 
   # Branch
-  row+="$(git-branch-colorize "$submoduleBranch" --with-icon)▮"
+  row+="$(git-branch-colorize "$branch" --with-icon)▮"
 
   # Commit
-  row+="$(git-commit-colorize "$submoduleHash" --with-icon)▮"
+  row+="$(git-commit-colorize "$hash" --with-icon)▮"
 
   output+="$row\n"
 done

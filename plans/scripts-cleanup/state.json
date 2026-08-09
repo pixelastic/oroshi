@@ -72,8 +72,9 @@
   {
     "id": "08b",
     "issue": "issues/08b-git-submodule-list-raw-completion.md",
-    "done": false,
-    "blocked_by": ["08"]
+    "done": true,
+    "blocked_by": ["08"],
+    "recap": "Created git-submodule-list-raw (▮-separated output), refactored git-submodule-list and complete-git-submodules to delegate to it, added git-commit-submodule to compdef"
   },
   {
     "id": "08c",

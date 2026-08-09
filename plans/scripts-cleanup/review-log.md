@@ -112,3 +112,26 @@ git stash apply && git stash drop
 ### git-submodule-list.bats mocks in test body
 **Problem:** All mocks defined inline in the single `@test` block rather than extracted to a helper
 **Reason skipped:** Only one test case — extracting to a helper would be premature abstraction.
+
+## Issue 08b — git-submodule-list-raw and completion
+### Abbreviated variable name `hash`
+```zsh
+local hash=${parts[1]:0:8}
+```
+**Problem:** `hash` could be `submoduleHash` to match old code's naming.
+**Reason skipped:** Within a loop iterating over submodule lines, `hash` is unambiguous — not abbreviated, just scoped.
+
+### `typeset -A` instead of `local -A`
+```zsh
+typeset -A submoduleData
+```
+**Problem:** Standards say "use `local` for all variables."
+**Reason skipped:** `typeset -A` is the idiomatic ZSH way to declare associative arrays; `local -A` is equivalent but less common.
+
+### Pipe continuation not indented in complete-git-submodules
+```zsh
+git-submodule-list-raw |
+awk -F '▮' '{print $1}'
+```
+**Problem:** Pipe continuation at column 0 instead of 2-space indent.
+**Reason skipped:** zsh-lint auto-fixes pipe continuations to column 0 — linter overrides the convention.

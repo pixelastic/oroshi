@@ -81,6 +81,12 @@ After migrating a script to autoloaded function, grep for call sites in:
 - Curly quote replacement in zsh `${//}` needs `$'\u2019'` for pattern and a variable for replacement — `\'` in replacement produces literal backslash
 - `${var:h}` returns `.` for bare filenames — compare basenames, not full paths, when checking if rename is a no-op
 
+### Issue 08b — git-submodule-list-raw and completion
+- ZSH `local name` (bare, no assignment) on an already-local variable prints `name=value` to stdout — always declare shared loop variables once at the top, before any loop
+- zsh-lint enforces `noGroupedLocals`: one `local` per line, no `local a b`
+- zsh-lint auto-fixes pipe continuation indentation to column 0 — don't fight it
+- Completion header gray square bug had TWO causes: (1) default `descriptions` format zstyle double-wrapped custom headers — fix: `%d` passthrough; (2) `echo` in `completion-header` joined 3 arguments with spaces, inserting a parasitic space between `%F{fg}` and content — fix: build string with `+=` concatenation then `echo` once
+
 ### Issue 08 — Git domain
 - `git-directory-root-bin` was already deleted in issue 03b — no work needed
 - Submodule aliases had a pre-existing bug: `git commit-submodule` (space) instead of `git-commit-submodule` (dash) — fixed alongside migration

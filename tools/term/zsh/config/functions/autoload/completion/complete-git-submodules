@@ -1,7 +1,5 @@
-# List all submodules
+# List all submodule names
 setopt local_options err_return
-cd "$(git-directory-root)" || return 0
 
-git submodule status |
-	awk '{print $2}' |
-	sort-filepaths
+git-submodule-list-raw | \
+  awk -F '▮' '{print $1}'

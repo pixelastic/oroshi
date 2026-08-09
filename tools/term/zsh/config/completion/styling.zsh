@@ -3,9 +3,10 @@ function completion-header() {
   local colorBackground=$COLORS[$1]
   local colorForeground=${COLORS[${2:-black}]}
   local content=${3:-%d}
-  echo "%K{${colorBackground}}%F{${colorForeground}}"\
-    "${content}%f%F{${COLORS[terminal]}}"\
-    "$ICONS[completion-separator]%f%k"
+  local result="%K{${colorBackground}}%F{${colorForeground}}"
+  result+="${content}%f%F{${COLORS[terminal]}}"
+  result+=" $ICONS[completion-separator]%f%k"
+  echo "$result"
 }
 
 # Color specific values in a specific color
@@ -135,7 +136,9 @@ function oroshi-completion-styling() {
 
 
   # Default
-  zstyle ':completion:*:descriptions' format "$(completion-header header black)"
+  # Passthrough: custom compdefs provide their own formatted headers via
+  # completion-header, so the default format just passes %d as-is
+  zstyle ':completion:*:descriptions' format '%d'
   zstyle ':completion:*:complete:*:*:*' list-colors $listColorsDefault
 
   # Files

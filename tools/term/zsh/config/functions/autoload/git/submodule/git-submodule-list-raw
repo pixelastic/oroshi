@@ -1,0 +1,35 @@
+# Machine-readable list of submodules: name▮hash▮branch
+# Usage:
+# $ git-submodule-list-raw
+setopt local_options err_return
+
+local rawList="$(git submodule status)"
+local gitRoot="$(git-directory-root)"
+
+# No submodules
+[[ "$rawList" == "" ]] && return 0
+
+typeset -A submoduleData
+
+local rawLine
+local name
+for rawLine in ${(f)rawList}; do
+  local parts=(${(@s/ /)rawLine})
+  local hash=${parts[1]:0:8}
+
+  name=${parts[2]}
+  name="$(path-relative ${name:a} $gitRoot)"
+
+  local branch=${parts[3]}
+  branch=${branch[2,-2]}
+
+  submoduleData[$name]="${hash}▮${branch}"
+done
+
+local sortedNames="$(sort-filepaths ${(k)submoduleData})"
+
+for name in ${(f)sortedNames}; do
+  local data=$submoduleData[$name]
+  local fields=(${(@ps/▮/)data})
+  echo "${name}▮${fields[1]}▮${fields[2]}"
+done
