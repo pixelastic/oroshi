@@ -1,0 +1,14 @@
+# Machine-readable list of commits: shortHash▮relativeDate▮authorName▮subject
+# Usage:
+# $ git-commit-list-raw
+setopt local_options err_return
+
+# No commits in repo
+git rev-parse --quiet --verify HEAD >/dev/null 2>&1 || return 0
+
+local rawList="$(git log --format='%h▮%cr▮%an▮%s')"
+
+# No commits
+[[ "$rawList" == "" ]] && return 0
+
+echo "$rawList"
