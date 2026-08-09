@@ -135,3 +135,18 @@ awk -F '▮' '{print $1}'
 ```
 **Problem:** Pipe continuation at column 0 instead of 2-space indent.
 **Reason skipped:** zsh-lint auto-fixes pipe continuations to column 0 — linter overrides the convention.
+
+## Issue 08c — git-stash-list-completion-fixes
+### Raw git stash pop instead of helper
+```zsh
+git stash pop "$selector"
+```
+**Problem:** calling-commands.md says prefer existing helpers over raw commands
+**Reason skipped:** `git-stash-apply` IS the helper for `git stash pop` — no wrapper to delegate to
+
+### function keyword in compdef
+```zsh
+function _git-stash() {
+```
+**Problem:** explicit `function` keyword usage
+**Reason skipped:** all existing compdef wrappers use `function _name() {` — codebase convention for completion functions

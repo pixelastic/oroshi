@@ -1,0 +1,11 @@
+# Machine-readable list of stashes: index▮message▮date
+# Usage:
+# $ git-stash-list-raw
+setopt local_options err_return
+
+local rawList="$(git stash list --format='%gd▮%s▮%cr')"
+
+# No stashes
+[[ "$rawList" == "" ]] && return 0
+
+echo "$rawList"

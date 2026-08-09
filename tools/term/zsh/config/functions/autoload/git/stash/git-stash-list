@@ -1,0 +1,34 @@
+# Display the list of stashes
+# Usage:
+# $ git-stash-list
+setopt local_options err_return
+
+local rawList="$(git-stash-list-raw)"
+
+# Nothing to display
+[[ "$rawList" == "" ]] && return 0
+
+local output=""
+local rawLine
+for rawLine in ${(f)rawList}; do
+  local fields=(${(@ps/▮/)rawLine})
+  local index=$fields[1]
+  local message=$fields[2]
+  local date=$fields[3]
+
+  local row=""
+
+  # Index
+  row+="$(git-stash-colorize "$index" --with-icon)▮"
+
+  # Message
+  row+="$(git-stash-colorize "$message")▮"
+
+  # Date
+  row+="$(git-stash-colorize "$date")▮"
+
+  output+="$row\n"
+done
+
+# Output as columns
+table "$output"

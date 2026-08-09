@@ -79,8 +79,9 @@
   {
     "id": "08c",
     "issue": "issues/08c-git-stash-list-completion-fixes.md",
-    "done": false,
-    "blocked_by": ["08"]
+    "done": true,
+    "blocked_by": ["08"],
+    "recap": "Created git-stash-list-raw/list/complete-git-stash, added _git-stash compdef for git-stash-apply, fixed create (save→push) and apply (apply+drop→pop with optional selector)"
   },
   {
     "id": "08d",

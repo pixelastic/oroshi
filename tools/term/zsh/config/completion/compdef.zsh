@@ -97,6 +97,8 @@ compdef _git-files-dirty \
   git-file-revert
 compdef _git-files-staged \
   git-file-unstage
+compdef _git-stash \
+  git-stash-apply
 compdef _git-submodules \
   git-commit-submodule \
   git-submodule-remove

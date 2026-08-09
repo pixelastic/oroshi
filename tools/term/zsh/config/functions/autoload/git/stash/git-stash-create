@@ -6,4 +6,7 @@ setopt local_options err_return
 
 local message=$1
 
-git stash save --include-untracked $message
+local args=(stash push --include-untracked)
+[[ "$message" != "" ]] && args+=(--message "$message")
+
+git "${args[@]}"

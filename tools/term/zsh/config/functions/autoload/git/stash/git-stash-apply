@@ -1,6 +1,12 @@
-# Apply last stash and delete it
+# Apply stash and delete it
 # Usage:
-# $ git-stash-apply
+# $ git-stash-apply              # Pop latest stash
+# $ git-stash-apply stash@{2}   # Pop specific stash
 setopt local_options err_return
 
-git stash apply && git stash drop
+local selector=$1
+
+local args=(stash pop)
+[[ "$selector" != "" ]] && args+=("$selector")
+
+git "${args[@]}"

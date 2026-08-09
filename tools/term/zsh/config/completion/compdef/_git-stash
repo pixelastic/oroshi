@@ -1,0 +1,12 @@
+#compdef
+
+# Suggest the stashes
+function _git-stash() {
+  colors-load-definitions
+  icons-load-definitions
+
+  local suggestions=(${(f)"$(complete-git-stash)"})
+  local label=" $ICONS[git-stash] Stashes "
+  local header="$(completion-header git-stash black "$label")"
+  _describe -V "$header" suggestions
+}

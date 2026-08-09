@@ -1,0 +1,14 @@
+# Suggest all git stashes
+setopt local_options err_return
+
+local rawList="$(git-stash-list-raw)"
+
+# No stashes
+[[ "$rawList" == "" ]] && return 0
+
+for rawLine in ${(f)rawList}; do
+  local fields=(${(@ps/▮/)rawLine})
+  local index=$fields[1]
+  local message=$fields[2]
+  echo "${index}:${message}"
+done
