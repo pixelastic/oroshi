@@ -11,9 +11,11 @@ grammar for the sake of concision.
 - DO: Apply the "return early" pattern in code
 - DO: When editing code, preserve its comments. When deleting code, delete its comments with it.
 
-## Text
+## Clipboard
 
-- DO: When writing mails or Slack messages, copy it to the clipboard using `clipboard-write`.
+- DO: When writing mails, Slack messages, etc, copy it to the clipboard with `clipboard-write "text"`.
+- DO: When asked to put something in the clipboard, use the `clipboard-write` command.
+- DO NOT: use `xclip`, `xsel`, `pbcopy`, or `wl-copy` directly.
 
 ## Throw-away scripts
 
