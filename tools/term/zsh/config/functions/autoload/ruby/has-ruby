@@ -1,0 +1,5 @@
+# Check if Ruby is available
+# Usage:
+# $ has-ruby && echo "Ruby found"
+setopt local_options err_return
+[[ -v commands[ruby] ]]

@@ -1,0 +1,7 @@
+# Install a gem and rehash rbenv shims
+# Usage:
+# $ gem-install rails
+# $ gem-install nokogiri -- --use-system-libraries
+setopt local_options err_return
+gem install "$@"
+rbenv rehash

@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-set -e
-gem install $@
-rbenv rehash

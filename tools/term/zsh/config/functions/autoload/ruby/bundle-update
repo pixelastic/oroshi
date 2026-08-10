@@ -1,0 +1,7 @@
+# Run bundle update and rehash rbenv shims
+# Usage:
+# $ bundle-update
+# $ bundle-update nokogiri
+setopt local_options err_return
+bundle update "$@"
+rbenv rehash

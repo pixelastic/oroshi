@@ -1,0 +1,6 @@
+# Uninstall a gem and rehash rbenv shims
+# Usage:
+# $ gem-uninstall rails
+setopt local_options err_return
+gem uninstall "$@"
+rbenv rehash

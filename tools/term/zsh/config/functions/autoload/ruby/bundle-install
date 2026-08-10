@@ -1,0 +1,7 @@
+# Run bundle install and rehash rbenv shims
+# Usage:
+# $ bundle-install
+# $ bundle-install --path vendor/bundle
+setopt local_options err_return
+bundle install "$@"
+rbenv rehash

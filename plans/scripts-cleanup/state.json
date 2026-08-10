@@ -128,8 +128,9 @@
   {
     "id": "12",
     "issue": "issues/12-domain-ruby-gem.md",
-    "done": false,
-    "blocked_by": ["03", "03b"]
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Migrated 7 ruby/gem scripts to autoloaded functions (bundle-install/update, gem-install/uninstall/update, bundle-install-in-progress, has-ruby); fixed has-ruby bug checking commands[zsh] instead of commands[ruby]; no external callers to update"
   },
   {
     "id": "13",

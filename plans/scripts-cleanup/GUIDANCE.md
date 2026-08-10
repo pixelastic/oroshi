@@ -113,3 +113,6 @@ After migrating a script to autoloaded function, grep for call sites in:
 ### Issue 08f — issue/PR cache location
 - `.git/oroshi_*_count` files were zombie writes — written by `git-issue-list`/`git-pullrequest-list` but never read by anything. The prompt already maintained its own cache at `$OROSHI_TMP_FOLDER/github/<project>/issues|pullrequests`
 - The spec's "migrate readers" step was a no-op — `git-issue-count` and `git-pullrequest-count` call the API directly, they never read from cache
+
+### Issue 12 — Ruby/Gem domain
+- `has-ruby` had a pre-existing bug: checked `commands[zsh]` instead of `commands[ruby]` — fixed during migration

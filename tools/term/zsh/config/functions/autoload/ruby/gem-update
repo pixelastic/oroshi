@@ -1,0 +1,7 @@
+# Update gems and rehash rbenv shims
+# Usage:
+# $ gem-update         # Update all gems
+# $ gem-update rails   # Update specific gem
+setopt local_options err_return
+gem update "$@"
+rbenv rehash
