@@ -1,8 +1,7 @@
-#!/usr/bin/env zsh
 # Display the list of all local containers
 # Usage:
 # $ docker-container-list          # List all containers
-set -e
+setopt local_options err_return
 
 local rawContainerList="$(\
   docker ps \
@@ -12,7 +11,7 @@ local rawContainerList="$(\
 
 local output=""
 for rawContainerLine in ${(f)rawContainerList}; do
-  local splitLine=(${(@s/▮/)rawContainerLine})
+  local splitLine=(${(@ps/▮/)rawContainerLine})
 
   local containerName=$splitLine[1]
   local containerImage=$splitLine[2]
@@ -22,23 +21,19 @@ for rawContainerLine in ${(f)rawContainerList}; do
 
   local row=""
 
-  # Name {{{
+  # Name
   row+="$(docker-container-colorize $containerName --with-icon --state $containerState)▮"
-  # }}}
 
-  # Image {{{
+  # Image
   [[ $containerImage != *:* ]] && containerImage+=':latest'
   row+="$(docker-image-colorize $containerImage --with-icon)▮"
-  # }}}
-  
-  # Hash {{{
+
+  # Hash
   row+="$(docker-hash-colorize $containerHash --with-icon)▮"
-  # }}}
-  
-  # Status {{{
+
+  # Status
   row+="$(docker-status-colorize $containerStatus)▮"
-  # }}}
-  
+
   output+="$row\n"
 done
 

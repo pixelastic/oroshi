@@ -1,8 +1,7 @@
-#!/usr/bin/env zsh
 # Push a docker image to GitHub
 # Usage:
 # $ docker-image-push ghcr.io/pixelastic/alpine    # Push the image
-set -e
+setopt local_options err_return
 
 local imageName="$1"
 

@@ -107,8 +107,9 @@
   {
     "id": "09",
     "issue": "issues/09-domain-docker.md",
-    "done": false,
-    "blocked_by": ["03", "03b"]
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Migrated 9 docker scripts to autoloaded functions (container-list, image-build/push, images-remote-refresh, oroshi-commit/list/run, run, run-interactive); no external callers to update"
   },
   {
     "id": "10",

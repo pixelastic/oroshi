@@ -1,8 +1,7 @@
-#!/usr/bin/env zsh
 # Runs my oroshi image
 # Usage:
 # $ docker-oroshi-run
-set -e
+setopt local_options err_return
 
 local oroshiTag="$(docker-oroshi-tag)"
 
@@ -14,13 +13,3 @@ docker-run-interactive \
   --workdir /home/tim \
   --hostname oroshi \
   oroshi:${oroshiTag}
-
-
-# docker \
-#   run \
-#   --rm \
-#   --interactive \
-#   --tty \
-#   --hostname cosmos \
-#   --name cosmos \
-#   cosmos

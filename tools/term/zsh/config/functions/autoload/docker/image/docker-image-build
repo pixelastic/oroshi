@@ -1,10 +1,9 @@
-#!/usr/bin/env zsh
 # Build a new image from a Dockerfile
 # Usage:
 # $ docker-image-build                           # Build local directory image
 # $ docker-image-build image-name                # Set the image name
 # $ docker-image-build image-name --stage=prod   # Specify the stage to build (... AS prod)
-set -e
+setopt local_options err_return
 
 zparseopts -E -D \
   -stage:=flagStageName
@@ -34,9 +33,8 @@ fi
 
 # If another image with the same name already exist, we need to remove it first
 if docker-image-exists $imageName; then
-	docker-image-remove $imageName
+  docker-image-remove $imageName
 fi
-# }}}
 
 # We build our new image
 docker build . \

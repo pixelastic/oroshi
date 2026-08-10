@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # Writes on disk a list of all official Docker images on Docker Hub
 # This takes a long time to run, so the output is stored in the repo and read
 # from there. If for whatever reason I need to regenerate the list, I can just
@@ -6,16 +5,12 @@
 #
 # This is used by docker-images-list-remote to display the fuzzy list, as well
 # as by the autocomplete
-set -e
+setopt local_options err_return
 
 local cacheFolder=/tmp/oroshi/fzf/docker-images-remote
 mkdir -p ${cacheFolder}
 
 local outputFile="$OROSHI_ROOT/tools/docker/docker/config/data/src/images-remote.txt"
-
-# Get the list of all official from GitHub
-# For each, do a query with docker search and fill the values
-# Iterate on the next, if not in the list skip
 
 # Save the list of all official images, as stored on GitHub
 curl \
@@ -42,17 +37,15 @@ for imageName in ${(k)images}; do
   fi
 
   # We search with docker search to get the description
-  local searchResults="$(\
-    docker search \
+  local searchResults="$(docker search \
       --filter is-official=true \
       --no-trunc \
       --format "{{.Name}}▮{{.Description}}" \
-      $imageName
-  )"
+      $imageName)"
 
   # There can be several results, so we iterate on them all
   for line in ${(f)searchResults}; do
-    local splitLine=(${(@s/▮/)line})
+    local splitLine=(${(@ps/▮/)line})
 
     local splitImageName=$splitLine[1]
     local splitImageDescription=$splitLine[2]
@@ -68,7 +61,7 @@ for imageName in ${(k)images}; do
   done
 done
 
-# Save this list of names + descriptions in an file
+# Save this list of names + descriptions in a file
 local rawFileContent=()
 for imageName in ${(k)images}; do
   local description=$images[$imageName]

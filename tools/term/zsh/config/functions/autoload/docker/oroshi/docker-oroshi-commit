@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # Commits a running oroshi container into an image
 # Usage:
 # $ docker-oroshi-commit               # Creates 1.9.2, if was on 1.9.1
@@ -9,42 +8,36 @@
 # highest version
 #
 # TODO: Need to pass a --minor or --major flag
-set -e
+setopt local_options err_return
 
 local containerName="$(docker-oroshi-container)"
 local commitMessage="$1"
 
-# Stops if oroshi is not running {{{
+# Stops if oroshi is not running
 if ! docker-container-is-running $containerName; then
   echo "Oroshi is not running"
-  exit 1
+  return 1
 fi
-# }}}
 
-# Ask for a commit message if none is passed {{{
+# Ask for a commit message if none is passed
 if [[ $commitMessage == "" ]]; then
-  # Creating a file to hold the message
   local commitMessagePath=/tmp/docker/commit-message
   mkdir -p ${commitMessagePath:h}
   rm -rf $commitMessagePath
   touch $commitMessagePath
 
-  # Writing the commit message
   nvim $commitMessagePath
   commitMessage="$(cat $commitMessagePath)"
 
   if [[ $commitMessage == "" ]]; then
     echo "Commit message empty, aborting"
-    exit 1
+    return 1
   fi
 fi
-# }}}
 
 # Increment the version
 local oroshiTagCurrent="$(docker-oroshi-tag)"
 local oroshiTagNext="$(version-increment $oroshiTagCurrent)"
-echo "===$commitMessage==="
-echo "===${commitMessage:q}==="
 
 docker commit \
   --message=${commitMessage} \

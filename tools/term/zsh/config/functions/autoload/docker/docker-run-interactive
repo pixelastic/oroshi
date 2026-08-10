@@ -1,8 +1,7 @@
-#!/usr/bin/env zsh
 # Runs a specific image interactively
 # Usage:
 # $ docker-run-interactive ubuntu
-set -e
+setopt local_options err_return
 
 local args=($@)
 
