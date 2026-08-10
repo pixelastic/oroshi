@@ -1,0 +1,22 @@
+# Print the subject line of the last commit on a branch
+# Usage:
+# $ git-branch-last-subject              # current branch
+# $ git-branch-last-subject main         # named branch
+# $ git-branch-last-subject --repo /path # current branch in given repo
+# $ git-branch-last-subject main --repo /path
+setopt local_options err_return
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local branch="$1"
+local repoPath="${flagRepo[2]}"
+
+local repoArgs=()
+if [[ "$repoPath" != "" ]]; then
+  repoArgs=("-C" "$repoPath")
+fi
+
+[[ "$branch" == "" ]] && branch="HEAD"
+
+git "${repoArgs[@]}" log -1 --format="%s" "$branch"

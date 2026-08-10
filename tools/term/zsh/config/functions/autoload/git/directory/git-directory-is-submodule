@@ -1,0 +1,10 @@
+# Boolean: is the current (or given) path inside a git submodule?
+# Usage:
+# $ git-directory-is-submodule [path]
+setopt local_options err_return
+
+local targetPath="${1:-$PWD}"
+[[ -f "$targetPath" ]] && targetPath="${targetPath:h}"
+
+local superproject="$(git -C "$targetPath" rev-parse --show-superproject-working-tree 2>/dev/null)"
+[[ "$superproject" != "" ]]

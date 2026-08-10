@@ -61,6 +61,19 @@ setup() {
   [[ "$fixbug_line" != *"${iconBehind}"* ]]
 }
 
+@test "works from inside a submodule" {
+  cd "$BATS_GIT_DIR"
+  bats_git_dir 'sub-repo'
+  local subRepoDir="$BATS_GIT_DIR"
+  BATS_GIT_DIR="$BATS_TMP_DIR/my-repo"
+  git -C "$BATS_GIT_DIR" -c protocol.file.allow=always submodule add --quiet "$subRepoDir" private
+  git -C "$BATS_GIT_DIR" commit --quiet -m "add submodule"
+  bats_run_zsh "cd $BATS_GIT_DIR/private && complete-git-worktrees-linked"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"fix/bug"* ]]
+  [[ "$output" == *"feat/thing"* ]]
+}
+
 @test "returns empty output when no worktrees exist" {
   bats_git_dir 'clean-repo'
   cd "$BATS_GIT_DIR"

@@ -86,6 +86,17 @@ setup() {
   [[ "$fixbug_line" != *"${iconBehind}"* ]]
 }
 
+@test "works from inside a submodule" {
+  cd "$BATS_MY_REPO"
+  bats_git_dir 'sub-repo'
+  git -C "$BATS_MY_REPO" -c protocol.file.allow=always submodule add --quiet "$BATS_GIT_DIR" private
+  git -C "$BATS_MY_REPO" commit --quiet -m "add submodule"
+  bats_run_zsh "cd $BATS_MY_REPO/private && complete-git-worktrees"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"main"* ]]
+  [[ "$output" == *"fix/bug"* ]]
+}
+
 @test "outputs main with no description when outside a git repo" {
   cd "$BATS_MY_REPO"
   bats_run_zsh "complete-git-worktrees"
