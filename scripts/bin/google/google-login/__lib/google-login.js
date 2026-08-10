@@ -11,7 +11,7 @@ import { google } from 'googleapis';
 const clientId = process.env.OROSHI_GOOGLE_CLIENT_ID;
 const clientSecret = process.env.OROSHI_GOOGLE_CLIENT_SECRET;
 const redirectUri = 'http://localhost:48912/oauth2callback';
-const tokenPath = `${process.env.HOME}/.oroshi/private/config/google/tokens.json`;
+const tokenPath = `${process.env.OROSHI_TMP_FOLDER}/google/tokens.json`;
 const scopes = [
   'https://www.googleapis.com/auth/documents',
   'https://www.googleapis.com/auth/drive',
