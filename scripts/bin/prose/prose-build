@@ -35,6 +35,39 @@ function _sanitize_section() {
   printf '%s' "${1//\*/__STAR__}"
 }
 
+# Format INI for dist: keep preamble as-is, drop section comments, sort entries alphabetically
+function _format_ini() {
+  local input="$(cat)"
+  local -a lines=("${(@f)input}")
+  local inPreamble=1
+  local currentSection=""
+  local -a preamble=()
+  local -a sectionOrder=()
+  local -A sectionEntries=()
+
+  local line=""
+  for line in "${lines[@]}"; do
+    if [[ "$line" =~ '^\[' ]]; then
+      inPreamble=0
+      currentSection="$line"
+      sectionOrder+=("$line")
+      continue
+    fi
+    if (( inPreamble )); then
+      preamble+=("$line")
+      continue
+    fi
+    [[ "$line" =~ '^[[:space:]]*(#|$)' ]] && continue
+    sectionEntries[$currentSection]+="${line}"$'\n'
+  done
+
+  printf '%s\n' "${preamble[@]}"
+  for header in "${sectionOrder[@]}"; do
+    printf '%s\n' "$header"
+    printf '%s' "${sectionEntries[$header]}" | sort
+  done
+}
+
 # For each profile (including default), merge with default and write to generated/
 for profileFile in "$SRC_DIR"/*.ini; do
   local profileName="${profileFile:t:r}"
@@ -42,7 +75,7 @@ for profileFile in "$SRC_DIR"/*.ini; do
 
   # Default profile: just copy
   if [[ "$profileName" == "default" ]]; then
-    cp "$defaultFile" "$outputFile"
+    _format_ini < "$defaultFile" > "$outputFile"
     continue
   fi
 
@@ -120,5 +153,5 @@ for profileFile in "$SRC_DIR"/*.ini; do
     result=("${finalResult[@]}")
   fi
 
-  printf '%s\n' "${result[@]}" > "$outputFile"
+  printf '%s\n' "${result[@]}" | _format_ini > "$outputFile"
 done
