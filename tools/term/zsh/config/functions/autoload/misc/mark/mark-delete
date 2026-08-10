@@ -1,0 +1,20 @@
+# Delete a named mark (symlink)
+# Usage:
+# $ mark-delete foo
+setopt local_options err_return
+
+# Require a mark name
+if [[ $# -eq 0 ]]; then
+  echoerr "Usage: mark-delete <name>"
+  return 1
+fi
+
+local name="$1"
+
+# Mark must exist
+if [[ ! -L "$OROSHI_MARKPATH/$name" ]]; then
+  echoerr "Mark $name does not exist"
+  return 1
+fi
+
+rm "$OROSHI_MARKPATH/$name"

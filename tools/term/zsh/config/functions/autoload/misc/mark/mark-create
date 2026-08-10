@@ -7,9 +7,12 @@ setopt local_options err_return
 
 local name="${1:-${PWD:t}}"
 
-# Warn if a project already resolves to this directory
-local projectName="$(project-name)"
-[[ "$projectName" != "" ]] && echoerr "Warning: $projectName already points here as a project"
+# Warn if a project already points exactly to this directory
+local closestProjectName="$(project-name)"
+if [[ "$closestProjectName" != "" ]]; then
+  local closestProjectPath="$(project-path "$closestProjectName")"
+  [[ "$closestProjectPath" == "$PWD" ]] && echoerr "Warning: $closestProjectName already points here as a project"
+fi
 
 # Remove existing mark if any
 rm -f "$OROSHI_MARKPATH/$name"

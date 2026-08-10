@@ -1,0 +1,16 @@
+# List marks for completion (marks only, no projects)
+# Usage:
+# $ complete-marks
+setopt local_options err_return
+
+local rawMarks="$(mark-list-raw)"
+[[ "$rawMarks" == "" ]] && return 0
+
+for line in ${(f)rawMarks}; do
+  local fields=(${(@ps/▮/)line})
+  local name=$fields[1]
+  local target=$fields[2]
+
+  local description="${target/$HOME\//}"
+  echo "${name}:${description}"
+done

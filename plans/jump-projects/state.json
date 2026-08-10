@@ -30,8 +30,9 @@
   {
     "id": "05",
     "issue": "issues/05-mark-delete-complete-marks.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Created mark-delete, complete-marks, and _marks compdef for marks-only deletion with tab completion"
   },
   {
     "id": "06",

@@ -173,6 +173,7 @@ compdef "_files -g '*.webp'" \
 # }}}
 # 📌 Jumps {{{
 compdef _jumps mark-jump
+compdef _marks mark-delete
 # }}}
 # 🟢 Node {{{
 compdef _nvm-lazyload lazyloadNvm

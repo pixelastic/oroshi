@@ -1,0 +1,9 @@
+#compdef
+
+# Suggest marks for deletion
+function _marks() {
+  local suggestions=(${(f)"$(complete-marks)"})
+  local label=" Delete mark "
+  local header="$(completion-header directory white "$label")"
+  _describe -V "$header" suggestions
+}

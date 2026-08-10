@@ -43,18 +43,35 @@ setup() {
   [[ "$(readlink "$markpath/foo")" == "$BATS_TMP_DIR/newtarget" ]]
 }
 
-# Warns on project match
-@test "warns on stderr when directory matches a project path" {
+# Warns when project points exactly to PWD
+@test "warns when project path matches PWD exactly" {
   local markpath="$BATS_TMP_DIR/marks"
 
-  # Mock project-name to return a matching project
+  # Mock project-name to return a project, project-path to return exact PWD
   project-name() { echo "myproject"; }
-  bats_mock project-name
+  project-path() { echo "$BATS_TMP_DIR"; }
+  bats_mock project-name project-path
 
   OROSHI_MARKPATH="$markpath" bats_run_zsh "cd $BATS_TMP_DIR && mark-create myproject"
   [[ "$status" -eq 0 ]]
   [[ -L "$markpath/myproject" ]]
   [[ "$output" == *"myproject"* ]]
+}
+
+# No warning when project contains PWD but doesn't match exactly
+@test "no warning when project path is a parent of PWD" {
+  local markpath="$BATS_TMP_DIR/marks"
+  local subdir="$BATS_TMP_DIR/subdir"
+  mkdir -p "$subdir"
+
+  # project-name returns a match, but project-path returns a parent dir
+  project-name() { echo "home"; }
+  project-path() { echo "$BATS_TMP_DIR"; }
+  bats_mock project-name project-path
+
+  OROSHI_MARKPATH="$markpath" bats_run_zsh "cd $subdir && mark-create myname"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
 }
 
 # No warning without project match
