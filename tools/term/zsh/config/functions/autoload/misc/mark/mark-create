@@ -1,0 +1,19 @@
+# Save current directory as a named mark (symlink)
+# Warns if directory already matches a known project
+# Usage:
+# $ mark-create           # Uses current dirname
+# $ mark-create my-name   # Explicit name
+setopt local_options err_return
+
+local name="${1:-${PWD:t}}"
+
+# Warn if a project already resolves to this directory
+local projectName="$(project-name)"
+[[ "$projectName" != "" ]] && echoerr "Warning: $projectName already points here as a project"
+
+# Remove existing mark if any
+rm -f "$OROSHI_MARKPATH/$name"
+
+# Create mark
+mkdir -p "$OROSHI_MARKPATH"
+ln -s "$PWD" "$OROSHI_MARKPATH/$name"
