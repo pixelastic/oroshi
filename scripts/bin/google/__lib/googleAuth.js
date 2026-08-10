@@ -1,4 +1,4 @@
-import { consoleError, readJson } from 'firost';
+import { consoleWarn, readJson, run } from 'firost';
 import { google } from 'googleapis';
 
 export let __;
@@ -14,12 +14,28 @@ export async function googleAuth() {
   try {
     tokens = await __.readTokens();
   } catch {
-    consoleError('No Google tokens found. Run google-login first.');
-    process.exit(1);
+    consoleWarn('No Google tokens found. Running google-login...');
+    await __.runGoogleLogin();
+    tokens = await __.readTokens();
   }
 
   const client = __.createOAuth2Client();
   client.setCredentials({ refresh_token: tokens.refresh_token });
+
+  // Verify the token works by forcing a refresh
+  try {
+    await client.getAccessToken();
+  } catch (error) {
+    if (error.message?.includes('invalid_grant')) {
+      consoleWarn('Google token expired. Running google-login...');
+      await __.runGoogleLogin();
+      tokens = await __.readTokens();
+      client.setCredentials({ refresh_token: tokens.refresh_token });
+    } else {
+      throw error;
+    }
+  }
+
   return client;
 }
 
@@ -40,5 +56,12 @@ __ = {
       process.env.OROSHI_GOOGLE_CLIENT_ID,
       process.env.OROSHI_GOOGLE_CLIENT_SECRET,
     );
+  },
+  /**
+   * Run google-login and wait for the user to complete auth
+   * @returns {Promise<void>}
+   */
+  async runGoogleLogin() {
+    await run('google-login', { stdin: 'inherit', stdout: 'inherit' });
   },
 };

@@ -53,6 +53,7 @@ the existing list
 - Use hunk to see work done by claude in realtime
 - Kitty keybinding to "mark" a tab with a specific icon (like re-adding an attention, or marking it as "to come back once other tab is done")
 - ralph skill probably need same split into different files for each step as plan
+- evaluate if I need some allowed-tools/disallowed-tools in my skills
 
 
 ---
