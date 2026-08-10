@@ -1,0 +1,18 @@
+# Filter a JSON array to only keep specific elements
+# Usage:
+# $ json-filter file.json name          # Keep elements that have the key
+# $ json-filter file.json era fantasy   # Keep elements where era = fantasy
+setopt local_options err_return
+
+local inputFile="${1:a}"
+local filterKey="$2"
+local filterValue="$3"
+
+# Filter on key existence only
+if [[ "$filterValue" == "" ]]; then
+  jq "[.[] | select(has(\"${filterKey}\"))]" "$inputFile"
+  return 0
+fi
+
+# Filter on key and value
+jq "[.[] | select(.${filterKey} == \"${filterValue}\")]" "$inputFile"

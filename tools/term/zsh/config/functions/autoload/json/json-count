@@ -1,0 +1,14 @@
+# Count elements in a JSON array
+# Usage:
+# $ json-count file.json           # From file
+# $ cat file.json | json-count     # From stdin
+setopt local_options err_return
+
+# Read from stdin if piped
+if [[ -p /dev/stdin ]]; then
+  jq 'length'
+  return 0
+fi
+
+local inputFile="$1"
+jq 'length' "$inputFile"
