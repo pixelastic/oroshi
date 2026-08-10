@@ -1,19 +1,18 @@
-#!/usr/bin/env zsh
-# Search for dirty stageable git files (modified, added, deleted)
+# Search for all dirty git files (modified, added, deleted, untracked)
 # Usage:
-# $ fzf-git-files-dirty-stageable                  # Interactive search
-# $ fzf-git-files-dirty-stageable --source         # Print stageable files
-# $ fzf-git-files-dirty-stageable --options        # Print FZF options (one per line)
-# $ fzf-git-files-dirty-stageable --postprocess    # Read selection from stdin, print filepath
-# $ fzf-git-files-dirty-stageable --preview <file> # Show diff or file content for preview pane
-set -e
-source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
-source "${0:h}/__lib/fzf-fs-preview.zsh"
-source "${0:h}/__lib/fzf-colorize-git-status-path.zsh"
+# $ fzf-git-files-dirty                  # Interactive search
+# $ fzf-git-files-dirty --source         # Print dirty files
+# $ fzf-git-files-dirty --options        # Print FZF options (one per line)
+# $ fzf-git-files-dirty --postprocess    # Read selection from stdin, print filepath
+# $ fzf-git-files-dirty --preview <file> # Show diff or file content for preview pane
+setopt local_options err_return
+source "$OROSHI_ROOT/scripts/bin/fzf/__lib/init.zsh"
+source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-options-prompt-directory.zsh"
+source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-fs-preview.zsh"
+source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-colorize-git-status-path.zsh"
 
 function fzf-source() {
-  local rawFiles="$(git-file-list-dirty-stageable-raw)"
+  local rawFiles="$(git-file-list-dirty-raw)"
   [[ "$rawFiles" == "" ]] && return 0
 
   local rawLine
@@ -77,7 +76,7 @@ function fzf-options() {
   echo "--prompt=${prompt}"
 
   echo "--with-nth=2"
-  echo "--preview=fzf-git-files-dirty-stageable --preview {1}"
+  echo "--preview=bin-zsh fzf-git-files-dirty --preview {1}"
   echo "--preview-window=wrap"
 }
 

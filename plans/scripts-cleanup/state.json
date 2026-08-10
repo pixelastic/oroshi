@@ -114,8 +114,9 @@
   {
     "id": "10",
     "issue": "issues/10-domain-fzf.md",
-    "done": false,
-    "blocked_by": ["03", "03b"]
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Migrated 5 FZF scripts (ctrl-shift-o, fzf-apt-packages, fzf-git-files-dirty-stageable, fzf-git-files-dirty, fzf-js-test) to autoloaded functions; preview/reload commands use bin-zsh for fzf subprocess access"
   },
   {
     "id": "11",

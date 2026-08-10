@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # Fuzzy search apt packages
 # Usage:
 # $ fzf-apt-packages                          # Interactive package search (all packages)
@@ -7,17 +6,15 @@
 # $ fzf-apt-packages --source --installed     # Print installed packages (one per line)
 # $ fzf-apt-packages --options                # Print FZF options (one per line)
 # $ fzf-apt-packages --postprocess            # Read raw selection from stdin, print package name
-set -e
-source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-options-prompt-label.zsh"
+setopt local_options err_return
+source "$OROSHI_ROOT/scripts/bin/fzf/__lib/init.zsh"
+source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-options-prompt-label.zsh"
 
 # Custom flags beyond the standard 4
 zparseopts -D -E \
   -installed=flagInstalled
 
 local isInstalled=${#flagInstalled}
-
-SCRIPT_NAME="${0:t}"
 
 function fzf-preview() {
   local packageName="$1"
@@ -72,14 +69,17 @@ function fzf-preview() {
   [[ "$packageDescriptionText" != "" ]] && colorize "${packageDescriptionText}" $COLORS[comment]
 }
 
-function fzf-source() {
-  local cacheFile="${OROSHI_TMP_FOLDER}/fzf/packages-apt"
-  [[ $isInstalled == "1" ]] && cacheFile="${OROSHI_TMP_FOLDER}/fzf/packages-apt-installed"
+function fzf-cache-file() {
+  local path="${OROSHI_TMP_FOLDER}/fzf/packages-apt"
+  [[ $isInstalled == "1" ]] && path="${OROSHI_TMP_FOLDER}/fzf/packages-apt-installed"
+  echo "$path"
+}
 
-  # Regenerate if missing, unreadable, or stale (older than 20 hours)
-  setopt local_options extended_glob
-  local staleFiles=(${cacheFile}(#qN.mh+20))
-  if [[ ! -r $cacheFile ]] || [[ ${#staleFiles[@]} -gt 0 ]]; then
+function fzf-source() {
+  local cacheFile="$(fzf-cache-file)"
+
+  # Generate cache if missing
+  if [[ ! -r $cacheFile ]]; then
     apt-packages-cache-generate
   fi
 
@@ -97,16 +97,22 @@ function fzf-options() {
   local prompt="${f5Badge}$(fzf-options-prompt-label package Packages yellow yellow-dark)"
   echo "--prompt=${prompt}"
 
-  echo "--preview=$SCRIPT_NAME --preview {1}"
+  echo "--preview=bin-zsh fzf-apt-packages --preview {1}"
 
-  # f5: force-refresh the package cache and reload the list
+  # Show loading header while cache is being built (cleared when items finish loading)
+  local cacheFile="$(fzf-cache-file)"
+  if [[ ! -r $cacheFile ]]; then
+    echo "--header=Building package cache, please wait…"
+  fi
+  echo "--bind=load:change-header()"
+
+  # f5: delete cache, rebuild, reload
   local sourceArgs=""
   [[ $isInstalled == "1" ]] && sourceArgs=" --installed"
-  local reloadCmd="apt-packages-cache-generate >/dev/null 2>&1; $SCRIPT_NAME --source${sourceArgs}"
+  local reloadCmd="rm -f ${cacheFile}; apt-packages-cache-generate >/dev/null 2>&1; bin-zsh fzf-apt-packages --source${sourceArgs}"
   local refreshIcon="$ICONS[fzf-refresh]"
-  local bindAction="transform-header(echo ' $refreshIcon Refreshing…')"
+  local bindAction="transform-header(echo ' $refreshIcon Rebuilding package cache, please wait…')"
   bindAction+="+reload($reloadCmd)"
-  bindAction+="+transform-header(echo '')"
   echo "--bind=f5:${bindAction}"
 }
 

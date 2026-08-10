@@ -1,14 +1,15 @@
 # Sets FZF_DEFAULT_OPTS for the current shell
 # Usage: source this file, then call fzf-set-default-opts
 
-fzf-set-default-opts() {
+function fzf-set-default-opts() {
   colors-load-definitions
   icons-load-definitions
 
   # Colors
   local fzfColors=()
   fzfColors+=("info:$COLORS[number]")               # result count
-  fzfColors+=("prompt:${COLORS[ui]}:regular")         # > before query (regular = not bold)
+  fzfColors+=("prompt:${COLORS[ui]}:regular")       # > before query (regular = not bold)
+  fzfColors+=("header:$COLORS[comment]")            # Header (used for temporary messages)
   fzfColors+=("bg+:$COLORS[selected-background]")   # selected result background
   fzfColors+=("fg+:$COLORS[selected-foreground]")   # selected result foreground
   fzfColors+=("pointer:$COLORS[pointer]")           # $ICONS[fzf-current] before current line
