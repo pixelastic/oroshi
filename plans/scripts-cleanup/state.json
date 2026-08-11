@@ -7,8 +7,14 @@
   },
   {
     "id": "02",
-    "issue": "issues/02-rename-migrate-root-scripts.md",
+    "issue": "issues/02-rename-root-scripts.md",
     "done": false,
     "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-migrate-root-scripts-to-autoloaded.md",
+    "done": false,
+    "blocked_by": ["01", "02"]
   }
 ]

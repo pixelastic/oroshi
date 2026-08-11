@@ -1,6 +1,6 @@
 ## Problem Statement
 
-After the first cleanup pass (issues 01-17), `scripts/bin/` still contains ~283 files. Many root-level scripts are unused/dead, and surviving ones need renaming or migration to autoloaded functions. A second interactive audit identified 10 scripts to delete and 6 to rename/migrate.
+After the first cleanup pass (issues 01-17), `scripts/bin/` still contains ~283 files. Many root-level scripts are unused/dead, and surviving ones need renaming or migration to autoloaded functions. A second interactive audit identified scripts to delete, rename, and migrate.
 
 ## Solution
 
@@ -12,7 +12,7 @@ Two-phase cleanup of remaining `scripts/bin/` contents:
 
 ### Issue 1: Delete dead root-level scripts
 
-Delete 10 scripts confirmed unused/obsolete during interactive audit:
+Delete 13 scripts confirmed unused/obsolete:
 
 | Script | Reason |
 |--------|--------|
@@ -24,22 +24,54 @@ Delete 10 scripts confirmed unused/obsolete during interactive audit:
 | `kbl` | One-liner gsettings debug, 1 history hit |
 | `randomstring` | 1 history hit, `openssl rand` covers the need |
 | `throttle` | Buggy, 5 history hits, no dependencies |
-| `better-posting` | Posting no longer used; also remove alias in `misc.zsh` |
+| `better-posting` | Posting no longer used |
 | `markdown/mk2html` | Perl Markdown original, replaced by `md2html` (pandoc) |
+| `compress` | Ruby dependency (`etc/compress/`) deleted, script is dead |
+| `record` | Ruby + X11 (byzanz-record/xprop/wmctrl), broken on Wayland |
+| `help` | 0 real history hits (489 were `--help` false positives) |
 
-### Issue 2: Rename and migrate surviving scripts
+### Issue 2: Rename root-level scripts
 
-| Current name | New name | Domain | Notes |
-|-------------|----------|--------|-------|
-| `order` | `rename-prefix-number` | rename/ | Migrate to autoloaded function |
-| `rename-sequential` | `rename-number` | rename/ | Already autoloaded, just rename |
-| `swapclean` | `swap-clean` | system/ | Migrate to autoloaded function |
-| `urls` | TBD | TBD | Keep, name + domain to decide |
-| `hx` | `html-get` | html/ | Migrate to autoloaded function |
-| `md2html` | `md2html` | markdown/ | Migrate to autoloaded function (keep name) |
+| Current | New name | Notes |
+|---------|----------|-------|
+| `f` | `better-find` + alias `f` | fd wrapper |
+| `g` | `better-grep` + alias `g` | rg wrapper |
+| `header` | `http-header` | Domain http/ |
+| `http/post` | `http-post` | Domain http/ |
+| `sp` | `spotify-dbus` | Move into spotify/, stays as bash script |
+| `chmod-default` | `chmod-default` | Rewrite Ruby to ZSH, find domain |
+
+### Issue 3: Migrate root-level scripts to autoloaded functions
+
+| Script | Target domain | Notes |
+|--------|--------------|-------|
+| `apt-packages-cache-generate` | apt-get/ | Already ZSH |
+| `better-cat` | (root or misc/) | Already ZSH |
+| `better-ls` | (root or misc/) | Already ZSH |
+| `better-ydotool` | (root or misc/) | Already ZSH |
+| `colors` | (root or system/) | Already ZSH |
+| `colors-reload` | (root or system/) | Already ZSH |
+| `extract` | (root or misc/) | Already ZSH |
+| `gif2png` | img/ | Already ZSH |
+| `glob` | (root or misc/) | Already ZSH |
+| `table` | (root or misc/) | Already ZSH |
+| `watch-and-reload` | (root or misc/) | Already ZSH |
+| `order` | rename/ | Rewrite Ruby to ZSH, rename to `rename-prefix-number` |
+| `rename-sequential` | rename/ | Already autoloaded, rename to `rename-number` |
+| `swapclean` | system/ | Rename to `swap-clean` |
+| `hx` | html/ | Rename to `html-get` |
+| `md2html` | markdown/ | Keep name |
+| `urls` | TBD | Name + domain to decide |
+
+### Scripts that remain as scripts
+
+| Script | Reason |
+|--------|--------|
+| `bin-zsh` | Core dispatcher, called from non-ZSH contexts |
+| `spotify-dbus` (ex `sp`) | Bash, third-party, not convertible |
+| `spotify/*` wrappers | Bash, called from keybindings |
 
 ## Out of Scope
 
 - Subdirectory scripts audit (Phase B, separate plan)
-- Scripts with confirmed dependencies (bin-zsh, colors, extract, compress, etc.)
-- Scripts with confirmed high usage (sp, help, record, glob, table, f, g, etc.)
+- exa to eza migration (separate task)
