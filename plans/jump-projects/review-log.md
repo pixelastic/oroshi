@@ -36,3 +36,11 @@ mkdir -p "$OROSHI_MARKPATH"
 ```
 **Problem:** No dedicated comment for `mkdir -p` guard
 **Reason skipped:** It's setup grouped under the existing "Create mark" comment, not a guard clause
+
+## Issue 08 — redundant marks cleanup
+### Script placement as autoloaded function vs scripts/bin
+```zsh
+# tools/term/zsh/config/functions/autoload/misc/mark/mark-cleanup-redundant
+```
+**Problem:** Spec suggests `scripts/bin/mark-cleanup-redundant`; implementation is an autoloaded function
+**Reason skipped:** Spec says "can live in" (suggestion). zsh-writer skill says autoloaded is preferred for functions called from zsh

@@ -51,7 +51,8 @@
   {
     "id": "08",
     "issue": "issues/08-redundant-marks-cleanup.md",
-    "done": false,
-    "blocked_by": ["07"]
+    "done": true,
+    "blocked_by": ["07"],
+    "recap": "Created mark-cleanup-redundant to identify and interactively remove marks duplicating project paths"
   }
 ]
