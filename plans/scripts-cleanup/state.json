@@ -170,7 +170,8 @@
   {
     "id": "17",
     "issue": "issues/17-doc-autoloaded-functions.md",
-    "done": false,
-    "blocked_by": ["04", "05", "06", "07", "08", "08a", "08b", "08c", "08d", "08e", "08f", "09", "10", "11", "12", "13", "13b", "14", "15", "16"]
+    "done": true,
+    "blocked_by": ["04", "05", "06", "07", "08", "08a", "08b", "08c", "08d", "08e", "08f", "09", "10", "11", "12", "13", "13b", "14", "15", "16"],
+    "recap": "Added doc comments to 8 autoloaded functions (3 ai/claude, 2 ai/skills, yarn-dependency-why, complete-make-targets, make-target-list-raw); removed stale shebangs from 3 functions; fixed pre-existing lint violations (missingErrReturn, noDashZ, unquoted vars)"
   }
 ]

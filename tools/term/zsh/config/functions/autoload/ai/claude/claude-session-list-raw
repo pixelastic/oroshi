@@ -1,3 +1,5 @@
+# List Claude sessions as raw ▮-separated output
+setopt local_options err_return
 local historyFile="$HOME/.claude/history.jsonl"
 
 jq -r 'select(has("sessionId")) |
@@ -7,7 +9,7 @@ jq -r 'select(has("sessionId")) |
     timestamp: .timestamp,
     display: (.display | gsub("\n"; " "))
   }' "$historyFile" |
-  jq -s 'group_by(.sessionId) |
+jq -s 'group_by(.sessionId) |
   map({
     uuid: .[0].sessionId,
     cwd: .[0].project,

@@ -1,6 +1,11 @@
+# Remove a globally installed Claude Code skill
+# Usage:
+# $ skills-remove <skill-name>
+setopt local_options err_return
 local skillName="$1"
 
-if [[ -z "$skillName" ]]; then
+# Skill name is required
+if [[ "$skillName" == "" ]]; then
   echo "Usage: skills-remove <skill-name>"
   return 1
 fi

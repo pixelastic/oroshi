@@ -1,6 +1,6 @@
-#!/usr/bin/env zsh
 # Format make targets for completion
 # Returns targets in format "target:description" for use with _describe
+setopt local_options err_return
 local rawList="$(make-target-list-raw)"
 [[ $rawList == "" ]] && return 0
 

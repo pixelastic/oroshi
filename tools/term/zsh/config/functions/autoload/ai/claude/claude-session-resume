@@ -1,12 +1,18 @@
+# Resume a Claude session by UUID
+# Usage:
+# $ claude-session-resume <uuid>
+setopt local_options err_return
 local uuid="$1"
 
-if [[ -z "$uuid" ]]; then
+# UUID is required
+if [[ "$uuid" == "" ]]; then
   echo "Usage: claude-session-resume <uuid>"
   return 1
 fi
 
-local cwd=$(claude-session-data $uuid | jq -r '.cwd')
-if [[ -z "$cwd" ]]; then
+local cwd="$(claude-session-data "$uuid" | jq -r '.cwd')"
+# No working directory found
+if [[ "$cwd" == "" ]]; then
   echo "❌ No working directory found for this session"
   return 1
 fi
