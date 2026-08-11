@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# Microsoft Teams
 set -e
 
 local DOWNLOAD_URL="https://go.microsoft.com/fwlink/p/?LinkID=2112886&clcid=0x409&culture=en-us&country=US"

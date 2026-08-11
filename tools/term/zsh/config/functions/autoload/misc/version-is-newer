@@ -1,0 +1,27 @@
+# Return 0 if the first version is strictly newer than the second
+# Usage:
+# $ version-is-newer 2.0.0 1.0.0 && echo "newer"
+# $ version-is-newer 1.0.0 2.0.0 || echo "not newer"
+setopt local_options err_return
+
+local left="$1"
+local right="$2"
+
+# Both args required
+[[ "$left" == "" || "$right" == "" ]] && return 1
+
+local leftParts=(${(@s/./)left})
+local rightParts=(${(@s/./)right})
+
+# Compare each segment left to right
+local maxLen=$((${#leftParts} > ${#rightParts} ? ${#leftParts} : ${#rightParts}))
+local i
+for i in $(seq 1 $maxLen); do
+  local l=${leftParts[$i]:-0}
+  local r=${rightParts[$i]:-0}
+  (( l > r )) && return 0
+  (( l < r )) && return 1
+done
+
+# Equal
+return 1

@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Install drivers for the Brother HL-L2375DW
+set -e
 
 DRIVER_PATH="${0:h}/driver-Brother-HL-L2375DW.deb"
 

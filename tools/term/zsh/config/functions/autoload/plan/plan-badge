@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # Render a colorized plan progress badge
 # Outputs "icon done/total" in amber (in progress) or green (complete)
 # Outputs error-colored icon when plan dir exists but state.json is malformed
@@ -8,7 +7,7 @@
 # $ plan-badge /path/to/plan     # explicit plan directory
 # $ plan-badge --zsh             # zsh prompt format (%F{} codes)
 # $ plan-badge --zsh /path/to/plan
-set -e
+setopt local_options err_return
 
 zparseopts -E -D \
   -zsh=flagZsh

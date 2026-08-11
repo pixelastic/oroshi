@@ -1,8 +1,7 @@
-#!/usr/bin/env zsh
 # Run a command in the background, and write a lockfile while it executes
 # Usage:
 # $ fork "yarn install" /tmp/yarn-install-in-progress
-set -e
+setopt local_options err_return
 
 local commandToRun="$1"
 local lockfilePath="$2"
@@ -10,13 +9,13 @@ local lockfilePath="$2"
 # Lockfile is mandatory
 if [[ $lockfilePath == '' ]]; then
   echo "✘ You must pass a lockfile path"
-  exit 1
+  return 1
 fi
 
 # If lockfile already exists, we stop, because we don't want to run twice the
 # same command
 if [[ -r $lockfilePath ]]; then
-  exit 0
+  return 0
 fi
 
 # The complex bash command below works like this:
@@ -30,8 +29,8 @@ fi
 
 local promptPid="$(prompt-pid)"
 (\
-  touch "$lockfilePath" \
-  && (eval $commandToRun) &>/dev/null; \
-     rm "$lockfilePath"; \
-     prompt-redraw $promptPid
+    touch "$lockfilePath" \
+    && (eval $commandToRun) &>/dev/null; \
+    rm "$lockfilePath"; \
+    prompt-redraw $promptPid
 ) &

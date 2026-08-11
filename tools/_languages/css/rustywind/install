@@ -3,4 +3,4 @@
 # https://github.com/avencera/rustywind
 set -e
 
-node-module-install rustywind
+bin-zsh node-module-install rustywind

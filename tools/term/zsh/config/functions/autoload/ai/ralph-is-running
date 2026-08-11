@@ -1,9 +1,8 @@
-#!/usr/bin/env zsh
 # Exit 0 if a ralph session is active for a plan directory, 1 if not.
 # Usage:
 #   ralph-is-running [planDir]   # planDir inferred from git root + branch slug if omitted
 # Silent — no output, exit code only.
-set -e
+setopt local_options err_return
 
 local planDir="$1"
 

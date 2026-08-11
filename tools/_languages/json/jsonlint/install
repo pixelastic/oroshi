@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
 # JSONLint: a JSON Linter
+set -e
 
 node-module-install jsonlint

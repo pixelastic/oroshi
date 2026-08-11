@@ -18,9 +18,9 @@ end
 
 M.configureFormatter = function(conform)
   conform.formatters.oroshi_css_fix = {
-    command = "css-fix",
+    command = "bin-zsh",
     stdin = true,
-    args = { "--piped", "--filepath", "$FILENAME" },
+    args = { "css-fix", "--piped", "--filepath", "$FILENAME" },
     exit_codes = { 0, 1 },
   }
 end

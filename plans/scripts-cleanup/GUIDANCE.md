@@ -127,3 +127,9 @@ After migrating a script to autoloaded function, grep for call sites in:
 - `xml2json` and `zsh2json` keep their `X2Y` names per issue 05 convention — the rename map's text/encoding section wasn't updated when the convention was established
 - `base64-decode`/`base64-encode` use `print -rn` instead of `echo` to avoid encoding trailing newlines — cleaner behavior than the originals
 - `xq` not available in test environment — `xml2json` tests must mock `xq` via `bats_mock`
+
+### Issue 15 — Misc dev tools
+- `node-module-install` had a comment saying it must stay as a script for install scripts — actually `zshenv` configures fpath for ALL ZSH instances (interactive and non-interactive), so ZSH install scripts can call autoloaded functions directly. Only Bash install scripts need `bin-zsh`
+- `lua-lint-selene`: `local` masks exit code of `$()`, so `|| true` is redundant — just use `local rawOutput="$(selene ...)"` directly
+- `version-is-newer` (Ruby→ZSH): ZSH `${(@s/./)version}` splits version strings into arrays for segment-by-segment comparison — no external deps needed
+- Several install scripts had pre-existing lint issues (missing `set -e`, missing doc comment, literal carriage return) — fixed as part of migration

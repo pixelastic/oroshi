@@ -156,8 +156,9 @@
   {
     "id": "15",
     "issue": "issues/15-domain-misc-dev-tools.md",
-    "done": false,
-    "blocked_by": ["03", "03b"]
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Migrated 12 misc dev tool scripts to autoloaded functions (fork, install-deb, is-older, css-fix, python-version, node-module-install, lua-lint-selene, lua-test-path, plan-badge, ralph-is-running, review-blog-start); rewrote version-compare from Ruby to ZSH as version-is-newer, renamed algolia-download to algolia-index-download; updated 3 Bash install scripts and NeoVim css.lua to use bin-zsh"
   },
   {
     "id": "16",

@@ -1,0 +1,16 @@
+# Download an algolia index as jsonl file
+# Usage:
+# $ algolia-index-download monsters   # monsters.jsonl from preferred app
+setopt local_options err_return
+
+local indexName="$1"
+local outputFile="${indexName}.jsonl"
+
+# Stop if no index name
+if [[ $indexName == "" ]]; then
+  echo "✘ You need to pass an index name"
+  return 1
+fi
+
+algolia objects browse ${indexName} > ${outputFile}
+echo "Index saved as $outputFile"

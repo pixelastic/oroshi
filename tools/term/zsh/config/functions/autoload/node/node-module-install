@@ -1,9 +1,4 @@
-#!/usr/bin/env zsh
 # Globally install a node binary
-#
-# Note: This is defined as a script in ./bin instead of as a zsh autoloaded
-# function as it is used in install scripts, where zsh functions might not be
-# available.
 #
 # Sometimes, I need to install an npm package, and have its binary globally
 # available in my $PATH. For example eslint_d, or jsonlint, that I use in vim
@@ -24,7 +19,7 @@
 #
 # Usage:
 # $ node-module-install eslint_d   # Install into the current node version as selected by nvm
-set -e
+setopt local_options err_return
 
 # We specifically go in a directory where we know no specific .nvmrc has been
 # set, to be sure to be using the global version
@@ -46,8 +41,8 @@ cd $installDirectory
 
 # Init package.json if first time we add a global package
 if [[ ! -f package.json ]]; then
-	echo $nodeVersion >.nvmrc
-	yarn init -y &>/dev/null
+  echo $nodeVersion >.nvmrc
+  yarn init -y &>/dev/null
 fi
 
 # Add the module with exact version pinning
@@ -65,14 +60,14 @@ elif (.bin | type == "object") then
 end
 ' ${nodeModulesDirectory}/package.json)"
 
-if [[ $allBinaries = "ORIGINAL_MODULE_NAME" ]]; then
+if [[ $allBinaries == "ORIGINAL_MODULE_NAME" ]]; then
   allBinaries=($baseModuleName)
 fi
 
-if [[ $allBinaries = "ERROR" ]]; then
+if [[ $allBinaries == "ERROR" ]]; then
   echo "✘ It seems that ${baseModuleName} has no binary linked."
   echo "✘ Make sure you installed the right package."
-  exit 1
+  return 1
 fi
 
 # Add a symlink for each

@@ -1,12 +1,11 @@
-#!/usr/bin/env zsh
 # Wrap selene linter, output violations in file▮code▮level▮line▮message format
 # Usage:
 # $ lua-lint-selene file.lua
-set -e
+setopt local_options err_return
 
 local SELENE_CONFIG="$OROSHI_ROOT/tools/_languages/lua/selene/selene.toml"
 
-local rawOutput="$(selene --display-style json --config "$SELENE_CONFIG" "$1" || true)"
+local rawOutput="$(selene --display-style json --config "$SELENE_CONFIG" "$1")"
 
 local -a violations=()
 local line
@@ -26,5 +25,5 @@ for v in "${violations[@]}"; do
   printf '%s\n' "$v"
 done
 
-[[ ${#violations} -gt 0 ]] && exit 1
-exit 0
+[[ ${#violations} -gt 0 ]] && return 1
+return 0

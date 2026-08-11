@@ -1,0 +1,6 @@
+# Print the current Python version number
+# Usage:
+# $ python-version   # 3.12.1
+setopt local_options err_return
+
+python --version 2>&1 | awk '{print $2}'
