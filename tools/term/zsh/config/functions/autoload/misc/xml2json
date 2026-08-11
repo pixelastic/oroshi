@@ -1,0 +1,9 @@
+# Convert XML files to JSON using yq
+# Usage:
+# $ xml2json file.xml             # Creates file.json
+# $ xml2json one.xml two.xml      # Converts multiple files
+setopt local_options err_return
+
+for input in "$@"; do
+  yq -p xml -o json "${input:a}" > "${input:a:r}.json"
+done

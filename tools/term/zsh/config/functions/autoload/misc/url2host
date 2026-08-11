@@ -1,0 +1,12 @@
+# Extract hostname from a URL
+# Usage:
+# $ url2host https://example.com/path   # example.com
+setopt local_options err_return
+
+local url=$1
+local withoutScheme=${url#*://}
+local host=${withoutScheme%%/*}
+host=${host%%:*}
+host=${host%%\?*}
+
+echo "$host"

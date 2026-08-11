@@ -122,3 +122,8 @@ After migrating a script to autoloaded function, grep for call sites in:
 - Kitty statusbar Python calls scripts via `subprocess.check_output` — after migration, pass `[binPath, binName]` list form to call `bin-zsh <function>` instead of direct script path
 - `statusbar-cpu` and `statusbar-ram` still live as scripts in `scripts/bin/statusbar/` — they'll be handled when their domain issue comes up. The Python `bin-zsh` dispatch already works for them since `bin-zsh` falls through to PATH lookup
 - `cpu-percent` and `ram-percent` were duplicates of existing `sys-cpu` and `sys-ram` — deleted without replacement
+
+### Issue 14 — Text/encoding domain
+- `xml2json` and `zsh2json` keep their `X2Y` names per issue 05 convention — the rename map's text/encoding section wasn't updated when the convention was established
+- `base64-decode`/`base64-encode` use `print -rn` instead of `echo` to avoid encoding trailing newlines — cleaner behavior than the originals
+- `xq` not available in test environment — `xml2json` tests must mock `xq` via `bats_mock`

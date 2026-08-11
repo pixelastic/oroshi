@@ -1,0 +1,6 @@
+# Sort stdin lines by ascending length
+# Usage:
+# $ echo "long\nhi" | sort-by-length
+setopt local_options err_return
+
+awk '{ print length(), $0 | "sort -n | cut -d\\  -f2-" }'

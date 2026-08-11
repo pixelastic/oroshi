@@ -1,0 +1,21 @@
+# Transform a ZSH env file (export KEY="VALUE" lines) to JSON
+# Usage:
+# $ zsh2json ./path/to/file.zsh   # Creates file.json
+setopt local_options err_return
+
+local input=$1
+local outputFile="${input:a:r}.json"
+local lines=(${(f)"$(<$input)"})
+local output="{\n"
+
+for line in $lines; do
+  [[ $line == "" ]] && continue
+  line=${line:7}
+  line="  \"${line//=/\": },"
+  output+="${line}\n"
+done
+
+output=${output:0:-3}
+output+="\n}"
+
+echo "$output" > "$outputFile"

@@ -1,0 +1,6 @@
+# Decode a base64 string
+# Usage:
+# $ base64-decode "aGVsbG8="   # hello
+setopt local_options err_return
+
+print -rn -- $1 | base64 --decode

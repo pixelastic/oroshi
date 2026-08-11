@@ -149,8 +149,9 @@
   {
     "id": "14",
     "issue": "issues/14-domain-text-encoding.md",
-    "done": false,
-    "blocked_by": ["03", "03b"]
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Migrated 6 text/encoding scripts to autoloaded functions: url2host (Ruby→ZSH), sort-by-length (Bash→ZSH), base64decode→base64-decode, base64encode→base64-encode, xml2json, zsh2json; updated NeoVim keybinding to bin-zsh"
   },
   {
     "id": "15",

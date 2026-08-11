@@ -305,7 +305,7 @@ vmap("s", ":!sort --version-sort<CR><CR>", "Sort")
 vmap("S", ":!sort --version-sort --reverse<CR><CR>", "Sort", { silent = false })
 vmap("u", ":sort u<CR>", "Remove duplicates")
 vmap("n", ":!cat -n<CR><CR>", "Number lines")
-vmap("L", ":!sort-by-length<CR><CR>", "Sort by length")
+vmap("L", ":!bin-zsh sort-by-length<CR><CR>", "Sort by length")
 
 -- Open URL under cursor
 -- Default mapping is gx, but it doesn't work well on URL with query strings by

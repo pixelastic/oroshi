@@ -190,3 +190,30 @@ git log --diff-filter=D --since="3 months ago" --name-only --format=""
 ```
 **Problem:** Spec line 12 says "must stay script — called by Python" but acceptance criteria say "All scripts migrated to autoloaded functions" and "External call sites updated to use bin-zsh"
 **Reason skipped:** Spec-internal contradiction. The dominant intent (migrate everything, update Python to call `bin-zsh statusbar-clock`) is followed. The parenthetical was likely a draft note superseded by the acceptance criteria.
+
+## Issue 14 — Text/encoding domain
+### Hand-rolled JSON in zsh2json
+```zsh
+local output="{\n"
+for line in $lines; do
+  line="  \"${line//=/\": },"
+  output+="${line}\n"
+done
+```
+**Problem:** CLAUDE.md says "Use jq/jo for JSON parsing in shell". Manual JSON construction is fragile.
+**Reason skipped:** Rule says "parsing", not generation. Function preserves original behavior. Rewriting with jo would change semantics for edge cases.
+
+### Missing argument guards
+```zsh
+local url=$1
+```
+**Problem:** Functions don't validate missing arguments per conditions.md "return early" pattern.
+**Reason skipped:** Out of scope for migration. Original scripts also lacked validation.
+
+### xml2json/zsh2json not renamed to -to- form
+```
+xml2json → xml-to-json (rename map)
+zsh2json → zsh-to-json (rename map)
+```
+**Problem:** Spec says "Apply renames from rename map". Rename map says `xml-to-json` and `zsh-to-json`.
+**Reason skipped:** GUIDANCE.md issue 05 established `X2Y` as the conversion convention. The text/encoding section of the rename map wasn't updated. Keeping `xml2json`/`zsh2json` follows the established convention.

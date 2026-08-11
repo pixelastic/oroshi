@@ -1,0 +1,6 @@
+# Encode a string to base64
+# Usage:
+# $ base64-encode "hello"   # aGVsbG8=
+setopt local_options err_return
+
+print -rn -- $1 | base64
