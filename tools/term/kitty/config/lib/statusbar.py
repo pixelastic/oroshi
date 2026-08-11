@@ -82,10 +82,10 @@ def redraw_statusbar():
 def update_statusbar_item(statusbarName: str):
     # Path to the executable
     binName = f"statusbar-{statusbarName}"
-    binPath = f"/home/tim/.oroshi/scripts/bin/statusbar/{binName}"
+    binPath = "/home/tim/.oroshi/scripts/bin/bin-zsh"
 
     # Convert raw JSON output to object
-    rawOutput = subprocess.check_output(binPath)
+    rawOutput = subprocess.check_output([binPath, binName])
     chunks = json.loads(rawOutput.decode())
 
     # Cast all fg/bg to expected format

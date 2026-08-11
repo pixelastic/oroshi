@@ -116,3 +116,9 @@ After migrating a script to autoloaded function, grep for call sites in:
 
 ### Issue 12 — Ruby/Gem domain
 - `has-ruby` had a pre-existing bug: checked `commands[zsh]` instead of `commands[ruby]` — fixed during migration
+
+### Issue 13 — System/desktop domain
+- `jo` only supports short flags (`-a`), not `--long-form` — same as ffmpeg/ImageMagick
+- Kitty statusbar Python calls scripts via `subprocess.check_output` — after migration, pass `[binPath, binName]` list form to call `bin-zsh <function>` instead of direct script path
+- `statusbar-cpu` and `statusbar-ram` still live as scripts in `scripts/bin/statusbar/` — they'll be handled when their domain issue comes up. The Python `bin-zsh` dispatch already works for them since `bin-zsh` falls through to PATH lookup
+- `cpu-percent` and `ram-percent` were duplicates of existing `sys-cpu` and `sys-ram` — deleted without replacement

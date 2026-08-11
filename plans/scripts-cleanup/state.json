@@ -135,8 +135,9 @@
   {
     "id": "13",
     "issue": "issues/13-domain-system-desktop.md",
-    "done": false,
-    "blocked_by": ["03", "03b"]
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Migrated 3 system/desktop scripts to autoloaded functions (better-keepass, dconf-watch, statusbar-clock); deleted cpu-percent and ram-percent (duplicates of existing sys-cpu/sys-ram); updated Ubuntu keybinding and Kitty statusbar Python to use bin-zsh"
   },
   {
     "id": "14",

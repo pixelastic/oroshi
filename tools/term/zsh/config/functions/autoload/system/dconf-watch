@@ -1,0 +1,6 @@
+# Listen to changes done in dconf/gsettings
+# Usage:
+# $ dconf-watch
+setopt local_options err_return
+
+dconf watch /

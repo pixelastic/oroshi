@@ -1,8 +1,7 @@
-#!/usr/bin/env zsh
-# JSON info about current time (HH:MM)
+# JSON info about current time (HH:MM:SS) for Kitty statusbar
 # Usage:
 # $ statusbar-clock
-set -e
+setopt local_options err_return
 
 icons-load-definitions
 

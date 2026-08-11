@@ -182,3 +182,11 @@ git log --diff-filter=D --since="3 months ago" --name-only --format=""
 ```
 **Problem:** Spec says to update `git-issue-count` and `git-pullrequest-count` to read from new cache location, but neither was modified.
 **Reason skipped:** These functions never read from cache — they call the GitHub API directly via `gh`. The `.git/oroshi_*_count` files were zombie writes (written but never read). The prompt maintains its own independent cache. No reader migration needed.
+
+## Issue 13 — System/desktop domain
+### statusbar-clock "must stay script" vs migration
+```markdown
+`statusbar-clock` — Kitty statusbar clock (must stay script — called by Python)
+```
+**Problem:** Spec line 12 says "must stay script — called by Python" but acceptance criteria say "All scripts migrated to autoloaded functions" and "External call sites updated to use bin-zsh"
+**Reason skipped:** Spec-internal contradiction. The dominant intent (migrate everything, update Python to call `bin-zsh statusbar-clock`) is followed. The parenthetical was likely a draft note superseded by the acceptance criteria.

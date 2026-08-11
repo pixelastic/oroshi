@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# Listen to changes done in dconf / gsettings
-set -e
-
-dconf watch /
