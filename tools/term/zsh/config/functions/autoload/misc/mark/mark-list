@@ -1,0 +1,25 @@
+# List all marks with colorized output
+# Usage:
+# $ mark-list
+setopt local_options err_return
+
+colors-load-definitions
+local rawMarks="$(mark-list-raw)"
+
+# Nothing to display
+[[ "$rawMarks" == "" ]] && return 0
+
+local output=""
+for rawLine in ${(f)rawMarks}; do
+  local fields=(${(@ps/▮/)rawLine})
+  local name=$fields[1]
+  local target=$fields[2]
+
+  local row=""
+  row+="$(colorize "$name" $COLORS[directory])▮"
+  row+="$(colorize "$target" $COLORS[comment])"
+
+  output+="$row\n"
+done
+
+table $output
