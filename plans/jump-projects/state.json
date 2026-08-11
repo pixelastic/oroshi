@@ -44,8 +44,9 @@
   {
     "id": "07",
     "issue": "issues/07-migration-cleanup.md",
-    "done": false,
-    "blocked_by": ["02", "03", "04", "05", "06"]
+    "done": true,
+    "blocked_by": ["02", "03", "04", "05", "06"],
+    "recap": "Deleted old mark/unmark scripts and jump.zsh aliases, added j alias to _jumps compdef registration"
   },
   {
     "id": "08",
