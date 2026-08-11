@@ -1,0 +1,109 @@
+# Movie night picker: pick 5 random movies, veto until one remains
+# Usage:
+# $ cesoir                    # Pick from default list
+# $ cesoir --add movie.mkv    # Add movie to list
+# $ cesoir --source ~/list    # Use custom list file
+setopt local_options err_return
+
+local sourceFile="${HOME}/.cesoir"
+
+zparseopts -E -D \
+  a=flagAdd \
+  -add=flagAdd \
+  s:=flagSource \
+  -source:=flagSource
+
+[[ "$flagSource" != "" ]] && sourceFile="${flagSource[2]}"
+sourceFile="${sourceFile:a}"
+
+# Add mode: append files to list
+if [[ "$flagAdd" != "" ]]; then
+  for file in "$@"; do
+    local filepath="${file:a}"
+    echo "$filepath" >> "$sourceFile"
+  done
+  # Deduplicate and sort
+  sort -u "$sourceFile" -o "$sourceFile"
+  return 0
+fi
+
+# Suggest mode: pick 5 random movies and veto
+if [[ ! -f "$sourceFile" ]]; then
+  echoerr "No movie list found at $sourceFile"
+  return 1
+fi
+
+local -a allMovies=("${(@f)$(cat "$sourceFile")}")
+if [[ ${#allMovies} -eq 0 ]]; then
+  echoerr "Movie list is empty"
+  return 1
+fi
+
+# Pick up to 5 random movies
+local maxPick=5
+[[ ${#allMovies} -lt $maxPick ]] && maxPick=${#allMovies}
+
+# Shuffle and take first N
+local -a shuffled=("${(@)allMovies}")
+for (( i = ${#shuffled}; i > 1; i-- )); do
+  local j=$(( RANDOM % i + 1 ))
+  local tmp="$shuffled[$i]"
+  shuffled[$i]="$shuffled[$j]"
+  shuffled[$j]="$tmp"
+done
+local -a movies=("${shuffled[@]:0:$maxPick}")
+
+local -a users=("Tim" "Maud")
+local userIndex=$(( RANDOM % 2 + 1 ))
+local -a alive
+for (( i = 1; i <= ${#movies}; i++ )); do
+  alive+=($i)
+done
+
+while [[ ${#alive} -gt 1 ]]; do
+  clear
+  echo ""
+
+  # Display list
+  for (( i = 1; i <= ${#movies}; i++ )); do
+    local display="${movies[$i]:t:r}"
+    if (( ! ${alive[(Ie)$i]} )); then
+      display="${display//?/#}"
+    fi
+    echo "${i}: ${display}"
+  done
+  echo ""
+
+  echo "${users[$userIndex]}, à toi de mettre un véto"
+  read -r "answer?"
+
+  # Validate answer
+  if (( ! ${alive[(Ie)$answer]} )); then
+    echo "$answer n'est pas une réponse valide."
+    echo "Les seuls réponses valides sont : ${(j:, :)alive}"
+    echo "Appuyez sur Entrée pour recommencer"
+    read -r
+    continue
+  fi
+
+  # Remove vetoed movie
+  alive=("${(@)alive:#$answer}")
+  userIndex=$(( userIndex % 2 + 1 ))
+done
+
+# Last movie standing
+local winnerId="$alive[1]"
+local winnerPath="$movies[$winnerId]"
+local winnerName="${winnerPath:t:r}"
+
+clear
+echo ""
+echo "On regarde donc ${winnerName}, qui se trouve dans"
+echo "$winnerPath"
+
+# Remove from list
+local -a remaining
+for line in "${allMovies[@]}"; do
+  [[ "$line" != "$winnerPath" ]] && remaining+=("$line")
+done
+printf '%s\n' "${remaining[@]}" > "$sourceFile"

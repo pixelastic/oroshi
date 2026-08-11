@@ -1,0 +1,16 @@
+# Wrapper for trash-put that uses rm -rf for .Trash directories
+# Aliased as rmdir for safe directory removal
+# Usage:
+# $ better-rmdir dir1 dir2
+setopt local_options err_return
+
+for arg in "$@"; do
+  local basename="${arg:t}"
+
+  # Avoid infinite loop: use rm for Trash directories
+  if [[ "$basename" =~ '\.Trash-[0-9]+' ]]; then
+    rm -rf "$arg"
+  else
+    trash-put "$arg"
+  fi
+done

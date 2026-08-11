@@ -163,8 +163,9 @@
   {
     "id": "16",
     "issue": "issues/16-domain-misc-personal.md",
-    "done": false,
-    "blocked_by": ["03", "03b"]
+    "done": true,
+    "blocked_by": ["03", "03b"],
+    "recap": "Migrated 16 misc personal scripts to autoloaded functions: rcp, rmv, better-rmdir, website-download, rar-repair, kindle-screensaver, switch-extract, isomount (ZSH); my-ip, ping-average, file-count, unmark (Bash→ZSH); cesoir, font-exists, html2pdf (Ruby→ZSH); kitty-tab-window-count moved to kitty/ domain; kindle-screensaver updated to use magick (ImageMagick 7)"
   },
   {
     "id": "17",

@@ -1,0 +1,7 @@
+# Display the number of files and directories in the current directory and subdirectories
+# Usage:
+# $ file-count   # 42
+setopt local_options err_return
+
+local entries=(**/*(.N) **/*(/N))
+echo "${#entries}"

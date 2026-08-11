@@ -1,0 +1,9 @@
+# Convert an image to be compatible as a Kindle screensaver
+# Usage:
+# $ kindle-screensaver image.jpg
+setopt local_options err_return
+
+magick "$1" \
+  -resize 758x1024! \
+  -colorspace Gray \
+  "${1:r}.png"

@@ -1,0 +1,12 @@
+# Mount an ISO file in ~/local/mnt
+# Usage:
+# $ isomount file.iso
+setopt local_options err_return
+
+local isoFile="${1:a}"
+local isoBasename="${isoFile:t:r}"
+local mountPoint=~/local/mnt/"$isoBasename"
+mkdir "$mountPoint"
+
+sudo mount -t iso9660 "$isoFile" "$mountPoint" -o loop
+echo "Mounted on $mountPoint"

@@ -1,0 +1,17 @@
+# Get the number of windows in a specific Kitty tab
+# Usage:
+# $ kitty-tab-window-count 1   # 3
+setopt local_options err_return
+
+local tabId="$1"
+if [[ "$tabId" == "" ]]; then
+  echoerr "Usage: kitty-tab-window-count <tab-id>"
+  return 2
+fi
+
+kitty-remote ls | jq -r --arg tabId "$tabId" '
+  .[0].tabs[]
+  | select(.id == ($tabId|tonumber))
+  | .windows
+  | length
+'

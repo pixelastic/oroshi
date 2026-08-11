@@ -1,0 +1,39 @@
+# Return the average current ping, designed for statusbar use
+# First call returns N/A, subsequent calls return the average ping
+# from the previous invocation. A new ping runs in the background.
+# Usage:
+# $ ping-average   # 42
+setopt local_options err_return
+
+local readFile="/tmp/ping-average.read"
+local writeFile="/tmp/ping-average.write"
+local pidFile="/tmp/ping-average.pid"
+local pingCount=5
+
+# Init files
+[[ ! -f "$readFile" ]] && echo "N/A" > "$readFile"
+[[ ! -f "$writeFile" ]] && echo "N/A" > "$writeFile"
+
+# Ping is already running, return cached value
+if [[ -f "$pidFile" ]]; then
+  local pid="$(cat "$pidFile")"
+  if ps -p "$pid" > /dev/null 2>&1; then
+    cat "$readFile"
+    return 0
+  fi
+fi
+
+# Use last completed ping result
+cp "$writeFile" "$readFile"
+cat "$readFile"
+
+# Start a new ping in the background
+ping \
+  -c "$pingCount" \
+  8.8.8.8 \
+  | tail -1 \
+  | awk '{print $4}' \
+  | cut -d '/' -f 2 \
+  | awk '{printf("%d\n",$1 + 0.5)}' \
+  > "$writeFile" &
+echo "$!" > "$pidFile"

@@ -1,0 +1,16 @@
+# Move files using rsync
+# Usage:
+# $ rmv source destination
+setopt local_options err_return
+
+rsync \
+  --verbose \
+  --recursive \
+  --archive \
+  --human-readable \
+  --partial \
+  --progress \
+  --modify-window=1 \
+  --prune-empty-dirs \
+  --remove-sent-files \
+  "$@"

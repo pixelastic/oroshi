@@ -1,0 +1,20 @@
+# Remove a directory bookmark
+# Usage:
+# $ unmark mymark
+setopt local_options err_return
+
+mkdir -p "$MARKPATH"
+
+local markname="$1"
+if [[ "$markname" == "" ]]; then
+  echoerr "Please provide the name of a mark"
+  return 1
+fi
+
+# Mark must exist
+if [[ ! -L "$MARKPATH/$markname" ]]; then
+  echoerr "Mark $markname does not exist"
+  return 1
+fi
+
+rm "$MARKPATH/$markname"

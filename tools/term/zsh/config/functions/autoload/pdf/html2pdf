@@ -1,0 +1,33 @@
+# Convert HTML files to PDF using wkhtmltopdf
+# Usage:
+# $ html2pdf file.html
+# $ html2pdf one.html two.html
+setopt local_options err_return
+
+for file in "$@"; do
+  local filepath="${file:a}"
+
+  # Skip non-existent or non-HTML files
+  [[ ! -f "$filepath" ]] && continue
+  [[ "${filepath:e}" != "html" ]] && continue
+
+  local dirname="${filepath:h}"
+  local basename="${filepath:t:r}"
+  local output="${dirname}/${basename}.pdf"
+
+  # wkhtmltopdf has issues with UTF-8 filenames — use temp files
+  local tmpInput="${dirname}/__html2pdf_tmp__$(md5sum <<< "$filepath" | cut -d ' ' -f 1).html"
+  local tmpOutput="${tmpInput:r}.pdf"
+
+  cp "$filepath" "$tmpInput"
+
+  echo "Converting ${filepath:t}"
+  wkhtmltopdf \
+    -T 0 -R 0 -B 0 -L 0 \
+    "file://${tmpInput}" \
+    "$tmpOutput" \
+    2>/dev/null
+
+  mv "$tmpOutput" "$output"
+  rm "$tmpInput"
+done

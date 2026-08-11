@@ -1,0 +1,17 @@
+# Display the local IP address
+# Usage:
+# $ my-ip   # 192.168.1.42
+setopt local_options err_return
+
+if (( ${+commands[ip]} )); then
+  ip address show wlp4s0 | grep 'inet ' | awk '{print $2}' | awk -F/ '{print $1}'
+  return 0
+fi
+
+if (( ${+commands[ifconfig]} )); then
+  ifconfig wlp4s0 | grep 'inet addr' | awk -F: '{print $2}' | awk '{print $1}'
+  return 0
+fi
+
+echoerr "Neither ip nor ifconfig found"
+return 1

@@ -217,3 +217,27 @@ zsh2json → zsh-to-json (rename map)
 ```
 **Problem:** Spec says "Apply renames from rename map". Rename map says `xml-to-json` and `zsh-to-json`.
 **Reason skipped:** GUIDANCE.md issue 05 established `X2Y` as the conversion convention. The text/encoding section of the rename map wasn't updated. Keeping `xml2json`/`zsh2json` follows the established convention.
+
+## Issue 16 — Misc personal tools
+### kindle-screensaver rename per map
+```markdown
+kindle-screensaver — convert image to Kindle format (rename per map)
+```
+**Problem:** Spec says "rename per map" but rename map has no entry for kindle-screensaver.
+**Reason skipped:** Rename map has no entry. Name already follows domain-action convention. No rename needed.
+
+### No alias/reference updates in diff
+```zsh
+alias rmdir='better-rmdir'
+alias mR='unmark'
+```
+**Problem:** Spec says "Update aliases and references" but diff has no alias changes.
+**Reason skipped:** Function names preserved (better-rmdir, unmark), so existing aliases and compdef entries work without modification.
+
+### No external call-site bin-zsh updates
+**Problem:** Spec says "If called from external context, update call site to bin-zsh". No such changes in diff.
+**Reason skipped:** Verified none of the 16 scripts have external callers (NeoVim, Kitty, Ubuntu keybindings, Argos). Migration was a no-op.
+
+### zsh-lint pass not evidenced
+**Problem:** Acceptance criterion requires zsh-lint pass on all touched files.
+**Reason skipped:** Lint was run and is clean — just not visible in the diff itself.

@@ -1,0 +1,16 @@
+# Repair corrupted RAR/CBR files
+# Usage:
+# $ rar-repair file.rar
+# $ rar-repair file.cbr
+setopt local_options err_return
+
+for file in "$@"; do
+  local extension="${file:e}"
+  if [[ "$extension" != "rar" && "$extension" != "cbr" ]]; then
+    echoerr "${file:t} is not a cbr or rar"
+    continue
+  fi
+  rar r "$file" /tmp/
+  local repaired=(/tmp/(fixed|rebuilt)."${file:t}"(N))
+  [[ ${#repaired} -gt 0 ]] && mv -f "$repaired[1]" "$file"
+done

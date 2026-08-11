@@ -1,0 +1,64 @@
+# Check if a font is installed
+# Usage:
+# $ font-exists "DejaVu Sans"      # exits 0 if found
+# $ font-exists "DejaVu Sans-bold" # check specific style
+setopt local_options err_return
+
+local needle="${1:l}"
+if [[ "$needle" == "" ]]; then
+  echoerr "Usage: font-exists <font-name>"
+  return 1
+fi
+
+# Extract style from name (e.g. "dejavu sans-bold" → style="bold")
+local -a knownStyles=(italic bold bolditalic)
+local matchStyle="regular"
+local matchName="$needle"
+
+if [[ "$needle" == *-* ]]; then
+  local suffix="${needle##*-}"
+  if (( ${knownStyles[(Ie)$suffix]} )); then
+    matchStyle="$suffix"
+    matchName="${needle%-*}"
+  fi
+fi
+
+# Normalize: remove spaces and hyphens for comparison
+matchName="${matchName// /}"
+matchName="${matchName//-/}"
+[[ "$matchStyle" == "regular" ]] && matchName="${matchName//regular/}"
+
+local rawFonts="$(fc-list)"
+for line in ${(f)rawFonts}; do
+  [[ "$line" == "" ]] && continue
+
+  # Parse: /path/to/font.ttf: Name1,Name2:style=Style1,Style2
+  local details="${line#*: }"
+  local names="${details%%:*}"
+  local styles="${details#*:style=}"
+
+  # Check each name
+  local -a nameList=("${(@s/,/)names}")
+  local nameMatches=0
+  for name in "${nameList[@]}"; do
+    local slugName="${name:l}"
+    slugName="${slugName// /}"
+    slugName="${slugName//-/}"
+    if [[ "$slugName" == "$matchName" ]]; then
+      nameMatches=1
+      break
+    fi
+  done
+  [[ $nameMatches -eq 0 ]] && continue
+
+  # Check style
+  local -a styleList=("${(@s/,/)styles}")
+  for style in "${styleList[@]}"; do
+    local slugStyle="${style:l}"
+    slugStyle="${slugStyle// /}"
+    slugStyle="${slugStyle//-/}"
+    [[ "$slugStyle" == "$matchStyle" ]] && return 0
+  done
+done
+
+return 1

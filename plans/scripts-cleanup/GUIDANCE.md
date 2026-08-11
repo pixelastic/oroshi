@@ -133,3 +133,11 @@ After migrating a script to autoloaded function, grep for call sites in:
 - `lua-lint-selene`: `local` masks exit code of `$()`, so `|| true` is redundant — just use `local rawOutput="$(selene ...)"` directly
 - `version-is-newer` (Ruby→ZSH): ZSH `${(@s/./)version}` splits version strings into arrays for segment-by-segment comparison — no external deps needed
 - Several install scripts had pre-existing lint issues (missing `set -e`, missing doc comment, literal carriage return) — fixed as part of migration
+
+### Issue 16 — Misc personal tools
+- `kindle-screensaver` spec says "rename per map" but rename map has no entry — name preserved as-is
+- `kindle-screensaver` used `convert` (ImageMagick 6); migrated to `magick` (ImageMagick 7) per issue 06 discovery
+- `html2pdf` keeps the `X2Y` conversion convention (like `xml2json`, `bin2iso`) — rename map entry `html-to-pdf` was wrong
+- `file-count` counts recursively (files + directories) matching the original `find ./*` behavior — uses `**/*(.N)` + `**/*(/N)` ZSH globs
+- `unmark` original used `exit 0` for error cases (silent success); rewritten with `return 1` + `echoerr` for proper error reporting
+- None of the 16 scripts had external callers (NeoVim, Kitty, Ubuntu keybindings) — `bin-zsh` migration was a no-op

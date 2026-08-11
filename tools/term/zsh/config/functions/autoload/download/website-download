@@ -1,0 +1,13 @@
+# Download a full website using wget
+# Usage:
+# $ website-download https://example.com
+setopt local_options err_return
+
+local website="$1"
+
+wget \
+  --recursive \
+  --level=1 \
+  --adjust-extension \
+  --convert-links \
+  "$website"
