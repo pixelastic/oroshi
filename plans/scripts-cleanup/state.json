@@ -140,6 +140,12 @@
     "recap": "Migrated 3 system/desktop scripts to autoloaded functions (better-keepass, dconf-watch, statusbar-clock); deleted cpu-percent and ram-percent (duplicates of existing sys-cpu/sys-ram); updated Ubuntu keybinding and Kitty statusbar Python to use bin-zsh"
   },
   {
+    "id": "13b",
+    "issue": "issues/13b-cleanup-kitty-statusbar.md",
+    "done": false,
+    "blocked_by": ["13"]
+  },
+  {
     "id": "14",
     "issue": "issues/14-domain-text-encoding.md",
     "done": false,
@@ -161,6 +167,6 @@
     "id": "17",
     "issue": "issues/17-doc-autoloaded-functions.md",
     "done": false,
-    "blocked_by": ["04", "05", "06", "07", "08", "08a", "08b", "08c", "08d", "08e", "08f", "09", "10", "11", "12", "13", "14", "15", "16"]
+    "blocked_by": ["04", "05", "06", "07", "08", "08a", "08b", "08c", "08d", "08e", "08f", "09", "10", "11", "12", "13", "13b", "14", "15", "16"]
   }
 ]
