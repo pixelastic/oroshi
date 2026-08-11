@@ -2,7 +2,6 @@ from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData
 from lib import redraw, tab_data, tab_switch
 from lib.helper import ansi_to_kitty
-from lib.statusbar import draw_statusbar
 from lib.state import tabState
 
 
@@ -33,8 +32,6 @@ def second_pass(
 
     # Once we've drawn the last tab, our job is almost done
     if is_last:
-        # Draw the statusbar, we have all the needed info
-        draw_statusbar(screen)
         # Fire any on_tab_switch callback
         tab_switch.check()
         # Cleanup any loose ends, so next redraw starts clean

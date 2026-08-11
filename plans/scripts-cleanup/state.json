@@ -142,8 +142,9 @@
   {
     "id": "13b",
     "issue": "issues/13b-cleanup-kitty-statusbar.md",
-    "done": false,
-    "blocked_by": ["13"]
+    "done": true,
+    "blocked_by": ["13"],
+    "recap": "Deleted statusbar.py, 3 statusbar scripts, statusbar-clock function+tests, removed statusbar imports/calls from Kitty tab bar, removed 7 statusbar icon definitions, simplified pick_tabs to use full screen width"
   },
   {
     "id": "14",

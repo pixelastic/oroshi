@@ -1,9 +1,0 @@
-# JSON info about current time (HH:MM:SS) for Kitty statusbar
-# Usage:
-# $ statusbar-clock
-setopt local_options err_return
-
-icons-load-definitions
-
-local time="$(date +"%H:%M:%S")"
-jo text="$ICONS[statusbar-clock] ${time} " | jo -a
