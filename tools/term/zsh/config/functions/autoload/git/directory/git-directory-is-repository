@@ -1,10 +1,15 @@
-# Check if current directory is a git repository
+# Check if a directory is a git repository
+# Usage:
+# $ git-directory-is-repository          # check current directory
+# $ git-directory-is-repository /path    # check given path
 setopt local_options err_return
 
-# If in a .git folder, we assume we're in a git repository
-[[ "${PWD}/" == *.git/* ]] && return 0
+local targetPath="${1:-$PWD}"
 
-local response="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
+# If in a .git folder, we assume we're in a git repository
+[[ "${targetPath}/" == *.git/* ]] && return 0
+
+local response="$(git -C "$targetPath" rev-parse --is-inside-work-tree 2>/dev/null)"
 
 [[ "$response" == "true" ]] && return 0
 return 1

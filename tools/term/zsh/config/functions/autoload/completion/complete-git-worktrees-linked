@@ -2,35 +2,5 @@
 # Output format: name:description (for use with zsh _describe)
 # Usage:
 # $ complete-git-worktrees-linked
-
 setopt local_options err_return
-icons-load-definitions
-
-# If inside a submodule, operate on the superproject
-if git-directory-is-submodule; then
-  cd "$(git-directory-root -f)"
-fi
-
-local rawList="$(git-worktree-list-raw)"
-[[ "$rawList" == "" ]] && return 0
-
-for rawLine in ${(f)rawList}; do
-  [[ "$rawLine" == "" ]] && continue
-  local fields=(${(@ps/▮/)rawLine})
-  local branch="$fields[1]"
-  local dirtyCount="$fields[3]"
-  local ahead="$fields[4]"
-  local behind="$fields[5]"
-  local message="$fields[7]"
-
-  local parts=()
-  [[ $dirtyCount -gt 0 ]] && parts+=("${dirtyCount}${ICONS[git-changes]}")
-  [[ $ahead -gt 0 ]] && parts+=("${ahead}${ICONS[git-branch-ahead]}")
-  [[ $behind -gt 0 ]] && parts+=("${behind}${ICONS[git-branch-behind]}")
-  local counters="${(j: :)parts}"
-  local desc="$message"
-  if [[ "$counters" != "" ]]; then
-    desc="${counters}  ${message}"
-  fi
-  echo "${branch}:${desc}"
-done
+complete-git-worktrees --linked

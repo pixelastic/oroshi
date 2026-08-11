@@ -3,12 +3,24 @@
 # Usage:
 # $ git-directory-dirty-count           # current directory
 # $ git-directory-dirty-count /path     # from given path
+# $ git-directory-dirty-count --reply /path  # write to $REPLY, no echo
 setopt local_options err_return
 setopt local_options errexit
 
-local rawFiles="$(git-file-list-dirty-raw "$@" || true)"
+local flagReply=()
+zparseopts -E -D \
+  -reply=flagReply
 
-[[ "$rawFiles" == "" ]] && echo 0 && return 0
+local rawFiles="$(git-file-list-dirty-raw "$@")"
+
+if [[ "$rawFiles" == "" ]]; then
+  if [[ ${#flagReply} == "1" ]]; then REPLY=0; else echo 0; fi
+  return 0
+fi
 
 local -a fileLines=(${(@f)rawFiles})
-echo ${#fileLines}
+if [[ ${#flagReply} == "1" ]]; then
+  REPLY=${#fileLines}
+else
+  echo ${#fileLines}
+fi

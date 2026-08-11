@@ -4,10 +4,13 @@
 # $ git-branch-last-subject main         # named branch
 # $ git-branch-last-subject --repo /path # current branch in given repo
 # $ git-branch-last-subject main --repo /path
+# $ git-branch-last-subject --reply main # write to $REPLY, no echo
 setopt local_options err_return
 
+local flagReply=()
 zparseopts -E -D \
-  -repo:=flagRepo
+  -repo:=flagRepo \
+  -reply=flagReply
 
 local branch="$1"
 local repoPath="${flagRepo[2]}"
@@ -19,4 +22,13 @@ fi
 
 [[ "$branch" == "" ]] && branch="HEAD"
 
-git "${repoArgs[@]}" log -1 --format="%s" "$branch"
+# Not in a git repo
+git-directory-is-repository "${repoPath:-.}" || return 1
+
+local result="$(git "${repoArgs[@]}" log -1 --format="%s" "$branch" 2>/dev/null)"
+
+if [[ ${#flagReply} == "1" ]]; then
+  REPLY="$result"
+  return
+fi
+echo "$result"

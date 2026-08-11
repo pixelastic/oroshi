@@ -17,16 +17,16 @@ setup() {
 }
 
 @test "no ellipsis when content fits within terminal width" {
-  tput() { echo "40"; }
-  bats_mock tput
+  terminal-width() { REPLY=40; }
+  bats_mock terminal-width
   bats_run_zsh "table 'col▮short'"
   [[ "$status" -eq 0 ]]
   [[ "$output" != *"…"* ]]
 }
 
 @test "adds ellipsis to last column when line overflows terminal width" {
-  tput() { echo "14"; }
-  bats_mock tput
+  terminal-width() { REPLY=14; }
+  bats_mock terminal-width
   bats_run_zsh "table 'col▮this is a very long message'"
   [[ "$status" -eq 0 ]]
   [[ "$output" == *"…"* ]]
@@ -36,8 +36,8 @@ setup() {
 }
 
 @test "preserves ANSI color codes in non-truncated output" {
-  tput() { echo "80"; }
-  bats_mock tput
+  terminal-width() { REPLY=80; }
+  bats_mock terminal-width
   printf 'col▮\033[31mred\033[0m' > "$BATS_TMP_DIR/input.txt"
   bats_run_zsh "cat $BATS_TMP_DIR/input.txt | table"
   [[ "$status" -eq 0 ]]
@@ -45,8 +45,8 @@ setup() {
 }
 
 @test "does not corrupt ANSI ESC bytes when last column is truncated" {
-  tput() { echo "10"; }
-  bats_mock tput
+  terminal-width() { REPLY=10; }
+  bats_mock terminal-width
   printf 'a▮\033[31mlong colored message\033[0m' > "$BATS_TMP_DIR/input.txt"
   bats_run_zsh "cat $BATS_TMP_DIR/input.txt | table"
   [[ "$status" -eq 0 ]]

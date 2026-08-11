@@ -1,9 +1,15 @@
 # List all linked worktrees: branch▮path▮dirtyCount▮ahead▮behind▮relativeDate▮message
 # Excludes the Git Repo Main
 # Usage:
-# $ git-worktree-list-raw   # fix/bug▮/path▮0▮2▮0▮3mn▮fix typo
+# $ git-worktree-list-raw          # fix/bug▮/path▮0▮2▮0▮3mn▮fix typo
+# $ git-worktree-list-raw --reply  # write to $REPLY, no echo
 
 setopt local_options err_return
+
+local flagReply=()
+zparseopts -E -D \
+  -reply=flagReply
+
 local porcelain="$(git worktree list --porcelain 2>/dev/null)"
 [[ "$porcelain" == "" ]] && return 1
 
@@ -54,15 +60,17 @@ done
 [[ "$isFirst" == false && "$branch" != "" ]] && worktreeData+=("$branch▮$worktreePath")
 
 # Second pass: enrich each entry with distance, date, message
+local -a resultLines=()
 for entry in "${worktreeData[@]}"; do
   local entryBranch="${entry%%▮*}"
   local entryPath="${entry#*▮}"
 
   # Dirty file count for this worktree
-  local dirtyCount="$(git-directory-dirty-count "$entryPath")"
+  git-directory-dirty-count --reply "$entryPath"
+  local dirtyCount="$REPLY"
 
   # Ahead/behind vs main via git-worktree-distance-raw
-  local rawDistance="$(git-worktree-distance-raw "$entryBranch" 2>/dev/null || true)"
+  local rawDistance="$(git-worktree-distance-raw "$entryBranch" 2>/dev/null)"
   local ahead="${rawDistance%%▮*}"
   local behind="${rawDistance##*▮}"
   [[ "$ahead" == "" ]] && ahead=0
@@ -73,5 +81,13 @@ for entry in "${worktreeData[@]}"; do
   local relativeDate="${logInfo%%▮*}"
   local message="${logInfo#*▮}"
 
-  echo "$entryBranch▮$entryPath▮$dirtyCount▮$ahead▮$behind▮$relativeDate▮$message"
+  resultLines+=("$entryBranch▮$entryPath▮$dirtyCount▮$ahead▮$behind▮$relativeDate▮$message")
 done
+
+if [[ ${#flagReply} == "1" ]]; then
+  REPLY="${(F)resultLines}"
+else
+  for resultLine in "${resultLines[@]}"; do
+    echo "$resultLine"
+  done
+fi

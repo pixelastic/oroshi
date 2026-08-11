@@ -1,55 +1,93 @@
 # List completion entries for git worktrees of the current repo
 # Output format: name:description (for use with zsh _describe)
-# Always includes 'main'; excludes worktrees from other repos
 # Usage:
-# $ complete-git-worktrees
+# $ complete-git-worktrees           # includes 'main' + linked worktrees
+# $ complete-git-worktrees --linked  # linked worktrees only
 
 setopt local_options err_return
 icons-load-definitions
 
+local flagLinked=()
+zparseopts -E -D \
+  -linked=flagLinked
+
 # If inside a submodule, operate on the superproject
 if git-directory-is-submodule; then
-  cd "$(git-directory-root -f)"
+  git-directory-root --reply -f
+  cd "$REPLY"
 fi
 
-local mainPath="$(git-worktree-main)"
-if [[ "$mainPath" == "" ]]; then
-  echo "main"
-  return 0
-fi
+local -a entries=()
 
-local mainDirtyCount="$(git-directory-dirty-count "$mainPath")"
-local mainMessage="$(git-branch-last-subject main)"
-
-local mainParts=()
-[[ $mainDirtyCount -gt 0 ]] && mainParts+=("${ICONS[git-changes]}${mainDirtyCount}")
-local mainCounters="${(j: :)mainParts}"
-local mainDesc="$mainMessage"
-if [[ "$mainCounters" != "" ]]; then
-  mainDesc="${mainCounters}  ${mainMessage}"
-fi
-echo "main:${mainDesc}"
-
-local rawList="$(git-worktree-list-raw)"
-[[ "$rawList" == "" ]] && return 0
-
-for rawLine in ${(f)rawList}; do
-  [[ "$rawLine" == "" ]] && continue
-  local fields=(${(@ps/▮/)rawLine})
-  local branch="$fields[1]"
-  local dirtyCount="$fields[3]"
-  local ahead="$fields[4]"
-  local behind="$fields[5]"
-  local message="$fields[7]"
-
-  local parts=()
-  [[ $dirtyCount -gt 0 ]] && parts+=("${dirtyCount}${ICONS[git-changes]}")
-  [[ $ahead -gt 0 ]] && parts+=("${ahead}${ICONS[git-branch-ahead]}")
-  [[ $behind -gt 0 ]] && parts+=("${behind}${ICONS[git-branch-behind]}")
-  local counters="${(j: :)parts}"
-  local desc="$message"
-  if [[ "$counters" != "" ]]; then
-    desc="${counters}  ${message}"
+# Add 'main' entry unless --linked
+if [[ ${#flagLinked} == 0 ]]; then
+  REPLY=""
+  git-worktree-main --reply 2>/dev/null || true
+  local mainPath="$REPLY"
+  if [[ "$mainPath" == "" ]]; then
+    echo "main"
+    return 0
   fi
-  echo "${branch}:${desc}"
+
+  git-directory-dirty-count --reply "$mainPath"
+  local mainDirtyCount="$REPLY"
+
+  git-branch-last-subject --reply main || REPLY=""
+  local mainMessage="$REPLY"
+
+  local mainParts=()
+  [[ $mainDirtyCount -gt 0 ]] && mainParts+=("${ICONS[git-changes]}${mainDirtyCount}")
+  local mainCounters="${(j: :)mainParts}"
+  local mainDesc="$mainMessage"
+  if [[ "$mainCounters" != "" ]]; then
+    mainDesc="${mainCounters}  ${mainMessage}"
+  fi
+  entries+=("main:${mainDesc}")
+fi
+
+REPLY=""
+git-worktree-list-raw --reply || true
+local rawList="$REPLY"
+
+if [[ "$rawList" != "" ]]; then
+  for rawLine in ${(f)rawList}; do
+    [[ "$rawLine" == "" ]] && continue
+    local fields=(${(@ps/▮/)rawLine})
+    local branch="$fields[1]"
+    local dirtyCount="$fields[3]"
+    local ahead="$fields[4]"
+    local behind="$fields[5]"
+    local message="$fields[7]"
+
+    local parts=()
+    [[ $dirtyCount -gt 0 ]] && parts+=("${dirtyCount}${ICONS[git-changes]}")
+    [[ $ahead -gt 0 ]] && parts+=("${ahead}${ICONS[git-branch-ahead]}")
+    [[ $behind -gt 0 ]] && parts+=("${behind}${ICONS[git-branch-behind]}")
+    local counters="${(j: :)parts}"
+    local desc="$message"
+    if [[ "$counters" != "" ]]; then
+      desc="${counters}  ${message}"
+    fi
+    entries+=("${branch}:${desc}")
+  done
+fi
+
+[[ ${#entries} == 0 ]] && return 0
+
+# Truncate descriptions to prevent line wrapping in the completion menu
+# _describe pads all names to the longest, then adds " // " before the description
+local maxNameLen=0
+for entry in "${entries[@]}"; do
+  local name="${entry%%:*}"
+  [[ ${#name} -gt $maxNameLen ]] && maxNameLen=${#name}
+done
+
+terminal-width --reply
+local maxDescLen=$(( REPLY - maxNameLen - 6 ))
+
+for entry in "${entries[@]}"; do
+  local name="${entry%%:*}"
+  local desc="${entry#*:}"
+  truncate-to-width --reply --width $maxDescLen "$desc"
+  echo "${name}:${REPLY}"
 done

@@ -3,19 +3,31 @@
 # $ git-directory-root               # Path to the root
 # $ git-directory-root /path/to/file # Root of the given path
 # $ git-directory-root -f / --force  # Goes all the way up submodules
+# $ git-directory-root --reply -f    # Write to $REPLY, no echo
 setopt local_options err_return
+
+local flagReply=()
+zparseopts -E -D \
+  f=flagForce \
+  -force=flagForce \
+  -reply=flagReply
+
+local isReply=${#flagReply}
+local isForce=${#flagForce}
+
+function replyOrEcho() {
+  if [[ $isReply == "1" ]]; then
+    REPLY=$1
+    return
+  fi
+  echo $1
+}
 
 # If not in a git repo, we simply return the current path
 if ! git-directory-is-repository; then
-  echo "$PWD"
+  replyOrEcho $PWD
   return 1
 fi
-
-zparseopts -E -D \
-  f=flagForce \
-  -force=flagForce
-
-local isForce=${#flagForce}
 
 # Check from the given directory, or the current one if none specified
 local targetPath="$1"
@@ -25,7 +37,7 @@ local targetPath="$1"
 
 # If path contains a .git/ folder, we remove anything after it
 if [[ $targetPath == *.git/* ]]; then
-  echo ${targetPath//\/.git\/*/}
+  replyOrEcho ${targetPath//\/.git\/*/}
   return 0
 fi
 
@@ -33,11 +45,11 @@ fi
 if [[ $isForce == "1" ]]; then
   local gitRoot="$(git -C "$targetPath" rev-parse --show-superproject-working-tree)"
   if [[ $gitRoot != "" ]]; then
-    echo $gitRoot
+    replyOrEcho $gitRoot
     return 0
   fi
 fi
 
 # Otherwise, we fallback to the current root
 local gitRoot="$(git -C "$targetPath" rev-parse --show-toplevel)"
-echo $gitRoot
+replyOrEcho $gitRoot

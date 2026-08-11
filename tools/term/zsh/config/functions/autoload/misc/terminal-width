@@ -1,0 +1,20 @@
+# Return the terminal width in columns
+# Works from any context including subshells and command substitutions
+# Usage:
+# $ terminal-width          # "120"
+# $ terminal-width --reply  # Write to $REPLY, no echo
+setopt local_options err_return
+
+local flagReply=()
+zparseopts -E -D \
+  -reply=flagReply
+
+local result="$({ stty size </dev/tty; } 2>/dev/null)"
+result="${result#* }"
+[[ "$result" == "" || "$result" == "0" ]] && result=80
+
+if [[ ${#flagReply} == "1" ]]; then
+  REPLY="$result"
+  return
+fi
+echo "$result"

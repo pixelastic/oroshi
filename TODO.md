@@ -54,6 +54,8 @@ the existing list
 - Kitty keybinding to "mark" a tab with a specific icon (like re-adding an attention, or marking it as "to come back once other tab is done")
 - ralph skill probably need same split into different files for each step as plan
 - evaluate if I need some allowed-tools/disallowed-tools in my skills
+- Add a rule in zsh to prevent abbreviations like *Len, *Dir, abs*, proj*
+- Imrpove hooks so `rm` of files that are tracked by git and can be saved is allowed
 
 
 ---

@@ -2,7 +2,12 @@
 # Usage:
 # $ git-worktree-main                    # from the main repo or a linked worktree
 # $ git-worktree-main /path/to/worktree  # resolve from a given path
+# $ git-worktree-main --reply            # write to $REPLY, no echo
 setopt local_options err_return
+
+local flagReply=()
+zparseopts -E -D \
+  -reply=flagReply
 
 local refDir="${1:-$PWD}"
 # git -C requires a directory; normalize file paths to their parent dir
@@ -20,4 +25,8 @@ else
   absCommonDir="$refDir/$commonDir"
 fi
 
-echo "${absCommonDir:h}"
+if [[ ${#flagReply} == "1" ]]; then
+  REPLY="${absCommonDir:h}"
+else
+  echo "${absCommonDir:h}"
+fi

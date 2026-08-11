@@ -1,0 +1,76 @@
+# Truncate a string to fit a given display width, ANSI-aware
+# Adds … and ANSI reset when truncating colored text
+# Without --width, defaults to terminal width
+# Usage:
+# $ truncate-to-width --width 40 "long string"   # Truncate to 40 cols
+# $ truncate-to-width "long string"               # Truncate to terminal width
+# $ truncate-to-width --reply --width 40 "string" # Write to $REPLY, no echo
+setopt local_options err_return
+
+local flagReply=()
+zparseopts -E -D \
+  -reply=flagReply \
+  -width:=flagWidth
+
+local isReply=${#flagReply}
+local input="$1"
+local maxWidth="${flagWidth[2]}"
+
+# Default to terminal width
+if [[ "$maxWidth" == "" ]]; then
+  terminal-width --reply
+  maxWidth="$REPLY"
+fi
+
+# Check visible length via remove-ansi
+remove-ansi --reply "$input"
+local plainText="$REPLY"
+local visibleLen=${#plainText}
+local hasANSI=0
+[[ ${#input} -ne ${#plainText} ]] && hasANSI=1
+
+# Short enough, return as-is
+if [[ $visibleLen -le $maxWidth ]]; then
+  if [[ $isReply == "1" ]]; then
+    REPLY="$input"
+    return
+  fi
+  echo "$input"
+  return
+fi
+
+# Walk char-by-char, skipping ANSI sequences in the count
+local result=""
+local visibleCount=0
+local isPartOfANSI=0
+for ((i = 1; i <= ${#input}; i++)); do
+  local char="${input[$i]}"
+  result+="$char"
+
+  # Starts an ANSI sequence
+  if [[ "$char" == $'\033' ]]; then
+    isPartOfANSI=1
+    continue
+  fi
+
+  # Inside an ANSI sequence, skip counting
+  if [[ $isPartOfANSI == 1 ]]; then
+    [[ "$char" == [A-Za-z] ]] && isPartOfANSI=0
+    continue
+  fi
+
+  visibleCount=$((visibleCount + 1))
+  if [[ $visibleCount -ge $((maxWidth)) ]]; then
+    # Replace last visible char with ellipsis
+    result="${result[1,$((${#result} - 1))]}…"
+    # Close any open ANSI color sequence
+    [[ $hasANSI == 1 ]] && result+=$'\033[0m'
+    break
+  fi
+done
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$result"
+  return
+fi
+echo "$result"
