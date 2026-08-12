@@ -1,0 +1,13 @@
+# Move a window to a different tab
+# Usage: kitty-window-move <windowId> <targetTabId>
+setopt local_options err_return
+
+local windowId="$1"
+local targetTabId="$2"
+
+if [[ "$windowId" == "" || "$targetTabId" == "" ]]; then
+  echo "Usage: kitty-window-move <window-id> <target-tab-id>"
+  return 2
+fi
+
+kitty-remote detach-window --match "id:${windowId}" --target-tab "id:${targetTabId}"

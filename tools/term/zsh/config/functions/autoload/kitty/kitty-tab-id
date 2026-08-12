@@ -1,0 +1,15 @@
+# Get a Kitty tab ID
+# Usage: kitty-tab-id           # Get current tab ID
+#        kitty-tab-id "TabName"  # Get tab ID by name
+setopt local_options err_return
+
+local tabName="$1"
+
+# No argument: get current tab ID
+if [[ "$tabName" == "" ]]; then
+  kitty-remote ls | jq -r '.[0].tabs[] | select(.is_focused == true) | .id'
+  return 0
+fi
+
+# Argument provided: get tab ID by name
+kitty-remote ls | jq -r --arg name "$tabName" '.[0].tabs[] | select(.title==$name) | .id'

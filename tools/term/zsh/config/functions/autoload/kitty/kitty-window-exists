@@ -1,0 +1,14 @@
+# Check if a Kitty window with the given oroshi_windowName exists
+# Usage: kitty-window-exists "windowName"
+# Returns: 0 if exists, 1 if not
+setopt local_options err_return
+
+local windowName="$1"
+if [[ "$windowName" == "" ]]; then
+  echo "Usage: kitty-window-exists <window-name>"
+  return 2
+fi
+
+local windowId=$(kitty-window-id "$windowName")
+[[ "$windowId" == "" ]] && return 1
+return 0

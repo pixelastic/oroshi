@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-# Launch Kitty with debug session to test statusbar with multiple tabs
-set -e
-
-local sessionFile="$OROSHI_ROOT/tools/term/kitty/config/debug.session"
-
-# Launch kitty with the debug session in detached mode
-kitty --session "$sessionFile" --detach

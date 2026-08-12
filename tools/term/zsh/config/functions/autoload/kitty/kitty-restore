@@ -1,0 +1,13 @@
+# Start kitty and restore to previous state
+setopt local_options err_return
+
+local uuid="$(uuidgen)"
+
+local kittySocketFolder=/home/$USER/local/tmp/oroshi/kitty
+mkdir -p $kittySocketFolder
+local kittySocketPath=$kittySocketFolder/socket-$uuid
+
+# Start kitty and make it listen to remote commands on this socket
+# This allow remote commands to be sent from outside of kitty itself
+OROSHI_KITTY_UUID=$uuid kitty \
+  --listen-on unix:$kittySocketPath

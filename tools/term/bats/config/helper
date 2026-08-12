@@ -1,4 +1,5 @@
 # vim: set ft=bats:
+bats_require_minimum_version 1.5.0
 
 # When ran through a pre-commit git hook, those variables are set, which then
 # leaks inside of test. We clear them to start with a clean state.

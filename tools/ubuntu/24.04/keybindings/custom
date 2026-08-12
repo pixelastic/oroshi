@@ -14,7 +14,7 @@ local shortcuts=(
   "Chrome" "<Super>C" "google-chrome"
   "Firefox" "<Super>F" "firefox"
   "Slack" "<Super>S" "slack"
-  "Kitty" "<Super>T" "$BIN/kitty/kitty-restore"
+  "Kitty" "<Super>T" "bin-zsh kitty-restore"
   "Keepass" "<Super>K" "bin-zsh better-keepass /home/tim/perso/Dropbox/tim/keys.kdbx"
 
   "current-date" "<Super>D" "$BIN/keybindings/insert-current-date"

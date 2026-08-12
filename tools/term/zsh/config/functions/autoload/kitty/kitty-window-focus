@@ -1,0 +1,11 @@
+# Focus a specific Kitty window by ID
+# Usage: kitty-window-focus <windowId>
+setopt local_options err_return
+
+local windowId="$1"
+if [[ "$windowId" == "" ]]; then
+  echo "Usage: kitty-window-focus <window-id>"
+  return 2
+fi
+
+kitty-remote focus-window --match "id:${windowId}"

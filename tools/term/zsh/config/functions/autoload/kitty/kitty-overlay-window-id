@@ -1,0 +1,20 @@
+# Get the parent window ID of the current overlay window
+# Usage:
+# $ kitty-overlay-window-id    # Prints parent window ID; exits non-zero if not an overlay
+setopt local_options err_return
+
+local parentId="$(kitty-remote ls | jq -r --arg winId "$KITTY_WINDOW_ID" '
+  .[0].tabs[].groups[]
+  | select(.windows | contains([$winId|tonumber]))
+  | select((.windows | length) >= 2)
+  | .windows[]
+  | select(. != ($winId|tonumber))
+')"
+
+# Not an overlay window if no paired window found in group
+if [[ "$parentId" == "" ]]; then
+  echoerr "Not an overlay window"
+  return 1
+fi
+
+echo "$parentId"

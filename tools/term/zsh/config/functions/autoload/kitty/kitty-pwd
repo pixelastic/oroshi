@@ -1,0 +1,12 @@
+# Print the cwd of the focused window in the focused tab
+# Usage:
+# $ kitty-pwd
+setopt local_options err_return
+
+local cwd="$(kitty @ ls --match-tab state:focused \
+  | jq --raw-output '.[0].tabs[0].windows[] | select(.is_focused == true) | .cwd')"
+
+# No focused window found
+[[ "$cwd" == "" ]] && return 1
+
+echo "$cwd"

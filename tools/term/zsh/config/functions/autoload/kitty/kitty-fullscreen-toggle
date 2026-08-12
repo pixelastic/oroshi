@@ -1,0 +1,29 @@
+# Toggle fullscreen in the current kitty tab
+# This should have no effect if there is only one split
+setopt local_options err_return
+
+# Get current window ID
+local currentWindowId="$(kitty-window-id)"
+
+# Extract tab info for current window
+local tabInfo=$(kitty-remote ls | jq -r --arg winId "$currentWindowId" '
+  .[0].tabs[]
+  | select(.windows[].id == ($winId|tonumber))
+  | {id: .id, layout: .layout, windowCount: (.windows | length)}
+  | @json
+')
+local tabId=$(echo "$tabInfo" | jq -r '.id')
+local currentLayout=$(echo "$tabInfo" | jq -r '.layout')
+local windowCount=$(echo "$tabInfo" | jq -r '.windowCount')
+
+# Stop if only one window
+if [[ "$windowCount" == "1" ]]; then
+  return 0
+fi
+
+# Toggle layout
+local nextLayout
+[[ "$currentLayout" == "stack" ]] && nextLayout="splits"
+[[ "$currentLayout" == "splits" ]] && nextLayout="stack"
+
+kitty-remote goto-layout --match "id:${tabId}" "$nextLayout"

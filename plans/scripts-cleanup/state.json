@@ -107,8 +107,9 @@
   {
     "id": "16",
     "issue": "issues/16-migrate-kitty.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Migrated 32 kitty bin scripts to autoloaded functions, updated 5 kitty keybindings and 2 Ubuntu keybindings to use bin-zsh, moved session.conf and behavioral tests to autoload location"
   },
   {
     "id": "17",

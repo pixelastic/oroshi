@@ -1,0 +1,6 @@
+# Switch focus to a tab by Tab ID
+# Usage:
+# $ kitty-tab-switch {tabId}
+setopt local_options err_return
+
+kitty @ focus-tab --match "id:$1"
