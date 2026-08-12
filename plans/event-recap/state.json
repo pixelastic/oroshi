@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-prose-lint-profiles.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added meetup-recap and slack-writer Vale profiles with empty overrides inheriting default rules"
   },
   {
     "id": "02",
