@@ -1,0 +1,22 @@
+# Cancel an in-progress mic2txt recording
+# Usage:
+# $ mic2txt-cancel
+setopt local_options err_return
+
+local tmpFolder=/dev/shm/oroshi/mic2txt
+local pidFile=${tmpFolder}/PID
+
+# No recording in progress
+[[ ! -f $pidFile ]] && return 0
+
+# Kill the rec process
+kill-pid "$(cat "$pidFile")"
+
+# Clean up temp files
+rm --force \
+  ${tmpFolder}/PID \
+  ${tmpFolder}/START_TIME \
+  ${tmpFolder}/record.wav
+
+# Play cancel sound
+audio-play-oroshi mic2txt-cancel.mp3

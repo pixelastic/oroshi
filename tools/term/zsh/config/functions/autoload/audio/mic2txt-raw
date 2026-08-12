@@ -1,20 +1,20 @@
-#!/usr/bin/env zsh
-# mic2text-raw: Start a microphone, and paste the content as text
+# Start a microphone, and paste the content as text
 # Usage:
-# $ mic2txt-raw # Starts recording then...
-#   mic2txt-raw # ...stops the recording and display the transcription
-set -e
+# $ mic2txt-raw --wav2txt wav2txt-openai   # Starts recording then...
+#   mic2txt-raw --wav2txt wav2txt-openai   # ...stops and transcribes
+setopt local_options err_return
 zmodload zsh/datetime
 
 # Parsing args {{{
 zparseopts -E -D \
   -wav2txt:=flagWav2Txt
 
-local wav2TxtBinary=${flagWav2Txt[2]}
+local wav2TxtName=${flagWav2Txt[2]}
 # }}}
 
 # Default values {{{
-local scriptDir="${0:a:h}"
+local functionDir="${functions_source[$0]:A:h}"
+local wav2TxtBinary="${functionDir}/__lib/${wav2TxtName}"
 local tmpFolder=/dev/shm/oroshi/mic2txt
 local pidFile=${tmpFolder}/PID
 local startTimeFile=${tmpFolder}/START_TIME
@@ -43,20 +43,12 @@ function stopRecording() {
   kill-pid "$(cat $pidFile)"
   rm $pidFile
 
-  # # Improve sound quality
-  # ffmpeg \
-    #   -i $recordFile \
-    #   -af "silenceremove=start_periods=1:start_silence=0.1:start_threshold=-50dB,volume=15dB" \
-    #   ${recordFile}.tmp.wav \
-    #   -y
-  # mv ${recordFile}.tmp.wav $recordFile
-
   # We transcribe to text
   audio-play-oroshi mic2txt-before.mp3
   local transcription="$(${wav2TxtBinary} $recordFile)"
 
   # Apply autocorrect rules (case-insensitive, whole-word substitution)
-  local autocorrectFile="${scriptDir}/__data/autocorrect.conf"
+  local autocorrectFile="${functionDir}/__data/autocorrect.conf"
   # Skip if no config file
   if [[ -f $autocorrectFile ]]; then
     local wrong
@@ -100,7 +92,7 @@ function stopRecording() {
 # If a recording is not already in progress, we start a new one
 if [[ ! -f $pidFile ]]; then
   startRecording
-  exit 0
+  return 0
 fi
 
 # Recording too short — cancel instead of transcribing
@@ -108,7 +100,7 @@ local startTime="$(cat $startTimeFile)"
 local elapsed=$(( EPOCHREALTIME - startTime ))
 if (( elapsed < 2 )); then
   mic2txt-cancel
-  exit 0
+  return 0
 fi
 
 # Otherwise, we stop the current recording

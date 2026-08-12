@@ -86,8 +86,9 @@
   {
     "id": "13",
     "issue": "issues/13-migrate-audio-mic2txt.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Migrated 10 mic2txt scripts to autoloaded functions in audio/, moved wav2txt backends to __lib/, Rust sources to __lib/__src/, autocorrect.conf to __data/, updated 5 keybindings to bin-zsh, relocated behavioral tests"
   },
   {
     "id": "14",

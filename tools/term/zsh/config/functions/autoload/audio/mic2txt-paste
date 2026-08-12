@@ -1,0 +1,13 @@
+# Paste last mic2txt transcription into focused input
+# Usage:
+# $ mic2txt-paste
+setopt local_options err_return
+
+local tmpFolder=/dev/shm/oroshi/mic2txt
+local transcriptionFile=${tmpFolder}/transcription.txt
+
+# No transcription available
+[[ ! -f $transcriptionFile ]] && return 0
+
+local content="$(<"$transcriptionFile")"
+focus-insert "$content"

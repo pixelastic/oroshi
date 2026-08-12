@@ -220,3 +220,23 @@ fi
 ```
 **Problem:** No guard for missing arguments when no stdin
 **Reason skipped:** Judgment call — jq errors naturally with missing input; pre-existing behavior unchanged by migration
+
+## Issue 13 — Migrate audio/mic2txt
+### wav2txt-openai uses function name() with parens
+```zsh
+function isFileTooBig {
+function transcribeFile {
+function splitAndTranscribe {
+```
+**Problem:** Functions use `function name()` syntax with parentheses
+**Reason skipped:** Cosmetic, no explicit rule forbids either form in zsh-writer standards
+
+### mic2txt-raw nested if blocks in stopRecording
+```zsh
+if [[ -f $autocorrectFile ]]; then
+if [[ $language != "fr" ]]; then
+if mic2txt-slack-mode-is-enabled; then
+if mic2txt-autosubmit-mode-is-enabled; then
+```
+**Problem:** Multiple if blocks inside stopRecording function
+**Reason skipped:** Sequential transformations on $transcription, not nested conditionals; return-early doesn't apply to mid-function data mutations

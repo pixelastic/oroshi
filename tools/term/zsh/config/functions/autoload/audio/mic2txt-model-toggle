@@ -1,6 +1,5 @@
-#!/usr/bin/env zsh
 # Toggle the model used by mic2txt
-set -e
+setopt local_options err_return
 
 local mic2txtDirectory=$OROSHI_TMP_FOLDER/mic2txt
 local modelFile="${mic2txtDirectory}/model"
@@ -8,7 +7,8 @@ mkdir -p $mic2txtDirectory
 
 # Find next model
 local currentModel="$(mic2txt-model)"
-[[ $currentModel = "openai" ]] && nextModel="parakeet"
-[[ $currentModel = "parakeet" ]] && nextModel="openai"
+local nextModel=""
+[[ $currentModel == "openai" ]] && nextModel="parakeet"
+[[ $currentModel == "parakeet" ]] && nextModel="openai"
 
 echo $nextModel >$modelFile
