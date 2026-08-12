@@ -15,6 +15,7 @@ set -e
 local dir="${0:A:h}"
 
 source "${dir}/zsh-lint-shellcheck.zsh"
+source "${dir}/zsh-lint-syntax.zsh"
 source "${dir}/zsh-lint-custom.zsh"
 
 zparseopts -E -D \
@@ -66,6 +67,7 @@ local valid_json='[]'
 if [[ ${#valid[@]} -gt 0 ]]; then
   valid_json="$(jq -cs 'add // []' \
     <(zsh-lint-shellcheck "${valid[@]}") \
+    <(zsh-lint-syntax "${valid[@]}") \
     <(zsh-lint-custom "${valid[@]}"))"
 fi
 
