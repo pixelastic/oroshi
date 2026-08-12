@@ -83,3 +83,31 @@ if [[ $result == "" ]]; then
 ```
 **Problem:** Convention is to quote variables
 **Reason skipped:** Inside `[[ ]]` quoting is optional in zsh (no word splitting); not a rule violation
+
+## Issue 07 — Migrate ubuntu/ to system/
+### workspace-switch unquoted $workspaceIndex
+```zsh
+wmctrl -s $workspaceIndex
+```
+**Problem:** Unquoted variable expansion
+**Reason skipped:** Numeric variable from arithmetic, no word-splitting risk
+
+### workspace-switch uses bc for arithmetic
+```zsh
+local workspaceIndex=$(echo "$1 - 1" | bc)
+```
+**Problem:** Uses external `bc` instead of native `$((...))` arithmetic
+**Reason skipped:** Pre-existing code, preserved from original script; no explicit rule banning `bc`
+
+### clipboard-write if/then/fi instead of one-liner
+```zsh
+if [[ "$input" == "" ]]; then
+  input="$(cat)"
+fi
+```
+**Problem:** Could be a one-liner guard
+**Reason skipped:** Side-effectful stdin read; multi-line form is clearer for this case
+
+### Spec "Callers to update" not touched
+**Problem:** Spec lists callers needing updates but none were changed
+**Reason skipped:** All callers reference functions by name, not path; autoload resolves identically to PATH — no code changes needed

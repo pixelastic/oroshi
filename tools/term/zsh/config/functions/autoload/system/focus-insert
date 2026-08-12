@@ -1,16 +1,15 @@
-#!/usr/bin/env zsh
 # Insert text given as argument to where I currently have the focus
 # Usage:
 # $ focus-insert "this is my text"
 #
 # Note: This will probably be triggered from a keybinding
-set -e
+setopt local_options err_return
 
-local input=$1
+local input="$1"
 
 # Store the input in the mouse Middle-Click.
 # This will be useful in case the other methods fail
-echo $input | wl-copy -p
+echo "$input" | wl-copy -p
 
 # We save the current clipboard
 local currentClipboard="$(clipboard-read)"

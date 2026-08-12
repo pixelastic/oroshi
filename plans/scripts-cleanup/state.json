@@ -44,8 +44,9 @@
   {
     "id": "07",
     "issue": "issues/07-migrate-ubuntu-to-system.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Migrated 5 ubuntu/ scripts to system/ autoload subdomains (clipboard-read, clipboard-write→system/clipboard/, focus-insert→system/, workspace-current, workspace-switch→system/workspace/)"
   },
   {
     "id": "08",

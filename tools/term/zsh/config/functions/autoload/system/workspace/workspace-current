@@ -1,8 +1,7 @@
-#!/usr/bin/env zsh
 # Get the current workspace number
 # Usage:
 # $ workspace-current   # 5
-set -e
+setopt local_options err_return
 
 # Note: wmctrl uses 0-indexed workspaces
 local currentIndex=$(wmctrl -d | grep '\*' | awk '{print $1}')

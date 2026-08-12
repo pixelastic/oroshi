@@ -1,7 +1,6 @@
-#!/usr/bin/env zsh
 # Read text from the clipboard
 # Usage:
 # $ clipboard-read
-set -e
+setopt local_options err_return
 
 wl-paste
