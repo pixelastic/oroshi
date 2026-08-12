@@ -3,7 +3,7 @@
 
 # Outputs two-column lines: absolute_path▮relative_path
 # Usage: fzf-source-directories /path/to/dir
-fzf-source-directories() {
+function fzf-source-directories() {
   local searchPath="$1"
   local items="$(fd \
     --hidden \

@@ -3,7 +3,7 @@
 
 # Returns a colored badge (icon + label + powerline separator) for a FZF --prompt value.
 # Usage: fzf-options-prompt-label <icon-key> <label> <bg-color-key> <fg-color-key>
-fzf-options-prompt-label() {
+function fzf-options-prompt-label() {
   colors-load-definitions
   icons-load-definitions
 

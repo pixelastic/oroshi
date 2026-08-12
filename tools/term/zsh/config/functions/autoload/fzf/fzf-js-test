@@ -5,10 +5,10 @@
 # $ fzf-js-test --options        # Print FZF options (one per line)
 # $ fzf-js-test --postprocess    # Read selection from stdin, print filepath
 setopt local_options err_return
-source "$OROSHI_ROOT/scripts/bin/fzf/__lib/init.zsh"
-source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-colorize-path.zsh"
-source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-options-files.zsh"
-source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-fs-preview.zsh"
+source "${functions_source[$0]:A:h}/__lib/init.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-colorize-path.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-options-files.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-fs-preview.zsh"
 
 SEARCH_PATH="$(git-directory-root)"
 

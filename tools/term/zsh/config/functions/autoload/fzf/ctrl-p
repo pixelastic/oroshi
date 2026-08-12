@@ -1,27 +1,27 @@
-#!/usr/bin/env zsh
 # Search files in current git project
 # Usage:
 # $ ctrl-p                    # Interactive file search
 # $ ctrl-p --source           # Print files (absolute_path▮colored_relative_path)
 # $ ctrl-p --options          # Print FZF options (one per line)
 # $ ctrl-p --postprocess      # Read selection from stdin, print absolute path
-set -e
-source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-options-files.zsh"
-source "${0:h}/__lib/fzf-source-files.zsh"
-source "${0:h}/__lib/fzf-fs-preview.zsh"
+setopt local_options err_return
+local __lib="${functions_source[$0]:A:h}/__lib"
+source "$__lib/init.zsh"
+source "$__lib/fzf-options-files.zsh"
+source "$__lib/fzf-source-files.zsh"
+source "$__lib/fzf-fs-preview.zsh"
 
-SCRIPT_NAME="${0:t}"
+SCRIPT_NAME="bin-zsh ctrl-p"
 
 # Git root or cwd fallback (git-directory-root exits non-zero outside a repo)
 SEARCH_PATH="$(git-directory-root)" || true
 [[ "$SEARCH_PATH" == "" ]] && SEARCH_PATH="$PWD"
 
-fzf-source() {
+function fzf-source() {
   fzf-source-files "$SEARCH_PATH"
 }
 
-fzf-options() {
+function fzf-options() {
   fzf-options-files "$SCRIPT_NAME" "$SEARCH_PATH"
 }
 

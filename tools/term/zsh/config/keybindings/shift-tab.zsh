@@ -1,6 +1,7 @@
 # Shift-Tab: Completion through fzf
 source "$HOME/local/etc/fzf-tab/fzf-tab.zsh"
-source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-options-prompt-label.zsh"
+local fzfAutoload="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/fzf"
+source "$fzfAutoload/__lib/fzf-options-prompt-label.zsh"
 
 # Loading fzf-tab automatically bind it to Tab (^I), so we revert it to the
 # regular completion widget

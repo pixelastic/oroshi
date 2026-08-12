@@ -2,7 +2,7 @@
 # Usage: fzf-colorize-path <display-path> [real-path]
 #   real-path: actual filesystem path used for -x executable check (defaults to display-path)
 # Result in $REPLY (no subprocess)
-fzf-colorize-path() {
+function fzf-colorize-path() {
   local inputPath="$1"
   local realPath="${2:-$1}"
   local dirname="${inputPath%/*}"
@@ -27,7 +27,9 @@ fzf-colorize-path() {
     [[ "$REPLY" == "1" ]] && fileColor="$FILETYPES[zsh:color]"
 
     # Is it an executable?
-    [[ "$fileColor" == "" ]] && [[ -x "$realPath" ]] && fileColor="$COLORS[executable]"
+    if [[ "$fileColor" == "" ]] && [[ -x "$realPath" ]]; then
+      fileColor="$COLORS[executable]"
+    fi
   fi
 
   if [[ "$fileColor" != "" ]]; then

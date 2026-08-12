@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # Search command history with fzf
 # Usage:
 # $ ctrl-r                    # Interactive history search
@@ -6,9 +5,10 @@
 # $ ctrl-r --regenerate-cache # Rebuild colored output cache (with spinner when foreground)
 # $ ctrl-r --options          # Print FZF options (one per line)
 # $ ctrl-r --postprocess      # Read raw▮colored selection from stdin, print raw command
-set -e
-source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-options-prompt-label.zsh"
+setopt local_options err_return
+local __lib="${functions_source[$0]:A:h}/__lib"
+source "$__lib/init.zsh"
+source "$__lib/fzf-options-prompt-label.zsh"
 source "$OROSHI_ROOT/tools/term/zsh/config/tools/zsh.zsh"
 source "$OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh"
 
@@ -46,7 +46,7 @@ HISTORY_MODE="lazy"
 # No cache file — force lazy regardless
 [[ ! -f "$CTRLR_DIR/cache" ]] && HISTORY_MODE="lazy"
 
-fzf-source() {
+function fzf-source() {
   if [[ "$HISTORY_MODE" == "fresh" ]]; then
     fzf-history-source-fresh
     return 0
@@ -61,7 +61,7 @@ fzf-source() {
 }
 
 # Display cache file contents, if it exists
-fzf-history-source-fresh() {
+function fzf-history-source-fresh() {
   # Stop if no cache file
   [[ ! -s "$CTRLR_DIR/cache" ]] && return 0
 
@@ -69,13 +69,13 @@ fzf-history-source-fresh() {
 }
 
 # Cache is only slightly off, we update it then display it
-fzf-history-source-eager() {
+function fzf-history-source-eager() {
   # If mutex is taken by a concurrent background update, serve stale cache
   fzf-history-update-cache || true
   fzf-history-source-fresh
 }
 
-fzf-history-source-lazy() {
+function fzf-history-source-lazy() {
   # New entries served raw (uncolored) on top
   local newEntries="$(fzf-history-entries $HISTORY_DIFF_COUNT)"
   for raw in "${(f)newEntries}"; do
@@ -87,7 +87,7 @@ fzf-history-source-lazy() {
   fzf-history-source-fresh
 }
 
-fzf-options() {
+function fzf-options() {
   echo "--sort"
   echo "--exact"
   echo "--tiebreak=index"
@@ -95,7 +95,7 @@ fzf-options() {
   echo "--prompt=$(fzf-options-prompt-label fzf-history History orange-7 orange-2)"
 }
 
-fzf-main() {
+function fzf-main() {
   local opts=(${(f)"$(fzf-options)"})
   fzf-source | fzf "${opts[@]}" | fzf-postprocess
 
@@ -111,7 +111,7 @@ fzf-main() {
 
 # Prepend new entries to cache file, colorized
 # Locked behind a mutex, so no two processes can colorize at the same time
-fzf-history-update-cache() {
+function fzf-history-update-cache() {
   # --progress: show n/total spinner on stderr
   zparseopts -D -E \
     -progress=flagProgress
@@ -179,14 +179,14 @@ fzf-history-update-cache() {
 }
 
 # Full cache rebuild from scratch
-fzf-history-regenerate-cache() {
+function fzf-history-regenerate-cache() {
   \rm -f "$CTRLR_DIR/cache" "$CTRLR_DIR/last-history-line-count"
   HISTORY_DIFF_COUNT="$CURRENT_HISTORY_LINE_COUNT"
   fzf-history-update-cache --progress
 }
 
 # Get all (or only the last n) entries of history, deduplicated
-fzf-history-entries() {
+function fzf-history-entries() {
   local count="$1"
 
   # Get only the last n lines, or the whole file in reverse
@@ -210,14 +210,14 @@ fzf-history-entries() {
 }
 
 # Takes a raw command, sets REPLY to raw▮colored
-fzf-history-format-line() {
+function fzf-history-format-line() {
   local raw="$1"
   fzf-history-highlight-line "$raw"
   REPLY="${raw}▮${REPLY}"
 }
 
 # Highlight an history command with the same colors as _zsh_highlight as-you-type
-fzf-history-highlight-line() {
+function fzf-history-highlight-line() {
   local raw="$1"
 
   # _zsh_highlight is very slow on long commands, so we skip it
@@ -245,9 +245,9 @@ fzf-history-highlight-line() {
     local ansi=""
     for part in ${(s:,:)spec}; do
       case "$part" in
-      fg=*) ansi+=$'\e'"[38;5;${part#fg=}m" ;;
-      bg=*) ansi+=$'\e'"[48;5;${part#bg=}m" ;;
-      bold) ansi+=$'\e'"[1m" ;;
+        fg=*) ansi+=$'\e'"[38;5;${part#fg=}m" ;;
+        bg=*) ansi+=$'\e'"[48;5;${part#bg=}m" ;;
+        bold) ansi+=$'\e'"[1m" ;;
       esac
     done
     [[ "$ansi" == "" ]] && continue
@@ -267,7 +267,7 @@ fzf-history-highlight-line() {
 # Handle --regenerate-cache before dispatch
 if [[ "$isRegenerateCache" == "1" ]]; then
   fzf-history-regenerate-cache
-  exit 0
+  return 0
 fi
 
 fzf-dispatch

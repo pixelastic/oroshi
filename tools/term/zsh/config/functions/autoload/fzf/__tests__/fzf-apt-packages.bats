@@ -65,7 +65,7 @@ setup() {
 @test "fzf-options: includes preview command" {
   bats_run_zsh "fzf-apt-packages --options"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == *"--preview=fzf-apt-packages --preview"* ]]
+  [[ "$output" == *"--preview=bin-zsh fzf-apt-packages --preview"* ]]
 }
 
 @test "fzf-options: binds f5 to reload" {

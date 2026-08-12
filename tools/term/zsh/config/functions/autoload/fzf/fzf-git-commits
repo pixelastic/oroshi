@@ -1,13 +1,13 @@
-#!/usr/bin/env zsh
 # Search for git commits with colorized display and preview
 # Usage:
 # $ fzf-git-commits                  # Interactive search
 # $ fzf-git-commits --source         # Print commits (hash▮colored display)
 # $ fzf-git-commits --options        # Print FZF options
 # $ fzf-git-commits --preview <hash> # Show commit details
-set -e
-source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-options-prompt-label.zsh"
+setopt local_options err_return
+local __lib="${functions_source[$0]:A:h}/__lib"
+source "$__lib/init.zsh"
+source "$__lib/fzf-options-prompt-label.zsh"
 
 function fzf-source() {
   local rawList="$(git-commit-list-raw | head -200)"
@@ -63,7 +63,7 @@ function fzf-options() {
   local prompt="$(fzf-options-prompt-label git-commit Commits git-commit white)"
   echo "--prompt=${prompt}"
   echo "--with-nth=2"
-  echo "--preview=fzf-git-commits --preview {1}"
+  echo "--preview=bin-zsh fzf-git-commits --preview {1}"
   echo "--preview-window=nowrap"
   echo "--ansi"
 }

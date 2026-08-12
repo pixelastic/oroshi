@@ -268,3 +268,14 @@ STORE_DIR="$HOME/local/tmp/oroshi/sound-mode"
 ```
 **Problem:** Tests read/write real `$OROSHI_TMP_FOLDER` instead of isolated `bats_tmp_dir`
 **Reason skipped:** Functions hardcode `$OROSHI_TMP_FOLDER` which is set by zshenv; tests save/restore state in setup/teardown
+
+## Issue 15 — Migrate fzf/
+### Existing autoloaded functions repeat functions_source on each source line
+```zsh
+source "${functions_source[$0]:A:h}/__lib/init.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-options-prompt-directory.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-fs-preview.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-colorize-git-status-path.zsh"
+```
+**Problem:** 5 existing autoloaded functions repeat `${functions_source[$0]:A:h}` per line instead of extracting to `local __lib=` variable like newly migrated functions
+**Reason skipped:** Pre-existing inconsistency, not introduced by this diff; out of scope for this migration

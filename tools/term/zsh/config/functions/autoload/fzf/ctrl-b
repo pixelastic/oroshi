@@ -1,23 +1,23 @@
-#!/usr/bin/env zsh
 # Search available commands, aliases, and functions with fzf
 # Usage:
 # $ ctrl-b                    # Interactive command search
 # $ ctrl-b --source           # Print available commands (one per line)
 # $ ctrl-b --options          # Print FZF options (one per line)
 # $ ctrl-b --postprocess      # Read raw selection from stdin, print command name
-set -e
-source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-options-prompt-label.zsh"
+setopt local_options err_return
+local __lib="${functions_source[$0]:A:h}/__lib"
+source "$__lib/init.zsh"
+source "$__lib/fzf-options-prompt-label.zsh"
 
-fzf-source() {
+function fzf-source() {
   print -l -- ${(k)commands} ${(k)aliases} ${(k)functions} | sort --unique
 }
 
-fzf-options() {
+function fzf-options() {
   echo "--prompt=$(fzf-options-prompt-label fzf-commands Commands yellow amber-dark)"
 }
 
-fzf-postprocess() {
+function fzf-postprocess() {
   local input="$(cat)"
   [[ "$input" == "" ]] && return 0
   print -- "$input"

@@ -1,19 +1,19 @@
-#!/usr/bin/env zsh
 # Fuzzy search Docker Hub images
 # Usage:
 # $ fzf-docker-images                  # Interactive image search
 # $ fzf-docker-images --source         # Print all images (one per line)
 # $ fzf-docker-images --options        # Print FZF options (one per line)
 # $ fzf-docker-images --postprocess    # Read raw selection from stdin, print image name
-set -e
-source "${0:h}/__lib/init.zsh"
+setopt local_options err_return
+local __lib="${functions_source[$0]:A:h}/__lib"
+source "$__lib/init.zsh"
 
-fzf-source() {
+function fzf-source() {
   local cacheFile="$OROSHI_ROOT/tools/docker/docker/config/data/src/images-remote.txt"
   cat "$cacheFile"
 }
 
-fzf-options() {
+function fzf-options() {
   echo "--with-nth=1"
   echo "--preview=echo {2..}"
 }

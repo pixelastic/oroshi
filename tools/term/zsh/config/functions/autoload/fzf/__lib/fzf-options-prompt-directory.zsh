@@ -4,7 +4,7 @@
 # Returns a colored directory path suitable for a FZF --prompt value.
 # Shows the project short code (if available) followed by a simplified path.
 # Usage: fzf-options-prompt-directory /path/to/dir
-fzf-options-prompt-directory() {
+function fzf-options-prompt-directory() {
   colors-load-definitions
   local inputPath="${1:a}"
   local projectPrefix="$(context-badge "$inputPath")"

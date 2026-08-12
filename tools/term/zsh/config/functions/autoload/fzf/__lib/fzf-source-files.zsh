@@ -4,7 +4,7 @@ source "${0:h}/fzf-colorize-path.zsh"
 
 # Outputs two-column lines: absolute_path▮colorized_relative_path
 # Usage: fzf-source-files /path/to/dir
-fzf-source-files() {
+function fzf-source-files() {
   local searchPath="$1"
   local items="$(fd \
     --hidden \

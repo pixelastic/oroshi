@@ -7,8 +7,8 @@
 # $ fzf-apt-packages --options                # Print FZF options (one per line)
 # $ fzf-apt-packages --postprocess            # Read raw selection from stdin, print package name
 setopt local_options err_return
-source "$OROSHI_ROOT/scripts/bin/fzf/__lib/init.zsh"
-source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-options-prompt-label.zsh"
+source "${functions_source[$0]:A:h}/__lib/init.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-options-prompt-label.zsh"
 
 # Custom flags beyond the standard 4
 zparseopts -D -E \

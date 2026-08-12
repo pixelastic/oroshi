@@ -100,8 +100,9 @@
   {
     "id": "15",
     "issue": "issues/15-migrate-fzf.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Migrated 12 fzf bin scripts to autoloaded functions, moved 18 __lib/ files + tests to autoload/fzf/, updated keybindings and fzf.zsh to use function names, existing autoloaded functions updated to use new __lib/ path via functions_source"
   },
   {
     "id": "16",

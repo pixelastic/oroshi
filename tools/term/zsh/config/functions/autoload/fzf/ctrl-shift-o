@@ -5,10 +5,10 @@
 # $ ctrl-shift-o --options        # Print FZF options (one per line)
 # $ ctrl-shift-o --postprocess    # Read raw selection from stdin, print absolute path
 setopt local_options err_return
-source "$OROSHI_ROOT/scripts/bin/fzf/__lib/init.zsh"
-source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-source-directories.zsh"
-source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-options-prompt-directory.zsh"
-source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-fs-preview.zsh"
+source "${functions_source[$0]:A:h}/__lib/init.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-source-directories.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-options-prompt-directory.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-fs-preview.zsh"
 
 function fzf-source() {
   fzf-source-directories "$PWD"

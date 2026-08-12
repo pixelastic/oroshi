@@ -6,7 +6,7 @@ source "${0:h}/fzf-var.zsh"
 # Globals: SEARCH_DIR, ARGS (from init.zsh)
 # Sets: QUERY, EXTRA_RG_ARGS (inherited by pipe subshells)
 # Usage: fzf-regexp-source [extra-rg-args...]
-fzf-regexp-source() {
+function fzf-regexp-source() {
   # Setting QUERY, read by other functions
   QUERY="${ARGS[*]}"
   [[ "$QUERY" == "" ]] && return 0
@@ -19,7 +19,7 @@ fzf-regexp-source() {
 
 # Run ripgrep and output raw results
 # Globals: SEARCH_DIR, QUERY, EXTRA_RG_ARGS
-fzf-regexp-source-raw() {
+function fzf-regexp-source-raw() {
   # Fold mode: on=no context (compact), off=2 lines of context around matches
   local foldMode="$(fzf-var-read regexp-fold-mode off)"
   local -a foldArg=(--context=2)
@@ -40,7 +40,7 @@ fzf-regexp-source-raw() {
 
 # Transform raw ripgrep output (stdin) into FZF-suitable ▮-delimited lines
 # Globals: SEARCH_DIR
-fzf-regexp-source-transform() {
+function fzf-regexp-source-transform() {
   local rawOutput="$(cat)"
   [[ "$rawOutput" == "" ]] && return 0
 
@@ -86,7 +86,7 @@ fzf-regexp-source-transform() {
 
 # Shared fzf-options for regexp scripts
 # Globals: SEARCH_DIR, SCRIPT_NAME
-fzf-regexp-options() {
+function fzf-regexp-options() {
   colors-load-definitions
 
   echo "--delimiter=▮"
@@ -109,7 +109,7 @@ fzf-regexp-options() {
 }
 
 # Shared fzf-postprocess for regexp scripts
-fzf-regexp-postprocess() {
+function fzf-regexp-postprocess() {
   local input="$(cat)"
   [[ "$input" == "" ]] && return 0
 
@@ -121,7 +121,7 @@ fzf-regexp-postprocess() {
 }
 
 # Handle --fold-toggle and --prompt, then fall through to fzf-dispatch
-fzf-regexp-dispatch() {
+function fzf-regexp-dispatch() {
   zparseopts -D -E \
     -fold-toggle=flagFoldToggle \
     -prompt=flagPrompt
@@ -131,19 +131,19 @@ fzf-regexp-dispatch() {
 
   if [[ $isFoldToggle == "1" ]]; then
     fzf-regexp-fold-toggle
-    exit 0
+    return 0
   fi
   if [[ $isPrompt == "1" ]]; then
     fzf-regexp-fold-prompt
     echo "$REPLY"
-    exit 0
+    return 0
   fi
 
   fzf-dispatch
 }
 
 # Toggle fold mode between on (no context) and off (2 lines of context)
-fzf-regexp-fold-toggle() {
+function fzf-regexp-fold-toggle() {
   local currentMode="$(fzf-var-read regexp-fold-mode off)"
   if [[ "$currentMode" == "on" ]]; then
     fzf-var-write regexp-fold-mode off
@@ -155,7 +155,7 @@ fzf-regexp-fold-toggle() {
 # Generate the FZF prompt badge with fold mode indicator
 # Globals: SEARCH_DIR
 # Result: $REPLY
-fzf-regexp-fold-prompt() {
+function fzf-regexp-fold-prompt() {
   icons-load-definitions
   colors-load-definitions
 

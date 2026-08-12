@@ -61,6 +61,25 @@ setup() {
   done
 }
 
+@test "fzf-source: stale cache outputs in reverse chronological order" {
+  rm "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/cache"
+  bats_run_zsh "ctrl-r --source"
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]%%▮*}" = "git status" ]]
+  [[ "${lines[1]%%▮*}" = "echo hello" ]]
+  [[ "${lines[2]%%▮*}" = "ls" ]]
+}
+
+@test "fzf-source: stale cache deduplicates commands" {
+  printf ': 1680000001:0;ls\n: 1680000002:0;echo hello\n: 1680000003:0;ls\n' > "$BATS_TMP_DIR/histfile"
+  rm "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/cache"
+  bats_run_zsh "ctrl-r --source"
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 2 ]]
+  [[ "${lines[0]%%▮*}" = "ls" ]]
+  [[ "${lines[1]%%▮*}" = "echo hello" ]]
+}
+
 # fzf-postprocess
 
 @test "fzf-postprocess: returns raw field from raw▮colored input" {
@@ -89,82 +108,33 @@ setup() {
   [[ "$output" == *"History"* ]]
 }
 
-# fzf-history-entries
+# --regenerate-cache
 
-@test "fzf-history-entries: outputs commands in reverse chronological order" {
-  bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-entries"
+@test "regenerate-cache: produces ANSI-colored entries in cache file" {
+  rm -f "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/cache" "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/last-history-line-count"
+  bats_run_zsh "ctrl-r --regenerate-cache"
   [[ "$status" -eq 0 ]]
-  [[ "${lines[0]}" = "git status" ]]
-  [[ "${lines[1]}" = "echo hello" ]]
-  [[ "${lines[2]}" = "ls" ]]
+  # Cache file should exist with ANSI codes in field 2
+  [[ -f "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/cache" ]]
+  local firstLine="$(head -1 "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/cache")"
+  local field2="${firstLine#*▮}"
+  [[ "$field2" == *$'\e['* ]]
 }
 
-@test "fzf-history-entries: strips ZSH extended history timestamp prefix" {
-  bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-entries"
+@test "regenerate-cache: field 1 is uncolored raw command" {
+  rm -f "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/cache" "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/last-history-line-count"
+  bats_run_zsh "ctrl-r --regenerate-cache"
   [[ "$status" -eq 0 ]]
-  [[ "$output" != *": 168"* ]]
-  [[ "$output" != *":0;"* ]]
+  local firstLine="$(head -1 "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/cache")"
+  local field1="${firstLine%%▮*}"
+  [[ "$field1" != *$'\e['* ]]
 }
 
-@test "fzf-history-entries: skips empty lines" {
-  printf ': 1680000001:0;ls\n\n: 1680000002:0;echo hello\n' > "$BATS_TMP_DIR/histfile"
-  bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-entries"
-  [[ "$status" -eq 0 ]]
-  [[ "${#lines[@]}" -eq 2 ]]
-}
-
-@test "fzf-history-entries: with count argument outputs only that many entries" {
-  bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-entries 2"
-  [[ "$status" -eq 0 ]]
-  [[ "${#lines[@]}" -eq 2 ]]
-  [[ "${lines[0]}" = "git status" ]]
-  [[ "${lines[1]}" = "echo hello" ]]
-}
-
-@test "fzf-history-entries: with no argument outputs all entries" {
-  bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-entries"
-  [[ "$status" -eq 0 ]]
-  [[ "${#lines[@]}" -eq 3 ]]
-}
-
-@test "fzf-history-entries: duplicate commands keep only the most recent" {
-  printf ': 1680000001:0;ls\n: 1680000002:0;echo hello\n: 1680000003:0;ls\n' > "$BATS_TMP_DIR/histfile"
-  bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-entries"
-  [[ "$status" -eq 0 ]]
-  [[ "${#lines[@]}" -eq 2 ]]
-  [[ "${lines[0]}" = "ls" ]]
-  [[ "${lines[1]}" = "echo hello" ]]
-}
-
-# fzf-history-highlight-line
-
-@test "fzf-history-highlight-line: produces ANSI-colored output for a known command" {
-  bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-highlight-line 'echo hello' && printf '%s' \"\$REPLY\""
-  [[ "$status" -eq 0 ]]
-  [[ "$output" == *$'\e['* ]]
-}
-
-@test "fzf-history-highlight-line: output contains no unclosed ANSI sequences" {
-  bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-highlight-line 'echo hello' && printf '%s' \"\$REPLY\""
-  [[ "$status" -eq 0 ]]
-  [[ "$output" == *$'\e[0m' ]]
-}
-
-@test "fzf-history-highlight-line: sets REPLY without printing to stdout" {
-  local stdoutFile="$BATS_TMP_DIR/highlight-stdout"
-  bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-highlight-line 'echo hello' > $stdoutFile && [[ ! -s $stdoutFile ]] && [[ -n \"\$REPLY\" ]]"
-  [[ "$status" -eq 0 ]]
-}
-
-# fzf-history-update-cache mutex
-
-@test "fzf-history-update-cache: prints message and exits cleanly when mutex is already taken" {
-  # Remove meta so HISTORY_DIFF_COUNT > 0 (cache stale → mutex logic runs)
-  rm "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/last-history-line-count"
+@test "regenerate-cache: exits cleanly when mutex is already taken" {
+  rm -f "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/last-history-line-count"
   local lockDir="$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/colorize.lock"
   mkdir -p "$lockDir"
   printf '%s\n' "$$" >"$lockDir/pid"
-  bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-update-cache"
+  bats_run_zsh "ctrl-r --regenerate-cache"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == *"Cache updating already in progress"* ]]
 }

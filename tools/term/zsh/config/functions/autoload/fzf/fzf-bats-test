@@ -1,17 +1,17 @@
-#!/usr/bin/env zsh
 # Fuzzy pick a bats test file
 # Usage:
 # $ fzf-bats-test                  # Interactive search
 # $ fzf-bats-test --source         # Print test files
 # $ fzf-bats-test --options        # Print FZF options (one per line)
 # $ fzf-bats-test --postprocess    # Read selection from stdin, print filepath
-set -e
-source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-fs-preview.zsh"
+setopt local_options err_return
+local __lib="${functions_source[$0]:A:h}/__lib"
+source "$__lib/init.zsh"
+source "$__lib/fzf-fs-preview.zsh"
 
-SCRIPT_NAME="${0:t}"
+SCRIPT_NAME="bin-zsh fzf-bats-test"
 
-fzf-source() {
+function fzf-source() {
   colors-load-definitions
 
   local rawList="$(bats-test-list-raw)"
@@ -28,7 +28,7 @@ fzf-source() {
   done
 }
 
-fzf-options() {
+function fzf-options() {
   icons-load-definitions
   colors-load-definitions
 

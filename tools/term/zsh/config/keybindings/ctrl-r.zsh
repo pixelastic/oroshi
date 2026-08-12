@@ -1,5 +1,5 @@
 # Ctrl-R to search in the history
-oroshi-ctrl-r-widget() {
+function oroshi-ctrl-r-widget() {
   # Stop if not available
   if ! command -v fzf >/dev/null; then
     echo "fzf is not installed"
@@ -8,7 +8,7 @@ oroshi-ctrl-r-widget() {
   fi
 
   export PROMPT_PREVENT_REFRESH="1"
-  local selection="$("$OROSHI_ROOT/scripts/bin/fzf/ctrl-r")"
+  local selection="$(ctrl-r)"
   export PROMPT_PREVENT_REFRESH="0"
 
   # Stop if no selection is made

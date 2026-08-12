@@ -4,7 +4,7 @@
 
 # Save a value under the given key.
 # Usage: fzf-var-write {key} {value}
-fzf-var-write() {
+function fzf-var-write() {
   local key="$1"
   local value="$2"
   local saveFilepath="${OROSHI_TMP_FOLDER}/fzf/var/${KITTY_WINDOW_ID}/${key}"
@@ -14,7 +14,7 @@ fzf-var-write() {
 
 # Read a value previously saved with fzf-var-write.
 # Usage: fzf-var-read {key} [{defaultValue}]
-fzf-var-read() {
+function fzf-var-read() {
   local key="$1"
   local defaultValue="$2"
   local saveFilepath="${OROSHI_TMP_FOLDER}/fzf/var/${KITTY_WINDOW_ID}/${key}"

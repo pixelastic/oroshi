@@ -3,7 +3,7 @@ source "${0:h}/fzf-options-prompt-directory.zsh"
 
 # Emits all fzf options for file-search scripts
 # Usage: fzf-options-files <scriptName> <searchPath>
-fzf-options-files() {
+function fzf-options-files() {
   local scriptName="$1"
   local searchPath="$2"
 

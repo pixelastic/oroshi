@@ -5,7 +5,7 @@ function oroshi_tools_fzf() {
   [[ ! -r $fzfPath ]] && return
   source $fzfPath
 
-  source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-set-default-opts.zsh"
+  source "$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/fzf/__lib/fzf-set-default-opts.zsh"
   fzf-set-default-opts
 }
 oroshi_tools_fzf
