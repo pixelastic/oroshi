@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-slack-writer-update.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Renamed slack-writer-end to slack-writer-tick, added --profile slack-writer to lint step, added iteration loop to finalize step"
   }
 ]

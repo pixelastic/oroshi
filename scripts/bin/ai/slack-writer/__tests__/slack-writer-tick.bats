@@ -10,17 +10,17 @@ setup() {
   clipboard-write() { echo "$1" > "$BATS_TMP_DIR/clipboard.txt"; }
   bats_mock clipboard-write
 
-  bats_run_zsh "slack-writer-end '$DRAFT_PATH'"
+  bats_run_zsh "slack-writer-tick '$DRAFT_PATH'"
   [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "hello world" ]]
 }
 
 @test "fails without argument" {
-  bats_run_zsh "slack-writer-end"
+  bats_run_zsh "slack-writer-tick"
   [[ "$status" -eq 1 ]]
 }
 
 @test "fails if file does not exist" {
-  bats_run_zsh "slack-writer-end '/nonexistent/path.md'"
+  bats_run_zsh "slack-writer-tick '/nonexistent/path.md'"
   [[ "$status" -eq 1 ]]
 }

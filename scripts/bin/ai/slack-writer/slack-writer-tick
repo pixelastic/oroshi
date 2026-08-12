@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 # Copy a slack-writer draft file to clipboard
 # Usage:
-# $ slack-writer-end /path/to/draft.md
+# $ slack-writer-tick /path/to/draft.md
 set -e
 
 local draftPath="$1"
 
 # Draft file is required
 if [[ "$draftPath" == "" ]]; then
-  echoerr "Usage: slack-writer-end <draft-path>"
+  echoerr "Usage: slack-writer-tick <draft-path>"
   return 1
 fi
 if [[ ! -f "$draftPath" ]]; then

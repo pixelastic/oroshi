@@ -70,20 +70,21 @@ Write the draft to `draftPath` using the **Create** tool.
 
 **Exit criterion:** Zero errors. Warnings and suggestions addressed as best effort.
 
-Run `prose-lint <draftPath>` to get a JSON array of violations with `line`, `rule`, `severity`, `match`, and `message` fields.
+Run `prose-lint --profile slack-writer <draftPath>` to get a JSON array of violations with `line`, `rule`, `severity`, `match`, and `message` fields.
 
 Loop: fix `draftPath` (using the Edit tool), re-lint. Repeat until zero errors remain. Warnings may stay if justified.
 
 ### Step 6 — Finalize
 
-**Goal:** Display the final message.
+**Goal:** Display the final message and get user approval.
 
-**Exit criterion:** Message displayed and `slack-writer-end` called.
+**Exit criterion:** User approves the draft and `slack-writer-tick` called.
 
-1. Run `slack-writer-end <draftPath>`
+1. Run `slack-writer-tick <draftPath>`
 2. Display the message (read `draftPath` and show it).
-
-If the user requests changes, edit the draft, then re-run Steps 5-6.
+3. Ask the user: approve or request edits.
+   - If edits requested → loop back to Step 4 (Write draft).
+   - If approved → skill ends.
 
 ## Common Rationalizations
 
@@ -98,4 +99,4 @@ If the user requests changes, edit the draft, then re-run Steps 5-6.
 - [ ] No repeated information
 - [ ] Language verified (English unless explicitly requested otherwise)
 - [ ] `prose-lint` returns zero errors
-- [ ] `slack-writer-end` called with `<draftPath>`
+- [ ] `slack-writer-tick` called with `<draftPath>`
