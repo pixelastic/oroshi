@@ -1,14 +1,13 @@
-#!/usr/bin/env zsh
-# toml-lint: Lint a TOML file
+# Lint a TOML file
 # Usage:
 # $ toml-lint ./path/to/file.toml
-set -e
+setopt local_options err_return
 
 # Input file
-inputFile="${1:a}"
+local inputFile="${1:a}"
 if [[ ! -f "$inputFile" ]]; then
   echoerr "Error: File '$inputFile' not found"
-  exit 1
+  return 1
 fi
 
 taplo lint \

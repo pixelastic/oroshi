@@ -1,27 +1,27 @@
-#!/usr/bin/env zsh
-# python-fix: Fix a Python file
+# Fix a Python file
 # Usage:
 # $ python-fix ./path/to/file.py                       # Output fixed code to stdout
 # $ python-fix --in-place ./path/to/file.py            # Overwrite the file in place
 # $ echo "code" | python-fix                           # Bad code from stdin, good code to stdout
 # $ echo "code" | python-fix --filepath ./realpath.py  # Specify file location for config resolution
-set -e
+setopt local_options err_return
 
 zparseopts -E -D \
   -in-place=flagInPlace \
   -filepath:=flagFilepath
-isInPlace=${#flagInPlace}
-overridePath=${flagFilepath[2]}
+local isInPlace=${#flagInPlace}
+local overridePath=${flagFilepath[2]}
 
 # Work file and temp file
-workfileDir="${OROSHI_TMP_FOLDER}/python-fix"
-workfilePath="${workfileDir}/python-fix-$RANDOM.py"
-tmpPath="${workfilePath}.tmp"
+local workfileDir="${OROSHI_TMP_FOLDER}/python-fix"
+local workfilePath="${workfileDir}/python-fix-$RANDOM.py"
+local tmpPath="${workfilePath}.tmp"
 mkdir -p "$workfileDir"
 
 # Check for stdin
-hasStdin=0
+local hasStdin=0
 [[ ! -t 0 ]] && hasStdin=1
+local inputPath=""
 
 # If a file is passed as an argument:
 # - inputPath is that file
@@ -40,7 +40,7 @@ if [[ $hasStdin -eq 1 ]]; then
 fi
 
 # Default overridePath value
-[[ $overridePath = "" ]] && overridePath="$inputPath"
+[[ $overridePath == "" ]] && overridePath="$inputPath"
 # Create the tmp file
 cp "$workfilePath" "$tmpPath"
 
@@ -55,10 +55,10 @@ cp "$workfilePath" "$tmpPath"
 
 # Fix linting errors
 # ruff check \
-#   --stdin-filename "$overridePath" \
-#   --fix \
-#   <"$workfilePath" \
-#   >"$tmpPath" 2>/dev/null
+  #   --stdin-filename "$overridePath" \
+  #   --fix \
+  #   <"$workfilePath" \
+  #   >"$tmpPath" 2>/dev/null
 # mv -f "$tmpPath" "$workfilePath"
 
 # Reformat
@@ -69,7 +69,7 @@ ruff format \
 mv -f "$tmpPath" "$workfilePath"
 
 # Update in place or output to stdout
-if [[ $isInPlace = 1 ]]; then
+if [[ $isInPlace == 1 ]]; then
   cp -f "$workfilePath" "$inputPath"
 else
   cat "$workfilePath"

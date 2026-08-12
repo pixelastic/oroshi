@@ -134,3 +134,22 @@ function applyFormatters() {
 ```
 **Problem:** Uses `function` keyword syntax for inner function
 **Reason skipped:** Linter reformatted it to this style; no explicit rule in zsh-writer forbids it
+
+## Issue 09 — Migrate python/toml
+### Commented-out code block indentation in python-fix
+```zsh
+# ruff check \
+  #   --stdin-filename "$overridePath" \
+  #   --fix \
+  #   <"$workfilePath" \
+  #   >"$tmpPath" 2>/dev/null
+```
+**Problem:** Comment continuation lines have inconsistent `#` prefix indentation
+**Reason skipped:** Linter auto-reformats this block; manual fixes get overwritten
+
+### fly-lint grep -v indentation
+```zsh
+grep -v '^.\{1,3\}|')
+```
+**Problem:** Line not indented to match the pipeline above it
+**Reason skipped:** Pre-existing from original script; no explicit indentation rule documented

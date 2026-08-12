@@ -1,12 +1,11 @@
-#!/usr/bin/env zsh
-# flylint: Lint fly.toml files
-set -e
+# Lint fly.toml files
+setopt local_options err_return
 setopt extendedglob
 
 local filepath=${1:a}
 
 # Only process files named fly.toml
-[[ "${filepath:t}" != "fly.toml" ]] && exit 0
+[[ "${filepath:t}" != "fly.toml" ]] && return 0
 
 # Run fly config validate and capture output
 local rawOutput=$(fly config validate --config "$filepath" 2>&1)
@@ -55,4 +54,4 @@ for block in "${blocks[@]}"; do
   echo "$filepath:$lineNumber:$columnNumber:$messageType:$message"
 done
 
-exit $exitCode
+return $exitCode

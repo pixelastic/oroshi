@@ -58,8 +58,9 @@
   {
     "id": "09",
     "issue": "issues/09-migrate-python-toml.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Migrated python-fix, python-lint, python-test to _languages/python/ and toml-lint, fly-lint to toml/ autoload, updated NeoVim python.lua and toml.lua to use bin-zsh, moved existing tests"
   },
   {
     "id": "10",

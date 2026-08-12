@@ -1,19 +1,18 @@
-#!/usr/bin/env zsh
-# python-test: Run pytest on one or more files or directories
+# Run pytest on one or more files or directories
 # Usage:
 # $ python-test ./path/to/test_file.py              # Run a single test file
 # $ python-test ./path/to/test_a.py ./test_b.py     # Run multiple test files
 # $ python-test ./path/to/tests/                    # Run all tests in a directory
-set -e
+setopt local_options err_return
 
 local targets=()
 for arg in "$@"; do
-	local target="${arg:a}"
-	# Skip non .py files
-	[[ "$target" != *.py && ! -d "$target" ]] && continue
-	# Skip missing files
-	[[ ! -e "$target" ]] && continue
-	targets+=("$target")
+  local target="${arg:a}"
+  # Skip non .py files
+  [[ "$target" != *.py && ! -d "$target" ]] && continue
+  # Skip missing files
+  [[ ! -e "$target" ]] && continue
+  targets+=("$target")
 done
 
 pytest --spec --no-header "${targets[@]}"

@@ -3,9 +3,9 @@ local M = {}
 -- Configure linter if not already configured
 M.configureLinter = function(lint)
   lint.linters.oroshi_python_lint = {
-    cmd = "python-lint",
+    cmd = "bin-zsh",
     stdin = false,
-    args = { "--json" },
+    args = { "python-lint", "--json" },
     ignore_exitcode = true,
     parser = M.lintParser,
   }
@@ -14,9 +14,9 @@ end
 -- Configure formatter if not already configured
 M.configureFormatter = function(conform)
   conform.formatters.oroshi_python_fix = {
-    command = "python-fix",
+    command = "bin-zsh",
     stdin = true,
-    args = { "--filepath", "$FILENAME" },
+    args = { "python-fix", "--filepath", "$FILENAME" },
     exit_codes = { 0, 1 },
   }
 end
