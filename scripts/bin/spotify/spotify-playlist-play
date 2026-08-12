@@ -13,7 +13,7 @@ fi
 current_workspace=$(workspace-current)
 
 # Open the playlist (this will focus Spotify window)
-sp open "spotify:playlist:$1"
+spotify-dbus open "spotify:playlist:$1"
 
 # Return to the original workspace
 workspace-switch "$current_workspace"

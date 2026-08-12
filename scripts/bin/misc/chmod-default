@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+# Apply default permissions to files (664) and directories (775)
+# Usage:
+# $ chmod-default file.txt dir/    # Apply to specific targets
+# $ chmod-default -r dir/          # Recursively apply to dir contents
+set -e
+
+CHMOD_FILE=664
+CHMOD_DIR=775
+
+local flagRecursive
+zparseopts -E -D \
+  r=flagRecursive
+
+local isRecursive=${#flagRecursive}
+
+function chmod-target() {
+  local target="${1:a}"
+
+  # Skip non-existent paths
+  [[ ! -e "$target" ]] && return 0
+
+  if [[ -d "$target" ]]; then
+    chmod $CHMOD_DIR "$target"
+    # Skip recursion unless -r was passed
+    [[ $isRecursive != 1 ]] && return 0
+    for entry in "$target"/*(.N) "$target"/*(N/); do
+      chmod-target "$entry"
+    done
+  else
+    chmod $CHMOD_FILE "$target"
+  fi
+}
+
+for target in "$@"; do
+  chmod-target "$target"
+done

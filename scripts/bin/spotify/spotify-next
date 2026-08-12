@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-sp next
+spotify-dbus next
