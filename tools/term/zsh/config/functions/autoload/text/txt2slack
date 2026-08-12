@@ -1,14 +1,13 @@
-#!/usr/bin/env zsh
-# txt2slack: Transform transcribed text into a Slack message
+# Transform transcribed text into a natural Slack message
 # Usage:
 # $ txt2slack "raw transcription text"
 # $ echo "text" | txt2slack
-set -e
+setopt local_options err_return
 
-local inputText="${1:-$(cat)}"
+local inputText="${1:-$(/usr/bin/cat)}"
 
 # If input is empty, return empty
-[[ -z "$inputText" ]] && exit 1
+[[ "$inputText" == "" ]] && return 1
 
 local language="$(mic2txt-language)"
 
@@ -24,7 +23,7 @@ CRITICAL INSTRUCTIONS:
 - NO markdown code blocks, NO formatting markers
 - Keep the tone casual and conversational (team communication)
 - Use short sentences and paragraphs
-- Do not use the — or - character to separate parts of a sentence, use commas or conjunctions instead.
+- Replace — and - with commas or conjunctions to join clauses.
 - Fix grammar and add proper punctuation
 - Make it clear and easy to understand
 - Keep all the important information
@@ -33,12 +32,14 @@ CRITICAL INSTRUCTIONS:
 YOUR OUTPUT MUST BE THE MESSAGE ITSELF, NOTHING ELSE."
 
 # Call Claude API with error handling
-local result="$(claude-print "$claudePrompt" --sound-before txt2slack-before.mp3 --sound txt2slack.mp3)"
+local result="$(claude-print "$claudePrompt" \
+  --sound-before txt2slack-before.mp3 \
+  --sound txt2slack.mp3)"
 
 # If result is empty, return the original input
-if [[ $result = "" ]]; then
+if [[ $result == "" ]]; then
   echo "$inputText"
-  exit 0
+  return 0
 fi
 
 echo "$result"

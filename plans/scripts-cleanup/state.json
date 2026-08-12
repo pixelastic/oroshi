@@ -37,8 +37,9 @@
   {
     "id": "06",
     "issue": "issues/06-create-text-domain.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Created text/ autoload domain, moved trim→text-trim, truncate-to-width→text-truncate, remove-ansi→text-ansi-remove from misc/, migrated text-select-line→text-line-get, translate, txt2slack from scripts/bin/, updated all callers and allowlist"
   },
   {
     "id": "07",

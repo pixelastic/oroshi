@@ -11,5 +11,5 @@ local input="$1"
 local rawOutput="$(echo $input | column --table-noheadings --table --separator "▮")"
 
 for line in ${(f)rawOutput}; do
-  truncate-to-width "$line"
+  text-truncate "$line"
 done

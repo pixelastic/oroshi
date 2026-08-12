@@ -1,6 +1,6 @@
 # Given a path to a script or autoloaded zsh function, return the path to its BATS test file
 # Usage:
-# $ bats-test-path ./scripts/bin/text-select-line
+# $ bats-test-path ./scripts/bin/text/text-line-get
 # $ bats-test-path /abs/path/to/config/term/zsh/functions/autoload/misc/slugify
 setopt local_options err_return
 

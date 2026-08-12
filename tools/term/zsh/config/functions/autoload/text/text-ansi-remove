@@ -1,8 +1,8 @@
 # Remove ANSI escape sequences from text
 # Usage:
-# $ remove-ansi "Hello [33mWorld[0m"          # "Hello World"
-# $ echo "Hello [33mWorld[0m" | remove-ansi   # "Hello World"
-# $ remove-ansi --reply "colored text"        # Write to $REPLY, no echo
+# $ text-ansi-remove "Hello [33mWorld[0m"          # "Hello World"
+# $ echo "Hello [33mWorld[0m" | text-ansi-remove   # "Hello World"
+# $ text-ansi-remove --reply "colored text"        # Write to $REPLY, no echo
 setopt local_options err_return extendedglob
 
 zparseopts -E -D \

@@ -56,3 +56,30 @@ fi
 ### Symlinks in ~/.claude/skills/ not in diff
 **Problem:** Spec says "replace with symlinks in `~/.claude/skills/`" but no diff creates those symlinks
 **Reason skipped:** Symlinks in `$HOME` are outside the git repo and can't be tracked in version control. They were created at runtime during implementation and already exist on the machine.
+
+## Issue 06 — Create text/ domain
+### translate/txt2slack naming convention
+```zsh
+translate
+txt2slack
+```
+**Problem:** Names don't follow `{domain}-{action}` convention (should be `text-translate`, `text-to-slack`)
+**Reason skipped:** Spec explicitly says "Keep name, move to text/ domain" for both
+
+### if/else in txt2slack fallback
+```zsh
+if [[ $result == "" ]]; then
+  echo "$inputText"
+  return 0
+fi
+echo "$result"
+```
+**Problem:** Could use return-early pattern
+**Reason skipped:** Single-level if with fallback output on both branches; converting wouldn't simplify
+
+### Unquoted $result in [[ ]]
+```zsh
+if [[ $result == "" ]]; then
+```
+**Problem:** Convention is to quote variables
+**Reason skipped:** Inside `[[ ]]` quoting is optional in zsh (no word splitting); not a rule violation

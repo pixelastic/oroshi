@@ -1,7 +1,7 @@
-# Trim a string, removing trailing slashes
+# Trim a string, removing leading/trailing whitespace
 # Usage:
-# $ trim "Hello World!  "         # "Hello World!"
-# $ echo "Hello World!  " | trim  # "Hello World!"
+# $ text-trim "Hello World!  "         # "Hello World!"
+# $ echo "Hello World!  " | text-trim  # "Hello World!"
 setopt local_options err_return
 local input="$1"
 # Read from pipe

@@ -2,9 +2,9 @@
 # Adds … and ANSI reset when truncating colored text
 # Without --width, defaults to terminal width
 # Usage:
-# $ truncate-to-width --width 40 "long string"   # Truncate to 40 cols
-# $ truncate-to-width "long string"               # Truncate to terminal width
-# $ truncate-to-width --reply --width 40 "string" # Write to $REPLY, no echo
+# $ text-truncate --width 40 "long string"   # Truncate to 40 cols
+# $ text-truncate "long string"               # Truncate to terminal width
+# $ text-truncate --reply --width 40 "string" # Write to $REPLY, no echo
 setopt local_options err_return
 
 local flagReply=()
@@ -22,8 +22,8 @@ if [[ "$maxWidth" == "" ]]; then
   maxWidth="$REPLY"
 fi
 
-# Check visible length via remove-ansi
-remove-ansi --reply "$input"
+# Check visible length via text-ansi-remove
+text-ansi-remove --reply "$input"
 local plainText="$REPLY"
 local visibleLen=${#plainText}
 local hasANSI=0

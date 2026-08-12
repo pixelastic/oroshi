@@ -88,6 +88,6 @@ local maxDescLen=$(( REPLY - maxNameLen - 6 ))
 for entry in "${entries[@]}"; do
   local name="${entry%%:*}"
   local desc="${entry#*:}"
-  truncate-to-width --reply --width $maxDescLen "$desc"
+  text-truncate --reply --width $maxDescLen "$desc"
   echo "${name}:${REPLY}"
 done
