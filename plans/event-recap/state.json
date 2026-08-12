@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-session-scripts.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added meetup-recap-start and meetup-recap-tick ZSH scripts with bats tests, mirroring the slack-writer pattern"
   },
   {
     "id": "03",
