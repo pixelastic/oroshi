@@ -24,4 +24,8 @@
 
 ### slack-writer/
 
-- `slack-writer-start`, `slack-writer-end` → ai/slack-writer/
+- `slack-writer-start`, `slack-writer-tick` → ai/slack-writer/
+
+### meetup-recap/ (added from main)
+
+- `meetup-recap-start`, `meetup-recap-tick` → ai/meetup-recap/
