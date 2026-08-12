@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-skill-file.md",
-    "done": false,
-    "blocked_by": ["01", "02"]
+    "done": true,
+    "blocked_by": ["01", "02"],
+    "recap": "Created /meetup-recap skill with 6-step workflow, 10-point scoring rubric, 6 writing principles, and output structure template"
   },
   {
     "id": "04",
