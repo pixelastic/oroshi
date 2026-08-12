@@ -56,6 +56,8 @@ the existing list
 - evaluate if I need some allowed-tools/disallowed-tools in my skills
 - Add a rule in zsh to prevent abbreviations like *Len, *Dir, abs*, proj*
 - Imrpove hooks so `rm` of files that are tracked by git and can be saved is allowed
+- make zshlint accept directories, and lint all files in this dir
+- find a way to fill a brag doc (https://jvns.ca/blog/brag-documents/) regularly
 
 
 ---
