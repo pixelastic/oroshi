@@ -22,9 +22,9 @@ M.configureLinter = function(lint)
   lint.linters.oroshi_js_lint = function()
     local filename = F.bufferName()
     return {
-      cmd = "js-lint",
+      cmd = "bin-zsh",
       stdin = true,
-      args = { "--json", "--stdin", "--filepath", filename },
+      args = { "js-lint", "--json", "--stdin", "--filepath", filename },
       ignore_exitcode = true,
       parser = M.lintParser,
     }
@@ -38,9 +38,9 @@ M.configureFormatter = function(conform)
   end
 
   conform.formatters.oroshi_js_fix = {
-    command = "js-fix",
+    command = "bin-zsh",
     stdin = true,
-    args = { "--piped", "--filepath", "$FILENAME" },
+    args = { "js-fix", "--piped", "--filepath", "$FILENAME" },
     exit_codes = { 0, 1 }, -- Do not fail on unfixable errors
   }
 end

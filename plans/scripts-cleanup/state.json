@@ -72,8 +72,9 @@
   {
     "id": "11",
     "issue": "issues/11-migrate-js-json.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Migrated js-fix, js-lint, eslint-fix, eslint-lint, prettier-fix to _languages/javascript/, json-fix, json-lint, json-head, json-random, jsonc-remove-key to json/ autoload, moved __lib/ and __tests__, updated NeoVim javascript.lua and json.lua to use bin-zsh"
   },
   {
     "id": "12",

@@ -1,0 +1,19 @@
+# Return a random element from a JSON array, and save it to clipboard
+# Usage:
+# $ json-random file.json   # Random item
+setopt local_options err_return
+
+local output=""
+
+# Check if has stdin
+if [[ -p /dev/stdin ]]; then
+  output="$(jq --argjson random "$RANDOM" '.[$random % length]')"
+else
+  local inputFile="$1"
+  output="$(jq --argjson random "$RANDOM" '.[$random % length]' "$inputFile")"
+fi
+
+# Output
+echo "$output"
+# Save to clipboard
+clipboard-write "$output"

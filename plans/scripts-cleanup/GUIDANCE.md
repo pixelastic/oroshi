@@ -7,3 +7,7 @@
 - gif2png already existed as a proper autoloaded function in img/gif/ — bin version was a stale duplicate
 - beautysh (used by zsh-lint formatter) cannot parse zsh glob patterns like `*.r([0-9][0-9]))` or `(N)` qualifiers — use `# shellcheck disable` comments to suppress false positives
 - `urls` migration deferred per spec (TBD name and domain)
+
+### Issue 11 — Migrate js/ and json/
+- `${0:A:h}` doesn't work in autoloaded functions (`$0` is the function name, not a file path) — use `${functions_source[$0]:A:h}` instead, which resolves the source file path of the current autoloaded function
+- beautysh strips indentation when pipe is at end of line (`cmd |` / `cmd2`), but preserves Google Shell Style with pipe at start (`cmd \` / `  | cmd2`) — always use Google style for multi-line pipes

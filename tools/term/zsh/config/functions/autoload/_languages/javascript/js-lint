@@ -1,10 +1,9 @@
-#!/usr/bin/env zsh
-# js-lint: Lint a JS file
+# Lint a JS file
 # Usage:
 # $ js-lint ./path/to/file.js                                # Lint file
 # $ js-lint --json ./path/to/file.js                         # Lint file, JSON output for vim
 # $ echo "var a = 42;" | js-lint                             # Lint stdin
 # $ echo "var a = 42;" | js-lint --filepath ./realpath.html  # Lint from stdin, with real location on disk
-set -e
+setopt local_options err_return
 
 eslint-lint "$@"

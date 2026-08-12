@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# Zsh wrapper around jsonc-remove-key.js
-set -e
-
-node ${0:A:h}/__lib/jsonc-remove-key.js "$@"

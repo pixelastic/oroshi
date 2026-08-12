@@ -16,9 +16,9 @@ end
 
 M.configureLinter = function(lint)
   lint.linters.oroshi_json_lint = {
-    cmd = "json-lint",
+    cmd = "bin-zsh",
     stdin = false,
-    args = { "--json" },
+    args = { "json-lint", "--json" },
     ignore_exitcode = true,
     parser = M.lintParser,
   }
@@ -26,9 +26,9 @@ end
 
 M.configureFormatter = function(conform)
   conform.formatters.oroshi_json_fix = {
-    command = "json-fix",
+    command = "bin-zsh",
     stdin = true,
-    args = { "--piped", "--filepath", "$FILENAME" },
+    args = { "json-fix", "--piped", "--filepath", "$FILENAME" },
     exit_codes = { 0, 1 },
   }
 end

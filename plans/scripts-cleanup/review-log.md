@@ -198,3 +198,25 @@ fi
 ```
 **Problem:** Misaligned continuation line for sort args
 **Reason skipped:** Linter (beautysh) reformats to this style; manual fix gets overwritten
+
+## Issue 11 — Migrate js/ and json/
+### json-head unquoted $inputFile
+```zsh
+jq \
+  ".[:${headLimit}]" \
+  $inputFile
+```
+**Problem:** `$inputFile` is unquoted in jq call
+**Reason skipped:** Pre-existing code, not introduced by this diff
+
+### json-random no guard clause for missing args
+```zsh
+if [[ -p /dev/stdin ]]; then
+  output="$(jq --argjson random "$RANDOM" '.[$random % length]')"
+else
+  local inputFile="$1"
+  output="$(jq --argjson random "$RANDOM" '.[$random % length]' "$inputFile")"
+fi
+```
+**Problem:** No guard for missing arguments when no stdin
+**Reason skipped:** Judgment call — jq errors naturally with missing input; pre-existing behavior unchanged by migration

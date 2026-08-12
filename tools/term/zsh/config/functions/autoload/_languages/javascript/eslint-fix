@@ -1,31 +1,30 @@
-#!/usr/bin/env zsh
-# eslint-lint: Lint a file using ESLint
+# Fix a file using ESLint
 # Usage:
-# $ eslint-lint ./path/to/file.js                       # Lint file
-# $ eslint-lint --json ./path/to/file.js            # Lint file, JSON output for vim
-# $ echo "<code />" | eslint-lint --filepath ./realpath.html  # Code from stdin, with real location on disk
-set -e
+# $ eslint-fix ./path/to/file.js                       # Output fixed code to stdout
+# $ eslint-fix --in-place ./path/to/file.js            # Overwrite the file in place
+# $ echo "var a=42;" | eslint-fix --filepath ./realpath.js  # Code from stdin, with real location on disk
+setopt local_options err_return
 
 # ============================================================================
 # Parse command-line arguments
 # ============================================================================
 zparseopts -E -D \
-  -json=flagJson \
+  -in-place=flagInPlace \
   -filepath:=flagFilepath \
   -piped=flagPiped
 
-isJson=${#flagJson}
-overrideFilepath=${flagFilepath[2]}
-isContentPiped=${#flagPiped}
+local isInPlace=${#flagInPlace}
+local overrideFilepath=${flagFilepath[2]}
+local isContentPiped=${#flagPiped}
 
-eslintArgs=()
+local eslintArgs=()
 
 # ============================================================================
 # Detect if content is piped
 # ============================================================================
-# cat file | eslint-lint
+# cat file | eslint-fix
 [[ -p /dev/stdin ]] && isContentPiped=1
-# eslint-lint < file
+# eslint-fix < file
 [[ -f /dev/stdin ]] && isContentPiped=1
 
 # ============================================================================
@@ -35,34 +34,33 @@ eslintArgs=()
 if [[ $isContentPiped == 1 ]]; then
   # Stop if missing --filepath
   if [[ $overrideFilepath == "" ]]; then
-    echoerr "When piping content to eslint-lint, you must specify --filepath."
-    exit 1
+    echoerr "When piping content to eslint-fix, you must specify --filepath."
+    return 1
   fi
-
-  eslintArgs+=(--stdin)
-  eslintArgs+=(--stdin-filename "${overrideFilepath}")
 fi
 
 # Resolve file paths
-# inputFile: the file to lint
-inputFile="${1:a}"
-[[ $overrideFilepath != "" ]] && inputFile="$overrideFilepath"
+# inputFilepath: the file to read (if not stdin)
+# realFilepath: where the file is really located (for config resolution)
+local inputFilepath="${1:a}"
+local realFilepath="$inputFilepath"
+[[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
 
 # Validate that we have a file path
-if [[ "$inputFile" == "" ]]; then
+if [[ "$realFilepath" == "" ]]; then
   echoerr "Error: no file specified"
-  exit 1
+  return 1
 fi
 
 # ============================================================================
 # Resolve eslint config file
 # ============================================================================
-configFile=~/.oroshi/eslint.config.js
+local configFile=~/.oroshi/eslint.config.js
 
-projectRoot="$(yarn-root ${inputFile:h} --force)"
+local projectRoot="$(yarn-root ${realFilepath:h} --force)"
 if [[ $projectRoot != "" ]]; then
   # Move to root, as this affects eslint resolution of plugins
-  cd "$projectRoot" || exit 1
+  cd "$projectRoot" || return 1
 
   [[ -f "$projectRoot/.eslintrc.js" ]] && configFile="$projectRoot/.eslintrc.js"
   [[ -f "$projectRoot/eslint.config.js" ]] && configFile="$projectRoot/eslint.config.js"
@@ -70,20 +68,41 @@ fi
 eslintArgs+=(--config "$configFile")
 
 # ============================================================================
-# Build eslint arguments
-# ============================================================================
-# Add JSON format if specified
-[[ $isJson == "1" ]] && eslintArgs+=(--format json)
-
-# ============================================================================
 # Execute eslint
 # ============================================================================
+
 # Input is stdin, output is stdout
 if [[ $isContentPiped == 1 ]]; then
-  eslint_d ${eslintArgs[@]}
-  exit $?
+  local stdinDir="${OROSHI_TMP_FOLDER}/eslint-fix/eslint-fix-$RANDOM"
+  mkdir -p "${stdinDir}"
+
+  local stdinFile="${stdinDir}/${realFilepath:t}"
+  cat >$stdinFile
+
+  eslint_d \
+    ${eslintArgs[@]} \
+    --stdin \
+    --fix-to-stdout \
+    --stdin-filename "${realFilepath}" \
+    <$stdinFile
+  local exitCode=$?
+  rm -rf "$stdinDir"
+  return $exitCode
 fi
 
+# Input is a file, fix in place
+if [[ $isInPlace == 1 ]]; then
+  eslint_d \
+    ${eslintArgs[@]} \
+    --fix \
+    "$inputFilepath" 2>/dev/null
+  return $?
+fi
+
+# Input is a file, output to stdout
 eslint_d \
   ${eslintArgs[@]} \
-  "$inputFile"
+  --stdin \
+  --fix-to-stdout \
+  --stdin-filename "$inputFilepath" \
+  <$inputFilepath

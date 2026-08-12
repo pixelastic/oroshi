@@ -1,10 +1,9 @@
-#!/usr/bin/env zsh
-# js-fix: Fix a JSON file
+# Fix a JS file
 # Usage:
 # $ js-fix ./path/to/file.js                       # Output fixed code to stdout
 # $ js-fix --in-place ./path/to/file.js            # Overwrite the file in place
 # $ echo 'var a = "test";' | js-fix                           # js from stdin, fixed js to stdout
 # $ echo 'var a = "test";' | js-fix --filepath ./realpath.js  # Specify file location for config resolution
-set -e
+setopt local_options err_return
 
 eslint-fix "$@"

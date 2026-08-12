@@ -1,11 +1,10 @@
-#!/usr/bin/env zsh
-# prettier-fix: Fix a file using Prettier
+# Fix a file using Prettier
 # Usage:
 # $ prettier-fix ./path/to/file.js                       # Output fixed code to stdout
 # $ prettier-fix --in-place ./path/to/file.js            # Overwrite the file in place
 # $ echo "<code />" | prettier-fix --parser html               # Code from stdin, with specific parser
 # $ echo "<code />" | prettier-fix --filepath ./realpath.html  # Code from stdin, with real location on disk
-set -e
+setopt local_options err_return
 
 # ============================================================================
 # Parse command-line arguments
@@ -16,12 +15,12 @@ zparseopts -E -D \
   -parser:=flagParser \
   -piped=flagPiped
 
-isInPlace=${#flagInPlace}
-overrideFilepath=${flagFilepath[2]}
-parser=${flagParser[2]}
-isContentPiped=${#flagPiped}
+local isInPlace=${#flagInPlace}
+local overrideFilepath=${flagFilepath[2]}
+local parser=${flagParser[2]}
+local isContentPiped=${#flagPiped}
 
-prettierArgs=()
+local prettierArgs=()
 
 # ============================================================================
 # Detect if content is piped
@@ -39,7 +38,7 @@ if [[ $isContentPiped == 1 ]]; then
   # Stop if missing arguments
   if [[ $overrideFilepath == "" && $parser == "" ]]; then
     echoerr "When piping content to prettier-fix, you must specify either --filepath or --parser."
-    exit 1
+    return 1
   fi
 
   # Define a default filepath if only parser is given
@@ -51,19 +50,19 @@ fi
 # Resolve file paths
 # inputFilepath: the file to read (if not stdin)
 # realFilepath: where the file is really located (for config resolution)
-inputFilepath="${1:a}"
-realFilepath="$inputFilepath"
+local inputFilepath="${1:a}"
+local realFilepath="$inputFilepath"
 [[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
 
 # ============================================================================
 # Resolve project root
 # ============================================================================
-projectRoot=$(yarn-root ${realFilepath:h} --force)
+local projectRoot=$(yarn-root ${realFilepath:h} --force)
 
 # ============================================================================
 # Resolve prettier binary
 # ============================================================================
-prettierBin="prettier"
+local prettierBin="prettier"
 if [[ $projectRoot != "" && -f "$projectRoot/node_modules/.bin/prettier" ]]; then
   prettierBin="$projectRoot/node_modules/.bin/prettier"
 fi
@@ -71,7 +70,7 @@ fi
 # ============================================================================
 # Resolve prettier config file
 # ============================================================================
-configFile=$OROSHI_ROOT/prettier.config.js
+local configFile=$OROSHI_ROOT/prettier.config.js
 if [[ $projectRoot != "" ]]; then
   [[ -f "$projectRoot/prettier.config.js" ]] && configFile="$projectRoot/prettier.config.js"
   [[ -f "$projectRoot/.prettierrc.js" ]] && configFile="$projectRoot/.prettierrc.js"
@@ -103,7 +102,7 @@ if [[ $isContentPiped == 1 ]]; then
     "$stdinFile"
   local exitCode=$?
   rm -rf "$stdinDir"
-  exit $exitCode
+  return $exitCode
 fi
 
 # Input is a file, fix in place
@@ -113,7 +112,7 @@ if [[ $isInPlace == 1 ]]; then
     --write \
     "$inputFilepath" \
     >/dev/null 2>&1
-  exit $?
+  return $?
 fi
 
 # Input is a file, output to stdout

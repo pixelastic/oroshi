@@ -1,0 +1,7 @@
+# Remove a top-level key from a JSONC file, preserving comments
+# Usage:
+# $ jsonc-remove-key file.jsonc keyName
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/jsonc-remove-key.js" "$@"
