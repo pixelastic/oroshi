@@ -1,0 +1,9 @@
+# Check if spotify is currently running
+# Usage:
+# $ spotify-is-running   # return 0 if currently running
+setopt local_options err_return
+
+spotify-dbus current |
+\grep --silent "Error: Spotify is not running" &&
+return 1
+return 0

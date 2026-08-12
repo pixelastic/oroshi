@@ -20,9 +20,9 @@ local shortcuts=(
   "current-date" "<Super>D" "$BIN/keybindings/insert-current-date"
   "uuid" "<Super>U" "$BIN/keybindings/insert-uuid"
 
-  "Spotify Pause" "<Super>I" "$BIN/spotify/spotify"
-  "Spotify Next" "<Super>L" "$BIN/spotify/spotify-next"
-  "Spotify Previous" "<Super>H" "$BIN/spotify/spotify-previous"
+  "Spotify Pause" "<Super>I" "bin-zsh spotify"
+  "Spotify Next" "<Super>L" "bin-zsh spotify-next"
+  "Spotify Previous" "<Super>H" "bin-zsh spotify-previous"
 
   "Flameshot" "<Super>XF86Launch5" 'script --command "flameshot gui" /dev/null'
   "mic2text" "<Ctrl>XF86Launch5" "$BIN/audio/mic2txt"
@@ -35,18 +35,18 @@ local shortcuts=(
   "mic2text-slack-mode-toggle" "<Ctrl><Super>F11" "$BIN/audio/mic2txt-slack-mode-toggle"
   "mic2text-model-toggle" "<Ctrl><Super>F12" "$BIN/audio/mic2txt-model-toggle"
 
-  "RP Green" "<Alt><Super>F2" "spotify-playlist-play 38PlgpAWtas5mPEXmFDNtw"
-  "RP Yellow" "<Alt><Super>F3" "spotify-playlist-play 6M9nIWHVYgj2QCmAWpZQXd"
-  "RP Red" "<Alt><Super>F4" "spotify-playlist-play 0c0nLQ04COLRbhTOqX6X4M"
-  "RP Blue" "<Alt><Super>F5" "spotify-playlist-play 6HSjJTsOL4ZRYQlH8rOLem"
-  "RP Grey" "<Alt><Super>F6" "spotify-playlist-play 2bf9y0CCeuzSYn7hJKky1o"
-  "RP Purple" "<Alt><Super>F7" "spotify-playlist-play 1tWNIMvp7pF0toZRDgRNMy"
+  "RP Green" "<Alt><Super>F2" "bin-zsh spotify-playlist-play 38PlgpAWtas5mPEXmFDNtw"
+  "RP Yellow" "<Alt><Super>F3" "bin-zsh spotify-playlist-play 6M9nIWHVYgj2QCmAWpZQXd"
+  "RP Red" "<Alt><Super>F4" "bin-zsh spotify-playlist-play 0c0nLQ04COLRbhTOqX6X4M"
+  "RP Blue" "<Alt><Super>F5" "bin-zsh spotify-playlist-play 6HSjJTsOL4ZRYQlH8rOLem"
+  "RP Grey" "<Alt><Super>F6" "bin-zsh spotify-playlist-play 2bf9y0CCeuzSYn7hJKky1o"
+  "RP Purple" "<Alt><Super>F7" "bin-zsh spotify-playlist-play 1tWNIMvp7pF0toZRDgRNMy"
 
-  "Playlist Work" "<Alt><Super>F8" "spotify-playlist-play 4stxnkHlVgBowV8rOWDFsK"
-  "Playlist Focus" "<Alt><Super>F9" "spotify-playlist-play 6nIIXpDrRmAl3cFswnGLYL"
-  "Playlist Slow Living" "<Alt><Super>F10" "spotify-playlist-play 37i9dQZF1DXc8kgYqQLMfH"
-  "Playlist Peaceful Piano" "<Alt><Super>F11" "spotify-playlist-play 37i9dQZF1DX4sWSpwq3LiO"
-  "Playlist All Nighter" "<Alt><Super>F12" "spotify-playlist-play 37i9dQZF1DX692WcMwL2yW"
+  "Playlist Work" "<Alt><Super>F8" "bin-zsh spotify-playlist-play 4stxnkHlVgBowV8rOWDFsK"
+  "Playlist Focus" "<Alt><Super>F9" "bin-zsh spotify-playlist-play 6nIIXpDrRmAl3cFswnGLYL"
+  "Playlist Slow Living" "<Alt><Super>F10" "bin-zsh spotify-playlist-play 37i9dQZF1DXc8kgYqQLMfH"
+  "Playlist Peaceful Piano" "<Alt><Super>F11" "bin-zsh spotify-playlist-play 37i9dQZF1DX4sWSpwq3LiO"
+  "Playlist All Nighter" "<Alt><Super>F12" "bin-zsh spotify-playlist-play 37i9dQZF1DX692WcMwL2yW"
 )
 # }}}
 

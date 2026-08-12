@@ -79,8 +79,9 @@
   {
     "id": "12",
     "issue": "issues/12-migrate-spotify.md",
-    "done": false,
-    "blocked_by": ["02", "04"]
+    "done": true,
+    "blocked_by": ["02", "04"],
+    "recap": "Migrated 6 spotify scripts to autoloaded ZSH functions in spotify/ domain, rewrote 4 from Bash to ZSH, updated keybindings to use bin-zsh, spotify-dbus stays as bash bin script"
   },
   {
     "id": "13",

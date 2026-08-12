@@ -1,0 +1,19 @@
+# Launch a Spotify playlist by its ID without focusing the Spotify window
+# Usage:
+# $ spotify-playlist-play <playlist-id>
+# $ spotify-playlist-play 37i9dQZF1DXcBWIGoYBM5M
+setopt local_options err_return
+
+if [[ "$1" == "" ]]; then
+  echoerr "Usage: spotify-playlist-play <playlist-id>"
+  return 1
+fi
+
+# Save current workspace
+local currentWorkspace=$(workspace-current)
+
+# Open the playlist (this will focus Spotify window)
+spotify-dbus open "spotify:playlist:$1"
+
+# Return to the original workspace
+workspace-switch "$currentWorkspace"
