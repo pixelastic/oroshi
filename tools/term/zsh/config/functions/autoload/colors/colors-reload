@@ -1,9 +1,8 @@
-#!/usr/bin/env zsh
 # Reload all theming artifacts by:
 # - Reloading kitty color config from OROSHI_ROOT (works in worktrees)
 # - Rebuilding COLORS[], ICONS[], FILETYPES[], PROJECTS[] arrays
 # - Regenerating tool configs (bat, rg, git)
-set -e
+setopt local_options err_return
 
 # Reload kitty colors from the current OROSHI_ROOT (supports worktrees)
 kitty @ set-colors --all "$OROSHI_ROOT/tools/term/kitty/config/colors.conf"

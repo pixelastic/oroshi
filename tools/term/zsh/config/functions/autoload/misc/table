@@ -1,9 +1,8 @@
-#!/usr/bin/env zsh
 # Display passed content as a table, truncated to terminal width
 # Usage:
 # $ echo "foo▮bar" | table         # foo  bar
 # $ table "foo▮bar"                # foo  bar
-set -e
+setopt local_options err_return
 
 # Read from arg or from pipe
 local input="$1"

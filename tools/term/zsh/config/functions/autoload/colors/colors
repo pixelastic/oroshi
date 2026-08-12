@@ -1,11 +1,10 @@
-#!/usr/bin/env zsh
 # Display terminal colors grouped by section
 # Usage:
 # $ colors                # Show all sections
 # $ colors --ansi         # ANSI 0-15 only
 # $ colors --palette      # Palette families only
 # $ colors --alias        # Semantic aliases only
-set -e
+setopt local_options err_return
 
 zparseopts -E -D - \
   -ansi=flagAnsi \

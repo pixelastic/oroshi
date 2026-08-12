@@ -1,6 +1,6 @@
 # Rename files with zero-padded sequential numbers
 # Usage:
-# $ rename-sequential *.jpg   # Renames to 0000.jpg, 0001.jpg, ...
+# $ rename-number *.jpg   # Renames to 0000.jpg, 0001.jpg, ...
 setopt local_options err_return
 
 local index=0

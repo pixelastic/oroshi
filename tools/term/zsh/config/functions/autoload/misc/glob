@@ -1,14 +1,12 @@
-#!/usr/bin/env zsh
-# Convert glob patterns to real filepaths
+# Convert glob patterns to real filepaths;
 # Usage:
 # $ glob "./*.js"
 # $ glob "./**/**"
-set -e
+setopt local_options err_return
 
 # The below zsh patterns work as follow
 # - "~" expands any glob pattern
-# - (N) means to ignore patterns that don't match anything 
+# - (N) means to ignore patterns that don't match anything
 for arg in $@; do
   echo $~arg(N) | xargs -n1
 done
-

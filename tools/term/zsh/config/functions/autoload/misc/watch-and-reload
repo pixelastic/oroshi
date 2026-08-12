@@ -1,9 +1,8 @@
-#!/usr/bin/env zsh
 # Watch for changes in files and run specific command when they change
 # Usage:
 # $ watch-and-reload ./file1.txt ./file2.txt 'something && ls'
 # $ watch-and-reload yarn-link-list-raw   # Automatically watch the autoloaded file definition and reload function definition between each call
-set -e
+setopt local_options err_return
 local commandToRun=$@[-1]
 local filesToWatch=(${(@)@[1,-2]})
 
@@ -15,12 +14,7 @@ fi
 
 # If the command is an autoloaded zsh function, we reload it
 if [[ $OROSHI_AUTOLOADED_FUNCTIONS[$commandToRun] == "1" ]]; then
-  local functionDefinitionPath="$(find \
-    $OROSHI_ROOT/tools/term/zsh/config/functions/autoload \
-    -name $commandToRun \
-    -type f \
-    -print
-  )"
+  local functionDefinitionPath="$(find $OROSHI_ROOT/tools/term/zsh/config/functions/autoload -name $commandToRun -type f -print)"
   filesToWatch=($functionDefinitionPath)
   commandToRun="oroshi-reload-fpath && $commandToRun"
 fi

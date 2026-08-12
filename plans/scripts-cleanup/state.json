@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-migrate-root-scripts-to-autoloaded.md",
-    "done": false,
-    "blocked_by": ["01", "02"]
+    "done": true,
+    "blocked_by": ["01", "02"],
+    "recap": "Migrated 15 root scripts to autoloaded functions (misc/, colors/, apt-get/, img/gif/, system/, html/, markdown/, rename/), rewrote order from Ruby to ZSH as rename-prefix-number, renamed rename-sequential to rename-number, deleted duplicate bin scripts, urls deferred"
   },
   {
     "id": "04",

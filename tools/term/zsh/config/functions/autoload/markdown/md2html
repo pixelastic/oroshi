@@ -1,9 +1,8 @@
-#!/usr/bin/env zsh
 # Convert markdown files to HTML using pandoc
 # Usage:
 # $ md2html file.md              # Single file
 # $ md2html file1.md file2.md    # Multiple files
-set -e
+setopt local_options err_return
 
 for file in $@; do
   pandoc \

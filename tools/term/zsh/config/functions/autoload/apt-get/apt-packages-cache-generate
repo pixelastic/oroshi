@@ -1,9 +1,8 @@
-#!/usr/bin/env zsh
 # Writes apt package list to disk for use by apt-packages fzf script
 # Cache speed up the fzf search (~5s to generate)
 # Usage:
 # $ apt-packages-cache-generate
-set -e
+setopt local_options err_return
 
 colors-load-definitions
 

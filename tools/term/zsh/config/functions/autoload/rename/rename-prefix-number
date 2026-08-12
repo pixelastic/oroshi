@@ -1,0 +1,23 @@
+# Prepend a numeric index to every file passed as argument
+# Usage:
+# $ rename-prefix-number file.jpg image.png novel.txt
+#   => 01 - File.jpg, 02 - Image.png, 03 - Novel.txt
+setopt local_options err_return
+
+local max=$#
+local zeros=$(( ${#max} < 2 ? 2 : ${#max} ))
+local index=0
+
+for file in "$@"; do
+  [[ ! -e "$file" ]] && continue
+  index=$((index + 1))
+
+  local dirname="${file:a:h}"
+  local basename="${file:t}"
+  local title="${(U)basename[1]}${basename[2,-1]}"
+  local prefix="$(printf "%0${zeros}d" "$index")"
+  local newfile="${dirname}/${prefix} - ${title}"
+
+  echo "Renaming to ${prefix} - ${title}"
+  mv -- "${file:a}" "$newfile"
+done

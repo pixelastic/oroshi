@@ -1,0 +1,7 @@
+# Clear swap by turning it off and on again
+# Usage:
+# $ swap-clean
+setopt local_options err_return
+
+sudo swapoff -a
+sudo swapon -a

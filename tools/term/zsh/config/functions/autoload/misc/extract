@@ -1,0 +1,34 @@
+# Will "extract" files from most of the archive file types.
+setopt local_options err_return
+
+if [[ $# == 0 ]]; then
+  echo "Select at least one file to extract"
+  return
+fi
+
+for file in $@; do
+  case $file in
+    *.tar.bz2) tar xvjf $file ;;
+    *.tar.gz) tar xvzf $file ;;
+    *.tar.lzma) tar --lzma -xvf $file ;;
+    *.tar.xz) tar xvJf $file ;;
+    *.tar) tar xvf $file ;;
+    *.7z.[0-9][0-9][0-9]) 7z x $file ;;
+    *.7z) 7z x $file ;;
+    *.bz2) bzip2 -d $file ;;
+    *.cbr) unrar x $file ;;
+    *.cbz) unzip $file ;;
+    *.deb) sudo dpkg -i $file && sudo apt-get -f install ;;
+    *.gz) gunzip $file ;;
+    *.htmlz) unzip $file ;;
+    *.r[0-9][0-9]) unrar x $file ;;
+    *.rar) unrar x $file ;;
+    *.tbz2) tar xvjf $file ;;
+    *.tgz) tar xvzf $file ;;
+    *.txz) tar Jxvf $file ;;
+    *.xz) 7z x $file ;;
+    *.Z) uncompress $file ;;
+    *.zip|*.ZIP) unzip -o $file ;;
+    *) echo "'$file' cannot be extracted via >extract<" ;;
+  esac
+done
