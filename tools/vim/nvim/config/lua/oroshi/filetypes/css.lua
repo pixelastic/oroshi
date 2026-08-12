@@ -8,9 +8,9 @@ end
 -- Configure linter if not already configured
 M.configureLinter = function(lint)
   lint.linters.oroshi_css_lint = {
-    cmd = "css-lint",
+    cmd = "bin-zsh",
     stdin = false,
-    args = { "--json" },
+    args = { "css-lint", "--json" },
     ignore_exitcode = true,
     parser = M.lintParser,
   }

@@ -19,9 +19,9 @@ end
 
 M.configureLinter = function(lint)
   lint.linters.oroshi_html_lint = {
-    cmd = "html-lint",
+    cmd = "bin-zsh",
     stdin = false,
-    args = { "--nvim" },
+    args = { "html-lint", "--nvim" },
     ignore_exitcode = true,
     parser = M.lintParser,
   }
@@ -29,9 +29,9 @@ end
 
 M.configureFormatter = function(conform)
   conform.formatters.oroshi_html_fix = {
-    command = "html-fix",
+    command = "bin-zsh",
     stdin = true,
-    args = { "--piped", "--filepath", "$FILENAME" },
+    args = { "html-fix", "--piped", "--filepath", "$FILENAME" },
     exit_codes = { 0, 1 },
   }
 end

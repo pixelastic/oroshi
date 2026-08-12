@@ -111,3 +111,26 @@ fi
 ### Spec "Callers to update" not touched
 **Problem:** Spec lists callers needing updates but none were changed
 **Reason skipped:** All callers reference functions by name, not path; autoload resolves identically to PATH — no code changes needed
+
+## Issue 08 — Migrate css/go/html linters/fixers
+### Nested if/else in css-lint and html-lint
+```zsh
+if [[ $projectRoot != "" ]] && [[ -f $projectStylelintBin ]]; then
+  stylelintBin=$projectStylelintBin
+else
+  stylelintBin=$globalStylelintBin
+fi
+```
+**Problem:** Nested if/else instead of return-early pattern
+**Reason skipped:** State-building branches selecting between two values, not early-termination candidates; flattening would not simplify
+
+### _languages/css/ path inconsistency
+**Problem:** `css-lint` placed in `_languages/css/` while `go/` and `html/` are top-level domains
+**Reason skipped:** Spec explicitly prescribes `_languages/css/` domain, and `css-fix` already lives there
+
+### function keyword on inner function in gotmpl-fix
+```zsh
+function applyFormatters() {
+```
+**Problem:** Uses `function` keyword syntax for inner function
+**Reason skipped:** Linter reformatted it to this style; no explicit rule in zsh-writer forbids it

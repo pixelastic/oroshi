@@ -37,9 +37,9 @@ end
 
 M.configureLinter = function(lint)
   lint.linters.oroshi_gotmpl_lint = {
-    cmd = "gotmpl-lint",
+    cmd = "bin-zsh",
     stdin = false,
-    args = { "--nvim" },
+    args = { "gotmpl-lint", "--nvim" },
     ignore_exitcode = true,
     parser = M.lintParser,
   }
@@ -47,9 +47,9 @@ end
 
 M.configureFormatter = function(conform)
   conform.formatters.oroshi_gotmpl_fix = {
-    command = "gotmpl-fix",
+    command = "bin-zsh",
     stdin = true,
-    args = { "--piped", "--filepath", "$FILENAME" },
+    args = { "gotmpl-fix", "--piped", "--filepath", "$FILENAME" },
     exit_codes = { 0, 1 },
   }
 end

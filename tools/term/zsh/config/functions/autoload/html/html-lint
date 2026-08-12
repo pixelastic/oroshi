@@ -1,5 +1,4 @@
-#!/usr/bin/env zsh
-# html-lint: Lint an HTML file
+# Lint an HTML file
 # Note: Uses djlint internally
 # Usage:
 # $ html-lint ./path/to/file.html                                # Lint file
@@ -7,7 +6,7 @@
 # $ html-lint --nvim ./path/to/file.html                         # Lint file, optimized output for NeoVim
 # $ html-lint --json ./path/to/file.html                         # Lint file, JSON output for vim (not supported by djlint, returns normal output)
 # $ echo '<div>Hello</div>' | html-lint --filepath ./realpath.html  # Lint from stdin, with real location on disk
-set -e
+setopt local_options err_return
 
 # ============================================================================
 # Parse command-line arguments
@@ -18,13 +17,13 @@ zparseopts -E -D \
   -gotmpl=flagGotmpl \
   -nvim=flagNvim
 
-isJson=${#flagJson}
-overrideFilepath=${flagFilepath[2]}
-isGotmpl=${#flagGotmpl}
-isNvim=${#flagNvim}
-isContentPiped=0
+local isJson=${#flagJson}
+local overrideFilepath=${flagFilepath[2]}
+local isGotmpl=${#flagGotmpl}
+local isNvim=${#flagNvim}
+local isContentPiped=0
 
-djlintArgs=()
+local djlintArgs=()
 
 # ============================================================================
 # Detect if content is piped
@@ -42,25 +41,25 @@ if [[ $isContentPiped == 1 ]]; then
   # Stop if missing --filepath
   if [[ $overrideFilepath == "" ]]; then
     echoerr "When piping content to html-lint, you must specify --filepath."
-    exit 1
+    return 1
   fi
 
-  inputFile="$overrideFilepath"
+  local inputFile="$overrideFilepath"
 else
   # Resolve file paths
-  inputFile="${1:a}"
+  local inputFile="${1:a}"
 
   # Validate file exists
   if [[ ! -f "$inputFile" ]]; then
     echoerr "Error: File '$inputFile' not found"
-    exit 1
+    return 1
   fi
 fi
 
 # Validate that we have a file path
 if [[ "$inputFile" == "" ]]; then
   echoerr "Error: no file specified"
-  exit 1
+  return 1
 fi
 
 # ============================================================================
@@ -90,7 +89,7 @@ fi
 # Input is stdin, output is stdout
 if [[ $isContentPiped == 1 ]]; then
   djlint ${djlintArgs[@]} -
-  exit $?
+  return $?
 fi
 
 # Input is file

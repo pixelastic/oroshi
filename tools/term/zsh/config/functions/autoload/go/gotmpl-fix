@@ -1,5 +1,4 @@
-#!/usr/bin/env zsh
-# gotmpl-fix: Fix a Go template HTML file
+# Fix a Go template HTML file
 # Note: Prettier chokes on gotmpl {{ syntax }}, so instead we use a mix of
 # djlint and rustywind as a good-enough fallback
 # Usage:
@@ -7,7 +6,7 @@
 # $ gotmpl-fix --in-place ./path/to/file.gohtml            # Overwrite the file in place
 # $ echo "<html>{{ .Title }}</html>" | gotmpl-fix                             # Go template from stdin, fixed to stdout
 # $ echo "<html>{{ .Title }}</html>" | gotmpl-fix --filepath ./realpath.gohtml  # Specify file location for context
-set -e
+setopt local_options err_return
 
 # ============================================================================
 # Parse command-line arguments
@@ -17,14 +16,14 @@ zparseopts -E -D \
   -filepath:=flagFilepath \
   -piped=flagPiped
 
-isInPlace=${#flagInPlace}
-overrideFilepath=${flagFilepath[2]}
-isContentPiped=${#flagPiped}
+local isInPlace=${#flagInPlace}
+local overrideFilepath=${flagFilepath[2]}
+local isContentPiped=${#flagPiped}
 
 # ============================================================================
 # Function to apply formatters on a file
 # ============================================================================
-applyFormatters() {
+function applyFormatters() {
   local targetFile="$1"
 
   # Apply djlint
@@ -55,8 +54,8 @@ applyFormatters() {
 # Resolve file paths
 # inputFilepath: the file to read (if not stdin)
 # realFilepath: where the file is really located (for context)
-inputFilepath="${1:a}"
-realFilepath="$inputFilepath"
+local inputFilepath="${1:a}"
+local realFilepath="$inputFilepath"
 [[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
 
 # ============================================================================
@@ -81,13 +80,13 @@ if [[ $isContentPiped == 1 ]]; then
   /usr/bin/cat "$tmpFile"
   local exitCode=$?
   rm -rf "$tmpDir"
-  exit $exitCode
+  return $exitCode
 fi
 
 # Input is a file, fix in place
 if [[ $isInPlace == 1 ]]; then
   applyFormatters "$inputFilepath"
-  exit $?
+  return $?
 fi
 
 # Input is a file, output to stdout
@@ -105,4 +104,4 @@ applyFormatters "$tmpFile"
 /usr/bin/cat "$tmpFile"
 local exitCode=$?
 rm -rf "$tmpDir"
-exit $exitCode
+return $exitCode

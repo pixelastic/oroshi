@@ -51,8 +51,9 @@
   {
     "id": "08",
     "issue": "issues/08-migrate-linters-css-go-html.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Migrated css-lint to _languages/css/, gotmpl-fix+gotmpl-lint to go/, html-fix+html-lint to html/ autoload, updated NeoVim filetypes to use bin-zsh"
   },
   {
     "id": "09",
