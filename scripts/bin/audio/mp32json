@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-set -e
-
-local input=$1
-
-exiftool $input -json | jq '.[0]'

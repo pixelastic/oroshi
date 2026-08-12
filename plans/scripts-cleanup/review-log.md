@@ -240,3 +240,31 @@ if mic2txt-autosubmit-mode-is-enabled; then
 ```
 **Problem:** Multiple if blocks inside stopRecording function
 **Reason skipped:** Sequential transformations on $transcription, not nested conditionals; return-early doesn't apply to mid-function data mutations
+
+## Issue 14 — Migrate audio/ general scripts
+### audio-split variable names output1/output2/basename
+```zsh
+local basename="${input:r}"
+local output1="${basename}-part1.${extension}"
+local output2="${basename}-part2.${extension}"
+```
+**Problem:** Variable names could be more descriptive; `basename` shadows the command
+**Reason skipped:** Full words, not abbreviations; `output1`/`output2` clear for a two-part split
+
+### sound-mode-toggle if/else block
+```zsh
+if [[ -f $storeFile ]]; then
+  rm $storeFile
+else
+  touch $storeFile
+fi
+```
+**Problem:** Uses if/else instead of return-early
+**Reason skipped:** Legitimate binary toggle (create vs remove), not a guard clause
+
+### Behavioral tests use real filesystem
+```bash
+STORE_DIR="$HOME/local/tmp/oroshi/sound-mode"
+```
+**Problem:** Tests read/write real `$OROSHI_TMP_FOLDER` instead of isolated `bats_tmp_dir`
+**Reason skipped:** Functions hardcode `$OROSHI_TMP_FOLDER` which is set by zshenv; tests save/restore state in setup/teardown

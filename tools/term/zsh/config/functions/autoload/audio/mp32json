@@ -1,0 +1,8 @@
+# Extract MP3 metadata as JSON
+# Usage:
+# $ mp32json file.mp3
+setopt local_options err_return
+
+local input=$1
+
+exiftool $input -json | jq '.[0]'

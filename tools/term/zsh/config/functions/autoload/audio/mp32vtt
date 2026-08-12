@@ -1,28 +1,31 @@
-#!/usr/bin/env zsh
-# Convert an MP3 audio file to a VTT subtitle file using OpenAI's Whisper API.
+# Convert an MP3 audio file to a VTT subtitle file using OpenAI's Whisper API
 # Usage:
 # $ mp32vtt file.mp3  # Creates file.vtt
-set -e
+setopt local_options err_return
 
-inputFile="$1"
+local inputFile="$1"
 
-# Validate input is an existing file
-if [[ "$inputFile" == "" || ! -f "$inputFile" ]]; then
+# Input must be an existing .mp3 file
+if [[ "$inputFile" == "" ]]; then
   echoerr "Usage: mp32vtt <file.mp3>"
-  exit 1
+  return 1
 fi
-# Validate file is an mp3
+if [[ ! -f "$inputFile" ]]; then
+  echoerr "Usage: mp32vtt <file.mp3>"
+  return 1
+fi
 if [[ "$inputFile" != *.mp3 ]]; then
   echoerr "Usage: mp32vtt <file.mp3>"
-  exit 1
+  return 1
 fi
 
+# API key required
 if [[ "$OPENAI_API_KEY" == "" ]]; then
   echoerr "Error: OPENAI_API_KEY not set"
-  exit 1
+  return 1
 fi
 
-outputFile="${inputFile:r}.vtt"
+local outputFile="${inputFile:r}.vtt"
 
 curl -s https://api.openai.com/v1/audio/transcriptions \
   -H "Authorization: Bearer $OPENAI_API_KEY" \

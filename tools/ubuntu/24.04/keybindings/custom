@@ -29,7 +29,7 @@ local shortcuts=(
   "mic2text-cancel" "<Shift><Ctrl>XF86Launch5" "bin-zsh mic2txt-cancel"
   "mic2text-paste" "<Ctrl><Alt>V" "bin-zsh mic2txt-paste"
 
-  "sound-mode-toggle" "<Ctrl><Super>F8" "$BIN/audio/sound-mode-toggle"
+  "sound-mode-toggle" "<Ctrl><Super>F8" "bin-zsh sound-mode-toggle"
   "mic2text-autosubmit-mode-toggle" "<Ctrl><Super>F9" "bin-zsh mic2txt-autosubmit-mode-toggle"
   "mic2text-language-toggle" "<Ctrl><Super>F10" "bin-zsh mic2txt-language-toggle"
   "mic2text-slack-mode-toggle" "<Ctrl><Super>F11" "bin-zsh mic2txt-slack-mode-toggle"

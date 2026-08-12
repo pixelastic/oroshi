@@ -93,8 +93,9 @@
   {
     "id": "14",
     "issue": "issues/14-migrate-audio-general.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Migrated 7 audio scripts (audio-play, audio-play-oroshi, audio-split, sound-mode-is-enabled, sound-mode-toggle, mp32json, mp32vtt) to autoloaded functions, updated keybinding and argos config to use bin-zsh"
   },
   {
     "id": "15",
