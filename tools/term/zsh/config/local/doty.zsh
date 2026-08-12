@@ -6,7 +6,4 @@ function ok() {
 
   # App bindings
   $OROSHI_ROOT/tools/ubuntu/22.04/keybindings/deploy
-
-  # Keybindings that couldn't work with Ubuntu directly
-  $OROSHI_ROOT/tools/keybindings/xbindkeys/deploy
 }

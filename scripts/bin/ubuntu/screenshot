@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-set -e
-
-script --command "flameshot gui" /dev/null
