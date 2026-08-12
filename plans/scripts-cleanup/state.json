@@ -65,8 +65,9 @@
   {
     "id": "10",
     "issue": "issues/10-migrate-misc-docker.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Migrated better-rm to misc/, kill-pid→process-kill and process-detach to system/process/, docker-image-list and docker-image-pull to docker/image/, moved better-rm tests to autoload location"
   },
   {
     "id": "11",

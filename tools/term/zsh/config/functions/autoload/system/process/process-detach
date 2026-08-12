@@ -1,5 +1,3 @@
-#!/usr/bin/env zsh
-set -e
 # Completely detach a process from the current session
 # Useful for running long-lived background processes that should survive
 # parent process termination, especially in sandboxed environments like hooks
@@ -9,6 +7,7 @@ set -e
 # Usage:
 # $ process-detach ffplay -nodisp song.mp3
 # $ process-detach long-running-daemon --config file.conf
+setopt local_options err_return
 
 # Execute the command with complete detachment:
 # - setsid: Creates new session, no controlling terminal

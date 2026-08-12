@@ -1,10 +1,9 @@
-#!/usr/bin/env zsh
 # Put file(s) into Trash rather than deleting directly
 # Usage:
 # $ better-rm ./path/to/file.txt   # Delete one file
 # $ better-rm ./path/to/*.txt      # Delete all *.txt
 # $ better-rm -rf ./path/to/dir    # rm-compatible flags are silently ignored
-set -e
+setopt local_options err_return
 
 # Strip rm-compatible flags (-f, -r, -rf, etc.) — no-ops for trash-put
 local flagDiscard=()
@@ -20,7 +19,7 @@ local regularFiles=()
 local mountedFiles=()
 
 for arg in "$@"; do
-  filepath="${arg:a}"
+  local filepath="${arg:a}"
   local isMountedFile=0
 
   # Check if file is a remote mount

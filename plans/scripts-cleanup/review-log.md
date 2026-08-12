@@ -153,3 +153,48 @@ grep -v '^.\{1,3\}|')
 ```
 **Problem:** Line not indented to match the pipeline above it
 **Reason skipped:** Pre-existing from original script; no explicit indentation rule documented
+
+## Issue 10 — Migrate misc/ and docker/
+### echo $output unquoted in docker-image-list
+```zsh
+echo $output | column \
+```
+**Problem:** `$output` is unquoted
+**Reason skipped:** Intentional — unquoted `echo` lets zsh expand `\n` sequences; quoting would break multiline output
+
+### docker-image-pull $@ collapsed to string
+```zsh
+local images="$@"
+```
+**Problem:** All positional args collapsed into single string, then re-split with `${=images}`
+**Reason skipped:** Pre-existing pattern from original script, unchanged by migration
+
+### docker-image-pull unquoted $imageName
+```zsh
+docker image pull $imageName
+```
+**Problem:** Unquoted variable expansion
+**Reason skipped:** Docker image names cannot contain spaces; safe in practice
+
+### better-rm nested if/else in loop
+```zsh
+if [[ $isMountedFile == 1 ]]; then
+  mountedFiles+=("$filepath")
+else
+  regularFiles+=("$filepath")
+fi
+```
+**Problem:** Nested if/else instead of return-early
+**Reason skipped:** Single-level if/else inside a loop sorting items into two arrays; break already short-circuits inner loop
+
+### better-rm domain TBD in spec
+**Problem:** Spec marks `better-rm` domain as TBD but implementation placed it in `misc/`
+**Reason skipped:** All other `better-*` functions live in `misc/` — consistent placement
+
+### docker-image-list --key indentation
+```zsh
+    --key 1,1d \
+  --key 2,2r
+```
+**Problem:** Misaligned continuation line for sort args
+**Reason skipped:** Linter (beautysh) reformats to this style; manual fix gets overwritten
