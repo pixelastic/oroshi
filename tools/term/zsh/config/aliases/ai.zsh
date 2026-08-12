@@ -16,6 +16,4 @@ alias alph="ralph"
 
 # Skills
 alias skl="skills-list"
-alias ska="skills-install"
-alias skR="skills-remove"
 alias skala="skills-allowlist-add"

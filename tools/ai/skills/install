@@ -1,10 +1,6 @@
 #!/usr/bin/env zsh
 # Install Claude Code skills
 # Target: ~/.claude/skills/
-
-# Install skills from external sources
-skills-install vercel-labs/skills@find-skills
-skills-install obra/superpowers@brainstorming
-skills-install obra/superpowers@systematic-debugging
-skills-install obra/superpowers@test-driven-development
-skills-install obra/superpowers@writing-skills
+# Community skills are now tracked in tools/ai/claude/config/skills/ and
+# symlinked into ~/.claude/skills/ by the dotfiles installer.
+set -e

@@ -9252,7 +9252,6 @@ __metadata:
     jsonc-parser: "npm:3.3.1"
     pietro: "npm:0.6.1"
     prettier: "npm:3.6.2"
-    skills: "npm:1.5.1"
     solkan: "npm:0.10.0"
   languageName: unknown
   linkType: soft
@@ -10670,18 +10669,6 @@ __metadata:
   version: 4.1.0
   resolution: "signal-exit@npm:4.1.0"
   checksum: 10c0/41602dce540e46d599edba9d9860193398d135f7ff72cab629db5171516cfae628d21e7bfccde1bbfdf11c48726bc2a6d1a8fb8701125852fbfda7cf19c6aa83
-  languageName: node
-  linkType: hard
-
-"skills@npm:1.5.1":
-  version: 1.5.1
-  resolution: "skills@npm:1.5.1"
-  dependencies:
-    yaml: "npm:^2.8.3"
-  bin:
-    add-skill: bin/cli.mjs
-    skills: bin/cli.mjs
-  checksum: 10c0/86c6e4f7cad4bc4603a7282ad2f310566b790f9d4c759c431f832ec61a0d7f239dd27ad73c9368ee2728dc1db4b1d9f880467b87521db537724e585b9dcce395
   languageName: node
   linkType: hard
 
@@ -12375,7 +12362,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.8.1, yaml@npm:^2.8.3":
+"yaml@npm:^2.8.1":
   version: 2.8.3
   resolution: "yaml@npm:2.8.3"
   bin:

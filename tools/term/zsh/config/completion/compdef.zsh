@@ -123,8 +123,6 @@ compdef _make-targets \
   make
 # }}}
 # 🤖 AI {{{
-compdef _skills \
-  skills-remove
 compdef _plans \
   ralph
 # }}}

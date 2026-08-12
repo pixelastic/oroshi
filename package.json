@@ -19,7 +19,6 @@
     "jsonc-parser": "3.3.1",
     "pietro": "0.6.1",
     "prettier": "3.6.2",
-    "skills": "1.5.1",
     "solkan": "0.10.0"
   },
   "scripts": {

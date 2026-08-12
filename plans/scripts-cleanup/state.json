@@ -30,8 +30,9 @@
   {
     "id": "05",
     "issue": "issues/05-skills-cleanup.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Removed skills npm package, deleted skills-install/skills-remove functions, migrated 4 community skills to tools/ai/claude/config/skills/, cleaned up aliases and completions"
   },
   {
     "id": "06",

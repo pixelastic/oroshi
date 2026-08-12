@@ -51,3 +51,8 @@ fi
 ### gif2png migration asymmetry
 **Problem:** `scripts/bin/gif2png` deleted but no new autoloaded version created in this diff
 **Reason skipped:** gif2png already existed as a proper autoloaded function in `img/gif/gif2png` from a prior change. Bin copy was a stale duplicate.
+
+## Issue 05 — Skills cleanup
+### Symlinks in ~/.claude/skills/ not in diff
+**Problem:** Spec says "replace with symlinks in `~/.claude/skills/`" but no diff creates those symlinks
+**Reason skipped:** Symlinks in `$HOME` are outside the git repo and can't be tracked in version control. They were created at runtime during implementation and already exist on the machine.
