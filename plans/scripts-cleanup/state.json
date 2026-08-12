@@ -16,5 +16,131 @@
     "issue": "issues/03-migrate-root-scripts-to-autoloaded.md",
     "done": false,
     "blocked_by": ["01", "02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-delete-dead-non-root-scripts.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-skills-cleanup.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-create-text-domain.md",
+    "done": false,
+    "blocked_by": ["04"]
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-migrate-ubuntu-to-system.md",
+    "done": false,
+    "blocked_by": ["04"]
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-migrate-linters-css-go-html.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "09",
+    "issue": "issues/09-migrate-python-toml.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "10",
+    "issue": "issues/10-migrate-misc-docker.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "11",
+    "issue": "issues/11-migrate-js-json.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "12",
+    "issue": "issues/12-migrate-spotify.md",
+    "done": false,
+    "blocked_by": ["02", "04"]
+  },
+  {
+    "id": "13",
+    "issue": "issues/13-migrate-audio-mic2txt.md",
+    "done": false,
+    "blocked_by": ["04"]
+  },
+  {
+    "id": "14",
+    "issue": "issues/14-migrate-audio-general.md",
+    "done": false,
+    "blocked_by": ["04"]
+  },
+  {
+    "id": "15",
+    "issue": "issues/15-migrate-fzf.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "16",
+    "issue": "issues/16-migrate-kitty.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "17",
+    "issue": "issues/17-migrate-ai-root.md",
+    "done": false,
+    "blocked_by": ["05", "06"]
+  },
+  {
+    "id": "18",
+    "issue": "issues/18-migrate-ai-subdomains.md",
+    "done": false,
+    "blocked_by": ["17"]
+  },
+  {
+    "id": "19",
+    "issue": "issues/19-migrate-zsh-lint-fix.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "20",
+    "issue": "issues/20-migrate-bats.md",
+    "done": false,
+    "blocked_by": ["04"]
+  },
+  {
+    "id": "21",
+    "issue": "issues/21-migrate-google.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "22",
+    "issue": "issues/22-migrate-markdown-vim-lua.md",
+    "done": false,
+    "blocked_by": ["03"]
+  },
+  {
+    "id": "23",
+    "issue": "issues/23-migrate-git.md",
+    "done": false,
+    "blocked_by": ["04"]
+  },
+  {
+    "id": "24",
+    "issue": "issues/24-migrate-small-domains.md",
+    "done": false,
+    "blocked_by": []
   }
 ]
