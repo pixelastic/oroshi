@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-# Say something in french
-set -e
-say --fr $@

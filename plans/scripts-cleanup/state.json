@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-delete-dead-root-scripts.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Deleted 13 dead root-level scripts and removed better-posting alias"
   },
   {
     "id": "02",

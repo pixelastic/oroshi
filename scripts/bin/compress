@@ -1,4 +1,0 @@
-#!/usr/bin/env ruby
-require_relative '../etc/compress/compress.rb'
-Compress.new(*ARGV).run()
-
