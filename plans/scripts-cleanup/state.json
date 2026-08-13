@@ -158,5 +158,11 @@
     "issue": "issues/24-migrate-small-domains.md",
     "done": false,
     "blocked_by": []
+  },
+  {
+    "id": "25",
+    "issue": "issues/25-fix-fzf-cat-alias.md",
+    "done": false,
+    "blocked_by": ["15"]
   }
 ]

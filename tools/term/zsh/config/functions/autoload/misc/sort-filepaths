@@ -11,7 +11,7 @@ setopt local_options err_return
 
 # Get input from stdin, or as arguments
 if [[ -p /dev/stdin ]]; then
-  local stdin="$(cat -)"
+  local stdin="$(\cat -)"
   local unsortedFilepaths=()
   [[ "$stdin" != "" ]] && unsortedFilepaths=(${(f)stdin})
 else
