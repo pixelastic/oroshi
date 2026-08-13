@@ -17,8 +17,8 @@ local shortcuts=(
   "Kitty" "<Super>T" "bin-zsh kitty-restore"
   "Keepass" "<Super>K" "bin-zsh better-keepass /home/tim/perso/Dropbox/tim/keys.kdbx"
 
-  "current-date" "<Super>D" "$BIN/keybindings/insert-current-date"
-  "uuid" "<Super>U" "$BIN/keybindings/insert-uuid"
+  "current-date" "<Super>D" "bin-zsh insert-current-date"
+  "uuid" "<Super>U" "bin-zsh insert-uuid"
 
   "Spotify Pause" "<Super>I" "bin-zsh spotify"
   "Spotify Next" "<Super>L" "bin-zsh spotify-next"

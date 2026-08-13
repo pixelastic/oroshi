@@ -163,8 +163,9 @@
   {
     "id": "24",
     "issue": "issues/24-migrate-small-domains.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Migrated prose/, ebook/, worktools/, video/, keybindings/, pdf/ scripts to autoloaded functions, updated keybinding config and package.json to use bin-zsh"
   },
   {
     "id": "25",

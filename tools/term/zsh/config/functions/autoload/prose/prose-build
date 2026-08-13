@@ -1,19 +1,18 @@
-#!/usr/bin/env zsh
 # Merge Vale profiles: default.ini + per-profile overrides → dist/*.ini
 # Usage:
 # $ prose-build              # Rebuild all profiles
-set -e
+setopt local_options err_return
 
-VALE_DIR="$OROSHI_ROOT/tools/prose/vale"
-SRC_DIR="$VALE_DIR/src"
-DIST_DIR="$VALE_DIR/dist"
+local VALE_DIR="$OROSHI_ROOT/tools/prose/vale"
+local SRC_DIR="$VALE_DIR/src"
+local DIST_DIR="$VALE_DIR/dist"
 
 local defaultFile="$SRC_DIR/default.ini"
 
 # No default profile
 if [[ ! -f "$defaultFile" ]]; then
   echo "Missing $defaultFile"
-  exit 1
+  return 1
 fi
 
 mkdir -p "$DIST_DIR"

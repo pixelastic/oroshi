@@ -1,0 +1,6 @@
+# Insert UUID in clipboard and focused input
+setopt local_options err_return
+
+local uuid=$(uuidgen)
+focus-insert "$uuid"
+clipboard-write "$uuid"

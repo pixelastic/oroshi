@@ -1,24 +1,23 @@
-#!/usr/bin/env zsh
 # Lint prose with Vale and output a minimal JSON array of violations
 # Usage:
 # $ prose-lint file.md                  # Lint a file
 # $ prose-lint "some text to check"     # Lint a string
 # $ prose-lint --profile blog file.md   # Lint with blog profile
-set -e
+setopt local_options err_return
 
 zparseopts -E -D \
   -profile:=flagProfile
 
 local profile="${flagProfile[2]:-default}"
-VALE_CONFIG="$OROSHI_ROOT/tools/prose/vale/dist/$profile.ini"
+local VALE_CONFIG="$OROSHI_ROOT/tools/prose/vale/dist/$profile.ini"
 # jq filter: flatten Vale's keyed-by-filename object into a flat array with 5 fields
-JQ_FILTER='[.[][]] | map({line: .Line, rule: .Check, severity: .Severity, match: .Match, message: .Message})'
+local JQ_FILTER='[.[][]] | map({line: .Line, rule: .Check, severity: .Severity, match: .Match, message: .Message})'
 
 local valeOutput=""
 
 if [[ $# -eq 0 ]]; then
   printf '[]\n'
-  exit 0
+  return 0
 fi
 
 if [[ -f "$1" ]]; then
@@ -33,5 +32,5 @@ fi
 local result="$(printf '%s' "$valeOutput" | jq --compact-output "$JQ_FILTER")"
 
 printf '%s\n' "$result"
-[[ "$(printf '%s' "$result" | jq 'length')" -gt 0 ]] && exit 1
-exit 0
+[[ "$(printf '%s' "$result" | jq 'length')" -gt 0 ]] && return 1
+return 0

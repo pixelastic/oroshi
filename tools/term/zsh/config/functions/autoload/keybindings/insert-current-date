@@ -1,5 +1,6 @@
-#!/usr/bin/env zsh
-set -e
+# Insert current date in clipboard and focused input
+setopt local_options err_return
+
 local currentDate=$(date +"%Y-%m-%d-%H-%M-%S")
 focus-insert "$currentDate"
 clipboard-write "$currentDate"

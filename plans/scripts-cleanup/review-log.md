@@ -359,3 +359,37 @@ fi
 ```
 **Problem:** if block could be flattened.
 **Reason skipped:** Single-level, no else, conditional setup reads cleanly as-is.
+
+## Issue 24 — Migrate small domains
+### `function` keyword in kindle-sync inner helper
+```zsh
+function getAllMobi() {
+```
+**Problem:** Uses `function` keyword for inner helper function.
+**Reason skipped:** No explicit rule in zsh-writer against `function` keyword for inner helpers.
+
+### pdf-extract-images.js lacks JSDoc and named exports
+```js
+import { extractImages } from 'pietro';
+await pMap(args, async (arg) => {
+```
+**Problem:** No JSDoc, no named exports, not testable via vitest.
+**Reason skipped:** Straight port of existing bin script; file is a CLI entry point, not a reusable module.
+
+### `_sanitize_section` and `_format_ini` underscore prefix
+```zsh
+function _sanitize_section() {
+function _format_ini() {
+```
+**Problem:** Inner functions use underscore prefix naming convention.
+**Reason skipped:** No explicit naming rule for inner helper functions in zsh-writer.
+
+### video-stream-list jq arg indentation
+```zsh
+video-info $1 \
+  | jq -r \
+  '.streams[] | "\(.index)▮\(.codec_type)▮\(.tags.title)▮\(.tags.language)"' \
+  | table
+```
+**Problem:** jq filter string at same indent level as pipeline operators.
+**Reason skipped:** beautysh linter enforces this indentation; manual fix gets reverted.

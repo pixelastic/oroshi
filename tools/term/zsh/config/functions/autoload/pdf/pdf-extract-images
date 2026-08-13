@@ -1,0 +1,6 @@
+# Extract images from PDF files
+# Usage:
+# $ pdf-extract-images file.pdf [file2.pdf ...]
+setopt local_options err_return
+
+node "${functions_source[$0]:A:h}/__lib/pdf-extract-images.js" "$@"

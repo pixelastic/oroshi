@@ -1,8 +1,7 @@
-#!/usr/bin/env node
-import { extractImages } from 'pietro';
 import { basename, dirname } from 'node:path';
-import { absolute } from 'firost'
 import { pMap } from 'golgoth';
+import { absolute } from 'firost';
+import { extractImages } from 'pietro';
 
 const args = process.argv.slice(2);
 const cwd = process.cwd();
@@ -17,7 +16,7 @@ await pMap(args, async (arg) => {
   const pdfBasename = basename(filepath, '.pdf');
   const pdfDirname = dirname(filepath);
   const outputDir = absolute(pdfDirname, pdfBasename);
-  console.log({ filepath, outputDir});
+  console.log({ filepath, outputDir });
 
   console.log(`Extracting images from ${filepath}...`);
   await extractImages(filepath, outputDir);

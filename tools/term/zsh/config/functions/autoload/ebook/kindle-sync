@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # Sync the local book library with the Kindle
 # What it should do:
 # - Only copy .mobi files
@@ -6,7 +5,7 @@
 # - Empty directories are cleaned in the Kindle
 # - Additional directory metadata added by Kindle are preserved, so I still have
 #   my bookmarks, highlights and reading progress
-set -e
+setopt local_options err_return
 
 local libraryRoot="/home/$USER/perso/Dropbox/backup/books/"
 local kindleRoot="/media/$USER/Kindle/documents/books"
@@ -23,15 +22,15 @@ local kindleRoot="/media/$USER/Kindle/documents/books"
 # Looks like closing the lid and adding --bwlimit=100 to rsync to limit the
 # transfer rate helps.
 rsync \
-	--verbose \
-	--recursive \
-	--size-only \
-	--exclude="tmp/" \
-	--include="*/" \
-	--include="*.mobi" \
-	--exclude="*" \
-	$libraryRoot \
-	$kindleRoot
+  --verbose \
+  --recursive \
+  --size-only \
+  --exclude="tmp/" \
+  --include="*/" \
+  --include="*.mobi" \
+  --exclude="*" \
+  $libraryRoot \
+  $kindleRoot
 # }}}
 
 # SECOND: CLEANUP REMOVED BOOKS {{{
@@ -39,19 +38,19 @@ rsync \
 # library
 
 function getAllMobi() {
-	local input=$1
-	# We find all .mobi files,
-	# display them line by line,
-	# replace any "TOLKIEN J. R. R./" with "TOLKIEN J. R. R/" as this is how the
-	# Kindle handles the trailing dots,
-	# and we sort them for easier comparison
-	find \
-		$input \
-		-type f \
-		-name "*.mobi" \
-		-printf "%P\n" \
-		| sed 's_\./_/_g' \
-		| sort
+  local input=$1
+  # We find all .mobi files,
+  # display them line by line,
+  # replace any "TOLKIEN J. R. R./" with "TOLKIEN J. R. R/" as this is how the
+  # Kindle handles the trailing dots,
+  # and we sort them for easier comparison
+  find \
+    $input \
+    -type f \
+    -name "*.mobi" \
+    -printf "%P\n" \
+    | sed 's_\./_/_g' \
+    | sort
 }
 
 local libraryList="$(getAllMobi $libraryRoot)"
@@ -60,8 +59,8 @@ local kindleList="$(getAllMobi $kindleRoot)"
 local removedBooks=$(comm -23 <(echo "$kindleList") <(echo "$libraryList"))
 # Remove them all
 for removedBook in ${(f)removedBooks}; do
-	echo "Removing ${removedBook}"
-	rm "${kindleRoot}/${removedBook}"
+  echo "Removing ${removedBook}"
+  rm "${kindleRoot}/${removedBook}"
 done
 # }}}
 
@@ -72,15 +71,15 @@ done
 # Finding all directories
 local kindleDirectories="$(find $kindleRoot -type d ! -name "*.sdr" -printf "%P\n")"
 for kindleDirectory in ${(f)kindleDirectories}; do
-	local fullpath="${kindleRoot}/${kindleDirectory}"
+  local fullpath="${kindleRoot}/${kindleDirectory}"
 
-	# Skip if already deleted
-	[[ ! -d $fullpath ]] && continue
+  # Skip if already deleted
+  [[ ! -d $fullpath ]] && continue
 
-	# Skip if has .mobi files in it
-	local booksInFolder="$(find $fullpath -type f -name "*.mobi")";
-	[[ $booksInFolder != "" ]] && continue;
+  # Skip if has .mobi files in it
+  local booksInFolder="$(find $fullpath -type f -name "*.mobi")";
+  [[ $booksInFolder != "" ]] && continue;
 
-	echo "Deleting ${kindleDirectory}"
-	rm -rf $fullpath
+  echo "Deleting ${kindleDirectory}"
+  rm -rf $fullpath
 done

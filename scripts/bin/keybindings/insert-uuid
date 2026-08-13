@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-set -e
-local uuid=$(uuidgen)
-focus-insert "$uuid"
-clipboard-write "$uuid"
