@@ -1,0 +1,7 @@
+# Google OAuth login — opens browser, saves refresh token to disk
+# Usage:
+# $ google-login
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/google-login.js" "$@"

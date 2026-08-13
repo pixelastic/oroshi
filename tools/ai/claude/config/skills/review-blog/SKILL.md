@@ -52,8 +52,8 @@ Do nothing until the user comes back. Any indication that comments are ready cou
 
 Run both commands, capturing their output:
 
-1. `gdocs2md <url>` — outputs a directory path. Read `{outputDir}/index.md` for the article markdown.
-2. `gdocs-comments-json <url>` — outputs a JSON array of `{ anchor, comment }` objects.
+1. `gdoc2md <url>` — outputs a directory path. Read `{outputDir}/index.md` for the article markdown.
+2. `gdoc-comments-json <url>` — outputs a JSON array of `{ anchor, comment }` objects.
 
 ---
 
@@ -104,8 +104,8 @@ Present the URL to the user:
 - [ ] Input resolved (file path or URL)
 - [ ] `review-blog-start` called and URL presented
 - [ ] Waited for user confirmation
-- [ ] `gdocs2md` called and article markdown read
-- [ ] `gdocs-comments-json` called and JSON parsed
+- [ ] `gdoc2md` called and article markdown read
+- [ ] `gdoc-comments-json` called and JSON parsed
 - [ ] Output format reference read
 - [ ] Article language detected
 - [ ] Comments cross-referenced against full article

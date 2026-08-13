@@ -1,4 +1,4 @@
-import { __, gdocs2md } from '../__lib/gdocs2md.js';
+import { __, gdoc2md } from '../__lib/gdoc2md.js';
 
 // Helper to build a Google Docs paragraph element
 /**
@@ -307,7 +307,7 @@ describe('elementsToMarkdown', () => {
   });
 });
 
-describe('gdocs2md', () => {
+describe('gdoc2md', () => {
   beforeEach(() => {
     vi.spyOn(__, 'getAuth').mockReturnValue({ credentials: 'mock' });
     vi.spyOn(__, 'fetchDoc').mockReturnValue({
@@ -320,7 +320,7 @@ describe('gdocs2md', () => {
   });
 
   it('returns markdown, images, title, and slug', async () => {
-    const actual = await gdocs2md('abc123');
+    const actual = await gdoc2md('abc123');
     expect(actual.markdown).toEqual('# Hello\n\n');
     expect(actual.images).toEqual([]);
     expect(actual.title).toEqual('My Document');
@@ -328,7 +328,7 @@ describe('gdocs2md', () => {
   });
 
   it('passes extracted doc ID to fetchDoc', async () => {
-    await gdocs2md('https://docs.google.com/document/d/abc123/edit');
+    await gdoc2md('https://docs.google.com/document/d/abc123/edit');
     expect(__.fetchDoc).toHaveBeenCalledWith(expect.anything(), 'abc123');
   });
 });

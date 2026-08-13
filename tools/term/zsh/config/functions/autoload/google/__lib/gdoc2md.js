@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { _ } from 'golgoth';
 import { google } from 'googleapis';
-import { googleAuth } from '../../../__lib/googleAuth.js';
+import { googleAuth } from './googleAuth.js';
 
 export let __;
 
@@ -12,7 +12,7 @@ export let __;
  * @param {string} urlOrId - Google Docs URL or document ID
  * @returns {object} { markdown, images, title, slug }
  */
-export async function gdocs2md(urlOrId) {
+export async function gdoc2md(urlOrId) {
   const docId = __.extractDocId(urlOrId);
   const auth = await __.getAuth();
   const doc = await __.fetchDoc(auth, docId);
@@ -318,11 +318,11 @@ if (process.argv[1] === currentFile) {
   const input = process.argv[2];
 
   if (!input) {
-    console.error('Usage: gdocs2md <url-or-doc-id>');
+    console.error('Usage: gdoc2md <url-or-doc-id>');
     process.exit(1);
   }
 
-  const { markdown, images, slug } = await gdocs2md(input);
+  const { markdown, images, slug } = await gdoc2md(input);
   const outputDir = join(process.cwd(), slug);
   await __.writeOutput(outputDir, markdown, images);
   console.log(outputDir);

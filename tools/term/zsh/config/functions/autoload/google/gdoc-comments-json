@@ -1,0 +1,7 @@
+# Fetch unresolved comments from a Google Doc as JSON
+# Usage:
+# $ gdoc-comments-json <url-or-doc-id>
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/gdoc-comments-json.js" "$@"

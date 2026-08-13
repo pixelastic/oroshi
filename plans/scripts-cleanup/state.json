@@ -142,8 +142,9 @@
   {
     "id": "21",
     "issue": "issues/21-migrate-google.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Migrated gdocs2md→gdoc2md, gdocs-comments-json→gdoc-comments-json, google-login to autoloaded functions in google/, moved __lib/ JS and __tests/, updated googleAuth import paths, renamed exported functions, updated allowlist and review-blog skill"
   },
   {
     "id": "22",

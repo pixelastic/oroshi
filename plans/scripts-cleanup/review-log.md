@@ -292,3 +292,29 @@ local valid_json='[]'
 ### NeoVim filetypes/zsh.lua not updated
 **Problem:** Spec lists `filetypes/zsh.lua → zsh-fix, zsh-lint` under "NeoVim configs to update"
 **Reason skipped:** Config references commands by name, not path; autoloaded functions resolve identically — no code change needed
+
+## Issue 21 — Migrate google/
+### for loops in wrapText/writeOutput
+```js
+for (const word of words) {
+```
+**Problem:** js-writer checklist forbids `for` loops, prefers `_.each`/`_.map`/`_.reduce`
+**Reason skipped:** Pre-existing code moved verbatim; `wrapText` is an accumulator where `_.reduce` would be less readable
+
+### google-login.js flat script structure
+```js
+const server = http.createServer(async (request, response) => {
+```
+**Problem:** No `__` pattern, no named export, no JSDoc — violates js-writer module conventions
+**Reason skipped:** Imperative OAuth server script, restructuring out of scope for a move operation
+
+### node:fs/promises instead of firost
+```js
+import { mkdir, writeFile } from 'node:fs/promises';
+```
+**Problem:** js-writer references firost for file I/O
+**Reason skipped:** Pre-existing code, `node:fs/promises` not explicitly prohibited
+
+### review-blog-start not updated
+**Problem:** Spec lists `review-blog-start` under "Update callers"
+**Reason skipped:** File doesn't reference gdocs/gdoc names — only calls `md2gdocs` which is unrelated; spec entry is stale

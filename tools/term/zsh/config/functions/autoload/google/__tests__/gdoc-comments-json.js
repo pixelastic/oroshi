@@ -1,4 +1,4 @@
-import { __, gdocsCommentsJson } from '../__lib/gdocs-comments-json.js';
+import { __, gdocCommentsJson } from '../__lib/gdoc-comments-json.js';
 
 describe('extractDocId', () => {
   it.each([
@@ -23,7 +23,7 @@ describe('extractDocId', () => {
   });
 });
 
-describe('gdocsCommentsJson', () => {
+describe('gdocCommentsJson', () => {
   beforeEach(() => {
     vi.spyOn(__, 'getAuth').mockReturnValue({ credentials: 'mock' });
     // Comments returned in reverse chronological order (API default)
@@ -55,7 +55,7 @@ describe('gdocsCommentsJson', () => {
   });
 
   it('returns only unresolved comments', async () => {
-    const actual = await gdocsCommentsJson('abc123');
+    const actual = await gdocCommentsJson('abc123');
     expect(actual).toHaveLength(3);
   });
 
@@ -77,12 +77,12 @@ describe('gdocsCommentsJson', () => {
       },
     },
   ])('$title', async ({ index, expected }) => {
-    const actual = await gdocsCommentsJson('abc123');
+    const actual = await gdocCommentsJson('abc123');
     expect(actual[index]).toEqual(expected);
   });
 
   it('sorts comments by createdTime ascending', async () => {
-    const actual = await gdocsCommentsJson('abc123');
+    const actual = await gdocCommentsJson('abc123');
     const comments = actual.map((entry) => entry.comment);
     expect(comments).toEqual([
       'Needs more detail here',
@@ -92,13 +92,13 @@ describe('gdocsCommentsJson', () => {
   });
 
   it('excludes resolved comments', async () => {
-    const actual = await gdocsCommentsJson('abc123');
+    const actual = await gdocCommentsJson('abc123');
     const comments = actual.map((entry) => entry.comment);
     expect(comments).not.toContain('Fixed the typo');
   });
 
   it('passes extracted doc ID to fetchComments', async () => {
-    await gdocsCommentsJson('https://docs.google.com/document/d/doc456/edit');
+    await gdocCommentsJson('https://docs.google.com/document/d/doc456/edit');
     expect(__.fetchComments).toHaveBeenCalledWith(expect.anything(), 'doc456');
   });
 
@@ -119,7 +119,7 @@ describe('gdocsCommentsJson', () => {
     },
   ])('$title', async ({ comments }) => {
     vi.spyOn(__, 'fetchComments').mockReturnValue(comments);
-    const actual = await gdocsCommentsJson('abc123');
+    const actual = await gdocCommentsJson('abc123');
     expect(actual).toEqual([]);
   });
 });
