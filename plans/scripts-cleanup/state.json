@@ -135,8 +135,9 @@
   {
     "id": "20",
     "issue": "issues/20-migrate-bats.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Migrated bats and bats-lint to autoloaded functions in _languages/bats/, moved 2 __lib/ helpers and 8 __rules/ files, adapted path resolution to functions_source, updated NeoVim bats.lua to use bin-zsh, fixtures kept as bin scripts"
   },
   {
     "id": "21",

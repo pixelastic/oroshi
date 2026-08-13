@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  sourcePrefix="source '${BATS_TEST_DIRNAME}/../bats-lint-custom.zsh';"
+  sourcePrefix="source '${BATS_TEST_DIRNAME}/../__lib/bats-lint-custom.zsh';"
 }
 
 @test "outputs [] and exits 0 for clean file" {

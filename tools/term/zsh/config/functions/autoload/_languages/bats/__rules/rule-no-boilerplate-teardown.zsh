@@ -4,7 +4,7 @@
 # Usage:
 #   source rule-no-boilerplate-teardown.zsh
 #   batsLintRule_noBoilerplateTeardown <file.bats>
-batsLintRule_noBoilerplateTeardown() {
+function batsLintRule_noBoilerplateTeardown() {
   local code='noBoilerplateTeardown'
   local msg='Remove boilerplate teardown — the helper provides a default'
 

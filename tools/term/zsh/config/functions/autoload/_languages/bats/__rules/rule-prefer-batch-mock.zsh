@@ -4,7 +4,7 @@
 # Usage:
 #   source rule-prefer-batch-mock.zsh
 #   batsLintRule_preferBatchMock <file.bats>
-batsLintRule_preferBatchMock() {
+function batsLintRule_preferBatchMock() {
   local code='preferBatchMock'
   local msg='Merge all bats_mock calls into one: bats_mock fn1 fn2 ...'
 

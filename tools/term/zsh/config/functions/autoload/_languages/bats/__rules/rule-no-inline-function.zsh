@@ -6,7 +6,7 @@
 # Usage:
 #   source rule-no-inline-function.zsh
 #   batsLintRule_noInlineFunction <file.bats>
-batsLintRule_noInlineFunction() {
+function batsLintRule_noInlineFunction() {
   local code='noInlineFunction'
 
   local file="$1"
@@ -21,8 +21,10 @@ batsLintRule_noInlineFunction() {
     [[ ! "$line" =~ '^\s*[a-zA-Z_][a-zA-Z0-9_-]*\s*\(\)\s*\{.*\}\s*$' ]] && continue
     # Flag if the line exceeds 90 characters
     if (( ${#line} > 90 )); then
+      local msg="Inline function too long (> 90 chars), split onto multiple lines"
       printf '%s%s%s%serror%s%d%s%s\n' \
-        "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "Inline function too long (> 90 chars), split onto multiple lines"
+        "$file" "$_SEP" "$code" "$_SEP" \
+        "$_SEP" "$lineno" "$_SEP" "$msg"
       continue
     fi
     # Extract the body between the first { and the last }
@@ -36,7 +38,9 @@ batsLintRule_noInlineFunction() {
     done
     # Flag if more than one instruction
     (( count <= 1 )) && continue
+    local msg="Multi-instruction function body must be multi-line"
     printf '%s%s%s%serror%s%d%s%s\n' \
-      "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "Multi-instruction function body must be multi-line"
+      "$file" "$_SEP" "$code" "$_SEP" \
+      "$_SEP" "$lineno" "$_SEP" "$msg"
   done
 }

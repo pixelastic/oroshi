@@ -5,7 +5,7 @@
 # Usage:
 #   source rule-no-top-level-var.zsh
 #   batsLintRule_noTopLevelVar <file.bats>
-batsLintRule_noTopLevelVar() {
+function batsLintRule_noTopLevelVar() {
   local code='noTopLevelVar'
   local msg='Variable definitions must be inside setup(), not at file top level'
 

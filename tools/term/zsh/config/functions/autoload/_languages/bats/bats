@@ -1,8 +1,7 @@
-#!/usr/bin/env zsh
 # Runs bats tests
 # Usage:
 # $ bats ./path/to/file.bats
-set -e
+setopt local_options err_return
 
 local oroshiRoot=~/.oroshi
 
@@ -15,4 +14,4 @@ if git-worktree-is-oroshi; then
 fi
 
 export BATS_LIB_PATH="${oroshiRoot}/tools/term/bats/config"
-exec "${oroshiRoot}/node_modules/bats/bin/bats" "$@"
+"${oroshiRoot}/node_modules/bats/bin/bats" "$@"

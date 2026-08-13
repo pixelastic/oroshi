@@ -7,7 +7,7 @@
 # Guard: skip if already defined (e.g. mocked in tests)
 whence bats-lint-shellcheck >/dev/null && return 0
 
-bats-lint-shellcheck() {
+function bats-lint-shellcheck() {
   # Shellcheck rules excluded for all BATS files (grow incrementally as false positives are found)
   local -a excludedRules=()
   excludedRules+=(SC2016) # $var in single-quoted printf is intentional in bats fixtures
@@ -24,7 +24,11 @@ bats-lint-shellcheck() {
     input+=("$item")
   done
 
-  [[ ${#input} -eq 0 ]] && printf '[]\n' && return 0
+  # No files to check
+  if [[ ${#input} -eq 0 ]]; then
+    printf '[]\n'
+    return 0
+  fi
 
   # Run shellcheck
   local scOutput="$(shellcheck \
@@ -41,7 +45,7 @@ bats-lint-shellcheck() {
   local batsRunVars='["output","status","lines","line"]'
   scOutput="$(printf '%s' "$scOutput" | jq -c \
     --argjson vars "$batsRunVars" \
-    '[
+  '[
         .[] | select(
           (.code == 2154 and ((.message | split(" ")[0]) as $v | $vars | contains([$v]))
         )

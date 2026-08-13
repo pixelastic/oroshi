@@ -4,7 +4,7 @@
 # Usage:
 #   source rule-no-run-zsh.zsh
 #   batsLintRule_noRunZsh <file.bats>
-batsLintRule_noRunZsh() {
+function batsLintRule_noRunZsh() {
   local code='noRunZsh'
   local msg='Use bats_run_zsh instead of run zsh'
 

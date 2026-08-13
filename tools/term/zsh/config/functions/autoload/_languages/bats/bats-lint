@@ -1,14 +1,13 @@
-#!/usr/bin/env zsh
 # Orchestrator: merges bats-lint-shellcheck and bats-lint-custom into one JSON array
 # Usage:
 # $ bats-lint file.bats
 # $ bats-lint file.bats other.bats
-set -e
+setopt local_options err_return
 
-local dir="${0:A:h}"
+local scriptDir="${functions_source[$0]:A:h}"
 
-source "${dir}/bats-lint-shellcheck.zsh"
-source "${dir}/bats-lint-custom.zsh"
+source "$scriptDir/__lib/bats-lint-shellcheck.zsh"
+source "$scriptDir/__lib/bats-lint-custom.zsh"
 
 # Keep only valid bats files
 local -a valid=()
@@ -26,15 +25,21 @@ for item in "$@"; do
 done
 
 # No files
-[[ ${#valid[@]} -eq 0 && ${#invalid[@]} -eq 0 ]] && printf '[]\n' && exit 0
+if [[ ${#valid[@]} -eq 0 && ${#invalid[@]} -eq 0 ]]; then
+  printf '[]\n'
+  return 0
+fi
 
 # Generate notBats violations for non-bats files
 local invalid_json='[]'
 if [[ ${#invalid[@]} -gt 0 ]]; then
   invalid_json="$(
     for file in "${invalid[@]}"; do
-      jq -n --arg f "$file" \
-        '{file:$f,code:"notBats",level:"error",line:1,endLine:1,column:1,endColumn:1,message:"Not a bats file"}'
+      jq -n --arg f "$file" '{
+        file:$f, code:"notBats", level:"error",
+        line:1, endLine:1, column:1, endColumn:1,
+        message:"Not a bats file"
+      }'
     done | jq -cs '.'
   )"
 fi
@@ -50,5 +55,5 @@ fi
 # Merge and output
 local merged="$(jq -cs 'add // []' <(printf '%s' "$invalid_json") <(printf '%s' "$valid_json"))"
 printf '%s\n' "$merged"
-[[ "$(printf '%s' "$merged" | jq 'length')" -gt 0 ]] && exit 1
-exit 0
+[[ "$(printf '%s' "$merged" | jq 'length')" -gt 0 ]] && return 1
+return 0

@@ -5,7 +5,7 @@
 # Usage:
 #   source rule-no-shebang.zsh
 #   batsLintRule_noShebang <file.bats>
-batsLintRule_noShebang() {
+function batsLintRule_noShebang() {
   local code='noShebang'
   local msg='Bats files must not have a shebang on line 1'
 
