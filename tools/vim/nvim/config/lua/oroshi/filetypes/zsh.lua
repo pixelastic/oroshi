@@ -19,7 +19,8 @@ end
 
 M.configureFormatter = function(conform)
   conform.formatters.oroshi_zsh_fix = {
-    command = "zsh-fix",
+    command = "bin-zsh",
+    args = { "zsh-fix" },
     stdin = true,
     exit_codes = { 0, 1 }, -- Fail silently on zsh-specific syntax
   }
@@ -27,7 +28,8 @@ end
 
 M.configureLinter = function(lint)
   lint.linters["zsh-lint"] = {
-    cmd = "zsh-lint",
+    cmd = "bin-zsh",
+    args = { "zsh-lint" },
     stdin = false,
     ignore_exitcode = true,
     parser = M.lintParser,

@@ -416,3 +416,33 @@ echo "... is not a submodule"
 ```
 **Problem:** Uses `echo` instead of `echoerr` for error messages.
 **Reason skipped:** Pre-existing issue in file not touched by this issue.
+
+## Issue 26 — Add pipe-rewrite rule to zsh-fix
+### heredocRe abbreviated name
+```zsh
+local heredocPattern=$'<<-?...'
+```
+**Problem:** `heredocRe` could be `heredocRegex` or `heredocPattern`.
+**Reason skipped:** Judgment call — `Re` is universally understood for regex. Renamed to `heredocPattern` during fix pass anyway.
+
+### Loop index single-letter name
+```zsh
+for (( i=1; i<=${#line}; i++ )); do
+```
+**Problem:** Loop index `i` is a single letter.
+**Reason skipped:** Standard numeric loop counter. Renamed to `charIndex` during fix pass anyway.
+
+### No test for && (logical and)
+**Problem:** Spec mentions not rewriting `&&` but no test covers it.
+**Reason skipped:** `&&` never ends with `|`, so the trailing-pipe regex can't match it — test would be trivially true.
+
+### No test for pipes inside comments
+**Problem:** Implementation handles comments but no behavioral test.
+**Reason skipped:** Not listed in spec's behavioral tests section. Implementation covers it as defense-in-depth.
+
+### Trailing-pipe regex requires leading space
+```zsh
+"$line" =~ ' \|$'
+```
+**Problem:** Spec says "| at end of line" without requiring a leading space.
+**Reason skipped:** `foo|bar` without spaces is non-standard zsh style. Requiring space before `|` is correct for a formatter.

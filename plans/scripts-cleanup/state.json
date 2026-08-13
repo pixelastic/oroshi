@@ -177,7 +177,8 @@
   {
     "id": "26",
     "issue": "issues/26-zsh-fix-pipe-rewrite.md",
-    "done": false,
-    "blocked_by": ["19"]
+    "done": true,
+    "blocked_by": ["19"],
+    "recap": "Added noTrailingPipe lint rule that detects trailing-pipe style and suggests Google Shell Style — auto-fix approach was over-engineered, lint-only is simpler and safer"
   }
 ]

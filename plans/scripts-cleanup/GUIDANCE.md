@@ -27,3 +27,9 @@
 - beautysh auto-indents lines after trailing `\` — remove trailing `\` on the last line of zparseopts and use `()` without `\` for zsh arrays (parentheses alone handle multi-line)
 - `git-remote-create` used `sed` for URL rewriting — replaced with zsh `${var/pattern/replacement}` to satisfy shellcheck SC2001
 - `git-pullrequest-open` uses `$BROWSER` as a command variable — tests must create a fake executable script, not a function mock
+
+### Issue 26 — Add pipe-rewrite rule to zsh-fix
+- Auto-fixing trailing pipes in zsh-fix required a char-by-char state machine (quote/heredoc/comment tracking) — massively over-engineered for a formatter preprocessing step
+- Trailing pipes inside strings/heredocs essentially never occur in real zsh code — the edge cases aren't worth the complexity
+- A simple lint rule (regex detection + report) is far simpler and safer than auto-rewriting
+- beautysh misparses `'\''` and `"'"` as unclosed quotes, and nested function defs cause indent/outdent mismatch — these would block any complex code inside zsh-fix

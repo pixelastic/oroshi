@@ -36,6 +36,7 @@ function zsh-lint-custom() {
   source "${_zshLintRulesDir}/rule-use-echoerr.zsh"
   source "${_zshLintRulesDir}/rule-no-local-subshell-guard.zsh"
   source "${_zshLintRulesDir}/rule-missing-doc-comment.zsh"
+  source "${_zshLintRulesDir}/rule-no-trailing-pipe.zsh"
 
   lint-custom-run \
     --disable-prefix 'zsh-lint' \
@@ -63,5 +64,6 @@ function zsh-lint-custom() {
     zshLintRule_useEchoerr \
     zshLintRule_noLocalSubshellGuard \
     zshLintRule_missingDocComment \
+    zshLintRule_noTrailingPipe \
     -- "$@"
 }
