@@ -114,8 +114,9 @@
   {
     "id": "17",
     "issue": "issues/17-migrate-ai-root.md",
-    "done": false,
-    "blocked_by": ["05", "06"]
+    "done": true,
+    "blocked_by": ["05", "06"],
+    "recap": "Migrated claude, is-claude, is-claude-subagent, claude-stop from bin scripts to autoloaded functions in ai/, translate and txt2slack already migrated to text/"
   },
   {
     "id": "18",

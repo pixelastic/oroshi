@@ -1,7 +1,6 @@
-#!/usr/bin/env zsh
 # Check if running inside Claude Code
 # Usage:
 # $ is-claude && echo "inside Claude"
-set -e
+setopt local_options err_return
 
 [[ "$CLAUDECODE" == "1" ]]

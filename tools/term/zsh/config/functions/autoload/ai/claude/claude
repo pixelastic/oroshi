@@ -1,10 +1,11 @@
-#!/usr/bin/env zsh
 # Wrapper around claude
-set -e
+# Usage:
+# $ claude
+setopt local_options err_return
 
 # Default stop sound to auto if not already set
 if [[ "$OROSHI_CLAUDE_STOP_SOUND" == "" ]]; then
-	export OROSHI_CLAUDE_STOP_SOUND="auto"
+  export OROSHI_CLAUDE_STOP_SOUND="auto"
 fi
 
 # Binary may exit non-zero; continue to cleanup
