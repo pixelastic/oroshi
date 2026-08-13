@@ -180,5 +180,41 @@
     "done": true,
     "blocked_by": ["19"],
     "recap": "Added noTrailingPipe lint rule that detects trailing-pipe style and suggests Google Shell Style — auto-fix approach was over-engineered, lint-only is simpler and safer"
+  },
+  {
+    "id": "27",
+    "issue": "issues/27-flatten-scripts-bin.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "28",
+    "issue": "issues/28-migrate-http.md",
+    "done": false,
+    "blocked_by": ["27"]
+  },
+  {
+    "id": "29",
+    "issue": "issues/29-migrate-chmod-default.md",
+    "done": false,
+    "blocked_by": ["27"]
+  },
+  {
+    "id": "30",
+    "issue": "issues/30-create-file-subdomain.md",
+    "done": false,
+    "blocked_by": ["27"]
+  },
+  {
+    "id": "31",
+    "issue": "issues/31-consolidate-better.md",
+    "done": false,
+    "blocked_by": ["27"]
+  },
+  {
+    "id": "32",
+    "issue": "issues/32-move-orphaned-tests.md",
+    "done": false,
+    "blocked_by": ["27"]
   }
 ]
