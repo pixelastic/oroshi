@@ -1,11 +1,10 @@
-#!/usr/bin/env zsh
-set -e
 # Create a new repository locally, and on GitHub
 # Usage:
 # $ git-directory-create ./npcs    # Creates pixelastic/npcs and ./npcs
 # $ git-directory-create -n ./npcs # Only creates locally
 # $ git-directory-create -p ./npcs # Creates it private on GitHub
 # $ git-directory-create -a ./npcs # Creates algolia/npcs and ./npcs
+setopt local_options err_return
 
 zparseopts -E -D \
   n=flagLocal \
@@ -21,28 +20,25 @@ local orgName="pixelastic"
 local repoNameFull="${orgName}/${repoName}"
 local repoPath="${repoName:a}"
 
-# Stop if no repo name given {{{
+# Stop if no repo name given
 if [[ $repoName == "" ]]; then
   echo "You must pass the name of the new repo"
-  exit 1
+  return 1
 fi
-# }}}
-# Stop if such a folder already exists {{{
+
+# Stop if such a folder already exists
 if [[ -d $repoPath ]]; then
   echo "Local repository already exists."
-  exit 1
+  return 1
 fi
-# }}}
-# Stop if remote repo already exists {{{
-if [[ $isLocal == "0" ]]; then
-  if git-github-repo-exists $repoNameFull; then
-    echo "Remote repository already exists: https://github.com/${repoNameFull}"
-    exit 1
-  fi
-fi
-# }}}
 
-# Create the local repo {{{
+# Stop if remote repo already exists
+if [[ $isLocal == "0" ]] && git-github-repo-exists $repoNameFull; then
+  echo "Remote repository already exists: https://github.com/${repoNameFull}"
+  return 1
+fi
+
+# Create the local repo
 mkdir -p $repoPath
 cd $repoPath
 git init --quiet
@@ -56,11 +52,9 @@ git-commit-create-all "Add .gitignore and README.md"
 
 # Add remote
 git-remote-create origin git@github.com:${repoNameFull}.git
-# }}}
 
-# Create remote repo {{{
+# Create remote repo
 if [[ $isLocal == "0" ]]; then
-  # Create GitHub repo
   local repoVisibilityArg="--public"
   [[ $isPrivate == "1" ]] && repoVisibilityArg="--private"
   gh repo create ${repoVisibilityArg} ${repoNameFull}

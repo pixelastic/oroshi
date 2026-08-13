@@ -1,0 +1,33 @@
+# Create a new remote
+# Usage:
+# $ git-remote-create pixelastic {url} # Create a new remote pointing to the specified url
+# $ git-remote-create pixelastic       # Create a new remote pointing to pixelastic user
+#                                      # instead of the existing GitHub user
+setopt local_options err_return
+
+local remoteName="$1"
+local remoteUrl="$2"
+
+# A remote name is needed
+if [[ "$remoteName" == "" ]]; then
+  echo "✘ You must pass the name of the remote"
+  return 1
+fi
+
+# If no url is passed, assume it's a GitHub fork where the remote name is
+# the name of the fork user
+if [[ "$remoteUrl" == "" ]]; then
+  remoteUrl="$(git-remote-url)"
+  # Replace user in ssh url (git@github.com:user/repo.git)
+  remoteUrl="${remoteUrl/git@github.com:*\//"git@github.com:${remoteName}/"}"
+
+  # Convert https to ssh
+  remoteUrl="${remoteUrl/https:\/\/github.com\/*\//"git@github.com:${remoteName}/"}"
+fi
+
+git remote add "$remoteName" "$remoteUrl"
+# Set pruning so whenever we fetch, it updates the local cache of remote branches
+git config "remote.${remoteName}.prune" true
+
+local displayRemoteName="$(git-remote-colorize "$remoteName" --with-icon)"
+echo "Remote $displayRemoteName created"

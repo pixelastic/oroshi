@@ -22,3 +22,8 @@
 ### Issue 18 — Migrate ai/ subdomains
 - `plan-end` calls `claude-stop` which has no guard against test environments — tests must mock `claude-stop` to prevent killing the active Claude session (since `CLAUDECODE=1` leaks into bats subprocesses)
 - `plan-badge` and `ralph-is-running` were already migrated in prior issues — their old test files in `scripts/bin/ai/ralph/__tests__/` were stale duplicates safe to delete
+
+### Issue 23 — Migrate git/
+- beautysh auto-indents lines after trailing `\` — remove trailing `\` on the last line of zparseopts and use `()` without `\` for zsh arrays (parentheses alone handle multi-line)
+- `git-remote-create` used `sed` for URL rewriting — replaced with zsh `${var/pattern/replacement}` to satisfy shellcheck SC2001
+- `git-pullrequest-open` uses `$BROWSER` as a command variable — tests must create a fake executable script, not a function mock

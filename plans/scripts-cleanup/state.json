@@ -156,8 +156,9 @@
   {
     "id": "23",
     "issue": "issues/23-migrate-git.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Migrated 7 git scripts to autoloaded functions (commit/git-commit-is-before, commit/git-commit-list, commit/git-commit-message + __lib/ + __prompts/, directory/git-directory-create, directory/git-directory-create-all, pullrequest/git-pullrequest-open, remote/git-remote-create), adapted git-commit-message path to functions_source pattern"
   },
   {
     "id": "24",
@@ -170,5 +171,11 @@
     "issue": "issues/25-fix-fzf-cat-alias.md",
     "done": false,
     "blocked_by": ["15"]
+  },
+  {
+    "id": "26",
+    "issue": "issues/26-zsh-fix-pipe-rewrite.md",
+    "done": false,
+    "blocked_by": ["19"]
   }
 ]

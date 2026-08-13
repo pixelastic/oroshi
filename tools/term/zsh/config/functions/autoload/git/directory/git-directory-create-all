@@ -1,11 +1,10 @@
-#!/usr/bin/env zsh
-set -e
 # Create a new repository locally, and on GitHub, and install all deps
 # Usage:
 # $ git-directory-create-all ./npcs    # Creates pixelastic/npcs and ./npcs
 # $ git-directory-create-all -a ./npcs # Creates algolia/npcs and ./npcs
+setopt local_options err_return
 
-# Parse args {{{
+# Parse args
 local originalArgs=("$@")
 
 zparseopts -E -D \
@@ -17,7 +16,6 @@ local isPrivate=${#flagPrivate}
 local isAlgolia=${#flagAlgolia}
 
 local repoName="${1:t}"
-# }}}
 
 # Create a new repo (pass all original arguments through)
 git-directory-create "${originalArgs[@]}"

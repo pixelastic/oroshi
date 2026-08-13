@@ -1,0 +1,10 @@
+# Node wrapper around git-commit-message.js to ensure it runs in a Node environment
+# Usage:
+# $ git-commit-message
+setopt local_options err_return
+
+local output=$(node ${functions_source[$0]:A:h}/__lib/git-commit-message.js "$@")
+
+[[ "$output" == "" ]] && return 1
+
+echo "$output"

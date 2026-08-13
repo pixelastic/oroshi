@@ -318,3 +318,44 @@ import { mkdir, writeFile } from 'node:fs/promises';
 ### review-blog-start not updated
 **Problem:** Spec lists `review-blog-start` under "Update callers"
 **Reason skipped:** File doesn't reference gdocs/gdoc names — only calls `md2gdocs` which is unrelated; spec entry is stale
+
+## Issue 23 — Migrate git/
+### if/else in git-pullrequest-open
+```zsh
+if [[ $prNumber != "" ]]; then
+  openedUrl="${openedUrl}/pull/${prNumber}"
+else
+  openedUrl="${openedUrl}/pulls"
+fi
+```
+**Problem:** Could be a one-liner state-machine pattern per conditions reference.
+**Reason skipped:** Shallow if/else (no nesting), reads clearly, two branches set different suffixes.
+
+### Guard clauses with messages in git-directory-create and git-remote-create
+```zsh
+if [[ $repoName == "" ]]; then
+  echo "You must pass the name of the new repo"
+  return 1
+fi
+```
+**Problem:** Guard clauses use if/fi instead of one-liner return-early.
+**Reason skipped:** Guards print user-facing error messages before returning, requiring multi-line blocks. They are at function top and return early — spirit of the rule is followed.
+
+### Bottom if block in git-directory-create and git-directory-create-all
+```zsh
+if [[ $isLocal == "0" ]]; then
+  # multi-line remote setup
+fi
+```
+**Problem:** Could use early return for local-only case to avoid wrapping if.
+**Reason skipped:** Single-level if, not nested. Early-return refactor is arguable but current form is clear.
+
+### if block for URL derivation in git-remote-create
+```zsh
+if [[ "$remoteUrl" == "" ]]; then
+  remoteUrl="$(git-remote-url)"
+  remoteUrl="${remoteUrl/...}"
+fi
+```
+**Problem:** if block could be flattened.
+**Reason skipped:** Single-level, no else, conditional setup reads cleanly as-is.
