@@ -446,3 +446,18 @@ for (( i=1; i<=${#line}; i++ )); do
 ```
 **Problem:** Spec says "| at end of line" without requiring a leading space.
 **Reason skipped:** `foo|bar` without spaces is non-standard zsh style. Requiring space before `|` is correct for a formatter.
+
+## Issue 27 — Flatten scripts/bin
+### spotify-dbus is Bash not ZSH
+```bash
+#!/bin/bash
+```
+**Problem:** Script uses Bash, not ZSH — CLAUDE.md prefers ZSH or JS
+**Reason skipped:** Third-party vendored script (Wander Nauta, 2013), relocated not authored; rewriting out of scope
+
+### spotify-dbus naming convention
+```
+spotify-dbus
+```
+**Problem:** Name describes transport mechanism, not action — doesn't follow `{domain}-{action}` convention
+**Reason skipped:** zsh-writer naming applies to new ZSH functions; this is a third-party Bash script being relocated

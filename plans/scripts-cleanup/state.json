@@ -184,8 +184,9 @@
   {
     "id": "27",
     "issue": "issues/27-flatten-scripts-bin.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Moved solkan symlink and spotify-dbus to scripts/bin/ root, deleted html/prettier, docker/__README.md, text/__tests__/ (5 files), removed 4 empty subdirs"
   },
   {
     "id": "28",
