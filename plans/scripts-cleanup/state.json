@@ -170,8 +170,9 @@
   {
     "id": "25",
     "issue": "issues/25-fix-fzf-cat-alias.md",
-    "done": false,
-    "blocked_by": ["15"]
+    "done": true,
+    "blocked_by": ["15"],
+    "recap": "Added scaffolding tests verifying \\cat usage in fzf-regexp-common.zsh, fzf-var.zsh, and sort-filepaths (code fix was already applied)"
   },
   {
     "id": "26",

@@ -393,3 +393,26 @@ video-info $1 \
 ```
 **Problem:** jq filter string at same indent level as pipeline operators.
 **Reason skipped:** beautysh linter enforces this indentation; manual fix gets reverted.
+
+## Issue 25 — Fix bare cat in FZF libs and sort-filepaths
+### Missing Usage header in misc/extract
+```zsh
+# Will "extract" files from most of the archive file types.
+```
+**Problem:** Missing `Usage:` block in header comment.
+**Reason skipped:** Pre-existing issue in file not touched by this issue.
+
+### echo for error in git-remote-create
+```zsh
+echo "... You must pass the name of the remote"
+```
+**Problem:** Uses `echo` instead of `echoerr` for error messages.
+**Reason skipped:** Pre-existing issue in file not touched by this issue.
+
+### echo for errors in git-submodule-remove
+```zsh
+echo "... does not exist"
+echo "... is not a submodule"
+```
+**Problem:** Uses `echo` instead of `echoerr` for error messages.
+**Reason skipped:** Pre-existing issue in file not touched by this issue.
