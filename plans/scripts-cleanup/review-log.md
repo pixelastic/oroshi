@@ -279,3 +279,16 @@ source "${functions_source[$0]:A:h}/__lib/fzf-colorize-git-status-path.zsh"
 ```
 **Problem:** 5 existing autoloaded functions repeat `${functions_source[$0]:A:h}` per line instead of extracting to `local __lib=` variable like newly migrated functions
 **Reason skipped:** Pre-existing inconsistency, not introduced by this diff; out of scope for this migration
+
+## Issue 19 — Migrate zsh-lint + zsh-fix
+### snake_case variables in zsh-lint
+```zsh
+local invalid_json='[]'
+local valid_json='[]'
+```
+**Problem:** Uses `snake_case` instead of project's `camelCase` convention
+**Reason skipped:** Pre-existing naming from original script, not introduced by migration
+
+### NeoVim filetypes/zsh.lua not updated
+**Problem:** Spec lists `filetypes/zsh.lua → zsh-fix, zsh-lint` under "NeoVim configs to update"
+**Reason skipped:** Config references commands by name, not path; autoloaded functions resolve identically — no code change needed

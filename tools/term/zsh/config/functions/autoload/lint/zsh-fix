@@ -1,0 +1,53 @@
+# Fix a ZSH file
+# Usage:
+# $ zsh-fix ./path/to/file.zsh                       # Output fixed code to stdout
+# $ zsh-fix --in-place ./path/to/file.zsh            # Overwrite the file in place
+# $ zsh-fix --in-place file1.zsh file2.zsh file3.zsh # Batch in-place formatting
+# $ echo "code" | zsh-fix                            # ZSH code from stdin, fixed to stdout
+setopt local_options err_return
+
+zparseopts -E -D \
+  -in-place=flagInPlace
+local isInPlace="${#flagInPlace}"
+
+# Detect stdin: only when no file argument remains after flag parsing
+local hasStdin=0
+[[ $# -eq 0 && ! -t 0 ]] && hasStdin=1
+
+# Multiple files without --in-place is not supported
+if [[ $# -gt 1 && $isInPlace != "1" ]]; then
+  echo "zsh-fix: multiple files require --in-place"
+  return 1
+fi
+
+# In-place mode: pass all files to a single beautysh call
+if [[ $isInPlace == "1" ]]; then
+  local inputPaths=()
+  for file in "$@"; do
+    inputPaths+=("${file:a}")
+  done
+  beautysh \
+    --indent-size 2 \
+    --force-function-style fnpar \
+    "${inputPaths[@]}"
+  return 0
+fi
+
+# Stdout modes (file or stdin): use a work file
+local workfileDir="${OROSHI_TMP_FOLDER}/zsh-fix"
+local workfilePath="${workfileDir}/zsh-fix-$RANDOM.zsh"
+mkdir -p "$workfileDir"
+
+if [[ $hasStdin == "1" ]]; then
+  cat >"$workfilePath"
+else
+  cp "${1:a}" "$workfilePath"
+fi
+
+beautysh \
+  --indent-size 2 \
+  --force-function-style fnpar \
+  "$workfilePath"
+
+cat "$workfilePath"
+rm -f "$workfilePath"

@@ -128,8 +128,9 @@
   {
     "id": "19",
     "issue": "issues/19-migrate-zsh-lint-fix.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Migrated zsh-lint and zsh-fix to autoloaded functions in lint/, moved 3 __lib/ helpers and 24 __rules/ files, adapted path resolution to functions_source, fixed 2 pre-existing lint violations in rule files"
   },
   {
     "id": "20",
