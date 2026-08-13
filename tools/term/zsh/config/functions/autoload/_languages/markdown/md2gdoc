@@ -1,0 +1,9 @@
+# Convert a Markdown file to a Google Docs document
+# Usage:
+# $ md2gdoc file.md
+# $ md2gdoc --title "Custom Title" file.md
+# $ md2gdoc --no-open file.md
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/md2gdoc.js" "$@"

@@ -1,10 +1,9 @@
-#!/usr/bin/env zsh
 # Run custom rules on Lua files, output violations in file▮code▮level▮line▮message format
 # Usage:
 # $ lua-lint-custom file.lua
-set -e
+setopt local_options err_return
 
-local dir="${0:A:h}"
+local dir="${functions_source[$0]:A:h}"
 source "$dir/__rules/rule-no-vim-deepcopy.zsh"
 
 local -a _RULES=(
@@ -25,5 +24,5 @@ for v in "${violations[@]}"; do
   printf '%s\n' "$v"
 done
 
-[[ ${#violations} -gt 0 ]] && exit 1
-exit 0
+[[ ${#violations} -gt 0 ]] && return 1
+return 0

@@ -149,8 +149,9 @@
   {
     "id": "22",
     "issue": "issues/22-migrate-markdown-vim-lua.md",
-    "done": false,
-    "blocked_by": ["03"]
+    "done": true,
+    "blocked_by": ["03"],
+    "recap": "Migrated md2gdocs→md2gdoc, md2html, lua-lint-custom to autoloaded _languages/ functions; updated all callers"
   },
   {
     "id": "23",

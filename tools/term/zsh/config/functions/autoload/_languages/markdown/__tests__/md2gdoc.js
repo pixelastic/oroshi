@@ -1,6 +1,6 @@
 import { run } from 'firost';
 import { google } from 'googleapis';
-import { __, md2gdocs } from '../__lib/md2gdocs.js';
+import { __, md2gdoc } from '../__lib/md2gdoc.js';
 
 vi.mock('node:fs', () => ({
   createReadStream: vi.fn().mockReturnValue('mock-stream'),
@@ -19,7 +19,7 @@ vi.mock('googleapis', () => ({
   },
 }));
 
-describe('md2gdocs', () => {
+describe('md2gdoc', () => {
   beforeEach(() => {
     vi.spyOn(__, 'runPandoc').mockReturnValue();
     vi.spyOn(__, 'getAuth').mockReturnValue({ credentials: 'mock' });
@@ -30,20 +30,20 @@ describe('md2gdocs', () => {
   });
 
   it('calls Pandoc with input path, output DOCX, and cwd', async () => {
-    await md2gdocs('/path/to/article.md');
+    await md2gdoc('/path/to/article.md');
     expect(__.runPandoc).toHaveBeenCalledWith(
       '/path/to/article.md',
-      '/tmp/oroshi/md2gdocs/article.docx',
+      '/tmp/oroshi/md2gdoc/article.docx',
       '/path/to',
     );
   });
 
   it('uploads with DOCX mimeType', async () => {
-    await md2gdocs('/path/to/file.md');
+    await md2gdoc('/path/to/file.md');
     expect(__.uploadDoc).toHaveBeenCalledWith(
       expect.anything(),
       'file',
-      '/tmp/oroshi/md2gdocs/file.docx',
+      '/tmp/oroshi/md2gdoc/file.docx',
     );
   });
 
@@ -61,7 +61,7 @@ describe('md2gdocs', () => {
       expected: 'Custom',
     },
   ])('$title', async ({ filepath, options, expected }) => {
-    await md2gdocs(filepath, options);
+    await md2gdoc(filepath, options);
     expect(__.uploadDoc).toHaveBeenCalledWith(
       expect.anything(),
       expected,
@@ -70,26 +70,26 @@ describe('md2gdocs', () => {
   });
 
   it('returns Google Docs URL', async () => {
-    const actual = await md2gdocs('/path/to/file.md');
+    const actual = await md2gdoc('/path/to/file.md');
     expect(actual).toEqual(
       'https://docs.google.com/document/d/mock-doc-id-456/edit',
     );
   });
 
   it('opens browser with the Doc URL by default', async () => {
-    await md2gdocs('/path/to/file.md');
+    await md2gdoc('/path/to/file.md');
     expect(__.openBrowser).toHaveBeenCalledWith(
       'https://docs.google.com/document/d/mock-doc-id-456/edit',
     );
   });
 
   it('skips browser when open is false', async () => {
-    await md2gdocs('/path/to/file.md', { open: false });
+    await md2gdoc('/path/to/file.md', { open: false });
     expect(__.openBrowser).not.toHaveBeenCalled();
   });
 
   it('switches doc to pageless mode after upload', async () => {
-    await md2gdocs('/path/to/file.md');
+    await md2gdoc('/path/to/file.md');
     expect(__.setPageless).toHaveBeenCalledWith(
       { credentials: 'mock' },
       'mock-doc-id-456',
@@ -97,7 +97,7 @@ describe('md2gdocs', () => {
   });
 
   it('cleans up temp directory after upload', async () => {
-    await md2gdocs('/path/to/file.md');
+    await md2gdoc('/path/to/file.md');
     expect(__.cleanup).toHaveBeenCalled();
   });
 });
@@ -106,20 +106,20 @@ describe('runPandoc', () => {
   it('calls pandoc with reference-doc and extract-media flags', async () => {
     await __.runPandoc(
       '/path/to/file.md',
-      '/tmp/oroshi/md2gdocs/file.docx',
+      '/tmp/oroshi/md2gdoc/file.docx',
       '/path/to',
     );
     const command = run.mock.calls[0][0];
     expect(command).toContain('--reference-doc=');
     expect(command).toContain('reference.docx');
-    expect(command).toContain('--extract-media=/tmp/oroshi/md2gdocs/');
-    expect(command).toContain('-o "/tmp/oroshi/md2gdocs/file.docx"');
+    expect(command).toContain('--extract-media=/tmp/oroshi/md2gdoc/');
+    expect(command).toContain('-o "/tmp/oroshi/md2gdoc/file.docx"');
   });
 
   it('runs pandoc with cwd set to source directory', async () => {
     await __.runPandoc(
       '/path/to/file.md',
-      '/tmp/oroshi/md2gdocs/file.docx',
+      '/tmp/oroshi/md2gdoc/file.docx',
       '/path/to',
     );
     const options = run.mock.calls[0][1];

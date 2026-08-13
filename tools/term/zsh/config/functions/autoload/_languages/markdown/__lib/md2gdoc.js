@@ -7,7 +7,7 @@ import { googleAuth } from '../../../google/__lib/googleAuth.js';
 
 export let __;
 
-const TMP_DIR = '/tmp/oroshi/md2gdocs';
+const TMP_DIR = '/tmp/oroshi/md2gdoc';
 
 /**
  * Converts a Markdown file to a Google Docs document and optionally opens it in the browser.
@@ -17,7 +17,7 @@ const TMP_DIR = '/tmp/oroshi/md2gdocs';
  * @param {boolean} [userOptions.open=true] - Whether to automatically open the document in the browser after creation.
  * @returns {Promise<string>} The URL of the newly created Google Docs document.
  */
-export async function md2gdocs(filepath, userOptions = {}) {
+export async function md2gdoc(filepath, userOptions = {}) {
   const defaultOptions = {
     title: null,
     open: true,
@@ -180,11 +180,11 @@ if (process.argv[1] === currentFile) {
   const filepath = args[0];
   if (!filepath) {
     console.error(
-      'Usage: md2gdocs <file.md> [--title "Custom Title"] [--no-open]',
+      'Usage: md2gdoc <file.md> [--title "Custom Title"] [--no-open]',
     );
     process.exit(1);
   }
 
-  const url = await md2gdocs(filepath, options);
+  const url = await md2gdoc(filepath, options);
   console.log(url);
 }

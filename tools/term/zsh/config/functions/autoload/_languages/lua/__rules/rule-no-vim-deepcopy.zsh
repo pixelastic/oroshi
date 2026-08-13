@@ -1,7 +1,7 @@
 # Custom Rule: luaLintRule_noVimDeepcopy
 # Detects vim.deepcopy( calls; prefer F.clone instead
 # Rule Output: file▮noVimDeepcopy▮error▮line▮message
-luaLintRule_noVimDeepcopy() {
+function luaLintRule_noVimDeepcopy() {
   local code='noVimDeepcopy'
   local msg='Use F.clone instead of vim.deepcopy'
 

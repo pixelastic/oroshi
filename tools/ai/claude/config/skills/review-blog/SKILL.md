@@ -82,7 +82,7 @@ Run both commands, capturing their output:
 
 **Exit criterion:** Shareable URL returned to the user.
 
-Run `md2gdocs --title "<Article Title> (review)" --no-open /tmp/oroshi/review-blog/feedback.md`. The command outputs the Google Docs URL.
+Run `md2gdoc --title "<Article Title> (review)" --no-open /tmp/oroshi/review-blog/feedback.md`. The command outputs the Google Docs URL.
 
 Present the URL to the user:
 
@@ -96,7 +96,7 @@ Present the URL to the user:
 |---|---|
 | "I can synthesize feedback without fetching the full article" | You need the full article to auto-resolve comments and produce anchor quotes. Fetch it. |
 | "I'll skip auto-resolving, the user can filter" | Auto-resolving is the whole point of synthesizing vs. forwarding raw comments. |
-| "I'll publish the feedback as a message instead of a Google Doc" | The deliverable is a shareable Google Doc. Always publish via `md2gdocs`. |
+| "I'll publish the feedback as a message instead of a Google Doc" | The deliverable is a shareable Google Doc. Always publish via `md2gdoc`. |
 | "Comments are in French, I'll keep them in French" | Feedback language matches the article's language. Translate. |
 
 ## Checklist
@@ -112,4 +112,4 @@ Present the URL to the user:
 - [ ] Addressed comments auto-resolved
 - [ ] French comments translated to article language
 - [ ] Feedback written following output format (TL;DR, Strengths, Improvements)
-- [ ] Feedback published via `md2gdocs --title` and URL returned
+- [ ] Feedback published via `md2gdoc --title` and URL returned
