@@ -18,3 +18,7 @@
 - FZF preview/reload/execute-silent commands run in subprocesses where autoloaded functions aren't available — must use `bin-zsh <function-name>` wrapper for all fzf subprocess callbacks
 - `exit 0` in sourced __lib/ files must be `return 0` — they execute in the calling function's scope, `exit` would kill the shell
 - `shift-tab.zsh` also sourced fzf __lib/ — easy to miss since it's in keybindings/, not the fzf scripts dir
+
+### Issue 18 — Migrate ai/ subdomains
+- `plan-end` calls `claude-stop` which has no guard against test environments — tests must mock `claude-stop` to prevent killing the active Claude session (since `CLAUDECODE=1` leaks into bats subprocesses)
+- `plan-badge` and `ralph-is-running` were already migrated in prior issues — their old test files in `scripts/bin/ai/ralph/__tests__/` were stale duplicates safe to delete

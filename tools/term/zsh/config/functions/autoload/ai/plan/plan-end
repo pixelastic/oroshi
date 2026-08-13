@@ -1,0 +1,22 @@
+# Stage plan artifacts and commit with generated message
+# Usage:
+# $ plan-end <planDir>
+setopt local_options err_return
+
+local planDirectory="$1"
+
+# Plan directory must exist
+if [[ ! -d "$planDirectory" ]]; then
+  print -u2 "plan-end: plan directory not found: $planDirectory"
+  return 1
+fi
+
+# Add all plan files to staging area
+git-file-add "$planDirectory"
+
+# Commit with generated message
+local commitMessage="$(git-commit-message)"
+git-commit-create "$commitMessage"
+
+# Stop claude
+claude-stop

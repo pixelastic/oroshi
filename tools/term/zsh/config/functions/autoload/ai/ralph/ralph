@@ -1,0 +1,29 @@
+# Dispatch ralph to single-shot or loop mode
+# Usage:
+# $ ralph <dir>            # Single-shot mode
+# $ ralph --max N <dir>    # Loop mode, up to N iterations
+setopt local_options err_return
+
+local scriptDir="${functions_source[$0]:A:h}"
+source "$scriptDir/__lib/ralph-single.zsh"
+source "$scriptDir/__lib/ralph-loop.zsh"
+
+zparseopts -E -D \
+  -max:=flagMax
+
+local rawArg="${1:-}"
+# If already in a worktree with a plan, use it
+if [[ "$rawArg" == "" ]]; then
+  rawArg="$(plan-directory)" || rawArg="."
+fi
+local dir="${rawArg:a}"
+local maxLoops="${flagMax[2]}"
+
+# Loop mode
+if [[ "$maxLoops" != "" ]]; then
+  ralph-loop "$dir" "$maxLoops"
+  return
+fi
+
+# Single-shot mode
+ralph-single "$dir"

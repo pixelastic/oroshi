@@ -1,0 +1,46 @@
+# Launch a sidequest: create a worktree and open a Claude session in a new Kitty tab
+# Usage:
+# $ sidequest-end <filepath>                    # Create worktree from file's slug and open Claude tab
+# $ sidequest-end <filepath> --repo-dir <path>  # Target a specific git repo instead of CWD
+setopt local_options err_return
+
+zparseopts -E -D \
+  -repo-dir:=flagRepoDir
+
+local filepath="$1"
+local repoDir="${flagRepoDir[2]}"
+
+# Require a filepath argument
+if [[ "$filepath" == "" ]]; then
+  print "sidequest-end: filepath required" >&2
+  return 1
+fi
+
+# Require the file to exist
+if [[ ! -f "$filepath" ]]; then
+  print "sidequest-end: file not found: $filepath" >&2
+  return 1
+fi
+
+# If --repo-dir provided, cd into it (fails fast if path doesn't exist) and verify it's a git repo
+if [[ "$repoDir" != "" ]]; then
+  cd "$repoDir"
+  if ! git-directory-is-repository; then
+    print "sidequest-end: not a git repo: $repoDir" >&2
+    return 1
+  fi
+fi
+
+# Derive slug from filename (basename without extension)
+local slug="${${filepath:t}:r}"
+
+# Create the worktree for the slug
+git-worktree-create "$slug"
+
+# Resolve the worktree path from the newly-created worktree
+local worktreePath="$(git-worktree-path "$slug")"
+
+kitty-tab-create \
+  "$slug" \
+  --cwd "$worktreePath" \
+  --cmd "kitty-helper-claude-start @$filepath"

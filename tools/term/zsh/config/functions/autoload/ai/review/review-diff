@@ -1,0 +1,94 @@
+# Generate a full diff for review: working-tree, branch, or commit comparison
+# Usage:
+# $ review-diff                  # Working-tree diff (staged + unstaged + untracked)
+# $ review-diff dirty            # Same as 0-arg (explicit keyword)
+# $ review-diff worktree         # All commits since worktree was created
+# $ review-diff <branch>         # Since branch start
+# $ review-diff <sha>            # Single-commit review
+# $ review-diff <from>..<to>     # Range diff
+setopt local_options err_return
+
+# Display diff between two points
+function display_diff_range() {
+  rtk proxy git log "$1..$2"
+  rtk proxy git diff --stat -p "$1..$2"
+}
+
+# Display working-tree diff (staged + unstaged + untracked)
+function display_dirty_diff() {
+  local statusRaw="$(git status --porcelain)"
+  local trackedDiff="$(rtk proxy git diff --stat -p HEAD)"
+
+  # Clean tree: nothing to show
+  if [[ "$trackedDiff" == "" ]] && [[ "$statusRaw" == "" ]]; then
+    return 0
+  fi
+
+  # Output tracked changes (staged + unstaged)
+  [[ "$trackedDiff" != "" ]] && echo "$trackedDiff"
+
+  # Output untracked files as new-file diffs
+  local repoRoot="$(git-directory-root)"
+  local rawLine
+  for rawLine in ${(f)statusRaw}; do
+    [[ "$rawLine" != '?? '* ]] && continue
+    local rawFile="${rawLine:3}"
+
+    # diff filepaths are displayed as relative to the repoRoot
+    rtk proxy \
+      git \
+      -C "$repoRoot" \
+      diff \
+      --no-index \
+      /dev/null \
+      "$rawFile" || true
+  done
+}
+
+local ref="${1:-dirty}"
+
+# 0-arg / dirty: working-tree diff
+if [[ "$ref" == "dirty" ]]; then
+  display_dirty_diff
+  return 0
+fi
+
+# Worktree keyword: review all commits since worktree was created
+if [[ "$ref" == "worktree" ]]; then
+  local startCommit="$(git-worktree-start)"
+  display_diff_range "$startCommit" HEAD
+  return 0
+fi
+
+# Range syntax: "from..to" split on ".."
+if [[ "$ref" == *".."* ]]; then
+  local from="${ref%%\.\.*}"
+  local to="${ref##*\.\.}"
+  display_diff_range "$from" "$to"
+  return 0
+fi
+
+# Not a branch: SHA review
+if ! git-branch-exists "$ref"; then
+  rtk proxy git log --max-count=1 "$ref"
+  rtk proxy git diff --stat -p "$ref^" "$ref"
+  return 0
+fi
+
+# Branch: build range, apply to log and diff
+local currentBranch="$(git-branch-current)"
+
+# Determine direction: if ref is ancestor of HEAD, it's the base; otherwise ref is the tip
+local from="HEAD"
+local to="$ref"
+if git-commit-is-before "$ref" HEAD; then
+  from="$ref"
+  to="HEAD"
+fi
+# Self-review: parent branch to HEAD
+if [[ "$ref" == "$currentBranch" ]]; then
+  from="$(git-branch-parent)"
+  to="HEAD"
+fi
+
+display_diff_range "$from" "$to"

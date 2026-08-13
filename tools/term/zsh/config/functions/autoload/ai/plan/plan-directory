@@ -1,0 +1,21 @@
+# Return absolute path to the plans directory for a given path.
+# Usage:
+# $ plan-directory            # defaults to $PWD
+# $ plan-directory /some/path # explicit path
+setopt local_options err_return
+
+local targetPath="${1:-$PWD}"
+
+# No plan in this worktree → nothing to return
+git-worktree-has-plan "$targetPath" || return 1
+
+local wtRoot="$(git-directory-root "$targetPath")"
+[[ "$wtRoot" == "" ]] && return 1
+
+local branch="$(git-branch-current "$targetPath")"
+[[ "$branch" == "" ]] && return 1
+
+local slug="$(git-branch-slug "$branch")"
+[[ "$slug" == "" ]] && return 1
+
+print "$wtRoot/plans/$slug"

@@ -1,0 +1,10 @@
+# Run claude /review on working-tree, branch, or commit range
+# Usage:
+# $ review              # Review working tree (staged + unstaged + untracked)
+# $ review <branch>     # Review branch vs its parent (or from HEAD)
+# $ review <sha>        # Review a specific commit
+# $ review <ref> <ref>  # Review a commit range
+setopt local_options err_return
+
+local args="${(j: :)@}"
+claude-print "/review ${args}"

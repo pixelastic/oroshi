@@ -121,8 +121,9 @@
   {
     "id": "18",
     "issue": "issues/18-migrate-ai-subdomains.md",
-    "done": false,
-    "blocked_by": ["17"]
+    "done": true,
+    "blocked_by": ["17"],
+    "recap": "Migrated 20 ai subdomain bin scripts to autoloaded functions across 7 subdomains (deprecate, plan, ralph, review, sidequest, slack-writer, meetup-recap), moved __lib/ and __tests__, fixed plan-end tests to mock claude-stop, adapted ralph path resolution to functions_source"
   },
   {
     "id": "19",
