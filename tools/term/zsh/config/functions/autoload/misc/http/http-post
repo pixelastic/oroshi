@@ -1,0 +1,9 @@
+# Make a POST request with a JSON file as body
+# Usage:
+# $ http-post https://url.com/ file.json
+setopt local_options err_return
+
+local targetUrl="$1"
+local filePath="${2:a}"
+
+http POST "$targetUrl" <"$filePath"

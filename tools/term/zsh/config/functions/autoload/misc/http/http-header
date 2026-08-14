@@ -1,0 +1,6 @@
+# Return HTTP headers for a given URL
+# Usage:
+# $ http-header https://example.com
+setopt local_options err_return
+
+curl --silent --dump-header - "$1" --output /dev/null

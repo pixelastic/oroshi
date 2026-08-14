@@ -191,8 +191,9 @@
   {
     "id": "28",
     "issue": "issues/28-migrate-http.md",
-    "done": false,
-    "blocked_by": ["27"]
+    "done": true,
+    "blocked_by": ["27"],
+    "recap": "Migrated http-header and http-post to autoloaded functions in misc/http/, rewrote http-header from bash to zsh with long-form curl args"
   },
   {
     "id": "29",
