@@ -1,0 +1,11 @@
+# Find files using fd with hidden files and symlink following
+# Usage:
+# $ better-find pattern          # Search in current directory
+# $ better-find pattern path/    # Search in specific path
+# $ better-find --extension txt . path/
+setopt local_options err_return
+
+fd \
+  --hidden \
+  --follow \
+  "$@"

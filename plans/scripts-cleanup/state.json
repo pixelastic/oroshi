@@ -212,8 +212,9 @@
   {
     "id": "31",
     "issue": "issues/31-consolidate-better.md",
-    "done": false,
-    "blocked_by": ["27"]
+    "done": true,
+    "blocked_by": ["27"],
+    "recap": "Consolidated all 10 better-* functions into misc/better/, rewrote better-find and better-grep from bin scripts to zsh autoload format, moved tests"
   },
   {
     "id": "32",

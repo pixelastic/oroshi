@@ -1,0 +1,8 @@
+# Search in files using ripgrep
+# Usage:
+# $ better-grep query             # Search in current directory
+# $ better-grep query file.txt    # Search in specific file
+setopt local_options err_return
+
+rg \
+  "$@"
