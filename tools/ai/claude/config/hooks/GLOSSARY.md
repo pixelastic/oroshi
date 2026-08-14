@@ -5,7 +5,7 @@ Vocabulary for the `preToolUse-Bash` hook pipeline, which gates shell command ex
 ## Language
 
 **Solkan**:
-The allowlist-based decision layer that classifies a command as **allow** or **reject**.
+The command validation layer. Two responsibilities: (1) **rewrite** commands per the **rewrite list**, (2) classify each command as **allow** or **reject** per the allowlist. Rewrite always runs first — the allowlist sees the rewritten command.
 _Avoid_: allowlist checker, permission layer, gatekeeper
 
 **RTK**:
@@ -23,6 +23,10 @@ _Avoid_: deny, block, blacklist
 **rewrite**:
 **RTK** has an equivalent for the command and transforms it into its `rtk` form before execution.
 _Avoid_: transform, replace, substitute
+
+**rewrite list**:
+A JSON map of command names to replacements (e.g. `{"rm": "rm-for-claude"}`), consumed by **Solkan** via `--rewrite-list-file`. Solkan walks the shell AST and replaces matching command names — no matter how deeply nested in pipes, conditionals, or loops — before running allowlist validation.
+_Avoid_: replace list, substitution map, rename map
 
 **ignore**:
 **RTK** has no equivalent for the command — it is left unchanged.
@@ -46,7 +50,7 @@ _Avoid_: subagent detection, agent env var, subagent flag
 
 ## Relationships
 
-- **Solkan** is binary: **allow** or **reject**. Never a partial decision.
+- **Solkan** has two phases: **rewrite list** (substitute command names in AST) then allowlist (**allow** or **reject**). The allowlist decision is binary — never partial.
 - **Solkan** runs first; **RTK** runs second, regardless of **Solkan**'s decision.
 - Possible rewrite determined via `rtk-can-rewrite <cmd>`: exit 0 = **rewrite**, exit 1 = **ignore**.
 - Each command receives exactly one **Solkan** decision and exactly one **RTK** decision.
@@ -64,6 +68,12 @@ _Avoid_: subagent detection, agent env var, subagent flag
 | reject | ignore | ask with reason / ask with auto-accept (no updatedInput) |
 
 ## Design decisions
+
+### Why rewrite both in the hook and in Solkan
+
+The hook does global command rewriting via RTK (prepends `rtk bin-zsh` to the entire command).
+
+Solkan parses the full shell AST (via unbash) to extract every simple command and rewrite them individually (`rm` replaces to `rm-for-claude` for example).
 
 ### Why `ask with reason` and `ask with auto-accept` are mutually exclusive
 
