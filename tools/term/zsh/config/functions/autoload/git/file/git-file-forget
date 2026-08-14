@@ -1,0 +1,6 @@
+# Stop tracking file(s) but keep them in working directory
+# Usage:
+# $ git-file-forget ./path/to/file     # Forget single file
+# $ git-file-forget file1 file2        # Forget multiple files
+setopt local_options err_return
+git rm --cached "${@}"
