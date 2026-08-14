@@ -1,0 +1,66 @@
+#!/usr/bin/env zsh
+# wav2txt-groq: Convert a wav file into text using Groq
+# Usage:
+# $ wav2txt-groq ./path/to/file.wav     # Echo the transcript
+set -e
+
+MAX_FILE_SIZE=26214400 # 25 MB
+
+# Check if file exceeds Groq limit
+function isFileTooBig() {
+  local file=$1
+  local fileSize="$(stat --format=%s "$file")"
+  [[ $fileSize -ge $MAX_FILE_SIZE ]]
+}
+
+# Transcribe a single file with Groq
+function transcribeFile() {
+  local fileToTranscribe=$1
+  curl \
+    --silent \
+    --request POST \
+    https://api.groq.com/openai/v1/audio/transcriptions \
+    --header "Authorization: Bearer $GROQ_WAV2TXT_API_KEY" \
+    --header "Content-Type: multipart/form-data" \
+    --form file="@${fileToTranscribe}" \
+    --form model="whisper-large-v3" \
+    --form language="fr" \
+    --form response_format="text"
+}
+
+# Split large file into chunks and transcribe each
+function splitAndTranscribe() {
+  local file=$1
+
+  # Split into chunks <= 25MB, capture output paths
+  local chunkPaths="$(audio-split --max-size 25M "$file")"
+
+  # Transcribe each chunk
+  local transcription=""
+  for chunkPath in ${(f)chunkPaths}; do
+    local chunkText="$(transcribeFile "$chunkPath")"
+    [[ "$transcription" != "" ]] && transcription+=" "
+    transcription+="$chunkText"
+    rm -f "$chunkPath"
+  done
+
+  echo "$transcription"
+}
+
+# Stop here if sourced (vs called as a script)
+# This is useful when we just want to source the file functions, not execute it
+# (like in tests)
+[[ "$ZSH_EVAL_CONTEXT" != "toplevel" ]] && return 0
+
+local input=$1
+
+source "$OROSHI_ROOT/private/config/term/zsh/local/${HOSTNAME}/groq.zsh"
+
+# Main logic
+local rawTranscription=""
+if isFileTooBig "$input"; then
+  rawTranscription="$(splitAndTranscribe "$input")"
+else
+  rawTranscription="$(transcribeFile "$input")"
+fi
+echo "$rawTranscription"
