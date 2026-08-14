@@ -16,6 +16,11 @@ setup() {
   [[ -z "$output" ]]
 }
 
+@test "exits 1 for bats-lint (no false positives)" {
+  bats_run_zsh "rtk-can-rewrite 'bats-lint foo.bats'"
+  [[ "$status" -eq 1 ]]
+}
+
 @test "exits 0 for yarn run test" {
   bats_run_zsh "rtk-can-rewrite 'yarn run test'"
   [[ "$status" -eq 0 ]]

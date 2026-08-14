@@ -5,13 +5,13 @@ setup() {
   sourcePrefix="source '${BATS_TEST_DIRNAME}/../preToolUse-Bash-rtk.zsh'"
 }
 
-@test "prepends rtk when rtk-can-rewrite exits 0" {
+@test "prepends rtk bin-zsh when rtk-can-rewrite exits 0" {
   rtk-can-rewrite() { return 0; }
   bats_mock rtk-can-rewrite
 
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-rtk 'bats foo.bats'"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "rtk bats foo.bats" ]]
+  [[ "$output" = "rtk bin-zsh bats foo.bats" ]]
 }
 
 @test "ignores command when rtk-can-rewrite exits 1" {

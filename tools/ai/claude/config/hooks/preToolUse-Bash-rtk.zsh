@@ -8,7 +8,7 @@
 # Guard: skip if already defined (e.g. mocked in tests)
 whence preToolUse-Bash-rtk >/dev/null && return 0
 
-preToolUse-Bash-rtk() {
+function preToolUse-Bash-rtk() {
   local cmd="$1"
 
   # Already rewritten — pass through unchanged
@@ -23,5 +23,5 @@ preToolUse-Bash-rtk() {
     return 0
   fi
 
-  print -r -- "rtk $cmd"
+  print -r -- "rtk bin-zsh $cmd"
 }
