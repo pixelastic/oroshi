@@ -19,11 +19,11 @@ setup_recording() {
 
 # --- Recording in progress ---
 
-@test "kills rec process via kill-pid with correct PID" {
+@test "kills rec process via process-kill with correct PID" {
   setup_recording
-  kill-pid() { echo "$1" > "$BATS_TMP_DIR/killed-pid.txt"; }
+  process-kill() { echo "$1" > "$BATS_TMP_DIR/killed-pid.txt"; }
   audio-play-oroshi() { :; }
-  bats_mock kill-pid audio-play-oroshi
+  bats_mock process-kill audio-play-oroshi
 
   bats_run_zsh "mic2txt-cancel"
   [[ "$status" -eq 0 ]]
@@ -32,9 +32,9 @@ setup_recording() {
 
 @test "removes PID file" {
   setup_recording
-  kill-pid() { :; }
+  process-kill() { :; }
   audio-play-oroshi() { :; }
-  bats_mock kill-pid audio-play-oroshi
+  bats_mock process-kill audio-play-oroshi
 
   bats_run_zsh "mic2txt-cancel"
   [[ ! -f "$TMP_FOLDER/PID" ]]
@@ -42,9 +42,9 @@ setup_recording() {
 
 @test "removes START_TIME file" {
   setup_recording
-  kill-pid() { :; }
+  process-kill() { :; }
   audio-play-oroshi() { :; }
-  bats_mock kill-pid audio-play-oroshi
+  bats_mock process-kill audio-play-oroshi
 
   bats_run_zsh "mic2txt-cancel"
   [[ ! -f "$TMP_FOLDER/START_TIME" ]]
@@ -52,9 +52,9 @@ setup_recording() {
 
 @test "removes wav file" {
   setup_recording
-  kill-pid() { :; }
+  process-kill() { :; }
   audio-play-oroshi() { :; }
-  bats_mock kill-pid audio-play-oroshi
+  bats_mock process-kill audio-play-oroshi
 
   bats_run_zsh "mic2txt-cancel"
   [[ ! -f "$TMP_FOLDER/record.wav" ]]
@@ -62,9 +62,9 @@ setup_recording() {
 
 @test "plays cancel sound" {
   setup_recording
-  kill-pid() { :; }
+  process-kill() { :; }
   audio-play-oroshi() { echo "$1" > "$BATS_TMP_DIR/played-sound.txt"; }
-  bats_mock kill-pid audio-play-oroshi
+  bats_mock process-kill audio-play-oroshi
 
   bats_run_zsh "mic2txt-cancel"
   [[ "$(cat "$BATS_TMP_DIR/played-sound.txt")" == "mic2txt-cancel.mp3" ]]
@@ -79,10 +79,10 @@ setup_recording() {
   [[ "$status" -eq 0 ]]
 }
 
-@test "does not call kill-pid when no PID file" {
+@test "does not call process-kill when no PID file" {
   rm -f "$TMP_FOLDER/PID"
-  kill-pid() { echo "called" > "$BATS_TMP_DIR/kill-called.txt"; }
-  bats_mock kill-pid
+  process-kill() { echo "called" > "$BATS_TMP_DIR/kill-called.txt"; }
+  bats_mock process-kill
 
   bats_run_zsh "mic2txt-cancel"
   [[ ! -f "$BATS_TMP_DIR/kill-called.txt" ]]

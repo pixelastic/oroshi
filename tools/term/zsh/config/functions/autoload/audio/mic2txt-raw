@@ -40,7 +40,7 @@ function startRecording() {
 function stopRecording() {
   sleep 2
 
-  kill-pid "$(cat $pidFile)"
+  process-kill "$(cat $pidFile)"
   rm $pidFile
 
   # We transcribe to text

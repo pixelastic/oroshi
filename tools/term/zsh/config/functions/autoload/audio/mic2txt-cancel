@@ -10,7 +10,7 @@ local pidFile=${tmpFolder}/PID
 [[ ! -f $pidFile ]] && return 0
 
 # Kill the rec process
-kill-pid "$(cat "$pidFile")"
+process-kill "$(cat "$pidFile")"
 
 # Clean up temp files
 rm --force \

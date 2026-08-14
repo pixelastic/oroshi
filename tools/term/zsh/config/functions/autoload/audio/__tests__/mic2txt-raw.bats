@@ -7,7 +7,7 @@ setup() {
   mkdir -p "$TMP_FOLDER"
 
   rec() { :; }
-  kill-pid() { :; }
+  process-kill() { :; }
   audio-play-oroshi() { :; }
   mic2txt-language() { echo "fr"; }
   mic2txt-slack-mode-is-enabled() { return 0; }
@@ -18,7 +18,7 @@ setup() {
   txt2slack() { echo "$1"; }
   better-ydotool() { :; }
   sleep() { :; }
-  bats_mock rec kill-pid audio-play-oroshi mic2txt-language mic2txt-slack-mode-is-enabled mic2txt-autosubmit-mode-is-enabled mic2txt-cancel mic2txt-paste focus-insert txt2slack better-ydotool sleep
+  bats_mock rec process-kill audio-play-oroshi mic2txt-language mic2txt-slack-mode-is-enabled mic2txt-autosubmit-mode-is-enabled mic2txt-cancel mic2txt-paste focus-insert txt2slack better-ydotool sleep
 }
 
 teardown() {
