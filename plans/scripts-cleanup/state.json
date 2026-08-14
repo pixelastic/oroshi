@@ -219,7 +219,8 @@
   {
     "id": "32",
     "issue": "issues/32-move-orphaned-tests.md",
-    "done": false,
-    "blocked_by": ["27"]
+    "done": true,
+    "blocked_by": ["27"],
+    "recap": "Moved review-blog-start.bats to ai/__tests__/ and table.bats to misc/__tests__/, deleted empty scripts/bin/ai/ tree"
   }
 ]
