@@ -14,22 +14,22 @@ setup() {
   [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == *" zsh" ]]
 }
 
-@test "--cmd: kitty-remote called with the given command" {
+@test "--cmd: prefixes command with bin-zsh for autoload support" {
   kitty-remote() { echo "$*" >"$BATS_TMP_DIR/kitty-args"; }
   bats_mock kitty-remote
 
   bats_run_zsh "kitty-tab-create 'My Tab' --cmd 'kitty-helper-claude-start'"
 
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == *" kitty-helper-claude-start" ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == *"bin-zsh kitty-helper-claude-start" ]]
 }
 
-@test "--cmd with args: kitty-remote called with command and its arguments" {
+@test "--cmd with args: prefixes full command with bin-zsh" {
   kitty-remote() { echo "$*" >"$BATS_TMP_DIR/kitty-args"; }
   bats_mock kitty-remote
 
   bats_run_zsh "kitty-tab-create 'My Tab' --cmd 'kitty-helper-claude-start @/tmp/file.md'"
 
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == *" kitty-helper-claude-start @/tmp/file.md" ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == *"bin-zsh kitty-helper-claude-start @/tmp/file.md" ]]
 }

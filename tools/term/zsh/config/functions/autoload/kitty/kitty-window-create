@@ -10,8 +10,12 @@ zparseopts -E -D \
   -tab:=flagTab \
   -cmd:=flagCmd
 local tabId=${flagTab[2]}
-local kittyCommand=${flagCmd[2]}
-[[ "$kittyCommand" == "" ]] && kittyCommand="zsh"
+local cmd=${flagCmd[2]}
+
+# Prefix custom commands with bin-zsh so autoloaded functions are available
+# (kitty-remote launch spawns a process, not a zsh shell)
+local launchCmd=(zsh)
+[[ "$cmd" != "" ]] && launchCmd=(bin-zsh ${=cmd})
 
 local windowName="$1"
 local kittyAdditionalArgs=("${@:2}")
@@ -38,4 +42,4 @@ fi
 launchArgs+=("${kittyAdditionalArgs[@]}")
 
 # Launch and return window ID
-kitty-remote launch "${launchArgs[@]}" ${=kittyCommand} 1>/dev/null
+kitty-remote launch "${launchArgs[@]}" "${launchCmd[@]}" 1>/dev/null

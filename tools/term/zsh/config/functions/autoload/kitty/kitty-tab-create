@@ -13,7 +13,12 @@ zparseopts -E -D \
 
 local tabName="$1"
 local cwd=${flagCwd[2]:-current}
-local kittyCommand=${flagCmd[2]:-zsh}
+local cmd=${flagCmd[2]}
+
+# Prefix custom commands with bin-zsh so autoloaded functions are available
+# (kitty-remote launch spawns a process, not a zsh shell)
+local launchCmd=(zsh)
+[[ "$cmd" != "" ]] && launchCmd=(bin-zsh ${=cmd})
 
 if [[ "$tabName" == "" ]]; then
   echo "Usage: kitty-tab-create <tab-name> [--focus] [--cwd <path>] [--cmd <command>]"
@@ -30,5 +35,5 @@ kitty-remote launch \
   --location=after \
   $focusFlag \
   --cwd "$cwd" \
-  ${=kittyCommand} \
+  "${launchCmd[@]}" \
   1>/dev/null
