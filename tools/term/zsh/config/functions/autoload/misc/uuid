@@ -1,0 +1,17 @@
+# Generate a UUID
+# Usage:
+# $ uuid          # "a1b2c3d4-..."
+# $ uuid --reply  # Write to $REPLY, no echo
+setopt local_options err_return
+
+local flagReply=()
+zparseopts -E -D \
+  -reply=flagReply
+
+local result=$(uuidgen)
+
+if [[ ${#flagReply} == "1" ]]; then
+  REPLY="$result"
+  return
+fi
+echo "$result"

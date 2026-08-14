@@ -64,7 +64,7 @@ local realFilepath="$inputFilepath"
 
 # Input is stdin, output is stdout
 if [[ $isContentPiped == 1 ]]; then
-  local tmpDir="${OROSHI_TMP_FOLDER}/gotmpl-fix/gotmpl-fix-$RANDOM"
+  local tmpDir="${OROSHI_TMP_FOLDER}/gotmpl-fix/gotmpl-fix-$(uuid)"
   mkdir -p "${tmpDir}"
 
   # Use the real filepath name if provided, otherwise default name
@@ -90,7 +90,7 @@ if [[ $isInPlace == 1 ]]; then
 fi
 
 # Input is a file, output to stdout
-local tmpDir="${OROSHI_TMP_FOLDER}/gotmpl-fix/gotmpl-fix-$RANDOM"
+local tmpDir="${OROSHI_TMP_FOLDER}/gotmpl-fix/gotmpl-fix-$(uuid)"
 mkdir -p "${tmpDir}"
 local tmpFile="${tmpDir}/${inputFilepath:t}"
 

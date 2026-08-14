@@ -73,7 +73,7 @@ eslintArgs+=(--config "$configFile")
 
 # Input is stdin, output is stdout
 if [[ $isContentPiped == 1 ]]; then
-  local stdinDir="${OROSHI_TMP_FOLDER}/eslint-fix/eslint-fix-$RANDOM"
+  local stdinDir="${OROSHI_TMP_FOLDER}/eslint-fix/eslint-fix-$(uuid)"
   mkdir -p "${stdinDir}"
 
   local stdinFile="${stdinDir}/${realFilepath:t}"
