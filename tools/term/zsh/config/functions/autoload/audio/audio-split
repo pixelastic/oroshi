@@ -1,9 +1,118 @@
-# Split an audio file in two parts at a silence near the middle
-# Creates <basename>-part1.<ext> and <basename>-part2.<ext>
+# Split an audio file at silence boundaries
 # Usage:
-# $ audio-split input.wav  # Creates input-part1.wav and input-part2.wav
+# $ audio-split input.wav                  # Split in two at silence near midpoint
+# $ audio-split --max-size 25M input.wav   # Split into chunks <= 25MB
 setopt local_options err_return
 
+# Detect all silence timestamps in an audio file
+function detectSilences() {
+  ffmpeg \
+    -i "$1" \
+    -af silencedetect=noise=-20dB:d=0.2 \
+    -f null - 2>&1 \
+    | rg \
+    --color=never \
+    --only-matching \
+    --replace '$1' \
+    "silence_start: ([0-9.]+)"
+}
+
+# Split in two at first silence after midpoint
+function splitInHalf() {
+  local input=$1
+  local basename=$2
+  local extension=$3
+  local output1="${basename}-part1.${extension}"
+  local output2="${basename}-part2.${extension}"
+
+  local duration=$(audio-duration "$input")
+  local midpoint=$(echo "$duration / 2" | bc -l)
+  local silences=$(detectSilences "$input")
+
+  # Snap to first silence after midpoint
+  local splitPoint="$midpoint"
+  for silence in ${(f)silences}; do
+    if (($(echo "$silence >= $midpoint" | bc -l))); then
+      splitPoint=$silence
+      break
+    fi
+  done
+
+  ffmpeg -i "$input" -t "$splitPoint" -c copy "$output1" -y 2>/dev/null
+  ffmpeg -i "$input" -ss "$splitPoint" -c copy "$output2" -y 2>/dev/null
+}
+
+# Split into N chunks where each chunk <= maxSize, snapped to silences
+function splitBySize() {
+  local input=$1
+  local maxSizeArg=$2
+  local basename=$3
+  local extension=$4
+
+  # zsh-lint disable=noSplitLocal — split to preserve err_return on invalid size
+  local maxBytes
+  maxBytes=$(filesize2bytes "$maxSizeArg")
+
+  local fileSize=$(stat --format=%s "$input")
+  local numChunks=$(( (fileSize + maxBytes - 1) / maxBytes ))
+
+  # File fits in one chunk — just copy
+  if [[ $numChunks -le 1 ]]; then
+    local output="${basename}-part1.${extension}"
+    cp "$input" "$output"
+    echo "$output"
+    return 0
+  fi
+
+  local duration=$(audio-duration "$input")
+  local segmentDuration=$(echo "$duration / $numChunks" | bc -l)
+  local silences=$(detectSilences "$input")
+
+  # For each boundary, snap to nearest silence
+  local splitPoints=()
+  for ((i=1; i<numChunks; i++)); do
+    local target=$(echo "$segmentDuration * $i" | bc -l)
+    local nearest=$target
+    local minDistance=999999
+
+    for silence in ${(f)silences}; do
+      local distance=$(echo "d = $silence - $target; if (d < 0) d = -d; d" | bc -l)
+      if (($(echo "$distance < $minDistance" | bc -l))); then
+        nearest=$silence
+        minDistance=$distance
+      fi
+    done
+
+    splitPoints+=($nearest)
+  done
+
+  # Split at calculated points
+  local prevPoint=0
+  for ((i=1; i<=numChunks; i++)); do
+    local output="${basename}-part${i}.${extension}"
+
+    # Last chunk: from prevPoint to end of file
+    if [[ $i -eq $numChunks ]]; then
+      ffmpeg -i "$input" -ss "$prevPoint" -c copy "$output" -y 2>/dev/null
+      echo "$output"
+      continue
+    fi
+
+    # Middle chunks: from prevPoint for chunkDuration
+    local endPoint=${splitPoints[$i]}
+    local chunkDuration=$(echo "$endPoint - $prevPoint" | bc -l)
+    ffmpeg -i "$input" -ss "$prevPoint" -t "$chunkDuration" -c copy "$output" -y 2>/dev/null
+    prevPoint=$endPoint
+    echo "$output"
+  done
+}
+
+# --- Main ---
+
+zparseopts -E -D \
+  -max-size:=flagMaxSize
+
+local maxSizeArg=${flagMaxSize[2]}
 local input=$1
 
 # Input file must exist
@@ -12,29 +121,14 @@ if [[ ! -f $input ]]; then
   return 1
 fi
 
-# Generate output filenames
 local basename="${input:r}"
 local extension="${input:e}"
-local output1="${basename}-part1.${extension}"
-local output2="${basename}-part2.${extension}"
 
-# Get duration and calculate midpoint
-local duration=$(audio-duration "$input")
-local midpoint=$(echo "$duration / 2" | bc -l)
+# --max-size provided: split into N chunks capped by size
+if [[ "$maxSizeArg" != "" ]]; then
+  splitBySize "$input" "$maxSizeArg" "$basename" "$extension"
+  return 0
+fi
 
-# Detect all silences in the file
-local silences=$(ffmpeg -i "$input" -af silencedetect=noise=-20dB:d=0.2 -f null - 2>&1 \
-  | rg "silence_start: ([0-9.]+)" -or '$1')
-
-# Find the first silence after the midpoint
-local splitPoint="$midpoint"
-for silence in ${(f)silences}; do
-  if (($(echo "$silence >= $midpoint" | bc -l))); then
-    splitPoint=$silence
-    break
-  fi
-done
-
-# Split the file at the split point
-ffmpeg -i "$input" -t "$splitPoint" -c copy "$output1" -y 2>/dev/null
-ffmpeg -i "$input" -ss "$splitPoint" -c copy "$output2" -y 2>/dev/null
+# Default: split in two at silence near midpoint
+splitInHalf "$input" "$basename" "$extension"

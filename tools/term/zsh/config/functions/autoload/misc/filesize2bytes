@@ -1,0 +1,13 @@
+# Convert a human-readable file size to bytes
+# Usage:
+# $ filesize2bytes 25M   # 26214400
+# $ filesize2bytes 1G    # 1073741824
+# $ filesize2bytes 500K  # 512000
+setopt local_options err_return
+
+if [[ "$1" == "" ]]; then
+  echoerr "Usage: filesize2bytes <size> (e.g. 25M, 1G, 500K)"
+  return 1
+fi
+
+numfmt --from=iec "$1"

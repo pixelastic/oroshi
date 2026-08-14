@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-audio-split-max-size.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added --max-size flag to audio-split for N-way chunking with silence-snapped boundaries"
   },
   {
     "id": "02",

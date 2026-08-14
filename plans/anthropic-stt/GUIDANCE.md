@@ -30,3 +30,8 @@
 ## Discoveries
 
 (append-only, updated by agents after each issue)
+
+### Issue 01 — audio-split --max-size
+- `rg` outputs ANSI color codes even in pipelines when global config has colors enabled; always use `--color=never` in pipelines parsed by `bc`
+- `bats run` merges stdout+stderr into `$output`; use `run --separate-stderr` or check for specific content, not emptiness
+- `local var=$(cmd)` masks exit status in ZSH even with `err_return` — bc failures go unnoticed
