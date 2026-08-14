@@ -198,8 +198,9 @@
   {
     "id": "29",
     "issue": "issues/29-migrate-chmod-default.md",
-    "done": false,
-    "blocked_by": ["27"]
+    "done": true,
+    "blocked_by": ["27"],
+    "recap": "Migrated chmod-default from scripts/bin/misc/ to misc/ autoload, added --recursive long-form flag, localized constants"
   },
   {
     "id": "30",

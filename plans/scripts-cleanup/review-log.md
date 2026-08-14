@@ -461,3 +461,11 @@ spotify-dbus
 ```
 **Problem:** Name describes transport mechanism, not action — doesn't follow `{domain}-{action}` convention
 **Reason skipped:** zsh-writer naming applies to new ZSH functions; this is a third-party Bash script being relocated
+
+## Issue 29 — Migrate chmod-default
+### Inner function chmod-target pollutes global namespace
+```zsh
+function chmod-target() {
+```
+**Problem:** Named inner function leaks into global function namespace in autoloaded context
+**Reason skipped:** No standard explicitly forbids named inner functions; recursive helper needs a name to call itself
