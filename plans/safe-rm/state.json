@@ -1,0 +1,32 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-rm-for-claude-files.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-rm-for-claude-dirs.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-rmdir-for-claude.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-rename-move-wrappers.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-hook-integration.md",
+    "done": false,
+    "blocked_by": ["01", "02", "03", "04"]
+  }
+]
