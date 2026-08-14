@@ -5,7 +5,6 @@
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75"
   },
   "permissions": {
-    "defaultMode": "acceptEdits",
     "allow": [
       "BashOutput",
       "Fetch",
@@ -20,7 +19,8 @@
       "WebFetch",
       "WebSearch",
       "mcp__context7"
-    ]
+    ],
+    "defaultMode": "acceptEdits"
   },
   "model": "opus[1m]",
   "hooks": {
@@ -71,8 +71,9 @@
     "command": "/home/tim/.oroshi/tools/ai/claude/config/statusline"
   },
   "effortLevel": "high",
-  "theme": "dark",
+  "autoMemoryEnabled": false,
   "skipAutoPermissionPrompt": true,
+  "theme": "dark",
   "preferredNotifChannel": "notifications_disabled",
-  "autoMemoryEnabled": false
+  "voiceEnabled": true
 }

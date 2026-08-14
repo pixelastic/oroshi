@@ -58,6 +58,7 @@ the existing list
 - Imrpove hooks so `rm` of files that are tracked by git and can be saved is allowed
 - make zshlint accept directories, and lint all files in this dir
 - find a way to fill a brag doc (https://jvns.ca/blog/brag-documents/) regularly
+- Use anthropic API for voice, as it doesn't have any latency
 
 
 ---

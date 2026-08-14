@@ -5,6 +5,7 @@
 # Build directories
 build/
 dist/
+target/
 tmp/
 
 # Those dist we want to keep in the repo
