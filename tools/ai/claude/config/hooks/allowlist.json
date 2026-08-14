@@ -16,6 +16,7 @@
   "bats_load_library_path",
   "bats_run_zsh",
   "bat",
+  "better-cat",
   "bin-zsh",
   "cat",
   "cd",
