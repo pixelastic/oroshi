@@ -1,0 +1,9 @@
+# Output all URLs found in files
+# Usage:
+# $ file-url-list myfile.txt
+# $ file-url-list file1.txt file2.txt
+setopt local_options err_return
+
+cat "$@" \
+  | grep --only-matching --perl-regexp 'https?://[^\s"<>]+' \
+  | awk '!seen[$0]++'

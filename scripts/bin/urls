@@ -1,8 +1,0 @@
-#!/usr/bin/zsh
-# Outputs all urls found in a file
-
-cat "$@" | \
-  grep "http" | \
-  grep -shoP 'http.*?[" >]' |
-  sort | \
-  uniq

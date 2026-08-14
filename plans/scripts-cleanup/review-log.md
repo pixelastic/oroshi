@@ -469,3 +469,8 @@ function chmod-target() {
 ```
 **Problem:** Named inner function leaks into global function namespace in autoloaded context
 **Reason skipped:** No standard explicitly forbids named inner functions; recursive helper needs a name to call itself
+
+## Issue 30 — Create file/ subdomain
+### Missing file-url-list test
+**Problem:** Spec review flagged no `file-url-list.bats` test in `__tests__/`
+**Reason skipped:** Test exists as scaffolding test in `plans/scripts-cleanup/scaffold/30-create-file-subdomain.bats` — correct location per TDD references; `review-diff` didn't pick it up
