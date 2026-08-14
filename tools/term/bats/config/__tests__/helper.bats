@@ -14,13 +14,13 @@ setup() {
 @test "script chain: baz resolves from the current OROSHI_ROOT" {
   bats_run_zsh "bats-fixture-script-foo"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == "$OROSHI_ROOT/scripts/bin/term/bats/bats-fixture-script-baz" ]]
+  [[ "$output" == "$OROSHI_ROOT/scripts/bin/fixtures/bats-fixture-script-baz" ]]
 }
 
 @test "function chain: baz resolves from the current OROSHI_ROOT" {
   bats_run_zsh "bats-fixture-function-foo"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == "$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/term/bats/bats-fixture-function-baz" ]]
+  [[ "$output" == "$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/_languages/bats/bats-fixture-function-baz" ]]
 }
 
 # --- Deep-mocking ---
@@ -86,7 +86,7 @@ setup() {
 
   bats_run_zsh "which bats-fixture-script-bar"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == "$OROSHI_ROOT/scripts/bin/term/bats/bats-fixture-script-bar" ]]
+  [[ "$output" == "$OROSHI_ROOT/scripts/bin/fixtures/bats-fixture-script-bar" ]]
 }
 
 # --- bats_cleanup guard ---

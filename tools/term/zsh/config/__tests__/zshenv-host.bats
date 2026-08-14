@@ -82,9 +82,14 @@ mock_env() {
   export MOCK_OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
   cd "$worktreeDir"
 
-  # Overwrite fixtures to echo a custom string
-  echo '#!/usr/bin/env zsh' > "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
-  echo 'echo "from-test-worktree"' >> "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
+  # Ensure fixtures dir exists and has the full chain
+  mkdir -p "$worktreeDir/scripts/bin/fixtures"
+  cp "$OROSHI_ROOT/scripts/bin/fixtures"/bats-fixture-script-* "$worktreeDir/scripts/bin/fixtures/"
+  rm -rf "$worktreeDir/scripts/bin/term/bats"
+
+  # Overwrite leaf fixture to echo a custom string
+  echo '#!/usr/bin/env zsh' > "$worktreeDir/scripts/bin/fixtures/bats-fixture-script-baz"
+  echo 'echo "from-test-worktree"' >> "$worktreeDir/scripts/bin/fixtures/bats-fixture-script-baz"
   echo 'echo "from-test-worktree"' > "$worktreeDir/tools/term/zsh/config/functions/autoload/_languages/bats/bats-fixture-function-baz"
 
   # It correctly uses the new fixtures
@@ -104,9 +109,14 @@ mock_env() {
   export MOCK_OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
   cd "$worktreeDir"
 
-  # Overwrite fixtures to echo a custom string
-  echo '#!/usr/bin/env zsh' > "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
-  echo 'echo "from-test-worktree"' >> "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
+  # Ensure fixtures dir exists and has the full chain
+  mkdir -p "$worktreeDir/scripts/bin/fixtures"
+  cp "$OROSHI_ROOT/scripts/bin/fixtures"/bats-fixture-script-* "$worktreeDir/scripts/bin/fixtures/"
+  rm -rf "$worktreeDir/scripts/bin/term/bats"
+
+  # Overwrite leaf fixture to echo a custom string
+  echo '#!/usr/bin/env zsh' > "$worktreeDir/scripts/bin/fixtures/bats-fixture-script-baz"
+  echo 'echo "from-test-worktree"' >> "$worktreeDir/scripts/bin/fixtures/bats-fixture-script-baz"
   echo 'echo "from-test-worktree"' > "$worktreeDir/tools/term/zsh/config/functions/autoload/_languages/bats/bats-fixture-function-baz"
 
   # Disable worktree-aware behavior

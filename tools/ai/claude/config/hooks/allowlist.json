@@ -264,7 +264,7 @@
   "ruff",
   "sar",
   "scripts/bin/ai/review/review-diff",
-  "scripts/bin/term/bats/bats",
+  "bats",
   "sed",
   "selene",
   "setopt",
