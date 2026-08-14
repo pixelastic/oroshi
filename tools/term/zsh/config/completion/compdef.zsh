@@ -93,6 +93,7 @@ compdef _git-tags-remote \
 compdef _git-files-dirty-stageable \
   git-file-add
 compdef _git-files-dirty \
+  git-file-forget \
   git-file-revert
 compdef _git-files-staged \
   git-file-unstage
