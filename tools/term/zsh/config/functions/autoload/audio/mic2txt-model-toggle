@@ -5,10 +5,11 @@ local mic2txtDirectory=$OROSHI_TMP_FOLDER/mic2txt
 local modelFile="${mic2txtDirectory}/model"
 mkdir -p $mic2txtDirectory
 
-# Find next model
+# Cycle: openai -> parakeet -> groq -> openai
 local currentModel="$(mic2txt-model)"
-local nextModel=""
+local nextModel="openai"
 [[ $currentModel == "openai" ]] && nextModel="parakeet"
-[[ $currentModel == "parakeet" ]] && nextModel="openai"
+[[ $currentModel == "parakeet" ]] && nextModel="groq"
+[[ $currentModel == "groq" ]] && nextModel="openai"
 
 echo $nextModel >$modelFile

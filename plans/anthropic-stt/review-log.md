@@ -61,3 +61,24 @@ source "$OROSHI_ROOT/private/config/term/zsh/local/${HOSTNAME}/groq.zsh"
 ```
 **Problem:** Spec says `vorugal/groq.zsh`, implementation uses `${HOSTNAME}`
 **Reason skipped:** Follows existing wav2txt-openai convention, more portable
+
+## Issue 03 — Model toggle groq icon
+
+### Missing Usage comment in header
+```zsh
+# Toggle the model used by mic2txt
+setopt local_options err_return
+```
+**Problem:** Missing `Usage:` comment block per zsh-writer header standard
+**Reason skipped:** Pre-existing omission, not introduced by this diff
+
+### No test for Argos panel icon display
+**Problem:** Acceptance criterion "Argos panel displays Groq icon when model is groq" has no automated test
+**Reason skipped:** Runtime/integration concern; Argos panel resolves icons dynamically via `mic2txt-model-${modelName}.svg` — file exists at correct path
+
+### SVG is not actual Groq logo
+```svg
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm-1 14v-2h-1v-4h4v4h-1v2h-2z" />
+```
+**Problem:** Spec says "Groq logo" but SVG is a generic shape
+**Reason skipped:** Trademarked brand logo not reproducible; a distinctive panel indicator is sufficient

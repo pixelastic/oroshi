@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-model-toggle-groq-icon.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Extended mic2txt-model-toggle to 3-way cycle (openai/parakeet/groq) and added Groq Argos icon"
   }
 ]
