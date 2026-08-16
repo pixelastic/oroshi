@@ -3,8 +3,9 @@
 Crystallize the plan into a PRD and persist it in a dedicated worktree.
 
 1. Create worktree — `plan-start` sets up paths
-2. Write PRD — follow the template
-3. Write `COMMIT_HINT.md` — describe goal and scope
+2. Enter worktree — `cd` into `worktreePath`
+3. Write PRD — follow the template
+4. Write `COMMIT_HINT.md` — describe goal and scope
 
 ---
 
@@ -14,6 +15,10 @@ Run `plan-start <branchName>` and parse the JSON output:
 - `worktreePath` — git worktree root
 - `branch` — current branch name
 - `planDir` — directory for all plan artifacts
+
+## Enter worktree
+
+`cd` into `worktreePath`.
 
 ## Write PRD
 
@@ -29,5 +34,6 @@ Suggested type is `plan(<slug>)` where slug is the plan directory name.
 ## Checklist
 
 - [ ] `plan-start <branchName>` called, JSON output parsed
+- [ ] `cd` into `worktreePath`
 - [ ] PRD.md written in english to `<planDir>/PRD.md`, follows template
 - [ ] `COMMIT_HINT.md` written with `plan(<slug>)` type
