@@ -156,7 +156,7 @@ return {
         local options = vim.fn.systemlist("ctrl-p --options")
 
         vim.fn["fzf#run"]({
-          source = "ctrl-p --source",
+          source = "bin-zsh ctrl-p --source",
           options = options,
           sinklist = function(selection)
             openFilesInNewTabs(selection, "ctrl-p --postprocess")
@@ -174,7 +174,7 @@ return {
         local options = vim.fn.systemlist("ctrl-shift-p --options")
 
         vim.fn["fzf#run"]({
-          source = "ctrl-shift-p --source",
+          source = "bin-zsh ctrl-shift-p --source",
           options = options,
           sinklist = function(selection)
             openFilesInNewTabs(selection, "ctrl-shift-p --postprocess")
@@ -192,11 +192,10 @@ return {
       -- CTRL-G: {{{
       -- Regex search inside of files
       local function onCtrlG()
-        local source = vim.fn.systemlist("ctrl-g --source")
         local options = vim.fn.systemlist("ctrl-g --options")
 
         vim.fn["fzf#run"]({
-          source = source,
+          source = "bin-zsh ctrl-g --source",
           options = options,
           sinklist = function(selection)
             openLinesInNewTabs(selection, "ctrl-g --postprocess")
@@ -211,11 +210,10 @@ return {
       -- CTRL-SHIFT-G: {{{
       -- Regex search inside of files in the current directory
       local function onCtrlShiftG()
-        local source = vim.fn.systemlist("ctrl-shift-g --source")
         local options = vim.fn.systemlist("ctrl-shift-g --options")
 
         vim.fn["fzf#run"]({
-          source = source,
+          source = "bin-zsh ctrl-shift-g --source",
           options = options,
           sinklist = function(selection)
             openLinesInNewTabs(selection, "ctrl-shift-g --postprocess")
