@@ -9,8 +9,9 @@
 # Guard: skip if already defined (e.g. mocked in tests)
 whence preToolUse-Bash-solkan > /dev/null && return 0
 
-preToolUse-Bash-solkan() {
+function preToolUse-Bash-solkan() {
   solkan \
     --allow-list-file "${hookDir}/allowlist.json" \
+    --rewrite-list-file "${hookDir}/rewrite.json" \
     "$1"
 }

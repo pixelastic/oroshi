@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-hook-integration.md",
-    "done": false,
-    "blocked_by": ["01", "02", "03", "04"]
+    "done": true,
+    "blocked_by": ["01", "02", "03", "04"],
+    "recap": "Wired solkan rewrite list + allowlist so rm/rmdir are rewritten to safe wrappers and auto-approved through the hook pipeline"
   }
 ]

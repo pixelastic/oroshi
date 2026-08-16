@@ -260,6 +260,8 @@
   "review",
   "review-diff",
   "rg",
+  "rm-for-claude",
+  "rmdir-for-claude",
   "rtk rewrite",
   "rtk --help",
   "rtk --version",

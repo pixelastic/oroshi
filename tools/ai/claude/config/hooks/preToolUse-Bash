@@ -45,8 +45,13 @@ if solkanJson="$(preToolUse-Bash-solkan "$inputCommand")"; then
   isAllowed=1
 fi
 
+# Solkan rewrite: use rewritten command if provided
+local effectiveCommand="$inputCommand"
+local rewrittenCommand="$(json-get '.rewrittenCommand' <<<"$solkanJson")"
+[[ "$rewrittenCommand" != "" ]] && effectiveCommand="$rewrittenCommand"
+
 # RTK: Rewritten command
-local updatedInputCommand="$(preToolUse-Bash-rtk "$inputCommand")"
+local updatedInputCommand="$(preToolUse-Bash-rtk "$effectiveCommand")"
 
 # Subagent detection: prefix with env export when agent_id is present
 local agentId="$(json-get '.agent_id' <<<"$inputJson")"
