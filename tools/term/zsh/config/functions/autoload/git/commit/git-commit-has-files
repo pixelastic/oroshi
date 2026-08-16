@@ -1,0 +1,28 @@
+# Check if all given files exist in a commit
+# Usage:
+# $ git-commit-has-files a.txt b.txt          # Check in HEAD
+# $ git-commit-has-files --commit abc123 a.txt # Check in specific commit
+# $ git-commit-has-files --repo /path a.txt    # Check in different repo
+setopt local_options err_return
+
+zparseopts -E -D \
+  -commit:=flagCommit \
+  -repo:=flagRepo
+
+local commit=${flagCommit[2]:-HEAD}
+local repo=${flagRepo[2]}
+
+# No files → vacuously true
+[[ $# -eq 0 ]] && return 0
+
+local -a gitArgs=()
+[[ "$repo" != "" ]] && gitArgs+=(-C "$repo")
+
+local found="$(git "${gitArgs[@]}" ls-tree --name-only "$commit" "$@" 2>/dev/null)"
+
+# Count found vs expected
+local -a foundLines=()
+[[ "$found" != "" ]] && foundLines=("${(f)found}")
+
+[[ ${#foundLines} -eq $# ]] && return 0
+return 1

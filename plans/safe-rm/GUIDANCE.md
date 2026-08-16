@@ -43,3 +43,7 @@ This plan depends on the **solkan-rewrite** sidequest (separate repo: `/home/tim
 - ZSH ties `$path` to `$PATH` — never use `path` as a loop variable name (clobbers system PATH)
 - `local` always returns 0 in ZSH — can't use `local var="$(cmd)" || guard`; check the value instead
 - `bats_tmp_dir` inside a test wipes `$BATS_TMP_DIR` (and the git dir inside it); create subdirs of existing `$BATS_TMP_DIR` instead
+
+### Issue 02 — rm-for-claude dirs
+- `git ls-tree` has no `--recursive` long-form — only `-r` works; treat like `find -type` exception
+- Don't `git init` inside the worktree during debugging — it confuses zshenv and breaks all autoloaded functions

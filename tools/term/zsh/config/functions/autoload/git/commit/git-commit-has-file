@@ -1,0 +1,26 @@
+# Check if a file exists in a commit
+# Usage:
+# $ git-commit-has-file a.txt                  # Check in HEAD
+# $ git-commit-has-file --commit abc123 a.txt   # Check in specific commit
+# $ git-commit-has-file --repo /path a.txt      # Check in different repo
+setopt local_options err_return
+
+zparseopts -E -D \
+  -commit:=flagCommit \
+  -repo:=flagRepo
+
+local commit=${flagCommit[2]:-HEAD}
+local repo=${flagRepo[2]}
+local filePath="$1"
+
+# No file given → refuse
+[[ "$filePath" == "" ]] && return 1
+
+local -a gitArgs=()
+[[ "$repo" != "" ]] && gitArgs+=(-C "$repo")
+
+# ls-tree returns the file if it exists, empty otherwise
+local found="$(git "${gitArgs[@]}" ls-tree --name-only "$commit" "$filePath" 2>/dev/null)"
+
+[[ "$found" != "" ]] && return 0
+return 1

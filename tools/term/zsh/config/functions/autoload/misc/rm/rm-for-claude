@@ -1,12 +1,41 @@
-# Safe-delete files only if recoverable from HEAD
+# Safe-delete files and directories only if recoverable from HEAD
 # Usage:
 # $ rm-for-claude file.txt           # Delete committed file
+# $ rm-for-claude -rf dir/           # Delete dir if all files in HEAD
 # $ rm-for-claude -f a.txt b.txt     # Flags forwarded to /bin/rm
 setopt local_options err_return
 
 function rejectReason() {
   errors+=("rm $1 rejected. Reason: $2.")
 }
+
+# Reject directory if any file on disk is not in HEAD
+function validateDirectory() {
+  local dirPath=$1
+  local relativePath=$2
+
+  # List all files on disk
+  local diskFilesRaw="$(find "$dirPath" -type f 2>/dev/null)"
+
+  # Empty directory → safe
+  [[ "$diskFilesRaw" == "" ]] && return 0
+
+  local -a diskFiles=("${(f)diskFilesRaw}")
+
+  # Convert absolute paths to git-relative paths
+  local -a relPaths=()
+  for diskFile in "${diskFiles[@]}"; do
+    relPaths+=("${diskFile#"$worktreeRoot"/}")
+  done
+
+  # Each file must exist in HEAD
+  for relPath in "${relPaths[@]}"; do
+    if ! git-commit-has-file "$relPath"; then
+      rejectReason "$filePath" "$relPath not committed in HEAD"
+    fi
+  done
+}
+
 
 # No git repo → refuse
 if ! git-directory-is-repository; then
@@ -17,13 +46,21 @@ fi
 
 local worktreeRoot="$(git-directory-root)"
 
-# Collect file paths (skip flags) for validation
+# Detect recursive flags (-E: scan without consuming $@)
+zparseopts -E \
+  r=flagRecursive \
+  R=flagRecursive \
+  -recursive=flagRecursive
+
+local isRecursive=${#flagRecursive}
+
+# Collect non-flag paths for validation
 local -a filePaths=()
 for arg in "$@"; do
   [[ "$arg" != -* ]] && filePaths+=("$arg")
 done
 
-# Validate each path is committed in HEAD
+# Validate each path
 local -a errors=()
 for filePath in "${filePaths[@]}"; do
   local absolutePath="${filePath:a}"
@@ -34,11 +71,16 @@ for filePath in "${filePaths[@]}"; do
     continue
   fi
 
-  # Compute git-relative path
   local relativePath="${absolutePath#"$worktreeRoot"/}"
 
-  # Not in HEAD → refuse
-  if ! git cat-file -e "HEAD:$relativePath" 2>/dev/null; then
+  # Directory with recursive flag → batch-check all files
+  if [[ -d "$absolutePath" && $isRecursive -eq 1 ]]; then
+    validateDirectory "$absolutePath" "$relativePath"
+    continue
+  fi
+
+  # Regular file → check in HEAD
+  if ! git-commit-has-file "$relativePath"; then
     rejectReason "$filePath" "Not committed in HEAD"
     continue
   fi

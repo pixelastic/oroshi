@@ -118,3 +118,135 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_GIT_DIR/flagged.txt" ]]
 }
+
+# --- Directory with all committed files ---
+
+@test "deletes directory with all committed files and exits 0" {
+  mkdir -p "$BATS_GIT_DIR/mydir"
+  echo "a" > "$BATS_GIT_DIR/mydir/a.txt"
+  echo "b" > "$BATS_GIT_DIR/mydir/b.txt"
+  bats_git add mydir
+  bats_git commit -m "add mydir"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r mydir"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_GIT_DIR/mydir" ]]
+}
+
+# --- Directory with one untracked file ---
+
+@test "refuses directory with untracked file" {
+  mkdir -p "$BATS_GIT_DIR/mydir"
+  echo "committed" > "$BATS_GIT_DIR/mydir/a.txt"
+  bats_git add mydir
+  bats_git commit -m "add mydir"
+  echo "untracked" > "$BATS_GIT_DIR/mydir/untracked.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r mydir"
+  [[ "$status" -eq 1 ]]
+  [[ -d "$BATS_GIT_DIR/mydir" ]]
+  [[ "$output" == *"untracked.txt"* ]]
+}
+
+# --- Directory with git-ignored file ---
+
+@test "refuses directory with git-ignored file" {
+  echo "*.log" > "$BATS_GIT_DIR/.gitignore"
+  mkdir -p "$BATS_GIT_DIR/mydir"
+  echo "committed" > "$BATS_GIT_DIR/mydir/a.txt"
+  bats_git add .gitignore mydir
+  bats_git commit -m "add mydir and gitignore"
+  echo "ignored" > "$BATS_GIT_DIR/mydir/build.log"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r mydir"
+  [[ "$status" -eq 1 ]]
+  [[ -d "$BATS_GIT_DIR/mydir" ]]
+}
+
+# --- Empty directory with -r ---
+
+@test "deletes empty directory with -r and exits 0" {
+  mkdir -p "$BATS_GIT_DIR/emptydir"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r emptydir"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_GIT_DIR/emptydir" ]]
+}
+
+# --- Mixed: committed file + committed directory ---
+
+@test "deletes mixed committed file and committed directory" {
+  echo "file" > "$BATS_GIT_DIR/file.txt"
+  mkdir -p "$BATS_GIT_DIR/mydir"
+  echo "a" > "$BATS_GIT_DIR/mydir/a.txt"
+  bats_git add file.txt mydir
+  bats_git commit -m "add file and dir"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r file.txt mydir"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_GIT_DIR/file.txt" ]]
+  [[ ! -e "$BATS_GIT_DIR/mydir" ]]
+}
+
+# --- Mixed: committed file + directory with untracked file ---
+
+@test "refuses all when directory has untracked file in mixed command" {
+  echo "file" > "$BATS_GIT_DIR/file.txt"
+  mkdir -p "$BATS_GIT_DIR/mydir"
+  echo "committed" > "$BATS_GIT_DIR/mydir/a.txt"
+  bats_git add file.txt mydir
+  bats_git commit -m "add file and dir"
+  echo "untracked" > "$BATS_GIT_DIR/mydir/bad.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r file.txt mydir"
+  [[ "$status" -eq 1 ]]
+  [[ -e "$BATS_GIT_DIR/file.txt" ]]
+  [[ -d "$BATS_GIT_DIR/mydir" ]]
+}
+
+# --- Recursive flag variants ---
+
+@test "-rf triggers recursive directory check" {
+  mkdir -p "$BATS_GIT_DIR/mydir"
+  echo "a" > "$BATS_GIT_DIR/mydir/a.txt"
+  bats_git add mydir
+  bats_git commit -m "add mydir"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -rf mydir"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_GIT_DIR/mydir" ]]
+}
+
+@test "-R triggers recursive directory check" {
+  mkdir -p "$BATS_GIT_DIR/mydir"
+  echo "a" > "$BATS_GIT_DIR/mydir/a.txt"
+  bats_git add mydir
+  bats_git commit -m "add mydir"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -R mydir"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_GIT_DIR/mydir" ]]
+}
+
+@test "--recursive triggers recursive directory check" {
+  mkdir -p "$BATS_GIT_DIR/mydir"
+  echo "a" > "$BATS_GIT_DIR/mydir/a.txt"
+  bats_git add mydir
+  bats_git commit -m "add mydir"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude --recursive mydir"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_GIT_DIR/mydir" ]]
+}
+
+# --- Directory without recursive flag ---
+
+@test "does not treat directory specially without recursive flag" {
+  mkdir -p "$BATS_GIT_DIR/mydir"
+  echo "a" > "$BATS_GIT_DIR/mydir/a.txt"
+  bats_git add mydir
+  bats_git commit -m "add mydir"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude mydir"
+  [[ "$status" -eq 1 ]]
+}
