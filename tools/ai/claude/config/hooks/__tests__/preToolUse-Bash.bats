@@ -9,7 +9,7 @@ setup() {
 
 @test "allow with updatedInput when solkan allows and RTK does not rewrite" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'
+    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
   bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
@@ -22,7 +22,7 @@ setup() {
 
 @test "allow with updatedInput.command when solkan allows and RTK rewrites" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":true,"commands":{"allowed":["git"],"rejected":[]}}'
+    print '{"allow":{"isAllowed":true,"allowed":["git"],"rejected":[]}}'
   }
   preToolUse-Bash-rtk() { print -r -- "rtk $1"; }
   bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
@@ -35,7 +35,7 @@ setup() {
 
 @test "ask permissionDecision with updatedInput when solkan refuses and RTK does not rewrite" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
@@ -49,7 +49,7 @@ setup() {
 
 @test "ask permissionDecision with updatedInput.command when solkan refuses and RTK rewrites" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
   preToolUse-Bash-rtk() { print -r -- "rtk $1"; }
@@ -63,7 +63,7 @@ setup() {
 
 @test "permissionDecisionReason lists rejected commands when solkan refuses" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
@@ -76,7 +76,7 @@ setup() {
 
 @test "ask shows single rejected command" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
@@ -89,7 +89,7 @@ setup() {
 
 @test "no systemMessage when solkan rejects" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
@@ -102,7 +102,7 @@ setup() {
 
 @test "hook logs to CLAUDE_HOOKS_LOG_DIR" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'
+    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
   bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
@@ -114,7 +114,7 @@ setup() {
 
 @test "preserves \xa0 as literal chars through full hook pipeline" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'
+    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
   bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
@@ -133,7 +133,7 @@ setup() {
   preToolUse-Bash-solkan() {
     sleep 0.05
     print SOLKAN >>"$BATS_TMP_DIR/order.log"
-    print '{"isAllowed":true}'
+    print '{"allow":{"isAllowed":true}}'
   }
   preToolUse-Bash-rtk() {
     print RTK >>"$BATS_TMP_DIR/order.log"
@@ -148,7 +148,7 @@ setup() {
 
 @test "first encounter: ask with reason" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
@@ -162,7 +162,7 @@ setup() {
 
 @test "repeat encounter: defer with no reason" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
@@ -179,7 +179,7 @@ setup() {
 
 @test "multi-reject all new: ask with all rejected in reason" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
@@ -193,7 +193,7 @@ setup() {
 
 @test "multi-reject all seen: defer with no reason" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
@@ -210,7 +210,7 @@ setup() {
 
 @test "prefixes command with CLAUDE_IS_SUBAGENT export when agent_id present" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'
+    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
   bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
@@ -222,7 +222,7 @@ setup() {
 
 @test "prefixes command with CLAUDE_IS_SUBAGENT export on rejected path" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
@@ -235,7 +235,7 @@ setup() {
 
 @test "no CLAUDE_IS_SUBAGENT prefix when agent_id absent" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'
+    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
   bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
@@ -247,7 +247,7 @@ setup() {
 
 @test "multi-reject mixed: ask with only new rejected in reason" {
   preToolUse-Bash-solkan() {
-    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }

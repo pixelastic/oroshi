@@ -57,7 +57,7 @@ if [[ "$isAllowed" == "1" ]]; then
 fi
 
 # Commands rejected by solkan
-local -a rejectedCommands=(${(@f)$(json-get '.commands.rejected' <<<"$solkanJson")})
+local -a rejectedCommands=(${(@f)$(json-get '.allow.rejected' <<<"$solkanJson")})
 local stateFile="${sessionsDir}/${sessionId}/state.json"
 
 # Commands already asked in this session
