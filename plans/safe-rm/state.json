@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-rmdir-for-claude.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created rmdir-for-claude ZSH function that validates worktree membership before delegating to /bin/rmdir, with no-partial-deletion semantics"
   },
   {
     "id": "04",

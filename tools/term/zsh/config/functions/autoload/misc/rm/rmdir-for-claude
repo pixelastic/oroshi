@@ -1,0 +1,40 @@
+# Safe-delete empty directories only if inside the git worktree
+# Usage:
+# $ rmdir-for-claude emptydir          # Delete empty dir in worktree
+# $ rmdir-for-claude dir1 dir2         # Delete multiple empty dirs
+setopt local_options err_return
+
+function rejectReason() {
+  errors+=("rmdir $1 rejected. Reason: $2.")
+}
+
+# No git repo → refuse
+if ! git-directory-is-repository; then
+  echoerr "rmdir rejected. Reason: Not in a git repository."
+  echoerr "Use /bin/rmdir to bypass"
+  return 1
+fi
+
+local worktreeRoot="$(git-directory-root)"
+
+# Validate each path is inside the worktree
+local -a errors=()
+for dirPath in "$@"; do
+  local absolutePath="${dirPath:a}"
+
+  # Outside worktree → refuse
+  if [[ "$absolutePath" != "$worktreeRoot"/* ]]; then
+    rejectReason "$dirPath" "Not in current worktree"
+  fi
+done
+
+# No partial deletion — if any path failed, refuse all
+if [[ ${#errors} -gt 0 ]]; then
+  for error in "${errors[@]}"; do
+    echoerr "$error"
+  done
+  echoerr "Use /bin/rmdir to bypass"
+  return 1
+fi
+
+/bin/rmdir "$@"
