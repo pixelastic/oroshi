@@ -14,11 +14,9 @@
 - json-lint doesn't work on files outside of oroshi
 - Make some slack-* commands to read updated in a specific channel
 - Find a way to display in kitty how "deep" a tab is. That would allow me to focus on the tabs that are close to being done, in order to close them, rather than going deep into grill me/plan into new ideas
-- Update `j` so it only suggests through the projects list, no longer manually marking dirs, or maybe in addition to marking dirs?
 - /debug-script skill doesn't work well with nodejs scripts that require a dependency. Need to see if it can use package.json for the deps?
 - Change the color of the `!` bash mode in claude
 - Claude calls git-file-test, which isn't going through rtk. Check why it calls git-file-test (where?) and if we could make it go through rtk to only display the failing tests
-- Stop suggesting node binaries as completion for yr, only real scripts
 - Make a better slack-writer skill, based on facts about effective writing, with some grill-me first and concise
 - Add CLI tools to add items in my calendar
 
@@ -28,7 +26,6 @@
 
 - Ensure the right attention icon is displayed at the right time. Seems like I have the pause icon sometimes when Claude asks for something, while it should be a classical stop sign.
 - No way to see which project/worktree I'm in in Kitty tabs
-- Change the attention icon in orange, for claude
 I'd love an icon to see:
 - Claude is waiting for my input
 - Claude is blocked by a permission to run something
@@ -38,27 +35,21 @@ I'd love an icon to see:
   it was started from one, even if I alt-tab in between? kitty-remote send-text
   might be able to do that
 - How to mark that a tab is blocked until a sidequest is resolved?
-- Fix the fullscreen icon being too small if followed by an attention icon
 - Make a keybinding to automatically fix the text I have under my cursor
 - Refactor prose-build; the code is ugly
-- Define a glossary of why some scripts are scripts or autoloaded functions.
-Have a clear defintiion, encode it in zsh-writer so it can choose, and cleanup
-the existing list
 - Add a skill to brainstorm talk titles
-- Make the /plan mode call claude-stop after committing
-- I want Claude to know how to put things in the clipboard, using clipboard-write
 - /plan creates a worktree, but doesn't move to it
 - Make a git push/pull/clone wrapper that displays only relevant info
 - Make a better trash-restore, that uses fzf and preview to pick which file to restore
-- Use hunk to see work done by claude in realtime
+- Patch hunk to only show final lines
 - Kitty keybinding to "mark" a tab with a specific icon (like re-adding an attention, or marking it as "to come back once other tab is done")
-- ralph skill probably need same split into different files for each step as plan
 - evaluate if I need some allowed-tools/disallowed-tools in my skills
 - Add a rule in zsh to prevent abbreviations like *Len, *Dir, abs*, proj*
 - Imrpove hooks so `rm` of files that are tracked by git and can be saved is allowed
 - make zshlint accept directories, and lint all files in this dir
 - find a way to fill a brag doc (https://jvns.ca/blog/brag-documents/) regularly
-- Use anthropic API for voice, as it doesn't have any latency
+- Update Claude to latest, to use fables
+- Remove plans from git history
 
 
 ---
