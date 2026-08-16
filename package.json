@@ -19,7 +19,7 @@
     "jsonc-parser": "3.3.1",
     "pietro": "0.6.1",
     "prettier": "3.6.2",
-    "solkan": "portal:/home/tim/local/www/projects/solkan"
+    "solkan": "0.11.0"
   },
   "scripts": {
     "colors-build-and-stage": "./scripts/yarn/colors-build-and-stage",

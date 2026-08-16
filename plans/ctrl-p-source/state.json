@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-binzsh-source.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Prefixed all four FZF source commands in disk.lua with bin-zsh and removed systemlist calls for ctrl-g/ctrl-shift-g"
-  }
-]
