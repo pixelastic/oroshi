@@ -8,7 +8,7 @@ This plan depends on the **solkan-rewrite** sidequest (separate repo: `/home/tim
 
 - ZSH tests: `bats <filepath>`
 - Test files live in `__tests__` directories next to the source
-- Prior art for rm tests: `tools/term/zsh/config/functions/autoload/misc/better/__tests__/better-rm.bats`
+- Prior art for rm tests: `tools/term/zsh/config/functions/autoload/misc/rm/__tests__/rm-for-cli.bats`
 - Prior art for hook tests: `tools/ai/claude/config/hooks/__tests__/preToolUse-Bash.bats`
 - Hook tests mock solkan/rtk functions — follow existing patterns
 

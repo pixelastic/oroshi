@@ -1,4 +1,4 @@
 # rm
-alias rmdir='better-rmdir'
-alias rm='better-rm'
+alias rmdir='rmdir-for-cli'
+alias rm='rm-for-cli'
 alias rmz='trash-restore'

@@ -1,7 +1,7 @@
 # Wrapper for trash-put that uses rm -rf for .Trash directories
 # Aliased as rmdir for safe directory removal
 # Usage:
-# $ better-rmdir dir1 dir2
+# $ rmdir-for-cli dir1 dir2
 setopt local_options err_return
 
 for arg in "$@"; do

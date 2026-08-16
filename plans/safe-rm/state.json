@@ -23,8 +23,9 @@
   {
     "id": "04",
     "issue": "issues/04-rename-move-wrappers.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Renamed better-rm/better-rmdir to rm-for-cli/rmdir-for-cli, moved to misc/rm/, updated aliases"
   },
   {
     "id": "05",

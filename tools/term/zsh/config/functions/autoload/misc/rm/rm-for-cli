@@ -1,8 +1,8 @@
 # Put file(s) into Trash rather than deleting directly
 # Usage:
-# $ better-rm ./path/to/file.txt   # Delete one file
-# $ better-rm ./path/to/*.txt      # Delete all *.txt
-# $ better-rm -rf ./path/to/dir    # rm-compatible flags are silently ignored
+# $ rm-for-cli ./path/to/file.txt   # Delete one file
+# $ rm-for-cli ./path/to/*.txt      # Delete all *.txt
+# $ rm-for-cli -rf ./path/to/dir    # rm-compatible flags are silently ignored
 setopt local_options err_return
 
 # Strip rm-compatible flags (-f, -r, -rf, etc.) — no-ops for trash-put
