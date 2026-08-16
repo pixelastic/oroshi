@@ -38,3 +38,8 @@ This plan depends on the **solkan-rewrite** sidequest (separate repo: `/home/tim
 ## Discoveries
 
 (append-only, updated by agents after each issue)
+
+### Issue 01 — rm-for-claude files
+- ZSH ties `$path` to `$PATH` — never use `path` as a loop variable name (clobbers system PATH)
+- `local` always returns 0 in ZSH — can't use `local var="$(cmd)" || guard`; check the value instead
+- `bats_tmp_dir` inside a test wipes `$BATS_TMP_DIR` (and the git dir inside it); create subdirs of existing `$BATS_TMP_DIR` instead

@@ -1,0 +1,57 @@
+# Safe-delete files only if recoverable from HEAD
+# Usage:
+# $ rm-for-claude file.txt           # Delete committed file
+# $ rm-for-claude -f a.txt b.txt     # Flags forwarded to /bin/rm
+setopt local_options err_return
+
+function rejectReason() {
+  errors+=("rm $1 rejected. Reason: $2.")
+}
+
+# No git repo → refuse
+if ! git-directory-is-repository; then
+  echoerr "rm rejected. Reason: Not in a git repository."
+  echoerr "Use /bin/rm to bypass"
+  return 1
+fi
+
+local worktreeRoot="$(git-directory-root)"
+
+# Collect file paths (skip flags) for validation
+local -a filePaths=()
+for arg in "$@"; do
+  [[ "$arg" != -* ]] && filePaths+=("$arg")
+done
+
+# Validate each path is committed in HEAD
+local -a errors=()
+for filePath in "${filePaths[@]}"; do
+  local absolutePath="${filePath:a}"
+
+  # Outside worktree → refuse
+  if [[ "$absolutePath" != "$worktreeRoot"/* ]]; then
+    rejectReason "$filePath" "Not in current worktree"
+    continue
+  fi
+
+  # Compute git-relative path
+  local relativePath="${absolutePath#"$worktreeRoot"/}"
+
+  # Not in HEAD → refuse
+  if ! git cat-file -e "HEAD:$relativePath" 2>/dev/null; then
+    rejectReason "$filePath" "Not committed in HEAD"
+    continue
+  fi
+done
+
+# No partial deletion — if any path failed, refuse all
+if [[ ${#errors} -gt 0 ]]; then
+  for error in "${errors[@]}"; do
+    echoerr "$error"
+  done
+  echoerr "Use /bin/rm to bypass"
+  return 1
+fi
+
+# Pass original args verbatim — flags preserved in position
+/bin/rm "$@"

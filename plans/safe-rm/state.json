@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-rm-for-claude-files.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created rm-for-claude ZSH function that validates files are committed in HEAD before delegating to /bin/rm, with no-partial-deletion semantics"
   },
   {
     "id": "02",
