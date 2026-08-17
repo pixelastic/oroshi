@@ -36,7 +36,7 @@ jq --arg p "$pattern" '.[] | select(test($p))' "$file"
 
 ```sh
 chmod +x /tmp/oroshi/claude/scripts/inspect-allowlist
-/tmp/oroshi/claude/scripts/inspect-allowlist tools/ai/claude/config/hooks/allowlist.json "scripts"
+/tmp/oroshi/claude/scripts/inspect-allowlist tools/ai/claude/config/hooks/allow-list.json "scripts"
 ```
 
 ## Node Variant
@@ -53,5 +53,5 @@ entries.filter(e => e.includes(pattern)).forEach(e => console.log(e));
 
 ```sh
 chmod +x /tmp/oroshi/claude/scripts/inspect-allowlist
-/tmp/oroshi/claude/scripts/inspect-allowlist tools/ai/claude/config/hooks/allowlist.json scripts
+/tmp/oroshi/claude/scripts/inspect-allowlist tools/ai/claude/config/hooks/allow-list.json scripts
 ```

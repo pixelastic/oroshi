@@ -3,7 +3,7 @@
 # $ skills-allowlist-add "tree"
 setopt local_options err_return
 local allowedCommand="$1"
-local allowlistFile=~/.oroshi/tools/ai/claude/config/hooks/allowlist.json
+local allowlistFile=~/.oroshi/tools/ai/claude/config/hooks/allow-list.json
 
 if [[ "$allowedCommand" == "" ]]; then
   echoerr "Error: Command required"
@@ -17,8 +17,8 @@ local tmpFile="$(mktemp)"
 jq \
   --arg newCommand "$allowedCommand" \
   '. + [$newCommand] | unique' \
-  "$allowlistFile" |
-json-array-sort >"$tmpFile"
+  "$allowlistFile" \
+  | json-array-sort >"$tmpFile"
 
 /usr/bin/cat "$tmpFile" >"$allowlistFile"
 rm "$tmpFile"

@@ -11,7 +11,7 @@ whence preToolUse-Bash-solkan > /dev/null && return 0
 
 function preToolUse-Bash-solkan() {
   solkan \
-    --allow-list-file "${hookDir}/allowlist.json" \
-    --rewrite-list-file "${hookDir}/rewrite.json" \
+    --allow-list-file "${hookDir}/allow-list.json" \
+    --rewrite-list-file "${hookDir}/rewrite-list.json" \
     "$1"
 }
