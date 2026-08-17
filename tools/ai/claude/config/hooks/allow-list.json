@@ -266,7 +266,7 @@
   "rtk rewrite",
   "rtk --help",
   "rtk --version",
-  "rtk-can-rewrite",
+  "rtk-command-rewrite",
   "ruff",
   "sar",
   "scripts/bin/ai/review/review-diff",

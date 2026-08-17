@@ -52,7 +52,7 @@ _Avoid_: subagent detection, agent env var, subagent flag
 
 - **Solkan** has two phases: **rewrite list** (substitute command names in AST) then allowlist (**allow** or **reject**). The allowlist decision is binary — never partial.
 - **Solkan** runs first; **RTK** runs second, regardless of **Solkan**'s decision.
-- Possible rewrite determined via `rtk-can-rewrite <cmd>`: exit 0 = **rewrite**, exit 1 = **ignore**.
+- Rewrite determined via `rtk-command-rewrite <cmd>`: prints the rewritten command (or the original unchanged). Always exits 0.
 - Each command receives exactly one **Solkan** decision and exactly one **RTK** decision.
 - Each **allow** produces exactly one **auto-approve**; each **reject** produces either **ask with reason** or **ask with auto-accept** depending on session state (a maybe — the human decides).
 - A **rewrite** produces zero or one `updatedInput` JSON field; an **ignore** produces none.

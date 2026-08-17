@@ -26,7 +26,6 @@ local logDir="${CLAUDE_HOOKS_LOG_DIR:-/tmp/oroshi/claude/hooks}"
 local sessionsDir="${CLAUDE_SESSIONS_DIR:-/tmp/oroshi/claude/sessions}"
 
 source "${hookDir}/preToolUse-Bash-solkan.zsh"
-source "${hookDir}/preToolUse-Bash-rtk.zsh"
 source "${hookDir}/preToolUse-Bash-helper.zsh"
 
 # Parse input
@@ -51,7 +50,7 @@ local rewrittenCommand="$(json-get '.rewrite' <<<"$solkanJson")"
 [[ "$rewrittenCommand" != "" ]] && effectiveCommand="$rewrittenCommand"
 
 # RTK: Rewritten command
-local updatedInputCommand="$(preToolUse-Bash-rtk "$effectiveCommand")"
+local updatedInputCommand="$(rtk-command-rewrite "$effectiveCommand")"
 
 # Subagent detection: prefix with env export when agent_id is present
 local agentId="$(json-get '.agent_id' <<<"$inputJson")"

@@ -10,8 +10,8 @@ setup() {
 # --- Integration tests (real Solkan, mocked RTK) ---
 
 @test "integration: allow echo hello with no rewrite" {
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
@@ -20,8 +20,8 @@ setup() {
 }
 
 @test "integration: rewrite rmdir to rmdir-for-claude" {
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rmdir emptydir"}}'
   [[ "$status" -eq 0 ]]
@@ -30,8 +30,8 @@ setup() {
 }
 
 @test "integration: reject wget with reason" {
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
@@ -45,8 +45,8 @@ setup() {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
@@ -58,8 +58,8 @@ setup() {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["git"],"rejected":[]}}'
   }
-  preToolUse-Bash-rtk() { print -r -- "rtk $1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "rtk $1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"git status"}}'
   [[ "$status" -eq 0 ]]
@@ -72,8 +72,8 @@ setup() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
@@ -86,8 +86,8 @@ setup() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
-  preToolUse-Bash-rtk() { print -r -- "rtk $1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "rtk $1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"git status"}}'
   [[ "$status" -eq 0 ]]
@@ -100,8 +100,8 @@ setup() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [[ "$status" -eq 0 ]]
@@ -113,8 +113,8 @@ setup() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
@@ -126,8 +126,8 @@ setup() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
@@ -138,8 +138,8 @@ setup() {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
@@ -150,8 +150,8 @@ setup() {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo \\xa0"}}'
   [[ "$status" -eq 0 ]]
@@ -169,11 +169,11 @@ setup() {
     print SOLKAN >>"$BATS_TMP_DIR/order.log"
     print '{"allow":{"isAllowed":true}}'
   }
-  preToolUse-Bash-rtk() {
+  rtk-command-rewrite() {
     print RTK >>"$BATS_TMP_DIR/order.log"
     print -r -- "$1"
   }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
@@ -185,8 +185,8 @@ setup() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
@@ -199,8 +199,8 @@ setup() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   mkdir -p "$BATS_TMP_DIR/test"
   echo '{"preToolUse":{"Bash":{"askedCommands":["wget"]}}}' >"$BATS_TMP_DIR/test/state.json"
@@ -216,8 +216,8 @@ setup() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [[ "$status" -eq 0 ]]
@@ -230,8 +230,8 @@ setup() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   mkdir -p "$BATS_TMP_DIR/test"
   echo '{"preToolUse":{"Bash":{"askedCommands":["wget","curl"]}}}' >"$BATS_TMP_DIR/test/state.json"
@@ -246,8 +246,8 @@ setup() {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"},"agent_id":"sub-123"}'
   [[ "$status" -eq 0 ]]
@@ -259,8 +259,8 @@ setup() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"},"agent_id":"sub-123"}'
   [[ "$status" -eq 0 ]]
@@ -271,8 +271,8 @@ setup() {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
@@ -283,8 +283,8 @@ setup() {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["rm-for-claude"],"rejected":[]},"rewrite":"rm-for-claude foo.txt"}'
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm foo.txt"}}'
   [[ "$status" -eq 0 ]]
@@ -296,8 +296,8 @@ setup() {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["rmdir-for-claude"],"rejected":[]},"rewrite":"rmdir-for-claude emptydir"}'
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rmdir emptydir"}}'
   [[ "$status" -eq 0 ]]
@@ -309,8 +309,8 @@ setup() {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["ls","rm-for-claude"],"rejected":[]},"rewrite":"ls && rm-for-claude foo.txt"}'
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"ls && rm foo.txt"}}'
   [[ "$status" -eq 0 ]]
@@ -322,8 +322,8 @@ setup() {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
@@ -334,8 +334,8 @@ setup() {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["rm-for-claude"],"rejected":[]},"rewrite":"rm-for-claude foo.txt"}'
   }
-  preToolUse-Bash-rtk() { print -r -- "rtk $1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "rtk $1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm foo.txt"}}'
   [[ "$status" -eq 0 ]]
@@ -348,8 +348,8 @@ setup() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
     return 1
   }
-  preToolUse-Bash-rtk() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   mkdir -p "$BATS_TMP_DIR/test"
   echo '{"preToolUse":{"Bash":{"askedCommands":["wget"]}}}' >"$BATS_TMP_DIR/test/state.json"

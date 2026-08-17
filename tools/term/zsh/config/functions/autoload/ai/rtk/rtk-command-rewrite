@@ -1,0 +1,32 @@
+# Return the rewritten form of a command for RTK, or the command unchanged
+# Usage:
+# $ rtk-command-rewrite "git status"       # → rtk git status
+# $ rtk-command-rewrite "bats foo.bats"    # → rtk bin-zsh bats foo.bats
+# $ rtk-command-rewrite "echo hello"       # → echo hello
+setopt local_options err_return
+
+local cmd="$1"
+
+# Already prefixed with rtk — pass through unchanged
+if [[ "$cmd" == rtk\ * ]]; then
+  print -r -- "$cmd"
+  return 0
+fi
+
+# Native rewrite via rtk binary
+local rewritten=""
+if rewritten="$(rtk rewrite "$cmd" 2>/dev/null)"; then
+  print -r -- "$rewritten"
+  return 0
+fi
+
+# Filter-backed commands → rtk bin-zsh
+if [[ "$cmd" =~ '^bats( |$)' ]] || \
+  [[ "$cmd" =~ '^yarn run test( |$)' ]] || \
+  [[ "$cmd" =~ '^python-test( |$)' ]]; then
+  print -r -- "rtk bin-zsh $cmd"
+  return 0
+fi
+
+# No match — pass through unchanged
+print -r -- "$cmd"
