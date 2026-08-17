@@ -73,55 +73,11 @@ setup() {
 
 @test "calls git-dependencies-update without origin commit" {
   git-dependencies-update() { echo "called:$*" >> "$BATS_TMP_DIR/dep-update-calls"; }
-  git-submodule-list-raw() { :; }
-  bats_mock git-dependencies-update git-submodule-list-raw
+  bats_mock git-dependencies-update
   bats_disable_worktree_aware
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/deps"
   [[ "$status" -eq 0 ]]
   [[ -f "$BATS_TMP_DIR/dep-update-calls" ]]
   # Called with no arguments (no origin commit)
   [[ "$(cat "$BATS_TMP_DIR/dep-update-calls")" == "called:" ]]
-}
-
-@test "symlinks submodules from main worktree" {
-  mkdir -p "$BATS_GIT_DIR/private"
-  echo "secret" > "$BATS_GIT_DIR/private/env.txt"
-
-  git-submodule-list-raw() { echo "private▮abc12345▮main"; }
-  git-dependencies-update() { :; }
-  bats_mock git-submodule-list-raw git-dependencies-update
-  bats_disable_worktree_aware
-
-  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/bug"
-  [[ "$status" -eq 0 ]]
-
-  local wtDir="$MOCK_OROSHI_WORKTREES_DIR/my-repo--fix_bug"
-  [[ -L "$wtDir/private" ]]
-  [[ "$(readlink "$wtDir/private")" == "$BATS_GIT_DIR/private" ]]
-}
-
-@test "symlinked submodule content is accessible from worktree" {
-  mkdir -p "$BATS_GIT_DIR/private"
-  echo "MY_SECRET=42" > "$BATS_GIT_DIR/private/.env"
-
-  git-submodule-list-raw() { echo "private▮abc12345▮main"; }
-  git-dependencies-update() { :; }
-  bats_mock git-submodule-list-raw git-dependencies-update
-  bats_disable_worktree_aware
-
-  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/env"
-
-  local wtDir="$MOCK_OROSHI_WORKTREES_DIR/my-repo--fix_env"
-  [[ "$(cat "$wtDir/private/.env")" == "MY_SECRET=42" ]]
-}
-
-@test "does not create symlinks when no submodules exist" {
-  git-submodule-list-raw() { :; }
-  git-dependencies-update() { :; }
-  bats_mock git-submodule-list-raw git-dependencies-update
-  bats_disable_worktree_aware
-
-  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/no-sub"
-  [[ "$status" -eq 0 ]]
-  [[ -d "$MOCK_OROSHI_WORKTREES_DIR/my-repo--fix_no-sub" ]]
 }

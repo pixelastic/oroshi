@@ -15,6 +15,7 @@ zparseopts -E -D \
 local repoPath="${flagRepo[2]:-$(git-directory-root)}"
 local originCommit="$1"
 
+git-submodule-update-all "$repoPath"
 git-dependencies-update-node "$originCommit" --repo "$repoPath" $flagAsync
 git-dependencies-update-ruby "$originCommit" --repo "$repoPath" $flagAsync
 

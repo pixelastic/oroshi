@@ -38,17 +38,5 @@ git worktree add "$worktreeDir" "$branch" &> /dev/null
 
 cd "$worktreeDir"
 
-# Symlink submodules from main worktree (shared across worktrees)
-local mainWorktree="$(git-worktree-main)"
-local rawList="$(git-submodule-list-raw)"
-if [[ "$rawList" != "" ]]; then
-  local rawLine
-  for rawLine in ${(f)rawList}; do
-    local subPath="${rawLine%%▮*}"
-    [[ -d "$subPath" ]] && rmdir "$subPath"
-    ln -s "$mainWorktree/$subPath" "$subPath"
-  done
-fi
-
-# Sync dependencies (node, ruby)
+# Sync all dependencies (node, ruby, submodules)
 git-dependencies-update
