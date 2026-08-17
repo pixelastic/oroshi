@@ -50,6 +50,8 @@ I'd love an icon to see:
 - find a way to fill a brag doc (https://jvns.ca/blog/brag-documents/) regularly
 - Update Claude to latest, to use fables
 - Remove plans from git history
+- Need to decorrelate attention from marker. Attention is sound + marker, marker
+  is various icons in kitty to show attention, or ralph, or grill-me, etc
 
 
 ---
