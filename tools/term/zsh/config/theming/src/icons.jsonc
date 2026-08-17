@@ -110,17 +110,6 @@
     "image-orphan":    ""
   },
 
-  // Statusbar
-  "statusbar": {
-    "ram":          "",
-    "ram-fire":     "",
-    "cpu":          "",
-    "cpu-fire":     "",
-    "clock":        "",
-    "ping":         "",
-    "ping-offline": ""
-  },
-
   // Node
   "node":                     "",
   "node-version-current":     "",

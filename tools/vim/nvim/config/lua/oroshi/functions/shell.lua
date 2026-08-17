@@ -10,7 +10,7 @@ M.run = function(userCommand, userOptions)
     onError = F.noop,
   }
   local options = F.merge(defaults, userOptions)
-  local command = { F.absolute(userCommand), unpack(options.args) }
+  local command = { F.absolute("bin-zsh"), userCommand, unpack(options.args) }
 
   vim.system(command, {}, function(result)
     local output = {

@@ -530,6 +530,12 @@
     "path": "~/local/www/talks/talk-blog"
   },
   "talks": {
+    "background": "yellow-8",
+    "foreground": "white",
+    "icon": "󰐨 ",
+    "path": "~/local/www/algolia/talks"
+  },
+  "talks.pixelastic.com": {
     "background": "green-8",
     "foreground": "white",
     "icon": "  ",

@@ -1731,6 +1731,26 @@
   },
   "talks": {
     "background": {
+      "ansi": 48,
+      "hex": "#744210",
+      "name": "yellow-8"
+    },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
+    "foreground": {
+      "ansi": 201,
+      "hex": "#ffffff",
+      "name": "white"
+    },
+    "hideNameInPrompt": false,
+    "icon": "󰐨 ",
+    "path": "~/local/www/algolia/talks"
+  },
+  "talks.pixelastic.com": {
+    "background": {
       "ansi": 38,
       "hex": "#22543d",
       "name": "green-8"
