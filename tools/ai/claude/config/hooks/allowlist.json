@@ -288,6 +288,7 @@
   "skills --help",
   "slack-writer-end",
   "slack-writer-start",
+  "slack-writer-tick",
   "sleep",
   "snap info",
   "snap list",
