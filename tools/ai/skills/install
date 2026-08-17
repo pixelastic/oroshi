@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Install Claude Code skills
-# Target: ~/.claude/skills/
-# Community skills are now tracked in tools/ai/claude/config/skills/ and
-# symlinked into ~/.claude/skills/ by the dotfiles installer.
-set -e
