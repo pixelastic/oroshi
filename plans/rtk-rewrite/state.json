@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-rtk-command-rewrite.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Replaced rtk-can-rewrite (boolean) with rtk-command-rewrite (returns rewritten command), wired into hook, deleted wrapper"
-  }
-]
