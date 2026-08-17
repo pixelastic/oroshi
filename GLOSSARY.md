@@ -24,7 +24,7 @@ _Avoid_: refresh, repaint
 - [Project Display](tools/term/zsh/config/functions/autoload/project/__docs/GLOSSARY.md) — Projects, Contexts, Context Badges, Project Badges, Worktree Badges
 - [FZF](scripts/bin/fzf/__docs/GLOSSARY.md) — FZF Scripts, Lifecycle Functions, FZF Helpers, Neovim API, Legacy FZF
 - [FZF ctrl-r](scripts/bin/fzf/__docs/GLOSSARY-ctrl-r.md) — Eager/Lazy colorization strategies, History diff, Cache, Mutex
-- [Kitty Tab Bar](tools/term/kitty/config/GLOSSARY.md) — Tab Bar, Statusbar, Redraw, Reload, Reload Beacon, Attention
+- [Kitty Tab Bar](tools/term/kitty/config/GLOSSARY.md) — Tab Bar, Statusbar, Redraw, Reload, Notify, Markers (Notification, Fullscreen, Status)
 - [npm](tools/term/zsh/config/functions/autoload/npm/__docs/GLOSSARY.md) — Published, Deprecated — registry states and their relationship
 - [Prose Linting](tools/prose/GLOSSARY.md) — Error, Warning, Suggestion — severity levels for agent-driven prose correction
 - [rm](tools/term/zsh/config/functions/autoload/misc/rm/__docs/GLOSSARY.md) — Safe deletion, Recoverable — safety vocabulary for CLI and Claude rm/rmdir variants
