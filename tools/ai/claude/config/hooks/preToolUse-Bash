@@ -47,7 +47,7 @@ fi
 
 # Solkan rewrite: use rewritten command if provided
 local effectiveCommand="$inputCommand"
-local rewrittenCommand="$(json-get '.rewrittenCommand' <<<"$solkanJson")"
+local rewrittenCommand="$(json-get '.rewrite' <<<"$solkanJson")"
 [[ "$rewrittenCommand" != "" ]] && effectiveCommand="$rewrittenCommand"
 
 # RTK: Rewritten command

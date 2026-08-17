@@ -7,6 +7,40 @@ setup() {
   export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR"
 }
 
+# --- Integration tests (real Solkan, mocked RTK) ---
+
+@test "integration: allow echo hello with no rewrite" {
+  preToolUse-Bash-rtk() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
+}
+
+@test "integration: rewrite rmdir to rmdir-for-claude" {
+  preToolUse-Bash-rtk() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rmdir emptydir"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'rmdir-for-claude emptydir'
+}
+
+@test "integration: reject wget with reason" {
+  preToolUse-Bash-rtk() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
+}
+
+# --- Mocked tests ---
+
 @test "allow with updatedInput when solkan allows and RTK does not rewrite" {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
@@ -247,7 +281,7 @@ setup() {
 
 @test "rm rewritten: allow with rewrittenCommand as updatedInput" {
   preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["rm-for-claude"],"rejected":[]},"rewrittenCommand":"rm-for-claude foo.txt"}'
+    print '{"allow":{"isAllowed":true,"allowed":["rm-for-claude"],"rejected":[]},"rewrite":"rm-for-claude foo.txt"}'
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
   bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
@@ -260,7 +294,7 @@ setup() {
 
 @test "rmdir rewritten: allow with rewrittenCommand as updatedInput" {
   preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["rmdir-for-claude"],"rejected":[]},"rewrittenCommand":"rmdir-for-claude emptydir"}'
+    print '{"allow":{"isAllowed":true,"allowed":["rmdir-for-claude"],"rejected":[]},"rewrite":"rmdir-for-claude emptydir"}'
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
   bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
@@ -273,7 +307,7 @@ setup() {
 
 @test "compound rm rewritten: allow with rewrittenCommand as updatedInput" {
   preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["ls","rm-for-claude"],"rejected":[]},"rewrittenCommand":"ls && rm-for-claude foo.txt"}'
+    print '{"allow":{"isAllowed":true,"allowed":["ls","rm-for-claude"],"rejected":[]},"rewrite":"ls && rm-for-claude foo.txt"}'
   }
   preToolUse-Bash-rtk() { print -r -- "$1"; }
   bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
@@ -298,7 +332,7 @@ setup() {
 
 @test "rewrite + RTK: both transformations applied" {
   preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["rm-for-claude"],"rejected":[]},"rewrittenCommand":"rm-for-claude foo.txt"}'
+    print '{"allow":{"isAllowed":true,"allowed":["rm-for-claude"],"rejected":[]},"rewrite":"rm-for-claude foo.txt"}'
   }
   preToolUse-Bash-rtk() { print -r -- "rtk $1"; }
   bats_mock preToolUse-Bash-solkan preToolUse-Bash-rtk
