@@ -34,3 +34,5 @@ local promptPid="$(prompt-pid)"
     rm "$lockfilePath"; \
     prompt-redraw $promptPid
 ) &
+# Remove from job table so ZSH doesn't print "[N] + done" when it finishes
+disown
