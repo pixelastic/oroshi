@@ -11,3 +11,6 @@
 - Use `/zsh-writer` skill for hook implementation, `/tdd` for tests
 
 ## Discoveries
+
+### Issue 02 — Local allow and rewrite lists
+- Solkan multi-file support (multiple `--allow-list-file` / `--rewrite-list-file` flags) is available via portal link to local dev copy. The hook passes multiple flags directly — no jq merge needed.
