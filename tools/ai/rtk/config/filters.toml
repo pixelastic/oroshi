@@ -3,14 +3,14 @@ schema_version = 1
 
 [filters.bats]
 description = "bats TAP output — show failures only"
-match_command = "^bats\\b"
+match_command = "^(bin-zsh )?bats\\b"
 strip_ansi = true
 strip_lines_matching = ["^ok \\d+", "^\\d+\\.\\.\\d+"]
 on_empty = "All tests passed."
 
 [filters.yarn]
 description = "yarn run test (Vitest) output — show failures only"
-match_command = "^yarn run test\\b"
+match_command = "^(bin-zsh )?yarn run test\\b"
 strip_ansi = true
 strip_lines_matching = [
   "^\\s+RUN\\s",
@@ -24,7 +24,7 @@ on_empty = "All tests passed."
 
 [filters.pytest]
 description = "pytest output — show failures only"
-match_command = "^python-test( |$)"
+match_command = "^(bin-zsh )?python-test( |$)"
 strip_ansi = true
 strip_lines_matching = [
   "^=+ test session starts",

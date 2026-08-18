@@ -10,3 +10,8 @@
 - **Prior art:** See existing tests in `git-file-test.bats` for mocking `bats`, `yarn`, `python-test`, `bats-test-path`
 
 ## Discoveries
+
+### Issue 01 — RTK prefix
+- RTK applies TOML custom filters even for unknown subcommands (no need for `rtk test`)
+- `bin-zsh` prefix in commands breaks TOML `match_command` patterns — must use `^(bin-zsh )?` prefix in patterns
+- Any ZSH autoloaded function migrated from a PATH script needs `bin-zsh` wrapper for RTK, and the TOML filter must tolerate the prefix

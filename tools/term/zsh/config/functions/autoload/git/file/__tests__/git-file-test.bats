@@ -2,6 +2,9 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  # Default to non-Claude context
+  is-claude() { return 1; }
+  bats_mock is-claude
 }
 
 # ─── RETURN EARLY ─────────────────────────────────────────────────────────────
@@ -190,4 +193,55 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
+}
+
+# ─── CLAUDE CONTEXT ──────────────────────────────────────────────────────────
+
+@test "prefixes bats with rtk bin-zsh when is-claude" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  bats_git add script.zsh
+  bats_git commit --quiet -m "add script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
+
+  is-claude() { return 0; }
+  bats-test-path() { echo "path"; }
+  rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
+  bats_mock is-claude bats-test-path rtk
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/rtk-calls.txt")" == bin-zsh\ bats* ]]
+}
+
+@test "prefixes yarn run test with rtk bin-zsh when is-claude" {
+  echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
+  bats_git add script.js
+  bats_git commit --quiet -m "add script.js"
+  echo 'changed' >> "$BATS_GIT_DIR/script.js"
+
+  is-claude() { return 0; }
+  bats-test-path() { printf ''; }
+  rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
+  bats_mock is-claude bats-test-path rtk
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/rtk-calls.txt")" == bin-zsh\ yarn\ run\ test* ]]
+}
+
+@test "prefixes python-test with rtk bin-zsh when is-claude" {
+  echo 'x = 1' > "$BATS_GIT_DIR/module.py"
+  bats_git add module.py
+  bats_git commit --quiet -m "add module.py"
+  echo 'changed' >> "$BATS_GIT_DIR/module.py"
+
+  is-claude() { return 0; }
+  bats-test-path() { printf ''; }
+  python-test-path() { echo "$BATS_GIT_DIR/__tests__/test_module.py"; }
+  rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
+  bats_mock is-claude bats-test-path python-test-path rtk
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/rtk-calls.txt")" == bin-zsh\ python-test* ]]
 }
