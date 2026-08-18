@@ -77,3 +77,8 @@ Use `exec.Command("bin-zsh", "function-name", "arg1", "arg2")`. The `bin-zsh` sc
 ### Issue 05b — Manual TUI smoke test
 - BubbleTea's `tea.NewProgram` opens `/dev/tty` directly — cannot run in headless/CI environments. Manual TUI verification requires a real terminal.
 - Build output goes to `scripts/bin/git-branch-push-pretty/build/` (not alongside `__lib/`).
+
+### Issue 06 — Summary line
+- `New(ansiColor)` kept for backward compat in existing tests. `NewWithSummary(Config{...})` is the full constructor used by main.go.
+- `viewSummary()` guards on `branchName == ""` to distinguish simple vs full mode.
+- RefUpdate events with only `Remote` (destination line) are skipped in `EventToMsg` — only ref hash lines forwarded.

@@ -153,6 +153,38 @@ func TestEventToMsgReturnsNilForNoise(t *testing.T) {
 	}
 }
 
+func TestEventToMsgConvertsRefUpdateWithRefs(t *testing.T) {
+	event := parser.Event{Type: parser.RefUpdate, FromRef: "abc1234", ToRef: "def5678"}
+	msg := EventToMsg(event)
+	rm, ok := msg.(tui.RefUpdateMsg)
+	if !ok {
+		t.Fatalf("expected RefUpdateMsg, got %T", msg)
+	}
+	if rm.FromRef != "abc1234" || rm.ToRef != "def5678" {
+		t.Errorf("wrong RefUpdateMsg: %+v", rm)
+	}
+}
+
+func TestEventToMsgConvertsRemoteMessage(t *testing.T) {
+	event := parser.Event{Type: parser.RemoteMessage, Raw: "https://github.com/user/repo/pull/new/feature"}
+	msg := EventToMsg(event)
+	rm, ok := msg.(tui.RemoteMessageMsg)
+	if !ok {
+		t.Fatalf("expected RemoteMessageMsg, got %T", msg)
+	}
+	if rm.Text != "https://github.com/user/repo/pull/new/feature" {
+		t.Errorf("expected PR URL, got %q", rm.Text)
+	}
+}
+
+func TestEventToMsgSkipsRefUpdateDestination(t *testing.T) {
+	event := parser.Event{Type: parser.RefUpdate, Remote: "git@github.com:user/repo.git"}
+	msg := EventToMsg(event)
+	if msg != nil {
+		t.Errorf("destination-only RefUpdate should be nil, got %T", msg)
+	}
+}
+
 // --- Stderr streaming ---
 
 func TestStreamStderrSendsProgressMessages(t *testing.T) {

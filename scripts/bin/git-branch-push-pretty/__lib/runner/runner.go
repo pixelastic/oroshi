@@ -68,6 +68,15 @@ func EventToMsg(event parser.Event) tea.Msg {
 		return tui.ErrorMsg{Raw: event.Raw}
 	case parser.UpToDate:
 		return tui.UpToDateMsg{}
+	case parser.RefUpdate:
+		// Ref update with commit hashes
+		if event.FromRef != "" && event.ToRef != "" {
+			return tui.RefUpdateMsg{FromRef: event.FromRef, ToRef: event.ToRef}
+		}
+		// Destination line (To <url>) — not needed by TUI
+		return nil
+	case parser.RemoteMessage:
+		return tui.RemoteMessageMsg{Text: event.Raw}
 	default:
 		return nil
 	}

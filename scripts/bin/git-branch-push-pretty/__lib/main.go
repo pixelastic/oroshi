@@ -33,7 +33,7 @@ func main() {
 		return string(out), err
 	}
 
-	branch, _, pushArgs, err := runner.ParseArgs(args, cmdRunner)
+	branch, remote, pushArgs, err := runner.ParseArgs(args, cmdRunner)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -50,7 +50,17 @@ func main() {
 		branchColor = 7 // fallback to white
 	}
 
-	model := tui.New(branchColor)
+	remoteColor, err := th.RemoteColor(remote)
+	if err != nil {
+		remoteColor = 7 // fallback to white
+	}
+
+	model := tui.NewWithSummary(tui.Config{
+		BranchName:  branch,
+		RemoteName:  remote,
+		BranchColor: branchColor,
+		RemoteColor: remoteColor,
+	})
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -95,6 +105,9 @@ func main() {
 	m := finalModel.(tui.Model)
 	for _, line := range m.Errors() {
 		fmt.Fprintln(os.Stderr, line)
+	}
+	if summary := m.Summary(); summary != "" && len(m.Errors()) == 0 {
+		fmt.Println(summary)
 	}
 	os.Exit(m.ExitCode())
 }

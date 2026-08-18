@@ -44,8 +44,9 @@
   {
     "id": "06",
     "issue": "issues/06-summary-line.md",
-    "done": false,
-    "blocked_by": ["05"]
+    "done": true,
+    "blocked_by": ["05"],
+    "recap": "Styled summary line: NewWithSummary config, RefUpdateMsg/RemoteMessageMsg types, lipgloss-colored branch/remote names, ref range or up-to-date, remote messages after summary"
   },
   {
     "id": "07",
