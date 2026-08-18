@@ -1,0 +1,14 @@
+# Check if a config key is defined
+# Usage:
+# $ git-config-exists branch.main.remote
+setopt local_options err_return
+
+local configName="$1"
+
+# A config name is required
+if [[ "$configName" == '' ]]; then
+  echo "✘ You must pass a config name"
+  return 1
+fi
+
+git config --get "$configName" &>/dev/null

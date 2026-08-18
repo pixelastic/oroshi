@@ -9,5 +9,8 @@ if [[ "$configName" == '' ]]; then
   return 1
 fi
 
-git config --unset "$configName" &>/dev/null
+# Only unset if already defined
+if git-config-exists "$configName"; then
+  git config --unset "$configName"
+fi
 
