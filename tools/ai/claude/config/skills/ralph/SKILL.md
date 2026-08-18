@@ -155,7 +155,9 @@ Issue XX/YY
 
 **Problem solved:** {short description}
 
-**What changed:** {bullet point list of changes}
+**What changed:** {high-level architecture: new domains, new/changed function signatures, API changes, new connections between components}
+
+**Files changed:** {per-file bullet list of what was done}
 
 **How to test:** (optional) {only if no automated tests}
 
