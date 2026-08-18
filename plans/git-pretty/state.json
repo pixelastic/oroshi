@@ -58,8 +58,9 @@
   {
     "id": "08",
     "issue": "issues/08-update-aliases.md",
-    "done": false,
-    "blocked_by": ["05"]
+    "done": true,
+    "blocked_by": ["05"],
+    "recap": "Updated vbps alias from git-branch-push to git-branch-push-pretty; all variant aliases chain through vbps"
   },
   {
     "id": "09",
