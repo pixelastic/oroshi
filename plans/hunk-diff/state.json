@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-classification.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Implemented classifyLines pure function that classifies new-side lines as +/~/- from hunkdiff changes array, with priority resolution and per-hunk grouping"
   },
   {
     "id": "02",
