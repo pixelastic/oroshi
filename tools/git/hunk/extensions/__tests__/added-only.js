@@ -86,8 +86,11 @@ describe('addedOnly', () => {
       expect(layout.rows[1].spans[1]).toEqual({ text: '2 ', tone: 'muted' });
     });
 
-    it('has no tone on content span', () => {
-      expect(layout.rows[1].spans[2]).toEqual({ text: 'added' });
+    it('uses syntax tone on content span', () => {
+      expect(layout.rows[1].spans[2]).toEqual({
+        text: 'added',
+        tone: 'syntax',
+      });
     });
 
     it('has no marker text for context lines', () => {

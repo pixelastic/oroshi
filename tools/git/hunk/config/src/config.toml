@@ -86,7 +86,7 @@ addedSignColor = "{{git-added:hex}}"     # + symbol color
 
 
 # Unknown
-contextContentBg = "{{unknown:hex}}"
+contextContentBg = "{{terminal:hex}}"
 fileDeleted = "{{unknown:hex}}"
 fileModified = "{{unknown:hex}}"
 fileNew = "{{unknown:hex}}"
@@ -95,7 +95,7 @@ fileUntracked = "{{unknown:hex}}"
 movedAddedBg = "{{unknown:hex}}"
 movedRemovedBg = "{{unknown:hex}}"
 noteBackground = "{{unknown:hex}}"
-selectedHunk = "{{unknown:hex}}"
+selectedHunk = "{{gray-6:hex}}"
 
 [custom_theme.syntax_scopes]
 "comment" = "{{comment:hex}}"

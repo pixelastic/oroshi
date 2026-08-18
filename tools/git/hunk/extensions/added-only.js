@@ -134,7 +134,11 @@ __ = {
       ? { text: `${marker} `, tone: __.markerTone(marker) }
       : { text: '  ' };
 
-    return [markerSpan, { text: paddedNum, tone: 'muted' }, { text: content }];
+    return [
+      markerSpan,
+      { text: paddedNum, tone: 'muted' },
+      { text: content, tone: 'syntax' },
+    ];
   },
 
   /**
