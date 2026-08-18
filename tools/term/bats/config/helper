@@ -33,6 +33,19 @@ bats_tmp_dir() {
   export BATS_TMP_DIR="$dir"
 }
 
+# bats_plans_dir
+# Creates a temp plans directory and exports MOCK_OROSHI_PLANS_DIR.
+# Auto-creates sandbox if needed.
+# Usage: bats_plans_dir
+bats_plans_dir() {
+  [[ "$BATS_TMP_DIR" == "" ]] && bats_tmp_dir
+
+  local dir="$BATS_TMP_DIR/plans"
+  mkdir -p "$dir"
+
+  export MOCK_OROSHI_PLANS_DIR="$dir"
+}
+
 # bats_git_dir [name]
 # Creates a git repo inside $BATS_TMP_DIR/<name>/ (default: git) on branch main
 # with an initial "init" commit and test user config. Auto-creates sandbox if needed.

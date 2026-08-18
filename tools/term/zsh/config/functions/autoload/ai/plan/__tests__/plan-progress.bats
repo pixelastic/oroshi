@@ -52,12 +52,14 @@ setup() {
 }
 
 @test "deduces directory from worktree context when called with no argument" {
-  bats_git_dir 'repo'
-  local wt_path="$(bats_git_worktree 'feat/no-arg')"
-  mkdir -p "$wt_path/plans/feat_no-arg"
-  printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]}]' > "$wt_path/plans/feat_no-arg/state.json"
-  echo '{}' > "$wt_path/plans/feat_no-arg/ralph.json"
-  cd "$wt_path"
+  bats_plans_dir
+  local planDirectory="$MOCK_OROSHI_PLANS_DIR/repo--feat_no-arg"
+  mkdir -p "$planDirectory"
+  printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]}]' > "$planDirectory/state.json"
+
+  plan-directory() { echo "$BATS_TMP_DIR/plans/repo--feat_no-arg"; }
+  bats_mock plan-directory
+
   bats_run_zsh "plan-progress"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "1▮2" ]]

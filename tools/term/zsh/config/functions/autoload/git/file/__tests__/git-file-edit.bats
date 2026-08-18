@@ -99,32 +99,6 @@ setup() {
   [[ "$output" == *"data.xyz"* ]]
 }
 
-@test "still skips plan files" {
-  mkdir -p "$BATS_GIT_DIR/plans/my-plan/scaffold"
-  echo "x" > "$BATS_GIT_DIR/plans/my-plan/state.json"
-  echo "x" > "$BATS_GIT_DIR/plans/my-plan/scaffold/template.lua"
-  echo "x" > "$BATS_GIT_DIR/useful.txt"
-  bats_git add .
-
-  filetypes-load-definitions() { :; }
-  filetypes-group() {
-    local file="$2"
-    case "${file:e}" in
-      json) REPLY="config" ;;
-      lua) REPLY="script" ;;
-      txt) REPLY="text" ;;
-    esac
-  }
-  nvim() { echo "$*"; }
-  bats_mock filetypes-load-definitions filetypes-group nvim
-
-  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" == *"useful.txt"* ]]
-  [[ "$output" != *"state.json"* ]]
-  [[ "$output" != *"template.lua"* ]]
-}
-
 @test "does not open renamed source file (old path no longer exists)" {
   git -C "$BATS_GIT_DIR" mv file.txt renamed.txt
   filetypes-load-definitions() { :; }
