@@ -55,6 +55,7 @@ I'd love an icon to see:
 - Add a script that can give me a daily recap of everything I accomplished on a
   given day. Initially by checking git history, later by checking GDrive
   activity and Slack
+- Migrate rust dependencies (parakeet) at root level, just like package.json
 
 
 ---
