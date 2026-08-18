@@ -19,7 +19,7 @@ def patch_paths(mocker, tmp_path):
     beacon_dir = tmp_path / "beacons"
     beacon_dir.mkdir()
     mocker.patch.object(redraw, "REDRAW_BEACON", str(beacon_dir / "redraw"))
-    mocker.patch.object(redraw, "NOTIFICATION_FILE", str(tmp_path / "attention"))
+    mocker.patch.object(redraw, "NOTIFICATION_FILE", str(tmp_path / "notification"))
     yield
 
 

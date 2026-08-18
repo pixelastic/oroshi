@@ -7,7 +7,7 @@ setopt local_options err_return
 local tabId=$1
 [[ $tabId == "" ]] && tabId="$(kitty-tab-id)"
 
-local notificationFile=$OROSHI_TMP_FOLDER/kitty/attention
+local notificationFile=$OROSHI_TMP_FOLDER/kitty/notification
 
 # Create file and parent dir if absent
 if [[ ! -f "$notificationFile" ]]; then

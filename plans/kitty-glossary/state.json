@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-rename-disk-path.md",
-    "done": false,
-    "blocked_by": ["05"]
+    "done": true,
+    "blocked_by": ["05"],
+    "recap": "Renamed on-disk notification file path from kitty/attention to kitty/notification across ZSH functions, Python source, tests, and glossary"
   }
 ]

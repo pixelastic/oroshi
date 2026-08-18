@@ -12,19 +12,19 @@ setup() {
   bats_run_zsh "kitty-tab-notification-add 42"
 
   [[ "$status" -eq 0 ]]
-  grep -q "^42$" "$BATS_TMP_DIR/kitty/attention"
+  grep -q "^42$" "$BATS_TMP_DIR/kitty/notification"
 }
 
 @test "add: same tabId not duplicated" {
   mkdir -p "$BATS_TMP_DIR/kitty"
-  echo "42" >"$BATS_TMP_DIR/kitty/attention"
+  echo "42" >"$BATS_TMP_DIR/kitty/notification"
   kitty-redraw() { :; }
   bats_mock kitty-redraw
 
   bats_run_zsh "kitty-tab-notification-add 42"
 
   [[ "$status" -eq 0 ]]
-  [[ "$(grep -c "^42$" "$BATS_TMP_DIR/kitty/attention")" -eq 1 ]]
+  [[ "$(grep -c "^42$" "$BATS_TMP_DIR/kitty/notification")" -eq 1 ]]
 }
 
 @test "add: triggers kitty-redraw on new entry" {
@@ -39,7 +39,7 @@ setup() {
 
 @test "add: does not trigger kitty-redraw when entry already exists" {
   mkdir -p "$BATS_TMP_DIR/kitty"
-  echo "42" >"$BATS_TMP_DIR/kitty/attention"
+  echo "42" >"$BATS_TMP_DIR/kitty/notification"
   kitty-redraw() { touch "$BATS_TMP_DIR/redraw-called"; }
   bats_mock kitty-redraw
 

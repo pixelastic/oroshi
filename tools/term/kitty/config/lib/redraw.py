@@ -5,7 +5,7 @@ from lib.state import tabState
 from lib.tab_switch import on_tab_switch
 
 REDRAW_BEACON = "/home/tim/local/tmp/oroshi/kitty/beacons/redraw"
-NOTIFICATION_FILE = "/home/tim/local/tmp/oroshi/kitty/attention"
+NOTIFICATION_FILE = "/home/tim/local/tmp/oroshi/kitty/notification"
 
 
 # Sync notification file into tabState when a redraw beacon is present

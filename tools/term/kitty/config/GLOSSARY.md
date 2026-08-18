@@ -63,7 +63,7 @@ _Avoid_: fullscreen icon, fullscreen badge, stack indicator
 _Avoid_: activity marker, mode marker, skill marker
 
 **Notification Tab List**:
-A plain-text State File listing the Tab IDs that currently carry a Notification Marker, one `tabId` per line; read by the Tab Bar Python once per render cycle (at the start of each Redraw). Lives at `$OROSHI_TMP_FOLDER/kitty/attention`.
+A plain-text State File listing the Tab IDs that currently carry a Notification Marker, one `tabId` per line; read by the Tab Bar Python once per render cycle (at the start of each Redraw). Lives at `$OROSHI_TMP_FOLDER/kitty/notification`.
 _Avoid_: attention file, attention list, notification file
 
 ## Relationships

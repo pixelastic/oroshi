@@ -7,39 +7,39 @@ setup() {
 
 @test "remove: removes a tab entry" {
   mkdir -p "$BATS_TMP_DIR/kitty"
-  printf "10\n42\n" >"$BATS_TMP_DIR/kitty/attention"
+  printf "10\n42\n" >"$BATS_TMP_DIR/kitty/notification"
   kitty-redraw() { :; }
   bats_mock kitty-redraw
 
   bats_run_zsh "kitty-tab-notification-remove 42"
 
   [[ "$status" -eq 0 ]]
-  run ! grep -q "^42$" "$BATS_TMP_DIR/kitty/attention"
+  run ! grep -q "^42$" "$BATS_TMP_DIR/kitty/notification"
 }
 
 @test "remove: does not affect other tab IDs" {
   mkdir -p "$BATS_TMP_DIR/kitty"
-  printf "10\n42\n99\n" >"$BATS_TMP_DIR/kitty/attention"
+  printf "10\n42\n99\n" >"$BATS_TMP_DIR/kitty/notification"
   kitty-redraw() { :; }
   bats_mock kitty-redraw
 
   bats_run_zsh "kitty-tab-notification-remove 42"
 
   [[ "$status" -eq 0 ]]
-  grep -q "^10$" "$BATS_TMP_DIR/kitty/attention"
-  grep -q "^99$" "$BATS_TMP_DIR/kitty/attention"
+  grep -q "^10$" "$BATS_TMP_DIR/kitty/notification"
+  grep -q "^99$" "$BATS_TMP_DIR/kitty/notification"
 }
 
 @test "remove: no-op when tab ID not in file" {
   mkdir -p "$BATS_TMP_DIR/kitty"
-  echo "10" >"$BATS_TMP_DIR/kitty/attention"
+  echo "10" >"$BATS_TMP_DIR/kitty/notification"
   kitty-redraw() { :; }
   bats_mock kitty-redraw
 
   bats_run_zsh "kitty-tab-notification-remove 42"
 
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/kitty/attention")" == "10" ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty/notification")" == "10" ]]
 }
 
 @test "remove: no-op when notification file does not exist" {
