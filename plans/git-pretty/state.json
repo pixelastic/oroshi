@@ -49,5 +49,59 @@
     "issue": "issues/08-update-aliases.md",
     "done": false,
     "blocked_by": ["05"]
+  },
+  {
+    "id": "09",
+    "issue": "issues/09-install-go-tools.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "10",
+    "issue": "issues/10-is-go.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "11",
+    "issue": "issues/11-go-lint.md",
+    "done": false,
+    "blocked_by": ["09"]
+  },
+  {
+    "id": "12",
+    "issue": "issues/12-go-fix.md",
+    "done": false,
+    "blocked_by": ["09"]
+  },
+  {
+    "id": "13",
+    "issue": "issues/13-go-test-path-and-go-test.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "14",
+    "issue": "issues/14-neovim-go-filetype.md",
+    "done": false,
+    "blocked_by": ["11", "12"]
+  },
+  {
+    "id": "15",
+    "issue": "issues/15-lint-wiring.md",
+    "done": false,
+    "blocked_by": ["10", "11", "12"]
+  },
+  {
+    "id": "16",
+    "issue": "issues/16-test-wiring.md",
+    "done": false,
+    "blocked_by": ["10", "13"]
+  },
+  {
+    "id": "17",
+    "issue": "issues/17-go-writer-skill.md",
+    "done": false,
+    "blocked_by": ["11", "12", "13"]
   }
 ]
