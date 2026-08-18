@@ -34,6 +34,12 @@
     "blocked_by": ["04"]
   },
   {
+    "id": "05b",
+    "issue": "issues/05b-manual-tui-smoke-test.md",
+    "done": false,
+    "blocked_by": ["05"]
+  },
+  {
     "id": "06",
     "issue": "issues/06-summary-line.md",
     "done": false,
