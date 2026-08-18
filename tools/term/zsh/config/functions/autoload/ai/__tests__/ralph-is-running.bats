@@ -6,22 +6,22 @@ setup() {
   mkdir -p "$MOCK_OROSHI_PLANS_DIR"
 }
 
-@test "exits 0 when state.json exists in external plan dir" {
+@test "exits 0 when ralph.json exists in external plan dir" {
   plan-directory() { echo "$MOCK_OROSHI_PLANS_DIR/repo--feat_test"; }
   bats_mock plan-directory
   bats_disable_worktree_aware
   mkdir -p "$MOCK_OROSHI_PLANS_DIR/repo--feat_test"
-  echo '{}' > "$MOCK_OROSHI_PLANS_DIR/repo--feat_test/state.json"
-  bats_run_zsh "cd $BATS_TMP_DIR && git-worktree-has-plan"
+  echo '{}' > "$MOCK_OROSHI_PLANS_DIR/repo--feat_test/ralph.json"
+  bats_run_zsh "cd $BATS_TMP_DIR && ralph-is-running"
   [[ "$status" -eq 0 ]]
 }
 
-@test "exits 1 when no state.json at plan dir" {
+@test "exits 1 when no ralph.json in external plan dir" {
   plan-directory() { echo "$MOCK_OROSHI_PLANS_DIR/repo--feat_test"; }
   bats_mock plan-directory
   bats_disable_worktree_aware
   mkdir -p "$MOCK_OROSHI_PLANS_DIR/repo--feat_test"
-  bats_run_zsh "cd $BATS_TMP_DIR && git-worktree-has-plan"
+  bats_run_zsh "cd $BATS_TMP_DIR && ralph-is-running"
   [[ "$status" -eq 1 ]]
 }
 
@@ -29,6 +29,6 @@ setup() {
   plan-directory() { return 1; }
   bats_mock plan-directory
   bats_disable_worktree_aware
-  bats_run_zsh "cd $BATS_TMP_DIR && git-worktree-has-plan"
+  bats_run_zsh "cd $BATS_TMP_DIR && ralph-is-running"
   [[ "$status" -eq 1 ]]
 }

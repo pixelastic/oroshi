@@ -1,21 +1,13 @@
-# Return absolute path to the plans directory for a given path.
+# Return absolute path to the external plans directory for the current context
 # Usage:
-# $ plan-directory            # defaults to $PWD
-# $ plan-directory /some/path # explicit path
+# $ plan-directory                                  # from current worktree
+# $ plan-directory /some/path                       # explicit path
+# $ plan-directory --project myapp                  # override project
+# $ plan-directory --branch feat/x                  # override branch
+# $ plan-directory --project myapp --branch feat/x  # override both
 setopt local_options err_return
 
-local targetPath="${1:-$PWD}"
-
-# No plan in this worktree → nothing to return
-git-worktree-has-plan "$targetPath" || return 1
-
-local wtRoot="$(git-directory-root "$targetPath")"
-[[ "$wtRoot" == "" ]] && return 1
-
-local branch="$(git-branch-current "$targetPath")"
-[[ "$branch" == "" ]] && return 1
-
-local slug="$(git-branch-slug "$branch")"
+local slug="$(context-slug "$@")"
 [[ "$slug" == "" ]] && return 1
 
-print "$wtRoot/plans/$slug"
+print "$OROSHI_PLANS_DIR/$slug"

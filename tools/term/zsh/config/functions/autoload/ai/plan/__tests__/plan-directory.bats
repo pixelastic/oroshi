@@ -1,39 +1,61 @@
 bats_load_library 'helper'
 
+# Mock context-slug as the only collaborator
+_mock_defaults() {
+  context-slug() { echo "repo--feat_my-feat"; }
+  bats_mock context-slug
+  bats_disable_worktree_aware
+}
+
 setup() {
-  bats_git_dir 'repo'
+  bats_tmp_dir
+  export MOCK_OROSHI_PLANS_DIR="$BATS_TMP_DIR/plans"
+  mkdir -p "$MOCK_OROSHI_PLANS_DIR"
 }
 
-@test "returns absolute path to plans/<slug> in a ralph worktree" {
-  local wt_path="$(bats_git_worktree 'feat/my-feat')"
-  mkdir -p "$wt_path/plans/feat_my-feat"
-  echo '{}' >"$wt_path/plans/feat_my-feat/state.json"
-  bats_run_zsh "cd $wt_path && plan-directory"
+@test "returns OROSHI_PLANS_DIR/<slug> from context-slug" {
+  _mock_defaults
+  bats_run_zsh "cd $BATS_TMP_DIR && plan-directory"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == *"/plans/feat_my-feat" ]]
-  [[ "$output" == /* ]]
+  [[ "$output" == "$MOCK_OROSHI_PLANS_DIR/repo--feat_my-feat" ]]
 }
 
-@test "exits 1 when not in a ralph worktree" {
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "plan-directory"
+@test "exits 1 when context-slug fails" {
+  context-slug() { return 1; }
+  bats_mock context-slug
+  bats_disable_worktree_aware
+  bats_run_zsh "cd $BATS_TMP_DIR && plan-directory"
   [[ "$status" -eq 1 ]]
-  [[ -z "$output" ]]
 }
 
-@test "exits 1 in a worktree without state.json" {
-  local wt_path="$(bats_git_worktree 'feat/no-prd')"
-  cd "$wt_path"
-  bats_run_zsh "plan-directory"
-  [[ "$status" -eq 1 ]]
-  [[ -z "$output" ]]
+@test "forwards --project flag to context-slug" {
+  context-slug() {
+    echo "$@" > "$BATS_TMP_DIR/args.txt"
+    echo "myapp--feat_x"
+  }
+  bats_mock context-slug
+  bats_disable_worktree_aware
+  bats_run_zsh "cd $BATS_TMP_DIR && plan-directory --project myapp"
+  [[ "$(cat "$BATS_TMP_DIR/args.txt")" == *"--project myapp"* ]]
 }
 
-@test "accepts an explicit subpath argument" {
-  local wt_path="$(bats_git_worktree 'feat/explicit')"
-  mkdir -p "$wt_path/plans/feat_explicit"
-  echo '{}' >"$wt_path/plans/feat_explicit/state.json"
-  bats_run_zsh "plan-directory $wt_path/plans/feat_explicit"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" == *"/plans/feat_explicit" ]]
+@test "forwards --branch flag to context-slug" {
+  context-slug() {
+    echo "$@" > "$BATS_TMP_DIR/args.txt"
+    echo "repo--feat_x"
+  }
+  bats_mock context-slug
+  bats_disable_worktree_aware
+  bats_run_zsh "cd $BATS_TMP_DIR && plan-directory --branch feat/x"
+  [[ "$(cat "$BATS_TMP_DIR/args.txt")" == *"--branch feat/x"* ]]
+}
+
+@test "forwards positional path arg to context-slug" {
+  context-slug() {
+    echo "$@" > "$BATS_TMP_DIR/args.txt"
+    echo "repo--feat_x"
+  }
+  bats_mock context-slug
+  bats_run_zsh "plan-directory /some/path"
+  [[ "$(cat "$BATS_TMP_DIR/args.txt")" == *"/some/path"* ]]
 }

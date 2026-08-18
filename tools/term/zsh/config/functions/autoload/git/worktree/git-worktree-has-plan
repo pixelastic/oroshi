@@ -1,24 +1,9 @@
-# Boolean: is the current (or given) path inside a worktree with an associated plan?
-# A worktree with an associated plan is a linked git worktree with plans/<branch-slug>/state.json at its root.
+# Boolean: does the current context have an associated plan in the external store?
 # Usage:
-# $ git-worktree-has-plan            # checks $PWD
+# $ git-worktree-has-plan            # checks current context
 # $ git-worktree-has-plan /path/dir  # checks given path
 setopt local_options err_return
 
-local targetPath="${1:-$PWD}"
-
-# Not a linked worktree → not a worktree with an associated plan
-git-directory-is-worktree "$targetPath" || return 1
-
-local wtRoot="$(git-directory-root "$targetPath")"
-[[ "$wtRoot" == "" ]] && return 1
-
-local branch="$(git-branch-current "$targetPath")"
-
-# No branch → cannot compute slug
-[[ "$branch" == "" ]] && return 1
-
-local slug="$(git-branch-slug "$branch")"
-[[ "$slug" == "" ]] && return 1
-
-[[ -f "$wtRoot/plans/$slug/state.json" ]]
+local planDir="$(plan-directory "$@" 2>/dev/null)"
+[[ "$planDir" == "" ]] && return 1
+[[ -f "$planDir/state.json" ]]
