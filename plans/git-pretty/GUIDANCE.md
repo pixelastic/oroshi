@@ -56,3 +56,8 @@ Use `exec.Command("bin-zsh", "function-name", "arg1", "arg2")`. The `bin-zsh` sc
 ### Issue 02 — Stderr parser
 - Go subpackages in `__lib/` work fine with co-located `_test.go` files; just run `go test` with the explicit path.
 - Git `\r` handling: last `\r`-delimited segment is the "current" state (previous segments are overwritten). Use `strings.LastIndex` not `TrimLeft`.
+
+### Issue 03 — Theme loader
+- lipgloss v1.1.0 (latest stable; v2 is beta-only) uses `lipgloss.Color("73")` (string type conversion) for ANSI 256 colors.
+- Inject a `CommandRunner` function type for bin-zsh calls to enable test mocking without real shell execution.
+- Go tests in `__lib/` subpackages use co-located `_test.go` with `package theme` (same package) — gives access to unexported types like `colorEntry`.
