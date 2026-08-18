@@ -1,22 +1,33 @@
+- Make hunk only display changed lines
+    => Update Claude to latest
+        => Use Fable if I want
+        => Fix term corruption when closing Claude
+            => Fix ralph --auto
 
-- Validate display of context-badge if in a worktree of a repo that is not a project (cloned). What should be displaye?
+- Grill-me LUA
+    => lua-lint, lua-fix, lua-test
+        => Display context-badge pretty in nvim Ctrl-Shift-Y
+
+- Kitty
+    => Keybinding to add status markers
+
+- Misc
+    - Make git-worktree-distance use git-worktree-distance-raw
+    - vws shouldn't suggest "main" when not in a git repo
+    - Update calls to bats_debug to not pass an argument, as $output is by default
+    - Review git-branch-colorize tests. They seem trivial and useless
+    - Refactor the prompt/git.zsh functions into their own files
+    - Ensure zsh-lint doesn't yell about exporting a long API KEY
+
+
 - Closing a claude session in a removed (vwR) directory still sometimes use 100% CPU
-- Work on having ralph iterate on several issues in a row
-- Make git-worktree-distance use git-worktree-distance-raw
-- vws shouldn't suggest "main" when not in a git repo
-- Update calls to bats_debug to not pass an argument, as $output is by default
-- Review git-branch-colorize tests. They seem trivial and useless
-- Refactor the prompt/git.zsh functions into their own files
-- Ensure zsh-lint doesn't yell about exporting a long API KEY
 - git-commit-message should be retsricted in private/, to not see API keys
 - js-writer should have one named export per file, except for __
 - `local firstField="${lines[0]%%▮*}"` is bad, use a split array
 - json-lint doesn't work on files outside of oroshi
 - Make some slack-* commands to read updated in a specific channel
-- Find a way to display in kitty how "deep" a tab is. That would allow me to focus on the tabs that are close to being done, in order to close them, rather than going deep into grill me/plan into new ideas
 - /debug-script skill doesn't work well with nodejs scripts that require a dependency. Need to see if it can use package.json for the deps?
 - Change the color of the `!` bash mode in claude
-- Claude calls git-file-test, which isn't going through rtk. Check why it calls git-file-test (where?) and if we could make it go through rtk to only display the failing tests
 - Make a better slack-writer skill, based on facts about effective writing, with some grill-me first and concise
 - Add CLI tools to add items in my calendar
 

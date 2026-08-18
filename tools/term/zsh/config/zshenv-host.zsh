@@ -5,6 +5,10 @@
 # Where are all worktrees located?
 export OROSHI_WORKTREES_DIR="${MOCK_OROSHI_WORKTREES_DIR:-$HOME/local/www/worktrees}"
 
+# Where are all plans located?
+export OROSHI_PLANS_DIR="${MOCK_OROSHI_PLANS_DIR:-$HOME/local/www/plans}"
+mkdir -p "$OROSHI_PLANS_DIR"
+
 # Skip detection if worktree-aware is disabled — OROSHI_ROOT and PATH/fpath
 # are inherited from the parent process as-is
 if [[ "$OROSHI_DISABLE_WORKTREE_AWARE" != "1" ]]; then
