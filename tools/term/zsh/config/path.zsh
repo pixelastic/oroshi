@@ -33,6 +33,12 @@ function oroshi-reload-path() {
     local pythonBinariesPath=$HOME/.pyenv/versions/${defaultPythonVersion}/bin
   fi
 
+  # Go
+  if [[ -d ~/.gvm/gos ]]; then
+    eval "$(grep 'gvm_go_name=' ~/.gvm/environments/default 2>/dev/null)"
+    local goBinariesPath=~/.gvm/gos/${gvm_go_name}/bin
+  fi
+
   path=(
     # Local binaries
     $root/private/scripts/bin/local/$hostname
@@ -54,6 +60,7 @@ function oroshi-reload-path() {
     ~/.rbenv/shims
     ~/.pyenv/bin
     $pythonBinariesPath
+    $goBinariesPath
     ~/.cargo/bin
 
     # System paths

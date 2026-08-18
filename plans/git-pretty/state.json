@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-go-scaffold.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Go scaffold: go.mod with Charm deps, main.go with usage/help, build script handling GVM lazy loading"
   },
   {
     "id": "02",

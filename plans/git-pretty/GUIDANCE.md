@@ -45,3 +45,10 @@ Use `exec.Command("bin-zsh", "function-name", "arg1", "arg2")`. The `bin-zsh` sc
 - The flag is injected by the Go binary when calling git-branch-push
 
 ## Discoveries
+
+### Issue 01 — Go scaffold
+- Go ignores directories starting with `_` (`__lib/`). `go mod tidy` and `go list ./...` won't find packages there. Build must target the path explicitly.
+- GVM overrides `cd` with a hook that searches for `.go-version`/`.go-pkgset`. Use `builtin cd` in scripts to bypass it under `err_return`.
+- Build script must `source ~/.gvm/scripts/gvm` to make `go` available in non-interactive shells (lazy alias not set).
+- `.go-version` file at repo root needed for GVM to auto-select the correct Go version.
+- Linter requires both `set -e` and `setopt local_options err_return` in ZSH scripts.

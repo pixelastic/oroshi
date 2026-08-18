@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Build the git-branch-push-pretty binary
+# Usage:
+# $ build
+set -e
+setopt local_options err_return
+
+local binaryName="git-branch-push-pretty"
+local binDirectory="${OROSHI_ROOT}/scripts/bin/${binaryName}"
+
+go build \
+  -o "${binDirectory}/build/${binaryName}" \
+  "${binDirectory}/__lib"
