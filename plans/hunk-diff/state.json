@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-layout.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Implemented buildLayout pure function that builds row descriptors with context lines, merged ranges, and separators from classified annotations"
   },
   {
     "id": "03",
