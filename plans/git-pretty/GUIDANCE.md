@@ -66,3 +66,10 @@ Use `exec.Command("bin-zsh", "function-name", "arg1", "arg2")`. The `bin-zsh` sc
 - bubbles v1.0.0 uses `progress.WithSolidFill(color string)` for solid colors, not `WithColors` (v2 API).
 - `progress.ViewAs(percent)` renders a static bar at a given percentage — ideal for non-animated, event-driven updates. Avoids animation frame handling.
 - `progress.SetPercent` in v1 returns `tea.Cmd` (pointer receiver), not void — use `ViewAs` instead for value-type Models.
+
+### Issue 05 — Execute and wire
+- Cross-package imports within `__lib/` work fine (e.g. `runner` importing `parser` and `tui`). Go ignores `_`-prefixed dirs for auto-discovery but resolves explicit imports normally.
+- `go test ./...` won't find `__lib/` subpackages. Must list each test package explicitly: `go test ./path/__lib/tui/ ./path/__lib/runner/` etc.
+- For real-time git progress, split stderr on both `\r` and `\n` using a custom `bufio.Scanner` split function. The parser's built-in `\r` handling becomes a no-op but stays as defense-in-depth.
+- BubbleTea renders View() to stdout. Errors must be printed to stderr by main.go after `p.Run()` returns, not shown in View().
+- Use `exec.CommandContext` with a cancelable context for Ctrl+C cleanup — cancel the context after `p.Run()` returns to kill the subprocess.

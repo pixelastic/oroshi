@@ -30,8 +30,9 @@
   {
     "id": "05",
     "issue": "issues/05-execute-and-wire.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Wired main.go: arg parsing with branch/remote resolution, subprocess spawning with --progress, stderr streaming via custom \\r/\\n scanner, TUI message routing (done/error/upToDate), context-based Ctrl+C cleanup, errors to stderr"
   },
   {
     "id": "05b",

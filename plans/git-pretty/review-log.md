@@ -38,3 +38,21 @@ func New(ansiColor int) Model {
 ```
 **Problem:** TUI package has no direct dependency on the theme module; accepts a raw int instead.
 **Reason skipped:** Spec says "The TUI at this stage is standalone — it can be tested by feeding it fake progress events. Wiring to the actual git process comes in issue 05." Accepting an ANSI index is the correct decoupling boundary; issue 05 wiring will resolve colors from theme and pass them in.
+
+## Issue 05 — Execute and wire
+### Co-located Go test files
+```go
+// tui/tui_test.go, runner/runner_test.go
+```
+**Problem:** Test files use co-located `_test.go` pattern instead of `__tests__` directories.
+**Reason skipped:** Go's test toolchain requires `_test.go` files in the same directory as the package under test. This is a language constraint, not a style choice.
+
+### Only --repo special-cased as value flag
+```go
+if args[i] == "--repo" && i+1 < len(args) {
+    i++
+    flags = append(flags, args[i])
+}
+```
+**Problem:** Other git push value-taking flags aren't handled, potentially misclassifying their values as positional args.
+**Reason skipped:** git-branch-push's zparseopts only declares `--repo:` as a value flag. All other flags are boolean. No real gap.
