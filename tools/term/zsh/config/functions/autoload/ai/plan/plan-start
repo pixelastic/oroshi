@@ -1,4 +1,4 @@
-# Ensure plan is created in a worktree, output plan directory info
+# Ensure plan is created in a worktree, init plan dir in $OROSHI_PLANS_DIR
 # Usage:
 # $ plan-start [branchName]
 setopt local_options err_return
@@ -16,9 +16,20 @@ fi
 
 local root="$(git-directory-root)"
 local currentBranch="$(git-branch-current)"
-local slug="$(git-branch-slug "$currentBranch")"
+local planDir="$(plan-directory)"
+
+# Init plan repo if it doesn't exist yet
+if [[ ! -d "$planDir/.git" ]]; then
+  mkdir -p "$planDir"
+  git -C "$planDir" init \
+    --quiet
+  git -C "$planDir" commit \
+    --quiet \
+    --allow-empty \
+    --message "init"
+fi
 
 jo \
   worktreePath="$root" \
   branch="$currentBranch" \
-  planDir="$root/plans/$slug/"
+  planDir="$planDir/"
