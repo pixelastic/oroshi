@@ -37,8 +37,9 @@
   {
     "id": "05b",
     "issue": "issues/05b-manual-tui-smoke-test.md",
-    "done": false,
-    "blocked_by": ["05"]
+    "done": true,
+    "blocked_by": ["05"],
+    "recap": "Manual smoke test: build verified, all 51 tests green, TTY required for visual verification by user"
   },
   {
     "id": "06",

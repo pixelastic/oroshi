@@ -73,3 +73,7 @@ Use `exec.Command("bin-zsh", "function-name", "arg1", "arg2")`. The `bin-zsh` sc
 - For real-time git progress, split stderr on both `\r` and `\n` using a custom `bufio.Scanner` split function. The parser's built-in `\r` handling becomes a no-op but stays as defense-in-depth.
 - BubbleTea renders View() to stdout. Errors must be printed to stderr by main.go after `p.Run()` returns, not shown in View().
 - Use `exec.CommandContext` with a cancelable context for Ctrl+C cleanup — cancel the context after `p.Run()` returns to kill the subprocess.
+
+### Issue 05b — Manual TUI smoke test
+- BubbleTea's `tea.NewProgram` opens `/dev/tty` directly — cannot run in headless/CI environments. Manual TUI verification requires a real terminal.
+- Build output goes to `scripts/bin/git-branch-push-pretty/build/` (not alongside `__lib/`).
