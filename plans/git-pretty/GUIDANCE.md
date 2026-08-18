@@ -52,3 +52,7 @@ Use `exec.Command("bin-zsh", "function-name", "arg1", "arg2")`. The `bin-zsh` sc
 - Build script must `source ~/.gvm/scripts/gvm` to make `go` available in non-interactive shells (lazy alias not set).
 - `.go-version` file at repo root needed for GVM to auto-select the correct Go version.
 - Linter requires both `set -e` and `setopt local_options err_return` in ZSH scripts.
+
+### Issue 02 — Stderr parser
+- Go subpackages in `__lib/` work fine with co-located `_test.go` files; just run `go test` with the explicit path.
+- Git `\r` handling: last `\r`-delimited segment is the "current" state (previous segments are overwritten). Use `strings.LastIndex` not `TrimLeft`.

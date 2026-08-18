@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-stderr-parser.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Parser package: ParseLine classifies git push stderr into progress/refUpdate/remoteMessage/error/upToDate/noise with \\r splitting"
   },
   {
     "id": "03",
