@@ -1,4 +1,4 @@
-# Stage plan artifacts and commit with generated message
+# Commit plan files to the plan's own git repo, then stop claude
 # Usage:
 # $ plan-end <planDir>
 setopt local_options err_return
@@ -11,12 +11,12 @@ if [[ ! -d "$planDirectory" ]]; then
   return 1
 fi
 
-# Add all plan files to staging area
-git-file-add "$planDirectory"
+# Stage all files in the plan repo
+git-file-add --repo "$planDirectory"
 
-# Commit with generated message
+# Commit to the plan repo
 local commitMessage="$(git-commit-message)"
-git-commit-create "$commitMessage"
+git-commit-create --repo "$planDirectory" "$commitMessage"
 
 # Stop claude
 claude-stop

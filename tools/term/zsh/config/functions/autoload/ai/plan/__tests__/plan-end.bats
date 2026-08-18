@@ -1,7 +1,23 @@
 bats_load_library 'helper'
 
+# Setup: create a plan dir as a git repo with an initial commit and a dirty file
 setup() {
   bats_tmp_dir
+  export MOCK_OROSHI_PLANS_DIR="$BATS_TMP_DIR/plans"
+  mkdir -p "$MOCK_OROSHI_PLANS_DIR"
+}
+
+_mock_plan_repo() {
+  local planDir="$MOCK_OROSHI_PLANS_DIR/repo--my-feature"
+  git init --initial-branch=main --quiet "$planDir"
+  git -C "$planDir" config user.email "bats@oroshi"
+  git -C "$planDir" config user.name "Bats"
+  git -C "$planDir" commit --allow-empty --quiet --message="init"
+
+  # Add a dirty file so there's something to commit
+  echo "state" > "$planDir/state.json"
+
+  echo "$planDir"
 }
 
 @test "exits 1 when plan directory doesn't exist" {
@@ -10,47 +26,42 @@ setup() {
   [[ "$output" == *"plan directory"* ]]
 }
 
-@test "calls git-file-add with plan directory" {
-  local planDirectory="$BATS_TMP_DIR/plans/my-plan"
-  mkdir -p "$planDirectory"
+@test "commits all plan files to the plan's own git repo" {
+  local planDir="$(_mock_plan_repo)"
 
-  git-file-add() { echo "$1" > "$BATS_TMP_DIR/added.txt"; }
-  git-commit-message() { echo "plan(my-plan): do stuff"; }
-  git-commit-create() { :; }
+  git-commit-message() { echo "plan: update"; }
   claude-stop() { :; }
-  bats_mock git-file-add git-commit-message git-commit-create claude-stop
+  bats_mock git-commit-message claude-stop
 
-  bats_run_zsh "plan-end $planDirectory"
-  [[ "$(cat "$BATS_TMP_DIR/added.txt")" == "$planDirectory" ]]
+  bats_run_zsh "plan-end $planDir"
+  [[ "$status" -eq 0 ]]
+
+  # Plan repo has a new commit (2 total: init + plan-end)
+  [[ "$(git -C "$planDir" log --oneline | wc -l)" -eq 2 ]]
 }
 
-@test "calls git-commit-message for the commit message" {
-  local planDirectory="$BATS_TMP_DIR/plans/my-plan"
-  mkdir -p "$planDirectory"
+@test "plan repo working tree is clean after commit" {
+  local planDir="$(_mock_plan_repo)"
 
-  git-file-add() { :; }
-  git-commit-message() {
-    echo "generated-message" > "$BATS_TMP_DIR/message-called.txt"
-    echo "generated-message"
-  }
-  git-commit-create() { :; }
+  git-commit-message() { echo "plan: update"; }
   claude-stop() { :; }
-  bats_mock git-file-add git-commit-message git-commit-create claude-stop
+  bats_mock git-commit-message claude-stop
 
-  bats_run_zsh "plan-end $planDirectory"
-  [[ -f "$BATS_TMP_DIR/message-called.txt" ]]
+  bats_run_zsh "plan-end $planDir"
+  [[ "$status" -eq 0 ]]
+
+  # No uncommitted changes
+  [[ -z "$(git -C "$planDir" status --porcelain)" ]]
 }
 
-@test "creates a commit with generated message" {
-  local planDirectory="$BATS_TMP_DIR/plans/my-plan"
-  mkdir -p "$planDirectory"
+@test "calls claude-stop" {
+  local planDir="$(_mock_plan_repo)"
 
-  git-file-add() { :; }
-  git-commit-message() { echo "plan(my-plan): do stuff"; }
-  git-commit-create() { echo "$1" > "$BATS_TMP_DIR/committed.txt"; }
-  claude-stop() { :; }
-  bats_mock git-file-add git-commit-message git-commit-create claude-stop
+  git-commit-message() { echo "plan: update"; }
+  claude-stop() { echo "stopped" > "$BATS_TMP_DIR/claude-stopped.txt"; }
+  bats_mock git-commit-message claude-stop
 
-  bats_run_zsh "plan-end $planDirectory"
-  [[ "$(cat "$BATS_TMP_DIR/committed.txt")" == "plan(my-plan): do stuff" ]]
+  bats_run_zsh "plan-end $planDir"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/claude-stopped.txt" ]]
 }
