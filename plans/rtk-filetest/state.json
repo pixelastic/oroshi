@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-rtk-prefix.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Added conditional rtk bin-zsh prefix to yarn/python-test/bats in git-file-test when inside Claude, fixed TOML filters to match bin-zsh-prefixed commands"
-  }
-]
