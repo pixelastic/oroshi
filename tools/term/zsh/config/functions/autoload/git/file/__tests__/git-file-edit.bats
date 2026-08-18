@@ -304,6 +304,144 @@ setup() {
   [[ "$output" == *"file.txt"* ]]
 }
 
+# Plan artifact tests
+
+# Helper: create a plan repo with an initial commit
+# Sets BATS_PLAN_DIR to the plan repo path
+setup_plan_repo() {
+  export BATS_PLAN_DIR="$BATS_TMP_DIR/plans/my-repo--main"
+  mkdir -p "$BATS_PLAN_DIR"
+  git -C "$BATS_PLAN_DIR" init --quiet
+  echo "x" > "$BATS_PLAN_DIR/state.json"
+  echo "x" > "$BATS_PLAN_DIR/GUIDANCE.md"
+  git -C "$BATS_PLAN_DIR" add .
+  git -C "$BATS_PLAN_DIR" commit --quiet -m "init"
+}
+
+@test "dirty GUIDANCE.md in plan repo appears in file list" {
+  echo "modified" > "$BATS_GIT_DIR/file.txt"
+  setup_plan_repo
+  echo "new discovery" >> "$BATS_PLAN_DIR/GUIDANCE.md"
+
+  plan-directory() { echo "$BATS_PLAN_DIR"; }
+  filetypes-load-definitions() { :; }
+  filetypes-group() { REPLY="text"; }
+  nvim() {
+    shift
+    printf '%s\n' "$@"
+  }
+  bats_mock plan-directory filetypes-load-definitions filetypes-group nvim
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"GUIDANCE.md"* ]]
+}
+
+@test "dirty review-log.md in plan repo appears in file list" {
+  echo "modified" > "$BATS_GIT_DIR/file.txt"
+  setup_plan_repo
+  echo "review notes" > "$BATS_PLAN_DIR/review-log.md"
+
+  plan-directory() { echo "$BATS_PLAN_DIR"; }
+  filetypes-load-definitions() { :; }
+  filetypes-group() { REPLY="text"; }
+  nvim() {
+    shift
+    printf '%s\n' "$@"
+  }
+  bats_mock plan-directory filetypes-load-definitions filetypes-group nvim
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"review-log.md"* ]]
+}
+
+@test "plan artifacts appear before code files in buffer order" {
+  echo "modified" > "$BATS_GIT_DIR/file.txt"
+  setup_plan_repo
+  echo "new discovery" >> "$BATS_PLAN_DIR/GUIDANCE.md"
+  echo "review notes" > "$BATS_PLAN_DIR/review-log.md"
+
+  plan-directory() { echo "$BATS_PLAN_DIR"; }
+  filetypes-load-definitions() { :; }
+  filetypes-group() { REPLY="text"; }
+  nvim() {
+    shift
+    printf '%s\n' "$@"
+  }
+  bats_mock plan-directory filetypes-load-definitions filetypes-group nvim
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
+  [[ "$status" -eq 0 ]]
+  # Plan artifacts first, code file last
+  [[ "${lines[0]}" == *"GUIDANCE.md" ]]
+  [[ "${lines[1]}" == *"review-log.md" ]]
+  [[ "${lines[2]}" == *"file.txt" ]]
+}
+
+@test "clean plan repo adds no plan artifacts" {
+  echo "modified" > "$BATS_GIT_DIR/file.txt"
+  setup_plan_repo
+
+  plan-directory() { echo "$BATS_PLAN_DIR"; }
+  filetypes-load-definitions() { :; }
+  filetypes-group() { REPLY="text"; }
+  nvim() {
+    shift
+    printf '%s\n' "$@"
+  }
+  bats_mock plan-directory filetypes-load-definitions filetypes-group nvim
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"file.txt"* ]]
+  [[ "$output" != *"GUIDANCE.md"* ]]
+  [[ "$output" != *"review-log.md"* ]]
+}
+
+@test "no associated plan works as before" {
+  echo "modified" > "$BATS_GIT_DIR/file.txt"
+
+  plan-directory() { return 1; }
+  filetypes-load-definitions() { :; }
+  filetypes-group() { REPLY="text"; }
+  nvim() {
+    shift
+    printf '%s\n' "$@"
+  }
+  bats_mock plan-directory filetypes-load-definitions filetypes-group nvim
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"file.txt"* ]]
+}
+
+@test "dirty state.json in plan repo is NOT included" {
+  echo "modified" > "$BATS_GIT_DIR/file.txt"
+  setup_plan_repo
+  echo "changed" > "$BATS_PLAN_DIR/state.json"
+
+  plan-directory() { echo "$BATS_PLAN_DIR"; }
+  filetypes-load-definitions() { :; }
+  filetypes-group() { REPLY="text"; }
+  nvim() {
+    shift
+    printf '%s\n' "$@"
+  }
+  bats_mock plan-directory filetypes-load-definitions filetypes-group nvim
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"file.txt"* ]]
+  [[ "$output" != *"state.json"* ]]
+}
+
 @test "sorts paired files adjacent, unpaired at natural position" {
   mkdir -p "$BATS_GIT_DIR/src/__tests__"
   echo "x" > "$BATS_GIT_DIR/config.txt"

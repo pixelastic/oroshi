@@ -9,6 +9,18 @@ local rawFiles="$(git-file-list-dirty-raw)"
 # Nothing to open if working tree is clean
 [[ "$rawFiles" == "" ]] && return 0
 
+# Collect dirty plan artifacts (GUIDANCE.md, review-log.md) from external plan repo
+local planArtifacts=()
+local planDirectory="$(plan-directory 2>/dev/null)"
+if [[ "$planDirectory" != "" ]]; then
+  local planDirtyFiles="$(git-file-list-dirty-raw "$planDirectory" 2>/dev/null)"
+  for planLine in ${(f)planDirtyFiles}; do
+    local planFile="${planLine%%▮*}"
+    [[ "$planFile" == "GUIDANCE.md" ]] && planArtifacts+=("${planDirectory}/${planFile}")
+    [[ "$planFile" == "review-log.md" ]] && planArtifacts+=("${planDirectory}/${planFile}")
+  done
+fi
+
 filetypes-load-definitions
 local allowedGroups=(text script config)
 
@@ -42,7 +54,7 @@ done
 typeset -A companionMap
 typeset -A consumed
 for file in "${fileList[@]}"; do
-  local testFile="$(test-path "$file" 2>/dev/null || true)"
+  local testFile="$(test-path "$file" 2>/dev/null)"
 
   # Skip files with no test companion
   [[ "$testFile" == "" ]] && continue
@@ -68,4 +80,4 @@ for file in "${fileList[@]}"; do
   [[ "${companionMap[$file]}" != "" ]] && sortedList+=("${companionMap[$file]}")
 done
 
-nvim -p $sortedList
+nvim -p $planArtifacts $sortedList
