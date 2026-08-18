@@ -13,9 +13,9 @@ tabState = {
     # array with the list of tabIds we want to keep, based on the available
     # space.
     "displayedTabIds": [],
-    # Dict of tab IDs that need user attention, mapping tabId → type
-    # (populated once per render cycle from the attention file)
-    "attentionIds": {},
+    # Set of tab IDs that have a notification marker
+    # (populated once per render cycle from the notification file)
+    "notificationIds": set(),
     # ID of the currently active (focused) tab
     "activeTabId": None,
 }

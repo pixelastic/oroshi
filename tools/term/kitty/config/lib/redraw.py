@@ -5,37 +5,36 @@ from lib.state import tabState
 from lib.tab_switch import on_tab_switch
 
 REDRAW_BEACON = "/home/tim/local/tmp/oroshi/kitty/beacons/redraw"
-ATTENTION_FILE = "/home/tim/local/tmp/oroshi/kitty/attention"
+NOTIFICATION_FILE = "/home/tim/local/tmp/oroshi/kitty/attention"
 
 
-# Sync attention file into tabState when a redraw beacon is present
+# Sync notification file into tabState when a redraw beacon is present
 def check():
     # Stop early if no beacon
     if not files.exists(REDRAW_BEACON):
         return
 
-    entries = _read_attention_entries()
+    entries = _read_notification_entries()
 
-    # Error, beacon but no attention file
+    # Error, beacon but no notification file
     if entries is None:
-        tabState["attentionIds"] = {}
+        tabState["notificationIds"] = set()
         files.remove(REDRAW_BEACON)
         return
 
-    # Update the attention list state
-    ids = {}
+    # Update the notification list state
+    # COMPAT: remove when ZSH functions no longer write tabId:type
+    ids = set()
     for line in entries:
-        parts = line.split(":", 1)
-        tab_id = parts[0]
-        attention_type = parts[1] if len(parts) > 1 else "notification"
-        ids[tab_id] = attention_type
-    tabState["attentionIds"] = ids
+        tab_id = line.split(":", 1)[0]
+        ids.add(tab_id)
+    tabState["notificationIds"] = ids
 
     # Remove beacon
     files.remove(REDRAW_BEACON)
 
 
-# Prune stale tabs from manifest and attention file
+# Prune stale tabs from manifest and notification file
 def cleanup():
     live_tab_ids = tabState["allTabIds"]
 
@@ -47,15 +46,15 @@ def cleanup():
     # Reset allTabIds so first_pass can rebuild it next cycle
     tabState["allTabIds"] = []
 
-    # Remove attention entries for closed tabs
+    # Remove notification entries for closed tabs
     live_strings = {str(tid) for tid in live_tab_ids}
-    _remove_attention_entries(lambda tid: tid in live_strings)
+    _remove_notification_entries(lambda tid: tid in live_strings)
 
 
-# Remove any attention icon when we stay on a tab for a while
-def clear_attention(tab_id):
+# Remove notification marker when we stay on a tab for a while
+def clear_notification(tab_id):
     tab_id_str = str(tab_id)
-    if not _remove_attention_entries(lambda tid: tid != tab_id_str):
+    if not _remove_notification_entries(lambda tid: tid != tab_id_str):
         return
 
     # Force kitty to repaint the tab bar
@@ -64,29 +63,30 @@ def clear_attention(tab_id):
 
 
 # Register the callback
-on_tab_switch(clear_attention)
+on_tab_switch(clear_notification)
 
 
-# Re-read the attention file and parse into tabId:type lines
-def _read_attention_entries():
-    if not files.exists(ATTENTION_FILE):
+# Re-read the notification file and parse into lines
+def _read_notification_entries():
+    if not files.exists(NOTIFICATION_FILE):
         return None
-    return [line for line in files.read(ATTENTION_FILE).splitlines() if line.strip()]
+    return [line for line in files.read(NOTIFICATION_FILE).splitlines() if line.strip()]
 
 
 # Remove entries from disk and memory based on a keep predicate.
 # Returns True when in-memory state changed (= repaint needed).
-def _remove_attention_entries(keep):
+def _remove_notification_entries(keep):
     # Disk: best-effort
-    entries = _read_attention_entries()
+    entries = _read_notification_entries()
     if entries is not None:
+        # COMPAT: remove when ZSH functions no longer write tabId:type
         kept = [e for e in entries if keep(e.split(":", 1)[0])]
         if len(kept) != len(entries):
-            files.write(ATTENTION_FILE, "\n".join(kept) + "\n" if kept else "")
+            files.write(NOTIFICATION_FILE, "\n".join(kept) + "\n" if kept else "")
 
     # Memory: authoritative
-    stale = [k for k in tabState["attentionIds"] if not keep(k)]
+    stale = [k for k in tabState["notificationIds"] if not keep(k)]
     for k in stale:
-        del tabState["attentionIds"][k]
+        tabState["notificationIds"].discard(k)
 
     return len(stale) > 0

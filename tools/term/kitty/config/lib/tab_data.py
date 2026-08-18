@@ -33,25 +33,24 @@ def build_tab_data(tab: TabBarData, draw_data: DrawData):
     projectData = projects.get(name)
     icon = projectData.get("icon", "")
 
-    # Check attention state from tabState (populated once per render cycle)
-    isAttention = str(id) in tabState["attentionIds"]
+    # Check notification state from tabState (populated once per render cycle)
+    isNotification = str(id) in tabState["notificationIds"]
 
     # Build the title with icon, name, and fullscreen suffix
     title = f" {icon}{name} "
     if isFullscreen:
         title = f"{title}{_icons['kitty-tab-fullscreen']}"
 
-    # Attention icon drawn separately with its own color
-    attentionIcon = ""
-    if isAttention:
-        attentionType = tabState["attentionIds"][str(id)]
-        attentionIcon = _icons[f"kitty-tab-attention-{attentionType}"]
+    # Notification marker drawn separately with its own color
+    notificationMarker = ""
+    if isNotification:
+        notificationMarker = _icons["kitty-tab-notification"]
 
     tabData = {
         "id": id,
         "name": name,
         "title": title,
-        "attentionIcon": attentionIcon,
+        "notificationMarker": notificationMarker,
         "isFullscreen": isFullscreen,
         "icon": icon,
         "isActive": isActive,

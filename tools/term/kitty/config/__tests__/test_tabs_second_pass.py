@@ -9,7 +9,7 @@ def reset_state():
     tabState["manifest"] = {}
     tabState["allTabIds"] = []
     tabState["displayedTabIds"] = []
-    tabState["attentionIds"] = {}
+    tabState["notificationIds"] = set()
     tabState["activeTabId"] = None
     yield
 
@@ -37,6 +37,7 @@ def _make_tab_data(is_active=False):
         "fg": 0x112233,
         "bg": 0x445566,
         "title": "my-tab",
+        "notificationMarker": "",
         "separatorBg": 0x778899,
         "separatorFg": 0xAABBCC,
         "isActive": is_active,
@@ -110,7 +111,6 @@ def test_displayed_tab_calls_draw_tab_item(mocker):
     tab_id = 1
     tabState["displayedTabIds"] = [tab_id]
     mock_draw = mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.draw_statusbar")
 
     _call_second_pass(tab_id=tab_id)
 
@@ -121,37 +121,10 @@ def test_non_displayed_tab_skips_draw_tab_item(mocker):
     tab_id = 1
     tabState["displayedTabIds"] = []
     mock_draw = mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.draw_statusbar")
 
     _call_second_pass(tab_id=tab_id)
 
     mock_draw.assert_not_called()
-
-
-# --- second_pass — end-of-cycle teardown (is_last=True) ---
-
-
-def test_draw_statusbar_called_with_screen_on_last_tab(mocker):
-    mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.redraw")
-    mock_statusbar = mocker.patch("lib.tabs_second_pass.draw_statusbar")
-    screen = MagicMock()
-
-    _call_second_pass(is_last=True, screen=screen)
-
-    mock_statusbar.assert_called_once_with(screen)
-
-
-# --- second_pass — mid-cycle (is_last=False) ---
-
-
-def test_draw_statusbar_not_called_mid_cycle(mocker):
-    mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mock_statusbar = mocker.patch("lib.tabs_second_pass.draw_statusbar")
-
-    _call_second_pass(is_last=False)
-
-    mock_statusbar.assert_not_called()
 
 
 # --- second_pass — return value ---
@@ -159,7 +132,6 @@ def test_draw_statusbar_not_called_mid_cycle(mocker):
 
 def test_returns_screen_cursor_x(mocker):
     mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.draw_statusbar")
     screen = MagicMock()
     screen.cursor.x = 42
 
@@ -173,7 +145,6 @@ def test_returns_screen_cursor_x(mocker):
 
 def test_active_tab_id_set_when_active_tab_encountered(mocker):
     mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.draw_statusbar")
     tabState["manifest"] = {
         1: _make_tab_data(is_active=True),
     }
@@ -185,7 +156,6 @@ def test_active_tab_id_set_when_active_tab_encountered(mocker):
 
 def test_active_tab_id_not_set_for_inactive_tab(mocker):
     mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.draw_statusbar")
     tabState["manifest"] = {
         1: _make_tab_data(is_active=False),
     }
@@ -201,7 +171,6 @@ def test_active_tab_id_not_set_for_inactive_tab(mocker):
 
 def test_cleanup_called_on_last_tab(mocker):
     mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.draw_statusbar")
     mock_redraw = mocker.patch("lib.tabs_second_pass.redraw")
 
     _call_second_pass(is_last=True)
@@ -211,7 +180,6 @@ def test_cleanup_called_on_last_tab(mocker):
 
 def test_cleanup_not_called_mid_cycle(mocker):
     mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.draw_statusbar")
     mock_redraw = mocker.patch("lib.tabs_second_pass.redraw")
 
     _call_second_pass(is_last=False)
@@ -224,7 +192,6 @@ def test_cleanup_not_called_mid_cycle(mocker):
 
 def test_tab_switch_check_called_on_last_tab(mocker):
     mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.draw_statusbar")
     mocker.patch("lib.tabs_second_pass.redraw")
     mock_tab_switch = mocker.patch("lib.tabs_second_pass.tab_switch")
 
@@ -235,7 +202,6 @@ def test_tab_switch_check_called_on_last_tab(mocker):
 
 def test_tab_switch_check_not_called_mid_cycle(mocker):
     mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.draw_statusbar")
     mocker.patch("lib.tabs_second_pass.redraw")
     mock_tab_switch = mocker.patch("lib.tabs_second_pass.tab_switch")
 

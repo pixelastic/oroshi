@@ -47,10 +47,10 @@ def draw_tab_item(tab_item, screen):
     screen.cursor.bg = tab_item["bg"]
     screen.draw(tab_item["title"])
 
-    # Draw attention icon in ai color
-    if tab_item["attentionIcon"]:
+    # Draw notification marker in ai color
+    if tab_item["notificationMarker"]:
         screen.cursor.fg = ansi_to_kitty(tab_data._colors["ai"]["ansi"])
-        screen.draw(tab_item["attentionIcon"])
+        screen.draw(tab_item["notificationMarker"])
 
     # Draw separator
     screen.cursor.bg = tab_item["separatorBg"]
