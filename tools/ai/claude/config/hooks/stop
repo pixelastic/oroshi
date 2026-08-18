@@ -10,13 +10,13 @@ local transcriptPath="$(printf '%s\n' "$stdinData" | jq -r '.transcript_path // 
 # Skip entirely for subagent completions
 [[ "$transcriptPath" == */subagents/* ]] && exit 0
 
-# Mark the tab as requiring attention if out of focus
+# Mark the tab as requiring notification if out of focus
 local tabId="$(kitty-window-tab-id)"
 if ! kitty-tab-focused "$tabId"; then
-  kitty-tab-attention-add "$tabId" --type stop
+  kitty-tab-notification-add "$tabId"
 fi
 
-# Sound-only early exit — does not affect attention
+# Sound-only early exit — does not affect notification
 [[ "${OROSHI_CLAUDE_STOP_SOUND}" == "no" ]] && exit 0
 # Same if set, but empty
 [[ "${OROSHI_CLAUDE_STOP_SOUND}" == "" ]] && exit 0
@@ -32,9 +32,9 @@ local slowSound="claude-stop.mp3"
 local threshold=5
 
 local nowEpoch="$(date +%s)"
-local lastUserTime="$(/usr/bin/grep '"type":"user"' "$transcriptPath" |
-  tail -1 |
-  jq -r '.timestamp // empty' 2>/dev/null)"
+local lastUserTime="$(/usr/bin/grep '"type":"user"' "$transcriptPath" \
+  | tail -1 \
+  | jq -r '.timestamp // empty' 2>/dev/null)"
 local userEpoch="$(date -d "$lastUserTime" +%s 2>/dev/null)"
 local durationSeconds=$((nowEpoch - userEpoch))
 

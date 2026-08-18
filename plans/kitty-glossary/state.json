@@ -23,8 +23,9 @@
   {
     "id": "04",
     "issue": "issues/04-hooks-allowlist.md",
-    "done": false,
-    "blocked_by": ["03"]
+    "done": true,
+    "blocked_by": ["03"],
+    "recap": "Renamed kitty-tab-attention-add to kitty-tab-notification-add in stop/notification hooks, removed --type flag, updated allow-list and tests"
   },
   {
     "id": "05",

@@ -188,7 +188,7 @@
   "kitty @ --help",
   "kitty-pwd",
   "kitty-reload",
-  "kitty-tab-attention-add",
+  "kitty-tab-notification-add",
   "kitty-tab-focus",
   "kitty-tab-id",
   "kitty-tab-switch",

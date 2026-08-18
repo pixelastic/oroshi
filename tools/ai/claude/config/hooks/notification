@@ -2,10 +2,10 @@
 # Triggered when Claude needs my input to run a tool
 set -e
 
-# Mark the tab as requiring attention if out of focus
+# Mark the tab as requiring notification if out of focus
 local tabId="$(kitty-window-tab-id)"
 if ! kitty-tab-focused "$tabId"; then
-  kitty-tab-attention-add "$tabId" --type notification
+  kitty-tab-notification-add "$tabId"
 fi
 
 # Play a sound

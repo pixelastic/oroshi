@@ -7,40 +7,40 @@ setup() {
   bats_mock audio-play-oroshi
 }
 
-# Mock helpers for attention tests
-mock_kitty_attention() {
+# Mock helpers for notification tests
+mock_kitty_notification() {
   kitty-window-tab-id() { echo "5"; }
   bats_mock kitty-window-tab-id
   kitty-tab-focused() { return 1; }
   bats_mock kitty-tab-focused
-  kitty-tab-attention-add() { echo "$@" > "$BATS_TMP_DIR/attention-args"; }
-  bats_mock kitty-tab-attention-add
+  kitty-tab-notification-add() { echo "$@" > "$BATS_TMP_DIR/notification-args"; }
+  bats_mock kitty-tab-notification-add
 }
 
-@test "attention: added with --type notification when tab not focused" {
-  mock_kitty_attention
+@test "notification: added with just tabId when tab not focused" {
+  mock_kitty_notification
 
   bats_run_zsh "$NOTIFICATION_HOOK"
 
   [[ "$status" -eq 2 ]]
-  [[ -f "$BATS_TMP_DIR/attention-args" ]]
-  [[ "$(cat "$BATS_TMP_DIR/attention-args")" = "5 --type notification" ]]
+  [[ -f "$BATS_TMP_DIR/notification-args" ]]
+  [[ "$(cat "$BATS_TMP_DIR/notification-args")" = "5" ]]
 }
 
-@test "attention: not added when tab is focused" {
+@test "notification: not added when tab is focused" {
   kitty-window-tab-id() { echo "5"; }
   kitty-tab-focused() { return 0; }
-  kitty-tab-attention-add() { echo "$@" > "$BATS_TMP_DIR/attention-args"; }
-  bats_mock kitty-window-tab-id kitty-tab-focused kitty-tab-attention-add
+  kitty-tab-notification-add() { echo "$@" > "$BATS_TMP_DIR/notification-args"; }
+  bats_mock kitty-window-tab-id kitty-tab-focused kitty-tab-notification-add
 
   bats_run_zsh "$NOTIFICATION_HOOK"
 
   [[ "$status" -eq 2 ]]
-  [[ ! -f "$BATS_TMP_DIR/attention-args" ]]
+  [[ ! -f "$BATS_TMP_DIR/notification-args" ]]
 }
 
 @test "plays audio notification regardless of focus state" {
-  mock_kitty_attention
+  mock_kitty_notification
 
   bats_run_zsh "$NOTIFICATION_HOOK"
 
