@@ -1,0 +1,15 @@
+# Remove tab from notification list
+# Usage:
+# $ kitty-tab-notification-remove {tabId}   # Remove specific tab
+# $ kitty-tab-notification-remove           # Remove current tab
+setopt local_options err_return
+local tabId=$1
+[[ $tabId == "" ]] && tabId="$(kitty-tab-id)"
+
+# Return early if file doesn't exist
+local notificationFile=$OROSHI_TMP_FOLDER/kitty/attention
+[[ ! -f "$notificationFile" ]] && return 0
+
+# Remove tab ID and redraw
+sed -i "/^${tabId}$/d" "$notificationFile"
+kitty-redraw

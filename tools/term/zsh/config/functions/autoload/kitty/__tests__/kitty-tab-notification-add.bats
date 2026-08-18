@@ -1,0 +1,50 @@
+bats_load_library 'helper'
+
+setup() {
+  bats_tmp_dir
+  bats_mock_env OROSHI_TMP_FOLDER "$BATS_TMP_DIR"
+}
+
+@test "add: writes tabId to notification file" {
+  kitty-redraw() { :; }
+  bats_mock kitty-redraw
+
+  bats_run_zsh "kitty-tab-notification-add 42"
+
+  [[ "$status" -eq 0 ]]
+  grep -q "^42$" "$BATS_TMP_DIR/kitty/attention"
+}
+
+@test "add: same tabId not duplicated" {
+  mkdir -p "$BATS_TMP_DIR/kitty"
+  echo "42" >"$BATS_TMP_DIR/kitty/attention"
+  kitty-redraw() { :; }
+  bats_mock kitty-redraw
+
+  bats_run_zsh "kitty-tab-notification-add 42"
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(grep -c "^42$" "$BATS_TMP_DIR/kitty/attention")" -eq 1 ]]
+}
+
+@test "add: triggers kitty-redraw on new entry" {
+  kitty-redraw() { touch "$BATS_TMP_DIR/redraw-called"; }
+  bats_mock kitty-redraw
+
+  bats_run_zsh "kitty-tab-notification-add 42"
+
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/redraw-called" ]]
+}
+
+@test "add: does not trigger kitty-redraw when entry already exists" {
+  mkdir -p "$BATS_TMP_DIR/kitty"
+  echo "42" >"$BATS_TMP_DIR/kitty/attention"
+  kitty-redraw() { touch "$BATS_TMP_DIR/redraw-called"; }
+  bats_mock kitty-redraw
+
+  bats_run_zsh "kitty-tab-notification-add 42"
+
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/redraw-called" ]]
+}

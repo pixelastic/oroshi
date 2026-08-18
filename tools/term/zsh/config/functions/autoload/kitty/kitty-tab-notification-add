@@ -1,0 +1,23 @@
+# Add tab to notification list
+# Usage:
+# $ kitty-tab-notification-add {tabId}   # Add specific tab
+# $ kitty-tab-notification-add           # Add current tab
+setopt local_options err_return
+
+local tabId=$1
+[[ $tabId == "" ]] && tabId="$(kitty-tab-id)"
+
+local notificationFile=$OROSHI_TMP_FOLDER/kitty/attention
+
+# Create file and parent dir if absent
+if [[ ! -f "$notificationFile" ]]; then
+  mkdir -p "${notificationFile:h}"
+  touch "$notificationFile"
+fi
+
+# Return early if already notified
+grep -q "^${tabId}$" "$notificationFile" 2>/dev/null && return 0
+
+# Add entry and redraw
+echo "${tabId}" >>"$notificationFile"
+kitty-redraw

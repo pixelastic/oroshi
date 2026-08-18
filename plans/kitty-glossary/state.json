@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-zsh-rename.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Renamed kitty-tab-attention-{add,remove} to kitty-tab-notification-{add,remove}, removed --type flag, switched to bare tabId-per-line format"
   },
   {
     "id": "04",
@@ -30,5 +31,11 @@
     "issue": "issues/05-cleanup.md",
     "done": false,
     "blocked_by": ["04"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-rename-disk-path.md",
+    "done": false,
+    "blocked_by": ["05"]
   }
 ]

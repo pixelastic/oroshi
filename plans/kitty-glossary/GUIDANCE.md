@@ -25,7 +25,7 @@
 ### Conventions
 
 - Icons src file contains nerd font glyphs (U+E000-U+F8FF). NEVER use Write tool on it — use Edit only, or `sed` via Bash. The Write tool silently strips these glyphs.
-- The on-disk file path `$OROSHI_TMP_FOLDER/kitty/attention` is NOT renamed — only code references and variable names change.
+- The on-disk file path `$OROSHI_TMP_FOLDER/kitty/attention` is NOT renamed until issue 06.
 - Pre-existing test failures in `test_tabs_second_pass.py` (draw_statusbar) and `test_pick_tabs.py` (get_statusbar_width) are unrelated — ignore them.
 - Python dist files are loaded at runtime by the Kitty tab bar. After editing icons src, always run `icons-build` and then `kitty-reload` to pick up changes in the live tab bar.
 
