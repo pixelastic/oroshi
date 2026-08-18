@@ -82,35 +82,40 @@ func EventToMsg(event parser.Event) tea.Msg {
 	}
 }
 
-// scanCRLF splits input on both \r and \n for real-time progress updates.
-func scanCRLF(data []byte, atEOF bool) (advance int, token []byte, err error) {
-	if atEOF && len(data) == 0 {
-		return 0, nil, nil
-	}
-	for i, b := range data {
-		if b == '\r' || b == '\n' {
-			return i + 1, data[:i], nil
-		}
-	}
-	if atEOF {
-		return len(data), data, nil
-	}
-	return 0, nil, nil
-}
-
 // StreamStderr reads from a reader, splits on \r and \n, parses each segment,
 // and sends resulting TUI messages via the send function.
+// Lines terminated by \r send RawLineMsg with Overwrite=true to simulate
+// terminal carriage return behavior (in-place progress updates).
 func StreamStderr(reader io.Reader, send func(tea.Msg)) {
-	scanner := bufio.NewScanner(reader)
-	scanner.Split(scanCRLF)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if line == "" {
+	br := bufio.NewReader(reader)
+	var current []byte
+	for {
+		b, err := br.ReadByte()
+		if err != nil {
+			// Flush remaining data
+			if len(current) > 0 {
+				line := string(current)
+				send(tui.RawLineMsg{Line: line})
+				event := parser.ParseLine(line)
+				if msg := EventToMsg(event); msg != nil {
+					send(msg)
+				}
+			}
+			return
+		}
+		if b != '\r' && b != '\n' {
+			current = append(current, b)
 			continue
 		}
+		// Hit a delimiter — emit the line
+		if len(current) == 0 {
+			continue
+		}
+		line := string(current)
+		current = current[:0]
+		send(tui.RawLineMsg{Line: line, Overwrite: b == '\r'})
 		event := parser.ParseLine(line)
-		msg := EventToMsg(event)
-		if msg != nil {
+		if msg := EventToMsg(event); msg != nil {
 			send(msg)
 		}
 	}

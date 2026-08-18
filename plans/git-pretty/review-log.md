@@ -56,3 +56,13 @@ if args[i] == "--repo" && i+1 < len(args) {
 ```
 **Problem:** Other git push value-taking flags aren't handled, potentially misclassifying their values as positional args.
 **Reason skipped:** git-branch-push's zparseopts only declares `--repo:` as a value flag. All other flags are boolean. No real gap.
+
+## Issue 07 — Ctrl+O toggle
+### Ctrl+O not guarded after done
+```go
+if msg.Type == tea.KeyCtrlO {
+    m.showRaw = !m.showRaw
+}
+```
+**Problem:** Update handler doesn't check `m.done` before toggling showRaw. Spec says "toggle works during the push only."
+**Reason skipped:** BubbleTea quits on DoneMsg (returns `tea.Quit`), so no further key events arrive. The guard would be dead code.

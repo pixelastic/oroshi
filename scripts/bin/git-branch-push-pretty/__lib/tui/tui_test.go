@@ -283,3 +283,205 @@ func TestSummaryNoProgressBarContent(t *testing.T) {
 		t.Errorf("summary should not contain percentage, got: %q", summary)
 	}
 }
+
+// --- Raw output toggle (Ctrl+O) ---
+
+func TestCtrlOShowsRawPanel(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(RawLineMsg{Line: "Counting objects: 5"})
+	m2, _ := m1.Update(ProgressMsg{Phase: "Counting objects", Percentage: 50})
+	m3, _ := m2.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	view := m3.(Model).View()
+	if !strings.Contains(view, "Counting objects: 5") {
+		t.Errorf("view should show raw lines after Ctrl+O, got: %q", view)
+	}
+}
+
+func TestCtrlOAgainHidesRawPanel(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(RawLineMsg{Line: "Counting objects: 5"})
+	m2, _ := m1.Update(ProgressMsg{Phase: "Counting objects", Percentage: 50})
+	m3, _ := m2.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	m4, _ := m3.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	view := m4.(Model).View()
+	if strings.Contains(view, "Counting objects: 5") {
+		t.Errorf("view should hide raw lines after second Ctrl+O, got: %q", view)
+	}
+}
+
+func TestRawPanelShowsAllLinesFromBeforeToggle(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(RawLineMsg{Line: "first line"})
+	m2, _ := m1.Update(RawLineMsg{Line: "second line"})
+	m3, _ := m2.Update(ProgressMsg{Phase: "Writing", Percentage: 10})
+	m4, _ := m3.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	view := m4.(Model).View()
+	if !strings.Contains(view, "first line") {
+		t.Errorf("view should contain first buffered line, got: %q", view)
+	}
+	if !strings.Contains(view, "second line") {
+		t.Errorf("view should contain second buffered line, got: %q", view)
+	}
+}
+
+func TestRawPanelUpdatesInRealTime(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(ProgressMsg{Phase: "Writing", Percentage: 10})
+	m2, _ := m1.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	m3, _ := m2.Update(RawLineMsg{Line: "new line after toggle"})
+	view := m3.(Model).View()
+	if !strings.Contains(view, "new line after toggle") {
+		t.Errorf("view should show lines received after toggle, got: %q", view)
+	}
+}
+
+func TestMultipleTogglesWork(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(ProgressMsg{Phase: "Writing", Percentage: 10})
+	m2, _ := m1.Update(RawLineMsg{Line: "a raw line"})
+	// Toggle on
+	m3, _ := m2.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	if !strings.Contains(m3.(Model).View(), "a raw line") {
+		t.Error("first toggle on should show raw panel")
+	}
+	// Toggle off
+	m4, _ := m3.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	if strings.Contains(m4.(Model).View(), "a raw line") {
+		t.Error("toggle off should hide raw panel")
+	}
+	// Toggle on again
+	m5, _ := m4.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	if !strings.Contains(m5.(Model).View(), "a raw line") {
+		t.Error("second toggle on should show raw panel again")
+	}
+}
+
+func TestRawPanelAccessorAfterDone(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(RawLineMsg{Line: "stderr output"})
+	m2, _ := m1.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	m3, _ := m2.Update(DoneMsg{ExitCode: 0})
+	panel := m3.(Model).RawPanel()
+	if !strings.Contains(panel, "───") {
+		t.Errorf("RawPanel() should include separator, got: %q", panel)
+	}
+	if !strings.Contains(panel, "stderr output") {
+		t.Errorf("RawPanel() should return raw content when panel was open, got: %q", panel)
+	}
+}
+
+func TestRawPanelAccessorEmptyWhenClosed(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(RawLineMsg{Line: "stderr output"})
+	m2, _ := m1.Update(DoneMsg{ExitCode: 0})
+	panel := m2.(Model).RawPanel()
+	if panel != "" {
+		t.Errorf("RawPanel() should be empty when panel was closed, got: %q", panel)
+	}
+}
+
+func TestRawLineMsgBuffersWithoutPanel(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(RawLineMsg{Line: "buffered"})
+	m2, _ := m1.Update(ProgressMsg{Phase: "Writing", Percentage: 10})
+	view := m2.(Model).View()
+	if strings.Contains(view, "buffered") {
+		t.Error("raw lines should not appear in view when panel is closed")
+	}
+}
+
+func TestViewSeparatesProgressAndRawPanel(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(ProgressMsg{Phase: "Writing", Percentage: 50})
+	m2, _ := m1.Update(RawLineMsg{Line: "raw"})
+	m3, _ := m2.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	view := m3.(Model).View()
+	if !strings.Contains(view, "───") {
+		t.Errorf("view should contain a separator between progress and raw panel, got: %q", view)
+	}
+}
+
+func TestOverwriteReplacesLastRawLine(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(ProgressMsg{Phase: "Counting", Percentage: 10})
+	m2, _ := m1.Update(RawLineMsg{Line: "Counting objects: 50%"})
+	m3, _ := m2.Update(RawLineMsg{Line: "Counting objects: 100%", Overwrite: true})
+	m4, _ := m3.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	view := m4.(Model).View()
+	if strings.Contains(view, "50%") {
+		t.Errorf("overwritten line should be replaced, got: %q", view)
+	}
+	if !strings.Contains(view, "100%") {
+		t.Errorf("view should show the overwrite line, got: %q", view)
+	}
+}
+
+func TestOverwriteOnEmptyBufferAppends(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(ProgressMsg{Phase: "Counting", Percentage: 10})
+	m2, _ := m1.Update(RawLineMsg{Line: "first", Overwrite: true})
+	m3, _ := m2.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	view := m3.(Model).View()
+	if !strings.Contains(view, "first") {
+		t.Errorf("overwrite on empty buffer should append, got: %q", view)
+	}
+}
+
+func TestViewShowsHintWhenPanelClosed(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(ProgressMsg{Phase: "Writing", Percentage: 50})
+	view := m1.(Model).View()
+	if !strings.Contains(view, "ctrl+o") {
+		t.Errorf("view should show ctrl+o hint when panel is closed, got: %q", view)
+	}
+}
+
+func TestViewHidesHintWhenPanelOpen(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(ProgressMsg{Phase: "Writing", Percentage: 50})
+	m2, _ := m1.Update(tea.KeyMsg{Type: tea.KeyCtrlO})
+	view := m2.(Model).View()
+	if strings.Contains(view, "ctrl+o") {
+		t.Errorf("view should not show hint when panel is open, got: %q", view)
+	}
+}
+
+// --- Terminal width / bar sizing ---
+
+func TestWindowSizeMsgSetsTermWidth(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(tea.WindowSizeMsg{Width: 120, Height: 40})
+	model := m1.(Model)
+	if model.termWidth != 120 {
+		t.Errorf("expected termWidth 120, got %d", model.termWidth)
+	}
+}
+
+func TestBarWidthShrinksOnNarrowTerminal(t *testing.T) {
+	m := New(42)
+	// Narrow terminal: bar should shrink below default
+	m1, _ := m.Update(tea.WindowSizeMsg{Width: 50, Height: 40})
+	model := m1.(Model)
+	if model.barWidth() >= 40 {
+		t.Errorf("narrow terminal should shrink bar below 40, got %d", model.barWidth())
+	}
+}
+
+func TestBarWidthCapsAtMaxOnWideTerminal(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(tea.WindowSizeMsg{Width: 200, Height: 40})
+	m2, _ := m1.Update(ProgressMsg{Phase: "Writing objects", Percentage: 50})
+	model := m2.(Model)
+	if model.barWidth() != 40 {
+		t.Errorf("wide terminal should cap bar at 40, got %d", model.barWidth())
+	}
+}
+
+func TestBarWidthHasMinimum(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(tea.WindowSizeMsg{Width: 20, Height: 10})
+	model := m1.(Model)
+	if model.barWidth() < 10 {
+		t.Errorf("bar width should have minimum of 10, got %d", model.barWidth())
+	}
+}

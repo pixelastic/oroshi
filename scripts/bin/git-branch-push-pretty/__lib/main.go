@@ -106,6 +106,9 @@ func main() {
 	for _, line := range m.Errors() {
 		fmt.Fprintln(os.Stderr, line)
 	}
+	if rawPanel := m.RawPanel(); rawPanel != "" {
+		fmt.Println(rawPanel)
+	}
 	if summary := m.Summary(); summary != "" && len(m.Errors()) == 0 {
 		fmt.Println(summary)
 	}

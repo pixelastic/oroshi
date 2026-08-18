@@ -193,22 +193,38 @@ func TestStreamStderrSendsProgressMessages(t *testing.T) {
 	var messages []tea.Msg
 	send := func(msg tea.Msg) { messages = append(messages, msg) }
 	StreamStderr(reader, send)
-	if len(messages) != 1 {
-		t.Fatalf("expected 1 message, got %d", len(messages))
+	// RawLineMsg + ProgressMsg
+	if len(messages) != 2 {
+		t.Fatalf("expected 2 messages, got %d", len(messages))
 	}
-	if _, ok := messages[0].(tui.ProgressMsg); !ok {
-		t.Errorf("expected ProgressMsg, got %T", messages[0])
+	raw, ok := messages[0].(tui.RawLineMsg)
+	if !ok {
+		t.Errorf("first should be RawLineMsg, got %T", messages[0])
+	}
+	if raw.Overwrite {
+		t.Error("newline-terminated line should not have Overwrite set")
+	}
+	if _, ok := messages[1].(tui.ProgressMsg); !ok {
+		t.Errorf("second should be ProgressMsg, got %T", messages[1])
 	}
 }
 
-func TestStreamStderrIgnoresNoiseLines(t *testing.T) {
+func TestStreamStderrSendsRawLineForNoise(t *testing.T) {
 	input := "Delta compression using up to 18 threads\n"
 	reader := strings.NewReader(input)
 	var messages []tea.Msg
 	send := func(msg tea.Msg) { messages = append(messages, msg) }
 	StreamStderr(reader, send)
-	if len(messages) != 0 {
-		t.Errorf("expected 0 messages for noise, got %d", len(messages))
+	// RawLineMsg only (noise produces no typed message)
+	if len(messages) != 1 {
+		t.Fatalf("expected 1 message, got %d", len(messages))
+	}
+	raw, ok := messages[0].(tui.RawLineMsg)
+	if !ok {
+		t.Errorf("expected RawLineMsg, got %T", messages[0])
+	}
+	if raw.Line != "Delta compression using up to 18 threads" {
+		t.Errorf("unexpected raw line: %q", raw.Line)
 	}
 }
 
@@ -218,14 +234,25 @@ func TestStreamStderrSplitsOnCarriageReturn(t *testing.T) {
 	var messages []tea.Msg
 	send := func(msg tea.Msg) { messages = append(messages, msg) }
 	StreamStderr(reader, send)
-	if len(messages) != 2 {
-		t.Fatalf("expected 2 messages, got %d", len(messages))
+	// 2x (RawLineMsg + ProgressMsg) = 4 messages
+	if len(messages) != 4 {
+		t.Fatalf("expected 4 messages, got %d", len(messages))
 	}
-	first := messages[0].(tui.ProgressMsg)
+	// CR-terminated line should have Overwrite=true
+	firstRaw := messages[0].(tui.RawLineMsg)
+	if !firstRaw.Overwrite {
+		t.Error("CR-terminated line should have Overwrite set")
+	}
+	first := messages[1].(tui.ProgressMsg)
 	if first.Percentage != 50 {
 		t.Errorf("first should be 50%%, got %d%%", first.Percentage)
 	}
-	last := messages[1].(tui.ProgressMsg)
+	// LF-terminated line should have Overwrite=false
+	lastRaw := messages[2].(tui.RawLineMsg)
+	if lastRaw.Overwrite {
+		t.Error("LF-terminated line should not have Overwrite set")
+	}
+	last := messages[3].(tui.ProgressMsg)
 	if last.Percentage != 100 {
 		t.Errorf("last should be 100%%, got %d%%", last.Percentage)
 	}

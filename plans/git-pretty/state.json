@@ -51,8 +51,9 @@
   {
     "id": "07",
     "issue": "issues/07-ctrl-o-toggle.md",
-    "done": false,
-    "blocked_by": ["05"]
+    "done": true,
+    "blocked_by": ["05"],
+    "recap": "Ctrl+O raw output toggle: RawLineMsg type, rawLines buffer, showRaw toggle in Update, separator+lines in View, RawPanel() accessor for post-exit printing"
   },
   {
     "id": "08",

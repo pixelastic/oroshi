@@ -82,3 +82,8 @@ Use `exec.Command("bin-zsh", "function-name", "arg1", "arg2")`. The `bin-zsh` sc
 - `New(ansiColor)` kept for backward compat in existing tests. `NewWithSummary(Config{...})` is the full constructor used by main.go.
 - `viewSummary()` guards on `branchName == ""` to distinguish simple vs full mode.
 - RefUpdate events with only `Remote` (destination line) are skipped in `EventToMsg` — only ref hash lines forwarded.
+
+### Issue 07 — Ctrl+O toggle
+- `StreamStderr` sends `RawLineMsg` before the parsed typed message for each line — raw buffer accumulates all stderr regardless of toggle state.
+- `RawPanel()` accessor includes the separator for consistent visual between in-TUI and post-exit output.
+- BubbleTea quits on `DoneMsg` so no guard needed for Ctrl+O after done — no further key events arrive.
