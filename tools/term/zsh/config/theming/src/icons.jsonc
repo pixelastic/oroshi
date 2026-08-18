@@ -15,6 +15,7 @@
     "tab-separator":  "",
     "tab-attention-stop":  " ",
     "tab-attention-notification": "󱖒 ",
+    "tab-marker-notification": " ",
     "tab-fullscreen": "󰈈 "
   },
 

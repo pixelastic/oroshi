@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-icon-key.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added tab-marker-notification icon key to icons.jsonc with bell glyph, regenerated dist files"
   },
   {
     "id": "02",
