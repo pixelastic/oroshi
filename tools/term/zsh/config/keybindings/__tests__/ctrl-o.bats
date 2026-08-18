@@ -25,24 +25,6 @@ setup() {
   [[ "$output" = "cd /default/dir " ]]
 }
 
-@test "widget: dispatches to fzf-plans when last word is ralph" {
-  fzf-plans() { echo "/plans/my-plan"; }
-  bats_mock fzf-plans
-
-  bats_run_zsh "${sourcePrefix}; LBUFFER='ralph'; oroshi-ctrl-o-widget; echo \$LBUFFER"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "ralph/plans/my-plan " ]]
-}
-
-@test "widget: dispatches to fzf-plans when last word is raplh (typo)" {
-  fzf-plans() { echo "/plans/my-plan"; }
-  bats_mock fzf-plans
-
-  bats_run_zsh "${sourcePrefix}; LBUFFER='raplh'; oroshi-ctrl-o-widget; echo \$LBUFFER"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "raplh/plans/my-plan " ]]
-}
-
 @test "widget: returns 1 when picker returns empty selection" {
   ctrl-o() { printf ''; }
   bats_mock ctrl-o

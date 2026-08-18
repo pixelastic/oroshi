@@ -29,9 +29,6 @@ yarn-error.log
 **/__pycache__/
 **/__pycache__/*
 
-# Plans
-plans/
-
 # Synced packages (except custom oroshi rules)
 tools/prose/vale/styles/*
 !tools/prose/vale/styles/oroshi/

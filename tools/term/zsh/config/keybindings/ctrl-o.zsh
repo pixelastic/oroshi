@@ -1,7 +1,6 @@
 # Ctrl-O: Search for a directory in current git project
-# Dispatches to a context-aware picker based on the last word in LBUFFER
 
-oroshi-ctrl-o-widget() {
+function oroshi-ctrl-o-widget() {
   # Stop if not available
   if ! command -v fzf >/dev/null; then
     echo "fzf is not installed"
@@ -9,17 +8,7 @@ oroshi-ctrl-o-widget() {
     return
   fi
 
-  typeset -gA specialPickers
-  specialPickers=(
-    ralph fzf-plans
-    raplh fzf-plans
-  )
-
-  # Dispatch to context-aware picker based on last word in buffer
-  local bufferWords=(${(z)LBUFFER})
-  local lastWord="${bufferWords[-1]}"
-  local picker="${specialPickers[$lastWord]}"
-  [[ "$picker" == "" ]] && picker="ctrl-o"
+  local picker="ctrl-o"
 
   export PROMPT_PREVENT_REFRESH="1"
   local selection="$($picker)"
