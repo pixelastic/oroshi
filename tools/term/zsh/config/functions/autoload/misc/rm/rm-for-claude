@@ -31,7 +31,7 @@ function validateDirectory() {
   # Each file must exist in HEAD
   for relPath in "${relPaths[@]}"; do
     if ! git-commit-has-file "$relPath"; then
-      rejectReason "$filePath" "$relPath not committed in HEAD"
+      rejectReason "$filePath" "$relPath not committed in HEAD. Use /bin/rm to bypass"
     fi
   done
 }

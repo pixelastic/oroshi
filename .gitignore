@@ -30,11 +30,7 @@ yarn-error.log
 **/__pycache__/*
 
 # Plans
-plans/*/ralph.json
-plans/*/scaffold
-plans/*/COMMIT_HINT.md
-plans/*/review-log.md
-plans/plan-storage/
+plans/
 
 # Synced packages (except custom oroshi rules)
 tools/prose/vale/styles/*
