@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# Render the Claude Code statusline with context, cost, model and plan badges
 set -e
 
 # Load icon and color definitions
@@ -74,10 +75,7 @@ done
 [[ ${#mcpDisplay} -gt 0 ]] && statusline+=("${(j: :)mcpDisplay} ")
 
 # Ralph plan progress
-local planDir="$(plan-directory "$currentDir")"
-if [[ $planDir != "" ]]; then
-  local planBadge="$(plan-badge "$planDir")"
-  statusline+=("$planBadge ")
-fi
+local planBadge="$(plan-badge "$(plan-directory "$currentDir")")"
+[[ "$planBadge" != "" ]] && statusline+=("$planBadge ")
 
 print "${(j::)statusline}"

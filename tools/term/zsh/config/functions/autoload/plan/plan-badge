@@ -1,6 +1,5 @@
 # Render a colorized plan progress badge
 # Outputs "icon done/total" in amber (in progress) or green (complete)
-# Outputs error-colored icon when plan dir exists but state.json is malformed
 # Empty output when no plan is active
 # Usage:
 # $ plan-badge                   # deduce plan dir from current worktree ($PWD)
@@ -17,17 +16,10 @@ local zshFlag=()
 [[ $isZsh == "1" ]] && zshFlag=(--zsh)
 
 local dir="${1:-$(plan-directory)}"
-# No plan dir → nothing to show
-[[ "$dir" == "" ]] && return 0
+local progress="$(plan-progress "$dir" 2>/dev/null)"
+[[ "$progress" == "" ]] && return 0
 
 icons-load-definitions
-
-# If we can't get the progress info, then the state.json is probably corrupted
-local progress="$(plan-progress "$dir")"
-if [[ "$progress" == "" ]]; then
-  colorize "$ICONS[git-issue]" error ${zshFlag[@]}
-  return
-fi
 
 # Color the badge differently if all issues are implemented
 local fields=(${(@ps/▮/)progress})
