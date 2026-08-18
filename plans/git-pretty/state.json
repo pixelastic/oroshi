@@ -1,0 +1,50 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-go-scaffold.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-stderr-parser.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-theme-loader.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-tui-progress-bar.md",
+    "done": false,
+    "blocked_by": ["02", "03"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-execute-and-wire.md",
+    "done": false,
+    "blocked_by": ["04"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-summary-line.md",
+    "done": false,
+    "blocked_by": ["05"]
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-ctrl-o-toggle.md",
+    "done": false,
+    "blocked_by": ["05"]
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-update-aliases.md",
+    "done": false,
+    "blocked_by": ["05"]
+  }
+]
