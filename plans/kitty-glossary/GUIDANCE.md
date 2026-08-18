@@ -39,3 +39,6 @@
 ## Discoveries
 
 (append-only — agents add findings here after each issue)
+
+### Issue 05 — cleanup
+- After removing compat split-on-colon, `_read_notification_entries` now filters out any line containing `:` as a safety guard — this lives at the reader level so all consumers benefit.

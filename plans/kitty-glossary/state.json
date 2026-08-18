@@ -30,8 +30,9 @@
   {
     "id": "05",
     "issue": "issues/05-cleanup.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Removed tab-attention-stop/tab-attention-notification icon keys, removed compat split-on-colon parser from redraw.py, added colon-line guard"
   },
   {
     "id": "06",

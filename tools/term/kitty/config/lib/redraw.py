@@ -23,12 +23,7 @@ def check():
         return
 
     # Update the notification list state
-    # COMPAT: remove when ZSH functions no longer write tabId:type
-    ids = set()
-    for line in entries:
-        tab_id = line.split(":", 1)[0]
-        ids.add(tab_id)
-    tabState["notificationIds"] = ids
+    tabState["notificationIds"] = set(entries)
 
     # Remove beacon
     files.remove(REDRAW_BEACON)
@@ -70,7 +65,11 @@ on_tab_switch(clear_notification)
 def _read_notification_entries():
     if not files.exists(NOTIFICATION_FILE):
         return None
-    return [line for line in files.read(NOTIFICATION_FILE).splitlines() if line.strip()]
+    return [
+        line
+        for line in files.read(NOTIFICATION_FILE).splitlines()
+        if line.strip() and ":" not in line
+    ]
 
 
 # Remove entries from disk and memory based on a keep predicate.
@@ -79,8 +78,7 @@ def _remove_notification_entries(keep):
     # Disk: best-effort
     entries = _read_notification_entries()
     if entries is not None:
-        # COMPAT: remove when ZSH functions no longer write tabId:type
-        kept = [e for e in entries if keep(e.split(":", 1)[0])]
+        kept = [e for e in entries if keep(e)]
         if len(kept) != len(entries):
             files.write(NOTIFICATION_FILE, "\n".join(kept) + "\n" if kept else "")
 
