@@ -23,8 +23,9 @@
   {
     "id": "04",
     "issue": "issues/04-tui-progress-bar.md",
-    "done": false,
-    "blocked_by": ["02", "03"]
+    "done": true,
+    "blocked_by": ["02", "03"],
+    "recap": "TUI package: bubbletea Model rendering progress bar with phase name, percentage, and themed color via bubbles/progress ViewAs"
   },
   {
     "id": "05",

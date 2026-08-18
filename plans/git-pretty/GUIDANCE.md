@@ -61,3 +61,8 @@ Use `exec.Command("bin-zsh", "function-name", "arg1", "arg2")`. The `bin-zsh` sc
 - lipgloss v1.1.0 (latest stable; v2 is beta-only) uses `lipgloss.Color("73")` (string type conversion) for ANSI 256 colors.
 - Inject a `CommandRunner` function type for bin-zsh calls to enable test mocking without real shell execution.
 - Go tests in `__lib/` subpackages use co-located `_test.go` with `package theme` (same package) — gives access to unexported types like `colorEntry`.
+
+### Issue 04 — TUI progress bar
+- bubbles v1.0.0 uses `progress.WithSolidFill(color string)` for solid colors, not `WithColors` (v2 API).
+- `progress.ViewAs(percent)` renders a static bar at a given percentage — ideal for non-animated, event-driven updates. Avoids animation frame handling.
+- `progress.SetPercent` in v1 returns `tea.Cmd` (pointer receiver), not void — use `ViewAs` instead for value-type Models.

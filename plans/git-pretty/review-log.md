@@ -30,3 +30,11 @@ e := ParseLine("Counting objects: 100% (109/109), done.")
 ```
 **Problem:** Abbreviated variable names violate `code-writer/references/style.md` "no abbreviated variable names" rule.
 **Reason skipped:** Go idiom — single-letter vars in narrow scopes (regex match result used on next line, test assertion target) are standard Go style. Enforcing `match`/`event` here fights language convention for marginal readability gain.
+
+## Issue 04 — TUI progress bar
+### Theme module integration
+```go
+func New(ansiColor int) Model {
+```
+**Problem:** TUI package has no direct dependency on the theme module; accepts a raw int instead.
+**Reason skipped:** Spec says "The TUI at this stage is standalone — it can be tested by feeding it fake progress events. Wiring to the actual git process comes in issue 05." Accepting an ANSI index is the correct decoupling boundary; issue 05 wiring will resolve colors from theme and pass them in.
