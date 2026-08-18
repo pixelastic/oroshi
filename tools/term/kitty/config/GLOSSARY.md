@@ -88,7 +88,6 @@ _Avoid_: attention file, attention list, notification file
 - "refresh" was used informally to mean both **Redraw** (visual only) and **Reload** (data + visual) — resolved: these are distinct operations with distinct scripts (`kitty-redraw` vs `kitty-reload`).
 - The existing script `kitty-refresh` conflated both concepts — it is renamed `kitty-reload` as part of this project.
 - "beacon" alone was considered — rejected in favour of **Redraw Beacon** / **Reload Beacon** to make the association with each operation explicit.
-- "attention" was the original vocabulary for the notification system (Attention, Attention Icon, Attention File). Resolved: the entire family is renamed to the "notification" family (Notify, Notification Marker, Notification Tab List). Code still uses the old names (`attentionIds`, `kitty-tab-attention-add`, etc.) — a future sidequest handles the code rename.
 - Claude Code has its own hook named `notification` — this is Claude Code's internal naming. Our **Notify** is the action that any hook (including Claude Code's `stop` and `notification` hooks) can trigger.
 
 ## Example dialogue

@@ -17,13 +17,13 @@ def test_init_loads_icons(mocker):
     mocker.patch(
         "lib.tab_data.files.read_json",
         side_effect=[
-            {"kitty-tab-notification": "!", "kitty-tab-fullscreen": "F"},
+            {"kitty-tab-marker-notification": "!", "kitty-tab-fullscreen": "F"},
             {"ai": {"ansi": 146}},
         ],
     )
     tab_data.init()
     assert tab_data._icons == {
-        "kitty-tab-notification": "!",
+        "kitty-tab-marker-notification": "!",
         "kitty-tab-fullscreen": "F",
     }
 
@@ -32,7 +32,7 @@ def test_init_overwrites_on_second_call(mocker):
     mocker.patch(
         "lib.tab_data.files.read_json",
         side_effect=[
-            {"kitty-tab-attention-stop": "!"},
+            {"kitty-tab-marker-notification": "!"},
             {"ai": {"ansi": 146}},
             {"kitty-tab-fullscreen": "F"},
             {"ai": {"ansi": 146}},
@@ -152,7 +152,7 @@ def test_title_without_project_icon(mocker):
 def test_notification_marker_uses_notification_icon_key(mocker):
     mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
     mocker.patch("lib.tab_data.projects.get", return_value={})
-    tab_data._icons = {"kitty-tab-notification": "! "}
+    tab_data._icons = {"kitty-tab-marker-notification": "! "}
     tabState["notificationIds"] = {"1"}
     result = tab_data.build_tab_data(_make_tab(tab_id=1, title="neovim"), _make_draw())
     assert result["title"] == " neovim "
@@ -172,7 +172,10 @@ def test_title_appends_fullscreen_icon_with_trailing_space(mocker):
 def test_title_fullscreen_icon_before_notification_marker(mocker):
     mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
     mocker.patch("lib.tab_data.projects.get", return_value={})
-    tab_data._icons = {"kitty-tab-notification": "! ", "kitty-tab-fullscreen": "F "}
+    tab_data._icons = {
+        "kitty-tab-marker-notification": "! ",
+        "kitty-tab-fullscreen": "F ",
+    }
     tabState["notificationIds"] = {"1"}
     result = tab_data.build_tab_data(
         _make_tab(tab_id=1, title="neovim", layout_name="stack"), _make_draw()
@@ -184,7 +187,7 @@ def test_title_fullscreen_icon_before_notification_marker(mocker):
 def test_no_notification_marker_when_tab_not_in_notificationIds(mocker):
     mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
     mocker.patch("lib.tab_data.projects.get", return_value={})
-    tab_data._icons = {"kitty-tab-notification": "! "}
+    tab_data._icons = {"kitty-tab-marker-notification": "! "}
     tabState["notificationIds"] = set()
     result = tab_data.build_tab_data(_make_tab(tab_id=1, title="neovim"), _make_draw())
     assert result["notificationMarker"] == ""

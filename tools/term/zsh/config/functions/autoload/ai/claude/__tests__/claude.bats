@@ -10,9 +10,9 @@ setup() {
   chmod +x "$BATS_TMP_DIR/oroshi/node_modules/.bin/claude"
 
   # Mock collaborators as no-ops by default
-  kitty-tab-attention-remove() { :; }
+  kitty-tab-notification-remove() { :; }
   claude-terminal-fix() { :; }
-  bats_mock kitty-tab-attention-remove claude-terminal-fix
+  bats_mock kitty-tab-notification-remove claude-terminal-fix
 }
 
 @test "runs claude binary from OROSHI_ROOT node_modules" {
@@ -25,9 +25,9 @@ setup() {
   [[ -f "$BATS_TMP_DIR/binary-called" ]]
 }
 
-@test "calls kitty-tab-attention-remove after exit" {
-  kitty-tab-attention-remove() { touch "$BATS_TMP_DIR/remove-called"; }
-  bats_mock kitty-tab-attention-remove
+@test "calls kitty-tab-notification-remove after exit" {
+  kitty-tab-notification-remove() { touch "$BATS_TMP_DIR/remove-called"; }
+  bats_mock kitty-tab-notification-remove
 
   bats_run_zsh "claude"
 

@@ -44,7 +44,7 @@ def build_tab_data(tab: TabBarData, draw_data: DrawData):
     # Notification marker drawn separately with its own color
     notificationMarker = ""
     if isNotification:
-        notificationMarker = _icons["kitty-tab-notification"]
+        notificationMarker = _icons["kitty-tab-marker-notification"]
 
     tabData = {
         "id": id,

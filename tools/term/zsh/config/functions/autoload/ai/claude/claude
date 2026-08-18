@@ -11,8 +11,8 @@ fi
 # Binary may exit non-zero; continue to cleanup
 $OROSHI_ROOT/node_modules/.bin/claude "$@" || true
 
-# Remove any leftover attention icon
-kitty-tab-attention-remove
+# Remove any leftover notification marker
+kitty-tab-notification-remove
 
 # Claude v2.1.84 seem to leave the terminal in corrupted state.
 # Source: https://github.com/anthropics/claude-code/issues/38761
