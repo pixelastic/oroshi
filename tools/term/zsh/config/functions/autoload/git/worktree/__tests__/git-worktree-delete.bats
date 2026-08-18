@@ -84,23 +84,36 @@ setup() {
   [[ -d "${BATS_GIT_WORKTREES}my-repo--feat-thing" ]]
 }
 
-@test "removes associated plans/ directory from main" {
-  mkdir -p "${BATS_GIT_DIR}/plans/feature"
+@test "removes associated external plan directory" {
+  export MOCK_OROSHI_PLANS_DIR="$BATS_TMP_DIR/plans"
+  mkdir -p "$MOCK_OROSHI_PLANS_DIR/my-repo--feature"
+  plan-directory() { echo "$MOCK_OROSHI_PLANS_DIR/my-repo--feature"; }
+  bats_mock plan-directory
+  bats_disable_worktree_aware
+
   bats_run_zsh "cd '$BATS_GIT_DIR' && git-worktree-delete feature"
   [[ "$status" -eq 0 ]]
-  [[ ! -d "${BATS_GIT_DIR}/plans/feature" ]]
+  [[ ! -d "$BATS_TMP_DIR/plans/my-repo--feature" ]]
 }
 
-@test "succeeds without plans/ directory" {
+@test "succeeds when worktree has no plan" {
+  plan-directory() { return 1; }
+  bats_mock plan-directory
+  bats_disable_worktree_aware
+
   bats_run_zsh "cd '$BATS_GIT_DIR' && git-worktree-delete feature"
   [[ "$status" -eq 0 ]]
 }
 
 # ── Ralph guard ───────────────────────────────────────────────────────────────
 
-@test "blocks deletion when ralph session is active" {
+@test "blocks deletion when ralph session is active in external plan dir" {
+  export MOCK_OROSHI_PLANS_DIR="$BATS_TMP_DIR/plans"
+  mkdir -p "$MOCK_OROSHI_PLANS_DIR/my-repo--feature"
+  plan-directory() { echo "$MOCK_OROSHI_PLANS_DIR/my-repo--feature"; }
   ralph-is-running() { return 0; }
-  bats_mock ralph-is-running
+  bats_mock plan-directory ralph-is-running
+  bats_disable_worktree_aware
 
   bats_run_zsh "cd '$BATS_GIT_DIR' && git-worktree-delete feature"
   [[ "$status" -eq 1 ]]
@@ -108,8 +121,13 @@ setup() {
 }
 
 @test "--force does not bypass the ralph guard" {
+  export MOCK_OROSHI_PLANS_DIR="$BATS_TMP_DIR/plans"
+  mkdir -p "$MOCK_OROSHI_PLANS_DIR/my-repo--feature"
+  plan-directory() { echo "$MOCK_OROSHI_PLANS_DIR/my-repo--feature"; }
   ralph-is-running() { return 0; }
-  bats_mock ralph-is-running
+  bats_mock plan-directory ralph-is-running
+  bats_disable_worktree_aware
+
   bats_run_zsh "cd '$BATS_GIT_DIR' && git-worktree-delete feature --force"
   [[ "$status" -eq 1 ]]
   [[ -d "${BATS_GIT_WORKTREES}my-repo--feature" ]]

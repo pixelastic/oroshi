@@ -1,4 +1,4 @@
-# Remove one or more Worktree directories, branches, and associated plans/ folder
+# Remove one or more Worktree directories, branches, and associated external plan dir
 # If called from inside a Worktree being deleted, cds to Git Repo Main first
 # Blocks if branch has unmerged commits ahead of main (bypass with --force/-f)
 # Blocks if a ralph session is active in the branch worktree (not bypassed by --force)
@@ -22,8 +22,6 @@ for branch in "${branches[@]}"; do
   local worktreePath="$(git-worktree-path "$branch")"
   [[ "$worktreePath" == "" ]] && return 1
 
-  local branchSlug="$(git-branch-slug "$branch")"
-
   # Block deletion if branch has unmerged commits ahead of main
   if [[ "$force" -eq 0 ]] && git-worktree-is-ahead "$worktreePath"; then
     echo "✘ Cannot delete worktree: $branch has unmerged commit(s) ahead of main."
@@ -32,7 +30,8 @@ for branch in "${branches[@]}"; do
   fi
 
   # Block deletion if a ralph session is active (not bypassed by --force)
-  if ralph-is-running "$worktreePath/plans/$branchSlug"; then
+  local planDir="$(plan-directory "$worktreePath" 2>/dev/null)"
+  if [[ "$planDir" != "" ]] && ralph-is-running "$planDir"; then
     echo "✘ Cannot delete worktree: ralph session is active in $branch. Stop the session first."
     return 1
   fi
@@ -43,9 +42,8 @@ for branch in "${branches[@]}"; do
   git worktree remove --force "$worktreePath"
   git-branch-remove "$branch"
 
-  # Remove plans artifacts from main if they exist
-  local plansDir="$mainPath/plans/${branchSlug}"
-  if [[ -d "$plansDir" ]]; then
-    rm -rf "$plansDir"
+  # Remove external plan dir if it exists
+  if [[ "$planDir" != "" ]] && [[ -d "$planDir" ]]; then
+    rm -rf "$planDir"
   fi
 done
