@@ -65,13 +65,85 @@ setup() {
   [[ -d "$BATS_GIT_DIR/.git/worktrees/my-repo--refactor" ]]
 }
 
-@test "renames plans directory on success" {
-  mkdir -p "${BATS_GIT_WORKTREES}my-repo--feature/plans/feature"
+# External plan directory
+@test "renames external plan directory on success" {
+  local planDirectory="$BATS_TMP_DIR/plans"
+  mkdir -p "$planDirectory/my-repo--feature"
+  plan-directory() {
+    local branch=""
+    while [[ $# -gt 0 ]]; do
+      [[ "$1" == "--branch" ]] && branch="$2"
+      shift
+    done
+    echo "$BATS_TMP_DIR/plans/my-repo--${branch}"
+  }
+  bats_mock plan-directory
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd ${BATS_GIT_DIR} && git-worktree-rename feature refactor"
+
+  bats_debug "$output"
+  [[ "$status" -eq 0 ]]
+  [[ ! -d "$planDirectory/my-repo--feature" ]]
+  [[ -d "$planDirectory/my-repo--refactor" ]]
+}
+
+@test "preserves plan directory content after rename" {
+  local planDirectory="$BATS_TMP_DIR/plans"
+  mkdir -p "$planDirectory/my-repo--feature"
+  echo "test content" > "$planDirectory/my-repo--feature/state.json"
+  plan-directory() {
+    local branch=""
+    while [[ $# -gt 0 ]]; do
+      [[ "$1" == "--branch" ]] && branch="$2"
+      shift
+    done
+    echo "$BATS_TMP_DIR/plans/my-repo--${branch}"
+  }
+  bats_mock plan-directory
+  bats_disable_worktree_aware
+
   bats_run_zsh "cd ${BATS_GIT_DIR} && git-worktree-rename feature refactor"
 
   [[ "$status" -eq 0 ]]
-  [[ ! -d "${BATS_GIT_WORKTREES}my-repo--refactor/plans/feature" ]]
-  [[ -d "${BATS_GIT_WORKTREES}my-repo--refactor/plans/refactor" ]]
+  [[ "$(cat "$planDirectory/my-repo--refactor/state.json")" == "test content" ]]
+}
+
+@test "succeeds when worktree has no plan" {
+  plan-directory() {
+    local branch=""
+    while [[ $# -gt 0 ]]; do
+      [[ "$1" == "--branch" ]] && branch="$2"
+      shift
+    done
+    echo "$BATS_TMP_DIR/plans/my-repo--${branch}"
+  }
+  bats_mock plan-directory
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd ${BATS_GIT_DIR} && git-worktree-rename feature refactor"
+
+  [[ "$status" -eq 0 ]]
+  [[ -d "${BATS_GIT_WORKTREES}my-repo--refactor" ]]
+}
+
+@test "fails if destination external plan directory already exists" {
+  local planDirectory="$BATS_TMP_DIR/plans"
+  mkdir -p "$planDirectory/my-repo--feature"
+  mkdir -p "$planDirectory/my-repo--refactor"
+  plan-directory() {
+    local branch=""
+    while [[ $# -gt 0 ]]; do
+      [[ "$1" == "--branch" ]] && branch="$2"
+      shift
+    done
+    echo "$BATS_TMP_DIR/plans/my-repo--${branch}"
+  }
+  bats_mock plan-directory
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-rename feature refactor"
+  [[ "$status" -eq 1 ]]
 }
 
 # Fail early
@@ -84,14 +156,6 @@ setup() {
 
 @test "fails if destination directory already exists" {
   mkdir -p "${BATS_GIT_WORKTREES}my-repo--refactor"
-
-  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-rename feature refactor"
-  [[ "$status" -eq 1 ]]
-}
-
-@test "fails if destination plans directory already exists" {
-  mkdir -p "${BATS_GIT_WORKTREES}my-repo--feature/plans/feature"
-  mkdir -p "${BATS_GIT_WORKTREES}my-repo--feature/plans/refactor"
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-rename feature refactor"
   [[ "$status" -eq 1 ]]

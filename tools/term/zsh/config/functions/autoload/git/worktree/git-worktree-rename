@@ -1,4 +1,4 @@
-# Rename a linked worktree's branch, directory, and plans artifacts atomically
+# Rename a linked worktree's branch, directory, and external plan dir
 # Usage:
 # $ git-worktree-rename <new>           # rename current linked worktree
 # $ git-worktree-rename <old> <new>     # rename named linked worktree
@@ -23,13 +23,12 @@ local mainPath="$(git-worktree-main)"
 local repoName="$(git-github-project-name)"
 [[ "$repoName" == "" ]] && repoName="${${mainPath:t}##.#}"
 
-local oldSlug="$(git-branch-slug "$oldBranch")"
 local oldDir="$(git-worktree-path "$oldBranch")"
-local oldPlansDir="$oldDir/plans/${oldSlug}"
-
 local newSlug="$(git-branch-slug "$newBranch")"
 local newDir="${OROSHI_WORKTREES_DIR}/${repoName}--${newSlug}"
-local newPlansDir="$oldDir/plans/${newSlug}"
+
+local oldPlanDir="$(plan-directory --project "$repoName" --branch "$oldBranch")"
+local newPlanDir="$(plan-directory --project "$repoName" --branch "$newBranch")"
 
 # Stop if oldBranch is not a worktree
 [[ "$oldDir" == "" ]] && return 1
@@ -40,14 +39,15 @@ git-branch-exists "$newBranch" && return 1
 # Stop if newDir already exists
 [[ -d "$newDir" ]] && return 1
 
-# Stop if renaming the plans would overwrite an existing dir
-[[ -d "$oldPlansDir" && -d "$newPlansDir" ]] && return 1
+# Stop if renaming the plan would overwrite an existing dir
+[[ -d "$oldPlanDir" && -d "$newPlanDir" ]] && return 1
 
 # Rename branch
 git-branch-rename "$oldBranch" "$newBranch"
-# Rename plans
-if [[ -d "$oldPlansDir" ]]; then
-  mv "$oldPlansDir" "$newPlansDir"
+
+# Rename external plan dir
+if [[ -d "$oldPlanDir" ]]; then
+  mv "$oldPlanDir" "$newPlanDir"
 fi
 
 # Move directory and update all git tracking
