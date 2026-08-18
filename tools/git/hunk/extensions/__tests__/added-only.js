@@ -1,9 +1,5 @@
 import addedOnly, { __ } from '../added-only.js';
 
-vi.mock('react', () => ({
-  default: { createElement: vi.fn((...args) => args) },
-}));
-
 /**
  * Build a mock ExtensionFileViewInput
  * @param {string|null} doc - Document content readDocument returns
@@ -31,6 +27,8 @@ describe('addedOnly', () => {
     const hunk = {
       config: colors,
       registerFileView: vi.fn(),
+      registerCommand: vi.fn(),
+      log: vi.fn(),
     };
     addedOnly(hunk);
     view = hunk.registerFileView.mock.calls[0][0];
@@ -96,9 +94,8 @@ describe('addedOnly', () => {
       expect(layout.rows[0].spans[0]).toEqual({ text: '  ' });
     });
 
-    it('includes component with height 1', () => {
-      expect(layout.rows[1].component.height).toBe(1);
-      expect(typeof layout.rows[1].component.render).toBe('function');
+    it('line rows have no component', () => {
+      expect(layout.rows[1].component).toBeUndefined();
     });
 
     it('maps single hunk to all rows', () => {

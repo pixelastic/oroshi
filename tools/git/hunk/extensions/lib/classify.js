@@ -1,4 +1,4 @@
-import { _ } from 'golgoth';
+import _ from '/home/tim/.oroshi/node_modules/golgoth/lodash.js';
 
 export let __;
 

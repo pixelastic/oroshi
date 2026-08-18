@@ -1,6 +1,4 @@
-import { _ } from 'golgoth';
-// eslint-disable-next-line import/no-unresolved -- provided by hunkdiff at runtime
-import React from 'react';
+import _ from '/home/tim/.oroshi/node_modules/golgoth/lodash.js';
 import { classifyLines } from './lib/classify.js';
 import { buildLayout } from './lib/layout.js';
 
@@ -8,10 +6,14 @@ export let __;
 
 /**
  * Added-only file view extension factory
- * Replaces the default unified diff with a new-side-only view
+ * Replaces the default unified diff with a new-side-only view showing
+ * only the new side of changed files with color-coded gutter markers
  * @param {object} hunk - HunkExtensionAPI
  */
 export default function addedOnly(hunk) {
+  hunk.log('added-only: factory called');
+  hunk.log(`added-only: config = ${JSON.stringify(hunk.config)}`);
+
   const colors = {
     colorAdded: hunk.config.colorAdded,
     colorModified: hunk.config.colorModified,
@@ -24,6 +26,15 @@ export default function addedOnly(hunk) {
     matches: () => true,
     layout: (input) => __.layout(input, colors),
   });
+
+  hunk.registerCommand(
+    { id: 'toggle', title: 'Toggle Added-Only View', key: 'v' },
+    (ctx) => {
+      ctx.fileViews.toggle('added-only');
+    },
+  );
+
+  hunk.log('added-only: file view registered');
 }
 
 __ = {
@@ -107,15 +118,6 @@ __ = {
         id: `line-${lineNumber}`,
         spans: __.lineSpans(marker, paddedNum, content),
         sourceRanges: [{ side: 'new', range: [lineNumber, lineNumber] }],
-        component: {
-          height: 1,
-          render: __.makeRender(
-            marker,
-            paddedNum,
-            content,
-            __.markerColor(marker, colors),
-          ),
-        },
       };
     });
   },
@@ -143,42 +145,6 @@ __ = {
   markerTone(marker) {
     if (marker === '-') return 'removed';
     return 'added';
-  },
-
-  /**
-   * Map marker to configured hex color
-   * @param {string|null} marker - Gutter marker
-   * @param {object} colors - Color config
-   * @returns {string|null} Hex color or null
-   */
-  markerColor(marker, colors) {
-    if (marker === '+') return colors.colorAdded;
-    if (marker === '~') return colors.colorModified;
-    if (marker === '-') return colors.colorRemoved;
-    return null;
-  },
-
-  /**
-   * Create a render function for a line row component
-   * @param {string|null} marker - Gutter marker
-   * @param {string} paddedNum - Padded line number
-   * @param {string} content - Line text
-   * @param {string|null} color - Hex color for marker
-   * @returns {Function} Component render function
-   */
-  makeRender(marker, paddedNum, content, color) {
-    return (props) => {
-      const gutterText = marker ? `${marker} ` : '  ';
-      const gutterProps = color ? { fg: color } : {};
-
-      return React.createElement(
-        'text',
-        null,
-        React.createElement('span', gutterProps, gutterText),
-        React.createElement('span', { fg: props.theme.muted }, paddedNum),
-        React.createElement('span', null, content),
-      );
-    };
   },
 
   /**
