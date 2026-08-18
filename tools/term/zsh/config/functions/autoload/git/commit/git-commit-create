@@ -9,7 +9,7 @@ setopt local_options err_return
 zparseopts -E -D \
   -repo:=flagRepo
 
-local repoPath="${flagRepo[2]}"
+local repoPath="${flagRepo[2]:-$(git-directory-root)}"
 local args=($@)
 
 # Find the commit message as the first argument without a dash as prefix
@@ -31,9 +31,10 @@ fi
 # We always make it verbose
 args+=("--verbose")
 
-# Target a specific repo if --repo was passed
-local repoArgs=()
-[[ "$repoPath" != "" ]] && repoArgs=("-C" "$repoPath")
+local repoArgs=("-C" "$repoPath")
 
 # Commit staged files
 git ${repoArgs[@]} commit ${args}
+
+# Auto-commit dirty plan repo if one exists for this repo
+plan-commit "$commitMessage" "$repoPath"

@@ -1,0 +1,20 @@
+# Commit dirty plan repo for the current context
+# Silently does nothing if no plan exists or plan is clean
+# Usage:
+# $ plan-commit "message"                             # from current worktree
+# $ plan-commit "message" /some/path                  # explicit repo path
+# $ plan-commit "message" --project myapp --branch x  # override context
+setopt local_options err_return
+
+local commitMessage="$1"
+shift
+
+# Resolve plan directory, forwarding remaining args to plan-directory
+local planDir="$(plan-directory "$@" 2>/dev/null)"
+[[ "$planDir" == "" ]] && return 0
+
+# Nothing to commit if plan repo is clean
+! git-directory-is-dirty "$planDir" && return 0
+
+git -C "$planDir" add --all
+git -C "$planDir" commit --quiet --message "$commitMessage"
