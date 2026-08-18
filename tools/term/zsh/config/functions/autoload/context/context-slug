@@ -1,28 +1,47 @@
 # Return a filesystem-safe identifier for the current context
 # Repo Name from main, repoName--branchSlug from a worktree
 # Usage:
-# $ context-slug              # oroshi
-# $ context-slug /some/path   # oroshi--yarn-sync
+# $ context-slug                                  # oroshi
+# $ context-slug /some/path                       # oroshi--yarn-sync
+# $ context-slug --project myapp                  # myapp--yarn-sync (in worktree)
+# $ context-slug --branch feat/x                  # oroshi--feat_x
+# $ context-slug --project myapp --branch feat/x  # myapp--feat_x
 setopt local_options err_return
 
+zparseopts -E -D \
+  -project:=flagProject \
+  -branch:=flagBranch
+
+local projectOverride="${flagProject[2]}"
+local branchOverride="${flagBranch[2]}"
 local targetPath="${1:-$PWD}"
 
-# Get repo name from GitHub remote
-local repoName="$(git-github-project-name "$targetPath" 2>/dev/null; true)"
-
-# Fallback to git root basename with leading dots stripped
-if [[ "$repoName" == "" ]]; then
-  local rootDir="$(git-directory-root "$targetPath")"
-  local baseName="${rootDir:t}"
-  repoName="${baseName#.}"
+# Project: flag or derived from GitHub remote
+local project="$projectOverride"
+if [[ "$project" == "" ]]; then
+  project="$(git-github-project-name "$targetPath" 2>/dev/null)" || true
 fi
 
-# Not a worktree: return just repo name
+# Fallback to git root basename with leading dots stripped
+if [[ "$project" == "" ]]; then
+  local rootDir="$(git-directory-root "$targetPath")"
+  local baseName="${rootDir:t}"
+  project="${baseName#.}"
+fi
+
+# Branch override: always append slug
+if [[ "$branchOverride" != "" ]]; then
+  local branchSlug="$(git-branch-slug "$branchOverride")"
+  echo "${project}--${branchSlug}"
+  return 0
+fi
+
+# Not a worktree: return just project
 if ! git-directory-is-worktree "$targetPath"; then
-  echo "$repoName"
+  echo "$project"
   return 0
 fi
 
 # Worktree: append branch slug
 local branchSlug="$(git-branch-slug --repo "$targetPath")"
-echo "${repoName}--${branchSlug}"
+echo "${project}--${branchSlug}"
