@@ -158,6 +158,7 @@
   "go mod tidy",
   "go mod",
   "go test",
+  "go version",
   "grep",
   "gresource",
   "gsettings get",
