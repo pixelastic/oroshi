@@ -25,7 +25,9 @@ def check():
     # Update the attention list state
     ids = {}
     for line in entries:
-        tab_id, attention_type = line.split(":", 1)
+        parts = line.split(":", 1)
+        tab_id = parts[0]
+        attention_type = parts[1] if len(parts) > 1 else "notification"
         ids[tab_id] = attention_type
     tabState["attentionIds"] = ids
 
