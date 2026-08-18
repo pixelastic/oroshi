@@ -7,7 +7,12 @@ DEST_DIR=~/.config/hunk
 # Generate the final config from a template
 $CONFIG_DIR/generate-config
 
+SCRIPT_DIR="$(dirname "$0")"
+
 mkdir -p $DEST_DIR
 ln -fs \
 	$CONFIG_DIR/dist/config.toml \
 	$DEST_DIR/config.toml
+
+mkdir -p $DEST_DIR/extensions
+ln -fs $SCRIPT_DIR/extensions/added-only.js $DEST_DIR/extensions/added-only.js

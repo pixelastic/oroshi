@@ -44,3 +44,8 @@
 ## Discoveries
 
 (append-only, updated by agents after each issue)
+
+### Issue 03 — Extension wiring
+- hunkdiff requires `export default` for extension factories — overrides js-writer's "always named exports" convention
+- React is provided by hunkdiff at runtime; use `eslint-disable import/no-unresolved` and `vi.mock('react')` in tests
+- `assignRowHunks` uses forward+backward passes to propagate hunkIndex from annotated rows to context rows, with separators as block boundaries

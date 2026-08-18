@@ -137,3 +137,13 @@ selectedHunk = "{{unknown:hex}}"
 "variable.other.property" = "{{variable:hex}}"
 "variable.parameter" = "{{variable:hex}}"
 # }}}
+
+# Extensions {{{
+[extensions]
+enabled = true
+
+[extension.added-only]
+colorAdded = "{{git-added:hex}}"
+colorModified = "{{git-modified:hex}}"
+colorRemoved = "{{git-removed:hex}}"
+# }}}

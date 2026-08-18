@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-extension-wiring.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Wired classifyLines + buildLayout into hunkdiff registerFileView extension with OpenTUI component rendering, fallback spans, hunkRows mapping, config colors, and deploy symlink"
   }
 ]
