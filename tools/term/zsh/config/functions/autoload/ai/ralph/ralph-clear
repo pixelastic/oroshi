@@ -1,0 +1,13 @@
+# Clear ralph session lock
+# Usage:
+# $ ralph-clear [dir]   # dir defaults to plan-directory
+setopt local_options err_return
+
+local dir="${1:-$(plan-directory 2>/dev/null)}"
+if [[ "$dir" == "" ]]; then
+  print "ralph-clear: no plan directory found"
+  return 1
+fi
+dir="${dir:a}"
+
+rm -f "$dir/ralph.json"

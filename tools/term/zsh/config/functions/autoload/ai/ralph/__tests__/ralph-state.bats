@@ -34,14 +34,6 @@ setup() {
   [[ "$(jq -r .done "$DIR/ralph.json")" = "true" ]]
 }
 
-@test "clear removes state file" {
-  jq -n '{"mode":"loop","done":false,"prd_done":false}' > "$DIR/ralph.json"
-  [[ -f "$DIR/ralph.json" ]]
-  bats_run_zsh "ralph-state $DIR clear"
-  [[ "$status" -eq 0 ]]
-  [[ ! -f "$DIR/ralph.json" ]]
-}
-
 @test "fails without dir argument" {
   bats_run_zsh "ralph-state"
   [[ "$status" -ne 0 ]]

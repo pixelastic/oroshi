@@ -28,7 +28,7 @@ function ralph-single() {
   claude --permission-mode acceptEdits "/ralph $dir" || claudeExit=$?
 
   # Always clear the lock, even on failure
-  ralph-state "$dir" clear
+  ralph-clear "$dir"
 
   return $claudeExit
 }

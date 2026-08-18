@@ -40,7 +40,7 @@ function ralph-loop() {
     # PRD complete: exit loop early
     if [[ "$(ralph-state "$dir" get prd_done)" == "true" ]]; then
       print "ralph: PRD complete — all issues done"
-      ralph-state "$dir" clear
+      ralph-clear "$dir"
       return 0
     fi
 
@@ -69,7 +69,7 @@ function ralph-loop() {
     # Ctrl+C: stop loop cleanly, no commit
     if [[ $claudeExitCode -eq 130 ]]; then
       print "ralph: stopped (Ctrl+C)"
-      ralph-state "$dir" clear
+      ralph-clear "$dir"
       return 0
     fi
 
@@ -81,7 +81,7 @@ function ralph-loop() {
     fi
   done
 
-  ralph-state "$dir" clear
+  ralph-clear "$dir"
   print "ralph: done ($maxLoops iterations)"
   claude-terminal-fix
 }
