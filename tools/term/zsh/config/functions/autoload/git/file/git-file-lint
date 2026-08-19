@@ -1,4 +1,4 @@
-# Lint all dirty ZSH, BATS, JS and Python files in the working tree, grouped by type
+# Lint all dirty ZSH, BATS, JS, Python and Go files in the working tree, grouped by type
 # Usage:
 # $ git-file-lint
 setopt local_options err_return
@@ -11,6 +11,7 @@ local rawFiles="$(git-file-list-dirty-raw)"
 
 local -A results=(
   bats-files ""
+  go-files ""
   js-files ""
   python-files ""
   zsh-files ""
@@ -43,62 +44,63 @@ for rawLine in ${(f)rawFiles}; do
     results[python-files]+="${fullPath} "
     continue
   fi
+
+  if is-go "$fullPath"; then
+    results[go-files]+="${fullPath} "
+    continue
+  fi
 done
 
 local hasViolations="0"
 
-# Display ZSH/BATS lint errors — input is JSON from zsh-lint/bats-lint
-function displayZshAndBatsLintErrors() {
-  local label="$1"
-  local output="$2"
+# Display lint errors from JSON output (zsh-lint, bats-lint, go-lint)
+function displayLintJson() {
+  zparseopts -E -D -header:=flagHeader
+  local header=$flagHeader[2]
+  local output="$1"
 
   [[ "$output" == "[]" ]] && return 0
 
   hasViolations="1"
-  echo "── ${label} ──"
-  printf '%s\n' "$output" |
-  jq \
+  echo "── ${header} ──"
+  printf '%s\n' "$output" \
+    | jq \
     --raw-output \
     --arg root "$gitRoot" \
     '.[] | "\(.file | ltrimstr($root + "/")):\(.line):\(.column): \(.code): \(.message)"'
 }
 
-# Display JS lint errors — input is plain text from aberlaas
-function displayJsLintErrors() {
+# Display lint errors from plain text output (aberlaas, python-lint)
+function displayLintText() {
+  zparseopts -E -D -header:=flagHeader
+  local header=$flagHeader[2]
   local output="$1"
 
   [[ "$output" == "" ]] && return 0
 
   hasViolations="1"
-  echo "── JS ──"
-  printf '%s\n' "$output"
-}
-
-# Display Python lint errors — input is plain text from python-lint
-function displayPythonLintErrors() {
-  local output="$1"
-
-  [[ "$output" == "" ]] && return 0
-
-  hasViolations="1"
-  echo "── Python ──"
+  echo "── ${header} ──"
   printf '%s\n' "$output"
 }
 
 if [[ "$results[zsh-files]" != "" ]]; then
-  displayZshAndBatsLintErrors "ZSH" "$(zsh-lint --fix ${=results[zsh-files]})"
+  displayLintJson --header "ZSH" "$(zsh-lint --fix ${=results[zsh-files]})"
 fi
 
 if [[ "$results[bats-files]" != "" ]]; then
-  displayZshAndBatsLintErrors "BATS" "$(bats-lint ${=results[bats-files]})"
+  displayLintJson --header "BATS" "$(bats-lint ${=results[bats-files]})"
 fi
 
 if [[ "$results[js-files]" != "" ]]; then
-  displayJsLintErrors "$(yarn run lint:fix --js ${=results[js-files]})"
+  displayLintText --header "JS" "$(yarn run lint:fix --js ${=results[js-files]})"
 fi
 
 if [[ "$results[python-files]" != "" ]]; then
-  displayPythonLintErrors "$(python-lint --fix ${=results[python-files]})"
+  displayLintText --header "Python" "$(python-lint --fix ${=results[python-files]})"
+fi
+
+if [[ "$results[go-files]" != "" ]]; then
+  displayLintJson --header "Go" "$(go-lint --fix ${=results[go-files]})"
 fi
 
 # Exit non-zero if any group had violations

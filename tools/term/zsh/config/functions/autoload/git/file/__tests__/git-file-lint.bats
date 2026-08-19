@@ -261,6 +261,75 @@ setup() {
   grep -q -- '--fix' "$BATS_TMP_DIR/.python-lint-args"
 }
 
+# ─── GO ──────────────────────────────────────────────────────────────────────
+
+@test "exits 0 when is-go true and go-lint has no errors" {
+  echo 'package main' > "$BATS_GIT_DIR/main.go"
+  bats_git add main.go
+  bats_git commit --quiet -m "add main.go"
+  echo 'changed' >> "$BATS_GIT_DIR/main.go"
+
+  is-go() { return 0; }
+  go-lint() { printf '[]'; }
+  bats_mock is-go go-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+}
+
+@test "shows Go header, errors and relative paths when is-go true and go-lint has errors" {
+  echo 'package main' > "$BATS_GIT_DIR/main.go"
+  bats_git add main.go
+  bats_git commit --quiet -m "add main.go"
+  echo 'changed' >> "$BATS_GIT_DIR/main.go"
+
+  is-go() { return 0; }
+  go-lint() {
+    printf '[{"file":"%s","line":3,"column":1,"code":"unused","message":"var x is unused"}]' \
+      "$2"
+  }
+  bats_mock is-go go-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" =~ "── Go ──" ]]
+  [[ "$output" =~ main.go:3:1:\ unused: ]]
+  [[ ! "$output" =~ $BATS_GIT_DIR ]]
+}
+
+@test "exits 0 when is-go is false for all dirty files" {
+  echo 'package main' > "$BATS_GIT_DIR/main.go"
+  bats_git add main.go
+  bats_git commit --quiet -m "add main.go"
+  echo 'changed' >> "$BATS_GIT_DIR/main.go"
+
+  is-go() { return 1; }
+  bats_mock is-go
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+}
+
+@test "calls go-lint with --fix flag when dirty go files are found" {
+  echo 'package main' > "$BATS_GIT_DIR/main.go"
+  bats_git add main.go
+  bats_git commit --quiet -m "add main.go"
+  echo 'changed' >> "$BATS_GIT_DIR/main.go"
+
+  is-go() { return 0; }
+  go-lint() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/.go-lint-args"
+    printf '[]'
+  }
+  bats_mock is-go go-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  grep -q -- '--fix' "$BATS_TMP_DIR/.go-lint-args"
+}
+
 # ─── ALL ──────────────────────────────────────────────────────────────────────
 
 @test "shows both headers when both zsh and bats have errors" {

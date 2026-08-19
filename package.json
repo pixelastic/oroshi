@@ -26,6 +26,7 @@
     "lint": "./scripts/yarn/lint",
     "lint:bats": "./scripts/yarn/lint-bats",
     "lint:fix": "./scripts/yarn/lint-fix",
+    "lint:go": "./scripts/yarn/lint-go",
     "lint:python": "./scripts/yarn/lint-python",
     "lint:zsh": "./scripts/yarn/lint-zsh",
     "prose-build": "bin-zsh prose-build",

@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Lint all Go files among the given paths using go-lint
+# Called by lint-staged with staged file paths as arguments
+# Usage:
+# $ lint-go /abs/path/to/file1.go /abs/path/to/file2.go
+set -e
+
+# No staged files to lint
+[[ $# -eq 0 ]] && exit 0
+
+go-lint --fix "$@"
