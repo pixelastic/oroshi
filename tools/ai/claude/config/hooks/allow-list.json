@@ -163,6 +163,8 @@
   "go version",
   "go-lint",
   "go-test",
+  "go vet",
+  "golangci-lint",
   "grep",
   "gresource",
   "gsettings get",

@@ -1,0 +1,10 @@
+version: "2"
+linters:
+  enable:
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+  exclusions:
+    paths:
+      - node_modules
