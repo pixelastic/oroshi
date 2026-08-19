@@ -21,6 +21,9 @@ function _needsRebuild() {
   return 1
 }
 
-_needsRebuild && "${sourceDirectory}/build"
+if _needsRebuild; then
+  echoerr "Rebuilding ${commandName}..."
+  "${sourceDirectory}/build"
+fi
 
-exec "$binaryPath" "$@"
+"$binaryPath" "$@"
