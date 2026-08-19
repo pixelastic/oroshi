@@ -1,0 +1,26 @@
+# Build-if-needed and run a structured Go binary from scripts/src/
+# Usage:
+# $ go-run-oroshi git-branch-push-pretty           # Build if needed, then run
+# $ go-run-oroshi git-branch-push-pretty --help     # Forward args to binary
+setopt local_options err_return
+
+local commandName="$1"
+shift
+
+local sourceDirectory="${OROSHI_ROOT}/scripts/src/${commandName}"
+local binaryPath="${sourceDirectory}/dist/${commandName}"
+
+function _needsRebuild() {
+  # No binary yet
+  [[ ! -f "$binaryPath" ]] && return 0
+
+  # Any .go source newer than the binary
+  local newerFiles="$(find "$sourceDirectory" -name "*.go" -newer "$binaryPath")"
+  [[ "$newerFiles" != "" ]] && return 0
+
+  return 1
+}
+
+_needsRebuild && "${sourceDirectory}/build"
+
+exec "$binaryPath" "$@"

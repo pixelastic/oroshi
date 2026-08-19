@@ -1,0 +1,6 @@
+# Auto-build and run the git-branch-push-pretty Go binary
+# Usage:
+# $ git-branch-push-pretty
+setopt local_options err_return
+
+go-run-oroshi git-branch-push-pretty "$@"
