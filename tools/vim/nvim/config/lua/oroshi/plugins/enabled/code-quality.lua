@@ -1,5 +1,6 @@
 local batsHelper = O_require("oroshi/filetypes/bats")
 local cssHelper = O_require("oroshi/filetypes/css")
+local goHelper = O_require("oroshi/filetypes/go")
 local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
 local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
 local helper = O_require("oroshi/plugins/helpers/code-quality")
@@ -17,6 +18,7 @@ local config = {
   dependencies = {
     -- Mason packages (LSP servers, formatters, linters)
     mason = {
+      "gopls",
       "lua-language-server",
       "prettier",
       "shfmt",
@@ -77,6 +79,13 @@ local config = {
       configureLinter = cssHelper.configureLinter,
       configureFormatter = cssHelper.configureFormatter,
       formatterTimeout = 10000,
+    },
+    go = {
+      lsp = { "gopls" },
+      linters = { "oroshi_go_lint" },
+      formatters = { "oroshi_go_fix" },
+      configureLinter = goHelper.configureLinter,
+      configureFormatter = goHelper.configureFormatter,
     },
     gotmpl = {
       linters = { "oroshi_gotmpl_lint" },
