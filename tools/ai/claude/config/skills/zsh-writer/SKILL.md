@@ -133,7 +133,7 @@ table $output
 
 Run `zsh-lint --fix <file>` on any modified `.zsh` files.
 Run `bats-lint <test_file>` on any modified `.bats` test files.
-Fix **every** violation, (including pre-existing ones not introduced by the current change).
+Fix **every** violation, including pre-existing ones.
 
 ---
 

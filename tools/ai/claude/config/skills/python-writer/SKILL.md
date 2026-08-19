@@ -84,7 +84,7 @@ Run `python-test <filepath>` to confirm tests still pass.
 **Exit criterion:** Lint passes.
 
 - Run `python-lint --fix <file>` on any modified `.py` files
-- Fix **every** remaining violation
+- Fix **every** violation, including pre-existing ones.
 
 ---
 

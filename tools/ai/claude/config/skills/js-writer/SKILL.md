@@ -146,6 +146,7 @@ __ = {
 Write code that passes automated lint.
 
 - Use `yarn run lint:fix` to automatically fix common issues and see remaining ones
+- Fix **every** violation, including pre-existing ones.
 
 ---
 

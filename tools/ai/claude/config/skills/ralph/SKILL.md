@@ -70,8 +70,8 @@ If you have any `## Scaffolding Tests` from the issue:
 2. Edit files inside the current git root (`git-directory-root`)
 3. Write the simplest code that makes the tests pass. No more.
 4. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
-5. Lint all modified files with `git-file-lint` and fix any issues.
-6. Run tests for all modified files using `git-file-test`. All tests must pass.
+5. Lint all modified files with `git-file-lint`. Fix **every** violation, including pre-existing ones.
+6. Run tests for all modified files using `git-file-test`. Fix **every** failing test, including pre-existing ones.
 
 ---
 
@@ -100,8 +100,8 @@ If you have any `## Scaffolding Tests` from the issue:
 **Exit criterion:** All fixable items addressed, linter clean, tests green.
 
 1. Consume the **fixable** bucket, fix every item.
-2. Lint all modified files with `git-file-lint` and fix any issues.
-3. Run tests for all modified files using `git-file-test`. All tests must pass.
+2. Lint all modified files with `git-file-lint`. Fix **every** violation, including pre-existing ones.
+3. Run tests for all modified files using `git-file-test`. Fix **every** failing test, including pre-existing ones.
 
 ---
 
