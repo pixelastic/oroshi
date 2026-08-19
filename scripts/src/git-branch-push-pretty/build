@@ -6,8 +6,8 @@ set -e
 setopt local_options err_return
 
 local binaryName="git-branch-push-pretty"
-local binDirectory="${OROSHI_ROOT}/scripts/bin/${binaryName}"
+local srcDirectory="${OROSHI_ROOT}/scripts/src/${binaryName}"
 
 go build \
-  -o "${binDirectory}/build/${binaryName}" \
-  "${binDirectory}/__lib"
+  -o "${srcDirectory}/dist/${binaryName}" \
+  "${srcDirectory}"

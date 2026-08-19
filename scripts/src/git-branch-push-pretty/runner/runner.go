@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/pixelastic/oroshi/scripts/bin/git-branch-push-pretty/__lib/parser"
-	"github.com/pixelastic/oroshi/scripts/bin/git-branch-push-pretty/__lib/tui"
+	"github.com/pixelastic/oroshi/scripts/src/git-branch-push-pretty/parser"
+	"github.com/pixelastic/oroshi/scripts/src/git-branch-push-pretty/tui"
 )
 
 // ParseArgs extracts branch/remote from user args, resolving defaults via runner.

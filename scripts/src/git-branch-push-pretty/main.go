@@ -7,9 +7,9 @@ import (
 	"os/exec"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/pixelastic/oroshi/scripts/bin/git-branch-push-pretty/__lib/runner"
-	"github.com/pixelastic/oroshi/scripts/bin/git-branch-push-pretty/__lib/theme"
-	"github.com/pixelastic/oroshi/scripts/bin/git-branch-push-pretty/__lib/tui"
+	"github.com/pixelastic/oroshi/scripts/src/git-branch-push-pretty/runner"
+	"github.com/pixelastic/oroshi/scripts/src/git-branch-push-pretty/theme"
+	"github.com/pixelastic/oroshi/scripts/src/git-branch-push-pretty/tui"
 )
 
 func main() {
