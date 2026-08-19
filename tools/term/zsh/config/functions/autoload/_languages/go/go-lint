@@ -71,8 +71,8 @@ if [[ $isFix == "1" ]]; then
   _runLint --fix || true
 fi
 
-# Get golangci-lint JSON output
-local jsonOutput="$(_runLint --out-format json)"
+# Get golangci-lint JSON output (\grep bypasses rg alias, extracts the JSON line)
+local jsonOutput="$(_runLint --output.json.path stdout --output.text.path /dev/null | \grep '^{')"
 local prefixesJson="$(json-array "${allowedPrefixes[@]}")"
 
 # Filter to keep only violations from the initially requested files/directories,

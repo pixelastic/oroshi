@@ -70,7 +70,7 @@ SCRIPT
   local calls="$(cat "$BATS_TMP_DIR/lint_calls")"
   # First call has --fix, second has --out-format json
   [[ "$calls" == *"--fix"* ]]
-  [[ "$calls" == *"--out-format"* ]]
+  [[ "$calls" == *"--output.json.path"* ]]
   [[ "$(wc -l < "$BATS_TMP_DIR/lint_calls")" -eq 2 ]]
 }
 
