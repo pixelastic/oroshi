@@ -245,3 +245,82 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/rtk-calls.txt")" == bin-zsh\ python-test* ]]
 }
+
+# ─── GO ──────────────────────────────────────────────────────────────────────
+
+@test "exits 0 when dirty .go file has tests and go-test passes" {
+  echo 'package main' > "$BATS_GIT_DIR/main.go"
+  bats_git add main.go
+  bats_git commit --quiet -m "add main.go"
+  echo 'changed' >> "$BATS_GIT_DIR/main.go"
+
+  bats-test-path() { printf ''; }
+  go-test-path() { echo "$BATS_GIT_DIR/main_test.go"; }
+  go-test() { return 0; }
+  bats_mock bats-test-path go-test-path go-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+}
+
+@test "exits 0 when dirty .go file has no matching test" {
+  echo 'package main' > "$BATS_GIT_DIR/main.go"
+  bats_git add main.go
+  bats_git commit --quiet -m "add main.go"
+  echo 'changed' >> "$BATS_GIT_DIR/main.go"
+
+  bats-test-path() { printf ''; }
+  go-test-path() { return 1; }
+  bats_mock bats-test-path go-test-path
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+}
+
+@test "exits non-zero when go-test fails" {
+  echo 'package main' > "$BATS_GIT_DIR/main.go"
+  bats_git add main.go
+  bats_git commit --quiet -m "add main.go"
+  echo 'changed' >> "$BATS_GIT_DIR/main.go"
+
+  bats-test-path() { printf ''; }
+  go-test-path() { echo "$BATS_GIT_DIR/main_test.go"; }
+  go-test() { return 1; }
+  bats_mock bats-test-path go-test-path go-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 1 ]]
+}
+
+@test "exits 0 when is-go false for all dirty files" {
+  echo 'package main' > "$BATS_GIT_DIR/main.go"
+  bats_git add main.go
+  bats_git commit --quiet -m "add main.go"
+  echo 'changed' >> "$BATS_GIT_DIR/main.go"
+
+  is-go() { return 1; }
+  bats-test-path() { printf ''; }
+  bats_mock is-go bats-test-path
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+}
+
+@test "prefixes go-test with rtk bin-zsh when is-claude" {
+  echo 'package main' > "$BATS_GIT_DIR/main.go"
+  bats_git add main.go
+  bats_git commit --quiet -m "add main.go"
+  echo 'changed' >> "$BATS_GIT_DIR/main.go"
+
+  is-claude() { return 0; }
+  bats-test-path() { printf ''; }
+  go-test-path() { echo "$BATS_GIT_DIR/main_test.go"; }
+  rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
+  bats_mock is-claude bats-test-path go-test-path rtk
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/rtk-calls.txt")" == bin-zsh\ go-test* ]]
+}

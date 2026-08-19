@@ -32,6 +32,7 @@
     "prose-build": "bin-zsh prose-build",
     "test": "./scripts/yarn/test",
     "test:bats": "./scripts/yarn/test-bats",
+    "test:go": "./scripts/yarn/test-go",
     "test:python": "./scripts/yarn/test-python"
   }
 }

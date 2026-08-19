@@ -3,6 +3,7 @@
 - **Testing zsh:** Run `bats <filepath>`
 - **Testing js:** Run `yarn run test <filepath>`
 - **Testing python:** Run `python-test <filepath>`
+- **Testing go:** Run `go-test <filepath>`
 - Tests files live in `__tests__` directories
 
 - **Linting zsh:** Run `zsh-lint <filepath>`

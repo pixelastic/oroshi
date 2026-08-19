@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+# Run go test for any staged Go file that has tests
+# Called by lint-staged with staged file paths as arguments
+# Usage:
+# $ test-go /abs/path/to/file1.go /abs/path/to/file2.go
+set -e
+
+# No staged files to check
+[[ $# -eq 0 ]] && exit 0
+
+local goPaths=()
+for filePath in "$@"; do
+  local testPath="$(go-test-path "$filePath")"
+  [[ "$testPath" != "" ]] && goPaths+=("$filePath")
+done
+
+# No tests found for any of the staged files
+[[ "${#goPaths[@]}" -eq 0 ]] && exit 0
+
+local uniquePaths=("${(@u)goPaths}")
+go-test "${uniquePaths[@]}"

@@ -1,4 +1,4 @@
-# Run BATS and Vitest tests for all dirty files that have an associated test
+# Run BATS, Vitest, Go, and pytest tests for all dirty files that have an associated test
 # Usage:
 # $ git-file-test
 setopt local_options err_return
@@ -13,6 +13,7 @@ local rawFiles="$(git-file-list-dirty-raw)"
 local batsPaths=()
 local jsPaths=()
 local pythonPaths=()
+local goPaths=()
 for rawLine in ${(f)rawFiles}; do
   local splitLine=(${(@ps/▮/)rawLine})
   local filepath=$splitLine[1]
@@ -29,6 +30,11 @@ for rawLine in ${(f)rawFiles}; do
     [[ "$pythonTestPath" != "" ]] && pythonPaths+=("$pythonTestPath")
   fi
 
+  if is-go "$fullPath"; then
+    local goTestPath="$(go-test-path "$fullPath")"
+    [[ "$goTestPath" != "" ]] && goPaths+=("$fullPath")
+  fi
+
   local batsPath="$(bats-test-path "$fullPath")"
   [[ "$batsPath" != "" ]] && batsPaths+=("$batsPath")
 done
@@ -41,6 +47,11 @@ fi
 # Run pytest for dirty Python source files (exits 0 silently if no related tests exist)
 if [[ ${#pythonPaths[@]} -gt 0 ]]; then
   "${prefix[@]}" python-test "${pythonPaths[@]}"
+fi
+
+# Run go test for dirty Go source files that have associated tests
+if [[ ${#goPaths[@]} -gt 0 ]]; then
+  "${prefix[@]}" go-test "${goPaths[@]}"
 fi
 
 # No bats tests found for any dirty file
