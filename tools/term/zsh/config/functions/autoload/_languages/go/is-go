@@ -1,0 +1,15 @@
+# Boolean: is the given file a Go file?
+# Usage:
+# $ is-go /path/to/main.go       # exit 0 (.go extension)
+# $ is-go /path/to/script.py     # exit 1
+setopt local_options err_return
+
+local filepath="$1"
+
+# Directories and missing files are not Go files
+[[ ! -f "$filepath" ]] && return 1
+
+# .go extension → Go file
+[[ "$filepath" == *.go ]] && return 0
+
+return 1
