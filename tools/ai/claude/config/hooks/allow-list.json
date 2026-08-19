@@ -159,6 +159,7 @@
   "go mod tidy",
   "go mod",
   "go test",
+  "go tool",
   "go version",
   "grep",
   "gresource",
