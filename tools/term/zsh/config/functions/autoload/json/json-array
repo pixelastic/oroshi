@@ -1,0 +1,14 @@
+# Convert arguments into a JSON array of strings
+# Usage:
+# $ json-array "foo" "bar"          # ["foo","bar"]
+# $ json-array "${myArray[@]}"      # ZSH array to JSON array
+# $ json-array                      # []
+setopt local_options err_return
+
+# No arguments
+if [[ $# -eq 0 ]]; then
+  echo "[]"
+  return 0
+fi
+
+printf '%s\n' "$@" | jq -R . | jq -s .

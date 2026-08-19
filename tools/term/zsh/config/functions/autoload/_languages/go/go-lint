@@ -1,0 +1,97 @@
+# Lint one or more Go files or directories via golangci-lint
+# Returns a JSON array of violations in unified format, like zsh-lint and bats-lint
+# Usage:
+# $ go-lint ./path/to/file.go          # Filtered to that file
+# $ go-lint --fix ./path/to/file.go    # Auto-fix then report remaining
+# $ go-lint ./path/to/dir/             # Lint entire directory, unfiltered
+# $ go-lint file1.go file2.go          # Multiple files
+setopt local_options err_return
+
+zparseopts -E -D \
+  -fix=flagFix
+local isFix=${#flagFix}
+
+# No inputs provided
+local inputs=("$@")
+if [[ ${#inputs} -eq 0 ]]; then
+  echoerr "Error: No files provided"
+  return 1
+fi
+
+# Resolve inputs to absolute paths and validate
+for i in {1..${#inputs}}; do
+  inputs[$i]="${inputs[$i]:a}"
+  if [[ ! -e "${inputs[$i]}" ]]; then
+    echoerr "Error: '${inputs[$i]}' not found"
+    return 1
+  fi
+done
+
+# Go linter works per-directory, not per-file
+# Deduplicated directories to pass to golangci-lint
+local -aU packageDirs=()
+for input in "${inputs[@]}"; do
+  if [[ -d "$input" ]]; then
+    packageDirs+=("$input")
+    continue
+  fi
+  packageDirs+=("${input:h}")
+done
+
+# Resolve the linter binary and the target module
+local lintBin="$(go-tool-path golangci-lint)"
+local moduleRoot="$(go-module-root "${packageDirs[1]}")"
+
+# Run golangci-lint from the module root with extra args
+function _runLint() {
+  pushd "$moduleRoot" >/dev/null
+  "$lintBin" run "$@" "${packageDirs[@]}" 2>/dev/null
+  popd >/dev/null
+}
+
+# Build output filter prefixes from inputs relative to module root
+# golangci-lint outputs paths relative to module root, so we match the same way
+# - File inputs become "main.go:" (colon = exact file match)
+# - Dir inputs become "pkg/" (slash = everything under that dir)
+# - Module root dir becomes "" (empty = matches everything)
+local allowedPrefixes=()
+for input in "${inputs[@]}"; do
+  local relativePath="${input#"$moduleRoot"}"
+  relativePath="${relativePath#/}"
+  if [[ -d "$input" ]]; then
+    [[ "$relativePath" != "" ]] && relativePath="${relativePath}/"
+  else
+    relativePath="${relativePath}:"
+  fi
+  allowedPrefixes+=("$relativePath")
+done
+
+# --fix: auto-fix first, then fall through to report
+if [[ $isFix == "1" ]]; then
+  _runLint --fix || true
+fi
+
+# Get golangci-lint JSON output
+local jsonOutput="$(_runLint --out-format json)"
+local prefixesJson="$(json-array "${allowedPrefixes[@]}")"
+
+# Filter to keep only violations from the initially requested files/directories,
+# then reshape from golangci-lint format to our unified lint format
+# (same as zsh-lint and bats-lint)
+local result="$(printf '%s' "$jsonOutput" | jq --argjson prefixes "$prefixesJson" \
+'[.Issues // [] | .[]
+    | select(.Pos.Filename + ":" | . as $f | $prefixes | any(. as $p | $f | startswith($p)))
+    | {
+      file: .Pos.Filename,
+      code: .FromLinter,
+      level: (if .Severity == "" then "error" else .Severity end),
+      line: .Pos.Line,
+      endLine: (if .End.Line > 0 then .End.Line else .Pos.Line end),
+      column: .Pos.Column,
+      endColumn: (if .End.Column > 0 then .End.Column else .Pos.Column end),
+      message: .Text
+    }]')"
+
+printf '%s\n' "$result"
+[[ "$result" != "[]" ]] && return 1
+return 0

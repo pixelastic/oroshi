@@ -276,6 +276,10 @@ compdef "_files -g '*.pdf'" \
   pdf-page-count \
   pdf-split
 # }}}
+# Go {{{
+compdef "_files -g '*.go'" \
+  go-lint
+# }}}
 # JS {{{
 compdef "_files -g '*.js'" \
   js-fix \

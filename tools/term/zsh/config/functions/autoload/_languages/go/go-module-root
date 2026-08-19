@@ -1,0 +1,17 @@
+# Return the path to the nearest Go module root (directory containing go.mod)
+# Usage:
+# $ go-module-root /path/to/file.go     # /path/to
+# $ go-module-root /path/to/pkg/        # /path/to (if go.mod is one level up)
+setopt local_options err_return
+
+local inputPath="${1:a}"
+
+# Resolve starting directory
+local searchDir="$inputPath"
+[[ ! -d "$searchDir" ]] && searchDir="${searchDir:h}"
+
+# No go.mod found
+local goModPath="$(find-up go.mod --root "$searchDir")"
+[[ "$goModPath" == "" ]] && return 1
+
+echo "${goModPath:h}"

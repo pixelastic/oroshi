@@ -1,0 +1,15 @@
+# Return the path to a Go tool binary installed in oroshi
+# Usage:
+# $ go-tool-path golangci-lint   # /home/tim/.cache/go-build/.../golangci-lint
+# $ go-tool-path goimports       # /home/tim/.cache/go-build/.../goimports
+setopt local_options err_return
+
+local toolName="$1"
+
+# No tool name provided
+if [[ "$toolName" == "" ]]; then
+  echoerr "Error: No tool name provided"
+  return 1
+fi
+
+go tool -C "$OROSHI_ROOT" -n "$toolName"
