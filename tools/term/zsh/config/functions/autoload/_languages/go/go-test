@@ -1,0 +1,28 @@
+# Run Go tests for the packages containing the given files
+# Usage:
+# $ go-test ./path/to/file.go                    # Test that file's package
+# $ go-test file1.go file2.go                    # Test multiple packages (deduplicated)
+setopt local_options err_return
+
+local files=("$@")
+
+# No files provided
+[[ ${#files} -eq 0 ]] && return 1
+
+# Resolve each file to its package directory, deduplicated
+local -aU packageDirs=()
+for file in "${files[@]}"; do
+  packageDirs+=("${file:a:h}")
+done
+
+# Find the module root from the first file
+local moduleRoot="$(go-module-root "${files[1]}")"
+
+# Run go test for each unique package
+local exitCode=0
+for dir in "${packageDirs[@]}"; do
+  local relPath="${dir#"$moduleRoot"/}"
+  go test "./${relPath}/..." || exitCode=$?
+done
+
+return $exitCode

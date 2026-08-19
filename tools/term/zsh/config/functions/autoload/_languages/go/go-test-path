@@ -1,0 +1,23 @@
+# Resolve a Go file to its corresponding test file
+# Usage:
+# $ go-test-path foo.go          # Returns foo_test.go if it exists
+# $ go-test-path foo_test.go     # Returns foo_test.go directly
+setopt local_options err_return
+
+local inputPath="${1:a}"
+
+# Already a test file
+if [[ "$inputPath" == *_test.go ]]; then
+  echo "$inputPath"
+  return 0
+fi
+
+# Derive the test file path
+local testPath="${inputPath%.go}_test.go"
+if [[ -f "$testPath" ]]; then
+  echo "$testPath"
+  return 0
+fi
+
+# No test file found
+return 1
