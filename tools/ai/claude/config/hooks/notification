@@ -2,12 +2,5 @@
 # Triggered when Claude needs my input to run a tool
 set -e
 
-# Mark the tab as requiring notification if out of focus
-local tabId="$(kitty-window-tab-id)"
-if ! kitty-tab-focused "$tabId"; then
-  kitty-tab-notification-add "$tabId"
-fi
-
-# Play a sound
-audio-play-oroshi claude-notification.mp3
+kitty-notify --sound claude-notification.mp3
 exit 2

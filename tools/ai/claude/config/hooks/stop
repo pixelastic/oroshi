@@ -10,22 +10,18 @@ local transcriptPath="$(printf '%s\n' "$stdinData" | jq -r '.transcript_path // 
 # Skip entirely for subagent completions
 [[ "$transcriptPath" == */subagents/* ]] && exit 0
 
-# Mark the tab as requiring notification if out of focus
-local tabId="$(kitty-window-tab-id)"
-if ! kitty-tab-focused "$tabId"; then
-  kitty-tab-notification-add "$tabId"
-fi
-
-# Sound-only early exit — does not affect notification
-[[ "${OROSHI_CLAUDE_STOP_SOUND}" == "no" ]] && exit 0
-# Same if set, but empty
-[[ "${OROSHI_CLAUDE_STOP_SOUND}" == "" ]] && exit 0
-
-# Custom sound: play it directly
-if [[ "${OROSHI_CLAUDE_STOP_SOUND}" != "auto" ]]; then
-  audio-play-oroshi "${OROSHI_CLAUDE_STOP_SOUND}"
+# Notify without sound when disabled or empty
+if [[ "${OROSHI_CLAUDE_STOP_SOUND}" == "no" || "${OROSHI_CLAUDE_STOP_SOUND}" == "" ]]; then
+  kitty-notify --sound no
   exit 0
 fi
+
+# Custom sound: pass it to kitty-notify
+if [[ "${OROSHI_CLAUDE_STOP_SOUND}" != "auto" ]]; then
+  kitty-notify --sound "${OROSHI_CLAUDE_STOP_SOUND}"
+  exit 0
+fi
+
 # auto: play fast or slow sound based on duration
 local fastSound="claude-stop-fast.mp3"
 local slowSound="claude-stop.mp3"
@@ -39,8 +35,8 @@ local userEpoch="$(date -d "$lastUserTime" +%s 2>/dev/null)"
 local durationSeconds=$((nowEpoch - userEpoch))
 
 if ((durationSeconds < threshold)); then
-  audio-play-oroshi "${fastSound}"
+  kitty-notify --sound "${fastSound}"
   exit 0
 fi
 
-audio-play-oroshi "${slowSound}"
+kitty-notify --sound "${slowSound}"

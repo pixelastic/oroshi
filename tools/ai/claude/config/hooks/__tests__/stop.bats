@@ -3,8 +3,8 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   STOP_HOOK="$BATS_TEST_DIRNAME/../stop"
-  audio-play-oroshi() { echo "$1" > "$BATS_TMP_DIR/sound-played"; }
-  bats_mock audio-play-oroshi
+  kitty-notify() { printf '%s' "$*" > "$BATS_TMP_DIR/kitty-notify-args"; }
+  bats_mock kitty-notify
 }
 
 # Run the stop hook with a given env var value and stdin JSON
@@ -21,117 +21,73 @@ make_transcript() {
   echo '{"type":"user","timestamp":"'"$ts"'"}' > "$path"
 }
 
-# Mock helpers for notification tests
-mock_kitty_notification() {
-  kitty-window-tab-id() { echo "5"; }
-  bats_mock kitty-window-tab-id
-  kitty-tab-focused() { return 1; }
-  bats_mock kitty-tab-focused
-  kitty-tab-notification-add() { touch "$BATS_TMP_DIR/notification-added"; }
-  bats_mock kitty-tab-notification-add
-}
-
-@test "notification: added when tab not focused, even with sound disabled" {
-  export KITTY_WINDOW_ID="42"
-  export OROSHI_CLAUDE_STOP_SOUND="no"
-  mock_kitty_notification
-
-  run_stop '{"transcript_path":"/some/path.jsonl"}'
-
-  [[ "$status" -eq 0 ]]
-  [[ -f "$BATS_TMP_DIR/notification-added" ]]
-}
-
-@test "notification: not added for subagents" {
-  export KITTY_WINDOW_ID="42"
-  export OROSHI_CLAUDE_STOP_SOUND="no"
-  mock_kitty_notification
-
-  run_stop '{"transcript_path":"/home/user/.claude/sessions/abc/subagents/xyz.jsonl"}'
-
-  [[ "$status" -eq 0 ]]
-  [[ ! -f "$BATS_TMP_DIR/notification-added" ]]
-}
-
-@test "notification: not added when tab is focused" {
-  export KITTY_WINDOW_ID="42"
-  export OROSHI_CLAUDE_STOP_SOUND="no"
-  kitty-window-tab-id() { echo "5"; }
-  kitty-tab-focused() { return 0; }
-  kitty-tab-notification-add() { touch "$BATS_TMP_DIR/notification-added"; }
-  bats_mock kitty-window-tab-id kitty-tab-focused kitty-tab-notification-add
-
-  run_stop '{"transcript_path":"/some/path.jsonl"}'
-
-  [[ "$status" -eq 0 ]]
-  [[ ! -f "$BATS_TMP_DIR/notification-added" ]]
-}
-
-@test "silent when OROSHI_CLAUDE_STOP_SOUND is no" {
-  export OROSHI_CLAUDE_STOP_SOUND="no"
-  run_stop '{"transcript_path":"/some/path.jsonl"}'
-
-  [[ "$status" -eq 0 ]]
-  [[ ! -f "$BATS_TMP_DIR/sound-played" ]]
-}
-
-@test "silent when OROSHI_CLAUDE_STOP_SOUND is empty" {
-  export OROSHI_CLAUDE_STOP_SOUND=""
-  run_stop '{"transcript_path":"/some/path.jsonl"}'
-
-  [[ "$status" -eq 0 ]]
-  [[ ! -f "$BATS_TMP_DIR/sound-played" ]]
-}
-
-@test "silent for subagents even when OROSHI_CLAUDE_STOP_SOUND=auto" {
-  export OROSHI_CLAUDE_STOP_SOUND="auto"
-  run_stop '{"transcript_path":"/home/user/.claude/sessions/abc/subagents/xyz.jsonl"}'
-
-  [[ "$status" -eq 0 ]]
-  [[ ! -f "$BATS_TMP_DIR/sound-played" ]]
-}
-
-@test "plays custom sound directly when OROSHI_CLAUDE_STOP_SOUND is a filename" {
-  local transcriptPath="$BATS_TMP_DIR/session.jsonl"
-  make_transcript "$transcriptPath"
-
-  export OROSHI_CLAUDE_STOP_SOUND="my-custom.mp3"
-  run_stop "{\"transcript_path\":\"$transcriptPath\"}"
-
-  [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/sound-played")" = "my-custom.mp3" ]]
-}
-
-@test "auto: plays slow sound when duration >= threshold" {
+@test "calls kitty-notify --sound claude-stop.mp3 for slow responses" {
   local transcriptPath="$BATS_TMP_DIR/session.jsonl"
   make_transcript "$transcriptPath" 60
-
   export OROSHI_CLAUDE_STOP_SOUND="auto"
+
   run_stop "{\"transcript_path\":\"$transcriptPath\"}"
 
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-stop.mp3" ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound claude-stop.mp3" ]]
 }
 
-@test "auto: plays fast sound when duration < threshold" {
+@test "calls kitty-notify --sound claude-stop-fast.mp3 for fast responses" {
   local transcriptPath="$BATS_TMP_DIR/session.jsonl"
   make_transcript "$transcriptPath" 1
-
   export OROSHI_CLAUDE_STOP_SOUND="auto"
+
   run_stop "{\"transcript_path\":\"$transcriptPath\"}"
 
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-stop-fast.mp3" ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound claude-stop-fast.mp3" ]]
 }
 
-@test "auto: plays fast sound when stdin has escaped newlines in last_assistant_message" {
+@test "calls kitty-notify --sound with custom sound when OROSHI_CLAUDE_STOP_SOUND is a custom value" {
+  local transcriptPath="$BATS_TMP_DIR/session.jsonl"
+  make_transcript "$transcriptPath"
+  export OROSHI_CLAUDE_STOP_SOUND="my-custom.mp3"
+
+  run_stop "{\"transcript_path\":\"$transcriptPath\"}"
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound my-custom.mp3" ]]
+}
+
+@test "calls kitty-notify --sound no when OROSHI_CLAUDE_STOP_SOUND is no" {
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+
+  run_stop '{"transcript_path":"/some/path.jsonl"}'
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound no" ]]
+}
+
+@test "calls kitty-notify --sound no when OROSHI_CLAUDE_STOP_SOUND is empty" {
+  export OROSHI_CLAUDE_STOP_SOUND=""
+
+  run_stop '{"transcript_path":"/some/path.jsonl"}'
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound no" ]]
+}
+
+@test "skips entirely for subagent completions" {
+  export OROSHI_CLAUDE_STOP_SOUND="auto"
+
+  run_stop '{"transcript_path":"/home/user/.claude/sessions/abc/subagents/xyz.jsonl"}'
+
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/kitty-notify-args" ]]
+}
+
+@test "auto: handles escaped newlines in last_assistant_message" {
   local transcriptPath="$BATS_TMP_DIR/session.jsonl"
   make_transcript "$transcriptPath" 1
-
   export OROSHI_CLAUDE_STOP_SOUND="auto"
-  # \n in last_assistant_message (e.g. code blocks) must not corrupt JSON parsing
+
   run_stop "{\"transcript_path\":\"$transcriptPath\",\"last_assistant_message\":\"line1\\nline2\"}"
 
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-stop-fast.mp3" ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound claude-stop-fast.mp3" ]]
 }
