@@ -6,6 +6,8 @@ import (
 
 	"github.com/pixelastic/oroshi/scripts/src/git-branch-push-pretty/parser"
 	"github.com/pixelastic/oroshi/scripts/src/git-branch-push-pretty/tui"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
@@ -15,27 +17,18 @@ import (
 func TestParseArgsPassesThroughPositionalArgs(t *testing.T) {
 	runner := mockRunner(map[string]string{})
 	_, _, pushArgs, err := ParseArgs([]string{"main", "origin"}, runner)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if len(pushArgs) < 2 || pushArgs[0] != "main" || pushArgs[1] != "origin" {
-		t.Errorf("pushArgs should start with main origin, got: %v", pushArgs)
-	}
+	require.NoError(t, err)
+	require.GreaterOrEqual(t, len(pushArgs), 2)
+	assert.Equal(t, "main", pushArgs[0])
+	assert.Equal(t, "origin", pushArgs[1])
 }
 
 func TestParseArgsAppendsProgressFlag(t *testing.T) {
 	runner := mockRunner(map[string]string{})
 	_, _, pushArgs, err := ParseArgs([]string{"main", "origin"}, runner)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if len(pushArgs) == 0 {
-		t.Fatal("pushArgs should not be empty")
-	}
-	last := pushArgs[len(pushArgs)-1]
-	if last != "--progress" {
-		t.Errorf("last arg should be --progress, got %q", last)
-	}
+	require.NoError(t, err)
+	require.NotEmpty(t, pushArgs)
+	assert.Equal(t, "--progress", pushArgs[len(pushArgs)-1])
 }
 
 func TestParseArgsResolvesBranchWhenMissing(t *testing.T) {
@@ -44,12 +37,8 @@ func TestParseArgsResolvesBranchWhenMissing(t *testing.T) {
 		"git-remote-current": "origin\n",
 	})
 	branch, _, _, err := ParseArgs([]string{}, runner)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if branch != "feature" {
-		t.Errorf("expected branch 'feature', got %q", branch)
-	}
+	require.NoError(t, err)
+	assert.Equal(t, "feature", branch)
 }
 
 func TestParseArgsResolvesRemoteWhenMissing(t *testing.T) {
@@ -58,12 +47,8 @@ func TestParseArgsResolvesRemoteWhenMissing(t *testing.T) {
 		"git-remote-current": "upstream\n",
 	})
 	_, remote, _, err := ParseArgs([]string{}, runner)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if remote != "upstream" {
-		t.Errorf("expected remote 'upstream', got %q", remote)
-	}
+	require.NoError(t, err)
+	assert.Equal(t, "upstream", remote)
 }
 
 func TestParseArgsUsesProvidedBranchWithoutResolving(t *testing.T) {
@@ -78,17 +63,9 @@ func TestParseArgsUsesProvidedBranchWithoutResolving(t *testing.T) {
 		return "", nil
 	}
 	branch, _, _, err := ParseArgs([]string{"develop"}, runner)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if branch != "develop" {
-		t.Errorf("expected branch 'develop', got %q", branch)
-	}
-	for _, call := range calls {
-		if call == "git-branch-current" {
-			t.Error("should not resolve branch when provided")
-		}
-	}
+	require.NoError(t, err)
+	assert.Equal(t, "develop", branch)
+	assert.NotContains(t, calls, "git-branch-current")
 }
 
 func TestParseArgsPassesThroughFlags(t *testing.T) {
@@ -97,18 +74,8 @@ func TestParseArgsPassesThroughFlags(t *testing.T) {
 		"git-remote-current": "origin\n",
 	})
 	_, _, pushArgs, err := ParseArgs([]string{"--force"}, runner)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	foundForce := false
-	for _, a := range pushArgs {
-		if a == "--force" {
-			foundForce = true
-		}
-	}
-	if !foundForce {
-		t.Error("pushArgs should contain --force")
-	}
+	require.NoError(t, err)
+	assert.Contains(t, pushArgs, "--force")
 }
 
 // --- Event to message conversion ---
@@ -117,72 +84,52 @@ func TestEventToMsgConvertsProgress(t *testing.T) {
 	event := parser.Event{Type: parser.Progress, Phase: "Writing", Percentage: 50}
 	msg := EventToMsg(event)
 	pm, ok := msg.(tui.ProgressMsg)
-	if !ok {
-		t.Fatalf("expected ProgressMsg, got %T", msg)
-	}
-	if pm.Phase != "Writing" || pm.Percentage != 50 {
-		t.Errorf("wrong ProgressMsg: %+v", pm)
-	}
+	require.True(t, ok, "expected ProgressMsg, got %T", msg)
+	assert.Equal(t, "Writing", pm.Phase)
+	assert.Equal(t, 50, pm.Percentage)
 }
 
 func TestEventToMsgConvertsError(t *testing.T) {
 	event := parser.Event{Type: parser.Error, Raw: "rejected"}
 	msg := EventToMsg(event)
 	em, ok := msg.(tui.ErrorMsg)
-	if !ok {
-		t.Fatalf("expected ErrorMsg, got %T", msg)
-	}
-	if em.Raw != "rejected" {
-		t.Errorf("expected 'rejected', got %q", em.Raw)
-	}
+	require.True(t, ok, "expected ErrorMsg, got %T", msg)
+	assert.Equal(t, "rejected", em.Raw)
 }
 
 func TestEventToMsgConvertsUpToDate(t *testing.T) {
 	event := parser.Event{Type: parser.UpToDate}
 	msg := EventToMsg(event)
-	if _, ok := msg.(tui.UpToDateMsg); !ok {
-		t.Fatalf("expected UpToDateMsg, got %T", msg)
-	}
+	assert.IsType(t, tui.UpToDateMsg{}, msg)
 }
 
 func TestEventToMsgReturnsNilForNoise(t *testing.T) {
 	event := parser.Event{Type: parser.Noise}
 	msg := EventToMsg(event)
-	if msg != nil {
-		t.Errorf("expected nil for Noise, got %T", msg)
-	}
+	assert.Nil(t, msg)
 }
 
 func TestEventToMsgConvertsRefUpdateWithRefs(t *testing.T) {
 	event := parser.Event{Type: parser.RefUpdate, FromRef: "abc1234", ToRef: "def5678"}
 	msg := EventToMsg(event)
 	rm, ok := msg.(tui.RefUpdateMsg)
-	if !ok {
-		t.Fatalf("expected RefUpdateMsg, got %T", msg)
-	}
-	if rm.FromRef != "abc1234" || rm.ToRef != "def5678" {
-		t.Errorf("wrong RefUpdateMsg: %+v", rm)
-	}
+	require.True(t, ok, "expected RefUpdateMsg, got %T", msg)
+	assert.Equal(t, "abc1234", rm.FromRef)
+	assert.Equal(t, "def5678", rm.ToRef)
 }
 
 func TestEventToMsgConvertsRemoteMessage(t *testing.T) {
 	event := parser.Event{Type: parser.RemoteMessage, Raw: "https://github.com/user/repo/pull/new/feature"}
 	msg := EventToMsg(event)
 	rm, ok := msg.(tui.RemoteMessageMsg)
-	if !ok {
-		t.Fatalf("expected RemoteMessageMsg, got %T", msg)
-	}
-	if rm.Text != "https://github.com/user/repo/pull/new/feature" {
-		t.Errorf("expected PR URL, got %q", rm.Text)
-	}
+	require.True(t, ok, "expected RemoteMessageMsg, got %T", msg)
+	assert.Equal(t, "https://github.com/user/repo/pull/new/feature", rm.Text)
 }
 
 func TestEventToMsgSkipsRefUpdateDestination(t *testing.T) {
 	event := parser.Event{Type: parser.RefUpdate, Remote: "git@github.com:user/repo.git"}
 	msg := EventToMsg(event)
-	if msg != nil {
-		t.Errorf("destination-only RefUpdate should be nil, got %T", msg)
-	}
+	assert.Nil(t, msg)
 }
 
 // --- Stderr streaming ---
@@ -194,19 +141,11 @@ func TestStreamStderrSendsProgressMessages(t *testing.T) {
 	send := func(msg tea.Msg) { messages = append(messages, msg) }
 	StreamStderr(reader, send)
 	// RawLineMsg + ProgressMsg
-	if len(messages) != 2 {
-		t.Fatalf("expected 2 messages, got %d", len(messages))
-	}
+	require.Len(t, messages, 2)
 	raw, ok := messages[0].(tui.RawLineMsg)
-	if !ok {
-		t.Errorf("first should be RawLineMsg, got %T", messages[0])
-	}
-	if raw.Overwrite {
-		t.Error("newline-terminated line should not have Overwrite set")
-	}
-	if _, ok := messages[1].(tui.ProgressMsg); !ok {
-		t.Errorf("second should be ProgressMsg, got %T", messages[1])
-	}
+	require.True(t, ok, "first should be RawLineMsg, got %T", messages[0])
+	assert.False(t, raw.Overwrite)
+	assert.IsType(t, tui.ProgressMsg{}, messages[1])
 }
 
 func TestStreamStderrSendsRawLineForNoise(t *testing.T) {
@@ -216,16 +155,10 @@ func TestStreamStderrSendsRawLineForNoise(t *testing.T) {
 	send := func(msg tea.Msg) { messages = append(messages, msg) }
 	StreamStderr(reader, send)
 	// RawLineMsg only (noise produces no typed message)
-	if len(messages) != 1 {
-		t.Fatalf("expected 1 message, got %d", len(messages))
-	}
+	require.Len(t, messages, 1)
 	raw, ok := messages[0].(tui.RawLineMsg)
-	if !ok {
-		t.Errorf("expected RawLineMsg, got %T", messages[0])
-	}
-	if raw.Line != "Delta compression using up to 18 threads" {
-		t.Errorf("unexpected raw line: %q", raw.Line)
-	}
+	require.True(t, ok, "expected RawLineMsg, got %T", messages[0])
+	assert.Equal(t, "Delta compression using up to 18 threads", raw.Line)
 }
 
 func TestStreamStderrSplitsOnCarriageReturn(t *testing.T) {
@@ -235,27 +168,17 @@ func TestStreamStderrSplitsOnCarriageReturn(t *testing.T) {
 	send := func(msg tea.Msg) { messages = append(messages, msg) }
 	StreamStderr(reader, send)
 	// 2x (RawLineMsg + ProgressMsg) = 4 messages
-	if len(messages) != 4 {
-		t.Fatalf("expected 4 messages, got %d", len(messages))
-	}
+	require.Len(t, messages, 4)
 	// CR-terminated line should have Overwrite=true
 	firstRaw := messages[0].(tui.RawLineMsg)
-	if !firstRaw.Overwrite {
-		t.Error("CR-terminated line should have Overwrite set")
-	}
+	assert.True(t, firstRaw.Overwrite)
 	first := messages[1].(tui.ProgressMsg)
-	if first.Percentage != 50 {
-		t.Errorf("first should be 50%%, got %d%%", first.Percentage)
-	}
+	assert.Equal(t, 50, first.Percentage)
 	// LF-terminated line should have Overwrite=false
 	lastRaw := messages[2].(tui.RawLineMsg)
-	if lastRaw.Overwrite {
-		t.Error("LF-terminated line should not have Overwrite set")
-	}
+	assert.False(t, lastRaw.Overwrite)
 	last := messages[3].(tui.ProgressMsg)
-	if last.Percentage != 100 {
-		t.Errorf("last should be 100%%, got %d%%", last.Percentage)
-	}
+	assert.Equal(t, 100, last.Percentage)
 }
 
 // --- helpers ---
