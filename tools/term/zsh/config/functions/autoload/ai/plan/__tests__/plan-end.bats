@@ -30,8 +30,9 @@ _mock_plan_repo() {
   local planDir="$(_mock_plan_repo)"
 
   git-commit-message() { echo "plan: update"; }
+  kitty-notify() { :; }
   claude-stop() { :; }
-  bats_mock git-commit-message claude-stop
+  bats_mock git-commit-message kitty-notify claude-stop
 
   bats_run_zsh "plan-end $planDir"
   [[ "$status" -eq 0 ]]
@@ -44,8 +45,9 @@ _mock_plan_repo() {
   local planDir="$(_mock_plan_repo)"
 
   git-commit-message() { echo "plan: update"; }
+  kitty-notify() { :; }
   claude-stop() { :; }
-  bats_mock git-commit-message claude-stop
+  bats_mock git-commit-message kitty-notify claude-stop
 
   bats_run_zsh "plan-end $planDir"
   [[ "$status" -eq 0 ]]
@@ -58,10 +60,28 @@ _mock_plan_repo() {
   local planDir="$(_mock_plan_repo)"
 
   git-commit-message() { echo "plan: update"; }
+  kitty-notify() { :; }
   claude-stop() { echo "stopped" > "$BATS_TMP_DIR/claude-stopped.txt"; }
-  bats_mock git-commit-message claude-stop
+  bats_mock git-commit-message kitty-notify claude-stop
 
   bats_run_zsh "plan-end $planDir"
   [[ "$status" -eq 0 ]]
   [[ -f "$BATS_TMP_DIR/claude-stopped.txt" ]]
+}
+
+@test "calls kitty-notify --sound notification.mp3 before claude-stop" {
+  local planDir="$(_mock_plan_repo)"
+
+  git-commit-message() { echo "plan: update"; }
+  kitty-notify() { echo "notify:$*" >> "$BATS_TMP_DIR/call-order.txt"; }
+  claude-stop() { echo "stop" >> "$BATS_TMP_DIR/call-order.txt"; }
+  bats_mock git-commit-message kitty-notify claude-stop
+
+  bats_run_zsh "plan-end $planDir"
+  [[ "$status" -eq 0 ]]
+
+  # kitty-notify called with correct args
+  [[ "$(sed -n '1p' "$BATS_TMP_DIR/call-order.txt")" == "notify:--sound notification.mp3" ]]
+  # kitty-notify called before claude-stop
+  [[ "$(sed -n '2p' "$BATS_TMP_DIR/call-order.txt")" == "stop" ]]
 }

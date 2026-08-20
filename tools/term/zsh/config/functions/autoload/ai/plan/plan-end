@@ -18,5 +18,8 @@ git-file-add --repo "$planDirectory"
 local commitMessage="$(git-commit-message)"
 git-commit-create --repo "$planDirectory" "$commitMessage"
 
+# Notify user that plan is done
+kitty-notify --sound notification.mp3
+
 # Stop claude
 claude-stop
