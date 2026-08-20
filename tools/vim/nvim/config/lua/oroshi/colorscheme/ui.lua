@@ -376,6 +376,7 @@ hl("DevIconSvg", "violet")
 hl("DevIconTrueTypeFont", "violet")
 hl("DevIconWebOpenFontFormat", "violet")
 hl("DevIconYml", "violet")
+hl("DevIconZsh", "violet-3")
 -- }}}
 
 -- GitSigns {{{
