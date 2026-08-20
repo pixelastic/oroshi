@@ -68,11 +68,11 @@ function oroshiSlowCommandPrecmd() {
   # Stop if not long enough
   [[ $commandDuration -lt $threshold ]] && return
 
-  # Play different sound based on success/failure
+  # Notify with different sound based on success/failure
   if [[ $exitStatus -eq 0 ]]; then
-    audio-play-oroshi slow-success.mp3
+    kitty-notify --sound slow-success.mp3
     return
   fi
-  audio-play-oroshi slow-failure.mp3
+  kitty-notify --sound slow-failure.mp3
 }
 add-zsh-hook precmd oroshiSlowCommandPrecmd
