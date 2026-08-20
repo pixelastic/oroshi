@@ -7,11 +7,12 @@
 # Usage:
 # $ process-detach ffplay -nodisp song.mp3
 # $ process-detach long-running-daemon --config file.conf
-setopt local_options err_return
+setopt local_options err_return no_monitor
 
 # Execute the command with complete detachment:
+# - no_monitor: Suppress job start/done notifications
 # - setsid: Creates new session, no controlling terminal
 # - >/dev/null 2>&1: Close stdout and stderr
 # - </dev/null: Close stdin
-# - &: Run in background
-setsid "$@" >/dev/null 2>&1 </dev/null &
+# - &!: Run in background and disown
+setsid "$@" >/dev/null 2>&1 </dev/null &!

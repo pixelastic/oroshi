@@ -161,6 +161,8 @@
   "go test",
   "go tool",
   "go version",
+  "go-lint",
+  "go-test",
   "grep",
   "gresource",
   "gsettings get",
