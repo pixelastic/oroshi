@@ -28,6 +28,15 @@ setup() {
 	[[ "$lastMessage" == "my message" ]]
 }
 
+@test "does nothing when plan directory does not exist on disk" {
+	plan-directory() { echo "$BATS_TMP_DIR/nonexistent"; }
+	bats_mock plan-directory
+
+	bats_run_zsh "plan-commit 'my message' /some/repo 2>&1"
+	[[ "$status" -eq 0 ]]
+	[[ "$output" == "" ]]
+}
+
 @test "does nothing when plan-directory fails" {
 	plan-directory() { return 1; }
 	bats_mock plan-directory

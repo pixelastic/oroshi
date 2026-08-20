@@ -13,6 +13,9 @@ shift
 local planDir="$(plan-directory "$@" 2>/dev/null)"
 [[ "$planDir" == "" ]] && return 0
 
+# No plan directory on disk for this context
+[[ ! -d "$planDir" ]] && return 0
+
 # Nothing to commit if plan repo is clean
 ! git-directory-is-dirty "$planDir" && return 0
 
