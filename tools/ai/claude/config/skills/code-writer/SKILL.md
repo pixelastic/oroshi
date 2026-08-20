@@ -11,6 +11,7 @@ If a specific skill for a language exists, use that one instead:
 - **JavaScript**: Use `js-writer` skill for JavaScript/Node.js code
 - **ZSH**: Use `zsh-writer` skill for ZSH functions in .oroshi repository
 - **Python**: Use `python-writer` skill for Python code
+- **Go**: Use `go-writer` skill for Go code
 
 ## Overview
 
