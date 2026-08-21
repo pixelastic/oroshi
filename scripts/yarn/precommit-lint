@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Lint staged files for a given language
+# Called by lint-staged via package.json
+# Usage:
+# $ precommit-lint go /abs/path/to/file1.go /abs/path/to/file2.go
+set -e
+
+local lang=$1
+shift
+
+# No staged files to lint
+[[ $# -eq 0 ]] && exit 0
+
+${lang}-lint --fix "$@"

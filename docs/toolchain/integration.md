@@ -108,8 +108,9 @@ tests and relevant error messages. Two layers work together:
 ```
 
 Yarn scripts are defined in `package.json` and delegate to wrappers in
-`scripts/yarn/`. `lint-{lang}` wraps `{lang}-lint --fix`, `test-{lang}`
-wraps `{lang}-test`.
+`scripts/yarn/`. Each wrapper is an extensionless executable with a ZSH
+shebang. `lint-{lang}` calls `{lang}-lint --fix` on its arguments,
+`test-{lang}` calls `{lang}-test` on its arguments.
 
 **Dependencies:**
 
