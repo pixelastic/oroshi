@@ -74,11 +74,13 @@ tests and relevant error messages. Two layers work together:
 ### `filters.toml`
 
 ```toml
-# Per-language filtering rules. Each filter defines:
+# Per-language filtering rules.
+# Location: tools/ai/rtk/config/filters.toml
+# Each filter defines:
 # - match_command: regex to match the test command
+# - strip_ansi: strip ANSI escape codes before filtering (usually true)
 # - strip_lines_matching: array of regexes for lines to remove (passing tests, headers, etc.)
 # - on_empty: message when all output is stripped (i.e. all tests passed)
-# Location: tools/ai/rtk/config/filters.toml
 ```
 
 ### `rtk-command-rewrite`
