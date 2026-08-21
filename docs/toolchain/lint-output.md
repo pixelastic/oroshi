@@ -44,7 +44,7 @@ When there are no violations, output is empty (no output, exit 0).
 
 | Field | Type | Description |
 |---|---|---|
-| `file` | string | Path to the file containing the violation |
+| `file` | string | Absolute path to the file containing the violation |
 | `code` | string (optional) | Rule identifier from the underlying linter |
 | `level` | string | Severity: `error`, `warn`, `info`, or `hint` |
 | `line` | number | Line of the violation (1-based) |

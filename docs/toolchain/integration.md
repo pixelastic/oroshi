@@ -12,8 +12,8 @@ call.
 ## `git-file-lint`
 
 ```zsh
-# Lint dispatcher for dirty files.
-# Groups dirty files by language, runs {lang}-lint --fix on each group.
+# Lint dispatcher for files modified or added since the last commit.
+# Groups them by language, runs {lang}-lint --fix on each group.
 # Exits non-zero if any violations remain after fixing.
 # Deleted files are skipped automatically.
 # Usage:
@@ -27,7 +27,7 @@ Manual lint command, called by the user in the terminal or by
 [`lintstaged.config.js`](#lintstagedconfigjs) which runs automatically at commit
 time and blocks the commit on failure, `git-file-lint` is on-demand.
 
-Groups dirty files in the working tree by language using
+Groups modified and added files in the working tree by language using
 [`is-{lang}`](scripts.md#is-lang), then runs [`{lang}-lint
 --fix`](scripts.md#lang-lint) on each group. Reports violations grouped by
 language.
@@ -43,8 +43,8 @@ language.
 ## `git-file-test`
 
 ```zsh
-# Test dispatcher for dirty files.
-# Resolves dirty files to test files, deduplicates, runs {lang}-test.
+# Test dispatcher for files modified or added since the last commit.
+# Resolves them to test files, deduplicates, runs {lang}-test.
 # Silently succeeds when no test files are found.
 # Usage:
 # $ git-file-test                        # test all dirty files in the working tree
@@ -52,7 +52,7 @@ language.
 
 **Notes:**
 
-Iterates all dirty files, resolves each to a test file via
+Iterates all modified and added files, resolves each to a test file via
 [`{lang}-test-path`](scripts.md#lang-test-path), deduplicates, and runs
 [`{lang}-test`](scripts.md#lang-test) on the collected test files.
 

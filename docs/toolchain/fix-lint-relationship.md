@@ -3,7 +3,7 @@
 `{lang}-fix` and `{lang}-lint` are independent scripts, each with a single
 responsibility:
 
-- **`{lang}-fix`** modifies files in-place (or stdout). Reports nothing.
+- **`{lang}-fix`** modifies files in-place. Reports nothing.
 - **`{lang}-lint`** reports violations. Modifies nothing.
 
 Both can be called individually and must respect their contract in isolation.

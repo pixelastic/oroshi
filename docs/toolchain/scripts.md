@@ -13,6 +13,10 @@ the `bin-zsh` wrapper — see [neovim.md](neovim.md) for details.
 They live in `tools/term/zsh/config/functions/autoload/_languages/{lang}/`,
 one directory per language.
 
+Linter and formatter configuration files live in
+`tools/_language/{tool-name}/config/` when the tool supports specifying a config
+path.
+
 Naming convention: `{lang}` is the short language identifier (e.g. `zsh`, `js`,
 `python`, `go`, `json`, `toml`, etc).
 
@@ -38,6 +42,9 @@ Detection strategy, from most common to less common:
 3. Path convention (e.g. ZSH autoload functions with no extension under specific directories)
 4. Vim modeline (e.g. `# vim: ft=zsh`)
 
+Detection is not exclusive — a file may match multiple `is-{lang}` checks, and
+all matching toolchains apply.
+
 **Dependencies:**
 
 - Used by [`git-file-lint`](integration.md#git-file-lint) to dispatch files to the correct linter
@@ -50,7 +57,7 @@ Detection strategy, from most common to less common:
 ```zsh
 # Linter. Reports lint violations.
 # Exits 0 when clean, 1 on violations or errors.
-# All output (violations, errors) goes to stdout.
+# Violations go to stdout. Internal errors (missing config, tool crash) bubble to stderr.
 # Directories are scanned recursively for matching files only (e.g. zsh-lint ignores .js files).
 # Usage:
 # $ zsh-lint path/to/file.zsh                          # stylish output (default)
@@ -94,6 +101,7 @@ Implementation preference ladder, simplest first:
 ```zsh
 # Formatter. Rewrites code to canonical style.
 # Exits 0 on success (including nothing to do), 1 on error.
+# No output on stdout (unless --stdout). Errors go to stderr.
 # Default: modifies files in-place.
 # Directories are scanned recursively for matching files only (e.g. js-fix ignores .py files).
 # Usage:
@@ -114,11 +122,11 @@ together. The public API is the same regardless.
 
 Flags (only valid with a single file argument):
 
-- **`--stdout`** — write the fixed code to stdout instead of modifying the file
-    in-place.
 - **`--original-path`** — the real file path on disk. Used to resolve
     language-specific configuration files and rules that depend on the file's name
     or location.
+- **`--stdout`** — write the fixed code to stdout instead of modifying the file
+    in-place. Intended for manual CLI usage, not used by any automated consumer.
 
 Both flags are combinable, and both require a single file argument. If either
 flag is passed with multiple files or a directory, the script must exit 1.
@@ -177,6 +185,10 @@ Source files map to test files in a sibling `__tests__/` directory. The exact na
 ---
 
 ## Adding a language
+
+Configuration languages (JSON, TOML, YAML…) typically only need `is-{lang}`,
+`{lang}-lint`, and `{lang}-fix`. Programming languages must implement the full
+set including `{lang}-test` and `{lang}-test-path`.
 
 1. Create [`is-{lang}`](#is-lang) — file detection function
 2. Create [`{lang}-lint`](#lang-lint) — linter with `--json` and `--fix` flags
