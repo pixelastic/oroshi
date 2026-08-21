@@ -135,6 +135,7 @@ and `{lang}-lint` relate to each other.
 ```zsh
 # Tester. Runs the language's test runner.
 # Exits non-zero on failure.
+# Directories are scanned for matching files only (e.g. js-test ignores .py files).
 # Usage:
 # $ js-test src/__tests__/module.test.js                    # one test file
 # $ js-test src/module.js                                   # source file → resolved via {lang}-test-path
@@ -175,6 +176,6 @@ Source files map to test files in a sibling `__tests__/` directory. The exact na
 
 1. Create [`is-{lang}`](#is-lang) — file detection function
 2. Create [`{lang}-lint`](#lang-lint) — linter with `--json` and `--fix` flags
-3. Create [`{lang}-fix`](#lang-fix) — formatter with `--stdout` and `--filepath` flags
+3. Create [`{lang}-fix`](#lang-fix) — formatter with `--stdout` and `--original-path` flags
 4. Create [`{lang}-test`](#lang-test) — test runner
 5. Create [`{lang}-test-path`](#lang-test-path) — source-to-test file mapper

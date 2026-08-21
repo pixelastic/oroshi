@@ -34,9 +34,7 @@ When there are no violations, output is empty (no output, exit 0).
     "code": "RULE_ID",
     "level": "error",
     "line": 1,
-    "endLine": 1,
     "column": 1,
-    "endColumn": 10,
     "message": "Description of the violation"
   }
 ]

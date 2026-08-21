@@ -22,6 +22,11 @@ call.
 
 **Notes:**
 
+Manual lint command, called by the user in the terminal or by
+[AI agent skills](agents.md) after implementation. Unlike
+[`lintstaged.config.js`](#lintstagedconfigjs) which runs automatically at commit
+time and blocks the commit on failure, `git-file-lint` is on-demand.
+
 Uses `git-file-list-dirty-raw` to obtain the dirty file list. Groups files by
 language using [`is-{lang}`](scripts.md#is-lang), then runs
 [`{lang}-lint --fix`](scripts.md#lang-lint) on each group. Reports violations
@@ -66,18 +71,6 @@ Test runners produce verbose output (all passing tests, timing info, progress
 bars, etc.) that wastes agent context. RTK filters this down to only failing
 tests and relevant error messages. Two layers work together:
 
-### `rtk-command-rewrite`
-
-```zsh
-# Decides whether to route a command through RTK.
-# Idempotent: already-prefixed commands pass through unchanged.
-# Unrecognized commands pass through unchanged.
-# Usage:
-# $ rtk-command-rewrite "go test ./..."              # → rtk bin-zsh go test ./...
-# $ rtk-command-rewrite "rtk bin-zsh go test ./..."  # → unchanged
-# $ rtk-command-rewrite "echo hello"                 # → unchanged
-```
-
 ### `filters.toml`
 
 ```toml
@@ -86,6 +79,19 @@ tests and relevant error messages. Two layers work together:
 # - strip_lines_matching: array of regexes for lines to remove (passing tests, headers, etc.)
 # - on_empty: message when all output is stripped (i.e. all tests passed)
 # Location: tools/ai/rtk/config/filters.toml
+```
+
+### `rtk-command-rewrite`
+
+```zsh
+# Takes a ready-to-execute command and returns it prefixed with rtk if a
+# matching filter exists. ZSH autoloaded commands are also prefixed with
+# bin-zsh so rtk can invoke them.
+# Idempotent: already-prefixed commands pass through unchanged.
+# Unrecognized commands pass through unchanged.
+# Called by a Claude Code hook before every command execution.
+# Usage:
+# $ rtk-command-rewrite "python-test tests/"                  # → rtk bin-zsh python-test tests/
 ```
 
 ---
@@ -162,4 +168,3 @@ File-type-aware tab completion, provided in two layers.
    `specialPickers` array
 7. **`filetypes.jsonc`** — add file extension(s) to the appropriate group, then
    rebuild with `yarn colors-build-and-stage`
-

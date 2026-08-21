@@ -18,7 +18,7 @@ The shortcut exists for two reasons:
    linting (e.g. eslint with `--fix` does both in a single pass). Running them
    separately would launch the same tool twice.
 2. **Code deduplication** — fix and lint often share boilerplate (config
-   resolution, project root detection, stdin handling). A shared implementation
+   resolution, project root detection). A shared implementation
    avoids duplicating this logic.
 
 The internal wiring varies by language. In some, `lint --fix` calls `fix` then
