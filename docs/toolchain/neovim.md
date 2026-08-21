@@ -9,6 +9,11 @@ registry that ties everything together.
 See [scripts.md](scripts.md) for the per-language ZSH functions these modules
 call.
 
+Since all toolchain scripts are ZSH autoloaded functions (not standalone
+binaries), NeoVim must call them through `bin-zsh` — a wrapper that executes its
+arguments in a ZSH context. All commands in `configureLinter` and
+`configureFormatter` are prefixed with `bin-zsh` for this reason.
+
 ---
 
 ## `code-quality.lua`

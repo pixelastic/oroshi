@@ -5,6 +5,11 @@ fix, test, etc. This uniform interface lets shared dispatchers like
 [`git-file-lint`](integration.md#git-file-lint) and editor integrations work
 identically regardless of which language or external tool is underneath.
 
+All these functions are **ZSH autoloaded functions**, not standalone binaries.
+They are available directly in any ZSH context and can call each other without
+spawning subprocesses. Non-ZSH callers (e.g. NeoVim) must invoke them through
+the `bin-zsh` wrapper — see [neovim.md](neovim.md) for details.
+
 Naming convention: `{lang}` is the short language identifier (e.g. `zsh`, `js`,
 `python`, `go`, `json`, `toml`, etc).
 
