@@ -52,6 +52,8 @@ language.
 
 **Notes:**
 
+Skips [configuration languages](README.md#language-categories) silently.
+
 Iterates all modified and added files, resolves each to a test file via
 [`{lang}-test-path`](scripts.md#lang-test-path), deduplicates, and runs
 [`{lang}-test`](scripts.md#lang-test) on the collected test files.
@@ -105,13 +107,15 @@ relevant error messages. Two configuration layers adapt it to the toolchain:
 // Two generic yarn scripts handle all languages:
 //   yarn precommit:lint {lang} — calls {lang}-lint --fix on staged files
 //   yarn precommit:test {lang} — calls {lang}-test on staged files
-// Example entry:
-// '**/*.go': ['yarn precommit:lint go', 'yarn precommit:test go']
+// Example entries:
+// '**/*.go': ['yarn precommit:lint go', 'yarn precommit:test go']   // programming language
+// '**/*.json': ['yarn precommit:lint json']                         // configuration language
 ```
 
 Two generic scripts in `scripts/yarn/` handle all languages:
 `precommit-lint` calls `{lang}-lint --fix` on its arguments,
-`precommit-test` calls `{lang}-test` on its arguments. Both take the
+`precommit-test` calls `{lang}-test` on its arguments (not used for
+[configuration languages](README.md#language-categories)). Both take the
 language identifier as their first argument.
 
 **Dependencies:**
@@ -159,18 +163,26 @@ File-type-aware tab completion, provided in two layers.
 
 ## Adding a language
 
+See [Language categories](README.md#language-categories) for which steps apply.
+
+All languages:
+
 1. **`git-file-lint`** — add an `is-{lang}` check and route matched files to
    `{lang}-lint --fix`
-2. **`git-file-test`** — add an `is-{lang}` check, use `{lang}-test-path` for
-   resolution, call `{lang}-test`
-3. **`filters.toml`** — add a filter block with `match_command` regex and
-   `strip_lines_matching` patterns for the language's test runner output
-4. **`rtk-command-rewrite`** — add a command match so the test command gets
-   routed through RTK
-5. **`lintstaged.config.js`** — add a glob pattern entry mapping the language's
-   file extensions to `yarn precommit:lint {lang}` and `yarn precommit:test {lang}`
-6. **`compdef.zsh`** — add `compdef` entries for the new commands; optionally
-   create an `fzf-{lang}-test` picker and register it in `ctrl-p.zsh`'s
-   `specialPickers` array
-7. **`filetypes.jsonc`** — add file extension(s) to the appropriate group, then
+2. **`lintstaged.config.js`** — add a glob pattern entry mapping the language's
+   file extensions to `yarn precommit:lint {lang}` (and `yarn precommit:test
+   {lang}` for programming languages)
+3. **`compdef.zsh`** — add `compdef` entries for the new commands
+4. **`filetypes.jsonc`** — add file extension(s) to the appropriate group, then
    rebuild with `yarn colors-build-and-stage`
+
+Programming languages only:
+
+5. **`git-file-test`** — add an `is-{lang}` check, use `{lang}-test-path` for
+   resolution, call `{lang}-test`
+6. **`filters.toml`** — add a filter block with `match_command` regex and
+   `strip_lines_matching` patterns for the language's test runner output
+7. **`rtk-command-rewrite`** — add a command match so the test command gets
+   routed through RTK
+8. **`compdef.zsh`** — optionally create an `fzf-{lang}-test` picker and
+   register it in `ctrl-p.zsh`'s `specialPickers` array

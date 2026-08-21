@@ -2,6 +2,15 @@
 
 A language toolchain is the full set of ZSH scripts, configuration files, and conventions that make a programming language a first-class citizen in this codebase. Each toolchain provides linting, fixing, testing, editor integration, and AI assistance through a uniform interface — allowing every language to plug into shared dispatchers, NeoVim diagnostics, and CI pipelines without special-casing.
 
+## Language categories
+
+Each language falls into one of two categories:
+
+- **Programming language** — a language with executable logic and testable code
+  (e.g. JS, Python, Go, Lua, ZSH).
+- **Configuration language** — a data or markup format with no executable logic
+  (e.g. JSON, TOML, YAML, XML).
+
 ## Detail files
 
 - [scripts.md](scripts.md) — Per-language ZSH functions: `is-{lang}`, `{lang}-lint`, `{lang}-fix`, `{lang}-test`, `{lang}-test-path`, and their contracts.

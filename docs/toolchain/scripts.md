@@ -209,13 +209,16 @@ Source files map to test files in a sibling `__tests__/` directory. The exact na
 
 ## Adding a language
 
-Configuration languages (JSON, TOML, YAML…) typically only need `is-{lang}`,
-`{lang}-lint`, and `{lang}-fix`. Programming languages must implement the full
-set including `{lang}-test` and `{lang}-test-path`.
+See [Language categories](README.md#language-categories) for which steps apply.
+
+All languages:
 
 1. Install external tools — see [External tool installation](#external-tool-installation)
 2. Create [`is-{lang}`](#is-lang) — file detection function
 3. Create [`{lang}-lint`](#lang-lint) — linter with `--json` and `--fix` flags
 4. Create [`{lang}-fix`](#lang-fix) — formatter with `--stdout` and `--original-path` flags
+
+Programming languages only:
+
 5. Create [`{lang}-test`](#lang-test) — test runner
 6. Create [`{lang}-test-path`](#lang-test-path) — source-to-test file mapper
