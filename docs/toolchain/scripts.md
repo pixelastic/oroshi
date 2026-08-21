@@ -31,8 +31,8 @@ folder with:
 
 - **`install`** *(required)* — idempotent script that installs the tool
   globally on the machine. Run once per setup.
-- **`config/`** *(optional)* — configuration files for the tool, referenced by
-  the toolchain scripts via explicit path or deployed by `deploy`.
+- **`config/`** *(optional)* — configuration files for the tool, deployed by
+  `deploy` and referenced at runtime via `$OROSHI_ROOT`
 - **`deploy`** *(optional)* — symlinks or copies configuration files to their
   expected locations on disk (e.g. `~/.config/{tool}/`).
 
@@ -42,6 +42,22 @@ When tools are available as packages in the language's ecosystem (npm, pip,
 go modules), you can declare them in the repository's root dependency file
 (`package.json`, `go.mod`) and install via the package manager. The installed
 binaries are then available from within the repository.
+
+---
+
+## Argument handling
+
+`{lang}-lint`, `{lang}-fix`, and `{lang}-test` share the same argument
+handling convention:
+
+1. **Expand** — directory arguments are expanded recursively to all files they
+   contain, as if each file had been passed individually.
+2. **Filter** — the expanded list is filtered through `is-{lang}`, keeping only
+   files that belong to the language. Non-matching files are silently skipped.
+
+Each script implements these steps internally — there is no shared helper
+function. The logic is simple enough that duplicating it is preferable to
+adding an abstraction.
 
 ---
 
@@ -81,9 +97,7 @@ all matching toolchains apply.
 # Linter. Reports lint violations.
 # Exits 0 when clean, 1 on violations or errors.
 # Violations go to stdout. Internal errors (missing config, tool crash) bubble to stderr.
-# When a directory is passed, it is expanded to all its files recursively
-# and each file is treated as if passed individually. Non-matching files
-# (per is-{lang}) are skipped.
+# Accepts files and directories (see Argument handling above).
 # Usage:
 # $ zsh-lint path/to/file.zsh                          # stylish output (default)
 # $ zsh-lint src/foo.zsh src/bar.zsh                   # multiple files
@@ -128,9 +142,7 @@ Implementation preference ladder, simplest first:
 # Exits 0 on success (including nothing to do), 1 on error.
 # No output on stdout (unless --stdout). Errors go to stderr.
 # Default: modifies files in-place.
-# When a directory is passed, it is expanded to all its files recursively
-# and each file is treated as if passed individually. Non-matching files
-# (per is-{lang}) are skipped.
+# Accepts files and directories (see Argument handling above).
 # Usage:
 # $ js-fix path/to/file.js                      # modify file in-place
 # $ js-fix src/foo.js src/bar.js                # multiple files
@@ -174,9 +186,9 @@ and `{lang}-lint` relate to each other.
 # Tester. Runs the language's test runner.
 # Exits non-zero on failure, 0 on success or when no tests are found.
 # All output goes to stdout.
-# When a directory is passed, it is expanded to all its files recursively
-# and each file is treated as if passed individually. Non-matching files
-# (per is-{lang}) are skipped.
+# Accepts files and directories (see Argument handling above).
+# After filtering, resolves all files to test files via {lang}-test-path
+# and deduplicates before running.
 # Usage:
 # $ js-test src/__tests__/module.js                          # one test file
 # $ js-test src/module.js                                   # source file → resolved via {lang}-test-path
