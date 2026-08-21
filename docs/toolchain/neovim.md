@@ -10,8 +10,8 @@ See [scripts.md](scripts.md) for the per-language ZSH functions these modules
 call.
 
 Since all toolchain scripts are ZSH autoloaded functions (not standalone
-binaries), NeoVim must call them through `bin-zsh` — a wrapper that executes its
-arguments in a ZSH context. All commands in `configureLinter` and
+binaries), NeoVim must call them through
+[`bin-zsh`](utilities.md#bin-zsh). All commands in `configureLinter` and
 `configureFormatter` are prefixed with `bin-zsh` for this reason.
 
 ---
@@ -95,7 +95,7 @@ modified file back.
 
 Command: `bin-zsh {lang}-fix $FILENAME --original-path $ORIGINAL_PATH`.
 
-- `bin-zsh`: because `{lang}-fix` is a ZSH autoloaded function
+- [`bin-zsh`](utilities.md#bin-zsh): because `{lang}-fix` is a ZSH autoloaded function
 - `$FILENAME`: the temp file created by conform.nvim, modified in-place
 - `--original-path`: the real file path, so the script can resolve configuration
   and rules that depend on the file's name or location

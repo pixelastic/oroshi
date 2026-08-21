@@ -67,9 +67,8 @@ Iterates all modified and added files, resolves each to a test file via
 
 ## RTK — Test output filtering for agents
 
-Test runners produce verbose output (all passing tests, timing info, progress
-bars, etc.) that wastes agent context. RTK filters this down to only failing
-tests and relevant error messages. Two layers work together:
+[RTK](utilities.md#rtk) filters test runner output down to only failures and
+relevant error messages. Two configuration layers adapt it to the toolchain:
 
 ### `filters.toml`
 

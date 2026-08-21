@@ -8,7 +8,7 @@ identically regardless of which language or external tool is underneath.
 All these functions are **ZSH autoloaded functions**, not standalone binaries.
 They are available directly in any ZSH context and can call each other without
 spawning subprocesses. Non-ZSH callers (e.g. NeoVim) must invoke them through
-the `bin-zsh` wrapper — see [neovim.md](neovim.md) for details.
+[`bin-zsh`](utilities.md#bin-zsh).
 
 They live in `tools/term/zsh/config/functions/autoload/_languages/{lang}/`,
 one directory per language.
