@@ -13,12 +13,35 @@ spawning subprocesses. Non-ZSH callers (e.g. NeoVim) must invoke them through
 They live in `tools/term/zsh/config/functions/autoload/_languages/{lang}/`,
 one directory per language.
 
-Linter and formatter configuration files live in
-`tools/_language/{tool-name}/config/` when the tool supports specifying a config
-path.
-
 Naming convention: `{lang}` is the short language identifier (e.g. `zsh`, `js`,
 `python`, `go`, `json`, `toml`, etc).
+
+---
+
+## External tool installation
+
+Each language's external tools (linters, formatters, test runners) must be
+installable from the repository for reproducibility. Two methods are available,
+in order of preference.
+
+### Preferred — `tools/_languages/{lang}/{tool-name}/`
+
+Each tool gets a directory under the language's `tools/_languages/{lang}/`
+folder with:
+
+- **`install`** *(required)* — idempotent script that installs the tool
+  globally on the machine. Run once per setup.
+- **`config/`** *(optional)* — configuration files for the tool, referenced by
+  the toolchain scripts via explicit path or deployed by `deploy`.
+- **`deploy`** *(optional)* — symlinks or copies configuration files to their
+  expected locations on disk (e.g. `~/.config/{tool}/`).
+
+### Fallback — language package manager
+
+When tools are available as packages in the language's ecosystem (npm, pip,
+go modules), you can declare them in the repository's root dependency file
+(`package.json`, `go.mod`) and install via the package manager. The installed
+binaries are then available from within the repository.
 
 ---
 
@@ -190,8 +213,9 @@ Configuration languages (JSON, TOML, YAML…) typically only need `is-{lang}`,
 `{lang}-lint`, and `{lang}-fix`. Programming languages must implement the full
 set including `{lang}-test` and `{lang}-test-path`.
 
-1. Create [`is-{lang}`](#is-lang) — file detection function
-2. Create [`{lang}-lint`](#lang-lint) — linter with `--json` and `--fix` flags
-3. Create [`{lang}-fix`](#lang-fix) — formatter with `--stdout` and `--original-path` flags
-4. Create [`{lang}-test`](#lang-test) — test runner
-5. Create [`{lang}-test-path`](#lang-test-path) — source-to-test file mapper
+1. Install external tools — see [External tool installation](#external-tool-installation)
+2. Create [`is-{lang}`](#is-lang) — file detection function
+3. Create [`{lang}-lint`](#lang-lint) — linter with `--json` and `--fix` flags
+4. Create [`{lang}-fix`](#lang-fix) — formatter with `--stdout` and `--original-path` flags
+5. Create [`{lang}-test`](#lang-test) — test runner
+6. Create [`{lang}-test-path`](#lang-test-path) — source-to-test file mapper
