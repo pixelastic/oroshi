@@ -70,7 +70,7 @@ Implementation preference ladder, simplest first:
 **Dependencies:**
 
 - Used by [`git-file-lint`](integration.md#git-file-lint) to lint changed files
-- Used by [NeoVim `filetypes/{lang}.lua`](neovim.md#diagnostics) to populate diagnostics
+- Used by [NeoVim `filetypes/{lang}.lua`](neovim.md#configurelinterlint) to populate diagnostics
 - Used by [`lintstaged.config.js`](integration.md#lintstagedconfigjs) for pre-commit linting
 
 
@@ -103,7 +103,7 @@ and `{lang}-lint` relate to each other.
 
 **Dependencies:**
 
-- Used by [NeoVim format-on-save](neovim.md#format-on-save) in stdin → stdout mode
+- Used by [NeoVim `configureFormatter`](neovim.md#configureformatterconform) in stdin → stdout mode
 - Used by [`git-file-fix`](integration.md#git-file-fix) to fix changed files
 - Used by [`{lang}-lint --fix`](#lang-lint) as the formatting step before linting
 
