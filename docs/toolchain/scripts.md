@@ -71,7 +71,7 @@ Implementation preference ladder, simplest first:
 
 - Used by [`git-file-lint`](integration.md#git-file-lint) to lint changed files
 - Used by [NeoVim `filetypes/{lang}.lua`](neovim.md#diagnostics) to populate diagnostics
-- Used by [`lintstaged.config.js`](integration.md#lintstaged) for pre-commit linting
+- Used by [`lintstaged.config.js`](integration.md#lintstagedconfigjs) for pre-commit linting
 
 
 ---
