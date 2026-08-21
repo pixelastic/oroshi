@@ -172,10 +172,10 @@ and `{lang}-lint` relate to each other.
 # All output goes to stdout.
 # Directories are scanned recursively; files are filtered through is-{lang}.
 # Usage:
-# $ js-test src/__tests__/module.test.js                    # one test file
+# $ js-test src/__tests__/module.js                          # one test file
 # $ js-test src/module.js                                   # source file → resolved via {lang}-test-path
 # $ js-test src/                                            # all tests in directory
-# $ js-test src/foo.js src/bar.js src/__tests__/baz.test.js # mix of sources, tests, directories
+# $ js-test src/foo.js src/bar.js src/__tests__/baz.js      # mix of sources, tests, directories
 ```
 
 **Dependencies:**
@@ -192,7 +192,7 @@ and `{lang}-lint` relate to each other.
 # Prints the absolute test path on stdout, exits 1 if no test file exists.
 # If the input is already a test file, returns it as-is.
 # Usage:
-# $ js-test-path src/module.js        # → src/__tests__/module.test.js
+# $ js-test-path src/module.js        # → src/__tests__/module.js
 # $ python-test-path lib/helper.py    # → lib/__tests__/test_helper.py
 ```
 

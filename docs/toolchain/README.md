@@ -18,6 +18,8 @@ Each language falls into one of two categories:
   - [fix-lint-relationship.md](fix-lint-relationship.md) — How `{lang}-fix`, `{lang}-lint`, and `{lang}-lint --fix` relate to each other, and how implementations may optimize internally.
 - [integration.md](integration.md) — Shared dispatchers, pre-commit hooks, shell completion, and other cross-language configuration.
 - [agents.md](agents.md) — AI integration: how Claude Code skills invoke the toolchain, and conventions for agent-driven linting, testing, and fixing.
+  - [skill-programming.md](skill-programming.md) — Skill template for programming languages.
+  - [skill-configuration.md](skill-configuration.md) — Skill template for configuration languages.
 - [neovim.md](neovim.md) — NeoVim integration: diagnostics from unified lint JSON and format-on-save via `{lang}-fix`.
 - [utilities.md](utilities.md) — External utilities used by the toolchain but not part of it: `bin-zsh`, `rtk`.
 
