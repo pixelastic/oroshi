@@ -47,12 +47,10 @@ When there are no violations, output is empty (no output, exit 0).
 | Field | Type | Description |
 |---|---|---|
 | `file` | string | Path to the file containing the violation |
-| `code` | string? | Rule identifier from the underlying linter (omitted when the linter has no rule codes) |
+| `code` | string (optional) | Rule identifier from the underlying linter |
 | `level` | string | Severity: `error`, `warn`, `info`, or `hint` |
-| `line` | number | Start line (1-based) |
-| `endLine` | number | End line (1-based) |
-| `column` | number | Start column (1-based) |
-| `endColumn` | number | End column (1-based) |
+| `line` | number | Line of the violation (1-based) |
+| `column` | number | Column of the violation (1-based) |
 | `message` | string | Human-readable description of the violation |
 
 

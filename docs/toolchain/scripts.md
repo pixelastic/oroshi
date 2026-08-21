@@ -53,7 +53,7 @@ Detection strategy, from most common to less common:
 # $ zsh-lint src/foo.zsh src/bar.zsh                   # multiple files
 # $ zsh-lint src/                                      # all zsh files in directory
 # $ zsh-lint src/foo.zsh lib/                          # mix of files and directories
-# $ zsh-lint --json path/to/file.zsh                   # unified JSON (for NeoVim, agents)
+# $ zsh-lint --json path/to/file.zsh                   # unified JSON (for NeoVim)
 # $ zsh-lint --fix path/to/file.zsh                    # format in-place, then report remaining violations
 ```
 
@@ -64,7 +64,7 @@ Two output modes:
 - **Default (no flag)** — stylish format for terminal use. Violations are
   grouped by file, with an indented `line:column  level  message  rule-id` line
   per violation. When there are no violations, output is empty.
-- **`--json`** — unified JSON array for machine consumers (NeoVim, agents).
+- **`--json`** — unified JSON array for NeoVim.
   See [lint-output.md](lint-output.md) for the schema. When there are no
   violations, output is `[]`.
 

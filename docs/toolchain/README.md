@@ -8,5 +8,5 @@ A language toolchain is the full set of ZSH scripts, configuration files, and co
 - [**fix-lint-relationship.md**](fix-lint-relationship.md) — How `{lang}-fix`, `{lang}-lint`, and `{lang}-lint --fix` relate to each other, and how implementations may optimize internally.
 - [**lint-output.md**](lint-output.md) — Lint output formats: default stylish for terminal, `--json` unified schema for machine consumers.
 - [**integration.md**](integration.md) — Shared dispatchers, pre-commit hooks, shell completion, and other cross-language configuration.
-- [**neovim.md**](neovim.md) — NeoVim integration: diagnostics from unified lint JSON and format-on-save via `{lang}-fix`.
 - [**agents.md**](agents.md) — AI integration: how Claude Code skills invoke the toolchain, and conventions for agent-driven linting, testing, and fixing.
+- [**neovim.md**](neovim.md) — NeoVim integration: diagnostics from unified lint JSON and format-on-save via `{lang}-fix`.
