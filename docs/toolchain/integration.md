@@ -132,21 +132,42 @@ File-type-aware tab completion, provided in two layers.
 ### Standard completion (`compdef.zsh`)
 
 ```zsh
-# Registers _files -g "*.{ext}" for {lang}-lint, {lang}-test, and related commands.
+# Registers _files -g "*.{ext}" for {lang}-lint, {lang}-fix, and {lang}-test.
+# Location: tools/term/zsh/config/completion/compdef.zsh
 # Tab only suggests files with relevant extensions.
 # Usage:
-# $ zsh-lint <TAB>                       # only .zsh files suggested
+# $ go-lint <TAB>                        # only .go files suggested
+# $ go-fix <TAB>                         # only .go files suggested
 # $ go-test <TAB>                        # only .go files suggested
 ```
+
+**Notes:**
+
+Register `{lang}-lint` and `{lang}-fix` for all languages. Add `{lang}-test`
+for [programming languages](README.md#language-categories) only.
 
 ### CTRL-P FZF pickers (`ctrl-p.zsh`)
 
 ```zsh
-# Context-aware dispatch for test commands.
-# Typing a test command then pressing CTRL-P opens a dedicated fzf-{lang}-test picker.
+# Context-aware FZF picker dispatch.
+# Location: tools/term/zsh/config/keybindings/ctrl-p.zsh
+# Typing a toolchain command then pressing CTRL-P opens a dedicated fzf picker.
 # Usage:
-# $ go-test <CTRL-P>                     # opens fzf-go-test showing only Go test files
+# $ go-lint <CTRL-P>                     # fzf-go-lint: all .go files
+# $ go-fix <CTRL-P>                      # fzf-go-fix: all .go files
+# $ go-test <CTRL-P>                     # fzf-go-test: only test files
 ```
+
+**Notes:**
+
+Each command maps to an `fzf-{lang}-{command}` picker in the `specialPickers`
+table. `fzf-{lang}-lint` and `fzf-{lang}-fix` show all files matching the
+language's extensions. `fzf-{lang}-test` shows only test files (e.g.
+`__tests__/*.js`).
+
+Pickers live in `tools/term/zsh/config/functions/autoload/fzf/` and use the
+`fzf-dispatch` framework (`fzf-source`, `fzf-options`, `fzf-preview`,
+`fzf-postprocess`).
 
 ---
 
@@ -172,17 +193,21 @@ All languages:
 2. **`lintstaged.config.js`** — add a glob pattern entry mapping the language's
    file extensions to `yarn precommit:lint {lang}` (and `yarn precommit:test
    {lang}` for programming languages)
-3. **`compdef.zsh`** — add `compdef` entries for the new commands
-4. **`filetypes.jsonc`** — add file extension(s) to the appropriate group, then
+3. **`compdef.zsh`** — register `{lang}-lint` and `{lang}-fix` with the
+   language's file glob
+4. **`ctrl-p.zsh`** — add `fzf-{lang}-lint` and `fzf-{lang}-fix` pickers to
+   `specialPickers`
+5. **`filetypes.jsonc`** — add file extension(s) to the appropriate group, then
    rebuild with `yarn colors-build-and-stage`
 
 Programming languages only:
 
-5. **`git-file-test`** — add an `is-{lang}` check, use `{lang}-test-path` for
+6. **`git-file-test`** — add an `is-{lang}` check, use `{lang}-test-path` for
    resolution, call `{lang}-test`
-6. **`filters.toml`** — add a filter block with `match_command` regex and
+7. **`filters.toml`** — add a filter block with `match_command` regex and
    `strip_lines_matching` patterns for the language's test runner output
-7. **`rtk-command-rewrite`** — add a command match so the test command gets
+8. **`rtk-command-rewrite`** — add a command match so the test command gets
    routed through RTK
-8. **`compdef.zsh`** — optionally create an `fzf-{lang}-test` picker and
-   register it in `ctrl-p.zsh`'s `specialPickers` array
+9. **`compdef.zsh`** — register `{lang}-test` with the language's file glob
+10. **`ctrl-p.zsh`** — add `fzf-{lang}-test` picker (filtered to test files
+    only) to `specialPickers`
