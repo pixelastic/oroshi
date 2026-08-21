@@ -101,21 +101,22 @@ tests and relevant error messages. Two layers work together:
 ```js
 // Pre-commit hook configuration.
 // Maps file glob patterns to lint and test commands that run on staged files.
-// Yarn script wrappers in scripts/yarn/ delegate to per-language tools.
-// Lint scripts call {lang}-lint --fix so files are formatted before commit.
+// Two generic yarn scripts handle all languages:
+//   yarn precommit:lint {lang} — calls {lang}-lint --fix on staged files
+//   yarn precommit:test {lang} — calls {lang}-test on staged files
 // Example entry:
-// '**/*.go': ['yarn lint:go', 'yarn test:go']
+// '**/*.go': ['yarn precommit:lint go', 'yarn precommit:test go']
 ```
 
-Yarn scripts are defined in `package.json` and delegate to wrappers in
-`scripts/yarn/`. Each wrapper is an extensionless executable with a ZSH
-shebang. `lint-{lang}` calls `{lang}-lint --fix` on its arguments,
-`test-{lang}` calls `{lang}-test` on its arguments.
+Two generic scripts in `scripts/yarn/` handle all languages:
+`precommit-lint` calls `{lang}-lint --fix` on its arguments,
+`precommit-test` calls `{lang}-test` on its arguments. Both take the
+language identifier as their first argument.
 
 **Dependencies:**
 
-- Uses [`{lang}-lint`](scripts.md#lang-lint) via yarn script wrappers
-- Uses [`{lang}-test`](scripts.md#lang-test) via yarn script wrappers
+- Uses [`{lang}-lint`](scripts.md#lang-lint) via `precommit-lint`
+- Uses [`{lang}-test`](scripts.md#lang-test) via `precommit-test`
 
 ---
 
@@ -165,9 +166,8 @@ File-type-aware tab completion, provided in two layers.
    `strip_lines_matching` patterns for the language's test runner output
 4. **`rtk-command-rewrite`** — add a command match so the test command gets
    routed through RTK
-5. **`lintstaged.config.js`** — create yarn wrapper scripts in `scripts/yarn/`,
-   register them in `package.json` (e.g. `lint:go`, `test:go`), add a glob
-   pattern entry mapping the language's file extensions to the new scripts
+5. **`lintstaged.config.js`** — add a glob pattern entry mapping the language's
+   file extensions to `yarn precommit:lint {lang}` and `yarn precommit:test {lang}`
 6. **`compdef.zsh`** — add `compdef` entries for the new commands; optionally
    create an `fzf-{lang}-test` picker and register it in `ctrl-p.zsh`'s
    `specialPickers` array
