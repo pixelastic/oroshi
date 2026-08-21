@@ -88,12 +88,17 @@ across all languages.
 
 Registers a custom formatter with conform.nvim.
 
-Command: `bin-zsh {lang}-fix --stdin --filepath $FILENAME`.
+conform.nvim is configured with `stdin = false`: it writes the buffer content to
+a temporary file in the same directory as the original (e.g.
+`.conform.4827193.file.js`), passes its path to the formatter, and reads the
+modified file back.
+
+Command: `bin-zsh {lang}-fix $FILENAME --original-path $ORIGINAL_PATH`.
 
 - `bin-zsh`: because `{lang}-fix` is a ZSH autoloaded function
-- `--stdin`: conform.nvim pipes the buffer content; this tells `{lang}-fix` to
-read it from stdin rather than from a filepath
-- `--filepath`: the real file path, so the script can resolve configuration
+- `$FILENAME`: the temp file created by conform.nvim, modified in-place
+- `--original-path`: the real file path, so the script can resolve configuration
+  and rules that depend on the file's name or location
 
 ### `onInit()` *(optional)*
 
@@ -109,7 +114,7 @@ opened (e.g. indentation overrides, comment string settings).
 **Dependencies:**
 
 - Calls [`{lang}-lint --json`](scripts.md#lang-lint) for diagnostics
-- Calls [`{lang}-fix --stdin --filepath`](scripts.md#lang-fix) for format-on-save
+- Calls [`{lang}-fix --original-path`](scripts.md#lang-fix) for format-on-save
 - Referenced by [`code-quality.lua`](#code-qualitylua) to wire into the plugin system
 
 ---

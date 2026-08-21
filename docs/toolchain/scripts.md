@@ -99,7 +99,8 @@ Implementation preference ladder, simplest first:
 # $ js-fix src/                                 # all js files in directory
 # $ js-fix src/foo.js lib/                      # mix of files and directories
 # $ js-fix path/to/file.js --stdout             # print fixed code (single file only)
-# $ echo code | js-fix --stdin --filepath path/to/file  # read stdin, write stdout, resolve config from path
+# $ js-fix .conform.123.file.js --original-path src/file.js   # in-place, resolve config from src/file.js
+# $ js-fix .conform.123.file.js --original-path src/file.js --stdout  # same, but to stdout
 ```
 
 **Notes:**
@@ -108,22 +109,23 @@ The underlying tool varies by language — sometimes a dedicated formatter (e.g.
 Prettier), sometimes the linter's own autofix mode, sometimes both chained
 together. The public API is the same regardless.
 
-Flags:
+Flags (only valid with a single file argument):
 
 - **`--stdout`** — write the fixed code to stdout instead of modifying the file
-  in-place. Only valid with a single file argument.
-- **`--stdin`** — read input from stdin instead of from a file argument.
-  Implies `--stdout` (no file to modify in-place).
-- **`--filepath`** — the real file path, used to resolve language-specific
-  configuration (e.g. eslint config, prettier config). Required with `--stdin`
-  since no file argument is available.
+    in-place.
+- **`--original-path`** — the real file path on disk. Used to resolve
+    language-specific configuration files and rules that depend on the file's name
+    or location.
+
+Both flags are combinable, and both require a single file argument. If either
+flag is passed with multiple files or a directory, the script must exit 1.
 
 See [fix-lint-relationship.md](fix-lint-relationship.md) for how `{lang}-fix`
 and `{lang}-lint` relate to each other.
 
 **Dependencies:**
 
-- Used by [NeoVim `configureFormatter`](neovim.md#configureformatterconform) with `--stdin --filepath` (conform.nvim pipes the buffer content)
+- Used by [NeoVim `configureFormatter`](neovim.md#configureformatterconform) with `--original-path` (conform.nvim creates a temp file)
 - Used by [`{lang}-lint --fix`](#lang-lint) as the formatting step before linting
 
 ---
