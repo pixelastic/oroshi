@@ -73,7 +73,6 @@ Implementation preference ladder, simplest first:
 - Used by [NeoVim `filetypes/{lang}.lua`](neovim.md#configurelinterlint) to populate diagnostics
 - Used by [`lintstaged.config.js`](integration.md#lintstagedconfigjs) for pre-commit linting
 
-
 ---
 
 ## `{lang}-fix`
@@ -104,7 +103,6 @@ and `{lang}-lint` relate to each other.
 **Dependencies:**
 
 - Used by [NeoVim `configureFormatter`](neovim.md#configureformatterconform) in stdin → stdout mode
-- Used by [`git-file-fix`](integration.md#git-file-fix) to fix changed files
 - Used by [`{lang}-lint --fix`](#lang-lint) as the formatting step before linting
 
 ---
@@ -147,3 +145,13 @@ Source files map to test files in a sibling `__tests__/` directory. The exact na
 
 - Used by [`git-file-test`](integration.md#git-file-test) to resolve source files to test files
 - Used by [`{lang}-test`](#lang-test) when given a source file
+
+---
+
+## Adding a language
+
+1. Create [`is-{lang}`](#is-lang) — file detection function
+2. Create [`{lang}-lint`](#lang-lint) — linter with `--json` and `--fix` flags
+3. Create [`{lang}-fix`](#lang-fix) — formatter with `--stdout` and `--filepath` flags
+4. Create [`{lang}-test`](#lang-test) — test runner
+5. Create [`{lang}-test-path`](#lang-test-path) — source-to-test file mapper

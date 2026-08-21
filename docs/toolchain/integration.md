@@ -27,9 +27,6 @@ language using [`is-{lang}`](scripts.md#is-lang), then runs
 [`{lang}-lint --fix`](scripts.md#lang-lint) on each group. Reports violations
 grouped by language.
 
-**Adding a language:** add an `is-{lang}` check and route matched files to
-`{lang}-lint --fix`.
-
 **Dependencies:**
 
 - Uses [`is-{lang}`](scripts.md#is-lang) to detect file language
@@ -53,9 +50,6 @@ grouped by language.
 Iterates all dirty files, resolves each to a test file via
 [`{lang}-test-path`](scripts.md#lang-test-path), deduplicates, and runs
 [`{lang}-test`](scripts.md#lang-test) on the collected test files.
-
-**Adding a language:** add an `is-{lang}` check, use `{lang}-test-path` for
-resolution, call `{lang}-test`.
 
 **Dependencies:**
 
@@ -94,13 +88,6 @@ tests and relevant error messages. Two layers work together:
 # Location: tools/ai/rtk/config/filters.toml
 ```
 
-**Adding a language:**
-
-1. Add a filter block in `filters.toml` with `match_command` regex and
-   `strip_lines_matching` patterns specific to the language's test runner output
-2. Add a command match in `rtk-command-rewrite` so the test command gets routed
-   through RTK
-
 ---
 
 ## `lintstaged.config.js`
@@ -113,13 +100,6 @@ tests and relevant error messages. Two layers work together:
 // Example entry:
 // '**/*.go': ['yarn lint:go', 'yarn test:go']
 ```
-
-**Adding a language:**
-
-1. Create yarn wrapper scripts in `scripts/yarn/` that call the per-language tools
-2. Register those scripts in `package.json` (e.g. `lint:go`, `test:go`)
-3. Add a glob pattern entry in `lintstaged.config.js` mapping the language's
-   file extensions to the new yarn scripts
 
 **Dependencies:**
 
@@ -151,10 +131,6 @@ File-type-aware tab completion, provided in two layers.
 # $ go-test <CTRL-P>                     # opens fzf-go-test showing only Go test files
 ```
 
-**Adding a language:** add `compdef` entries for the new commands. Optionally
-create an `fzf-{lang}-test` picker and register it in `ctrl-p.zsh`'s
-`specialPickers` array.
-
 ---
 
 ## LS coloring
@@ -166,5 +142,24 @@ create an `fzf-{lang}-test` picker and register it in `ctrl-p.zsh`'s
 # Build: yarn colors-build-and-stage → dist/filetypes.zsh → LS_COLORS
 ```
 
-**Adding a language:** add the file extension(s) to the appropriate group in
-`filetypes.jsonc`, then rebuild with `yarn colors-build-and-stage`.
+---
+
+## Adding a language
+
+1. **`git-file-lint`** — add an `is-{lang}` check and route matched files to
+   `{lang}-lint --fix`
+2. **`git-file-test`** — add an `is-{lang}` check, use `{lang}-test-path` for
+   resolution, call `{lang}-test`
+3. **`filters.toml`** — add a filter block with `match_command` regex and
+   `strip_lines_matching` patterns for the language's test runner output
+4. **`rtk-command-rewrite`** — add a command match so the test command gets
+   routed through RTK
+5. **`lintstaged.config.js`** — create yarn wrapper scripts in `scripts/yarn/`,
+   register them in `package.json` (e.g. `lint:go`, `test:go`), add a glob
+   pattern entry mapping the language's file extensions to the new scripts
+6. **`compdef.zsh`** — add `compdef` entries for the new commands; optionally
+   create an `fzf-{lang}-test` picker and register it in `ctrl-p.zsh`'s
+   `specialPickers` array
+7. **`filetypes.jsonc`** — add file extension(s) to the appropriate group, then
+   rebuild with `yarn colors-build-and-stage`
+

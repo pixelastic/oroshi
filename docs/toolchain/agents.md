@@ -53,16 +53,8 @@ The skill enforces a TDD-driven sequence:
 - How to run tests via [`{lang}-test`](scripts.md#lang-test)
 - How to lint via [`{lang}-lint`](scripts.md#lang-lint)
 - Project structure conventions
-- Style rules the linter cannot not enforce
+- Style rules the linter cannot enforce
 - Preferred libraries and when to use them
-
-### Adding a language
-
-1. Create `tools/ai/claude/config/skills/{lang}-writer/SKILL.md` with the
-   canonical workflow adapted to the language's tooling
-2. Add reference documents under `references/` for style, testing, and library
-   conventions
-3. Run `tools/ai/claude/deploy` to symlink the new skill into `~/.claude/skills/`
 
 **Dependencies:**
 
@@ -93,15 +85,22 @@ These entries are the minimal contract: an agent that has never seen the
 codebase before can read CLAUDE.md and immediately know how to validate its
 changes.
 
-### Adding a language
-
-1. Add the two command entries (`Testing`, `Linting`) to the `## Commands`
-   section of the root CLAUDE.md
-2. If a `{lang}-writer` skill exists, ensure the "use dedicated skill per
-   language" line in `tools/ai/claude/config/CLAUDE.md` references it
-
 **Dependencies:**
 
 - References [`{lang}-test`](scripts.md#lang-test) and
   [`{lang}-lint`](scripts.md#lang-lint) by name
 - Complements the [`{lang}-writer` skill](#lang-writer-skill) as a lightweight alternative
+
+---
+
+## Adding a language
+
+1. Create `tools/ai/claude/config/skills/{lang}-writer/SKILL.md` with the
+   canonical workflow adapted to the language's tooling
+2. Add reference documents under `references/` for style, testing, and library
+   conventions
+3. Run `tools/ai/claude/deploy` to symlink the new skill into `~/.claude/skills/`
+4. Add `Testing` and `Linting` entries to the `## Commands` section of the root
+   CLAUDE.md
+5. Reference the skill in `tools/ai/claude/config/CLAUDE.md`'s "use dedicated
+   skill per language" line

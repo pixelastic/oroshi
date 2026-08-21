@@ -51,14 +51,6 @@ tools at startup, then `linters`/`formatters` lists reference them by name.
 | `lsp`                | LSP server name(s) for this filetype                                        |
 | `formatterTimeout`   | Timeout in milliseconds for format-on-save (for slow formatters)            |
 
-**Adding a language:**
-
-1. Import the filetype helper at the top of the file
-2. Add an entry in `config.filetypes` referencing the helper's configure
-   functions
-3. Add the LSP server to `config.dependencies.mason`
-4. Add the treesitter parser to `config.dependencies.treesitter`
-
 **Dependencies:**
 
 - Uses [`filetypes/{lang}.lua`](#filetypeslanglua) for per-language configuration
@@ -104,8 +96,19 @@ at startup.
 Buffer-local keymaps or settings applied when a buffer of this filetype is
 opened (e.g. indentation overrides, comment string settings).
 
-### Dependencies
+**Dependencies:**
 
 - Calls [`{lang}-lint --json`](scripts.md#lang-lint) for diagnostics
 - Calls [`{lang}-fix --stdout`](scripts.md#lang-fix) for format-on-save
 - Referenced by [`code-quality.lua`](#code-qualitylua) to wire into the plugin system
+
+---
+
+## Adding a language
+
+1. Create `filetypes/{lang}.lua` with `configureLinter` and `configureFormatter`
+   (and optionally `onInit` / `onFiletype`)
+2. In `code-quality.lua`: import the filetype helper and add an entry in
+   `config.filetypes` referencing its configure functions
+3. Add the LSP server to `config.dependencies.mason`
+4. Add the treesitter parser to `config.dependencies.treesitter`
