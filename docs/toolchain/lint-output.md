@@ -13,7 +13,7 @@ indented violations with aligned columns.
 ```
 path/to/file.zsh
   3:10  error    Missing double quotes around variable   SC2086
-  7:1   warning  Variable is referenced but not assigned  SC2154
+  7:1   warn     Variable is referenced but not assigned  SC2154
 
 path/to/other.zsh
   12:5  error  Unreachable code after return  custom/unreachable

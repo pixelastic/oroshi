@@ -90,6 +90,7 @@ Implementation preference ladder, simplest first:
 
 ```zsh
 # Formatter. Rewrites code to canonical style.
+# Exits 0 on success (including nothing to do), 1 on error.
 # Default: modifies files in-place.
 # Directories are scanned for matching files only (e.g. js-fix ignores .py files).
 # Usage:
@@ -98,8 +99,7 @@ Implementation preference ladder, simplest first:
 # $ js-fix src/                                 # all js files in directory
 # $ js-fix src/foo.js lib/                      # mix of files and directories
 # $ js-fix path/to/file.js --stdout             # print fixed code (single file only)
-# $ echo code | js-fix                          # stdin → stdout
-# $ echo code | js-fix --filepath path/to/file  # stdin → stdout, config resolved from path
+# $ echo code | js-fix --stdin --filepath path/to/file  # read stdin, write stdout, resolve config from path
 ```
 
 **Notes:**
@@ -108,12 +108,22 @@ The underlying tool varies by language — sometimes a dedicated formatter (e.g.
 Prettier), sometimes the linter's own autofix mode, sometimes both chained
 together. The public API is the same regardless.
 
+Flags:
+
+- **`--stdout`** — write the fixed code to stdout instead of modifying the file
+  in-place. Only valid with a single file argument.
+- **`--stdin`** — read input from stdin instead of from a file argument.
+  Implies `--stdout` (no file to modify in-place).
+- **`--filepath`** — the real file path, used to resolve language-specific
+  configuration (e.g. eslint config, prettier config). Required with `--stdin`
+  since no file argument is available.
+
 See [fix-lint-relationship.md](fix-lint-relationship.md) for how `{lang}-fix`
 and `{lang}-lint` relate to each other.
 
 **Dependencies:**
 
-- Used by [NeoVim `configureFormatter`](neovim.md#configureformatterconform) in stdin → stdout mode
+- Used by [NeoVim `configureFormatter`](neovim.md#configureformatterconform) with `--stdin --filepath` (conform.nvim pipes the buffer content)
 - Used by [`{lang}-lint --fix`](#lang-lint) as the formatting step before linting
 
 ---

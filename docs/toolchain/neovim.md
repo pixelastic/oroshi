@@ -86,9 +86,14 @@ across all languages.
 
 ### `configureFormatter(conform)`
 
-Registers a custom formatter with conform.nvim. Specifies the command (`bin-zsh
-{lang}-fix`), args (`--stdout`, `--filepath`), stdin mode, and accepted exit
-codes. The formatter reads from stdin and writes the fixed code to stdout.
+Registers a custom formatter with conform.nvim.
+
+Command: `bin-zsh {lang}-fix --stdin --filepath $FILENAME`.
+
+- `bin-zsh`: because `{lang}-fix` is a ZSH autoloaded function
+- `--stdin`: conform.nvim pipes the buffer content; this tells `{lang}-fix` to
+read it from stdin rather than from a filepath
+- `--filepath`: the real file path, so the script can resolve configuration
 
 ### `onInit()` *(optional)*
 
@@ -104,7 +109,7 @@ opened (e.g. indentation overrides, comment string settings).
 **Dependencies:**
 
 - Calls [`{lang}-lint --json`](scripts.md#lang-lint) for diagnostics
-- Calls [`{lang}-fix --stdout`](scripts.md#lang-fix) for format-on-save
+- Calls [`{lang}-fix --stdin --filepath`](scripts.md#lang-fix) for format-on-save
 - Referenced by [`code-quality.lua`](#code-qualitylua) to wire into the plugin system
 
 ---
