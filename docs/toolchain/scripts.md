@@ -10,6 +10,9 @@ They are available directly in any ZSH context and can call each other without
 spawning subprocesses. Non-ZSH callers (e.g. NeoVim) must invoke them through
 the `bin-zsh` wrapper — see [neovim.md](neovim.md) for details.
 
+They live in `tools/term/zsh/config/functions/autoload/_languages/{lang}/`,
+one directory per language.
+
 Naming convention: `{lang}` is the short language identifier (e.g. `zsh`, `js`,
 `python`, `go`, `json`, `toml`, etc).
 
@@ -46,8 +49,9 @@ Detection strategy, from most common to less common:
 
 ```zsh
 # Linter. Reports lint violations.
-# Exits non-zero when violations are found.
-# Directories are scanned for matching files only (e.g. zsh-lint ignores .js files).
+# Exits 0 when clean, 1 on violations or errors.
+# All output (violations, errors) goes to stdout.
+# Directories are scanned recursively for matching files only (e.g. zsh-lint ignores .js files).
 # Usage:
 # $ zsh-lint path/to/file.zsh                          # stylish output (default)
 # $ zsh-lint src/foo.zsh src/bar.zsh                   # multiple files
@@ -76,7 +80,6 @@ Implementation preference ladder, simplest first:
 1. Use an external linter with default options
 2. Add custom options or rule exclusions
 3. Combine multiple external linters (merge their JSON outputs into a single array)
-4. Write custom regex-based rules using the `lint-custom-run` framework
 
 **Dependencies:**
 
@@ -92,7 +95,7 @@ Implementation preference ladder, simplest first:
 # Formatter. Rewrites code to canonical style.
 # Exits 0 on success (including nothing to do), 1 on error.
 # Default: modifies files in-place.
-# Directories are scanned for matching files only (e.g. js-fix ignores .py files).
+# Directories are scanned recursively for matching files only (e.g. js-fix ignores .py files).
 # Usage:
 # $ js-fix path/to/file.js                      # modify file in-place
 # $ js-fix src/foo.js src/bar.js                # multiple files
@@ -135,7 +138,8 @@ and `{lang}-lint` relate to each other.
 ```zsh
 # Tester. Runs the language's test runner.
 # Exits non-zero on failure.
-# Directories are scanned for matching files only (e.g. js-test ignores .py files).
+# All output goes to stdout.
+# Directories are scanned recursively for matching files only (e.g. js-test ignores .py files).
 # Usage:
 # $ js-test src/__tests__/module.test.js                    # one test file
 # $ js-test src/module.js                                   # source file → resolved via {lang}-test-path

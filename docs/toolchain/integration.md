@@ -27,10 +27,10 @@ Manual lint command, called by the user in the terminal or by
 [`lintstaged.config.js`](#lintstagedconfigjs) which runs automatically at commit
 time and blocks the commit on failure, `git-file-lint` is on-demand.
 
-Uses `git-file-list-dirty-raw` to obtain the dirty file list. Groups files by
-language using [`is-{lang}`](scripts.md#is-lang), then runs
-[`{lang}-lint --fix`](scripts.md#lang-lint) on each group. Reports violations
-grouped by language.
+Groups dirty files in the working tree by language using
+[`is-{lang}`](scripts.md#is-lang), then runs [`{lang}-lint
+--fix`](scripts.md#lang-lint) on each group. Reports violations grouped by
+language.
 
 **Dependencies:**
 
@@ -106,6 +106,10 @@ tests and relevant error messages. Two layers work together:
 // Example entry:
 // '**/*.go': ['yarn lint:go', 'yarn test:go']
 ```
+
+Yarn scripts are defined in `package.json` and delegate to wrappers in
+`scripts/yarn/`. `lint-{lang}` wraps `{lang}-lint --fix`, `test-{lang}`
+wraps `{lang}-test`.
 
 **Dependencies:**
 

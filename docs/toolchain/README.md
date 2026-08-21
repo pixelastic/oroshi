@@ -5,13 +5,13 @@ A language toolchain is the full set of ZSH scripts, configuration files, and co
 ## Detail files
 
 - [scripts.md](scripts.md) — Per-language ZSH functions: `is-{lang}`, `{lang}-lint`, `{lang}-fix`, `{lang}-test`, `{lang}-test-path`, and their contracts.
-- [fix-lint-relationship.md](fix-lint-relationship.md) — How `{lang}-fix`, `{lang}-lint`, and `{lang}-lint --fix` relate to each other, and how implementations may optimize internally.
-- [lint-output.md](lint-output.md) — Lint output formats: default stylish for terminal, `--json` unified schema for machine consumers.
+  - [lint-output.md](lint-output.md) — Lint output formats: default stylish for terminal, `--json` unified schema for machine consumers.
+  - [fix-lint-relationship.md](fix-lint-relationship.md) — How `{lang}-fix`, `{lang}-lint`, and `{lang}-lint --fix` relate to each other, and how implementations may optimize internally.
 - [integration.md](integration.md) — Shared dispatchers, pre-commit hooks, shell completion, and other cross-language configuration.
 - [agents.md](agents.md) — AI integration: how Claude Code skills invoke the toolchain, and conventions for agent-driven linting, testing, and fixing.
 - [neovim.md](neovim.md) — NeoVim integration: diagnostics from unified lint JSON and format-on-save via `{lang}-fix`.
 
 ## Adding a language
 
-Each detail file has an "Adding a language" section. Follow them in order:
+Each of the following files has an "Adding a language" section. Follow them in order:
 [scripts.md](scripts.md) → [integration.md](integration.md) → [neovim.md](neovim.md) → [agents.md](agents.md).

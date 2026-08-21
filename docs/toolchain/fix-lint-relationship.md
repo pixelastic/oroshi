@@ -10,7 +10,8 @@ Both can be called individually and must respect their contract in isolation.
 
 **`{lang}-lint --fix`** is a shortcut for running both together: format in-place,
 then report remaining violations. The end result is identical to
-`{lang}-fix file && {lang}-lint file`.
+`{lang}-fix file && {lang}-lint file` — if the fix step fails, the lint step
+does not run.
 
 The shortcut exists for two reasons:
 

@@ -76,7 +76,7 @@ tools at startup, then `linters`/`formatters` lists reference them by name.
 ### `configureLinter(lint)`
 
 Registers a custom linter with nvim-lint. Specifies the command (`bin-zsh
-{lang}-lint`), args (`--json` and the filename), and stdin mode. The linter name
+{lang}-lint`) and args (`--json` and the filename). The linter name
 is registered in nvim-lint's `linters` table so it can be referenced by name in
 `code-quality.lua`.
 
