@@ -81,7 +81,9 @@ all matching toolchains apply.
 # Linter. Reports lint violations.
 # Exits 0 when clean, 1 on violations or errors.
 # Violations go to stdout. Internal errors (missing config, tool crash) bubble to stderr.
-# Directories are scanned recursively; files are filtered through is-{lang}.
+# When a directory is passed, it is expanded to all its files recursively
+# and each file is treated as if passed individually. Non-matching files
+# (per is-{lang}) are skipped.
 # Usage:
 # $ zsh-lint path/to/file.zsh                          # stylish output (default)
 # $ zsh-lint src/foo.zsh src/bar.zsh                   # multiple files
@@ -126,7 +128,9 @@ Implementation preference ladder, simplest first:
 # Exits 0 on success (including nothing to do), 1 on error.
 # No output on stdout (unless --stdout). Errors go to stderr.
 # Default: modifies files in-place.
-# Directories are scanned recursively; files are filtered through is-{lang}.
+# When a directory is passed, it is expanded to all its files recursively
+# and each file is treated as if passed individually. Non-matching files
+# (per is-{lang}) are skipped.
 # Usage:
 # $ js-fix path/to/file.js                      # modify file in-place
 # $ js-fix src/foo.js src/bar.js                # multiple files
@@ -168,9 +172,11 @@ and `{lang}-lint` relate to each other.
 
 ```zsh
 # Tester. Runs the language's test runner.
-# Exits non-zero on failure.
+# Exits non-zero on failure, 0 on success or when no tests are found.
 # All output goes to stdout.
-# Directories are scanned recursively; files are filtered through is-{lang}.
+# When a directory is passed, it is expanded to all its files recursively
+# and each file is treated as if passed individually. Non-matching files
+# (per is-{lang}) are skipped.
 # Usage:
 # $ js-test src/__tests__/module.js                          # one test file
 # $ js-test src/module.js                                   # source file → resolved via {lang}-test-path

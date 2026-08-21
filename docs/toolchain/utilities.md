@@ -32,6 +32,26 @@ Used by:
 
 ---
 
+## `lint-staged`
+
+```js
+// Pre-commit runner that executes lint and test commands on staged files.
+// Source: https://github.com/lint-staged/lint-staged
+// Config: lintstaged.config.js (repository root)
+```
+
+lint-staged is invoked automatically at pre-commit time via a git hook. It
+reads [`lintstaged.config.js`](integration.md#lintstagedconfigjs), matches
+staged files against glob patterns, and runs the configured lint and test
+commands on them. If any command exits non-zero, the commit is blocked.
+
+Used by:
+
+- [integration.md](integration.md#lintstagedconfigjs) — per-language glob
+  patterns route staged files to `{lang}-lint --fix` and `{lang}-test`
+
+---
+
 ## `rtk`
 
 ```zsh
