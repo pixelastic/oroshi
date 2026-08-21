@@ -28,12 +28,20 @@ mechanisms invoke.
   references/         # Supplementary docs referenced by SKILL.md
     style.md          # Style rules not enforced by the linter
     testing.md        # Test framework conventions and patterns
-    libraries.md      # Preferred libraries and idiomatic usage
+    ...               # Additional files as needed by the language
 ```
 
 The `references/` directory contains material too detailed for the main skill
 file. SKILL.md references these files by relative path so the agent loads them
 on demand rather than all at once.
+
+Two files are expected in every skill:
+
+- **`style.md`** — style rules too fuzzy for deterministic linter enforcement
+- **`testing.md`** — test framework conventions, patterns, and runner usage
+
+Additional files are free-form and vary by language (e.g. preferred libraries,
+argument parsing conventions, language-specific idioms).
 
 ### Canonical workflow
 
@@ -43,7 +51,7 @@ The skill enforces a TDD-driven sequence:
    conventions and naming rules
 2. **Test first** — write a failing test before any production code
 3. **Make it pass** with minimal code
-4. **Refactor** applying project conventions (return early, naming, structure)
+4. **Refactor** applying the style conventions defined in [`style.md`](#directory-structure)
 5. **Lint** with [`{lang}-lint --fix`](scripts.md#lang-lint)
 
 ### What SKILL.md defines
