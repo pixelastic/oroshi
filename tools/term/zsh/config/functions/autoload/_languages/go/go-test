@@ -1,13 +1,21 @@
-# Run Go tests for the packages containing the given files
+# Run Go tests for the packages containing the given files or directories
 # Usage:
 # $ go-test ./path/to/file.go                    # Test that file's package
 # $ go-test file1.go file2.go                    # Test multiple packages (deduplicated)
+# $ go-test ./pkg/                               # Expand directory, test all Go packages
+# $ go-test file.go ./pkg/                       # Mixed inputs
 setopt local_options err_return
 
-local files=("$@")
+# No arguments provided
+[[ $# -eq 0 ]] && return 1
 
-# No files provided
-[[ ${#files} -eq 0 ]] && return 1
+# Expand directories, filter to Go files, map to test files
+local expanded="$(file-expand --filter is-go --map go-test-path "$@")"
+
+# No testable files found
+[[ "$expanded" == "" ]] && return 1
+
+local -a files=("${(@f)expanded}")
 
 # Resolve each file to its package directory, deduplicated
 local -aU packageDirs=()
