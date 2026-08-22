@@ -55,6 +55,8 @@ handling convention:
 2. **Filter** — the expanded list is filtered through `is-{lang}`, keeping only
    files that belong to the language. Non-matching files are silently skipped.
 
+These scripts never read from stdin. All input is passed as file path arguments.
+
 Each script implements these steps internally — there is no shared helper
 function. The logic is simple enough that duplicating it is preferable to
 adding an abstraction.

@@ -32,6 +32,7 @@
 - Add CLI tools to add items in my calendar
 - Seem like we have both {language}-fix called by nvim and {language}-lint --fix
   called by agents and maybe lintstaged. Seems like a weird gap
+- Prevent variables like `absArg` in code, prefer full words
 
 ---
 
