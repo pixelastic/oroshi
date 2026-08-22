@@ -1,39 +1,35 @@
 # Fix Go files by organizing imports and applying strict formatting
 # Usage:
-# $ go-fix ./path/to/file.go                         # Output fixed code to stdout
-# $ go-fix --in-place ./path/to/file.go              # Overwrite the file in place
-# $ go-fix --in-place file1.go file2.go              # Overwrite multiple files in place
-# $ echo "code" | go-fix --filepath ./realpath.go    # Stdin to stdout with import resolution
+# $ go-fix ./path/to/file.go                # Fix file in place
+# $ go-fix file1.go file2.go                # Fix multiple files in place
+# $ go-fix ./pkg/                           # Expand directory, fix all Go files
+# $ go-fix --stdout ./path/to/file.go       # Output fixed code to stdout
 setopt local_options err_return
 
 zparseopts -E -D \
-  -in-place=flagInPlace \
-  -filepath:=flagFilepath
-local isInPlace=${#flagInPlace}
-local overridePath=${flagFilepath[2]}
+  -stdout=flagStdout
+local isStdout=${#flagStdout}
 
-# Detect piped input
-local hasStdin=0
-[[ -p /dev/stdin ]] && hasStdin=1
-[[ -f /dev/stdin ]] && hasStdin=1
+# --stdout only works with a single file
+[[ $isStdout -eq 1 && $# -ne 1 ]] && return 1
 
-# Stdin mode: pipe through both tools to stdout
-if [[ $hasStdin -eq 1 ]]; then
-  local srcArgs=()
-  [[ "$overridePath" != "" ]] && srcArgs=(-srcdir "$overridePath")
-  goimports "${srcArgs[@]}" | gofumpt
-  return 0
+# Expand directories, resolve file list
+local expanded="$(file-expand --filter is-go "$@")"
+local -a files=("${(@f)expanded}")
+
+# Stdout mode: swap the file for a temp copy
+local tmpFile=""
+if [[ $isStdout -eq 1 ]]; then
+  tmpFile="$(mktemp)"
+  cp "${files[1]}" "$tmpFile"
+  files=("$tmpFile")
 fi
 
-# In-place mode: run both tools with -w on all files
-if [[ $isInPlace -eq 1 ]]; then
-  local files=("$@")
-  goimports -w "${files[@]}"
-  gofumpt -w "${files[@]}"
-  return 0
-fi
+goimports -w "${files[@]}"
+gofumpt -w "${files[@]}"
 
-# Default: file to stdout
-local inputPath="${1:a}"
-local srcArgs=(-srcdir "$inputPath")
-goimports "${srcArgs[@]}" <"$inputPath" | gofumpt
+# Stdout mode: output and cleanup
+if [[ "$tmpFile" != "" ]]; then
+  cat "$tmpFile"
+  rm -f "$tmpFile"
+fi
