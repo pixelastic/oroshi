@@ -1,0 +1,66 @@
+# Expand directories to files, with optional filtering and mapping
+# Usage:
+# $ file-expand dir/                              # All files recursively
+# $ file-expand --filter is-go dir/               # Only .go files
+# $ file-expand --filter is-go --map go-test dir/  # Filtered and mapped
+# $ file-expand file1 dir1/ file2                  # Mixed inputs
+setopt local_options err_return
+
+zparseopts -E -D \
+  -filter:=flagFilter \
+  -map:=flagMap
+
+local filterCmd=${flagFilter[2]}
+local mapCmd=${flagMap[2]}
+
+# No arguments → no output
+[[ $# -eq 0 ]] && return 0
+
+local -a files=()
+
+# Expand: directories → recursive files, files → as-is
+local absoluteArg
+local fdOutput
+for arg in "$@"; do
+  absoluteArg="${arg:a}"
+
+  # Individual files pass through as-is
+  if [[ -f "$absoluteArg" ]]; then
+    files+=("$absoluteArg")
+    continue
+  fi
+
+  # Expand directory recursively
+  fdOutput="$(fd --type file . "$absoluteArg" 2>/dev/null)"
+  [[ "$fdOutput" == "" ]] && continue
+  for filePath in ${(f)fdOutput}; do
+    files+=("${filePath:a}")
+  done
+done
+
+# Filter: keep only files where command returns 0
+if [[ "$filterCmd" != "" ]]; then
+  local -a filtered=()
+  for filePath in "${files[@]}"; do
+    "$filterCmd" "$filePath" 2>/dev/null && filtered+=("$filePath")
+  done
+  files=("${filtered[@]}")
+fi
+
+# Map: transform each path through the command
+if [[ "$mapCmd" != "" ]]; then
+  local -a mapped=()
+  local result
+  for filePath in "${files[@]}"; do
+    result="$("$mapCmd" "$filePath" 2>/dev/null)" && mapped+=("$result")
+  done
+  files=("${mapped[@]}")
+fi
+
+# Dedup and output
+local -A seen=()
+for filePath in "${files[@]}"; do
+  [[ "${seen[$filePath]+x}" != "" ]] && continue
+  seen[$filePath]=1
+  echo "$filePath"
+done
