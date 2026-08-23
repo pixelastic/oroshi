@@ -153,17 +153,16 @@ for [programming languages](README.md#language-categories) only.
 # Location: tools/term/zsh/config/keybindings/ctrl-p.zsh
 # Typing a toolchain command then pressing CTRL-P opens a dedicated fzf picker.
 # Usage:
-# $ go-lint <CTRL-P>                     # fzf-go-lint: all .go files
-# $ go-fix <CTRL-P>                      # fzf-go-fix: all .go files
-# $ go-test <CTRL-P>                     # fzf-go-test: only test files
+# $ go-lint <CTRL-P>                     # fzf-go-files: all .go files
+# $ go-fix <CTRL-P>                      # fzf-go-files: all .go files
+# $ go-test <CTRL-P>                     # fzf-go-tests: only test files
 ```
 
 **Notes:**
 
-Each command maps to an `fzf-{lang}-{command}` picker in the `specialPickers`
-table. `fzf-{lang}-lint` and `fzf-{lang}-fix` show all files matching the
-language's extensions. `fzf-{lang}-test` shows only test files (e.g.
-`__tests__/*.js`).
+Two pickers per language: `fzf-{lang}-files` shows all files matching the
+language's extensions (used by both `{lang}-lint` and `{lang}-fix`), and
+`fzf-{lang}-tests` shows only test files (e.g. `*_test.go`, `__tests__/*.js`).
 
 Pickers live in `tools/term/zsh/config/functions/autoload/fzf/` and use the
 `fzf-dispatch` framework (`fzf-source`, `fzf-options`, `fzf-preview`,
@@ -195,8 +194,8 @@ All languages:
    {lang}` for programming languages)
 3. **`compdef.zsh`** — register `{lang}-lint` and `{lang}-fix` with the
    language's file glob
-4. **`ctrl-p.zsh`** — add `fzf-{lang}-lint` and `fzf-{lang}-fix` pickers to
-   `specialPickers`
+4. **`ctrl-p.zsh`** — map `{lang}-lint` and `{lang}-fix` to the
+   `fzf-{lang}-files` picker in `specialPickers`
 5. **`filetypes.jsonc`** — add file extension(s) to the appropriate group, then
    rebuild with `yarn colors-build-and-stage`
 
@@ -209,5 +208,5 @@ Programming languages only:
 8. **`rtk-command-rewrite`** — add a command match so the test command gets
    routed through RTK
 9. **`compdef.zsh`** — register `{lang}-test` with the language's file glob
-10. **`ctrl-p.zsh`** — add `fzf-{lang}-test` picker (filtered to test files
-    only) to `specialPickers`
+10. **`ctrl-p.zsh`** — map `{lang}-test` to the `fzf-{lang}-tests` picker
+    (filtered to test files only) in `specialPickers`

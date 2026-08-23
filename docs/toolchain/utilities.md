@@ -73,3 +73,38 @@ Filter rules live in `filters.toml`, which maps command patterns to
 strip/replace rules. See
 [integration.md](integration.md#rtk--test-output-filtering-for-agents) for
 how the toolchain configures filters and command rewriting for each language.
+
+---
+
+## `file-expand`
+
+```zsh
+# Expands directories to files, filters, and optionally maps paths.
+# Output is deduplicated absolute paths, one per line.
+# Location: tools/term/zsh/config/functions/autoload/misc/file/file-expand
+# Usage:
+# $ file-expand src/                                           # all files recursively
+# $ file-expand --filter is-go src/                            # only Go files
+# $ file-expand --filter is-go --map go-test-path src/         # Go files → test paths
+# $ file-expand file1.go dir/ file2.go                         # mixed files and directories
+```
+
+Shared helper used by [`{lang}-lint`](scripts.md#lang-lint),
+[`{lang}-fix`](scripts.md#lang-fix), and [`{lang}-test`](scripts.md#lang-test)
+for [argument handling](scripts.md#argument-handling). Accepts files and
+directories as positional arguments. Directories are expanded recursively
+using `fd --type file` (respects `.gitignore`).
+
+Optional flags:
+
+- **`--filter <cmd>`** — keep only files where `<cmd> <file>` returns exit 0.
+  Files that fail are silently dropped.
+- **`--map <cmd>`** — transform each remaining path by calling `<cmd> <file>`.
+  If the command fails (exit non-zero), skip that file silently.
+
+Processing order: expand → filter → map → deduplicate.
+
+Used by:
+
+- [scripts.md](scripts.md#argument-handling) — all `{lang}-lint`, `{lang}-fix`,
+  and `{lang}-test` use it for argument expansion and filtering

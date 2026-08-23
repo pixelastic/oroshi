@@ -57,9 +57,8 @@ handling convention:
 
 These scripts never read from stdin. All input is passed as file path arguments.
 
-Each script implements these steps internally — there is no shared helper
-function. The logic is simple enough that duplicating it is preferable to
-adding an abstraction.
+Each script uses [`file-expand`](utilities.md#file-expand) to implement these
+steps.
 
 ---
 
