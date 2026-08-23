@@ -1,17 +1,22 @@
 # Fix Go files by organizing imports and applying strict formatting
 # Usage:
-# $ go-fix ./path/to/file.go                # Fix file in place
-# $ go-fix file1.go file2.go                # Fix multiple files in place
-# $ go-fix ./pkg/                           # Expand directory, fix all Go files
-# $ go-fix --stdout ./path/to/file.go       # Output fixed code to stdout
+# $ go-fix ./path/to/file.go                          # Fix file in place
+# $ go-fix file1.go file2.go                          # Fix multiple files in place
+# $ go-fix ./pkg/                                     # Expand directory, fix all Go files
+# $ go-fix --stdout ./path/to/file.go                 # Output fixed code to stdout
+# $ go-fix --original-path /real/path.go /tmp/file.go # Resolve config from real path
 setopt local_options err_return
 
 zparseopts -E -D \
-  -stdout=flagStdout
+  -stdout=flagStdout \
+  -original-path:=flagOriginalPath
 local isStdout=${#flagStdout}
+local originalPath="${flagOriginalPath[2]}"
 
 # --stdout only works with a single file
 [[ $isStdout -eq 1 && $# -ne 1 ]] && return 1
+# --original-path only works with a single file
+[[ "$originalPath" != "" && $# -ne 1 ]] && return 1
 
 # Expand directories, resolve file list
 local expanded="$(file-expand --filter is-go "$@")"
@@ -25,7 +30,12 @@ if [[ $isStdout -eq 1 ]]; then
   files=("$tmpFile")
 fi
 
-goimports -w "${files[@]}"
+# Build goimports args — pass -srcdir when original-path is set
+local -a goimportsArgs=(-w)
+[[ "$originalPath" != "" ]] && goimportsArgs+=(-srcdir "${originalPath:h}")
+goimportsArgs+=("${files[@]}")
+
+goimports "${goimportsArgs[@]}"
 gofumpt -w "${files[@]}"
 
 # Stdout mode: output and cleanup

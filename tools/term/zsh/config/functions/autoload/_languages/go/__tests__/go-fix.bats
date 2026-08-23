@@ -98,6 +98,48 @@ setup() {
   [[ "$status" -ne 0 ]]
 }
 
+@test "--original-path passes srcdir to goimports" {
+  local file="$BATS_TMP_DIR/main.go"
+  printf 'package main\n' > "$file"
+  local originalPath="/home/user/project/cmd/main.go"
+
+  bats_run_zsh "go-fix --original-path $originalPath $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+
+  local calls="$(cat "$BATS_TMP_DIR/calls")"
+  # goimports gets -srcdir with the directory of the original path
+  [[ "$calls" == *"goimports -w -srcdir /home/user/project/cmd $file"* ]]
+  # gofumpt is unaffected
+  [[ "$calls" == *"gofumpt -w $file"* ]]
+}
+
+@test "--original-path errors with multiple files" {
+  local file1="$BATS_TMP_DIR/a.go"
+  local file2="$BATS_TMP_DIR/b.go"
+  printf 'package main\n' > "$file1"
+  printf 'package main\n' > "$file2"
+
+  bats_run_zsh "go-fix --original-path /some/path $file1 $file2"
+  [[ "$status" -ne 0 ]]
+}
+
+@test "--original-path combined with --stdout" {
+  local file="$BATS_TMP_DIR/main.go"
+  printf 'package main\n' > "$file"
+  local originalPath="/home/user/project/cmd/main.go"
+
+  bats_run_zsh "go-fix --stdout --original-path $originalPath $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != "" ]]
+
+  local calls="$(cat "$BATS_TMP_DIR/calls")"
+  # goimports gets -srcdir even in stdout mode
+  [[ "$calls" == *"goimports -w -srcdir /home/user/project/cmd"* ]]
+  # but NOT called on the original file (uses temp copy)
+  [[ "$calls" != *"goimports -w -srcdir /home/user/project/cmd $file"* ]]
+}
+
 @test "goimports runs before gofumpt in in-place mode" {
   local file="$BATS_TMP_DIR/main.go"
   printf 'package main\n' > "$file"
