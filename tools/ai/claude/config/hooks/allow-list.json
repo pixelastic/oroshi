@@ -167,6 +167,7 @@
   "go version",
   "go vet",
   "go-lint",
+  "go-module-root",
   "go-test",
   "go-tool-path",
   "grep",
