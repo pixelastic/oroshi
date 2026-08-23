@@ -1,0 +1,35 @@
+# Fuzzy pick a Go test file
+# Usage:
+# $ fzf-go-tests                  # Interactive search
+# $ fzf-go-tests --source         # Print Go test files
+# $ fzf-go-tests --options        # Print FZF options (one per line)
+# $ fzf-go-tests --postprocess    # Read selection from stdin, print filepath
+setopt local_options err_return
+source "${functions_source[$0]:A:h}/__lib/init.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-colorize-path.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-options-files.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-fs-preview.zsh"
+
+SEARCH_PATH="$(git-directory-root)"
+
+function fzf-source() {
+  local items="$(fd \
+    --type file \
+    --extension go \
+    --glob '*_test.go' \
+    --base-directory "$SEARCH_PATH" \
+    | sort-filepaths)"
+  [[ "$items" == "" ]] && return 0
+
+  local item
+  for item in ${(f)items}; do
+    fzf-colorize-path "$item" "${SEARCH_PATH}/${item}"
+    echo "${SEARCH_PATH}/${item}▮${REPLY}"
+  done
+}
+
+function fzf-options() {
+  fzf-options-files "bin-zsh fzf-go-tests" "$SEARCH_PATH"
+}
+
+fzf-dispatch

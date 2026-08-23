@@ -16,6 +16,9 @@ function oroshi-ctrl-p-widget() {
     yrt fzf-js-test
     yrtw fzf-js-test
     yrtff fzf-js-test
+    go-lint fzf-go-files
+    go-fix fzf-go-files
+    go-test fzf-go-tests
   )
 
   # Dispatch to context-aware picker based on last word in buffer

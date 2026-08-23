@@ -278,7 +278,9 @@ compdef "_files -g '*.pdf'" \
 # }}}
 # Go {{{
 compdef "_files -g '*.go'" \
-  go-lint
+  go-fix \
+  go-lint \
+  go-test
 # }}}
 # JS {{{
 compdef "_files -g '*.js'" \
