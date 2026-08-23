@@ -270,7 +270,7 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/main.go"
 
   is-go() { return 0; }
-  go-lint() { printf '[]'; }
+  go-lint() { printf ''; }
   bats_mock is-go go-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
@@ -278,7 +278,7 @@ setup() {
   [[ "$output" = "" ]]
 }
 
-@test "shows Go header, errors and relative paths when is-go true and go-lint has errors" {
+@test "shows Go header and stylish output when is-go true and go-lint has errors" {
   echo 'package main' > "$BATS_GIT_DIR/main.go"
   bats_git add main.go
   bats_git commit --quiet -m "add main.go"
@@ -286,16 +286,14 @@ setup() {
 
   is-go() { return 0; }
   go-lint() {
-    printf '[{"file":"%s","line":3,"column":1,"code":"unused","message":"var x is unused"}]' \
-      "$2"
+    printf 'main.go\n  3:1  warn  var x is unused  unused\n'
   }
   bats_mock is-go go-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 1 ]]
   [[ "$output" =~ "── Go ──" ]]
-  [[ "$output" =~ main.go:3:1:\ unused: ]]
-  [[ ! "$output" =~ $BATS_GIT_DIR ]]
+  [[ "$output" =~ "var x is unused" ]]
 }
 
 @test "exits 0 when is-go is false for all dirty files" {
@@ -321,7 +319,7 @@ setup() {
   is-go() { return 0; }
   go-lint() {
     printf '%s\n' "$@" > "$BATS_TMP_DIR/.go-lint-args"
-    printf '[]'
+    printf ''
   }
   bats_mock is-go go-lint
 

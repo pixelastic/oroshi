@@ -22,6 +22,19 @@ strip_lines_matching = [
 ]
 on_empty = "All tests passed."
 
+[filters.go]
+description = "go test output — show failures only"
+match_command = "^(bin-zsh )?go-test( |$)"
+strip_ansi = true
+strip_lines_matching = [
+  "^=== RUN\\s",
+  "^--- PASS:",
+  "^PASS$",
+  "^ok\\s",
+  "^\\?\\s",
+]
+on_empty = "All tests passed."
+
 [filters.pytest]
 description = "pytest output — show failures only"
 match_command = "^(bin-zsh )?python-test( |$)"

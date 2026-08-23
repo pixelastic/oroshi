@@ -15,7 +15,7 @@ export default {
   '**/*.py': ['yarn run lint:python', 'yarn run test:python'],
 
   // Go files
-  '**/*.go': ['yarn run lint:go', 'yarn run test:go'],
+  '**/*.go': ['yarn precommit:lint go', 'yarn precommit:test go'],
 
   // JS Scripts
   '**/*.js': ['yarn run lint:fix --js', 'yarn run test --fail-fast --related'],

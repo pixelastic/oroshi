@@ -100,7 +100,7 @@ if [[ "$results[python-files]" != "" ]]; then
 fi
 
 if [[ "$results[go-files]" != "" ]]; then
-  displayLintJson --header "Go" "$(go-lint --fix ${=results[go-files]})"
+  displayLintText --header "Go" "$(go-lint --fix ${=results[go-files]})"
 fi
 
 # Exit non-zero if any group had violations

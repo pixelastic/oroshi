@@ -23,7 +23,8 @@ fi
 # Filter-backed commands → rtk bin-zsh
 if [[ "$cmd" =~ '^bats( |$)' ]] || \
   [[ "$cmd" =~ '^yarn run test( |$)' ]] || \
-  [[ "$cmd" =~ '^python-test( |$)' ]]; then
+  [[ "$cmd" =~ '^python-test( |$)' ]] || \
+  [[ "$cmd" =~ '^go-test( |$)' ]]; then
   print -r -- "rtk bin-zsh $cmd"
   return 0
 fi

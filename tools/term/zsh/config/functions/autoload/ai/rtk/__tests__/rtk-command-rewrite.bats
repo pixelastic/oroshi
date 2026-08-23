@@ -57,6 +57,15 @@ setup() {
   [[ "$output" = "rtk bin-zsh python-test foo.py" ]]
 }
 
+@test "returns rtk bin-zsh go-test foo_test.go for go-test foo_test.go" {
+  rtk() { return 1; }
+  bats_mock rtk
+
+  bats_run_zsh "rtk-command-rewrite 'go-test foo_test.go'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "rtk bin-zsh go-test foo_test.go" ]]
+}
+
 # --- Pass-through ---
 
 @test "returns echo hello unchanged for echo hello" {
@@ -109,4 +118,13 @@ setup() {
   bats_run_zsh "rtk-command-rewrite 'python-test-something'"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "python-test-something" ]]
+}
+
+@test "returns go-test-something unchanged for go-test-something" {
+  rtk() { return 1; }
+  bats_mock rtk
+
+  bats_run_zsh "rtk-command-rewrite 'go-test-something'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "go-test-something" ]]
 }
