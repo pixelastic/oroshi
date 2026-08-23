@@ -1,22 +1,32 @@
 # Lint one or more Go files or directories via golangci-lint
-# Returns a JSON array of violations in unified format, like zsh-lint and bats-lint
+# Default output is stylish format (violations grouped by file)
 # Usage:
-# $ go-lint ./path/to/file.go          # Filtered to that file
+# $ go-lint ./path/to/file.go          # Stylish output (default)
+# $ go-lint --json ./path/to/file.go   # Unified JSON output
 # $ go-lint --fix ./path/to/file.go    # Auto-fix then report remaining
-# $ go-lint ./path/to/dir/             # Lint entire directory, unfiltered
+# $ go-lint ./path/to/dir/             # Expand directory to Go files
 # $ go-lint file1.go file2.go          # Multiple files
 setopt local_options err_return
 
 zparseopts -E -D \
-  -fix=flagFix
+  -fix=flagFix \
+  -json=flagJson
 local isFix=${#flagFix}
+local isJson=${#flagJson}
 
 # No inputs provided
-local inputs=("$@")
-if [[ ${#inputs} -eq 0 ]]; then
+if [[ $# -eq 0 ]]; then
   echoerr "Error: No files provided"
   return 1
 fi
+
+# Expand directories and filter to Go files
+local expanded="$(file-expand --filter is-go "$@")"
+if [[ "$expanded" == "" ]]; then
+  [[ $isJson == 1 ]] && printf '[]\n'
+  return 0
+fi
+local -a inputs=("${(@f)expanded}")
 
 # Resolve inputs to absolute paths and validate
 for i in {1..${#inputs}}; do
@@ -78,20 +88,56 @@ local prefixesJson="$(json-array "${allowedPrefixes[@]}")"
 # Filter to keep only violations from the initially requested files/directories,
 # then reshape from golangci-lint format to our unified lint format
 # (same as zsh-lint and bats-lint)
-local result="$(printf '%s' "$jsonOutput" | jq --argjson prefixes "$prefixesJson" \
+local result="$(printf '%s' "$jsonOutput" | jq \
+  --argjson prefixes "$prefixesJson" \
+  --arg root "$moduleRoot/" \
 '[.Issues // [] | .[]
     | select(.Pos.Filename + ":" | . as $f | $prefixes | any(. as $p | $f | startswith($p)))
     | {
-      file: .Pos.Filename,
-      code: .FromLinter,
-      level: (if .Severity == "" then "error" else .Severity end),
+      file: ($root + .Pos.Filename),
+      code: (if (.Text | test("^[A-Za-z0-9_-]+: "))
+        then (.Text | capture("^(?<c>[A-Za-z0-9_-]+): ") | .c)
+        else .FromLinter end),
+      level: (.Severity
+        | if . == "" then "error"
+          elif . == "warning" then "warn"
+          else . end),
       line: .Pos.Line,
-      endLine: (if .End.Line > 0 then .End.Line else .Pos.Line end),
       column: .Pos.Column,
-      endColumn: (if .End.Column > 0 then .End.Column else .Pos.Column end),
-      message: .Text
+      message: (if (.Text | test("^[A-Za-z0-9_-]+: "))
+        then (.Text | sub("^[A-Za-z0-9_-]+: "; ""))
+        else .Text end)
     }]')"
 
-printf '%s\n' "$result"
-[[ "$result" != "[]" ]] && return 1
-return 0
+# JSON mode: output raw JSON
+if [[ $isJson == 1 ]]; then
+  printf '%s\n' "$result"
+  [[ "$result" != "[]" ]] && return 1
+  return 0
+fi
+
+# Stylish mode (default): format as grouped violations
+# No violations → no output
+[[ "$result" == "[]" ]] && return 0
+
+local stylish="$(printf '%s' "$result" | jq -r --arg root "$moduleRoot/" '
+  group_by(.file)
+  | map(
+      (map("\(.line):\(.column)" | length) | max) as $lcw
+    | (map(.level | length) | max) as $lw
+    | (.[0].file | ltrimstr($root)) + "\n" +
+      (map(
+        "  " +
+        ("\(.line):\(.column)" | . + (" " * ($lcw - length))) +
+        "  " +
+        (.level + (" " * ($lw - (.level | length)))) +
+        "  " +
+        .message +
+        "  " +
+        .code
+      ) | join("\n"))
+    )
+  | join("\n\n")')"
+
+printf '%s\n' "$stylish"
+return 1
