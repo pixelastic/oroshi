@@ -1,0 +1,15 @@
+# Boolean: is the given file a JSON file?
+# Usage:
+# $ is-json /path/to/config.json    # exit 0 (.json extension)
+# $ is-json /path/to/script.js      # exit 1
+setopt local_options err_return
+
+local filepath="$1"
+
+# Directories and missing files are not JSON files
+[[ ! -f "$filepath" ]] && return 1
+
+# .json extension → JSON file
+[[ "$filepath" == *.json ]] && return 0
+
+return 1
