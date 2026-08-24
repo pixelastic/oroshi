@@ -10,6 +10,7 @@
 - **Linting bats:** Run `bats-lint <filepath>`
 - **Linting js:** Run `yarn run lint:fix <filepath>`
 - **Linting python:** Run `python-lint <filepath>`
+- **Linting json:** Run `json-lint <filepath>`
 - **Linting go:** Run `go-lint <filepath>`
 
 ## Code
