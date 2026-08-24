@@ -163,6 +163,22 @@
     "version-uninstalled": "yellow"
   },
 
+  // Modes
+  "modes": {
+    "sound-enabled":          "green",
+    "sound-disabled":         "gray",
+    "autosubmit-enabled":     "green",
+    "autosubmit-disabled":    "gray",
+    "language-en":            "amber-6",
+    "language-fr":            "gray",
+    "slack-enabled":          "amber-6",
+    "slack-disabled":         "gray",
+    "model-openai":           "amber-6",
+    "model-groq":             "orange",
+    "model-parakeet":         "gray"
+  },
+
+
   // Video
   "video": {
     "stream-audio": "blue"

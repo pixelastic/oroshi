@@ -811,6 +811,50 @@
     "ansi": 102,
     "hex": "#fdba74"
   },
+  "modes-autosubmit-disabled": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "modes-autosubmit-enabled": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "modes-language-en": {
+    "ansi": 146,
+    "hex": "#b45309"
+  },
+  "modes-language-fr": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "modes-model-groq": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "modes-model-openai": {
+    "ansi": 146,
+    "hex": "#b45309"
+  },
+  "modes-model-parakeet": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "modes-slack-disabled": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "modes-slack-enabled": {
+    "ansi": 146,
+    "hex": "#b45309"
+  },
+  "modes-sound-disabled": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "modes-sound-enabled": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
   "modifier": {
     "ansi": 102,
     "hex": "#fdba74"
