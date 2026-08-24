@@ -3,26 +3,26 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR"
-  STORE_FILE="$BATS_TMP_DIR/modes/sound"
+  STORE_FILE="$BATS_TMP_DIR/modes/test-mode"
 }
 
-@test "returns 0 when modes/sound contains enabled" {
+@test "returns 0 when content is enabled" {
   mkdir -p "$BATS_TMP_DIR/modes"
   echo "enabled" > "$STORE_FILE"
 
-  bats_run_zsh "sound-mode-is-enabled"
+  bats_run_zsh "mode-is-enabled test-mode"
   [[ "$status" -eq 0 ]]
 }
 
-@test "returns 1 when modes/sound contains disabled" {
+@test "returns 1 when content is disabled" {
   mkdir -p "$BATS_TMP_DIR/modes"
   echo "disabled" > "$STORE_FILE"
 
-  bats_run_zsh "sound-mode-is-enabled"
+  bats_run_zsh "mode-is-enabled test-mode"
   [[ "$status" -ne 0 ]]
 }
 
-@test "returns 1 when modes/sound does not exist" {
-  bats_run_zsh "sound-mode-is-enabled"
+@test "returns 1 when file does not exist" {
+  bats_run_zsh "mode-is-enabled test-mode"
   [[ "$status" -ne 0 ]]
 }

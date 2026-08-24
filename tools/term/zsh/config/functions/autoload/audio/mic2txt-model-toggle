@@ -1,15 +1,4 @@
 # Toggle the model used by mic2txt
 setopt local_options err_return
 
-local mic2txtDirectory=$OROSHI_TMP_FOLDER/mic2txt
-local modelFile="${mic2txtDirectory}/model"
-mkdir -p $mic2txtDirectory
-
-# Cycle: openai -> parakeet -> groq -> openai
-local currentModel="$(mic2txt-model)"
-local nextModel="openai"
-[[ $currentModel == "openai" ]] && nextModel="parakeet"
-[[ $currentModel == "parakeet" ]] && nextModel="groq"
-[[ $currentModel == "groq" ]] && nextModel="openai"
-
-echo $nextModel >$modelFile
+mode-toggle mic2txt-model openai parakeet groq

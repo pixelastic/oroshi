@@ -1,0 +1,10 @@
+# Read the current value of a mode, with a default fallback
+# Usage:
+# $ mode-read mic2txt-language fr      # Outputs "fr" if file missing
+# $ mode-read mic2txt-model openai     # Outputs "openai" if file missing
+setopt local_options err_return
+
+local modeName=$1
+local defaultValue=$2
+
+cat $OROSHI_TMP_FOLDER/modes/$modeName 2>/dev/null || echo $defaultValue

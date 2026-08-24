@@ -1,7 +1,4 @@
 # Check if "Slack Mode" is enabled
 setopt local_options err_return
 
-local storeFile=$OROSHI_TMP_FOLDER/mic2txt/slack-mode
-
-[[ -f $storeFile ]] && return 0
-return 1
+mode-is-enabled mic2txt-slack

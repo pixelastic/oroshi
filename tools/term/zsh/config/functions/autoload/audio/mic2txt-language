@@ -1,4 +1,4 @@
 # Display the current language used for mic2txt
 setopt local_options err_return
 
-cat $OROSHI_TMP_FOLDER/mic2txt/language 2>/dev/null || echo "fr"
+mode-read mic2txt-language fr

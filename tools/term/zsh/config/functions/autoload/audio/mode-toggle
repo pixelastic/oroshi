@@ -1,0 +1,29 @@
+# Toggle a mode to its next value in a cycle
+# First value is the default when the file doesn't exist
+# Usage:
+# $ mode-toggle sound disabled enabled                  # Cycles: disabled -> enabled -> disabled
+# $ mode-toggle mic2txt-model openai parakeet groq      # Cycles: openai -> parakeet -> groq -> openai
+setopt local_options err_return
+
+local modeName=$1
+shift
+local values=("$@")
+
+local storeDirectory=$OROSHI_TMP_FOLDER/modes
+local storeFile="${storeDirectory}/${modeName}"
+mkdir -p $storeDirectory
+
+# Read current value, default to first value in cycle
+local current="${values[1]}"
+[[ -f $storeFile ]] && current="$(cat $storeFile)"
+
+# Find next value in cycle
+local nextValue="${values[1]}"
+for i in {1..${#values}}; do
+  [[ "${values[$i]}" != "$current" ]] && continue
+  local nextIndex=$(( (i % ${#values}) + 1 ))
+  nextValue="${values[$nextIndex]}"
+  break
+done
+
+echo $nextValue > $storeFile

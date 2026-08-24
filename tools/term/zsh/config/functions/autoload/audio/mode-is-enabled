@@ -1,0 +1,8 @@
+# Check if a mode is enabled (content equals "enabled")
+# Usage:
+# $ mode-is-enabled sound && echo "on"  # Exits 0 if enabled, 1 if disabled
+setopt local_options err_return
+
+local storeFile=$OROSHI_TMP_FOLDER/modes/$1
+
+[[ -f $storeFile ]] && [[ "$(cat $storeFile)" == "enabled" ]]
