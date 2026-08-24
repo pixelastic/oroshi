@@ -1,0 +1,42 @@
+# Lint JSON files via eslint
+# Usage:
+# $ json-lint file.json              # Stylish output (default)
+# $ json-lint --json file.json       # Unified JSON output
+# $ json-lint --fix file.json        # Fix then report remaining
+# $ json-lint src/                   # Expand directory, lint all JSON files
+setopt local_options err_return
+
+local scriptDirectory="${functions_source[$0]:A:h}"
+source "$scriptDirectory/../javascript/__lib/eslint-lint.zsh"
+
+zparseopts -E -D \
+  -fix=flagFix \
+  -json=flagJson
+local isFix=${#flagFix}
+local isJson=${#flagJson}
+
+# No inputs provided
+if [[ $# -eq 0 ]]; then
+  echoerr "Error: No files provided"
+  return 1
+fi
+
+# Expand directories and filter to JSON files
+local expanded="$(file-expand --filter is-json "$@")"
+if [[ "$expanded" == "" ]]; then
+  [[ $isJson == 1 ]] && printf '[]\n'
+  return 0
+fi
+local -a files=("${(@f)expanded}")
+
+# Fix mode: fix first, then fall through to lint
+if [[ $isFix == 1 ]]; then
+  json-fix "${files[@]}"
+fi
+
+# Build eslint-lint args
+local -a lintArgs=()
+[[ $isJson == 1 ]] && lintArgs+=(--json)
+
+# Delegate to eslint-lint helper
+eslint-lint "${lintArgs[@]}" "${files[@]}"
