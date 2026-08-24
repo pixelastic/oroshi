@@ -15,7 +15,9 @@ M.configureFormatter = function(conform)
   conform.formatters.oroshi_go_fix = {
     command = "bin-zsh",
     stdin = false,
-    args = { "go-fix", "$FILENAME", "--original-path", "$ORIGINAL_PATH" },
+    args = function(_, ctx)
+      return { "go-fix", "$FILENAME", "--original-path", ctx.filename }
+    end,
   }
 end
 

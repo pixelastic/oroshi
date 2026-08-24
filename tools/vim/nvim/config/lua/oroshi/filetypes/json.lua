@@ -29,7 +29,9 @@ M.configureFormatter = function(conform)
   conform.formatters.oroshi_json_fix = {
     command = "bin-zsh",
     stdin = false,
-    args = { "json-fix", "$FILENAME", "--original-path", "$ORIGINAL_PATH" },
+    args = function(_, ctx)
+      return { "json-fix", "$FILENAME", "--original-path", ctx.filename }
+    end,
   }
 end
 

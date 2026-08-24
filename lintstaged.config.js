@@ -17,6 +17,9 @@ export default {
   // Go files
   '**/*.go': ['yarn precommit:lint go', 'yarn precommit:test go'],
 
+  // JSON files
+  '**/*.json': ['yarn precommit:lint json'],
+
   // JS Scripts
   '**/*.js': ['yarn run lint:fix --js', 'yarn run test --fail-fast --related'],
   'scripts/yarn/**/*': ['yarn run lint:zsh'],

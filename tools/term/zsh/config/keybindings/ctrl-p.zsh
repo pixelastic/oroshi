@@ -19,6 +19,8 @@ function oroshi-ctrl-p-widget() {
     go-lint fzf-go-files
     go-fix fzf-go-files
     go-test fzf-go-tests
+    json-lint fzf-json-files
+    json-fix fzf-json-files
   )
 
   # Dispatch to context-aware picker based on last word in buffer
