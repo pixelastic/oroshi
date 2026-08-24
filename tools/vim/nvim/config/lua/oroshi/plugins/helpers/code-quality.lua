@@ -140,4 +140,48 @@ function M.configureFormatters(filetypesConfig)
   end)
 end
 
+-- Convert unified JSON lint output to NeoVim diagnostic format
+-- Input: raw string from `{lang}-lint --json`
+-- Output: table of NeoVim diagnostics
+function M.lintParser(output)
+  if not output or output == "" then
+    return {}
+  end
+
+  local decoded = vim.json.decode(output)
+  if not decoded or #decoded == 0 then
+    return {}
+  end
+
+  local severities = {
+    error = vim.diagnostic.severity.ERROR,
+    warning = vim.diagnostic.severity.WARN,
+    warn = vim.diagnostic.severity.WARN,
+    info = vim.diagnostic.severity.INFO,
+    style = vim.diagnostic.severity.HINT,
+    hint = vim.diagnostic.severity.HINT,
+  }
+
+  local diagnostics = {}
+  for _, item in ipairs(decoded) do
+    F.append(diagnostics, {
+      source = item.source or item.code,
+      code = item.code,
+      message = item.message,
+      severity = severities[item.level],
+      lnum = item.line - 1,
+      end_lnum = item.endLine - 1,
+      col = item.column - 1,
+      end_col = item.endColumn - 1,
+      user_data = {
+        lsp = {
+          code = item.code,
+        },
+      },
+    })
+  end
+
+  return diagnostics
+end
+
 return M
