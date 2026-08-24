@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+# Hot-reload the oroshi-modes extension by swapping the import token
+# Usage:
+# $ reload
+set -e
+
+local UUID="oroshi-modes@oroshi"
+local LIB_DIRECTORY="${0:A:h}/lib"
+local DIST_DIRECTORY="${LIB_DIRECTORY}/dist"
+
+mkdir -p "$DIST_DIRECTORY"
+
+local tokenFile="${DIST_DIRECTORY}/token"
+
+# Clean up previous symlink
+if [[ -f "$tokenFile" ]]; then
+  local oldToken="$(<"$tokenFile")"
+  rm --force "${DIST_DIRECTORY}/${oldToken}"
+fi
+
+# Create new token and symlink
+local newToken="$(uuid)"
+ln --symbolic --force "$LIB_DIRECTORY" "${DIST_DIRECTORY}/${newToken}"
+echo "$newToken" > "$tokenFile"
+
+# Reload the extension (fails on first install — logout/login required)
+if ! gnome-extensions disable "$UUID" 2>/dev/null; then
+  echo "Extension not yet discovered. Log out and log in, then run reload again."
+  return 0
+fi
+gnome-extensions enable "$UUID"

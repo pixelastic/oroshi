@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Symlink the extension source to the GNOME Shell extensions directory
+# Usage:
+# $ install
+set -e
+
+local extensionDirectory=~/.local/share/gnome-shell/extensions/oroshi-modes@oroshi
+local sourceDirectory="$OROSHI_ROOT/tools/ubuntu/24.04/extensions/oroshi-modes/lib"
+rm --force "$extensionDirectory"
+ln --symbolic --force "$sourceDirectory" "$extensionDirectory"

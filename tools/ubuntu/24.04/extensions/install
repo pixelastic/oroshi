@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Install GNOME extensions to improve the default Gnome UI
+set -e
 
 # gext is required to install dependencies
 if ! command -v gext >/dev/null; then
@@ -13,3 +14,7 @@ gext install just-perfection-desktop@just-perfection # Just Perfection
 gext install spotify-controls@Sonath21               # Spotify Controls + Track Info
 gext install unite@hardpixel.eu                      # Unite
 gext install wsmatrix@martin.zurowietz.de            # Workspace Matrix
+
+# Custom extensions
+"${0:A:h}/oroshi-modes/install"
+"${0:A:h}/oroshi-modes/reload"
