@@ -181,6 +181,7 @@
   "gsettings list-schemas",
   "gvm",
   "head",
+  "helper-list",
   "helper-list-raw",
   "hexdump",
   "hostname",

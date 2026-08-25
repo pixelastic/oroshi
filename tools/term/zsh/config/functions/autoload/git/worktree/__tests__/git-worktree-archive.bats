@@ -3,7 +3,7 @@ bats_load_library 'helper'
 setup() {
   bats_git_dir 'my-repo'
   bats_git_worktree 'feature'
-  # Hard-coded as $OROSHI_WORKTREES_DIR/_ARCHIVES; direct export for before merge
+  export MOCK_OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
   export OROSHI_WORKTREE_ARCHIVES_DIR="$BATS_TMP_DIR/worktrees/_ARCHIVES"
 }
 
