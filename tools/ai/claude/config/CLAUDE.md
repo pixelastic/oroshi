@@ -16,6 +16,24 @@ In all interactions, be extremely concise and sacrifice grammar for the sake of 
 - DO: When asked to put something in the clipboard, use the `clipboard-write` command.
 - DO NOT: use `xclip`, `xsel`, `pbcopy`, or `wl-copy` directly.
 
+## Helpers
+
+Prefer existing ZSH helpers over domain-specific CLI tools:
+
+| Instead of…                | Use helpers from domain… |
+|----------------------------|--------------------------|
+| `git` complex pipelines    | `git`                    |
+| `convert`, `imagemagick`   | `img`                    |
+| `yarn` multi-step commands | `yarn`                   |
+| `ffmpeg` pipelines         | `audio`, `video`         |
+| `docker` commands          | `docker`                 |
+
+Discover helpers with `helper-list <domain> [action]` — all returned helpers are in PATH and callable directly:
+- `helper-list git branch` — find git branch helpers
+- `helper-list img` — list all image helpers
+
+Use matching helpers over raw commands; if none match, fall back to standard tools.
+
 ## Throw-away scripts
 
 Use the `/debug-script` skill when writing complex or multi-step Bash commands.
