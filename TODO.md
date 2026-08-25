@@ -1,9 +1,3 @@
-- Make hunk only display changed lines
-    => Update Claude to latest
-        => Use Fable if I want
-        => Fix term corruption when closing Claude
-            => Fix ralph --auto
-
 - Grill-me LUA
     => lua-lint, lua-fix, lua-test
         => Display context-badge pretty in nvim Ctrl-Shift-Y
@@ -57,14 +51,12 @@ I'd love an icon to see:
 - /plan creates a worktree, but doesn't move to it
 - Make a git push/pull/clone wrapper that displays only relevant info
 - Make a better trash-restore, that uses fzf and preview to pick which file to restore
-- Patch hunk to only show final lines
 - Kitty keybinding to "mark" a tab with a specific icon (like re-adding an attention, or marking it as "to come back once other tab is done")
 - evaluate if I need some allowed-tools/disallowed-tools in my skills
 - Add a rule in zsh to prevent abbreviations like *Len, *Dir, abs*, proj*
 - Imrpove hooks so `rm` of files that are tracked by git and can be saved is allowed
 - make zshlint accept directories, and lint all files in this dir
 - find a way to fill a brag doc (https://jvns.ca/blog/brag-documents/) regularly
-- Update Claude to latest, to use fables
 - Remove plans from git history
 - Need to decorrelate attention from marker. Attention is sound + marker, marker
   is various icons in kitty to show attention, or ralph, or grill-me, etc
