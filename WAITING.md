@@ -23,14 +23,14 @@ palette.
 Upgrading would also unblock: using Fable, fixing terminal corruption when
 closing Claude (which itself blocks ralph --auto).
 
-- **Current version:** 2.1.84
 - **Sources:**
   - https://github.com/anthropics/claude-code/releases
   - https://github.com/anthropics/claude-code/issues/48636
   - https://github.com/anthropics/claude-code/issues/85821
   - https://github.com/anthropics/claude-code/issues/85660
+- **Current version:** 2.1.84
+- **Last checked version:** 2.1.245 (released 2026-08-25)
 - **Last checked date:** 2026-08-25
-- **Last checked version:** 2.1.245
 
 ## Hunkdiff
 
@@ -47,9 +47,9 @@ limitations. Any one of these upstream features would unblock: built-in
 metadata in `transformChangeset`, or auto-active file views. See
 `tools/git/hunk/NEW_SIDE_ONLY_VIEW.md` for full exploration notes.
 
-- **Current version:** 0.18.0-beta.0
 - **Sources:**
   - https://github.com/modem-dev/hunk/releases
   - https://github.com/modem-dev/hunk/blob/main/CHANGELOG.md
+- **Current version:** 0.18.0-beta.0
+- **Last checked version:** 0.19.1 (released 2026-08-25)
 - **Last checked date:** 2026-08-25
-- **Last checked version:** 0.19.1
