@@ -51,17 +51,26 @@ dconf write /org/gnome/shell/extensions/just-perfection/notification-banner-posi
 local extensionDir=~/.local/share/gnome-shell/extensions/oroshi-modes@oroshi
 ln -fsn $OROSHI_ROOT/tools/ubuntu/24.04/extensions/oroshi-modes/lib $extensionDir
 
-# The extensions are displayed in the order they are enabled, from right to
-# left. To ensure a consistent placement, we will enable them in turn.
+# Extensions are displayed in the order they are enabled, from right to left.
+# To ensure consistent placement, disable all first then enable in order.
 
-function stackExtension() {
-  gext disable $1 &>/dev/null
-  sleep 1
-  gext enable $1 &>/dev/null
-}
+local topbarExtensions=(
+  ubuntu-appindicators@ubuntu.com         # App Indicators (Dropbox, etc.)
+  just-perfection-desktop@just-perfection # Just Perfection + Clock
+  unite@hardpixel.eu                      # Unite (reduce spacing)
+  oroshi-modes@oroshi                      # Oroshi Modes
+  spotify-controls@Sonath21               # Spotify Controls + Track Info
+)
 
-# From right to left...
-stackExtension just-perfection-desktop@just-perfection # Just Perfection
-stackExtension ubuntu-appindicators@ubuntu.com         # App Indicators
-stackExtension spotify-controls@Sonath21               # Spotify Controls + Track Info
-stackExtension oroshi-modes@oroshi                      # Oroshi Modes
+# Disable all topbar extensions
+for ext in "${topbarExtensions[@]}"; do
+  gext disable $ext &>/dev/null
+done
+
+sleep 2
+
+# Enable from right to left
+for ext in "${topbarExtensions[@]}"; do
+  gext enable $ext &>/dev/null
+  sleep 2
+done

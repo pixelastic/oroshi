@@ -81,7 +81,7 @@ class OroshiModes {
     this._createIndicators();
     this._setupMonitors();
 
-    Main.panel.addToStatusArea('oroshi-modes', this._button);
+    Main.panel.addToStatusArea('oroshi-modes', this._button, 0, 'right');
   }
 
   /**
