@@ -3,12 +3,27 @@
 # Usage:
 # $ bin-zsh git-branch-current           # Call function
 # $ bin-zsh git-branch-current --verbose  # With args
+# $ bin-zsh --alias ls                   # Resolve aliases before running
 set -e
+
+zparseopts -E -D -- -alias=flagAlias
+
+local isAlias=${#flagAlias}
 
 # No arguments provided
 if [[ $1 == "" ]]; then
-  echoerr "Usage: bin-zsh <function> [args...]"
+  echoerr "Usage: bin-zsh [--alias] <command> [args...]"
   exit 1
 fi
 
-"$@"
+# Without --alias, run directly
+[[ $isAlias == 0 ]] && exec "$@"
+
+# Temporarily disable errexit so unaliasing a missing alias doesn't throw an
+# error
+set +e
+source $OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh 2>/dev/null
+set -e
+
+# Eval the args to expand the aliases
+eval "$*"

@@ -1,3 +1,3 @@
 # Watch
-alias watch='watch -c '
+alias watch='watch --color --exec bin-zsh --alias '
 alias wr='watch-and-reload'

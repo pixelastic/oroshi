@@ -34,3 +34,23 @@ bats_load_library 'helper'
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"Usage"* ]]
 }
+
+@test "--alias resolves alias to underlying function" {
+  bats_run_zsh "CLAUDECODE=0 bin-zsh --alias ls --help"
+  [[ "$status" -eq 0 ]]
+  # ls is aliased to better-ls (wraps exa), not system ls
+  [[ "$output" == *"exa"* ]]
+}
+
+@test "--alias still runs autoloaded functions" {
+  bats_run_zsh "CLAUDECODE=0 bin-zsh --alias echo hello"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "hello" ]]
+}
+
+@test "without --alias does not resolve aliases" {
+  bats_run_zsh "bin-zsh ls --help"
+  [[ "$status" -eq 0 ]]
+  # Without --alias, ls is the system ls, not better-ls
+  [[ "$output" != *"better-ls"* ]]
+}
