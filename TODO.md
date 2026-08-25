@@ -33,6 +33,8 @@
 - Seem like we have both {language}-fix called by nvim and {language}-lint --fix
   called by agents and maybe lintstaged. Seems like a weird gap
 - Prevent variables like `absArg` in code, prefer full words
+- Can /issues create issue files in parallel, rather than in sequence?
+- Bind Alt-f5 to save all kitty tabs, and allow for save/load
 
 ---
 
