@@ -1,0 +1,29 @@
+# Display a dashboard of all mode indicators
+# Usage:
+# $ mode-status
+setopt local_options err_return
+
+colors-load-definitions
+
+local output=""
+
+# Ordered list matching the top bar indicator sequence
+local -a modeNames=(sound mic2txt-autosubmit mic2txt-language mic2txt-slack mic2txt-model)
+local -A modeDefaults=(sound disabled mic2txt-autosubmit disabled mic2txt-language fr mic2txt-slack disabled mic2txt-model openai)
+local -a booleanModes=(sound mic2txt-autosubmit mic2txt-slack)
+
+for modeName in $modeNames; do
+  local value="$(mode-read $modeName $modeDefaults[$modeName])"
+
+  # Boolean modes get color-coded
+  if (( $booleanModes[(Ie)$modeName] )); then
+    local color="error"
+    [[ "$value" == "enabled" ]] && color="success"
+    colorize --reply "$value" "$color"
+    output+="${modeName}▮${REPLY}\n"
+  else
+    output+="${modeName}▮${value}\n"
+  fi
+done
+
+table $output
