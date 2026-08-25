@@ -5,6 +5,7 @@ Split the PRD into independently-grabbable vertical slices and persist them to d
 1. Draft vertical slices — thin tracer bullets through all layers
 2. Confirm slices with user — validate granularity and order
 3. Write issues, state, and guidance — persist to `<planDir>`
+4. Write `COMMIT_HINT.md` — describe goal and scope
 
 ---
 
@@ -69,6 +70,15 @@ writing issue files once the user approves the breakdown.
 - Create a [state.json](./templates/state-json.template.md) containing all issues and their dependencies
 - Create a [GUIDANCE.md](./templates/GUIDANCE.template.md) to guide subsequent agents
 
+---
+
+## Write COMMIT_HINT.md
+
+Write `COMMIT_HINT.md` to `<planDir>/COMMIT_HINT.md`.
+Load the **commit hint** reference from the `/ralph` skill for format and rules.
+Derive Goal from the PRD's Problem Statement.
+Suggested type is `plan(<slug>)` where slug is the plan directory name.
+
 ## Checklist
 
 - [ ] Vertical slices drafted — each is a tracer bullet through all layers
@@ -80,3 +90,4 @@ writing issue files once the user approves the breakdown.
 - [ ] Each issue has considered its Scaffolding Tests
 - [ ] `state.json` written — all issues with `done: false`
 - [ ] `GUIDANCE.md` written — Guidance + Discoveries sections present
+- [ ] `COMMIT_HINT.md` written with `plan(<slug>)` type
