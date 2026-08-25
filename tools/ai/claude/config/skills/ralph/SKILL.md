@@ -85,6 +85,7 @@ If you have any `## Scaffolding Tests` from the issue:
     - Skill name: `review`
     - Args: `ref:dirty` and `spec:<issue_path>`
     - DO NOT use the Bash tool to run `review`
+    - DO NOT stop when the review skill completes
 2. Categorize ALL findings (from both Code Review and Spec Review) into two buckets:
    - **skipped** — out of scope or not relevant, with one-line reason per item
    - **fixable** — actionable and in scope

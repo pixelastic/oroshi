@@ -58,6 +58,18 @@ Present the two reports under `## Code Review` and `## Spec Review` headings, ve
 
 End with a one-line summary: total findings per axis, and the worst single issue (if any) flagged.
 
+### Step 4 — Handback
+
+**Goal:** Return control to the calling context.
+
+**Exit criterion:** Caller workflow resumed, or session ended.
+
+- If this skill was invoked by another skill (e.g. `/ralph`):
+    - Resume the calling skill's workflow immediately
+    - Do not stop, do not wait for user input, do not end your turn.
+- If this review was the only task requested:
+    - Stop here and wait for user input.
+
 ## Common Rationalizations
 
 | Rationalization | Reality |
