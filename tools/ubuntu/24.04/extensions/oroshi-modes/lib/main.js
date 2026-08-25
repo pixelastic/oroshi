@@ -132,13 +132,18 @@ class OroshiModes {
   }
 
   /**
-   * Build a Gio.FileIcon from an icon filename
+   * Build a Gio.BytesIcon from an SVG file, injecting the given hex color
    * @param {string} filename - SVG filename in the icons directory
-   * @returns {Gio.FileIcon} Icon loaded from the SVG file
+   * @param {string} hex - Hex color to replace currentColor with
+   * @returns {Gio.BytesIcon} Icon with baked-in color
    */
-  _makeGicon(filename) {
-    return new Gio.FileIcon({
-      file: Gio.File.new_for_path(`${this._iconsDir}/${filename}`),
+  _makeGicon(filename, hex) {
+    const file = Gio.File.new_for_path(`${this._iconsDir}/${filename}`);
+    const [, contents] = file.load_contents(null);
+    let svg = new TextDecoder().decode(contents);
+    svg = svg.replaceAll('currentColor', hex);
+    return new Gio.BytesIcon({
+      bytes: new GLib.Bytes(new TextEncoder().encode(svg)),
     });
   }
 
@@ -152,10 +157,9 @@ class OroshiModes {
       const hex = this._colors[mapping.color] || '#ffffff';
 
       const icon = new St.Icon({
-        gicon: this._makeGicon(mapping.icon),
+        gicon: this._makeGicon(mapping.icon, hex),
         icon_size: 20,
         style_class: 'system-status-icon oroshi-mode-icon',
-        style: `color: ${hex};`,
       });
 
       const bin = new St.Bin({ child: icon });
@@ -173,8 +177,8 @@ class OroshiModes {
     if (value === entry.value) return;
 
     const mapping = this._resolveMapping(entry.config, value);
-    entry.icon.gicon = this._makeGicon(mapping.icon);
-    entry.icon.set_style(`color: ${this._colors[mapping.color] || '#ffffff'};`);
+    const hex = this._colors[mapping.color] || '#ffffff';
+    entry.icon.gicon = this._makeGicon(mapping.icon, hex);
     entry.value = value;
   }
 
@@ -185,9 +189,8 @@ class OroshiModes {
     this._loadColors();
     for (const entry of this._entries) {
       const mapping = this._resolveMapping(entry.config, entry.value);
-      entry.icon.set_style(
-        `color: ${this._colors[mapping.color] || '#ffffff'};`,
-      );
+      const hex = this._colors[mapping.color] || '#ffffff';
+      entry.icon.gicon = this._makeGicon(mapping.icon, hex);
     }
   }
 
