@@ -4,6 +4,8 @@
 
 # Where are all worktrees located?
 export OROSHI_WORKTREES_DIR="${MOCK_OROSHI_WORKTREES_DIR:-$HOME/local/www/worktrees}"
+export OROSHI_WORKTREE_ARCHIVES_DIR="$OROSHI_WORKTREES_DIR/_ARCHIVES"
+mkdir -p "$OROSHI_WORKTREE_ARCHIVES_DIR"
 
 # Where are all plans located?
 export OROSHI_PLANS_DIR="${MOCK_OROSHI_PLANS_DIR:-$HOME/local/www/plans}"

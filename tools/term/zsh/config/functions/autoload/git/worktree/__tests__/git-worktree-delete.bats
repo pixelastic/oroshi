@@ -3,6 +3,8 @@ bats_load_library 'helper'
 setup() {
   bats_git_dir 'my-repo'
   bats_git_worktree 'feature'
+  # Hard-coded as $OROSHI_WORKTREES_DIR/_ARCHIVES; direct export for before merge
+  export OROSHI_WORKTREE_ARCHIVES_DIR="$BATS_TMP_DIR/worktrees/_ARCHIVES"
 }
 
 @test "removes the worktree directory" {
@@ -82,18 +84,6 @@ setup() {
   [[ "$status" -eq 1 ]]
   [[ -d "${BATS_GIT_WORKTREES}my-repo--feature" ]]
   [[ -d "${BATS_GIT_WORKTREES}my-repo--feat-thing" ]]
-}
-
-@test "removes associated external plan directory" {
-  export MOCK_OROSHI_PLANS_DIR="$BATS_TMP_DIR/plans"
-  mkdir -p "$MOCK_OROSHI_PLANS_DIR/my-repo--feature"
-  plan-directory() { echo "$MOCK_OROSHI_PLANS_DIR/my-repo--feature"; }
-  bats_mock plan-directory
-  bats_disable_worktree_aware
-
-  bats_run_zsh "cd '$BATS_GIT_DIR' && git-worktree-delete feature"
-  [[ "$status" -eq 0 ]]
-  [[ ! -d "$BATS_TMP_DIR/plans/my-repo--feature" ]]
 }
 
 @test "succeeds when worktree has no plan" {

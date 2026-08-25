@@ -1,0 +1,33 @@
+# Save worktree artifacts (plan dir + commit log) to archives before deletion
+# Skips silently when branch has no commits ahead of main
+# Usage:
+# $ git-worktree-archive /path/to/worktree
+setopt local_options err_return
+
+local worktreePath="$1"
+local branch="$(git-branch-current "$worktreePath")"
+local planDir="$(plan-directory "$worktreePath" 2>/dev/null)"
+
+local startCommit="$(git-worktree-start "$worktreePath" 2>/dev/null)"
+
+# Nothing to archive if branch has no commits ahead of main
+[[ "$startCommit" == "" ]] && return 0
+
+local slug="${worktreePath:t}"
+local timestamp="$(date '+%Y-%m-%d_%H-%M')"
+local archiveDir="$OROSHI_WORKTREE_ARCHIVES_DIR/${timestamp}_${slug}"
+
+# Move plan dir or create empty archive entry
+if [[ "$planDir" != "" ]] && [[ -d "$planDir" ]]; then
+  mkdir -p "${archiveDir:h}"
+  mv "$planDir" "$archiveDir"
+else
+  mkdir -p "$archiveDir"
+fi
+
+# Generate commit log
+local logFormat='%h %as%n%n%s%n%n%b%n---'
+git log \
+  --reverse \
+  --format="$logFormat" \
+  "${startCommit}..${branch}" > "$archiveDir/COMMITS.md"

@@ -1,4 +1,4 @@
-# Remove one or more Worktree directories, branches, and associated external plan dir
+# Remove one or more Worktree directories, branches, and archive artifacts
 # If called from inside a Worktree being deleted, cds to Git Repo Main first
 # Blocks if branch has unmerged commits ahead of main (bypass with --force/-f)
 # Blocks if a ralph session is active in the branch worktree (not bypassed by --force)
@@ -39,11 +39,9 @@ for branch in "${branches[@]}"; do
   # If currently inside the worktree being deleted, move to Git Repo Main first
   [[ "$PWD" == "$worktreePath"* ]] && cd "$mainPath"
 
+  # Archive the worktree plan and commits, for potential later use
+  git-worktree-archive "$worktreePath"
+
   git worktree remove --force "$worktreePath"
   git-branch-remove "$branch"
-
-  # Remove external plan dir if it exists
-  if [[ "$planDir" != "" ]] && [[ -d "$planDir" ]]; then
-    rm -rf "$planDir"
-  fi
 done
