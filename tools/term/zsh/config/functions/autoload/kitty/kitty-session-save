@@ -1,0 +1,18 @@
+# Save the current kitty session to disk with a green flash confirmation
+# Usage:
+# $ kitty-session-save
+setopt local_options err_return
+
+# Flash the active window green
+kitty-remote set-colors \
+  --match=recent:0 \
+  background='#1a3a1a'
+
+# Save the session
+kitty-remote action save_as_session \
+  --save-only "$OROSHI_TMP_FOLDER/kitty/session.kitty-session"
+
+# Reset colors
+kitty-remote set-colors \
+  --match=recent:0 \
+  --reset
