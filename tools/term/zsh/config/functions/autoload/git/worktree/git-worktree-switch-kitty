@@ -1,0 +1,25 @@
+# Open a Worktree (or Git Repo Main) in a new focused Kitty tab
+# Usage:
+# $ git-worktree-switch-kitty fix/bug   # → Kitty tab at Worktree path
+# $ git-worktree-switch-kitty main      # → Kitty tab at Git Repo Main
+setopt local_options err_return
+
+local branch="$1"
+
+# Branch name is required
+[[ "$branch" == "" ]] && return 1
+
+# Navigate to Git Repo Main
+if [[ "$branch" == "main" ]]; then
+  local tabTitle="$(git-github-project-name)"
+  local tabCwd="$(git-worktree-main)"
+  kitty-tab-create "$tabTitle" --focus --cwd "$tabCwd"
+  return
+fi
+
+# Navigate to Worktree
+local worktreePath="$(git-worktree-path "$branch")"
+[[ "$worktreePath" == "" ]] && return 1
+
+local tabTitle="$(git-branch-slug "$branch")"
+kitty-tab-create "$tabTitle" --focus --cwd "$worktreePath"

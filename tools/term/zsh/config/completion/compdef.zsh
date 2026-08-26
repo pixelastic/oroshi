@@ -113,7 +113,8 @@ compdef _git-remotes \
 compdef _git-remote-rename \
   git-remote-rename
 compdef _git-worktrees \
-  git-worktree-switch
+  git-worktree-switch \
+  git-worktree-switch-kitty
 compdef _git-worktrees-linked \
   git-worktree-delete \
   git-worktree-rename
