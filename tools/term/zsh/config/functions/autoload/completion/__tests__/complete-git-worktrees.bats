@@ -87,10 +87,7 @@ setup() {
 }
 
 @test "works from inside a submodule" {
-  cd "$BATS_MY_REPO"
-  bats_git_dir 'sub-repo'
-  git -C "$BATS_MY_REPO" -c protocol.file.allow=always submodule add --quiet "$BATS_GIT_DIR" private
-  git -C "$BATS_MY_REPO" commit --quiet -m "add submodule"
+  bats_git_submodule "$BATS_MY_REPO" 'private'
   bats_run_zsh "cd $BATS_MY_REPO/private && complete-git-worktrees"
   [[ "$status" -eq 0 ]]
   [[ "$output" == *"main"* ]]

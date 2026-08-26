@@ -4,9 +4,7 @@ setup() {
   bats_git_dir 'parent'
   export BATS_PARENT_DIR="$BATS_GIT_DIR"
 
-  bats_git_dir 'child'
-  git -C "$BATS_PARENT_DIR" -c protocol.file.allow=always submodule add --quiet "$BATS_GIT_DIR" sub
-  git -C "$BATS_PARENT_DIR" commit --quiet -m "add submodule"
+  bats_git_submodule "$BATS_PARENT_DIR" 'sub'
 }
 
 @test "returns 0 inside a submodule" {
