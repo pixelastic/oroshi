@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Enable background GNOME extensions (no topbar component)
+# Topbar extensions are enabled separately in topbar/deploy
+set -e
+
+local backgroundExtensions=(
+  tiling-assistant@ubuntu.com          # Tiling Assistant (Super+Arrow tiling)
+  wsmatrix@martin.zurowietz.de         # Workspace Matrix (3x3 grid)
+  advanced-alt-tab@G-dH.github.com     # AATWS (Advanced Alt-Tab Window Switcher)
+)
+
+for ext in "${backgroundExtensions[@]}"; do
+  gnome-extensions enable "$ext"
+done

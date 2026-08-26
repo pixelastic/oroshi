@@ -58,10 +58,8 @@ local topbarExtensions=(
   ubuntu-appindicators@ubuntu.com         # App Indicators (Dropbox, etc.)
   just-perfection-desktop@just-perfection # Just Perfection + Clock
   unite@hardpixel.eu                      # Unite (reduce spacing)
-  oroshi-modes@oroshi                      # Oroshi Modes
+  oroshi-modes@oroshi                     # Oroshi Modes
   spotify-controls@Sonath21               # Spotify Controls + Track Info
-  wsmatrix@martin.zurowietz.de            # Workspace Matrix (3x3 grid)
-  advanced-alt-tab@G-dH.github.com        # AATWS (Advanced Alt-Tab Window Switcher)
 )
 
 # Disable all topbar extensions
