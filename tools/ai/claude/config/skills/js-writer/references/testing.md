@@ -131,6 +131,7 @@ describe('getOrders', () => {
 ## Assertions
 
 - Prefer `toEqual` with the exact expected value when the full content is known
+- Use `toContain` only when the full value is unknown
 - Reserve `arrayContaining`/`objectContaining` for genuine subset tests
 - Use `try`/`catch` with a `let actual` to test errors
 
@@ -143,7 +144,7 @@ it('throws on invalid status', async () => {
     actual = error;
   }
   expect(actual).toHaveProperty('code', 'ERR_INVALID');
-  expect(actual.message).toContain('must be a string');
+  expect(actual).toHaveProperty('message', 'status must be a string');
 });
 ```
 
@@ -152,4 +153,5 @@ it('throws on invalid status', async () => {
 | Rationalization | Reality |
 |---|---|
 | "`arrayContaining` + `toHaveLength` is safer because order doesn't matter" | If full content is known, use `toEqual` with the exact array. Sort if order is non-deterministic. `arrayContaining` is for genuine subset checks only. |
+| "`toContain` is more resilient to future changes" | If the full value is known in the test context, assert it exactly. Partial checks hide regressions. `toContain` is for genuine substring/subset checks where the full value is unknown or irrelevant. |
 | "The shared mock should be minimal so tests are self-contained" | If most tests override the setup, the setup is wrong. |
