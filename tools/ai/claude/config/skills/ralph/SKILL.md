@@ -101,8 +101,9 @@ If you have any `## Scaffolding Tests` from the issue:
 **Exit criterion:** All fixable items addressed, linter clean, tests green.
 
 1. Consume the **fixable** bucket, fix every item.
-2. Lint all modified files with `git-file-lint`. Fix **every** violation, including pre-existing ones.
-3. Run tests for all modified files using `git-file-test`. Fix **every** failing test, including pre-existing ones.
+2. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
+3. Lint all modified files with `git-file-lint`. Fix **every** violation, including pre-existing ones.
+4. Run tests for all modified files using `git-file-test`. Fix **every** failing test, including pre-existing ones.
 
 ---
 
@@ -142,9 +143,9 @@ Load [commit-hint.md](references/commit-hint.md) for the format and rules.
 
 ---
 
-## Step 8 — STOP
+## Step 8 — HANDOFF
 
-**Goal:** Hand off to user.
+**Goal:** End automation, hand off to user for review.
 
 **Exit criterion:** `ralph-end` called, session recap displayed.
 
@@ -170,6 +171,22 @@ Issue XX/YY
 
 ---
 
+## Step 9 — USER REVIEW
+
+**Goal:** Apply user feedback with the same quality bar as automated steps.
+
+**Exit criterion:** User is satisfied (commits, moves on, or ends conversation).
+
+This step is a loop — the user reviews the recap or the diff and requests changes. For each requested change:
+
+1. Apply the requested modification.
+2. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
+3. Lint all modified files with `git-file-lint`. Fix **every** violation, including pre-existing ones.
+4. Run tests for all modified files using `git-file-test`. Fix **every** failing test, including pre-existing ones.
+5. Present what changed. Wait for user's next feedback.
+
+---
+
 ## Common Rationalizations
 
 | Rationalization | Reality |
@@ -183,6 +200,7 @@ Issue XX/YY
 | "I should run `review` via the Bash tool" | Use the `/review` skill instead, Bash will go to the background and we need to wait for the review. |
 | "I mentioned an issue COMMIT_HINT.md to be specific" | Issue are ephemeral and internal. Describe what was built, not which issue was closed. |
 | "I should present review findings and wait for user input" | Steps 4→5 are continuous. Categorize, display, fix. No pause between REVIEW and FIX. |
+| "Fixes are small, no need to refactor" | Post-fix code is still code. Refactor every time you touch code. |
 
 ## Checklist
 
@@ -204,9 +222,13 @@ REVIEW:
 - [ ] Summary of both buckets displayed
 FIX:
 - [ ] All **fixable** items fixed
+- [ ] Refactored after fixes: duplication, names, helpers
 - [ ] Linter + tests green for modified files after fixes
 - [ ] state.json updated with `done: true` + `recap`
 - [ ] GUIDANCE.md discoveries appended (or skipped if none)
 - [ ] review-log.md updated if **skipped** bucket is non-empty
 - [ ] COMMIT_HINT.md describes outcomes, not issue numbers or plan status
 - [ ] **Stopped — waiting for user to commit**
+USER REVIEW:
+- [ ] Each user-requested change followed by refactor → lint → test
+- [ ] Presented what changed after each modification
