@@ -7,7 +7,7 @@ set -e
 # Kitty releases are coming often and the Ubuntu source files are usually too
 # old to reflect the current documentation. Better to grab it from GitHub
 # releases directly.
-KITTY_VERSION="0.43.0"
+KITTY_VERSION="0.48.2"
 DOWNLOAD_URL="https://github.com/kovidgoyal/kitty/releases/download/v${KITTY_VERSION}/kitty-${KITTY_VERSION}-x86_64.txz"
 
 INSTALL_DIR=~/local/etc/kitty
@@ -21,6 +21,7 @@ rm kitty.txz
 
 cd ~/local/bin
 ln -fs ../etc/kitty/bin/kitty ./kitty
+ln -fs ../etc/kitty/bin/kitten ./kitten
 
 # Prevents "WARNING: terminal is not fully functional" warnings when using
 # sudo systemctl status
