@@ -201,3 +201,23 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "${lines[-1]}" = "/some/other/path" ]]
 }
+
+# Submodule support
+@test "renames a worktree containing an initialized submodule" {
+  local worktreePath="${BATS_GIT_WORKTREES}my-repo--feature"
+  bats_git_submodule "$worktreePath" 'my-sub'
+
+  bats_run_zsh "cd ${BATS_GIT_DIR} && git-worktree-rename feature refactor"
+
+  bats_debug "$output"
+  [[ "$status" -eq 0 ]]
+
+  # Directories renamed
+  [[ ! -d "${BATS_GIT_WORKTREES}my-repo--feature" ]]
+  [[ -d "${BATS_GIT_WORKTREES}my-repo--refactor" ]]
+
+  # Submodule still works in the renamed worktree
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--refactor && git submodule status"
+  bats_debug "$output"
+  [[ "$status" -eq 0 ]]
+}

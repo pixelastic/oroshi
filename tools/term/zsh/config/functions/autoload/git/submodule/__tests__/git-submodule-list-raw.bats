@@ -5,9 +5,7 @@ setup() {
 }
 
 @test "outputs ▮-separated fields: name, hash, branch" {
-  git() {
-    [[ "$1" == "submodule" ]] && echo " abc1234567890 mymodule (main)"
-  }
+  git() { [[ "$*" == *"submodule"* ]] && echo " abc1234567890 mymodule (main)"; }
   git-directory-root() { echo "/repo"; }
   path-relative() { echo "${1##*/}"; }
   sort-filepaths() { printf '%s\n' "$@"; }
@@ -20,7 +18,8 @@ setup() {
 
 @test "handles multiple submodules" {
   git() {
-    [[ "$1" == "submodule" ]] && printf ' aaa1234567890 alpha (main)\n bbb9876543210 beta (develop)\n'
+    [[ "$*" == *"submodule"* ]] && \
+      printf ' aaa1234567890 alpha (main)\n bbb9876543210 beta (develop)\n'
   }
   git-directory-root() { echo "/repo"; }
   path-relative() { echo "${1##*/}"; }
@@ -34,9 +33,7 @@ setup() {
 }
 
 @test "handles detached HEAD with no branch" {
-  git() {
-    [[ "$1" == "submodule" ]] && echo " abc1234567890 mymodule"
-  }
+  git() { [[ "$*" == *"submodule"* ]] && echo " abc1234567890 mymodule"; }
   git-directory-root() { echo "/repo"; }
   path-relative() { echo "${1##*/}"; }
   sort-filepaths() { printf '%s\n' "$@"; }

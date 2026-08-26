@@ -50,8 +50,34 @@ if [[ -d "$oldPlanDir" ]]; then
   mv "$oldPlanDir" "$newPlanDir"
 fi
 
+# Snapshot submodule paths before the move breaks cross-references
+local submoduleLines=""
+if git-directory-has-submodules "$oldDir"; then
+  submoduleLines="$(git-submodule-list-raw "$oldDir")"
+fi
+
 # Move directory and update all git tracking
-git -C "$mainPath" worktree move --force "$oldDir" "$newDir"
+mv "$oldDir" "$newDir"
+print "$newDir/.git" > "$mainPath/.git/worktrees/${oldDir:t}/gitdir"
+
+# Fix submodule cross-references broken by the directory move
+if [[ "$submoduleLines" != "" ]]; then
+  local trackingDir="$mainPath/.git/worktrees/${oldDir:t}"
+
+  local rawLine
+  for rawLine in ${(f)submoduleLines}; do
+    local subPath="${rawLine%%▮*}"
+
+    # Update submodule .git file to point to renamed worktree dir
+    [[ -f "$newDir/$subPath/.git" ]] && \
+      sed --in-place "s/${oldDir:t}/${newDir:t}/g" "$newDir/$subPath/.git"
+
+    # Update module tracking config to point to renamed worktree dir
+    [[ -f "$trackingDir/modules/$subPath/config" ]] && \
+      sed --in-place "s/${oldDir:t}/${newDir:t}/g" "$trackingDir/modules/$subPath/config"
+  done
+fi
+
 mv "$mainPath/.git/worktrees/${oldDir:t}" "$mainPath/.git/worktrees/${newDir:t}"
 print "gitdir: $mainPath/.git/worktrees/${newDir:t}" > "$newDir/.git"
 git -C "$mainPath" worktree prune

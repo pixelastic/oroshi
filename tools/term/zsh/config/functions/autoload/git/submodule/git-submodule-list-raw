@@ -1,10 +1,13 @@
 # Machine-readable list of submodules: name▮hash▮branch
 # Usage:
-# $ git-submodule-list-raw
+# $ git-submodule-list-raw            # current repo
+# $ git-submodule-list-raw /path/to   # given repo
 setopt local_options err_return
 
-local rawList="$(git submodule status)"
-local gitRoot="$(git-directory-root)"
+local targetDir="${1:-.}"
+
+local rawList="$(git -C "$targetDir" submodule status)"
+local gitRoot="$(git-directory-root "$targetDir")"
 
 # No submodules
 [[ "$rawList" == "" ]] && return 0
@@ -18,7 +21,7 @@ for rawLine in ${(f)rawList}; do
   local hash=${parts[1]:0:8}
 
   name=${parts[2]}
-  name="$(path-relative ${name:a} $gitRoot)"
+  name="$(path-relative ${gitRoot}/${name} $gitRoot)"
 
   local branch=${parts[3]}
   branch=${branch[2,-2]}

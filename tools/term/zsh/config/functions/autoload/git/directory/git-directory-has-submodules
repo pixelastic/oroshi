@@ -1,0 +1,9 @@
+# Boolean: does the current or given repo have submodules?
+# Usage:
+# $ git-directory-has-submodules
+# $ git-directory-has-submodules /path/to/repo
+setopt local_options err_return
+
+local targetPath="${1:-$(git-directory-root)}"
+
+[[ -f "$targetPath/.gitmodules" ]]
