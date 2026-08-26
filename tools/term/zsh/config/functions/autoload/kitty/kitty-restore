@@ -1,4 +1,6 @@
-# Start kitty and restore to previous state
+# Start kitty and restore the last saved session if available
+# Usage:
+# $ kitty-restore
 setopt local_options err_return
 
 local uuid="$(uuidgen)"
@@ -7,7 +9,14 @@ local kittySocketFolder=/home/$USER/local/tmp/oroshi/kitty
 mkdir -p $kittySocketFolder
 local kittySocketPath=$kittySocketFolder/socket-$uuid
 
+local sessionArgs=()
+local sessionFile="$OROSHI_TMP_FOLDER/kitty/session.kitty-session"
+
+# Restore from last saved session if available
+[[ -f "$sessionFile" ]] && sessionArgs+=(--session "$sessionFile")
+
 # Start kitty and make it listen to remote commands on this socket
-# This allow remote commands to be sent from outside of kitty itself
+# This allows remote commands to be sent from outside of kitty itself
 OROSHI_KITTY_UUID=$uuid kitty \
-  --listen-on unix:$kittySocketPath
+  --listen-on unix:$kittySocketPath \
+  "${sessionArgs[@]}"
