@@ -1,0 +1,13 @@
+# Initialize a cfp-writer session and output JSON with the draft filepath
+# Usage:
+# $ cfp-writer-start
+# {"draftPath":"/tmp/oroshi/claude/cfp-writer/e8d0442d.md"}
+setopt local_options err_return
+
+local sessionDir="/tmp/oroshi/claude/cfp-writer"
+mkdir --parents "$sessionDir"
+
+local id="$(uuidgen)"
+local draftPath="$sessionDir/$id.md"
+
+jo draftPath="$draftPath"
