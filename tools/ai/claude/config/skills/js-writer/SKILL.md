@@ -157,6 +157,7 @@ Write code that passes automated lint.
 | "These comments are clutter, I'll clean them up" | Never remove existing comments |
 | "mockResolvedValue is more idiomatic Vitest" | Always `mockReturnValue(value)` — abstract away sync/async |
 | "expect().rejects.toThrow() is cleaner" | Use `let actual = null` + try/catch pattern |
+| "I'll put this dependency in `__` in case we need to mock it later" | Only add to `__` what tests actually mock. YAGNI. |
 
 ## Checklist
 
