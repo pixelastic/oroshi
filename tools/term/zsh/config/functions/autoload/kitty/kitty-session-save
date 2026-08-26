@@ -3,9 +3,9 @@
 # $ kitty-session-save
 setopt local_options err_return
 
-# Flash the active window green
+# Flash all windows green
 kitty-remote set-colors \
-  --match=recent:0 \
+  --all \
   background='#1a3a1a'
 
 # Save the session
@@ -14,5 +14,5 @@ kitty-remote action save_as_session \
 
 # Reset colors
 kitty-remote set-colors \
-  --match=recent:0 \
+  --all \
   --reset

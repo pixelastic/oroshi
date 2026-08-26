@@ -9,13 +9,13 @@ setup() {
 	bats_mock kitty-remote
 }
 
-@test "flashes the active window green first" {
+@test "flashes all windows green first" {
 	bats_run_zsh "kitty-session-save"
 
 	[[ "$status" -eq 0 ]]
 	local firstCall="$(sed -n '1p' "$BATS_TMP_DIR/kitty-remote-calls")"
 	[[ "$firstCall" == *"set-colors"* ]]
-	[[ "$firstCall" == *"--match=recent:0"* ]]
+	[[ "$firstCall" == *"--all"* ]]
 	[[ "$firstCall" == *"#1a3a1a"* ]]
 }
 
@@ -29,13 +29,13 @@ setup() {
 	[[ "$secondCall" == *"$BATS_TMP_DIR/kitty/session.kitty-session"* ]]
 }
 
-@test "resets colors after saving" {
+@test "resets colors on all windows after saving" {
 	bats_run_zsh "kitty-session-save"
 
 	[[ "$status" -eq 0 ]]
 	local thirdCall="$(sed -n '3p' "$BATS_TMP_DIR/kitty-remote-calls")"
 	[[ "$thirdCall" == *"set-colors"* ]]
-	[[ "$thirdCall" == *"--match=recent:0"* ]]
+	[[ "$thirdCall" == *"--all"* ]]
 	[[ "$thirdCall" == *"--reset"* ]]
 }
 
