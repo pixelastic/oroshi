@@ -109,3 +109,29 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ ! -d "$BATS_TMP_DIR" ]]
 }
+
+# --- bats_git_submodule ---
+
+@test "bats_git_submodule creates a submodule inside the parent directory" {
+  bats_git_dir 'parent'
+  bats_git_submodule "$BATS_GIT_DIR" 'my-sub'
+
+  [[ -d "$BATS_GIT_DIR/my-sub" ]]
+}
+
+@test "bats_git_submodule is listed in git submodule status" {
+  bats_git_dir 'parent'
+  bats_git_submodule "$BATS_GIT_DIR" 'my-sub'
+
+  local sub_status
+  sub_status="$(git -C "$BATS_GIT_DIR" submodule status)"
+  [[ "$sub_status" == *"my-sub"* ]]
+}
+
+@test "bats_git_submodule does not change BATS_GIT_DIR" {
+  bats_git_dir 'parent'
+  local original="$BATS_GIT_DIR"
+  bats_git_submodule "$BATS_GIT_DIR" 'my-sub'
+
+  [[ "$BATS_GIT_DIR" == "$original" ]]
+}

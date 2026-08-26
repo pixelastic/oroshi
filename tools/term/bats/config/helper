@@ -95,6 +95,30 @@ bats_git_worktree() {
   echo "$wt_path"
 }
 
+# bats_git_submodule <parent-dir> <name>
+# Creates a throwaway upstream repo and adds it as a submodule in <parent-dir>.
+# Does NOT modify BATS_GIT_DIR.
+# Usage: bats_git_submodule "$BATS_GIT_DIR" 'my-sub'
+bats_git_submodule() {
+  local parent_dir="$1"
+  local name="$2"
+
+  [[ "$parent_dir" == "" ]] && return 1
+  [[ "$name" == "" ]] && return 1
+  [[ "$BATS_TMP_DIR" == "" ]] && bats_tmp_dir
+
+  local upstream="$BATS_TMP_DIR/sub-upstream-${name}"
+  git init --initial-branch=main --quiet "$upstream"
+  git -C "$upstream" config user.email "bats@oroshi"
+  git -C "$upstream" config user.name "Bats"
+  git -C "$upstream" commit --allow-empty --quiet --message="init"
+
+  git -C "$parent_dir" \
+    -c protocol.file.allow=always \
+    submodule add --quiet "$upstream" "$name"
+  git -C "$parent_dir" commit --quiet --message="add submodule ${name}"
+}
+
 # bats_git <git-args...>
 # Runs git against $BATS_GIT_DIR without needing -C each time.
 # Usage: bats_git commit --quiet -m "message"
