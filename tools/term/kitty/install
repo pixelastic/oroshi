@@ -5,9 +5,10 @@ set -e
 
 # Download and extract
 # Kitty releases are coming often and the Ubuntu source files are usually too
-# old to reflect the current documentation. Better to grab it from the GitHub
-# nighthly releases.
-DOWNLOAD_URL="https://github.com/kovidgoyal/kitty/releases/download/nightly/kitty-nightly-x86_64.txz"
+# old to reflect the current documentation. Better to grab it from GitHub
+# releases directly.
+KITTY_VERSION="0.43.0"
+DOWNLOAD_URL="https://github.com/kovidgoyal/kitty/releases/download/v${KITTY_VERSION}/kitty-${KITTY_VERSION}-x86_64.txz"
 
 INSTALL_DIR=~/local/etc/kitty
 rm -rf $INSTALL_DIR
