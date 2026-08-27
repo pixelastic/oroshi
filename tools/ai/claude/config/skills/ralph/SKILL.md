@@ -66,10 +66,10 @@ If you have any `## Scaffolding Tests` from the issue:
 
 **Exit criterion:** Linter clean, all tests green.
 
-1. Language skill already loaded in Step 2 — follow its style and conventions.
+1. Apply the `/{lang}-writer` skill's style patterns.
 2. Edit files inside the current git root (`git-directory-root`)
 3. Write the simplest code that makes the tests pass. No more.
-4. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
+4. Refactor: apply the `/{lang}-writer` skill's style patterns. Don't add behavior.
 5. Lint all modified files with `git-file-lint`. Fix **every** violation, including pre-existing ones.
 6. Run tests for all modified files using `git-file-test`. Fix **every** failing test, including pre-existing ones.
 
@@ -101,7 +101,7 @@ If you have any `## Scaffolding Tests` from the issue:
 **Exit criterion:** All fixable items addressed, linter clean, tests green.
 
 1. Consume the **fixable** bucket, fix every item.
-2. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
+2. Refactor: apply the `/{lang}-writer` skill's style patterns. Don't add behavior.
 3. Lint all modified files with `git-file-lint`. Fix **every** violation, including pre-existing ones.
 4. Run tests for all modified files using `git-file-test`. Fix **every** failing test, including pre-existing ones.
 
@@ -180,7 +180,7 @@ Issue XX/YY
 This step is a loop — the user reviews the recap or the diff and requests changes. For each requested change:
 
 1. Apply the requested modification.
-2. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
+2. Refactor: apply the `/{lang}-writer` skill's style patterns. Don't add behavior.
 3. Lint all modified files with `git-file-lint`. Fix **every** violation, including pre-existing ones.
 4. Run tests for all modified files using `git-file-test`. Fix **every** failing test, including pre-existing ones.
 5. Present what changed. Wait for user's next feedback.
@@ -222,7 +222,7 @@ REVIEW:
 - [ ] Summary of both buckets displayed
 FIX:
 - [ ] All **fixable** items fixed
-- [ ] Refactored after fixes: duplication, names, helpers
+- [ ] Refactored after fixes: applied `/{lang}-writer` style patterns
 - [ ] Linter + tests green for modified files after fixes
 - [ ] state.json updated with `done: true` + `recap`
 - [ ] GUIDANCE.md discoveries appended (or skipped if none)

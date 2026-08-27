@@ -1,10 +1,12 @@
 # Python Style
 
-- No abbreviated variable names (`absolutePath` not `absPath`)
+## Essentials
+
+- Remove duplication by extracting helpers
+- Improve readability with clear names. Avoid abbreviations (`absolute_path` not `abs_path`)
+- Return early to avoid `if/else` nesting
 
 ## Return early
-
-No avoidable nesting. Guard clauses at the top, happy path at the bottom.
 
 **Before:**
 
