@@ -31,7 +31,7 @@ done
 # Themes {{{
 mkdir -p ~/.claude/themes
 # Copy themes instead of symlinking (Claude Code's file watcher doesn't follow symlinks)
-for oroshiPath in $CONFIG_DIR/themes/*; do
+for oroshiPath in $CONFIG_DIR/themes/dist/*.json; do
   themeName="${oroshiPath:t}"
   cp -f "${oroshiPath}" ~/.claude/themes/${themeName}
 done

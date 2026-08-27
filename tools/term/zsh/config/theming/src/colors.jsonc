@@ -74,7 +74,9 @@
     "costHigh":       "yellow",
     "model":          "amber-6",
     "sessionId":      "amber-9",
-    "mcp":            "cyan-7"
+    "mcp":            "cyan-7",
+    "commandMode":    "teal-6",
+    "text":           "white"
   },
 
   // Docker
