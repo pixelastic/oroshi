@@ -41,6 +41,26 @@ setup() {
   [[ -f "$side_effect" ]]
 }
 
+@test "produces no output on stdout or stderr" {
+  local lockfile="$BATS_TMP_DIR/lock"
+  local side_effect="$BATS_TMP_DIR/side-effect"
+
+  bats_run_zsh "fork 'touch $side_effect' $lockfile"
+  [[ "$status" -eq 0 ]]
+
+  # Wait for background command to complete
+  local i=0
+  while [[ ! -f "$side_effect" ]] && (( i < 50 )); do
+    sleep 0.1
+    (( i++ ))
+  done
+  [[ -f "$side_effect" ]]
+
+  # No output — MONITOR job notifications only appear with a controlling terminal,
+  # which bats can't provide; no_monitor in fork guards against it in real usage
+  [[ "$output" == "" ]]
+}
+
 @test "creates lockfile during execution and removes it after completion" {
   local lockfile="$BATS_TMP_DIR/lock"
   # Command that writes proof the lockfile existed, then sleeps briefly
