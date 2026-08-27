@@ -16,8 +16,8 @@ local srcJson="$(jsonc2json "$srcJsonc")"
 
 # Slot→family mapping: decade start → family name {{{
 local -A familyRanges=(
-   20 red    30 green   40 yellow  50 blue   60 purple  70 cyan
-   80 pink   90 lime   100 orange 110 indigo 120 fuchsia 130 teal
+  20 red    30 green   40 yellow  50 blue   60 purple  70 cyan
+  80 pink   90 lime   100 orange 110 indigo 120 fuchsia 130 teal
   140 amber 150 emerald 160 sky   170 violet
   200 gray  210 slate  220 neutral 230 stone
 )
@@ -27,7 +27,7 @@ local -A familyRanges=(
 local -A colorsByName
 local -A colorsByNameHexa
 
-local kittyColors="$(grep '^color' "$kittyConf")"
+local kittyColors="$(\grep '^color' "$kittyConf")"
 for line in ${(f)kittyColors}; do
   local split=(${=line})
   local slot="${split[1]:5}"  # strip "color" prefix
@@ -104,9 +104,9 @@ function generateDistZsh() {
     echo "# zsh-lint disable-file=commandTooLong"
     echo "typeset -gA COLORS"
     jq -r '
-      to_entries[] |
-      "COLORS[\(.key)]=\(.value.ansi)",
-      "COLORS[\(.key):hex]=\"\(.value.hex)\""
+      to_entries[]
+      | "COLORS[\(.key)]=\(.value.ansi)",
+        "COLORS[\(.key):hex]=\"\(.value.hex)\""
     ' "$distJson"
   } >"$distZsh"
 }
