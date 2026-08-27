@@ -28,7 +28,6 @@
   called by agents and maybe lintstaged. Seems like a weird gap
 - Prevent variables like `absArg` in code, prefer full words
 - Can /issues create issue files in parallel, rather than in sequence?
-- Bind Alt-f5 to save all kitty tabs, and allow for save/load
 
 ---
 
@@ -47,17 +46,12 @@ I'd love an icon to see:
 - How to mark that a tab is blocked until a sidequest is resolved?
 - Make a keybinding to automatically fix the text I have under my cursor
 - Refactor prose-build; the code is ugly
-- Add a skill to brainstorm talk titles
 - /plan creates a worktree, but doesn't move to it
-- Make a git push/pull/clone wrapper that displays only relevant info
 - Make a better trash-restore, that uses fzf and preview to pick which file to restore
 - Kitty keybinding to "mark" a tab with a specific icon (like re-adding an attention, or marking it as "to come back once other tab is done")
 - evaluate if I need some allowed-tools/disallowed-tools in my skills
 - Add a rule in zsh to prevent abbreviations like *Len, *Dir, abs*, proj*
-- Imrpove hooks so `rm` of files that are tracked by git and can be saved is allowed
-- make zshlint accept directories, and lint all files in this dir
 - find a way to fill a brag doc (https://jvns.ca/blog/brag-documents/) regularly
-- Remove plans from git history
 - Need to decorrelate attention from marker. Attention is sound + marker, marker
   is various icons in kitty to show attention, or ralph, or grill-me, etc
 - Add a script that can give me a daily recap of everything I accomplished on a
@@ -73,8 +67,6 @@ I'd love an icon to see:
 - Run claude on all history, analyzing common review issues, improve skills accordingly
 - Ensure GUIDANCE uses the right test/lint commands, even outside of oroshi
 - Ensure skill run `review-diff` from the path
-- Maybe re-evaluate if we need to commit the plans. It sure adds some noise, and
-  is only needed during implementation.
 
 ---
 
@@ -124,11 +116,7 @@ I'd love an icon to see:
 ---
 ## Cleanup
 
-- Cleanup scripts and autoloaded functions. Delete the unused ones.
-- Define what should be a script and what should be an autoloaded
-- Migrate everything that should be a function and not a script to a functions
 - Cleanup private/ scripts and autoloaded functions
-- Reorg by domain and install/deploy in private/
 
 ---
 ## Ideas
