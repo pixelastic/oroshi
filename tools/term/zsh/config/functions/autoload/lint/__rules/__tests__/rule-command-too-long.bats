@@ -23,12 +23,19 @@ run_this_rule() {
   expect_rule_violation commandTooLong 1
 }
 
+@test "skips export lines exceeding 100 chars" {
+  local -a input=( 'export ANTHROPIC_API_KEY="sk-ant-api03-very-long-key-that-definitely-exceeds-one-hundred-characters-total"' )
+  run_this_rule "${input[@]}"
+  expect_clean
+}
+
 @test "clean — all exclusions together" {
   local -a input=(
     '# This is a very long comment that exceeds one hundred characters and should not be flagged by the rule'
     '[[ "$some_very_long_variable_name" == "$another_very_long_variable_name" && "$third" == "$fourth_var" ]]'
     'if [[ "$some_very_long_variable_name" == "$another_very_long_variable_name" && "$x_var" == "$y_var" ]]; then'
     'local very_long_variable_name="some very long value that makes this line exceed one hundred characters total"'
+    'export ANTHROPIC_API_KEY="sk-ant-api03-very-long-key-that-definitely-exceeds-one-hundred-characters-total"'
     'VERY_LONG_VARIABLE_NAME="some very long value that makes this line exceed one hundred characters in total xx"'
     'mycommand --opt1 val1 --opt2 val2 --opt3 val3 --opt4 val4 --opt5 val5 --opt6 val6 --opt7 val7-xxxxxx'
     'shortcmd arg'

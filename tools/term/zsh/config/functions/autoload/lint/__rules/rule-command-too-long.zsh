@@ -23,6 +23,8 @@ function zshLintRule_commandTooLong() {
     [[ "$line" =~ ^[[:space:]]*'if ' ]] && continue
     # Skip local declarations
     [[ "$line" =~ ^[[:space:]]*'local ' ]] && continue
+    # Skip export declarations
+    [[ "$line" =~ ^[[:space:]]*'export ' ]] && continue
     # Skip bare assignments (identifier=value)
     [[ "$line" =~ ^[[:space:]]*[a-zA-Z_][a-zA-Z0-9_]*= ]] && continue
     printf '%s%s%s%serror%s%d%s%s\n' \
