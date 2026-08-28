@@ -12,7 +12,7 @@ setup() {
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--feature && git-worktree-rename refactor"
 
   # Passed
-  bats_debug "$output"
+  bats_debug
   [[ "$status" -eq 0 ]]
 
   # Directories renamed
@@ -27,7 +27,7 @@ setup() {
 
   # Worktree clean
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list-raw"
-  bats_debug "$output"
+  bats_debug
   [[ "${lines[0]}" = refactor* ]]
   [[ "${lines[1]}" == "" ]]
 }
@@ -56,7 +56,7 @@ setup() {
 
   # Worktree clean
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list-raw"
-  bats_debug "$output"
+  bats_debug
   [[ "${lines[0]}" = refactor* ]]
   [[ "${lines[1]}" == "" ]]
 
@@ -82,7 +82,7 @@ setup() {
 
   bats_run_zsh "cd ${BATS_GIT_DIR} && git-worktree-rename feature refactor"
 
-  bats_debug "$output"
+  bats_debug
   [[ "$status" -eq 0 ]]
   [[ ! -d "$planDirectory/my-repo--feature" ]]
   [[ -d "$planDirectory/my-repo--refactor" ]]
@@ -184,7 +184,7 @@ setup() {
 
   local worktreePath="${BATS_GIT_WORKTREES}my-repo--feature"
   bats_run_zsh "export OROSHI_ROOT='$worktreePath' && cd $worktreePath && git-worktree-rename refactor && echo \$OROSHI_ROOT"
-  bats_debug "$output"
+  bats_debug
   [[ "$status" -eq 0 ]]
   # newDir inherits OROSHI_WORKTREES_DIR trailing slash
   [[ "${lines[-1]}" = "${BATS_GIT_WORKTREES}/my-repo--refactor" ]]
@@ -197,7 +197,7 @@ setup() {
 
   local worktreePath="${BATS_GIT_WORKTREES}my-repo--feature"
   bats_run_zsh "export OROSHI_ROOT='/some/other/path' && cd $worktreePath && git-worktree-rename refactor && echo \$OROSHI_ROOT"
-  bats_debug "$output"
+  bats_debug
   [[ "$status" -eq 0 ]]
   [[ "${lines[-1]}" = "/some/other/path" ]]
 }
@@ -209,7 +209,7 @@ setup() {
 
   bats_run_zsh "cd ${BATS_GIT_DIR} && git-worktree-rename feature refactor"
 
-  bats_debug "$output"
+  bats_debug
   [[ "$status" -eq 0 ]]
 
   # Directories renamed
@@ -218,6 +218,6 @@ setup() {
 
   # Submodule still works in the renamed worktree
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--refactor && git submodule status"
-  bats_debug "$output"
+  bats_debug
   [[ "$status" -eq 0 ]]
 }

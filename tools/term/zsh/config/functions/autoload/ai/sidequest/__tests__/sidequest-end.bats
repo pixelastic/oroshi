@@ -32,7 +32,7 @@ setup() {
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
   bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md"
-  bats_debug "$output"
+  bats_debug
   [[ "$status" -eq 0 ]]
   [[ "$output" == "WORKTREE:my-slug" ]]
 }
