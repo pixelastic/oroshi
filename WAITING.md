@@ -20,8 +20,14 @@ via `syntaxHighlightingDisabled: true`, which is too drastic. Waiting for
 custom syntax highlighting theme support or a way to override the diff syntax
 palette.
 
-Upgrading would also unblock: using Fable, fixing terminal corruption when
-closing Claude (which itself blocks ralph --auto).
+Upgrading would also unblock:
+
+- Custom UI themes (v2.1.118+) — the theme pipeline is ready
+  (src/oroshi.json → generate-theme → ~/.claude/themes/) and would enable
+  changing bash mode border, prompt colors, diff backgrounds, etc.
+- Using Fable
+- Fixing terminal corruption when closing Claude (which itself blocks
+  ralph --auto)
 
 - **Sources:**
   - https://github.com/anthropics/claude-code/releases
