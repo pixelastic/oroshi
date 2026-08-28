@@ -117,6 +117,7 @@ I'd love an icon to see:
 ## Cleanup
 
 - Cleanup private/ scripts and autoloaded functions
+- Reorg by domain and install/deploy in private/
 
 ---
 ## Ideas
