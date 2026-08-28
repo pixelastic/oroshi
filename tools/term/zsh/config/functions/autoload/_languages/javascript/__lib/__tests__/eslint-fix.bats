@@ -35,7 +35,9 @@ SCRIPT
 
 @test "--original-path resolves config from the given path" {
   local file="$BATS_TMP_DIR/tmp-copy.js"
-  local originalPath="/home/user/project/src/app.js"
+  local originalDir="$BATS_TMP_DIR/project/src"
+  mkdir -p "$originalDir"
+  local originalPath="$originalDir/app.js"
   printf 'var x;\n' > "$file"
 
   cat > "$BATS_TMP_DIR/mock-eslint_d" <<'SCRIPT'
@@ -55,7 +57,7 @@ SCRIPT
   bats_run_zsh "source $LIB_DIR/eslint-fix.zsh && eslint-fix $file --original-path $originalPath"
   [[ "$status" -eq 0 ]]
   local yarnArgs="$(cat "$BATS_TMP_DIR/yarn_root_args")"
-  [[ "$yarnArgs" == *"/home/user/project/src"* ]]
+  [[ "$yarnArgs" == *"$originalDir"* ]]
 }
 
 @test "--original-path with multiple files exits 1" {

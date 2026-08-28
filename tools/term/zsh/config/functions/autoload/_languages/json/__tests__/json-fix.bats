@@ -125,7 +125,9 @@ setup() {
 @test "passes --original-path to prettier and eslint_d" {
   local file="$BATS_TMP_DIR/test.json"
   echo '{}' > "$file"
-  local originalPath="/home/user/project/config.json"
+  local originalDir="$BATS_TMP_DIR/project"
+  mkdir -p "$originalDir"
+  local originalPath="$originalDir/config.json"
 
   bats_run_zsh "json-fix --original-path $originalPath $file"
   [[ "$status" -eq 0 ]]

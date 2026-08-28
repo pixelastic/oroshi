@@ -2,6 +2,8 @@
 # Usage:
 # $ eslint-fix file.js                              # Fix in-place
 # $ eslint-fix file.js --original-path /real/path   # Config from real path
+source "${0:A:h}/eslint-helpers.zsh"
+
 function eslint-fix() {
   setopt local_options err_return
 
@@ -9,6 +11,7 @@ function eslint-fix() {
     -original-path:=flagOriginalPath
 
   local originalPath=${flagOriginalPath[2]}
+  local files=("$@")
 
   # --original-path is single-file only
   if [[ $originalPath != "" && $# -gt 1 ]]; then
@@ -20,21 +23,19 @@ function eslint-fix() {
   local configDir="${1:a:h}"
   [[ $originalPath != "" ]] && configDir="${originalPath:h}"
 
-  local configFile=~/.oroshi/eslint.config.js
   local projectRoot="$(yarn-root $configDir --force)"
-  if [[ $projectRoot != "" ]]; then
-    cd "$projectRoot" || return 1
-    [[ -f "$projectRoot/.eslintrc.js" ]] && configFile="$projectRoot/.eslintrc.js"
-    [[ -f "$projectRoot/eslint.config.js" ]] && configFile="$projectRoot/eslint.config.js"
-  fi
 
-  # Resolve eslint binary
-  local eslintBin="eslint_d"
-  if [[ $projectRoot != "" && -f "$projectRoot/node_modules/.bin/eslint_d" ]]; then
-    eslintBin="$projectRoot/node_modules/.bin/eslint_d"
-  fi
+  local eslintBin="$(__eslint-binary "$projectRoot")"
+  local configFile="$(__eslint-config "$projectRoot")"
+
+  # If --original-path is passed, we use it as the workingDirectory base
+  [[ $originalPath != "" ]] && files=("$originalPath")
+  local workingDirectory="$(__eslint-working-directory "$projectRoot" "${files[@]}")"
+
+  # Point eslint_d to the right node_modules/eslint
+  local -x ESLINT_D_ROOT="${projectRoot:-$OROSHI_ROOT}"
 
   local eslintArgs=(--config "$configFile" --fix)
 
-  $eslintBin ${eslintArgs[@]} "$@" 2>/dev/null
+  cd "$workingDirectory" && $eslintBin ${eslintArgs[@]} "$@" 2>/dev/null
 }
