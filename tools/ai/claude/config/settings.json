@@ -74,7 +74,7 @@
   "effortLevel": "high",
   "autoMemoryEnabled": false,
   "skipAutoPermissionPrompt": true,
-  "theme": "oroshi",
+  "theme": "dark",
   "preferredNotifChannel": "notifications_disabled",
   "voiceEnabled": true
 }
