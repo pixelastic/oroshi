@@ -1,13 +1,13 @@
 #!/usr/bin/env zsh
-# Regenerate ./dist/oroshi.json from ./src/oroshi.json
+# Regenerate ~/.claude/themes/oroshi.json from ./src/oroshi.json
 # Usage:
 # $ tools/ai/claude/config/themes/generate-theme
 set -e
 
 local currentDir=${0:a:h}
 
-mkdir -p $currentDir/dist
+mkdir -p ~/.claude/themes
 
 colors-template-render \
   $currentDir/src/oroshi.json \
-  >$currentDir/dist/oroshi.json
+  >~/.claude/themes/oroshi.json
