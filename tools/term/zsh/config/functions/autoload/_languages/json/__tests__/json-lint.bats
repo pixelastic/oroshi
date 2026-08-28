@@ -145,3 +145,67 @@ setup() {
   [[ "$status" -eq 1 ]]
   [[ "$output" == *"No files provided"* ]]
 }
+
+@test "runs eslint_d from files common ancestor when no project root" {
+  local file="$BATS_TMP_DIR/clean.json"
+  echo '{}' > "$file"
+
+  eslint_d() {
+    pwd > "$BATS_TMP_DIR/eslint_cwd"
+    printf '%s\n' "$*" >> "$BATS_TMP_DIR/eslint_calls"
+    cat "$BATS_TMP_DIR/eslint_stylish_output"
+  }
+  bats_mock eslint_d
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd /tmp && json-lint $file"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/eslint_cwd" ]]
+  local cwd="$(cat "$BATS_TMP_DIR/eslint_cwd")"
+  [[ "$cwd" == "$BATS_TMP_DIR" ]]
+}
+
+@test "reports parsing errors for invalid JSON outside any project" {
+  local file="$BATS_TMP_DIR/bad.json"
+  echo '{invalid' > "$file"
+
+  printf '%s' "$file
+  1:1  error  Parsing error: Unexpected token i  json/*
+
+1 problem (1 error, 0 warnings)" > "$BATS_TMP_DIR/eslint_stylish_output"
+
+  eslint_d() {
+    pwd > "$BATS_TMP_DIR/eslint_cwd"
+    printf '%s\n' "$*" >> "$BATS_TMP_DIR/eslint_calls"
+    cat "$BATS_TMP_DIR/eslint_stylish_output"
+  }
+  bats_mock eslint_d
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd /tmp && json-lint $file"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"Parsing error"* ]]
+  local cwd="$(cat "$BATS_TMP_DIR/eslint_cwd")"
+  [[ "$cwd" == "$BATS_TMP_DIR" ]]
+}
+
+@test "runs eslint from project root when file has a project root" {
+  mkdir -p "$BATS_TMP_DIR/myproject"
+  local file="$BATS_TMP_DIR/myproject/config.json"
+  echo '{}' > "$file"
+
+  yarn-root() { echo "$BATS_TMP_DIR/myproject"; }
+  eslint_d() {
+    pwd > "$BATS_TMP_DIR/eslint_cwd"
+    printf '%s\n' "$*" >> "$BATS_TMP_DIR/eslint_calls"
+    cat "$BATS_TMP_DIR/eslint_stylish_output"
+  }
+  bats_mock yarn-root eslint_d
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd /tmp && json-lint $file"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/eslint_cwd" ]]
+  local cwd="$(cat "$BATS_TMP_DIR/eslint_cwd")"
+  [[ "$cwd" == "$BATS_TMP_DIR/myproject" ]]
+}
