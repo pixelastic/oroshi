@@ -1,0 +1,22 @@
+# Convert an RSS feed to a Lunii pack using studio-pack-generator
+# Usage:
+# $ rss2lunii <url>                        # Convert feed with defaults
+# $ rss2lunii <url> --rss-min-duration 300 # With extra options
+setopt local_options err_return
+
+# URL is required
+if [[ $# -eq 0 ]]; then
+  echoerr "Usage: rss2lunii <url> [extra-options...]"
+  return 1
+fi
+
+local url=$1
+shift
+
+studio-pack-generator \
+  --rss-split-length 9999 \
+  --rss-episode-numbers \
+  --rss-use-image-as-thumbnail \
+  --output-folder . \
+  "$@" \
+  "$url"
