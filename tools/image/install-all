@@ -4,25 +4,26 @@ set -e
 
 # Basic image support
 sudo apt-get install \
-	libimage-exiftool-perl
+  libimage-exiftool-perl \
+  librsvg2-bin
 
 # Conversion
-"$(dirname "$0")/imagemagick/install"
+"${0:h}/imagemagick/install"
 
 # Screenshots
-"$(dirname "$0")/flameshot/install"
+"${0:h}/flameshot/install"
 
 # DSSIM
-"$(dirname "$0")/dssim/install"
+"${0:h}/dssim/install"
 
 # WEBP
-"$(dirname "$0")/webp/install"
+"${0:h}/webp/install"
 
 # JPG
-"$(dirname "$0")/jpegoptim/install"
+"${0:h}/jpegoptim/install"
 
 # PNG
-"$(dirname "$0")/pngquant/install"
+"${0:h}/pngquant/install"
 
 # GIF
-"$(dirname "$0")/gifsicle/install"
+"${0:h}/gifsicle/install"
