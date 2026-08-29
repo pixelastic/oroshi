@@ -199,6 +199,7 @@
   "iconv",
   "identify",
   "img-min",
+  "img-resize",
   "iostat",
   "is-bats",
   "is-claude",
@@ -348,6 +349,7 @@
   "stat",
   "strace",
   "strings",
+  "studio-pack-generator",
   "stylelint",
   "systemctl",
   "sys-battery",
@@ -423,5 +425,6 @@
   "zsh-lint-shellcheck",
   "./node_modules/.bin/bats",
   "/tmp/oroshi/claude/scripts/**",
-  "/usr/bin/curl"
+  "/usr/bin/curl",
+  "/usr/bin/find"
 ]
