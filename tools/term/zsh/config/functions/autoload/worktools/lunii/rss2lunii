@@ -13,10 +13,68 @@ fi
 local url=$1
 shift
 
+# Snapshot directories before generation to detect the new pack folder
+local dirsBefore=("${(@f)$(print -l ./*(/N))}")
+
+# First pass: download and process RSS, skip zip so we can fix images
 studio-pack-generator \
+  --skip-zip-generation \
   --rss-split-length 9999 \
   --rss-episode-numbers \
   --rss-use-image-as-thumbnail \
   --output-folder . \
   "$@" \
   "$url"
+
+# Find the pack folder created by studio-pack-generator
+local dirsAfter=("${(@f)$(print -l ./*(/N))}")
+local packDir=""
+for dir in $dirsAfter; do
+  if [[ ${dirsBefore[(I)$dir]} -eq 0 ]]; then
+    packDir=$dir
+    break
+  fi
+done
+
+# Fall back to the only directory if none was new (re-run scenario)
+if [[ "$packDir" == "" && ${#dirsAfter} -eq 1 ]]; then
+  packDir=$dirsAfter[1]
+fi
+
+# No pack folder found
+if [[ "$packDir" == "" ]]; then
+  echoerr "Could not determine pack folder, skipping image resize"
+  return 0
+fi
+
+# studio-pack-generator produces images that are not exactly 320x240
+# (e.g. 300x220 or untouched thumbnails), but the Lunii FS format
+# requires exactly 320x240. Resize all images with black padding.
+local LUNII_SIZE="320x240"
+local findResult="$(/usr/bin/find "$packDir" -type f \
+  \( -name '*.png' -o -name '*.jpeg' -o -name '*.jpg' \))"
+local images=(${(f)findResult})
+
+for img in $images; do
+  local size="$(magick identify -format '%wx%h' "$img")"
+  [[ "$size" == "$LUNII_SIZE" ]] && continue
+
+  magick "$img" \
+    -resize "$LUNII_SIZE" \
+    -background black \
+    -gravity center \
+    -extent "$LUNII_SIZE" \
+    "$img"
+  echo "Resized $img ($size → $LUNII_SIZE)"
+done
+
+# Second pass: repack the folder into a proper Studio zip
+# (skip all processing, just generate the zip with correct images)
+studio-pack-generator \
+  --skip-audio-convert \
+  --skip-image-convert \
+  --skip-audio-item-gen \
+  --skip-image-item-gen \
+  --skip-extract-image-from-mp-3 \
+  --output-folder . \
+  "$packDir"
