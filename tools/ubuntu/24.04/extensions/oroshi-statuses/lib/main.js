@@ -1,11 +1,15 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import St from 'gi://St';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 
 const SNI_PREFIX = 'org.freedesktop.StatusNotifierItem-';
 const SNI_INTERFACE = 'org.kde.StatusNotifierItem';
 const SNI_PATH = '/StatusNotifierItem';
 const SLACK_ID = 'Slack_status_icon_1';
 const PROPERTIES_INTERFACE = 'org.freedesktop.DBus.Properties';
+const INDICATOR_ID = 'oroshi-slack-status';
 
 class OroshiStatuses {
   /**
@@ -14,8 +18,11 @@ class OroshiStatuses {
   constructor(_extension) {
     this._bus = Gio.DBus.session;
     this._slackBusName = null;
-    this._subscriptionIds = [];
+    this._busSubscriptionIds = [];
+    this._slackSubscriptionIds = [];
     this._cancellable = new Gio.Cancellable();
+    this._button = null;
+    this._icon = null;
 
     this._watchNameChanges();
     this._scanExistingNames();
@@ -24,11 +31,11 @@ class OroshiStatuses {
   /** Tear down all resources and remove the panel indicator */
   destroy() {
     this._cancellable.cancel();
-    for (const id of this._subscriptionIds) {
+    this._teardownSlack();
+    for (const id of this._busSubscriptionIds) {
       this._bus.signal_unsubscribe(id);
     }
-    this._subscriptionIds = [];
-    this._slackBusName = null;
+    this._busSubscriptionIds = [];
   }
 
   /**
@@ -55,11 +62,11 @@ class OroshiStatuses {
         // Name disappeared from the bus
         if (newOwner === '' && name === this._slackBusName) {
           console.log('OroshiStatuses: Slack removed from D-Bus');
-          this._slackBusName = null;
+          this._teardownSlack();
         }
       },
     );
-    this._subscriptionIds.push(id);
+    this._busSubscriptionIds.push(id);
   }
 
   /**
@@ -99,6 +106,8 @@ class OroshiStatuses {
    * @param {string} busName - The D-Bus bus name to query
    */
   _checkIfSlack(busName) {
+    if (this._slackBusName) return;
+
     this._bus.call(
       busName,
       SNI_PATH,
@@ -115,9 +124,12 @@ class OroshiStatuses {
           const [props] = reply.deepUnpack();
           const id = props.Id?.deepUnpack();
           if (id !== SLACK_ID) return;
+          if (this._slackBusName) return;
 
           this._slackBusName = busName;
           console.log('OroshiStatuses: Slack detected on D-Bus');
+          this._showIcon(props);
+          this._watchSlackSignals();
         } catch (e) {
           if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
             // Not Slack or property retrieval failed — ignore
@@ -125,6 +137,111 @@ class OroshiStatuses {
         }
       },
     );
+  }
+
+  /**
+   * Build icon path from D-Bus properties
+   * @param {object} props - Unpacked GetAll properties
+   * @returns {string|null} Full path to the PNG icon, or null
+   */
+  _resolveIconPath(props) {
+    const themePath = props.IconThemePath?.deepUnpack();
+    const iconName = props.IconName?.deepUnpack();
+    if (!themePath || !iconName) return null;
+    return `${themePath}/${iconName}.png`;
+  }
+
+  /**
+   * Create or update the panel button with Slack's current icon
+   * @param {object} props - Unpacked GetAll properties
+   */
+  _showIcon(props) {
+    const iconPath = this._resolveIconPath(props);
+    if (!iconPath) return;
+
+    if (!this._button) {
+      this._icon = new St.Icon({
+        style_class: 'system-status-icon',
+        icon_size: 20,
+      });
+      this._button = new PanelMenu.Button(0.0, INDICATOR_ID, false);
+      this._button.add_child(this._icon);
+      Main.panel.addToStatusArea(INDICATOR_ID, this._button);
+    }
+
+    this._icon.gicon = Gio.FileIcon.new(Gio.File.new_for_path(iconPath));
+  }
+
+  /**
+   * Subscribe to NewIcon and NewToolTip signals on Slack's SNI
+   */
+  _watchSlackSignals() {
+    for (const signal of ['NewIcon', 'NewToolTip']) {
+      const id = this._bus.signal_subscribe(
+        this._slackBusName,
+        SNI_INTERFACE,
+        signal,
+        SNI_PATH,
+        null,
+        Gio.DBusSignalFlags.NONE,
+        () => {
+          this._refreshIcon();
+        },
+      );
+      this._slackSubscriptionIds.push(id);
+    }
+  }
+
+  /**
+   * Re-read Slack's properties via GetAll and update the panel icon
+   */
+  _refreshIcon() {
+    if (!this._slackBusName) return;
+
+    this._bus.call(
+      this._slackBusName,
+      SNI_PATH,
+      PROPERTIES_INTERFACE,
+      'GetAll',
+      new GLib.Variant('(s)', [SNI_INTERFACE]),
+      GLib.VariantType.new('(a{sv})'),
+      Gio.DBusCallFlags.NONE,
+      -1,
+      this._cancellable,
+      (connection, result) => {
+        try {
+          const reply = connection.call_finish(result);
+          const [props] = reply.deepUnpack();
+          this._showIcon(props);
+        } catch (e) {
+          if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+            console.error('OroshiStatuses: failed to refresh icon', e);
+          }
+        }
+      },
+    );
+  }
+
+  /**
+   * Remove the panel button and release its references
+   */
+  _destroyButton() {
+    if (!this._button) return;
+    this._button.destroy();
+    this._button = null;
+    this._icon = null;
+  }
+
+  /**
+   * Unsubscribe from Slack signals, remove button, clear bus name
+   */
+  _teardownSlack() {
+    for (const id of this._slackSubscriptionIds) {
+      this._bus.signal_unsubscribe(id);
+    }
+    this._slackSubscriptionIds = [];
+    this._destroyButton();
+    this._slackBusName = null;
   }
 }
 
