@@ -18,3 +18,5 @@ gext install wsmatrix@martin.zurowietz.de            # Workspace Matrix
 # Custom extensions
 "${0:A:h}/oroshi-modes/install"
 "${0:A:h}/oroshi-modes/reload"
+"${0:A:h}/oroshi-statuses/install"
+"${0:A:h}/oroshi-statuses/reload"

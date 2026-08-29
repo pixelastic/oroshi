@@ -47,9 +47,11 @@ dconf write /org/gnome/shell/extensions/just-perfection/quick-settings-airplane-
 # Notifications below quick settings
 dconf write /org/gnome/shell/extensions/just-perfection/notification-banner-position 2
 
-# Symlink oroshi-modes extension to GNOME extensions directory
-local extensionDir=~/.local/share/gnome-shell/extensions/oroshi-modes@oroshi
-ln -fsn $OROSHI_ROOT/tools/ubuntu/24.04/extensions/oroshi-modes/lib $extensionDir
+# Symlink custom extensions to GNOME extensions directory
+local extensionDir=~/.local/share/gnome-shell/extensions
+local extensionSrc=$OROSHI_ROOT/tools/ubuntu/24.04/extensions
+ln -fsn $extensionSrc/oroshi-modes/lib $extensionDir/oroshi-modes@oroshi
+ln -fsn $extensionSrc/oroshi-statuses/lib $extensionDir/oroshi-statuses@oroshi
 
 # Extensions are displayed in the order they are enabled, from right to left.
 # To ensure consistent placement, disable all first then enable in order.
@@ -58,6 +60,7 @@ local topbarExtensions=(
   ubuntu-appindicators@ubuntu.com         # App Indicators (Dropbox, etc.)
   just-perfection-desktop@just-perfection # Just Perfection + Clock
   unite@hardpixel.eu                      # Unite (reduce spacing)
+  oroshi-statuses@oroshi                  # Oroshi Statuses (Slack status)
   oroshi-modes@oroshi                     # Oroshi Modes
   spotify-controls@Sonath21               # Spotify Controls + Track Info
 )
