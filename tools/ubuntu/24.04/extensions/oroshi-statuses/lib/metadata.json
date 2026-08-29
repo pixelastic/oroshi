@@ -1,0 +1,7 @@
+{
+  "uuid": "oroshi-statuses@oroshi",
+  "name": "Oroshi Statuses",
+  "description": "Custom status icons for the GNOME top bar",
+  "shell-version": ["46"],
+  "url": ""
+}

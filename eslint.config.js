@@ -9,7 +9,7 @@ export default [
   },
   {
     name: 'oroshi/gnome-extension',
-    files: ['tools/ubuntu/24.04/extensions/oroshi-modes/lib/**'],
+    files: ['tools/ubuntu/24.04/extensions/*/lib/**'],
     rules: { 'import/no-unresolved': 'off' },
   },
 ];

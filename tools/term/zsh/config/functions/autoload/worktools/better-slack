@@ -1,0 +1,9 @@
+# Launch Slack in XWayland mode
+# Slack 4.51+ auto-detects Wayland and uses native mode, which breaks
+# tray icon, notifications, and fullscreen title bar hiding.
+# Usage:
+# $ better-slack
+setopt local_options err_return
+
+slack --ozone-platform=x11 "$@" &>/dev/null &
+disown

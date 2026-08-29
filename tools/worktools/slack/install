@@ -2,7 +2,7 @@
 # Slack: Online chat
 set -e
 
-local DOWNLOAD_URL="https://downloads.slack-edge.com/desktop-releases/linux/x64/4.47.69/slack-desktop-4.47.69-amd64.deb"
+local DOWNLOAD_URL="https://downloads.slack-edge.com/desktop-releases/linux/x64/4.51.191/slack-desktop-4.51.191-amd64.deb"
 
 cd ~/local/tmp
 wget $DOWNLOAD_URL -O slack.deb
