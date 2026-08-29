@@ -2,4 +2,6 @@
 # Usage:
 # $ svg2png ./*.svg
 setopt local_options err_return
-rsvg-convert "$1" -o "${1:r}.png"
+for svg in "$@"; do
+  rsvg-convert "$svg" -o "${svg:r}.png"
+done
