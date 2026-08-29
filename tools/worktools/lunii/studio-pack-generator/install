@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+# Studio Pack Generator: Convert audio packs for Lunii storyteller
+# https://github.com/jersou/studio-pack-generator
+# Usage:
+# $ ./install   # Download binary + install picoTTS
+set -e
+
+VERSION="0.5.15"
+DOWNLOAD_URL="https://github.com/jersou/studio-pack-generator/releases/download/v${VERSION}/studio-pack-generator-${VERSION}-x86_64-linux.zip"
+INSTALL_DIR=~/local/etc/studio-pack-generator
+BINARY_NAME="studio-pack-generator-x86_64-linux"
+
+# TTS dependency for menu generation
+sudo apt install libttspico-utils
+
+# Download and extract
+mkdir -p "$INSTALL_DIR"
+cd "$INSTALL_DIR"
+rm --recursive --force "./$BINARY_NAME"
+wget "$DOWNLOAD_URL" --output-document ./studio-pack-generator.zip
+extract ./studio-pack-generator.zip
+rm ./studio-pack-generator.zip
+chmod +x "./$BINARY_NAME"
+
+# Create link
+cd ~/local/bin
+ln --force --symbolic ./../etc/studio-pack-generator/"$BINARY_NAME" ./studio-pack-generator
