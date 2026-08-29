@@ -119,3 +119,127 @@ setup() {
 
   [[ -f "$BATS_TMP_DIR/mypack/ep1-generated.item.mp3" ]]
 }
+
+@test "calls Claude API for episodes without existing images" {
+  mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
+  mkdir -p "$BATS_TMP_DIR/mypack/02 - Episode Two"
+
+  studio-pack-generator() { :; }
+  curl() {
+    echo "called" >> "$BATS_TMP_DIR/curl_calls.txt"
+    printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
+  }
+  svg2png() {
+    for f in "$@"; do touch "${f%.svg}.png"; done
+  }
+  img-resize() { :; }
+  bats_mock studio-pack-generator curl svg2png img-resize
+  bats_disable_worktree_aware
+
+  export ANTHROPIC_API_KEY=test-anthropic-key
+  export OPENAI_API_KEY=test-openai-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  [[ -f "$BATS_TMP_DIR/curl_calls.txt" ]]
+  [[ $(wc -l < "$BATS_TMP_DIR/curl_calls.txt") -eq 2 ]]
+}
+
+@test "skips Claude API for episodes with existing .item.png" {
+  mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
+  mkdir -p "$BATS_TMP_DIR/mypack/02 - Episode Two"
+  touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
+
+  studio-pack-generator() { :; }
+  curl() {
+    echo "called" >> "$BATS_TMP_DIR/curl_calls.txt"
+    printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
+  }
+  svg2png() {
+    for f in "$@"; do touch "${f%.svg}.png"; done
+  }
+  img-resize() { :; }
+  bats_mock studio-pack-generator curl svg2png img-resize
+  bats_disable_worktree_aware
+
+  export ANTHROPIC_API_KEY=test-anthropic-key
+  export OPENAI_API_KEY=test-openai-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  # Only Episode Two should trigger an API call
+  [[ -f "$BATS_TMP_DIR/curl_calls.txt" ]]
+  [[ $(wc -l < "$BATS_TMP_DIR/curl_calls.txt") -eq 1 ]]
+}
+
+@test "deletes existing images when --force-img is set" {
+  mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
+  touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
+
+  studio-pack-generator() { :; }
+  curl() {
+    echo "called" >> "$BATS_TMP_DIR/curl_calls.txt"
+    printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
+  }
+  svg2png() {
+    for f in "$@"; do touch "${f%.svg}.png"; done
+  }
+  img-resize() { :; }
+  bats_mock studio-pack-generator curl svg2png img-resize
+  bats_disable_worktree_aware
+
+  export ANTHROPIC_API_KEY=test-anthropic-key
+  export OPENAI_API_KEY=test-openai-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-img https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  # Image was deleted and regenerated via API
+  [[ -f "$BATS_TMP_DIR/curl_calls.txt" ]]
+  [[ $(wc -l < "$BATS_TMP_DIR/curl_calls.txt") -eq 1 ]]
+}
+
+@test "generates PNG at 320x240 dimensions" {
+  mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
+
+  studio-pack-generator() { :; }
+  curl() {
+    printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
+  }
+  svg2png() {
+    for f in "$@"; do touch "${f%.svg}.png"; done
+  }
+  img-resize() { echo "$@" >> "$BATS_TMP_DIR/resize_calls.txt"; }
+  bats_mock studio-pack-generator curl svg2png img-resize
+  bats_disable_worktree_aware
+
+  export ANTHROPIC_API_KEY=test-anthropic-key
+  export OPENAI_API_KEY=test-openai-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  [[ -f "$BATS_TMP_DIR/resize_calls.txt" ]]
+  [[ "$(cat "$BATS_TMP_DIR/resize_calls.txt")" == *"--no-ratio"* ]]
+  [[ "$(cat "$BATS_TMP_DIR/resize_calls.txt")" == *"320x240"* ]]
+}
+
+@test "does not call Claude API when all episodes have images" {
+  mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
+  touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
+
+  studio-pack-generator() { :; }
+  curl() {
+    echo "called" >> "$BATS_TMP_DIR/curl_calls.txt"
+    printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
+  }
+  svg2png() { :; }
+  img-resize() { :; }
+  bats_mock studio-pack-generator curl svg2png img-resize
+  bats_disable_worktree_aware
+
+  export ANTHROPIC_API_KEY=test-anthropic-key
+  export OPENAI_API_KEY=test-openai-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  [[ ! -f "$BATS_TMP_DIR/curl_calls.txt" ]]
+}
