@@ -1,17 +1,30 @@
 # Convert an RSS feed to a Lunii pack using studio-pack-generator
 # Usage:
 # $ rss2lunii <url>                        # Convert feed with defaults
+# $ rss2lunii <url> --force-img            # Regenerate images
+# $ rss2lunii <url> --force-tts            # Regenerate TTS audio
 # $ rss2lunii <url> --rss-min-duration 300 # With extra options
 setopt local_options err_return
 
 # URL is required
 if [[ $# -eq 0 ]]; then
-  echoerr "Usage: rss2lunii <url> [extra-options...]"
+  echoerr "Usage: rss2lunii <url> [--force-img] [--force-tts] [extra-options...]"
   return 1
 fi
 
-local url=$1
+zparseopts -E -D \
+  -force-img=flagForceImg \
+  -force-tts=flagForceTts
+
+local isForceImg=${#flagForceImg}
+local isForceTts=${#flagForceTts}
+
+local url="$1"
 shift
+
+# No-op skeletons — wired in later issues
+function _generate_images() { :; }
+function _resize_thumbnail() { :; }
 
 # Snapshot directories before generation to detect the new pack folder
 local dirsBefore=("${(@f)$(print -l ./*(/N))}")
@@ -19,6 +32,8 @@ local dirsBefore=("${(@f)$(print -l ./*(/N))}")
 # First pass: download and process RSS, skip zip so we can fix images
 studio-pack-generator \
   --skip-zip-generation \
+  --skip-image-convert \
+  --skip-audio-item-gen \
   --rss-split-length 9999 \
   --rss-episode-numbers \
   --rss-use-image-as-thumbnail \
@@ -47,26 +62,8 @@ if [[ "$packDir" == "" ]]; then
   return 0
 fi
 
-# studio-pack-generator produces images that are not exactly 320x240
-# (e.g. 300x220 or untouched thumbnails), but the Lunii FS format
-# requires exactly 320x240. Resize all images with black padding.
-local LUNII_SIZE="320x240"
-local findResult="$(/usr/bin/find "$packDir" -type f \
-  \( -name '*.png' -o -name '*.jpeg' -o -name '*.jpg' \))"
-local images=(${(f)findResult})
-
-for img in $images; do
-  local size="$(magick identify -format '%wx%h' "$img")"
-  [[ "$size" == "$LUNII_SIZE" ]] && continue
-
-  magick "$img" \
-    -resize "$LUNII_SIZE" \
-    -background black \
-    -gravity center \
-    -extent "$LUNII_SIZE" \
-    "$img"
-  echo "Resized $img ($size → $LUNII_SIZE)"
-done
+_generate_images
+_resize_thumbnail
 
 # Second pass: repack the folder into a proper Studio zip
 # (skip all processing, just generate the zip with correct images)
