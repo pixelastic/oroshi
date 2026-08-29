@@ -29,11 +29,21 @@ function _resize_thumbnail() { :; }
 # Snapshot directories before generation to detect the new pack folder
 local dirsBefore=("${(@f)$(print -l ./*(/N))}")
 
+# Delete cached TTS files so studio-pack-generator regenerates them
+if [[ $isForceTts -eq 1 ]]; then
+  for dir in $dirsBefore; do
+    [[ ! -d "$dir" ]] && continue
+    find "$dir" -type f \( -name "*-generated.item.mp3" -o -name "*-generated.item.wav" \) -delete
+  done
+fi
+
 # First pass: download and process RSS, skip zip so we can fix images
 studio-pack-generator \
   --skip-zip-generation \
   --skip-image-convert \
-  --skip-audio-item-gen \
+  --use-open-ai-tts \
+  --open-ai-api-key "$OPENAI_API_KEY" \
+  --open-ai-voice nova \
   --rss-split-length 9999 \
   --rss-episode-numbers \
   --rss-use-image-as-thumbnail \
