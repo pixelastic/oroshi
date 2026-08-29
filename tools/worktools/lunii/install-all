@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Install all Lunii-related tools
+set -e
+
+# Studio web UI
+"${0:h}/install"
+
+# Studio Pack Generator
+"${0:h}/studio-pack-generator/install"
