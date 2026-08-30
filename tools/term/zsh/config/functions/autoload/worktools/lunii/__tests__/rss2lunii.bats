@@ -279,6 +279,67 @@ setup() {
   [[ ! -f "$BATS_TMP_DIR/magick_calls.txt" ]]
 }
 
+@test "full flow calls studio-pack-generator twice" {
+  mkdir -p "$BATS_TMP_DIR/mypack"
+
+  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
+  bats_mock studio-pack-generator
+  bats_disable_worktree_aware
+
+  export OPENAI_API_KEY=test-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  [[ -f "$BATS_TMP_DIR/spg_calls.txt" ]]
+  [[ $(wc -l < "$BATS_TMP_DIR/spg_calls.txt") -eq 2 ]]
+}
+
+@test "extra arguments pass through to pass 1" {
+  mkdir -p "$BATS_TMP_DIR/mypack"
+
+  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
+  bats_mock studio-pack-generator
+  bats_disable_worktree_aware
+
+  export OPENAI_API_KEY=test-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml --rss-min-duration 300"
+  [[ "$status" -eq 0 ]]
+
+  local pass1=$(sed -n '1p' "$BATS_TMP_DIR/spg_calls.txt")
+  [[ "$pass1" == *"--rss-min-duration 300"* ]]
+}
+
+@test "extra arguments do not pass to pass 2" {
+  mkdir -p "$BATS_TMP_DIR/mypack"
+
+  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
+  bats_mock studio-pack-generator
+  bats_disable_worktree_aware
+
+  export OPENAI_API_KEY=test-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml --rss-min-duration 300"
+  [[ "$status" -eq 0 ]]
+
+  local pass2=$(sed -n '2p' "$BATS_TMP_DIR/spg_calls.txt")
+  [[ "$pass2" != *"--rss-min-duration 300"* ]]
+}
+
+@test "--force-img and --force-tts are not passed to studio-pack-generator" {
+  mkdir -p "$BATS_TMP_DIR/mypack"
+
+  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
+  bats_mock studio-pack-generator
+  bats_disable_worktree_aware
+
+  export OPENAI_API_KEY=test-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-img --force-tts https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  local allCalls="$(cat "$BATS_TMP_DIR/spg_calls.txt")"
+  [[ "$allCalls" != *"--force-img"* ]]
+  [[ "$allCalls" != *"--force-tts"* ]]
+}
+
 @test "does not call Claude API when all episodes have images" {
   mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
   touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
