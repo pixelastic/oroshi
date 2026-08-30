@@ -1,0 +1,26 @@
+# Read a single key from an XML file or stdin
+# Usage:
+# $ xml-get --input file.xml '.rss.channel.title'  # from file
+# $ curl -s "$url" | xml-get '.rss.channel.title'  # from stdin
+setopt local_options err_return
+
+zparseopts -E -D \
+  -input:=flagInput
+
+local inputFile="${flagInput[2]}"
+local xmlKey="$1"
+
+local xmlData=""
+if [[ "$inputFile" != "" ]]; then
+  xmlData="$(cat -- "$inputFile")"
+else
+  xmlData="$(cat -)"
+fi
+
+# !!seq is yq's internal type for arrays (repeated XML elements)
+# Arrays are expanded one element per line, scalars pass through as-is
+local flattenExpr='select(type == "!!seq") | .[], select(type != "!!seq")'
+
+yq -p xml \
+  "${xmlKey} | select(. != null) | ( ${flattenExpr} )" \
+  <<<"$xmlData"

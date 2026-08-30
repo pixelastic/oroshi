@@ -4,76 +4,107 @@ setup() {
   bats_tmp_dir
 }
 
-@test "errors with usage when no arguments provided" {
-  studio-pack-generator() { :; }
-  bats_mock studio-pack-generator
+# Mock curl that dispatches between RSS feed (for getRssTitle) and Claude API
+_curl_rss_and_claude() {
+  cat <<'BASH'
+  curl() {
+    if [[ "$*" == *"api.anthropic.com"* ]]; then
+      echo "called" >> "$BATS_TMP_DIR/curl_calls.txt"
+      printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
+    else
+      printf '<rss><channel><title>mypack</title></channel></rss>'
+    fi
+  }
+BASH
+}
 
+# Mock curl that only returns RSS feed (no Claude API)
+_curl_rss_only() {
+  cat <<'BASH'
+  curl() {
+    printf '<rss><channel><title>mypack</title></channel></rss>'
+  }
+BASH
+}
+
+@test "errors with usage when no arguments provided" {
   bats_run_zsh "rss2lunii"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"Usage"* ]]
 }
 
 @test "calls studio-pack-generator with opinionated defaults" {
-  studio-pack-generator() { echo "$@" > "$BATS_TMP_DIR/args.txt"; }
-  bats_mock studio-pack-generator
+  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
+  eval "$(_curl_rss_only)"
+  bats_mock studio-pack-generator curl
+  bats_disable_worktree_aware
 
-  bats_run_zsh "rss2lunii https://example.com/feed.xml"
+  export OPENAI_API_KEY=test-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  local args="$(cat "$BATS_TMP_DIR/args.txt")"
-  [[ "$args" == *"--rss-split-length 9999"* ]]
-  [[ "$args" == *"--rss-episode-numbers"* ]]
-  [[ "$args" == *"--rss-use-image-as-thumbnail"* ]]
-  [[ "$args" == *"--output-folder ."* ]]
-  [[ "$args" == *"https://example.com/feed.xml"* ]]
+  local pass1=$(sed -n '1p' "$BATS_TMP_DIR/spg_calls.txt")
+  [[ "$pass1" == *"--rss-split-length 9999"* ]]
+  [[ "$pass1" == *"--rss-episode-numbers"* ]]
+  [[ "$pass1" == *"--rss-use-image-as-thumbnail"* ]]
+  [[ "$pass1" == *"--output-folder ."* ]]
+  [[ "$pass1" == *"https://example.com/feed.xml"* ]]
 }
 
 @test "passes --use-open-ai-tts to studio-pack-generator" {
-  studio-pack-generator() { echo "$@" > "$BATS_TMP_DIR/args.txt"; }
-  bats_mock studio-pack-generator
+  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
+  eval "$(_curl_rss_only)"
+  bats_mock studio-pack-generator curl
+  bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
-  bats_run_zsh "rss2lunii https://example.com/feed.xml"
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  local args="$(cat "$BATS_TMP_DIR/args.txt")"
-  [[ "$args" == *"--use-open-ai-tts"* ]]
+  local pass1=$(sed -n '1p' "$BATS_TMP_DIR/spg_calls.txt")
+  [[ "$pass1" == *"--use-open-ai-tts"* ]]
 }
 
 @test "passes --open-ai-api-key with OPENAI_API_KEY env var to studio-pack-generator" {
-  studio-pack-generator() { echo "$@" > "$BATS_TMP_DIR/args.txt"; }
-  bats_mock studio-pack-generator
+  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
+  eval "$(_curl_rss_only)"
+  bats_mock studio-pack-generator curl
+  bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key-123
-  bats_run_zsh "rss2lunii https://example.com/feed.xml"
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  local args="$(cat "$BATS_TMP_DIR/args.txt")"
-  [[ "$args" == *"--open-ai-api-key test-key-123"* ]]
+  local pass1=$(sed -n '1p' "$BATS_TMP_DIR/spg_calls.txt")
+  [[ "$pass1" == *"--open-ai-api-key test-key-123"* ]]
 }
 
 @test "passes --open-ai-voice nova to studio-pack-generator" {
-  studio-pack-generator() { echo "$@" > "$BATS_TMP_DIR/args.txt"; }
-  bats_mock studio-pack-generator
+  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
+  eval "$(_curl_rss_only)"
+  bats_mock studio-pack-generator curl
+  bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
-  bats_run_zsh "rss2lunii https://example.com/feed.xml"
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  local args="$(cat "$BATS_TMP_DIR/args.txt")"
-  [[ "$args" == *"--open-ai-voice nova"* ]]
+  local pass1=$(sed -n '1p' "$BATS_TMP_DIR/spg_calls.txt")
+  [[ "$pass1" == *"--open-ai-voice nova"* ]]
 }
 
-@test "does not pass --skip-audio-item-gen to studio-pack-generator" {
-  studio-pack-generator() { echo "$@" > "$BATS_TMP_DIR/args.txt"; }
-  bats_mock studio-pack-generator
+@test "does not pass --skip-audio-item-gen to first pass" {
+  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
+  eval "$(_curl_rss_only)"
+  bats_mock studio-pack-generator curl
+  bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
-  bats_run_zsh "rss2lunii https://example.com/feed.xml"
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  local args="$(cat "$BATS_TMP_DIR/args.txt")"
-  [[ "$args" != *"--skip-audio-item-gen"* ]]
+  local pass1=$(sed -n '1p' "$BATS_TMP_DIR/spg_calls.txt")
+  [[ "$pass1" != *"--skip-audio-item-gen"* ]]
 }
 
 @test "deletes existing TTS files when --force-tts is set" {
@@ -81,8 +112,9 @@ setup() {
   touch "$BATS_TMP_DIR/mypack/ep1-generated.item.mp3"
   touch "$BATS_TMP_DIR/mypack/ep2-generated.item.wav"
 
-  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/args.txt"; }
-  bats_mock studio-pack-generator
+  studio-pack-generator() { :; }
+  eval "$(_curl_rss_only)"
+  bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
@@ -97,8 +129,9 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/mypack"
   touch "$BATS_TMP_DIR/mypack/ep1-generated.item.mp3"
 
-  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/args.txt"; }
-  bats_mock studio-pack-generator
+  studio-pack-generator() { :; }
+  eval "$(_curl_rss_only)"
+  bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
@@ -113,10 +146,7 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/mypack/02 - Episode Two"
 
   studio-pack-generator() { :; }
-  curl() {
-    echo "called" >> "$BATS_TMP_DIR/curl_calls.txt"
-    printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
-  }
+  eval "$(_curl_rss_and_claude)"
   svg2png() {
     for f in "$@"; do touch "${f%.svg}.png"; done
   }
@@ -139,10 +169,7 @@ setup() {
   touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
 
   studio-pack-generator() { :; }
-  curl() {
-    echo "called" >> "$BATS_TMP_DIR/curl_calls.txt"
-    printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
-  }
+  eval "$(_curl_rss_and_claude)"
   svg2png() {
     for f in "$@"; do touch "${f%.svg}.png"; done
   }
@@ -155,7 +182,6 @@ setup() {
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  # Only Episode Two should trigger an API call
   [[ -f "$BATS_TMP_DIR/curl_calls.txt" ]]
   [[ $(wc -l < "$BATS_TMP_DIR/curl_calls.txt") -eq 1 ]]
 }
@@ -165,10 +191,7 @@ setup() {
   touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
 
   studio-pack-generator() { :; }
-  curl() {
-    echo "called" >> "$BATS_TMP_DIR/curl_calls.txt"
-    printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
-  }
+  eval "$(_curl_rss_and_claude)"
   svg2png() {
     for f in "$@"; do touch "${f%.svg}.png"; done
   }
@@ -181,7 +204,6 @@ setup() {
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-img https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  # Image was deleted and regenerated via API
   [[ -f "$BATS_TMP_DIR/curl_calls.txt" ]]
   [[ $(wc -l < "$BATS_TMP_DIR/curl_calls.txt") -eq 1 ]]
 }
@@ -190,9 +212,7 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
 
   studio-pack-generator() { :; }
-  curl() {
-    printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
-  }
+  eval "$(_curl_rss_and_claude)"
   svg2png() {
     for f in "$@"; do touch "${f%.svg}.png"; done
   }
@@ -215,9 +235,10 @@ setup() {
   touch "$BATS_TMP_DIR/mypack/thumbnail.png"
 
   studio-pack-generator() { :; }
+  eval "$(_curl_rss_only)"
   img-dimensions() { echo "640x480"; }
   magick() { echo "$@" >> "$BATS_TMP_DIR/magick_calls.txt"; }
-  bats_mock studio-pack-generator img-dimensions magick
+  bats_mock studio-pack-generator curl img-dimensions magick
   bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
@@ -235,9 +256,10 @@ setup() {
   touch "$BATS_TMP_DIR/mypack/thumbnail.png"
 
   studio-pack-generator() { :; }
+  eval "$(_curl_rss_only)"
   img-dimensions() { echo "640x480"; }
   magick() { echo "$@" >> "$BATS_TMP_DIR/magick_calls.txt"; }
-  bats_mock studio-pack-generator img-dimensions magick
+  bats_mock studio-pack-generator curl img-dimensions magick
   bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
@@ -254,16 +276,16 @@ setup() {
   touch "$BATS_TMP_DIR/mypack/thumbnail.png"
 
   studio-pack-generator() { :; }
+  eval "$(_curl_rss_only)"
   img-dimensions() { echo "320x240"; }
   magick() { echo "$@" >> "$BATS_TMP_DIR/magick_calls.txt"; }
-  bats_mock studio-pack-generator img-dimensions magick
+  bats_mock studio-pack-generator curl img-dimensions magick
   bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  # magick was not called for resize
   [[ ! -f "$BATS_TMP_DIR/magick_calls.txt" ]]
 }
 
@@ -271,7 +293,8 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/mypack"
 
   studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
-  bats_mock studio-pack-generator
+  eval "$(_curl_rss_only)"
+  bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
@@ -286,7 +309,8 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/mypack"
 
   studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
-  bats_mock studio-pack-generator
+  eval "$(_curl_rss_only)"
+  bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
@@ -303,10 +327,7 @@ setup() {
   touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
 
   studio-pack-generator() { :; }
-  curl() {
-    echo "called" >> "$BATS_TMP_DIR/curl_calls.txt"
-    printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
-  }
+  eval "$(_curl_rss_and_claude)"
   svg2png() { :; }
   img-resize() { :; }
   bats_mock studio-pack-generator curl svg2png img-resize

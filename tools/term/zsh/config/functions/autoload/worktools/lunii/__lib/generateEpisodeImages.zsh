@@ -1,11 +1,7 @@
 # Generate SVG illustrations via Claude API for episodes missing images
-# Usage: generateEpisodeImages <packDir> <isForceImg>
+# Usage: generateEpisodeImages <packDir>
 function generateEpisodeImages() {
   local packDir=$1
-  local isForceImg=$2
-
-  # Delete existing episode images to force regeneration
-  [[ $isForceImg -eq 1 ]] && find "$packDir" -type f \( -name "*.item.png" -o -name "*.item.jpeg" \) -delete
 
   local svgSystemPrompt="Generate a monochrome SVG illustration. Black shapes on white background. Flat shapes, no gradients, no shadows. Playful and rounded, child-friendly (not corporate). One central object or scene. Use viewBox=\"0 0 320 240\". Output only the SVG markup, no explanation."
 

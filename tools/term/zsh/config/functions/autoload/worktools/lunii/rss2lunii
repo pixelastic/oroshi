@@ -21,22 +21,21 @@ fi
 
 # Source helper functions
 local libDir="${functions_source[$0]:A:h}/__lib"
+source "$libDir/deleteCachedImages.zsh"
 source "$libDir/deleteCachedTts.zsh"
 source "$libDir/downloadAndProcessRss.zsh"
-source "$libDir/findPackDir.zsh"
 source "$libDir/generateEpisodeImages.zsh"
+source "$libDir/getRssTitle.zsh"
 source "$libDir/repackAsZip.zsh"
 source "$libDir/resizeThumbnail.zsh"
 
-# Snapshot directories before generation to detect the new pack folder
-local dirsBefore=("${(@f)$(print -l ./*(/N))}")
+local packTitle="$(getRssTitle "$url")"
+local packDir="./${packTitle}"
 
-deleteCachedTts "$isForceTts" $dirsBefore
+[[ $isForceImg -eq 1 ]] && deleteCachedImages "$packDir"
+[[ $isForceTts -eq 1 ]] && deleteCachedTts "$packDir"
+
 downloadAndProcessRss "$url"
-
-local packDir=$(findPackDir $dirsBefore ---)
-[[ "$packDir" == "" ]] && return 0
-
-generateEpisodeImages "$packDir" "$isForceImg"
+generateEpisodeImages "$packDir"
 resizeThumbnail "$packDir"
 repackAsZip "$packDir"

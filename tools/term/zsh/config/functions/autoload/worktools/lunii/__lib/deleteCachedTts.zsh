@@ -1,14 +1,13 @@
 # Delete cached TTS files so studio-pack-generator regenerates them
-# Usage: deleteCachedTts <isForceTts> <dirs...>
+# Usage: deleteCachedTts <packDir>
 function deleteCachedTts() {
-  local isForceTts=$1
-  shift
-  local dirs=("$@")
+  local packDir=$1
 
-  [[ $isForceTts -eq 0 ]] && return 0
-
-  for dir in $dirs; do
-    [[ ! -d "$dir" ]] && continue
-    find "$dir" -type f \( -name "*-generated.item.mp3" -o -name "*-generated.item.wav" \) -delete
-  done
+  local files=(
+    "$packDir"/**/*-generated.item.mp3(N)
+    "$packDir"/**/*-generated.item.wav(N)
+  )
+  if [[ ${#files} -gt 0 ]]; then
+    rm -f $files
+  fi
 }
