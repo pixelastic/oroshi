@@ -222,6 +222,63 @@ setup() {
   [[ "$(cat "$BATS_TMP_DIR/resize_calls.txt")" == *"320x240"* ]]
 }
 
+@test "resizes thumbnail to 320x240" {
+  mkdir -p "$BATS_TMP_DIR/mypack"
+  touch "$BATS_TMP_DIR/mypack/thumbnail.png"
+
+  studio-pack-generator() { :; }
+  img-dimensions() { echo "640x480"; }
+  magick() { echo "$@" >> "$BATS_TMP_DIR/magick_calls.txt"; }
+  bats_mock studio-pack-generator img-dimensions magick
+  bats_disable_worktree_aware
+
+  export OPENAI_API_KEY=test-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  [[ -f "$BATS_TMP_DIR/magick_calls.txt" ]]
+  local calls="$(cat "$BATS_TMP_DIR/magick_calls.txt")"
+  [[ "$calls" == *"-resize 320x240"* ]]
+  [[ "$calls" == *"-extent 320x240"* ]]
+}
+
+@test "preserves aspect ratio with black padding" {
+  mkdir -p "$BATS_TMP_DIR/mypack"
+  touch "$BATS_TMP_DIR/mypack/thumbnail.png"
+
+  studio-pack-generator() { :; }
+  img-dimensions() { echo "640x480"; }
+  magick() { echo "$@" >> "$BATS_TMP_DIR/magick_calls.txt"; }
+  bats_mock studio-pack-generator img-dimensions magick
+  bats_disable_worktree_aware
+
+  export OPENAI_API_KEY=test-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  local calls="$(cat "$BATS_TMP_DIR/magick_calls.txt")"
+  [[ "$calls" == *"-background black"* ]]
+  [[ "$calls" == *"-gravity center"* ]]
+}
+
+@test "skips resize if thumbnail is already 320x240" {
+  mkdir -p "$BATS_TMP_DIR/mypack"
+  touch "$BATS_TMP_DIR/mypack/thumbnail.png"
+
+  studio-pack-generator() { :; }
+  img-dimensions() { echo "320x240"; }
+  magick() { echo "$@" >> "$BATS_TMP_DIR/magick_calls.txt"; }
+  bats_mock studio-pack-generator img-dimensions magick
+  bats_disable_worktree_aware
+
+  export OPENAI_API_KEY=test-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  # magick was not called for resize
+  [[ ! -f "$BATS_TMP_DIR/magick_calls.txt" ]]
+}
+
 @test "does not call Claude API when all episodes have images" {
   mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
   touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"

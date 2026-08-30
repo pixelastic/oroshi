@@ -70,8 +70,24 @@ function _generate_images() {
   done
 }
 
-# No-op skeleton — wired in a later issue
-function _resize_thumbnail() { :; }
+# Fit+pad the pack thumbnail to exactly 320x240 with black padding
+function _resize_thumbnail() {
+  local packDir=$1
+
+  local thumbnails=("$packDir"/thumbnail.png(N) "$packDir"/thumbnail.jpeg(N) "$packDir"/0-item.png(N))
+  [[ ${#thumbnails} -eq 0 ]] && return 0
+
+  local thumbnail=$thumbnails[1]
+  local dimensions=$(img-dimensions "$thumbnail")
+  [[ "$dimensions" == "320x240" ]] && return 0
+
+  magick "$thumbnail" \
+    -resize 320x240 \
+    -background black \
+    -gravity center \
+    -extent 320x240 \
+    "$thumbnail"
+}
 
 # Snapshot directories before generation to detect the new pack folder
 local dirsBefore=("${(@f)$(print -l ./*(/N))}")
@@ -120,7 +136,7 @@ if [[ "$packDir" == "" ]]; then
 fi
 
 _generate_images "$packDir" "$isForceImg"
-_resize_thumbnail
+_resize_thumbnail "$packDir"
 
 # Second pass: repack the folder into a proper Studio zip
 # (skip all processing, just generate the zip with correct images)
