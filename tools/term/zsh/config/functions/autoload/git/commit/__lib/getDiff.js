@@ -1,5 +1,6 @@
 import { _, pMap } from 'golgoth';
 import { getRepo } from './config.js';
+import { redactSecrets } from './redactSecrets.js';
 
 /**
  * Returns git diff of staged files, excluding specified files.
@@ -60,5 +61,5 @@ export async function getDiff(excludedFiles) {
     blocks.push(`Binary files added:\n${binaryList}`);
   }
 
-  return blocks.join('\n\n');
+  return redactSecrets(blocks.join('\n\n'));
 }
