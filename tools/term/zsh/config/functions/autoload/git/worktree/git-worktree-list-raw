@@ -70,7 +70,7 @@ for entry in "${worktreeData[@]}"; do
   local dirtyCount="$REPLY"
 
   # Ahead/behind vs main via git-worktree-distance-raw
-  local rawDistance="$(git-worktree-distance-raw "$entryBranch" 2>/dev/null)"
+  local rawDistance="$(git-worktree-distance-raw --branch "$entryBranch" 2>/dev/null)"
   local ahead="${rawDistance%%▮*}"
   local behind="${rawDistance##*▮}"
   [[ "$ahead" == "" ]] && ahead=0

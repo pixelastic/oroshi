@@ -1,16 +1,22 @@
 # Ahead/behind commit count between a branch and main, machine-readable
 # Usage:
-# $ git-worktree-distance-raw            # outputs ahead▮behind (auto-detects branch)
-# $ git-worktree-distance-raw <branch>   # outputs ahead▮behind
+# $ git-worktree-distance-raw                          # auto-detects repo and branch
+# $ git-worktree-distance-raw /path/to/repo            # auto-detects branch
+# $ git-worktree-distance-raw --branch fix/bug         # explicit branch in PWD
+# $ git-worktree-distance-raw /path/to/repo --branch fix/bug
 setopt local_options err_return
 
-local branch="${1}"
-[[ $branch == "" ]] && branch="$(git-branch-current)"
+zparseopts -E -D \
+  -branch:=flagBranch
+
+local repo="${1:-$PWD}"
+local branch=${flagBranch[2]}
+[[ "$branch" == "" ]] && branch="$(git-branch-current "$repo")"
 
 # Not in a git repo or detached HEAD
 [[ "$branch" == "" || "$branch" == "HEAD" ]] && return 1
 
-local rawDistance="$(git rev-list --left-right --count "${branch}...main" 2>/dev/null)"
+local rawDistance="$(git -C "$repo" rev-list --left-right --count "${branch}...main" 2>/dev/null)"
 
 # Branch unknown or main missing
 [[ "$rawDistance" == "" ]] && return 1

@@ -7,7 +7,7 @@ setup() {
 }
 
 @test "outputs 0▮0 for branch with no divergence from main" {
-  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT fix/bug"
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT --branch fix/bug"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "0▮0" ]]
 }
@@ -16,7 +16,7 @@ setup() {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   git commit --allow-empty -m "commit 1"
   git commit --allow-empty -m "commit 2"
-  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT fix/bug"
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT --branch fix/bug"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "2▮0" ]]
 }
@@ -26,28 +26,37 @@ setup() {
   git commit --allow-empty -m "main commit 1"
   git commit --allow-empty -m "main commit 2"
   git commit --allow-empty -m "main commit 3"
-  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT fix/bug"
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT --branch fix/bug"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "0▮3" ]]
 }
 
 @test "exits 1 when called outside a git repo" {
-  bats_run_zsh "cd /tmp && source $CURRENT fix/bug"
+  bats_run_zsh "cd /tmp && source $CURRENT --branch fix/bug"
   [[ "$status" -eq 1 ]]
 }
 
 @test "exits 1 when branch is unknown" {
-  bats_run_zsh "cd $BATS_GIT_DIR && source $CURRENT no-such-branch"
+  bats_run_zsh "cd $BATS_GIT_DIR && source $CURRENT --branch no-such-branch"
   [[ "$status" -eq 1 ]]
 }
 
-@test "auto-detects branch when called without argument" {
+@test "auto-detects branch when called without --branch" {
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "0▮0" ]]
 }
 
-@test "exits 1 when called without argument outside a git repo" {
+@test "exits 1 when called without --branch outside a git repo" {
   bats_run_zsh "cd /tmp && source $CURRENT"
   [[ "$status" -eq 1 ]]
+}
+
+@test "accepts repo as positional argument" {
+  cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
+  git commit --allow-empty -m "commit 1"
+  # Run from main repo, passing worktree path as $1
+  bats_run_zsh "cd $BATS_GIT_DIR && source $CURRENT ${BATS_GIT_WORKTREES}my-repo--fix-bug --branch fix/bug"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "1▮0" ]]
 }

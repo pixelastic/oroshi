@@ -39,7 +39,9 @@ setup() {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   git commit --allow-empty -m "commit in worktree"
   cd "$BATS_GIT_DIR"
-  bats_run_zsh "git-worktree-distance ${BATS_GIT_WORKTREES}my-repo--fix-bug"
+  # Override fpath to load local (worktree) versions of both functions
+  local localFpath="$BATS_TEST_DIRNAME/.."
+  bats_run_zsh "fpath=($localFpath \$fpath); autoload -Uz git-worktree-distance git-worktree-distance-raw; git-worktree-distance ${BATS_GIT_WORKTREES}my-repo--fix-bug"
   [[ "$status" -eq 0 ]]
   [[ "$output" == *"ahead 1"* ]]
   [[ "$output" == *"behind 0"* ]]
