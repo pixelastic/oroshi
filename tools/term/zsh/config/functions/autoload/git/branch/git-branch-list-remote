@@ -97,8 +97,9 @@ for remoteName in $remoteNames; do
     # Ahead/behind {{{
     local remoteDistance=$remoteDistances[$remoteBranchName]
     local distanceParsed="$(git-distance-parse "$remoteDistance")"
-    local aheadCount="${distanceParsed%%▮*}"
-    local behindCount="${distanceParsed##*▮}"
+    local -a distanceParts=(${(@ps/▮/)distanceParsed})
+    local aheadCount="$distanceParts[1]"
+    local behindCount="$distanceParts[2]"
     if [[ "$aheadCount" != "0" ]]; then
       row+="$(colorize "${aheadCount}${ICONS[git-branch-ahead]}" git-ahead)▮"
     else

@@ -27,7 +27,8 @@ function fzf-postprocess() {
   [[ "$input" == "" ]] && return 0
   local line
   for line in ${(f)input}; do
-    print -- "${line%%▮*}"
+    local -a parts=(${(@ps/▮/)line})
+    print -- "$parts[1]"
   done
 }
 

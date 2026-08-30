@@ -41,8 +41,11 @@ for rawLine in ${(f)rawBranches}; do
 
   # Parse ahead/behind from track string; default to 0
   local distanceParsed="$(git-distance-parse "${fields[5]}")"
-  local aheadCount="${${distanceParsed:-0▮0}%%▮*}"
-  local behindCount="${${distanceParsed:-0▮0}##*▮}"
+  local -a distanceParts=(${(@ps/▮/)${distanceParsed:-0▮0}})
+  local aheadCount="$distanceParts[1]"
+  local behindCount="$distanceParts[2]"
 
-  echo "$branchName▮$commitHash▮$remoteName▮$remoteBranchName▮$aheadCount▮$behindCount▮$relativeDate▮$message▮"
+  local row="$branchName▮$commitHash▮$remoteName▮$remoteBranchName"
+  row+="▮$aheadCount▮$behindCount▮$relativeDate▮$message▮"
+  echo "$row"
 done

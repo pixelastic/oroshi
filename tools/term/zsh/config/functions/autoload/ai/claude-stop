@@ -18,4 +18,5 @@ if [[ "$claudeLine" == "" ]]; then
   return 1
 fi
 
-kill -TERM "${claudeLine%%▮*}"
+local -a parts=(${(@ps/▮/)claudeLine})
+kill -TERM "$parts[1]"

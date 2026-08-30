@@ -15,7 +15,8 @@ local planDirectory="$(plan-directory 2>/dev/null)"
 if [[ "$planDirectory" != "" ]]; then
   local planDirtyFiles="$(git-file-list-dirty-raw "$planDirectory" 2>/dev/null)"
   for planLine in ${(f)planDirtyFiles}; do
-    local planFile="${planLine%%▮*}"
+    local -a planParts=(${(@ps/▮/)planLine})
+    local planFile="$planParts[1]"
     [[ "$planFile" == "GUIDANCE.md" ]] && planArtifacts+=("${planDirectory}/${planFile}")
     [[ "$planFile" == "review-log.md" ]] && planArtifacts+=("${planDirectory}/${planFile}")
   done

@@ -62,8 +62,9 @@ done
 # Second pass: enrich each entry with distance, date, message
 local -a resultLines=()
 for entry in "${worktreeData[@]}"; do
-  local entryBranch="${entry%%▮*}"
-  local entryPath="${entry#*▮}"
+  local -a entryParts=(${(@ps/▮/)entry})
+  local entryBranch="$entryParts[1]"
+  local entryPath="$entryParts[2]"
 
   # Dirty file count for this worktree
   git-directory-dirty-count --reply "$entryPath"
@@ -71,15 +72,17 @@ for entry in "${worktreeData[@]}"; do
 
   # Ahead/behind vs main via git-worktree-distance-raw
   local rawDistance="$(git-worktree-distance-raw --branch "$entryBranch" 2>/dev/null)"
-  local ahead="${rawDistance%%▮*}"
-  local behind="${rawDistance##*▮}"
+  local -a distanceParts=(${(@ps/▮/)rawDistance})
+  local ahead="$distanceParts[1]"
+  local behind="$distanceParts[2]"
   [[ "$ahead" == "" ]] && ahead=0
   [[ "$behind" == "" ]] && behind=0
 
   # Relative date and commit message
   local logInfo="$(git log -1 --format="%ar▮%s" "$entryBranch" 2>/dev/null)"
-  local relativeDate="${logInfo%%▮*}"
-  local message="${logInfo#*▮}"
+  local -a logParts=(${(@ps/▮/)logInfo})
+  local relativeDate="$logParts[1]"
+  local message="$logParts[2]"
 
   resultLines+=("$entryBranch▮$entryPath▮$dirtyCount▮$ahead▮$behind▮$relativeDate▮$message")
 done

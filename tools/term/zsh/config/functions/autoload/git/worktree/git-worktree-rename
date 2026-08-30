@@ -66,7 +66,8 @@ if [[ "$submoduleLines" != "" ]]; then
 
   local rawLine
   for rawLine in ${(f)submoduleLines}; do
-    local subPath="${rawLine%%▮*}"
+    local -a rawParts=(${(@ps/▮/)rawLine})
+    local subPath="$rawParts[1]"
 
     # Update submodule .git file to point to renamed worktree dir
     [[ -f "$newDir/$subPath/.git" ]] && \
