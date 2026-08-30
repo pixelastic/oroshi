@@ -24,10 +24,9 @@ if [[ ${#flagLinked} == 0 ]]; then
   REPLY=""
   git-worktree-main --reply 2>/dev/null || true
   local mainPath="$REPLY"
-  if [[ "$mainPath" == "" ]]; then
-    echo "main"
-    return 0
-  fi
+
+  # Not in a git repo — no completions available
+  [[ "$mainPath" == "" ]] && return 0
 
   git-directory-dirty-count --reply "$mainPath"
   local mainDirtyCount="$REPLY"

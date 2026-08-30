@@ -50,11 +50,11 @@ setup() {
   [[ "${lines[0]}" == "main:"* ]]
 }
 
-@test "returns 'main' and succeeds outside a git repo" {
-  cd "$BATS_TMP_DIR"
-  bats_run_zsh "complete-git-worktrees"
+@test "returns empty output outside a git repo" {
+  bats_disable_worktree_aware
+  bats_run_zsh "cd $BATS_TMP_DIR && complete-git-worktrees"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "main" ]]
+  [[ "$output" = "" ]]
 }
 
 @test "output is in name:description format" {
@@ -94,13 +94,8 @@ setup() {
   [[ "$output" == *"fix/bug"* ]]
 }
 
-@test "outputs main with no description when outside a git repo" {
+@test "outputs main with description inside a git repo" {
   cd "$BATS_MY_REPO"
   bats_run_zsh "complete-git-worktrees"
   [[ "${lines[0]}" == "main:"* ]]
-
-  cd "$BATS_TMP_DIR"
-  bats_run_zsh "complete-git-worktrees"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "main" ]]
 }
