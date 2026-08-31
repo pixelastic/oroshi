@@ -159,6 +159,26 @@ BASH
   [[ ! -f "$episodesDir/20240101 Episode One.item.png" ]]
 }
 
+@test "preserves JPEG images when --force-img is set" {
+  local episodesDir="$BATS_TMP_DIR/mypack/Choisis ton histoire"
+  mkdir -p "$episodesDir"
+  touch "$episodesDir/20240101 Episode One.item.jpeg"
+
+  studio-pack-generator() { :; }
+  eval "$(_curl_rss_only)"
+  # md5sum and magick needed by generateEpisodeImages after PNG is deleted
+  md5sum() { echo "abc123  $1"; }
+  magick() { touch "${@[-1]}"; }
+  bats_mock studio-pack-generator curl md5sum magick
+  bats_disable_worktree_aware
+
+  export OPENAI_API_KEY=test-openai-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-img https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  [[ -f "$episodesDir/20240101 Episode One.item.jpeg" ]]
+}
+
 @test "resizes thumbnail to 320x240" {
   mkdir -p "$BATS_TMP_DIR/mypack"
   touch "$BATS_TMP_DIR/mypack/thumbnail.png"
