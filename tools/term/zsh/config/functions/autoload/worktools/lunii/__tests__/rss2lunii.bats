@@ -142,102 +142,21 @@ BASH
   [[ -f "$BATS_TMP_DIR/mypack/ep1-generated.item.mp3" ]]
 }
 
-@test "calls claude-api for episodes without existing images" {
-  mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
-  mkdir -p "$BATS_TMP_DIR/mypack/02 - Episode Two"
+@test "deletes existing PNG images when --force-img is set" {
+  local episodesDir="$BATS_TMP_DIR/mypack/Choisis ton histoire"
+  mkdir -p "$episodesDir"
+  touch "$episodesDir/20240101 Episode One.item.png"
 
   studio-pack-generator() { :; }
   eval "$(_curl_rss_only)"
-  claude-api() {
-    echo "called" >> "$BATS_TMP_DIR/claude_api_calls.txt"
-    echo "<svg></svg>"
-  }
-  svg2png() {
-    for f in "$@"; do touch "${f%.svg}.png"; done
-  }
-  img-resize() { :; }
-  bats_mock studio-pack-generator curl claude-api svg2png img-resize
-  bats_disable_worktree_aware
-
-  export OPENAI_API_KEY=test-openai-key
-  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
-  [[ "$status" -eq 0 ]]
-
-  [[ -f "$BATS_TMP_DIR/claude_api_calls.txt" ]]
-  [[ $(wc -l < "$BATS_TMP_DIR/claude_api_calls.txt") -eq 2 ]]
-}
-
-@test "skips claude-api for episodes with existing .item.png" {
-  mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
-  mkdir -p "$BATS_TMP_DIR/mypack/02 - Episode Two"
-  touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
-
-  studio-pack-generator() { :; }
-  eval "$(_curl_rss_only)"
-  claude-api() {
-    echo "called" >> "$BATS_TMP_DIR/claude_api_calls.txt"
-    echo "<svg></svg>"
-  }
-  svg2png() {
-    for f in "$@"; do touch "${f%.svg}.png"; done
-  }
-  img-resize() { :; }
-  bats_mock studio-pack-generator curl claude-api svg2png img-resize
-  bats_disable_worktree_aware
-
-  export OPENAI_API_KEY=test-openai-key
-  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
-  [[ "$status" -eq 0 ]]
-
-  [[ -f "$BATS_TMP_DIR/claude_api_calls.txt" ]]
-  [[ $(wc -l < "$BATS_TMP_DIR/claude_api_calls.txt") -eq 1 ]]
-}
-
-@test "deletes existing images when --force-img is set" {
-  mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
-  touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
-
-  studio-pack-generator() { :; }
-  eval "$(_curl_rss_only)"
-  claude-api() {
-    echo "called" >> "$BATS_TMP_DIR/claude_api_calls.txt"
-    echo "<svg></svg>"
-  }
-  svg2png() {
-    for f in "$@"; do touch "${f%.svg}.png"; done
-  }
-  img-resize() { :; }
-  bats_mock studio-pack-generator curl claude-api svg2png img-resize
+  bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-openai-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-img https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  [[ -f "$BATS_TMP_DIR/claude_api_calls.txt" ]]
-  [[ $(wc -l < "$BATS_TMP_DIR/claude_api_calls.txt") -eq 1 ]]
-}
-
-@test "generates PNG at 320x240 dimensions" {
-  mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
-
-  studio-pack-generator() { :; }
-  eval "$(_curl_rss_only)"
-  claude-api() { echo "<svg></svg>"; }
-  svg2png() {
-    for f in "$@"; do touch "${f%.svg}.png"; done
-  }
-  img-resize() { echo "$@" >> "$BATS_TMP_DIR/resize_calls.txt"; }
-  bats_mock studio-pack-generator curl claude-api svg2png img-resize
-  bats_disable_worktree_aware
-
-  export OPENAI_API_KEY=test-openai-key
-  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
-  [[ "$status" -eq 0 ]]
-
-  [[ -f "$BATS_TMP_DIR/resize_calls.txt" ]]
-  [[ "$(cat "$BATS_TMP_DIR/resize_calls.txt")" == *"--no-ratio"* ]]
-  [[ "$(cat "$BATS_TMP_DIR/resize_calls.txt")" == *"320x240"* ]]
+  [[ ! -f "$episodesDir/20240101 Episode One.item.png" ]]
 }
 
 @test "resizes thumbnail to 320x240" {
@@ -332,24 +251,3 @@ BASH
   [[ "$allCalls" != *"--force-tts"* ]]
 }
 
-@test "does not call claude-api when all episodes have images" {
-  mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
-  touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
-
-  studio-pack-generator() { :; }
-  eval "$(_curl_rss_only)"
-  claude-api() {
-    echo "called" >> "$BATS_TMP_DIR/claude_api_calls.txt"
-    echo "<svg></svg>"
-  }
-  svg2png() { :; }
-  img-resize() { :; }
-  bats_mock studio-pack-generator curl claude-api svg2png img-resize
-  bats_disable_worktree_aware
-
-  export OPENAI_API_KEY=test-openai-key
-  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
-  [[ "$status" -eq 0 ]]
-
-  [[ ! -f "$BATS_TMP_DIR/claude_api_calls.txt" ]]
-}
