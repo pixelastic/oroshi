@@ -27,6 +27,7 @@ source "$libDir/downloadAndProcessRss.zsh"
 source "$libDir/generateEpisodeImages.zsh"
 source "$libDir/getRssTitle.zsh"
 source "$libDir/repackAsZip.zsh"
+source "$libDir/resizeToLunii.zsh"
 source "$libDir/resizeThumbnail.zsh"
 
 local packTitle="$(getRssTitle "$url")"
