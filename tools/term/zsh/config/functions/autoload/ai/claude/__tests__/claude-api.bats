@@ -10,7 +10,27 @@ _mock_curl() {
   cat <<'BASH'
   curl() {
     echo "$@" > "$BATS_TMP_DIR/curl.log"
-    printf '{"content":[{"type":"text","text":"Hello from Claude"}]}'
+    printf '{"content":[{"type":"text","text":"Hello from Claude"}]}▮200'
+  }
+BASH
+}
+
+# Mock curl to return an HTTP error response
+_mock_curl_http_error() {
+  cat <<'BASH'
+  curl() {
+    echo "$@" > "$BATS_TMP_DIR/curl.log"
+    printf '{"type":"error","error":{"type":"authentication_error","message":"Invalid API key"}}▮401'
+  }
+BASH
+}
+
+# Mock curl to return an empty response body
+_mock_curl_empty() {
+  cat <<'BASH'
+  curl() {
+    echo "$@" > "$BATS_TMP_DIR/curl.log"
+    printf '▮200'
   }
 BASH
 }
@@ -102,4 +122,63 @@ BASH
   bats_run_zsh "claude-api 'hello'"
   local args=$(cat "$BATS_TMP_DIR/curl.log")
   [[ "$args" == *"x-api-key: test-key-abc"* ]]
+}
+
+@test "reads user content from stdin when no positional argument given" {
+  eval "$(_mock_curl)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api" <<<"hello from stdin"
+  [[ "$status" -eq 0 ]]
+  local args=$(cat "$BATS_TMP_DIR/curl.log")
+  [[ "$args" == *"hello from stdin"* ]]
+}
+
+@test "prefers positional argument over stdin when both are available" {
+  eval "$(_mock_curl)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api 'positional content'" <<<"stdin content"
+  [[ "$status" -eq 0 ]]
+  local args=$(cat "$BATS_TMP_DIR/curl.log")
+  [[ "$args" == *"positional content"* ]]
+  [[ "$args" != *"stdin content"* ]]
+}
+
+@test "includes system field in API body when --system is passed" {
+  eval "$(_mock_curl)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api --system 'Be helpful' 'hello'"
+  [[ "$status" -eq 0 ]]
+  local args=$(cat "$BATS_TMP_DIR/curl.log")
+  [[ "$args" == *"system"* ]]
+  [[ "$args" == *"Be helpful"* ]]
+}
+
+@test "omits system field from API body when --system is not passed" {
+  eval "$(_mock_curl)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api 'hello'"
+  local args=$(cat "$BATS_TMP_DIR/curl.log")
+  [[ "$args" != *'"system"'* ]]
+}
+
+@test "returns exit code 1 and prints to stderr on HTTP error" {
+  eval "$(_mock_curl_http_error)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api 'hello'"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"error"* ]] || [[ "$output" == *"Error"* ]]
+}
+
+@test "returns exit code 1 and prints to stderr on empty response" {
+  eval "$(_mock_curl_empty)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api 'hello'"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"Empty"* ]]
 }

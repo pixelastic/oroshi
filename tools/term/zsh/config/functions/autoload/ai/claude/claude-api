@@ -1,8 +1,10 @@
 # Send a one-shot prompt to the Anthropic Messages API
 # Usage:
-# $ claude-api "What is 2+2?"                        # Default sonnet model
-# $ claude-api --model opus "Explain gravity"         # Specify model alias
-# $ claude-api --max-tokens 1024 "Short answer only"  # Custom token limit
+# $ claude-api "What is 2+2?"                                  # Default sonnet model
+# $ claude-api --model opus "Explain gravity"                   # Specify model alias
+# $ claude-api --max-tokens 1024 "Short answer only"            # Custom token limit
+# $ claude-api --system "Be concise" "Explain gravity"          # With system prompt
+# $ echo "long content" | claude-api --system "Summarize this"  # Read from stdin
 setopt local_options err_return
 
 # Guard: API key must be set
@@ -25,20 +27,46 @@ zparseopts -E -D \
 local modelAlias=${flagModel[2]:-sonnet}
 local model=${modelAliases[$modelAlias]:-$modelAlias}
 local maxTokens=${flagMaxTokens[2]:-4096}
+local systemPrompt=${flagSystem[2]}
 local prompt="$1"
 
-local message=$(jo role=user content="$prompt")
-local body=$(jo \
-    model="$model" \
-    max_tokens="$maxTokens" \
-  messages="$(jo -a "$message")")
+# Read from stdin when no positional argument and stdin is piped
+if [[ "$prompt" == "" ]] && [[ ! -t 0 ]]; then
+  prompt="$(cat)"
+fi
 
-local response=$(curl \
+local message=$(jo role=user content="$prompt")
+
+# Build arguments
+local joArgs=(model="$model" max_tokens="$maxTokens")
+[[ "$systemPrompt" != "" ]] && joArgs+=(system="$systemPrompt")
+joArgs+=(messages="$(jo -a "$message")")
+
+local body=$(jo "${joArgs[@]}")
+
+local rawResponse=$(curl \
     --silent \
+    --write-out '▮%{http_code}' \
     --header "x-api-key: $OROSHI_ANTHROPIC_API_KEY" \
     --header "anthropic-version: 2023-06-01" \
     --header "content-type: application/json" \
     --data "$body" \
   https://api.anthropic.com/v1/messages)
+
+local -a parts=("${(@s/▮/)rawResponse}")
+local response=${parts[1]}
+local httpCode=${parts[2]}
+
+# Guard: HTTP error
+if [[ "$httpCode" != 2* ]]; then
+  echoerr "Anthropic API error (HTTP $httpCode)"
+  return 1
+fi
+
+# Guard: empty response
+if [[ "$response" == "" ]]; then
+  echoerr "Empty response from Anthropic API"
+  return 1
+fi
 
 echo "$response" | jq -r '.content[0].text'
