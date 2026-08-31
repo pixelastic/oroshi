@@ -12,9 +12,9 @@ local xmlKey="$1"
 
 local xmlData=""
 if [[ "$inputFile" != "" ]]; then
-  xmlData="$(cat -- "$inputFile")"
+  xmlData="$(\cat -- "$inputFile")"
 else
-  xmlData="$(cat -)"
+  xmlData="$(\cat -)"
 fi
 
 # !!seq is yq's internal type for arrays (repeated XML elements)
