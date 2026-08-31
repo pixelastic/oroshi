@@ -5,11 +5,13 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/textarea"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/claude"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/comments"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/editing"
@@ -24,41 +26,53 @@ import (
 // DiffChangedMsg is sent when the watcher detects a new git diff.
 type DiffChangedMsg struct{}
 
+// CommentsChangedMsg is sent when the comments file changes externally.
+type CommentsChangedMsg struct{}
+
 // EditorFinishedMsg is sent when the external editor exits.
 type EditorFinishedMsg struct{ err error }
 
 type model struct {
-	theme          *theme.Theme
-	rows           []layout.Row
-	highlighted    map[string][]highlight.StyledLine
-	rawLines       map[string][]string
-	watchChannel   <-chan struct{}
-	nav            navigation.State
-	fileHeaders    []int
-	filePaths      []string
-	foldState      map[string]bool
-	visibleIndices []int
-	pendingKey     string
-	repoRoot       string
-	userComments   []comments.Comment
-	commentsPath   string
-	commentIndex   map[string]bool
-	editState      editing.State
-	editTextArea   textarea.Model
+	theme                *theme.Theme
+	rows                 []layout.Row
+	highlighted          map[string][]highlight.StyledLine
+	rawLines             map[string][]string
+	watchChannel         <-chan struct{}
+	commentsWatchChannel <-chan struct{}
+	nav                  navigation.State
+	fileHeaders          []int
+	filePaths            []string
+	foldState            map[string]bool
+	visibleIndices       []int
+	pendingKey           string
+	repoRoot             string
+	userComments         []comments.Comment
+	commentsPath         string
+	commentIndex         map[string]bool
+	editState            editing.State
+	editTextArea         textarea.Model
+	statusMessage        string
 }
 
 func (m model) Init() tea.Cmd {
-	if m.watchChannel == nil {
-		return nil
+	var commands []tea.Cmd
+	if m.watchChannel != nil {
+		commands = append(commands, waitForDiffChange(m.watchChannel))
 	}
-	return waitForChange(m.watchChannel)
+	if m.commentsWatchChannel != nil {
+		commands = append(commands, waitForCommentsChange(m.commentsWatchChannel))
+	}
+	return tea.Batch(commands...)
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case DiffChangedMsg:
 		m.rebuildDisplay()
-		return m, waitForChange(m.watchChannel)
+		return m, waitForDiffChange(m.watchChannel)
+	case CommentsChangedMsg:
+		m.reloadComments()
+		return m, waitForCommentsChange(m.commentsWatchChannel)
 	case EditorFinishedMsg:
 		m.rebuildDisplay()
 		return m, nil
@@ -94,6 +108,7 @@ func (m model) updateEditing(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	m.statusMessage = ""
 	key := msg.String()
 	if m.pendingKey == "z" {
 		m.pendingKey = ""
@@ -122,6 +137,8 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, tea.ExecProcess(cmd, func(err error) tea.Msg {
 			return EditorFinishedMsg{err: err}
 		})
+	case "r":
+		return m.sendReviewToClaude()
 	case "enter":
 		return m.openEditing()
 	case "z":
@@ -210,10 +227,76 @@ func (m *model) rebuildDisplay() {
 	m.editState = editing.Inactive()
 }
 
-func waitForChange(channel <-chan struct{}) tea.Cmd {
+func (m model) sendReviewToClaude() (tea.Model, tea.Cmd) {
+	tabID, err := currentTabID()
+	if err != nil {
+		m.statusMessage = fmt.Sprintf("error: %s", err)
+		return m, nil
+	}
+
+	windowID, err := claude.FindClaudeWindow(runCommand, tabID)
+	if err != nil {
+		m.statusMessage = fmt.Sprintf("error: %s", err)
+		return m, nil
+	}
+
+	if err := claude.SendReview(runCommand, windowID, len(m.userComments)); err != nil {
+		m.statusMessage = err.Error()
+		return m, nil
+	}
+
+	m.statusMessage = "review sent to Claude"
+	return m, nil
+}
+
+func (m *model) reloadComments() {
+	loaded, err := comments.Load(m.commentsPath)
+	if err != nil {
+		return
+	}
+	m.userComments = loaded
+	m.commentIndex = buildCommentIndex(m.userComments)
+	m.editState = editing.Inactive()
+}
+
+func runCommand(name string, args ...string) (string, error) {
+	cmd := exec.Command(name, args...)
+	output, err := cmd.Output()
+	if err != nil {
+		return "", err
+	}
+	return string(output), nil
+}
+
+func currentTabID() (int, error) {
+	kittyWindowID := os.Getenv("KITTY_WINDOW_ID")
+	if kittyWindowID == "" {
+		return 0, fmt.Errorf("KITTY_WINDOW_ID not set")
+	}
+
+	output, err := runCommand("kitty-window-tab-id", kittyWindowID)
+	if err != nil {
+		return 0, fmt.Errorf("resolving tab ID: %w", err)
+	}
+
+	tabID, err := strconv.Atoi(strings.TrimSpace(output))
+	if err != nil {
+		return 0, fmt.Errorf("parsing tab ID %q: %w", output, err)
+	}
+	return tabID, nil
+}
+
+func waitForDiffChange(channel <-chan struct{}) tea.Cmd {
 	return func() tea.Msg {
 		<-channel
 		return DiffChangedMsg{}
+	}
+}
+
+func waitForCommentsChange(channel <-chan struct{}) tea.Cmd {
+	return func() tea.Msg {
+		<-channel
+		return CommentsChangedMsg{}
 	}
 }
 
@@ -280,6 +363,12 @@ func (m model) View() string {
 			builder.WriteString(m.editTextArea.View())
 			builder.WriteByte('\n')
 		}
+	}
+
+	if m.statusMessage != "" {
+		builder.WriteByte('\n')
+		builder.WriteString(m.statusMessage)
+		builder.WriteByte('\n')
 	}
 
 	return builder.String()
@@ -381,23 +470,30 @@ func main() {
 		os.Exit(1)
 	}
 
+	commentsWatchChannel, err := watcher.WatchFile(commentsPath)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
 	fileHeaders, filePaths := findFileHeaders(rows)
 	foldState := map[string]bool{}
 	visibleIndices := navigation.VisibleIndices(len(rows), fileHeaders, filePaths, foldState)
 	p := tea.NewProgram(model{
-		theme:          th,
-		rows:           rows,
-		highlighted:    highlighted,
-		rawLines:       rawLines,
-		watchChannel:   watchChannel,
-		fileHeaders:    fileHeaders,
-		filePaths:      filePaths,
-		foldState:      foldState,
-		visibleIndices: visibleIndices,
-		repoRoot:       repoRoot,
-		userComments:   userComments,
-		commentsPath:   commentsPath,
-		commentIndex:   buildCommentIndex(userComments),
+		theme:                th,
+		rows:                 rows,
+		highlighted:          highlighted,
+		rawLines:             rawLines,
+		watchChannel:         watchChannel,
+		commentsWatchChannel: commentsWatchChannel,
+		fileHeaders:          fileHeaders,
+		filePaths:            filePaths,
+		foldState:            foldState,
+		visibleIndices:       visibleIndices,
+		repoRoot:             repoRoot,
+		userComments:         userComments,
+		commentsPath:         commentsPath,
+		commentIndex:         buildCommentIndex(userComments),
 		nav: navigation.State{
 			RowCount: len(rows),
 		},
