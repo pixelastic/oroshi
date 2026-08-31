@@ -10,6 +10,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/editor"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/navigation"
@@ -19,6 +20,9 @@ import (
 
 // DiffChangedMsg is sent when the watcher detects a new git diff.
 type DiffChangedMsg struct{}
+
+// EditorFinishedMsg is sent when the external editor exits.
+type EditorFinishedMsg struct{ err error }
 
 type model struct {
 	theme          *theme.Theme
@@ -31,6 +35,7 @@ type model struct {
 	foldState      map[string]bool
 	visibleIndices []int
 	pendingKey     string
+	repoRoot       string
 }
 
 func (m model) Init() tea.Cmd {
@@ -43,19 +48,11 @@ func (m model) Init() tea.Cmd {
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case DiffChangedMsg:
-		rows, highlighted, err := buildDisplay()
-		if err != nil {
-			return m, waitForChange(m.watchChannel)
-		}
-		m.rows = rows
-		m.highlighted = highlighted
-		m.fileHeaders, m.filePaths = findFileHeaders(rows)
-		m.nav.RowCount = len(rows)
-		if m.nav.Cursor >= len(rows) {
-			m.nav.Cursor = max(0, len(rows)-1)
-		}
-		m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileHeaders, m.filePaths, m.foldState)
+		m.rebuildDisplay()
 		return m, waitForChange(m.watchChannel)
+	case EditorFinishedMsg:
+		m.rebuildDisplay()
+		return m, nil
 	case tea.WindowSizeMsg:
 		m.nav.ViewportHeight = msg.Height
 		return m, nil
@@ -80,11 +77,34 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.nav = navigation.NextFileHeader(m.nav, m.fileHeaders, m.visibleIndices)
 		case "h":
 			m.nav = navigation.PrevFileHeader(m.nav, m.fileHeaders, m.visibleIndices)
+		case "i":
+			cmd := editor.NvimCommand(m.rows, m.nav.Cursor, m.repoRoot)
+			if cmd == nil {
+				return m, nil
+			}
+			return m, tea.ExecProcess(cmd, func(err error) tea.Msg {
+				return EditorFinishedMsg{err: err}
+			})
 		case "z":
 			m.pendingKey = "z"
 		}
 	}
 	return m, nil
+}
+
+func (m *model) rebuildDisplay() {
+	rows, highlighted, err := buildDisplay()
+	if err != nil {
+		return
+	}
+	m.rows = rows
+	m.highlighted = highlighted
+	m.fileHeaders, m.filePaths = findFileHeaders(rows)
+	m.nav.RowCount = len(rows)
+	if m.nav.Cursor >= len(rows) {
+		m.nav.Cursor = max(0, len(rows)-1)
+	}
+	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileHeaders, m.filePaths, m.foldState)
 }
 
 func waitForChange(channel <-chan struct{}) tea.Cmd {
@@ -251,6 +271,7 @@ func main() {
 		filePaths:      filePaths,
 		foldState:      foldState,
 		visibleIndices: visibleIndices,
+		repoRoot:       repoRoot,
 		nav: navigation.State{
 			RowCount: len(rows),
 		},
