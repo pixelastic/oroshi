@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Build the git-file-watch binary
+# Usage:
+# $ build
+set -e
+setopt local_options err_return
+
+local binaryName="git-file-watch"
+local srcDirectory="${OROSHI_ROOT}/scripts/src/${binaryName}"
+
+go build \
+  -o "${srcDirectory}/dist/${binaryName}" \
+  "${srcDirectory}"
