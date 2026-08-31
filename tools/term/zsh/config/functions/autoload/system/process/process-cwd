@@ -1,0 +1,16 @@
+# Get working directory for a PID from /proc
+# Usage:
+# $ process-cwd 1234    # "/home/user/project"
+# $ process-cwd         # Current process
+setopt local_options err_return
+
+# Default to current process
+local pid="${1:-$$}"
+
+# PID not running
+[[ ! -d "/proc/$pid" ]] && return 1
+
+local result="$(readlink /proc/$pid/cwd 2>/dev/null)"
+[[ "$result" == "" ]] && return 1
+
+echo "$result"

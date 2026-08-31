@@ -36,6 +36,9 @@ for branch in "${branches[@]}"; do
     return 1
   fi
 
+  # Stop any Claude sessions running in the worktree
+  claude-stop-in "$worktreePath"
+
   # If currently inside the worktree being deleted, move to Git Repo Main first
   [[ "$PWD" == "$worktreePath"* ]] && cd "$mainPath"
 

@@ -1,0 +1,12 @@
+# Find PIDs by exact process name, one per line
+# Usage:
+# $ process-find claude
+# $ process-find node
+setopt local_options err_return
+
+local name="$1"
+
+# Name is required
+[[ "$name" == "" ]] && return 1
+
+pgrep --exact "$name" 2>/dev/null || true

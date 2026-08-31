@@ -122,3 +122,26 @@ setup() {
   [[ "$status" -eq 1 ]]
   [[ -d "${BATS_GIT_WORKTREES}my-repo--feature" ]]
 }
+
+# ── Claude guard ─────────────────────────────────────────────────────────────
+
+@test "stops Claude sessions before deleting worktree" {
+  claude-stop-in() { echo "$@" > "$BATS_TMP_DIR/claude-stop-in-args.txt"; }
+  bats_mock claude-stop-in
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd '$BATS_GIT_DIR' && git-worktree-delete feature"
+  [[ "$status" -eq 0 ]]
+  [[ ! -d "${BATS_GIT_WORKTREES}my-repo--feature" ]]
+  [[ "$(cat "$BATS_TMP_DIR/claude-stop-in-args.txt")" == "${BATS_GIT_WORKTREES}my-repo--feature" ]]
+}
+
+@test "deletes worktree even when no Claude session is running" {
+  claude-stop-in() { return 0; }
+  bats_mock claude-stop-in
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd '$BATS_GIT_DIR' && git-worktree-delete feature"
+  [[ "$status" -eq 0 ]]
+  [[ ! -d "${BATS_GIT_WORKTREES}my-repo--feature" ]]
+}
