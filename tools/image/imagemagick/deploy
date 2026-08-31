@@ -3,9 +3,10 @@
 # Default ImageMagick config has low default values for memory management,
 # making it fail when converting large files
 # We are using a custom policy that should fix it
+set -e
 
-CONFIG_DIR="$(dirname "$0")/config"
+CONFIG_DIR="${0:h:a}/config"
+LOCAL_CONFIG_DIR=~/.config/ImageMagick
 
-sudo cp \
-	$CONFIG_DIR/policy.xml \
-	/etc/ImageMagick-6/
+mkdir -p $LOCAL_CONFIG_DIR
+ln -fs $CONFIG_DIR/policy.xml $LOCAL_CONFIG_DIR/policy.xml
