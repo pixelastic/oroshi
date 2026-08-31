@@ -51,27 +51,180 @@ func TestViewportScrollsWhenCursorPassesTopEdge(t *testing.T) {
 func TestNextFileHeaderJumpsToNextFile(t *testing.T) {
 	state := State{Cursor: 0, ViewportOffset: 0, ViewportHeight: 10, RowCount: 20}
 	headers := []int{0, 8, 15}
-	result := NextFileHeader(state, headers)
+	result := NextFileHeader(state, headers, nil)
 	assert.Equal(t, 8, result.Cursor)
 }
 
 func TestPrevFileHeaderJumpsToPreviousFile(t *testing.T) {
 	state := State{Cursor: 10, ViewportOffset: 0, ViewportHeight: 10, RowCount: 20}
 	headers := []int{0, 8, 15}
-	result := PrevFileHeader(state, headers)
+	result := PrevFileHeader(state, headers, nil)
 	assert.Equal(t, 0, result.Cursor)
 }
 
 func TestNextFileHeaderAtLastFileDoesNotMove(t *testing.T) {
 	state := State{Cursor: 16, ViewportOffset: 10, ViewportHeight: 10, RowCount: 20}
 	headers := []int{0, 8, 15}
-	result := NextFileHeader(state, headers)
+	result := NextFileHeader(state, headers, nil)
 	assert.Equal(t, 16, result.Cursor)
 }
 
 func TestPrevFileHeaderAtFirstFileDoesNotMove(t *testing.T) {
 	state := State{Cursor: 3, ViewportOffset: 0, ViewportHeight: 10, RowCount: 20}
 	headers := []int{0, 8, 15}
-	result := PrevFileHeader(state, headers)
+	result := PrevFileHeader(state, headers, nil)
 	assert.Equal(t, 3, result.Cursor)
+}
+
+// --- Visible indices ---
+
+func TestVisibleIndicesAllRowsVisibleWhenNothingFolded(t *testing.T) {
+	headers := []int{0, 5, 10}
+	paths := []string{"a.go", "b.go", "c.go"}
+	foldState := map[string]bool{}
+
+	result := VisibleIndices(15, headers, paths, foldState)
+
+	expected := make([]int, 15)
+	for i := range expected {
+		expected[i] = i
+	}
+	assert.Equal(t, expected, result)
+}
+
+func TestVisibleIndicesFoldedFileShowsHeaderOnly(t *testing.T) {
+	headers := []int{0, 5, 10}
+	paths := []string{"a.go", "b.go", "c.go"}
+	foldState := map[string]bool{"b.go": true}
+
+	result := VisibleIndices(15, headers, paths, foldState)
+
+	expected := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
+	assert.Equal(t, expected, result)
+}
+
+func TestVisibleIndicesUnfoldedFileShowsAllRows(t *testing.T) {
+	headers := []int{0, 5, 10}
+	paths := []string{"a.go", "b.go", "c.go"}
+	foldState := map[string]bool{"b.go": false}
+
+	result := VisibleIndices(15, headers, paths, foldState)
+
+	expected := make([]int, 15)
+	for i := range expected {
+		expected[i] = i
+	}
+	assert.Equal(t, expected, result)
+}
+
+// --- Fold toggle ---
+
+func TestToggleFoldOnUnfoldedFileFoldsIt(t *testing.T) {
+	state := State{Cursor: 7, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	headers := []int{0, 5, 10}
+	paths := []string{"a.go", "b.go", "c.go"}
+	foldState := map[string]bool{}
+
+	_, newFold := ToggleFold(state, headers, paths, foldState)
+
+	assert.True(t, newFold["b.go"])
+}
+
+func TestToggleFoldOnFoldedFileUnfoldsIt(t *testing.T) {
+	state := State{Cursor: 5, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	headers := []int{0, 5, 10}
+	paths := []string{"a.go", "b.go", "c.go"}
+	foldState := map[string]bool{"b.go": true}
+
+	_, newFold := ToggleFold(state, headers, paths, foldState)
+
+	assert.False(t, newFold["b.go"])
+}
+
+func TestFoldingMovesCursorToFileHeader(t *testing.T) {
+	state := State{Cursor: 7, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	headers := []int{0, 5, 10}
+	paths := []string{"a.go", "b.go", "c.go"}
+	foldState := map[string]bool{}
+
+	newState, _ := ToggleFold(state, headers, paths, foldState)
+
+	assert.Equal(t, 5, newState.Cursor)
+}
+
+func TestUnfoldingKeepsCursorOnHeader(t *testing.T) {
+	state := State{Cursor: 5, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	headers := []int{0, 5, 10}
+	paths := []string{"a.go", "b.go", "c.go"}
+	foldState := map[string]bool{"b.go": true}
+
+	newState, _ := ToggleFold(state, headers, paths, foldState)
+
+	assert.Equal(t, 5, newState.Cursor)
+}
+
+// --- Navigation with folds ---
+
+func TestNextFileHeaderJumpsToFoldedFileHeader(t *testing.T) {
+	state := State{Cursor: 3, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	headers := []int{0, 5, 10}
+	// File b (header at 5) is folded — l should still jump there
+	visible := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
+	result := NextFileHeader(state, headers, visible)
+	assert.Equal(t, 5, result.Cursor)
+}
+
+func TestPrevFileHeaderJumpsToFoldedFileHeader(t *testing.T) {
+	state := State{Cursor: 10, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	headers := []int{0, 5, 10}
+	// File b (header at 5) is folded — h should still jump there
+	visible := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
+	result := PrevFileHeader(state, headers, visible)
+	assert.Equal(t, 5, result.Cursor)
+}
+
+func TestMoveDownVisibleSkipsFoldedContent(t *testing.T) {
+	state := State{Cursor: 5, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	visible := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
+
+	result := MoveDownVisible(state, visible)
+
+	assert.Equal(t, 10, result.Cursor)
+}
+
+func TestMoveUpVisibleSkipsFoldedContent(t *testing.T) {
+	state := State{Cursor: 10, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	visible := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
+
+	result := MoveUpVisible(state, visible)
+
+	assert.Equal(t, 5, result.Cursor)
+}
+
+func TestMoveDownVisibleAtLastRowDoesNotMove(t *testing.T) {
+	state := State{Cursor: 14, ViewportOffset: 10, ViewportHeight: 10, RowCount: 15}
+	visible := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
+
+	result := MoveDownVisible(state, visible)
+
+	assert.Equal(t, 14, result.Cursor)
+}
+
+func TestMoveUpVisibleAtFirstRowDoesNotMove(t *testing.T) {
+	state := State{Cursor: 0, ViewportOffset: 0, ViewportHeight: 10, RowCount: 15}
+	visible := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
+
+	result := MoveUpVisible(state, visible)
+
+	assert.Equal(t, 0, result.Cursor)
+}
+
+func TestMoveDownVisibleScrollsViewport(t *testing.T) {
+	state := State{Cursor: 4, ViewportOffset: 2, ViewportHeight: 3, RowCount: 15}
+	visible := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
+
+	result := MoveDownVisible(state, visible)
+
+	assert.Equal(t, 5, result.Cursor)
+	assert.Equal(t, 3, result.ViewportOffset)
 }

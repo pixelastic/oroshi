@@ -27,6 +27,10 @@ type model struct {
 	watchChannel   <-chan struct{}
 	nav            navigation.State
 	fileHeaders    []int
+	filePaths      []string
+	foldState      map[string]bool
+	visibleIndices []int
+	pendingKey     string
 }
 
 func (m model) Init() tea.Cmd {
@@ -45,27 +49,39 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 		m.rows = rows
 		m.highlighted = highlighted
-		m.fileHeaders = findFileHeaders(rows)
+		m.fileHeaders, m.filePaths = findFileHeaders(rows)
 		m.nav.RowCount = len(rows)
 		if m.nav.Cursor >= len(rows) {
 			m.nav.Cursor = max(0, len(rows)-1)
 		}
+		m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileHeaders, m.filePaths, m.foldState)
 		return m, waitForChange(m.watchChannel)
 	case tea.WindowSizeMsg:
 		m.nav.ViewportHeight = msg.Height
 		return m, nil
 	case tea.KeyMsg:
-		switch msg.String() {
+		key := msg.String()
+		if m.pendingKey == "z" {
+			m.pendingKey = ""
+			if key == "a" {
+				m.nav, m.foldState = navigation.ToggleFold(m.nav, m.fileHeaders, m.filePaths, m.foldState)
+				m.visibleIndices = navigation.VisibleIndices(len(m.rows), m.fileHeaders, m.filePaths, m.foldState)
+			}
+			return m, nil
+		}
+		switch key {
 		case "q", "ctrl+c":
 			return m, tea.Quit
 		case "j":
-			m.nav = navigation.MoveDown(m.nav)
+			m.nav = navigation.MoveDownVisible(m.nav, m.visibleIndices)
 		case "k":
-			m.nav = navigation.MoveUp(m.nav)
+			m.nav = navigation.MoveUpVisible(m.nav, m.visibleIndices)
 		case "l":
-			m.nav = navigation.NextFileHeader(m.nav, m.fileHeaders)
+			m.nav = navigation.NextFileHeader(m.nav, m.fileHeaders, m.visibleIndices)
 		case "h":
-			m.nav = navigation.PrevFileHeader(m.nav, m.fileHeaders)
+			m.nav = navigation.PrevFileHeader(m.nav, m.fileHeaders, m.visibleIndices)
+		case "z":
+			m.pendingKey = "z"
 		}
 	}
 	return m, nil
@@ -82,27 +98,32 @@ func (m model) View() string {
 	var builder strings.Builder
 	var currentFile string
 
-	end := m.nav.ViewportOffset + m.nav.ViewportHeight
-	if end > len(m.rows) {
-		end = len(m.rows)
-	}
-
-	// Find the current file for visible rows by scanning from the start
-	for i := 0; i < m.nav.ViewportOffset && i < len(m.rows); i++ {
-		if header, ok := m.rows[i].(layout.FileHeaderRow); ok {
-			currentFile = header.Path
+	// Render visible rows within viewport
+	rendered := 0
+	for _, i := range m.visibleIndices {
+		if i < m.nav.ViewportOffset {
+			// Track current file for rows before viewport
+			if header, ok := m.rows[i].(layout.FileHeaderRow); ok {
+				currentFile = header.Path
+			}
+			continue
 		}
-	}
+		if rendered >= m.nav.ViewportHeight {
+			break
+		}
 
-	for i := m.nav.ViewportOffset; i < end; i++ {
 		row := m.rows[i]
 		isCursor := i == m.nav.Cursor
+		rendered++
 
 		switch r := row.(type) {
 		case layout.FileHeaderRow:
 			currentFile = r.Path
 			style := lipgloss.NewStyle().Bold(true)
 			line := style.Render(r.Path)
+			if m.foldState[r.Path] {
+				line += " [folded]"
+			}
 			if isCursor {
 				line = "> " + line
 			} else {
@@ -175,14 +196,16 @@ func lineContent(highlighted map[string][]highlight.StyledLine, path string, lin
 	return lines[index].Content
 }
 
-func findFileHeaders(rows []layout.Row) []int {
+func findFileHeaders(rows []layout.Row) ([]int, []string) {
 	var indices []int
+	var paths []string
 	for i, row := range rows {
-		if _, ok := row.(layout.FileHeaderRow); ok {
+		if header, ok := row.(layout.FileHeaderRow); ok {
 			indices = append(indices, i)
+			paths = append(paths, header.Path)
 		}
 	}
-	return indices
+	return indices, paths
 }
 
 func main() {
@@ -216,13 +239,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	fileHeaders := findFileHeaders(rows)
+	fileHeaders, filePaths := findFileHeaders(rows)
+	foldState := map[string]bool{}
+	visibleIndices := navigation.VisibleIndices(len(rows), fileHeaders, filePaths, foldState)
 	p := tea.NewProgram(model{
-		theme:        th,
-		rows:         rows,
-		highlighted:  highlighted,
-		watchChannel: watchChannel,
-		fileHeaders:  fileHeaders,
+		theme:          th,
+		rows:           rows,
+		highlighted:    highlighted,
+		watchChannel:   watchChannel,
+		fileHeaders:    fileHeaders,
+		filePaths:      filePaths,
+		foldState:      foldState,
+		visibleIndices: visibleIndices,
 		nav: navigation.State{
 			RowCount: len(rows),
 		},
