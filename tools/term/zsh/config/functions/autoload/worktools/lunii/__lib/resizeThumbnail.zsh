@@ -10,10 +10,5 @@ function resizeThumbnail() {
   local dimensions=$(img-dimensions "$thumbnail")
   [[ "$dimensions" == "320x240" ]] && return 0
 
-  magick "$thumbnail" \
-    -resize 320x240 \
-    -background black \
-    -gravity center \
-    -extent 320x240 \
-    "$thumbnail"
+  resizeToLunii "$thumbnail"
 }
