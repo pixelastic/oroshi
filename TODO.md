@@ -6,18 +6,12 @@
     => Keybinding to add status markers
 
 - Misc
-    - Make git-worktree-distance use git-worktree-distance-raw
-    - vws shouldn't suggest "main" when not in a git repo
     - Update calls to bats_debug to not pass an argument, as $output is by default
     - Review git-branch-colorize tests. They seem trivial and useless
-    - Refactor the prompt/git.zsh functions into their own files
     - Ensure zsh-lint doesn't yell about exporting a long API KEY
 
 
-- Closing a claude session in a removed (vwR) directory still sometimes use 100% CPU
-- git-commit-message should be retsricted in private/, to not see API keys
 - js-writer should have one named export per file, except for __
-- `local firstField="${lines[0]%%▮*}"` is bad, use a split array
 - json-lint doesn't work on files outside of oroshi
 - Make some slack-* commands to read updated in a specific channel
 - /debug-script skill doesn't work well with nodejs scripts that require a dependency. Need to see if it can use package.json for the deps?
