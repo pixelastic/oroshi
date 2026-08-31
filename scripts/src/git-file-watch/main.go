@@ -12,6 +12,7 @@ import (
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/navigation"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/theme"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/watcher"
 )
@@ -20,10 +21,12 @@ import (
 type DiffChangedMsg struct{}
 
 type model struct {
-	theme       *theme.Theme
-	rows        []layout.Row
-	highlighted map[string][]highlight.StyledLine
+	theme          *theme.Theme
+	rows           []layout.Row
+	highlighted    map[string][]highlight.StyledLine
 	watchChannel   <-chan struct{}
+	nav            navigation.State
+	fileHeaders    []int
 }
 
 func (m model) Init() tea.Cmd {
@@ -42,11 +45,27 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 		m.rows = rows
 		m.highlighted = highlighted
+		m.fileHeaders = findFileHeaders(rows)
+		m.nav.RowCount = len(rows)
+		if m.nav.Cursor >= len(rows) {
+			m.nav.Cursor = max(0, len(rows)-1)
+		}
 		return m, waitForChange(m.watchChannel)
+	case tea.WindowSizeMsg:
+		m.nav.ViewportHeight = msg.Height
+		return m, nil
 	case tea.KeyMsg:
-		key := msg.String()
-		if key == "q" || key == "ctrl+c" {
+		switch msg.String() {
+		case "q", "ctrl+c":
 			return m, tea.Quit
+		case "j":
+			m.nav = navigation.MoveDown(m.nav)
+		case "k":
+			m.nav = navigation.MoveUp(m.nav)
+		case "l":
+			m.nav = navigation.NextFileHeader(m.nav, m.fileHeaders)
+		case "h":
+			m.nav = navigation.PrevFileHeader(m.nav, m.fileHeaders)
 		}
 	}
 	return m, nil
@@ -63,18 +82,48 @@ func (m model) View() string {
 	var builder strings.Builder
 	var currentFile string
 
-	for _, row := range m.rows {
+	end := m.nav.ViewportOffset + m.nav.ViewportHeight
+	if end > len(m.rows) {
+		end = len(m.rows)
+	}
+
+	// Find the current file for visible rows by scanning from the start
+	for i := 0; i < m.nav.ViewportOffset && i < len(m.rows); i++ {
+		if header, ok := m.rows[i].(layout.FileHeaderRow); ok {
+			currentFile = header.Path
+		}
+	}
+
+	for i := m.nav.ViewportOffset; i < end; i++ {
+		row := m.rows[i]
+		isCursor := i == m.nav.Cursor
+
 		switch r := row.(type) {
 		case layout.FileHeaderRow:
 			currentFile = r.Path
 			style := lipgloss.NewStyle().Bold(true)
-			builder.WriteString(style.Render(r.Path))
+			line := style.Render(r.Path)
+			if isCursor {
+				line = "> " + line
+			} else {
+				line = "  " + line
+			}
+			builder.WriteString(line)
 			builder.WriteByte('\n')
 		case layout.SeparatorRow:
-			builder.WriteString("···\n")
+			if isCursor {
+				builder.WriteString("> ···\n")
+			} else {
+				builder.WriteString("  ···\n")
+			}
 		case layout.LineRow:
 			lineNumber := renderLineNumber(r, m.theme)
 			content := lineContent(m.highlighted, currentFile, r.LineNumber)
+			if isCursor {
+				builder.WriteString("> ")
+			} else {
+				builder.WriteString("  ")
+			}
 			builder.WriteString(lineNumber)
 			builder.WriteByte(' ')
 			builder.WriteString(content)
@@ -126,6 +175,16 @@ func lineContent(highlighted map[string][]highlight.StyledLine, path string, lin
 	return lines[index].Content
 }
 
+func findFileHeaders(rows []layout.Row) []int {
+	var indices []int
+	for i, row := range rows {
+		if _, ok := row.(layout.FileHeaderRow); ok {
+			indices = append(indices, i)
+		}
+	}
+	return indices
+}
+
 func main() {
 	oroshiRoot := os.Getenv("OROSHI_ROOT")
 	if oroshiRoot == "" {
@@ -157,12 +216,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	fileHeaders := findFileHeaders(rows)
 	p := tea.NewProgram(model{
-		theme:       th,
-		rows:        rows,
-		highlighted: highlighted,
-		watchChannel:   watchChannel,
-	})
+		theme:        th,
+		rows:         rows,
+		highlighted:  highlighted,
+		watchChannel: watchChannel,
+		fileHeaders:  fileHeaders,
+		nav: navigation.State{
+			RowCount: len(rows),
+		},
+	}, tea.WithAltScreen())
 	if _, err := p.Run(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
