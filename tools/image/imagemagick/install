@@ -7,8 +7,9 @@ set -e
 # It replaces the old `convert` method, and all other methods should use this as
 # its primary entrypoint
 
-local DOWNLOAD_URL="https://imagemagick.org/archive/binaries/magick"
+local VERSION="7.1.2-30"
 local DOWNLOAD_DIR=~/local/etc/magick
+local DOWNLOAD_URL="https://github.com/ImageMagick/ImageMagick/releases/download/${VERSION}/ImageMagick-${VERSION}-gcc-x86_64.AppImage"
 
 # Dependencies needed
 sudo apt install libfuse2t64
@@ -17,6 +18,7 @@ sudo apt install libfuse2t64
 mkdir -p $DOWNLOAD_DIR
 cd $DOWNLOAD_DIR
 rm -rf ./magick
+echo "Downloading ImageMagick ${VERSION}..."
 wget $DOWNLOAD_URL -O ./magick
 chmod +x ./magick
 
@@ -24,4 +26,4 @@ chmod +x ./magick
 cd ~/local/bin
 ln -fs ./../etc/magick/magick ./magick
 
-"$(dirname "$0")/deploy"
+"${0:h}/deploy"
