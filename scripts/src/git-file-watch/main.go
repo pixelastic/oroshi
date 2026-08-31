@@ -13,27 +13,50 @@ import (
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/theme"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/watcher"
 )
+
+// DiffChangedMsg is sent when the watcher detects a new git diff.
+type DiffChangedMsg struct{}
 
 type model struct {
 	theme       *theme.Theme
 	rows        []layout.Row
 	highlighted map[string][]highlight.StyledLine
+	watchChannel   <-chan struct{}
 }
 
 func (m model) Init() tea.Cmd {
-	return nil
+	if m.watchChannel == nil {
+		return nil
+	}
+	return waitForChange(m.watchChannel)
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	keyMsg, ok := msg.(tea.KeyMsg)
-	if !ok {
-		return m, nil
-	}
-	if keyMsg.String() == "q" || keyMsg.String() == "ctrl+c" {
-		return m, tea.Quit
+	switch msg := msg.(type) {
+	case DiffChangedMsg:
+		rows, highlighted, err := buildDisplay()
+		if err != nil {
+			return m, waitForChange(m.watchChannel)
+		}
+		m.rows = rows
+		m.highlighted = highlighted
+		return m, waitForChange(m.watchChannel)
+	case tea.KeyMsg:
+		key := msg.String()
+		if key == "q" || key == "ctrl+c" {
+			return m, tea.Quit
+		}
 	}
 	return m, nil
+}
+
+func waitForChange(channel <-chan struct{}) tea.Cmd {
+	return func() tea.Msg {
+		<-channel
+		return DiffChangedMsg{}
+	}
 }
 
 func (m model) View() string {
@@ -122,10 +145,23 @@ func main() {
 		os.Exit(1)
 	}
 
+	repoRoot, err := gitRepoRoot()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	watchChannel, err := watcher.Watch(repoRoot)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
 	p := tea.NewProgram(model{
 		theme:       th,
 		rows:        rows,
 		highlighted: highlighted,
+		watchChannel:   watchChannel,
 	})
 	if _, err := p.Run(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
