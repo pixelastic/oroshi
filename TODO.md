@@ -28,6 +28,9 @@
   called by agents and maybe lintstaged. Seems like a weird gap
 - Prevent variables like `absArg` in code, prefer full words
 - Can /issues create issue files in parallel, rather than in sequence?
+- Find tests best practices, review my tests, see what goes wrong, update test
+guidance, fix tests. Notably define when to do several tests, when to do one big
+test. Also when to use real dependencies and when to mock them.
 
 ---
 
