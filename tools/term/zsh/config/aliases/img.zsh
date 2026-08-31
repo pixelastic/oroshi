@@ -5,6 +5,3 @@ alias resize="img-resize"
 
 # Backward compat (aberlaas checks for pngmin)
 alias pngmin="png-min"
-
-# ImageMagick 7 aliases
-alias convert="magick"

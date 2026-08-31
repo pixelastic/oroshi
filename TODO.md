@@ -1,27 +1,21 @@
+## Quick wins
+- js-writer should have one named export per file, except for __
+
+## Kitty
+=> Keybinding to add status markers
+
+## LUA
 - Grill-me LUA
     => lua-lint, lua-fix, lua-test
         => Display context-badge pretty in nvim Ctrl-Shift-Y
 
-- Kitty
-    => Keybinding to add status markers
-
-- Misc
-    - Update calls to bats_debug to not pass an argument, as $output is by default
-    - Review git-branch-colorize tests. They seem trivial and useless
-    - Ensure zsh-lint doesn't yell about exporting a long API KEY
-
-
-- js-writer should have one named export per file, except for __
-- json-lint doesn't work on files outside of oroshi
 - Make some slack-* commands to read updated in a specific channel
 - /debug-script skill doesn't work well with nodejs scripts that require a dependency. Need to see if it can use package.json for the deps?
-- Change the color of the `!` bash mode in claude
 - Make a better slack-writer skill, based on facts about effective writing, with some grill-me first and concise
 - Add CLI tools to add items in my calendar
 - Seem like we have both {language}-fix called by nvim and {language}-lint --fix
   called by agents and maybe lintstaged. Seems like a weird gap
 - Prevent variables like `absArg` in code, prefer full words
-- Can /issues create issue files in parallel, rather than in sequence?
 - Find tests best practices, review my tests, see what goes wrong, update test
 guidance, fix tests. Notably define when to do several tests, when to do one big
 test. Also when to use real dependencies and when to mock them.
@@ -49,8 +43,6 @@ I'd love an icon to see:
 - evaluate if I need some allowed-tools/disallowed-tools in my skills
 - Add a rule in zsh to prevent abbreviations like *Len, *Dir, abs*, proj*
 - find a way to fill a brag doc (https://jvns.ca/blog/brag-documents/) regularly
-- Need to decorrelate attention from marker. Attention is sound + marker, marker
-  is various icons in kitty to show attention, or ralph, or grill-me, etc
 - Add a script that can give me a daily recap of everything I accomplished on a
   given day. Initially by checking git history, later by checking GDrive
   activity and Slack
@@ -114,7 +106,6 @@ I'd love an icon to see:
 ## Cleanup
 
 - Cleanup private/ scripts and autoloaded functions
-- Reorg by domain and install/deploy in private/
 
 ---
 ## Ideas
