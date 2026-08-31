@@ -4,21 +4,7 @@ setup() {
   bats_tmp_dir
 }
 
-# Mock curl that dispatches between RSS feed (for getRssTitle) and Claude API
-_curl_rss_and_claude() {
-  cat <<'BASH'
-  curl() {
-    if [[ "$*" == *"api.anthropic.com"* ]]; then
-      echo "called" >> "$BATS_TMP_DIR/curl_calls.txt"
-      printf '{"content":[{"type":"text","text":"<svg></svg>"}]}'
-    else
-      printf '<rss><channel><title>mypack</title></channel></rss>'
-    fi
-  }
-BASH
-}
-
-# Mock curl that only returns RSS feed (no Claude API)
+# Mock curl that only returns RSS feed
 _curl_rss_only() {
   cat <<'BASH'
   curl() {
@@ -141,49 +127,55 @@ BASH
   [[ -f "$BATS_TMP_DIR/mypack/ep1-generated.item.mp3" ]]
 }
 
-@test "calls Claude API for episodes without existing images" {
+@test "calls claude-api for episodes without existing images" {
   mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
   mkdir -p "$BATS_TMP_DIR/mypack/02 - Episode Two"
 
   studio-pack-generator() { :; }
-  eval "$(_curl_rss_and_claude)"
+  eval "$(_curl_rss_only)"
+  claude-api() {
+    echo "called" >> "$BATS_TMP_DIR/claude_api_calls.txt"
+    echo "<svg></svg>"
+  }
   svg2png() {
     for f in "$@"; do touch "${f%.svg}.png"; done
   }
   img-resize() { :; }
-  bats_mock studio-pack-generator curl svg2png img-resize
+  bats_mock studio-pack-generator curl claude-api svg2png img-resize
   bats_disable_worktree_aware
 
-  export ANTHROPIC_API_KEY=test-anthropic-key
   export OPENAI_API_KEY=test-openai-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  [[ -f "$BATS_TMP_DIR/curl_calls.txt" ]]
-  [[ $(wc -l < "$BATS_TMP_DIR/curl_calls.txt") -eq 2 ]]
+  [[ -f "$BATS_TMP_DIR/claude_api_calls.txt" ]]
+  [[ $(wc -l < "$BATS_TMP_DIR/claude_api_calls.txt") -eq 2 ]]
 }
 
-@test "skips Claude API for episodes with existing .item.png" {
+@test "skips claude-api for episodes with existing .item.png" {
   mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
   mkdir -p "$BATS_TMP_DIR/mypack/02 - Episode Two"
   touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
 
   studio-pack-generator() { :; }
-  eval "$(_curl_rss_and_claude)"
+  eval "$(_curl_rss_only)"
+  claude-api() {
+    echo "called" >> "$BATS_TMP_DIR/claude_api_calls.txt"
+    echo "<svg></svg>"
+  }
   svg2png() {
     for f in "$@"; do touch "${f%.svg}.png"; done
   }
   img-resize() { :; }
-  bats_mock studio-pack-generator curl svg2png img-resize
+  bats_mock studio-pack-generator curl claude-api svg2png img-resize
   bats_disable_worktree_aware
 
-  export ANTHROPIC_API_KEY=test-anthropic-key
   export OPENAI_API_KEY=test-openai-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  [[ -f "$BATS_TMP_DIR/curl_calls.txt" ]]
-  [[ $(wc -l < "$BATS_TMP_DIR/curl_calls.txt") -eq 1 ]]
+  [[ -f "$BATS_TMP_DIR/claude_api_calls.txt" ]]
+  [[ $(wc -l < "$BATS_TMP_DIR/claude_api_calls.txt") -eq 1 ]]
 }
 
 @test "deletes existing images when --force-img is set" {
@@ -191,36 +183,39 @@ BASH
   touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
 
   studio-pack-generator() { :; }
-  eval "$(_curl_rss_and_claude)"
+  eval "$(_curl_rss_only)"
+  claude-api() {
+    echo "called" >> "$BATS_TMP_DIR/claude_api_calls.txt"
+    echo "<svg></svg>"
+  }
   svg2png() {
     for f in "$@"; do touch "${f%.svg}.png"; done
   }
   img-resize() { :; }
-  bats_mock studio-pack-generator curl svg2png img-resize
+  bats_mock studio-pack-generator curl claude-api svg2png img-resize
   bats_disable_worktree_aware
 
-  export ANTHROPIC_API_KEY=test-anthropic-key
   export OPENAI_API_KEY=test-openai-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-img https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  [[ -f "$BATS_TMP_DIR/curl_calls.txt" ]]
-  [[ $(wc -l < "$BATS_TMP_DIR/curl_calls.txt") -eq 1 ]]
+  [[ -f "$BATS_TMP_DIR/claude_api_calls.txt" ]]
+  [[ $(wc -l < "$BATS_TMP_DIR/claude_api_calls.txt") -eq 1 ]]
 }
 
 @test "generates PNG at 320x240 dimensions" {
   mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
 
   studio-pack-generator() { :; }
-  eval "$(_curl_rss_and_claude)"
+  eval "$(_curl_rss_only)"
+  claude-api() { echo "<svg></svg>"; }
   svg2png() {
     for f in "$@"; do touch "${f%.svg}.png"; done
   }
   img-resize() { echo "$@" >> "$BATS_TMP_DIR/resize_calls.txt"; }
-  bats_mock studio-pack-generator curl svg2png img-resize
+  bats_mock studio-pack-generator curl claude-api svg2png img-resize
   bats_disable_worktree_aware
 
-  export ANTHROPIC_API_KEY=test-anthropic-key
   export OPENAI_API_KEY=test-openai-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
@@ -322,21 +317,24 @@ BASH
   [[ "$allCalls" != *"--force-tts"* ]]
 }
 
-@test "does not call Claude API when all episodes have images" {
+@test "does not call claude-api when all episodes have images" {
   mkdir -p "$BATS_TMP_DIR/mypack/01 - Episode One"
   touch "$BATS_TMP_DIR/mypack/01 - Episode One/01 - Episode One.item.png"
 
   studio-pack-generator() { :; }
-  eval "$(_curl_rss_and_claude)"
+  eval "$(_curl_rss_only)"
+  claude-api() {
+    echo "called" >> "$BATS_TMP_DIR/claude_api_calls.txt"
+    echo "<svg></svg>"
+  }
   svg2png() { :; }
   img-resize() { :; }
-  bats_mock studio-pack-generator curl svg2png img-resize
+  bats_mock studio-pack-generator curl claude-api svg2png img-resize
   bats_disable_worktree_aware
 
-  export ANTHROPIC_API_KEY=test-anthropic-key
   export OPENAI_API_KEY=test-openai-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  [[ ! -f "$BATS_TMP_DIR/curl_calls.txt" ]]
+  [[ ! -f "$BATS_TMP_DIR/claude_api_calls.txt" ]]
 }

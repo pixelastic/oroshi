@@ -69,4 +69,4 @@ if [[ "$response" == "" ]]; then
   return 1
 fi
 
-echo "$response" | jq -r '.content[0].text'
+printf '%s\n' "$response" | jq -r '.content[0].text'

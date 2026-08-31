@@ -1,4 +1,4 @@
-import { callApi } from './callApi.js';
+import { consoleError, run } from 'firost';
 import { commitWithHint } from './commitWithHint.js';
 import { commitWithoutHint } from './commitWithoutHint.js';
 import { init } from './config.js';
@@ -22,7 +22,16 @@ const strategy = commitHint ? commitWithHint : commitWithoutHint;
 // Call the API
 const prompt = await strategy.getPrompt();
 const diff = await strategy.getDiff();
-const response = await callApi({ prompt, diff });
 
-const commitMessage = formatMessage(response);
+if (!diff.trim()) {
+  consoleError('Empty diff: nothing to send to the API.\n');
+  process.exit(1);
+}
+
+const result = await run(
+  ['bin-zsh', 'claude-api', '--system', prompt, '--max-tokens', '1024'],
+  { input: diff, stdout: false },
+);
+
+const commitMessage = formatMessage(result.stdout);
 console.log(commitMessage);

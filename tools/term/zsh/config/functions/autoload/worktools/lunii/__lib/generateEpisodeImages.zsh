@@ -16,22 +16,7 @@ function generateEpisodeImages() {
     local title="${dirName#[0-9]##[ -]#}"
 
     # Call Claude API to generate SVG illustration
-    local message=$(jo role=user content="Illustrate: $title")
-    local body=$(jo \
-        model=claude-sonnet-4-20250514 \
-        max_tokens:=4096 \
-        system="$svgSystemPrompt" \
-      messages:="$(jo -a "$message")")
-
-    local response=$(curl \
-        --silent \
-        --header "x-api-key: $ANTHROPIC_API_KEY" \
-        --header "anthropic-version: 2023-06-01" \
-        --header "content-type: application/json" \
-        --data "$body" \
-      https://api.anthropic.com/v1/messages)
-
-    local svgContent=$(echo "$response" | jq -r '.content[0].text')
+    local svgContent=$(claude-api --system "$svgSystemPrompt" "Illustrate: $title")
 
     # Save SVG, convert to PNG, resize to Lunii dimensions
     local tmpSvg=$(mktemp --suffix=.svg)
