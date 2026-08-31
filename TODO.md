@@ -9,6 +9,7 @@
     => lua-lint, lua-fix, lua-test
         => Display context-badge pretty in nvim Ctrl-Shift-Y
 
+- Add a lint rule to use `\{cmd}` instead of `command {cmd}` to bypass aliases
 - Make some slack-* commands to read updated in a specific channel
 - /debug-script skill doesn't work well with nodejs scripts that require a dependency. Need to see if it can use package.json for the deps?
 - Make a better slack-writer skill, based on facts about effective writing, with some grill-me first and concise
