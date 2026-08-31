@@ -9,6 +9,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/comments"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/editor"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
@@ -36,6 +37,9 @@ type model struct {
 	visibleIndices []int
 	pendingKey     string
 	repoRoot       string
+	userComments   []comments.Comment
+	commentsPath   string
+	commentIndex   map[string]bool
 }
 
 func (m model) Init() tea.Cmd {
@@ -93,7 +97,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *model) rebuildDisplay() {
-	rows, highlighted, err := buildDisplay()
+	rows, highlighted, rawLines, err := buildDisplay()
 	if err != nil {
 		return
 	}
@@ -105,6 +109,10 @@ func (m *model) rebuildDisplay() {
 		m.nav.Cursor = max(0, len(rows)-1)
 	}
 	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileHeaders, m.filePaths, m.foldState)
+
+	m.userComments = comments.Reattach(m.userComments, rawLines)
+	_ = comments.Save(m.commentsPath, m.userComments)
+	m.commentIndex = buildCommentIndex(m.userComments)
 }
 
 func waitForChange(channel <-chan struct{}) tea.Cmd {
@@ -165,6 +173,8 @@ func (m model) View() string {
 			} else {
 				builder.WriteString("  ")
 			}
+			absolutePath := filepath.Join(m.repoRoot, currentFile)
+			builder.WriteString(commentIndicator(m.commentIndex, m.theme, absolutePath, r.LineNumber))
 			builder.WriteString(lineNumber)
 			builder.WriteByte(' ')
 			builder.WriteString(content)
@@ -241,13 +251,25 @@ func main() {
 		os.Exit(1)
 	}
 
-	rows, highlighted, err := buildDisplay()
+	rows, highlighted, _, err := buildDisplay()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 
 	repoRoot, err := gitRepoRoot()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	commentsPath, err := resolveCommentsPath()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	userComments, err := comments.Load(commentsPath)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -272,6 +294,9 @@ func main() {
 		foldState:      foldState,
 		visibleIndices: visibleIndices,
 		repoRoot:       repoRoot,
+		userComments:   userComments,
+		commentsPath:   commentsPath,
+		commentIndex:   buildCommentIndex(userComments),
 		nav: navigation.State{
 			RowCount: len(rows),
 		},
@@ -282,20 +307,21 @@ func main() {
 	}
 }
 
-func buildDisplay() ([]layout.Row, map[string][]highlight.StyledLine, error) {
+func buildDisplay() ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
 	repoRoot, err := gitRepoRoot()
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 
 	raw, err := runGitDiff(repoRoot)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 
 	fileDiffs := diff.Parse(raw)
 	highlighter := highlight.New()
 	highlightedFiles := make(map[string][]highlight.StyledLine)
+	rawLines := make(map[string][]string)
 	var allRows []layout.Row
 
 	for _, fileDiff := range fileDiffs {
@@ -307,13 +333,14 @@ func buildDisplay() ([]layout.Row, map[string][]highlight.StyledLine, error) {
 
 		lines := highlighter.Highlight(fileDiff.Path, string(content))
 		highlightedFiles[fileDiff.Path] = lines
+		rawLines[absolutePath] = strings.Split(string(content), "\n")
 
 		markers := diff.Classify(fileDiff.Hunks)
 		rows := layout.Build(fileDiff, markers, len(lines))
 		allRows = append(allRows, rows...)
 	}
 
-	return allRows, highlightedFiles, nil
+	return allRows, highlightedFiles, rawLines, nil
 }
 
 func gitRepoRoot() (string, error) {
@@ -333,4 +360,47 @@ func runGitDiff(repoRoot string) (string, error) {
 		return "", fmt.Errorf("running git diff: %w", err)
 	}
 	return string(output), nil
+}
+
+func resolveCommentsPath() (string, error) {
+	tmpFolder := os.Getenv("OROSHI_TMP_FOLDER")
+	if tmpFolder == "" {
+		return "", fmt.Errorf("OROSHI_TMP_FOLDER not set")
+	}
+
+	cmd := exec.Command("context-slug")
+	output, err := cmd.Output()
+	if err != nil {
+		return "", fmt.Errorf("resolving context-slug: %w", err)
+	}
+
+	slug := strings.TrimSpace(string(output))
+	dir := filepath.Join(tmpFolder, "git-file-watch")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		return "", fmt.Errorf("creating comments directory: %w", err)
+	}
+
+	return filepath.Join(dir, slug+".json"), nil
+}
+
+func buildCommentIndex(userComments []comments.Comment) map[string]bool {
+	index := make(map[string]bool, len(userComments))
+	for _, c := range userComments {
+		key := fmt.Sprintf("%s:%d", c.Filepath, c.LineNumber)
+		index[key] = true
+	}
+	return index
+}
+
+func commentIndicator(index map[string]bool, th *theme.Theme, absolutePath string, lineNumber int) string {
+	key := fmt.Sprintf("%s:%d", absolutePath, lineNumber)
+	if !index[key] {
+		return " "
+	}
+	ansi, err := th.Color("orange")
+	if err != nil {
+		return "●"
+	}
+	style := lipgloss.NewStyle().Foreground(theme.ANSIToLipgloss(ansi))
+	return style.Render("●")
 }
