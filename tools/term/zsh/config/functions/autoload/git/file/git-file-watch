@@ -1,8 +1,6 @@
-# Watch live diff of dirty tracked files
+# Auto-build and run the git-file-watch Go binary
 # Usage:
-# $ git-file-watch   # Open hunk diff in watch mode
+# $ git-file-watch
 setopt local_options err_return
 
-local gitRoot="$(git-directory-root)"
-cd "$gitRoot"
-hunk diff --watch
+go-run-oroshi git-file-watch "$@"
