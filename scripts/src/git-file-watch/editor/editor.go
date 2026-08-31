@@ -11,7 +11,7 @@ import (
 // NvimCommand builds an exec.Cmd to open nvim at the correct file and line
 // for the given cursor position. Returns nil if no file is found.
 func NvimCommand(rows []layout.Row, cursor int, repoRoot string) *exec.Cmd {
-	filePath := currentFilePath(rows, cursor)
+	filePath := CurrentFilePath(rows, cursor)
 	if filePath == "" {
 		return nil
 	}
@@ -22,8 +22,8 @@ func NvimCommand(rows []layout.Row, cursor int, repoRoot string) *exec.Cmd {
 	return exec.Command("nvim", fmt.Sprintf("+%d", lineNumber), absolutePath)
 }
 
-// currentFilePath scans backwards from cursor to find the nearest FileHeaderRow.
-func currentFilePath(rows []layout.Row, cursor int) string {
+// CurrentFilePath scans backwards from cursor to find the nearest FileHeaderRow.
+func CurrentFilePath(rows []layout.Row, cursor int) string {
 	for i := cursor; i >= 0; i-- {
 		if header, ok := rows[i].(layout.FileHeaderRow); ok {
 			return header.Path

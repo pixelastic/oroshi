@@ -146,6 +146,31 @@ func TestReattachDropsCommentWhenLineNumberOutOfBoundsAndContentNotFound(t *test
 	assert.Empty(t, result)
 }
 
+// --- FindReview ---
+
+func TestFindReviewReturnsMatchingReviewText(t *testing.T) {
+	comments := []Comment{
+		{Filepath: "/a.go", LineNumber: 5, Review: "fix this"},
+		{Filepath: "/b.go", LineNumber: 10, Review: "looks good"},
+	}
+
+	result := FindReview(comments, "/a.go", 5)
+
+	assert.Equal(t, "fix this", result)
+}
+
+func TestFindReviewReturnsEmptyStringWhenNoMatch(t *testing.T) {
+	comments := []Comment{
+		{Filepath: "/a.go", LineNumber: 5, Review: "fix this"},
+	}
+
+	result := FindReview(comments, "/z.go", 99)
+
+	assert.Equal(t, "", result)
+}
+
+// --- Reattach ---
+
 func TestReattachHandlesMultipleCommentsInSameFile(t *testing.T) {
 	comments := []Comment{
 		{Filepath: "/a.go", LineNumber: 1, LineContent: "moved", Review: "r1"},

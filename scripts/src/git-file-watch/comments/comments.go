@@ -71,6 +71,16 @@ func Delete(comments []Comment, filepath string, lineNumber int) []Comment {
 	return result
 }
 
+// FindReview returns the review text for a matching filepath+lineNumber, or empty string.
+func FindReview(comments []Comment, filepath string, lineNumber int) string {
+	for _, comment := range comments {
+		if comment.Filepath == filepath && comment.LineNumber == lineNumber {
+			return comment.Review
+		}
+	}
+	return ""
+}
+
 // Reattach updates comment line numbers after file content changes.
 // For each comment, it searches for lineContent in the file's lines:
 // - If found at a different line, update lineNumber

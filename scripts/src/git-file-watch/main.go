@@ -7,10 +7,12 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/charmbracelet/bubbles/textarea"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/comments"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/editing"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/editor"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
@@ -29,6 +31,7 @@ type model struct {
 	theme          *theme.Theme
 	rows           []layout.Row
 	highlighted    map[string][]highlight.StyledLine
+	rawLines       map[string][]string
 	watchChannel   <-chan struct{}
 	nav            navigation.State
 	fileHeaders    []int
@@ -40,6 +43,8 @@ type model struct {
 	userComments   []comments.Comment
 	commentsPath   string
 	commentIndex   map[string]bool
+	editState      editing.State
+	editTextArea   textarea.Model
 }
 
 func (m model) Init() tea.Cmd {
@@ -61,39 +66,127 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.nav.ViewportHeight = msg.Height
 		return m, nil
 	case tea.KeyMsg:
-		key := msg.String()
-		if m.pendingKey == "z" {
-			m.pendingKey = ""
-			if key == "a" {
-				m.nav, m.foldState = navigation.ToggleFold(m.nav, m.fileHeaders, m.filePaths, m.foldState)
-				m.visibleIndices = navigation.VisibleIndices(len(m.rows), m.fileHeaders, m.filePaths, m.foldState)
-			}
-			return m, nil
+		if m.editState.Active {
+			return m.updateEditing(msg)
 		}
-		switch key {
-		case "q", "ctrl+c":
-			return m, tea.Quit
-		case "j":
-			m.nav = navigation.MoveDownVisible(m.nav, m.visibleIndices)
-		case "k":
-			m.nav = navigation.MoveUpVisible(m.nav, m.visibleIndices)
-		case "l":
-			m.nav = navigation.NextFileHeader(m.nav, m.fileHeaders, m.visibleIndices)
-		case "h":
-			m.nav = navigation.PrevFileHeader(m.nav, m.fileHeaders, m.visibleIndices)
-		case "i":
-			cmd := editor.NvimCommand(m.rows, m.nav.Cursor, m.repoRoot)
-			if cmd == nil {
-				return m, nil
-			}
-			return m, tea.ExecProcess(cmd, func(err error) tea.Msg {
-				return EditorFinishedMsg{err: err}
-			})
-		case "z":
-			m.pendingKey = "z"
-		}
+		return m.updateNormal(msg)
 	}
 	return m, nil
+}
+
+func (m model) updateEditing(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	switch msg.String() {
+	case "ctrl+s":
+		result := editing.Save(m.editState, m.editTextArea.Value())
+		m.userComments = applyEditResult(m.userComments, result)
+		_ = comments.Save(m.commentsPath, m.userComments)
+		m.commentIndex = buildCommentIndex(m.userComments)
+		m.editState = editing.Inactive()
+		return m, nil
+	case "esc":
+		m.editState = editing.Inactive()
+		return m, nil
+	}
+
+	var cmd tea.Cmd
+	m.editTextArea, cmd = m.editTextArea.Update(msg)
+	return m, cmd
+}
+
+func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	key := msg.String()
+	if m.pendingKey == "z" {
+		m.pendingKey = ""
+		if key == "a" {
+			m.nav, m.foldState = navigation.ToggleFold(m.nav, m.fileHeaders, m.filePaths, m.foldState)
+			m.visibleIndices = navigation.VisibleIndices(len(m.rows), m.fileHeaders, m.filePaths, m.foldState)
+		}
+		return m, nil
+	}
+	switch key {
+	case "q", "ctrl+c":
+		return m, tea.Quit
+	case "j":
+		m.nav = navigation.MoveDownVisible(m.nav, m.visibleIndices)
+	case "k":
+		m.nav = navigation.MoveUpVisible(m.nav, m.visibleIndices)
+	case "l":
+		m.nav = navigation.NextFileHeader(m.nav, m.fileHeaders, m.visibleIndices)
+	case "h":
+		m.nav = navigation.PrevFileHeader(m.nav, m.fileHeaders, m.visibleIndices)
+	case "i":
+		cmd := editor.NvimCommand(m.rows, m.nav.Cursor, m.repoRoot)
+		if cmd == nil {
+			return m, nil
+		}
+		return m, tea.ExecProcess(cmd, func(err error) tea.Msg {
+			return EditorFinishedMsg{err: err}
+		})
+	case "enter":
+		return m.openEditing()
+	case "z":
+		m.pendingKey = "z"
+	}
+	return m, nil
+}
+
+func (m model) openEditing() (tea.Model, tea.Cmd) {
+	lineRow, ok := m.rows[m.nav.Cursor].(layout.LineRow)
+	if !ok {
+		return m, nil
+	}
+
+	relativePath := editor.CurrentFilePath(m.rows, m.nav.Cursor)
+	if relativePath == "" {
+		return m, nil
+	}
+	absolutePath := filepath.Join(m.repoRoot, relativePath)
+
+	lineContent := rawLineContent(m.rawLines, absolutePath, lineRow.LineNumber)
+	existingReview := comments.FindReview(m.userComments, absolutePath, lineRow.LineNumber)
+
+	m.editState = editing.Open(absolutePath, lineRow.LineNumber, lineContent, existingReview, m.nav.Cursor)
+
+	ta := textarea.New()
+	ta.SetWidth(60)
+	ta.SetHeight(3)
+	ta.ShowLineNumbers = false
+	ta.Prompt = "  "
+	ta.FocusedStyle.Base = lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color("240")).
+		Padding(0, 1)
+	if existingReview != "" {
+		ta.SetValue(existingReview)
+	}
+	ta.Focus()
+	m.editTextArea = ta
+
+	return m, nil
+}
+
+func applyEditResult(userComments []comments.Comment, result editing.SaveResult) []comments.Comment {
+	if result.IsEmpty {
+		return comments.Delete(userComments, result.FilePath, result.LineNumber)
+	}
+	return comments.Upsert(userComments, comments.Comment{
+		Filepath:    result.FilePath,
+		LineNumber:  result.LineNumber,
+		LineContent: result.LineContent,
+		Review:      result.Text,
+	})
+}
+
+func rawLineContent(rawLines map[string][]string, absolutePath string, lineNumber int) string {
+	lines, ok := rawLines[absolutePath]
+	if !ok {
+		return ""
+	}
+	index := lineNumber - 1
+	if index < 0 || index >= len(lines) {
+		return ""
+	}
+	return lines[index]
 }
 
 func (m *model) rebuildDisplay() {
@@ -103,6 +196,7 @@ func (m *model) rebuildDisplay() {
 	}
 	m.rows = rows
 	m.highlighted = highlighted
+	m.rawLines = rawLines
 	m.fileHeaders, m.filePaths = findFileHeaders(rows)
 	m.nav.RowCount = len(rows)
 	if m.nav.Cursor >= len(rows) {
@@ -113,6 +207,7 @@ func (m *model) rebuildDisplay() {
 	m.userComments = comments.Reattach(m.userComments, rawLines)
 	_ = comments.Save(m.commentsPath, m.userComments)
 	m.commentIndex = buildCommentIndex(m.userComments)
+	m.editState = editing.Inactive()
 }
 
 func waitForChange(channel <-chan struct{}) tea.Cmd {
@@ -178,6 +273,11 @@ func (m model) View() string {
 			builder.WriteString(lineNumber)
 			builder.WriteByte(' ')
 			builder.WriteString(content)
+			builder.WriteByte('\n')
+		}
+
+		if m.editState.Active && i == m.editState.RowIndex {
+			builder.WriteString(m.editTextArea.View())
 			builder.WriteByte('\n')
 		}
 	}
@@ -251,7 +351,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	rows, highlighted, _, err := buildDisplay()
+	rows, highlighted, rawLines, err := buildDisplay()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -288,6 +388,7 @@ func main() {
 		theme:          th,
 		rows:           rows,
 		highlighted:    highlighted,
+		rawLines:       rawLines,
 		watchChannel:   watchChannel,
 		fileHeaders:    fileHeaders,
 		filePaths:      filePaths,
