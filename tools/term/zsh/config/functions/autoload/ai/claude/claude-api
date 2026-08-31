@@ -1,0 +1,44 @@
+# Send a one-shot prompt to the Anthropic Messages API
+# Usage:
+# $ claude-api "What is 2+2?"                        # Default sonnet model
+# $ claude-api --model opus "Explain gravity"         # Specify model alias
+# $ claude-api --max-tokens 1024 "Short answer only"  # Custom token limit
+setopt local_options err_return
+
+# Guard: API key must be set
+if [[ "$OROSHI_ANTHROPIC_API_KEY" == "" ]]; then
+  echoerr "OROSHI_ANTHROPIC_API_KEY is not set"
+  return 1
+fi
+
+local -A modelAliases=(
+  sonnet  claude-sonnet-4-6
+  opus    claude-opus-4-6
+  haiku   claude-haiku-4-5-20251001
+)
+
+zparseopts -E -D \
+  -model:=flagModel \
+  -max-tokens:=flagMaxTokens \
+  -system:=flagSystem
+
+local modelAlias=${flagModel[2]:-sonnet}
+local model=${modelAliases[$modelAlias]:-$modelAlias}
+local maxTokens=${flagMaxTokens[2]:-4096}
+local prompt="$1"
+
+local message=$(jo role=user content="$prompt")
+local body=$(jo \
+    model="$model" \
+    max_tokens="$maxTokens" \
+  messages="$(jo -a "$message")")
+
+local response=$(curl \
+    --silent \
+    --header "x-api-key: $OROSHI_ANTHROPIC_API_KEY" \
+    --header "anthropic-version: 2023-06-01" \
+    --header "content-type: application/json" \
+    --data "$body" \
+  https://api.anthropic.com/v1/messages)
+
+echo "$response" | jq -r '.content[0].text'

@@ -1,4 +1,7 @@
-# First pass: download and process RSS, skip zip so we can fix images
+# Read an RSS and download all podcasts
+# Generate Speech-To-Text titles
+# DO NOT Generate images
+# DO NOT Build final .zip
 # Usage: downloadAndProcessRss <url>
 function downloadAndProcessRss() {
   local url=$1
