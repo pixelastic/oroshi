@@ -12,6 +12,7 @@ function downloadAndProcessRss() {
     --use-open-ai-tts \
     --open-ai-api-key "$OPENAI_API_KEY" \
     --open-ai-voice nova \
+    --lang fr \
     --rss-split-length 9999 \
     --rss-episode-numbers \
     --rss-use-image-as-thumbnail \

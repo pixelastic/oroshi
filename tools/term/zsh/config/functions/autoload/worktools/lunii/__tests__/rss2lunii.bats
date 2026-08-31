@@ -32,6 +32,7 @@ BASH
   local pass1=$(sed -n '1p' "$BATS_TMP_DIR/spg_calls.txt")
   [[ "$pass1" == *"--rss-split-length 9999"* ]]
   [[ "$pass1" == *"--rss-episode-numbers"* ]]
+  [[ "$pass1" == *"--lang fr"* ]]
   [[ "$pass1" == *"--rss-use-image-as-thumbnail"* ]]
   [[ "$pass1" == *"--output-folder ."* ]]
   [[ "$pass1" == *"https://example.com/feed.xml"* ]]
@@ -63,6 +64,20 @@ BASH
 
   local pass1=$(sed -n '1p' "$BATS_TMP_DIR/spg_calls.txt")
   [[ "$pass1" == *"--open-ai-api-key test-key-123"* ]]
+}
+
+@test "passes --lang fr to studio-pack-generator" {
+  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
+  eval "$(_curl_rss_only)"
+  bats_mock studio-pack-generator curl
+  bats_disable_worktree_aware
+
+  export OPENAI_API_KEY=test-key
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
+  [[ "$status" -eq 0 ]]
+
+  local pass1=$(sed -n '1p' "$BATS_TMP_DIR/spg_calls.txt")
+  [[ "$pass1" == *"--lang fr"* ]]
 }
 
 @test "passes --open-ai-voice nova to studio-pack-generator" {
