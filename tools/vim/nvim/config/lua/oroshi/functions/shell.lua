@@ -10,7 +10,11 @@ M.run = function(userCommand, userOptions)
     onError = F.noop,
   }
   local options = F.merge(defaults, userOptions)
-  local command = { F.absolute("bin-zsh"), userCommand, unpack(options.args) }
+  -- Expand $ENV_VAR references in the command string
+  local expandedCommand = userCommand:gsub("%$([%w_]+)", function(var)
+    return os.getenv(var) or ""
+  end)
+  local command = { F.absolute("bin-zsh"), expandedCommand, unpack(options.args) }
 
   vim.system(command, {}, function(result)
     local output = {

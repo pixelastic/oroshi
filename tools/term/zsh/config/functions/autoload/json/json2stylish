@@ -19,7 +19,7 @@ zparseopts -E -D \
 
 local root="${flagRoot[2]}"
 
-local input="$(cat)"
+local input="$(command cat)"
 
 # No violations
 [[ "$input" == "[]" ]] && return 0

@@ -1,0 +1,68 @@
+# Lint XML files for well-formedness via xmllint
+# Default output is stylish format (violations grouped by file)
+# Usage:
+# $ xml-lint ./path/to/file.xml          # Stylish output (default)
+# $ xml-lint --json ./path/to/file.xml   # Unified JSON output
+# $ xml-lint --fix ./path/to/file.xml    # Fix first, then report remaining
+# $ xml-lint ./src/                      # Expand directory to XML files
+# $ xml-lint file1.xml file2.xml         # Multiple files
+setopt local_options err_return
+
+zparseopts -E -D \
+  -fix=flagFix \
+  -json=flagJson
+local isFix=${#flagFix}
+local isJson=${#flagJson}
+
+# No inputs provided
+if [[ $# -eq 0 ]]; then
+  echoerr "Error: No files provided"
+  return 1
+fi
+
+# Expand directories and filter to XML files
+local expanded="$(file-expand --filter is-xml "$@")"
+if [[ "$expanded" == "" ]]; then
+  [[ $isJson == 1 ]] && printf '[]\n'
+  return 0
+fi
+local -a files=("${(@f)expanded}")
+
+# Fix mode: run xml-fix first, then fall through to lint
+if [[ $isFix == 1 ]]; then
+  xml-fix "${files[@]}"
+fi
+
+# Run xmllint on all files, capture stderr
+local lintStderr=""
+lintStderr="$(xmllint --noout "${files[@]}" 2>&1)" || true
+
+# Parse xmllint stderr into unified JSON
+# Lines matching {file}:{line}: {message} are violations
+# Skip context lines (indented or pointer lines)
+local result="$(printf '%s' "$lintStderr" | \grep -E '^.+:[0-9]+: .+$' | jq -R -s '
+  [split("\n")[] | select(length > 0)
+    | capture("^(?<file>.+):(?<line>[0-9]+): (?<rawMsg>.+)$")
+    | {
+        file: .file,
+        code: (if (.rawMsg | test("^[a-zA-Z]+ error"))
+          then (.rawMsg | capture("^(?<c>[a-zA-Z]+ error)") | .c | gsub(" "; "-"))
+          else "parse-error" end),
+        level: "error",
+        line: (.line | tonumber),
+        column: 0,
+        message: (if (.rawMsg | test("^[a-zA-Z]+ error : "))
+          then (.rawMsg | sub("^[a-zA-Z]+ error : "; ""))
+          else .rawMsg end)
+      }]')"
+
+# JSON mode: output raw JSON
+if [[ $isJson == 1 ]]; then
+  printf '%s\n' "$result"
+  [[ "$result" != "[]" ]] && return 1
+  return 0
+fi
+
+# Stylish mode (default): pipe to json2stylish
+local projectRoot="$(git-directory-root 2>/dev/null || pwd)"
+printf '%s' "$result" | json2stylish --root "$projectRoot/"
