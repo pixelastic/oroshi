@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# XML linter (part of libxml2-utils)
+# https://gnome.pages.gitlab.gnome.org/libxml2/xmllint.html
+set -e
+
+sudo apt-get install libxml2-utils

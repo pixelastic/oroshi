@@ -1482,6 +1482,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prettier/plugin-xml@npm:3.4.1":
+  version: 3.4.1
+  resolution: "@prettier/plugin-xml@npm:3.4.1"
+  dependencies:
+    "@xml-tools/parser": "npm:^1.0.11"
+  peerDependencies:
+    prettier: ^3.0.0
+  checksum: 10c0/39bdc3d6e475ed4f804ea4dad8ad66c1e36743935eefde87bf9a68c44434695e74e52c8c6d70239de12dae141153f8979cce0b1c5c8f820693ff1f62bbe66044
+  languageName: node
+  linkType: hard
+
 "@rollup/rollup-android-arm-eabi@npm:4.60.2":
   version: 4.60.2
   resolution: "@rollup/rollup-android-arm-eabi@npm:4.60.2"
@@ -2216,6 +2227,15 @@ __metadata:
     "@vitest/pretty-format": "npm:4.0.18"
     tinyrainbow: "npm:^3.0.3"
   checksum: 10c0/4a3c43c1421eb90f38576926496f6c80056167ba111e63f77cf118983902673737a1a38880b890d7c06ec0a12475024587344ee502b3c43093781533022f2aeb
+  languageName: node
+  linkType: hard
+
+"@xml-tools/parser@npm:^1.0.11":
+  version: 1.0.11
+  resolution: "@xml-tools/parser@npm:1.0.11"
+  dependencies:
+    chevrotain: "npm:7.1.1"
+  checksum: 10c0/5abc75163d6b2ac8e9006a54576523513535953237463297137c5a3665ce1b9d220b77b6dbb68ab93df3fab40bbc98bbb10e90dd690fd7646fdb021323827971
   languageName: node
   linkType: hard
 
@@ -3372,6 +3392,15 @@ __metadata:
   version: 2.1.1
   resolution: "chardet@npm:2.1.1"
   checksum: 10c0/d8391dd412338442b3de0d3a488aa9327f8bcf74b62b8723d6bd0b85c4084d50b731320e0a7c710edb1d44de75969995d2784b80e4c13b004a6c7a0db4c6e793
+  languageName: node
+  linkType: hard
+
+"chevrotain@npm:7.1.1":
+  version: 7.1.1
+  resolution: "chevrotain@npm:7.1.1"
+  dependencies:
+    regexp-to-ast: "npm:0.5.0"
+  checksum: 10c0/3fbbb7a30fb87a4cd141a28bdfa2851f54fde4099aa92071442b47605dfc5974eee0388ec25a517087fcea4dcc1f0ce6b371bc975591346327829aa83b3c843d
   languageName: node
   linkType: hard
 
@@ -9241,6 +9270,7 @@ __metadata:
   resolution: "oroshi@workspace:."
   dependencies:
     "@anthropic-ai/claude-code": "npm:2.1.84"
+    "@prettier/plugin-xml": "npm:3.4.1"
     aberlaas: "npm:2.28.0"
     bats: "npm:1.13.0"
     eslint_d: "npm:14.3.0"
@@ -10018,6 +10048,13 @@ __metadata:
   dependencies:
     regex-utilities: "npm:^2.3.0"
   checksum: 10c0/6e0ee2a1c17d5a66dc1120dfc51899dedf6677857e83a0df4d5a822ebb8645a54a079772efc1ade382b67aad35e4e22b5bd2d33c05ed28b0e000f8f57eb0aec1
+  languageName: node
+  linkType: hard
+
+"regexp-to-ast@npm:0.5.0":
+  version: 0.5.0
+  resolution: "regexp-to-ast@npm:0.5.0"
+  checksum: 10c0/16d3c3905fb24866c3bff689ab177c1e63a7283a3cd1ba95987ef86020526f9827f5c60794197311f0e8a967889131142fe7a2e5ed3523ffe2ac9f55052e1566
   languageName: node
   linkType: hard
 

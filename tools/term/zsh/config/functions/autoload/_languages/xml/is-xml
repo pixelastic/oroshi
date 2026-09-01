@@ -1,0 +1,15 @@
+# Boolean: is the given file an XML file?
+# Usage:
+# $ is-xml /path/to/config.xml    # exit 0 (.xml extension)
+# $ is-xml /path/to/script.js     # exit 1
+setopt local_options err_return
+
+local filepath="$1"
+
+# Directories and missing files are not XML files
+[[ ! -f "$filepath" ]] && return 1
+
+# .xml extension → XML file
+[[ "$filepath" == *.xml ]] && return 0
+
+return 1

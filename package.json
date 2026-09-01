@@ -8,6 +8,7 @@
   "packageManager": "yarn@4.5.0",
   "dependencies": {
     "@anthropic-ai/claude-code": "2.1.84",
+    "@prettier/plugin-xml": "3.4.1",
     "aberlaas": "2.28.0",
     "bats": "1.13.0",
     "eslint_d": "14.3.0",
