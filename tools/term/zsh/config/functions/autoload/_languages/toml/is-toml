@@ -1,0 +1,15 @@
+# Boolean: is the given file a TOML file?
+# Usage:
+# $ is-toml /path/to/config.toml    # exit 0 (.toml extension)
+# $ is-toml /path/to/script.js      # exit 1
+setopt local_options err_return
+
+local filepath="$1"
+
+# Directories and missing files are not TOML files
+[[ ! -f "$filepath" ]] && return 1
+
+# .toml extension → TOML file
+[[ "$filepath" == *.toml ]] && return 0
+
+return 1

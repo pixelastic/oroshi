@@ -1,0 +1,53 @@
+# Fix TOML files via eslint
+# Usage:
+# $ toml-fix ./path/to/file.toml                          # Fix file in place
+# $ toml-fix file1.toml file2.toml                        # Fix multiple files in place
+# $ toml-fix ./src/                                       # Expand directory, fix all TOML files
+# $ toml-fix --stdout ./path/to/file.toml                 # Output fixed code to stdout
+# $ toml-fix --original-path /real/path.toml /tmp/file.toml # Resolve config from real path
+setopt local_options err_return
+
+local scriptDirectory="${functions_source[$0]:A:h}"
+source "$scriptDirectory/../javascript/__lib/eslint-fix.zsh"
+
+zparseopts -E -D \
+  -stdout=flagStdout \
+  -original-path:=flagOriginalPath
+local isStdout=${#flagStdout}
+local originalPath="${flagOriginalPath[2]}"
+
+local hasOriginalPath=0
+[[ "$originalPath" != "" ]] && hasOriginalPath=1
+local isSingleFileOnly=$(( isStdout == 1 || hasOriginalPath == 1 ))
+local hasMultipleInputs=$(( $# != 1 ))
+local isDirectory=0
+[[ -d "$1" ]] && isDirectory=1
+
+# --stdout and --original-path only work with a single file, not directories
+[[ $isSingleFileOnly -eq 1 && $hasMultipleInputs -eq 1 ]] && return 1
+[[ $isSingleFileOnly -eq 1 && $isDirectory -eq 1 ]] && return 1
+
+# Expand directories, resolve file list
+local expanded="$(file-expand --filter is-toml "$@")"
+local -a files=("${(@f)expanded}")
+
+# Stdout mode: swap the file for a temp copy
+local temporaryFile=""
+if [[ $isStdout -eq 1 ]]; then
+  temporaryFile="$(mktemp)"
+  cp "${files[1]}" "$temporaryFile"
+  files=("$temporaryFile")
+fi
+
+# Build --original-path args if set
+local -a originalPathArgs=()
+[[ $hasOriginalPath -eq 1 ]] && originalPathArgs=(--original-path "$originalPath")
+
+# Fix: eslint only (no prettier chain for TOML)
+eslint-fix "${originalPathArgs[@]}" "${files[@]}"
+
+# Stdout mode: output and cleanup
+if [[ "$temporaryFile" != "" ]]; then
+  cat "$temporaryFile"
+  rm -f "$temporaryFile"
+fi
