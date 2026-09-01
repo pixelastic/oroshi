@@ -1,0 +1,47 @@
+# Convert unified lint JSON to stylish terminal output
+# Reads JSON array from stdin, groups violations by file with aligned columns
+# File paths are displayed relative to --root (or as-is if omitted)
+# Usage:
+# $ cat violations.json | json2stylish                    # Paths as-is
+# $ cat violations.json | json2stylish --root /project/   # Relative paths
+# Exit 0 if no violations, exit 1 if violations exist
+# Output:
+#   src/app.go
+#     3:10  error  Missing closing tag  parse-error
+#     7:0   warn   Some other issue     some-code
+#
+#   src/other.go
+#     1:5  error  Bad encoding  encoding
+setopt local_options err_return
+
+zparseopts -E -D \
+  -root:=flagRoot
+
+local root="${flagRoot[2]}"
+
+local input="$(cat)"
+
+# No violations
+[[ "$input" == "[]" ]] && return 0
+
+local stylish="$(printf '%s' "$input" | jq -r --arg root "$root" '
+  group_by(.file)
+  | map(
+      (map("\(.line):\(.column)" | length) | max) as $lcw
+    | (map(.level | length) | max) as $lw
+    | (.[0].file | ltrimstr($root)) + "\n" +
+      (map(
+        "  " +
+        ("\(.line):\(.column)" | . + (" " * ($lcw - length))) +
+        "  " +
+        (.level + (" " * ($lw - (.level | length)))) +
+        "  " +
+        .message +
+        "  " +
+        .code
+      ) | join("\n"))
+    )
+  | join("\n\n")')"
+
+printf '%s\n' "$stylish"
+return 1
