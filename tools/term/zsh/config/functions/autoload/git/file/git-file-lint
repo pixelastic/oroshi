@@ -1,4 +1,4 @@
-# Lint all dirty ZSH, BATS, JS, Python, Go and JSON files in the working tree, grouped by type
+# Lint all dirty ZSH, BATS, JS, Python, Go, JSON and XML files in the working tree, grouped by type
 # Usage:
 # $ git-file-lint
 setopt local_options err_return
@@ -15,6 +15,7 @@ local -A results=(
   js-files ""
   json-files ""
   python-files ""
+  xml-files ""
   zsh-files ""
 )
 for rawLine in ${(f)rawFiles}; do
@@ -53,6 +54,11 @@ for rawLine in ${(f)rawFiles}; do
 
   if is-json "$fullPath"; then
     results[json-files]+="${fullPath} "
+    continue
+  fi
+
+  if is-xml "$fullPath"; then
+    results[xml-files]+="${fullPath} "
     continue
   fi
 done
@@ -111,6 +117,10 @@ fi
 
 if [[ "$results[json-files]" != "" ]]; then
   displayLintText --header "JSON" "$(json-lint --fix ${=results[json-files]})"
+fi
+
+if [[ "$results[xml-files]" != "" ]]; then
+  displayLintText --header "XML" "$(xml-lint --fix ${=results[xml-files]})"
 fi
 
 # Exit non-zero if any group had violations

@@ -11,6 +11,7 @@ local jsonHelper = O_require("oroshi/filetypes/json")
 local luaHelper = O_require("oroshi/filetypes/lua")
 local pythonHelper = O_require("oroshi/filetypes/python")
 local tomlHelper = O_require("oroshi/filetypes/toml")
+local xmlHelper = O_require("oroshi/filetypes/xml")
 local zshHelper = O_require("oroshi/filetypes/zsh")
 
 local config = {
@@ -169,6 +170,12 @@ local config = {
       configureLinter = javascriptHelper.configureLinter,
       configureFormatter = javascriptHelper.configureFormatter,
       formatterTimeout = 10000,
+    },
+    xml = {
+      linters = { "oroshi_xml_lint" },
+      formatters = { "oroshi_xml_fix" },
+      configureLinter = xmlHelper.configureLinter,
+      configureFormatter = xmlHelper.configureFormatter,
     },
     zsh = {
       formatters = { "oroshi_zsh_fix" },

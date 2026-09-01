@@ -20,6 +20,9 @@ export default {
   // JSON files
   '**/*.json': ['yarn precommit:lint json'],
 
+  // XML files
+  '**/*.xml': ['yarn precommit:lint xml'],
+
   // JS Scripts
   '**/*.js': ['yarn run lint:fix --js', 'yarn run test --fail-fast --related'],
   'scripts/yarn/**/*': ['yarn run lint:zsh'],

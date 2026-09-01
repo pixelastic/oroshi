@@ -17,7 +17,7 @@ JSON is a configuration language — no test workflow, no TDD.
 
 **Goal:** Make the requested change.
 
-**Exit criterion:** File is valid JSON with the intended content.
+**Exit criterion:** File has the intended content.
 
 ### Step 2 — Lint
 
