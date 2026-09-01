@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
-# Parse YAML, and TOML with a jq-like syntax
+# Parse YAML, XML and TOML with a jq-like syntax
 # https://github.com/mikefarah/yq
+set -e
 
 # Download the latest release binary
 local version="v4.44.3"

@@ -48,13 +48,13 @@ setup() {
   [[ "$status" -eq 1 ]]
 }
 
-@test "exits 1 for a symlink to a .zsh file" {
+@test "exits 0 for a symlink to a .zsh file" {
   local target="$BATS_TMP_DIR/foo.zsh"
   local link="$BATS_TMP_DIR/foo-link.zsh"
   echo "echo hello" > "$target"
   ln -s "$target" "$link"
   bats_run_zsh "is-zsh $link"
-  [[ "$status" -eq 1 ]]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "exits 0 for a compdef file with #compdef first line" {

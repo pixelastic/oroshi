@@ -46,13 +46,13 @@ setup() {
   [[ "$status" -eq 1 ]]
 }
 
-@test "exits 1 for a symlink to a .js file" {
+@test "exits 0 for a symlink to a .js file" {
   local target="$BATS_TMP_DIR/foo.js"
   local link="$BATS_TMP_DIR/foo-link.js"
   echo "console.log('hi')" > "$target"
   ln -s "$target" "$link"
   bats_run_zsh "is-js $link"
-  [[ "$status" -eq 1 ]]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "exits 1 for a directory path" {

@@ -6,8 +6,7 @@ setopt local_options err_return
 
 local filepath="$1"
 
-# Symlinks and non-regular-files
-[[ -L "$filepath" ]] && return 1
+# Non-regular-files
 [[ ! -f "$filepath" ]] && return 1
 
 # .bats extension
