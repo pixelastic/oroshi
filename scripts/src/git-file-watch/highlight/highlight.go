@@ -7,7 +7,6 @@ import (
 	"github.com/alecthomas/chroma/v2"
 	"github.com/alecthomas/chroma/v2/formatters"
 	"github.com/alecthomas/chroma/v2/lexers"
-	"github.com/alecthomas/chroma/v2/styles"
 )
 
 // StyledLine holds the ANSI-styled content for a single line.
@@ -23,12 +22,19 @@ type cacheEntry struct {
 // Highlighter applies syntax highlighting with caching.
 type Highlighter struct {
 	cache map[string]cacheEntry
+	style *chroma.Style
 }
 
-// New creates a Highlighter.
-func New() *Highlighter {
+// ColorProvider returns a hex color for a named token.
+type ColorProvider interface {
+	Hex(name string) string
+}
+
+// New creates a Highlighter using colors from the given provider.
+func New(colors ColorProvider) *Highlighter {
 	return &Highlighter{
 		cache: make(map[string]cacheEntry),
+		style: buildStyle(colors),
 	}
 }
 
@@ -46,19 +52,18 @@ func (h *Highlighter) Highlight(filepath string, content string) []StyledLine {
 	}
 	lexer = chroma.Coalesce(lexer)
 
-	lines := highlightContent(lexer, content)
+	lines := highlightContent(lexer, h.style, content)
 	h.cache[filepath] = cacheEntry{content: content, lines: lines}
 	return lines
 }
 
-func highlightContent(lexer chroma.Lexer, content string) []StyledLine {
+func highlightContent(lexer chroma.Lexer, style *chroma.Style, content string) []StyledLine {
 	iterator, err := lexer.Tokenise(nil, content)
 	if err != nil {
 		return splitPlain(content)
 	}
 
-	formatter := formatters.Get("terminal256")
-	style := styles.Get("monokai")
+	formatter := formatters.Get("terminal16m")
 
 	var buf bytes.Buffer
 	if err := formatter.Format(&buf, style, iterator); err != nil {
@@ -66,6 +71,44 @@ func highlightContent(lexer chroma.Lexer, content string) []StyledLine {
 	}
 
 	return splitStyled(buf.String())
+}
+
+func buildStyle(colors ColorProvider) *chroma.Style {
+	fg := colors.Hex("gray-3")
+
+	return chroma.MustNewStyle("oroshi", chroma.StyleEntries{
+		chroma.Text:               fg,
+		chroma.Keyword:            colors.Hex("keyword"),
+		chroma.KeywordConstant:    "bold " + colors.Hex("boolean"),
+		chroma.KeywordDeclaration: colors.Hex("keyword"),
+		chroma.KeywordNamespace:   colors.Hex("yellow-3"),
+		chroma.KeywordType:        colors.Hex("variable-type"),
+		chroma.Name:               fg,
+		chroma.NameBuiltin:        colors.Hex("function"),
+		chroma.NameClass:          colors.Hex("variable-type"),
+		chroma.NameFunction:       colors.Hex("function"),
+		chroma.NameDecorator:      colors.Hex("orange"),
+		chroma.NameTag:            colors.Hex("keyword"),
+		chroma.NameAttribute:      colors.Hex("key"),
+		chroma.NameVariable:       colors.Hex("variable"),
+		chroma.NameConstant:       "bold " + colors.Hex("constant"),
+		chroma.NameException:      colors.Hex("red-3"),
+		chroma.NameProperty:       colors.Hex("key"),
+		chroma.LiteralString:      colors.Hex("string"),
+		chroma.LiteralNumber:      colors.Hex("number"),
+		chroma.Comment:            "italic " + colors.Hex("comment"),
+		chroma.CommentPreproc:     colors.Hex("orange"),
+		chroma.Operator:           colors.Hex("punctuation"),
+		chroma.Punctuation:        colors.Hex("punctuation"),
+		chroma.GenericInserted:    colors.Hex("keyword"),
+		chroma.GenericDeleted:     colors.Hex("red-3"),
+	})
+}
+
+const tabWidth = 4
+
+func expandTabs(s string) string {
+	return strings.ReplaceAll(s, "\t", strings.Repeat(" ", tabWidth))
 }
 
 func splitStyled(rendered string) []StyledLine {
@@ -78,7 +121,7 @@ func splitStyled(rendered string) []StyledLine {
 	raw := strings.Split(rendered, "\n")
 	lines := make([]StyledLine, len(raw))
 	for i, line := range raw {
-		lines[i] = StyledLine{Content: line}
+		lines[i] = StyledLine{Content: expandTabs(line)}
 	}
 	return lines
 }
@@ -92,7 +135,7 @@ func splitPlain(content string) []StyledLine {
 	raw := strings.Split(content, "\n")
 	lines := make([]StyledLine, len(raw))
 	for i, line := range raw {
-		lines[i] = StyledLine{Content: line}
+		lines[i] = StyledLine{Content: expandTabs(line)}
 	}
 	return lines
 }

@@ -12,7 +12,8 @@ import (
 
 // Theme holds resolved colors from oroshi theming.
 type Theme struct {
-	colors map[string]int
+	colors    map[string]int
+	hexColors map[string]string
 }
 
 // colorEntry matches the shape of each value in colors.json.
@@ -40,8 +41,10 @@ func Load(oroshiRoot string) (*Theme, error) {
 	}
 
 	colors := make(map[string]int, len(colorEntries))
+	hexColors := make(map[string]string, len(colorEntries))
 	for name, entry := range colorEntries {
 		colors[name] = entry.ANSI
+		hexColors[name] = entry.Hex
 	}
 
 	for _, token := range requiredTokens {
@@ -50,7 +53,7 @@ func Load(oroshiRoot string) (*Theme, error) {
 		}
 	}
 
-	return &Theme{colors: colors}, nil
+	return &Theme{colors: colors, hexColors: hexColors}, nil
 }
 
 // Color returns the ANSI index for a named color.
@@ -60,6 +63,11 @@ func (t *Theme) Color(name string) (int, error) {
 		return 0, fmt.Errorf("unknown color: %s", name)
 	}
 	return ansi, nil
+}
+
+// Hex returns the hex color string for a named color, or "" if not found.
+func (t *Theme) Hex(name string) string {
+	return t.hexColors[name]
 }
 
 // ANSIToLipgloss converts an ANSI 256 index to a lipgloss Color.

@@ -52,6 +52,7 @@ type model struct {
 	editState            editing.State
 	editTextArea         textarea.Model
 	statusMessage        string
+	viewportWidth        int
 }
 
 func (m model) Init() tea.Cmd {
@@ -78,6 +79,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, nil
 	case tea.WindowSizeMsg:
 		m.nav.ViewportHeight = msg.Height
+		m.viewportWidth = msg.Width
 		return m, nil
 	case tea.KeyMsg:
 		if m.editState.Active {
@@ -207,7 +209,7 @@ func rawLineContent(rawLines map[string][]string, absolutePath string, lineNumbe
 }
 
 func (m *model) rebuildDisplay() {
-	rows, highlighted, rawLines, err := buildDisplay()
+	rows, highlighted, rawLines, err := buildDisplay(m.theme)
 	if err != nil {
 		return
 	}
@@ -274,7 +276,7 @@ func currentTabID() (int, error) {
 		return 0, fmt.Errorf("KITTY_WINDOW_ID not set")
 	}
 
-	output, err := runCommand("kitty-window-tab-id", kittyWindowID)
+	output, err := runCommand("bin-zsh", "kitty-window-tab-id", kittyWindowID)
 	if err != nil {
 		return 0, fmt.Errorf("resolving tab ID: %w", err)
 	}
@@ -322,42 +324,42 @@ func (m model) View() string {
 		isCursor := i == m.nav.Cursor
 		rendered++
 
+		var line string
 		switch r := row.(type) {
 		case layout.FileHeaderRow:
 			currentFile = r.Path
 			style := lipgloss.NewStyle().Bold(true)
-			line := style.Render(r.Path)
+			line = style.Render(r.Path)
 			if m.foldState[r.Path] {
 				line += " [folded]"
 			}
 			if isCursor {
-				line = "> " + line
+				line = ">" + line
 			} else {
-				line = "  " + line
+				line = " " + line
 			}
-			builder.WriteString(line)
-			builder.WriteByte('\n')
 		case layout.SeparatorRow:
 			if isCursor {
-				builder.WriteString("> ···\n")
+				line = ">···"
 			} else {
-				builder.WriteString("  ···\n")
+				line = " ···"
 			}
 		case layout.LineRow:
 			lineNumber := renderLineNumber(r, m.theme)
 			content := lineContent(m.highlighted, currentFile, r.LineNumber)
+			cursor := " "
 			if isCursor {
-				builder.WriteString("> ")
-			} else {
-				builder.WriteString("  ")
+				cursor = ">"
 			}
 			absolutePath := filepath.Join(m.repoRoot, currentFile)
-			builder.WriteString(commentIndicator(m.commentIndex, m.theme, absolutePath, r.LineNumber))
-			builder.WriteString(lineNumber)
-			builder.WriteByte(' ')
-			builder.WriteString(content)
-			builder.WriteByte('\n')
+			line = cursor + commentIndicator(m.commentIndex, m.theme, absolutePath, r.LineNumber) + lineNumber + " " + content
 		}
+
+		if m.viewportWidth > 0 {
+			line = lipgloss.NewStyle().MaxWidth(m.viewportWidth).Render(line)
+		}
+		builder.WriteString(line)
+		builder.WriteByte('\n')
 
 		if m.editState.Active && i == m.editState.RowIndex {
 			builder.WriteString(m.editTextArea.View())
@@ -375,7 +377,7 @@ func (m model) View() string {
 }
 
 func renderLineNumber(row layout.LineRow, th *theme.Theme) string {
-	numberString := fmt.Sprintf("%4d", row.LineNumber)
+	numberString := fmt.Sprintf("%3d", row.LineNumber)
 	if row.Marker == nil {
 		return numberString
 	}
@@ -440,7 +442,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	rows, highlighted, rawLines, err := buildDisplay()
+	rows, highlighted, rawLines, err := buildDisplay(th)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -504,7 +506,7 @@ func main() {
 	}
 }
 
-func buildDisplay() ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
+func buildDisplay(th *theme.Theme) ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
 	repoRoot, err := gitRepoRoot()
 	if err != nil {
 		return nil, nil, nil, err
@@ -516,7 +518,7 @@ func buildDisplay() ([]layout.Row, map[string][]highlight.StyledLine, map[string
 	}
 
 	fileDiffs := diff.Parse(raw)
-	highlighter := highlight.New()
+	highlighter := highlight.New(th)
 	highlightedFiles := make(map[string][]highlight.StyledLine)
 	rawLines := make(map[string][]string)
 	var allRows []layout.Row
@@ -565,7 +567,7 @@ func resolveCommentsPath() (string, error) {
 		return "", fmt.Errorf("OROSHI_TMP_FOLDER not set")
 	}
 
-	cmd := exec.Command("context-slug")
+	cmd := exec.Command("bin-zsh", "context-slug")
 	output, err := cmd.Output()
 	if err != nil {
 		return "", fmt.Errorf("resolving context-slug: %w", err)

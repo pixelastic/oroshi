@@ -146,7 +146,7 @@ func isMeaningfulEvent(event fsnotify.Event) bool {
 }
 
 func gitIgnoredDirectories(repoRoot string) (map[string]bool, error) {
-	cmd := exec.Command("git", "ls-files", "--ignored", "--exclude-standard", "--directory")
+	cmd := exec.Command("git", "ls-files", "--ignored", "--exclude-standard", "--others", "--directory")
 	cmd.Dir = repoRoot
 	output, err := cmd.Output()
 	if err != nil {
