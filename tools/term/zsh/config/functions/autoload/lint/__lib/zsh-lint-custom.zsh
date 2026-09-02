@@ -4,9 +4,6 @@
 # Usage (called by the orchestrator):
 # $ zsh-lint-custom file.zsh [file2.zsh ...]
 
-# Guard: skip if already defined (e.g. mocked in tests)
-whence zsh-lint-custom >/dev/null && return 0
-
 # Capture directory at source time ($0 is the file path when sourced, not inside a function)
 _zshLintRulesDir="${0:A:h}/../__rules"
 

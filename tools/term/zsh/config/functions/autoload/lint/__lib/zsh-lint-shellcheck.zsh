@@ -4,9 +4,6 @@
 # Usage (called by the orchestrator):
 # $ zsh-lint-shellcheck file.zsh [file2.zsh ...]
 
-# Guard: skip if already defined (e.g. mocked in tests)
-whence zsh-lint-shellcheck >/dev/null && return 0
-
 function zsh-lint-shellcheck() {
   # Shellcheck rules not relevant in zsh.
   # Each rule has a short reason for exclusion.

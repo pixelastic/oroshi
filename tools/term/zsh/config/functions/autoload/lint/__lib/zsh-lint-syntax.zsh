@@ -5,9 +5,6 @@
 # Usage (called by the orchestrator):
 # $ zsh-lint-syntax file.zsh [file2.zsh ...]
 
-# Guard: skip if already defined (e.g. mocked in tests)
-whence zsh-lint-syntax >/dev/null && return 0
-
 function zsh-lint-syntax() {
   local -a results=()
   local errOutput
