@@ -5,11 +5,14 @@
   "type": "module",
   "description": "This package.json is here to allow me to have pinned node libs",
   "license": "MIT",
-  "packageManager": "yarn@4.5.0",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "packageManager": "yarn@4.18.0",
   "dependencies": {
     "@anthropic-ai/claude-code": "2.1.84",
     "@prettier/plugin-xml": "3.4.1",
-    "aberlaas": "2.38.2",
+    "aberlaas": "2.39.0",
     "bats": "1.13.0",
     "eslint_d": "14.3.0",
     "firost": "5.11.0",
