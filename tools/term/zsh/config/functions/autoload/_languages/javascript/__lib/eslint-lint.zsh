@@ -35,7 +35,9 @@ function eslint-lint() {
       code: .ruleId,
       level: (if .severity == 2 then "error" elif .severity == 1 then "warn" else "info" end),
       line: .line,
+      endLine: (.endLine // .line),
       column: .column,
+      endColumn: (.endColumn // .column),
       message: .message
     }]')"
 

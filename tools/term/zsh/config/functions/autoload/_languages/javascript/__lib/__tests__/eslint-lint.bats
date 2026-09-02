@@ -50,7 +50,7 @@ SCRIPT
 
   mock_eslint <<SCRIPT
 #!/bin/bash
-printf '[{"filePath":"$file","messages":[{"ruleId":"no-unused-vars","severity":2,"message":"x is defined but never used","line":3,"column":5},{"ruleId":"no-console","severity":1,"message":"Unexpected console","line":5,"column":1}],"errorCount":1,"warningCount":1}]\n'
+printf '[{"filePath":"$file","messages":[{"ruleId":"no-unused-vars","severity":2,"message":"x is defined but never used","line":3,"column":5,"endLine":3,"endColumn":6},{"ruleId":"no-console","severity":1,"message":"Unexpected console","line":5,"column":1,"endLine":5,"endColumn":12}],"errorCount":1,"warningCount":1}]\n'
 exit 1
 SCRIPT
 
@@ -63,10 +63,31 @@ SCRIPT
   [[ "$(printf '%s' "$item0" | jq -r '.level')" == "error" ]]
   [[ "$(printf '%s' "$item0" | jq -r '.line')" == "3" ]]
   [[ "$(printf '%s' "$item0" | jq -r '.column')" == "5" ]]
+  [[ "$(printf '%s' "$item0" | jq -r '.endLine')" == "3" ]]
+  [[ "$(printf '%s' "$item0" | jq -r '.endColumn')" == "6" ]]
   [[ "$(printf '%s' "$item0" | jq -r '.message')" == "x is defined but never used" ]]
-  [[ "$(printf '%s' "$item0" | jq 'keys | length')" == "6" ]]
+  [[ "$(printf '%s' "$item0" | jq 'keys | length')" == "8" ]]
   # Severity 1 → warn
   [[ "$(printf '%s' "$output" | jq -r '.[1].level')" == "warn" ]]
+  [[ "$(printf '%s' "$output" | jq -r '.[1].endLine')" == "5" ]]
+  [[ "$(printf '%s' "$output" | jq -r '.[1].endColumn')" == "12" ]]
+}
+
+@test "--json falls back endLine/endColumn to line/column when missing" {
+  local file="$BATS_TMP_DIR/bad.js"
+  printf 'var x = 1;\n' > "$file"
+
+  mock_eslint <<SCRIPT
+#!/bin/bash
+printf '[{"filePath":"$file","messages":[{"ruleId":"no-var","severity":2,"message":"Use const","line":1,"column":1}],"errorCount":1,"warningCount":0}]\n'
+exit 1
+SCRIPT
+
+  bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint --json $file"
+  [[ "$status" -eq 1 ]]
+  local item0="$(printf '%s' "$output" | jq '.[0]')"
+  [[ "$(printf '%s' "$item0" | jq -r '.endLine')" == "1" ]]
+  [[ "$(printf '%s' "$item0" | jq -r '.endColumn')" == "1" ]]
 }
 
 @test "--json outputs [] for a clean file (exit 0)" {

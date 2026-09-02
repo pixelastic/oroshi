@@ -54,27 +54,6 @@ if [[ $isJson == 1 ]]; then
   return 0
 fi
 
-# Stylish mode (default): format as grouped violations
-[[ "$result" == "[]" ]] && return 0
-
-local stylish="$(printf '%s' "$result" | jq -r '
-  group_by(.file)
-  | map(
-      (map("\(.line):\(.column)" | length) | max) as $lcw
-    | (map(.level | length) | max) as $lw
-    | (.[0].file) + "\n" +
-      (map(
-        "  " +
-        ("\(.line):\(.column)" | . + (" " * ($lcw - length))) +
-        "  " +
-        (.level + (" " * ($lw - (.level | length)))) +
-        "  " +
-        .message +
-        "  " +
-        .code
-      ) | join("\n"))
-    )
-  | join("\n\n")')"
-
-printf '%s\n' "$stylish"
-return 1
+# Stylish mode (default): pipe to json2stylish
+local projectRoot="$(git-directory-root 2>/dev/null || pwd)"
+printf '%s' "$result" | json2stylish --root "$projectRoot/"

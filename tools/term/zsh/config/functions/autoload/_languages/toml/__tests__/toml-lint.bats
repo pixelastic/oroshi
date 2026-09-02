@@ -97,6 +97,8 @@ setup() {
   [[ "$(printf '%s' "$item" | jq -r '.level')" == "error" ]]
   [[ "$(printf '%s' "$item" | jq -r '.line')" == "1" ]]
   [[ "$(printf '%s' "$item" | jq -r '.column')" == "8" ]]
+  [[ "$(printf '%s' "$item" | jq -r '.endLine')" == "1" ]]
+  [[ "$(printf '%s' "$item" | jq -r '.endColumn')" == "8" ]]
   [[ "$(printf '%s' "$item" | jq -r '.message')" == "Trailing comma" ]]
 }
 
@@ -137,7 +139,7 @@ setup() {
 
   # toml-lint-fly returns a diagnostic
   toml-lint-fly() {
-    printf '[{"file":"%s","code":"fly-validate","level":"warn","line":2,"column":5,"message":"some warning"}]\n' "$1"
+    printf '[{"file":"%s","code":"fly-validate","level":"warn","line":2,"endLine":2,"column":5,"endColumn":5,"message":"some warning"}]\n' "$1"
   }
   bats_mock toml-lint-fly
 

@@ -28,6 +28,8 @@ setup() {
   [[ "$(printf '%s' "$item" | jq -r '.level')" == "warn" ]]
   [[ "$(printf '%s' "$item" | jq -r '.line')" == "2" ]]
   [[ "$(printf '%s' "$item" | jq -r '.column')" == "5" ]]
+  [[ "$(printf '%s' "$item" | jq -r '.endLine')" == "2" ]]
+  [[ "$(printf '%s' "$item" | jq -r '.endColumn')" == "5" ]]
   [[ "$(printf '%s' "$item" | jq -r '.message')" == *"some warning"* ]]
 }
 
@@ -45,6 +47,8 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$(printf '%s' "$output" | jq -r '.[0].level')" == "error" ]]
   [[ "$(printf '%s' "$output" | jq -r '.[0].line')" == "3" ]]
+  [[ "$(printf '%s' "$output" | jq -r '.[0].endLine')" == "3" ]]
+  [[ "$(printf '%s' "$output" | jq -r '.[0].endColumn')" == "1" ]]
 }
 
 @test "fly.toml with no diagnostics: outputs []" {
@@ -130,4 +134,6 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$(printf '%s' "$output" | jq -r '.[0].line')" == "1" ]]
   [[ "$(printf '%s' "$output" | jq -r '.[0].column')" == "1" ]]
+  [[ "$(printf '%s' "$output" | jq -r '.[0].endLine')" == "1" ]]
+  [[ "$(printf '%s' "$output" | jq -r '.[0].endColumn')" == "1" ]]
 }

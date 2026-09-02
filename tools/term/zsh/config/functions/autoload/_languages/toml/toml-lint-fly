@@ -51,7 +51,9 @@ for filepath in "$@"; do
       code="fly-validate" \
       level="$level" \
       line="$lineNumber" \
+      endLine="$lineNumber" \
       column="$columnNumber" \
+      endColumn="$columnNumber" \
       message="$message")"
     result+="${entry}\n"
   done
