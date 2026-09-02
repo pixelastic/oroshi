@@ -25,8 +25,15 @@ oroshi-reload-fpath $OROSHI_ROOT
 
 # Allow tests to override functions by sourcing $MOCK_OVERRIDE
 function _load_test_mocks() {
-  if [[ "$MOCK_OVERRIDE" != "" ]]; then
-    source "$MOCK_OVERRIDE"
-  fi
+  # No mock file to apply
+  [[ "$MOCK_OVERRIDE" == "" ]] && return
+
+  builtin source "$MOCK_OVERRIDE"
+
+  # Redefine source so any subsequent source call re-applies mocks
+  function source() {
+    builtin source "$@"
+    builtin source "$MOCK_OVERRIDE"
+  }
 }
 _load_test_mocks

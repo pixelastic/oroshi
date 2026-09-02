@@ -58,3 +58,24 @@ mock_command() {
   [[ "$status" -eq 0 ]]
   [[ "${lines[2]}" = "overriden" ]]
 }
+
+@test "source wrapper re-applies mocks after sourcing a file" {
+  # Library that defines the real implementation
+  echo 'function my-func() { echo "real"; }' > "$BATS_TMP_DIR/lib.zsh"
+
+  # Register mock via bats_mock — writes to MOCK_OVERRIDE, same file as MOCK_FILE
+  my-func() { echo "mock"; }
+  bats_mock my-func
+
+  run_bare_zsh "$sourcePrefix && source $BATS_TMP_DIR/lib.zsh && my-func"
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[2]}" = "mock" ]]
+}
+
+@test "production shells are unaffected when MOCK_OVERRIDE is unset" {
+  echo 'function my-func() { echo "real"; }' > "$BATS_TMP_DIR/lib.zsh"
+
+  run_bare_zsh "$sourcePrefix && source $BATS_TMP_DIR/lib.zsh && my-func"
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[2]}" = "real" ]]
+}
