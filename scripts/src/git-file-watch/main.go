@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/charmbracelet/bubbles/textarea"
 	tea "github.com/charmbracelet/bubbletea"
@@ -32,6 +33,9 @@ type CommentsChangedMsg struct{}
 // EditorFinishedMsg is sent when the external editor exits.
 type EditorFinishedMsg struct{ err error }
 
+// FlashExpiredMsg is sent when the flash highlight should be cleared.
+type FlashExpiredMsg struct{}
+
 type model struct {
 	theme                *theme.Theme
 	rows                 []layout.Row
@@ -54,6 +58,8 @@ type model struct {
 	statusMessage        string
 	viewportWidth        int
 	lineNumberWidth      int
+	flashLines           map[string]bool
+	prevSnapshot         *markedLineSnapshot
 }
 
 func (m model) Init() tea.Cmd {
@@ -70,13 +76,16 @@ func (m model) Init() tea.Cmd {
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case DiffChangedMsg:
-		m.rebuildDisplay()
-		return m, waitForDiffChange(m.watchChannel)
+		cmd := m.rebuildDisplay()
+		return m, tea.Batch(waitForDiffChange(m.watchChannel), cmd)
 	case CommentsChangedMsg:
 		m.reloadComments()
 		return m, waitForCommentsChange(m.commentsWatchChannel)
 	case EditorFinishedMsg:
 		m.rebuildDisplay()
+		return m, nil
+	case FlashExpiredMsg:
+		m.flashLines = nil
 		return m, nil
 	case tea.WindowSizeMsg:
 		m.nav.ViewportHeight = msg.Height
@@ -209,11 +218,17 @@ func rawLineContent(rawLines map[string][]string, absolutePath string, lineNumbe
 	return lines[index]
 }
 
-func (m *model) rebuildDisplay() {
+func (m *model) rebuildDisplay() tea.Cmd {
 	rows, highlighted, rawLines, err := buildDisplay(m.theme)
 	if err != nil {
-		return
+		return nil
 	}
+
+	// Detect changed marked lines
+	snap := newSnapshot(rows, rawLines, m.repoRoot)
+	m.flashLines = detectChangedLines(m.prevSnapshot, snap)
+	m.prevSnapshot = &snap
+
 	m.rows = rows
 	m.highlighted = highlighted
 	m.rawLines = rawLines
@@ -229,6 +244,13 @@ func (m *model) rebuildDisplay() {
 	_ = comments.Save(m.commentsPath, m.userComments)
 	m.commentIndex = buildCommentIndex(m.userComments)
 	m.editState = editing.Inactive()
+
+	if len(m.flashLines) > 0 {
+		return tea.Tick(1500*time.Millisecond, func(time.Time) tea.Msg {
+			return FlashExpiredMsg{}
+		})
+	}
+	return nil
 }
 
 func (m model) sendReviewToClaude() (tea.Model, tea.Cmd) {
@@ -342,7 +364,9 @@ func (m model) View() string {
 		case layout.SeparatorRow:
 			builder.WriteByte('\n')
 		case layout.LineRow:
-			lineNumber := renderLineNumber(r, m.theme, m.lineNumberWidth, isCursor)
+			flashKey := fmt.Sprintf("%s:%d", currentFile, r.LineNumber)
+			isFlash := m.flashLines[flashKey]
+			lineNumber := renderLineNumber(r, m.theme, m.lineNumberWidth, isCursor, isFlash)
 			content := dimContent(m.highlighted, m.rawLines, m.repoRoot, currentFile, r, m.theme)
 			absolutePath := filepath.Join(m.repoRoot, currentFile)
 			line := commentIndicator(m.commentIndex, m.theme, absolutePath, r.LineNumber) + lineNumber + " " + content
@@ -352,7 +376,6 @@ func (m model) View() string {
 			}
 
 			if isCursor {
-				// Fill line to full width with cursor background
 				bgStyle := lipgloss.NewStyle().Background(lipgloss.Color(m.theme.Hex("gray-9")))
 				visible := lipgloss.Width(line)
 				pad := m.viewportWidth - visible
@@ -380,8 +403,15 @@ func (m model) View() string {
 	return builder.String()
 }
 
-func renderLineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor bool) string {
+func renderLineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor bool, isFlash bool) string {
 	numberString := fmt.Sprintf("%*d", width, row.LineNumber)
+
+	if isFlash {
+		return lipgloss.NewStyle().
+			Foreground(lipgloss.Color(th.Hex("amber-3"))).
+			Bold(true).
+			Render(numberString)
+	}
 
 	if isCursor {
 		return lipgloss.NewStyle().
@@ -434,6 +464,62 @@ func markerColorName(marker diff.Marker) string {
 	default:
 		return ""
 	}
+}
+
+// markedLineSnapshot holds per-file sets of marked line contents.
+type markedLineSnapshot struct {
+	// keyed: "file:line" → content
+	lines map[string]string
+	// contentSet: "file" → set of content strings
+	contentSet map[string]map[string]bool
+}
+
+func newSnapshot(rows []layout.Row, rawLines map[string][]string, repoRoot string) markedLineSnapshot {
+	s := markedLineSnapshot{
+		lines:      make(map[string]string),
+		contentSet: make(map[string]map[string]bool),
+	}
+	var currentFile string
+	for _, row := range rows {
+		switch r := row.(type) {
+		case layout.FileHeaderRow:
+			currentFile = r.Path
+		case layout.LineRow:
+			if r.Marker == nil {
+				continue
+			}
+			absolutePath := filepath.Join(repoRoot, currentFile)
+			content := rawLineContent(rawLines, absolutePath, r.LineNumber)
+			key := fmt.Sprintf("%s:%d", currentFile, r.LineNumber)
+			s.lines[key] = content
+			if s.contentSet[currentFile] == nil {
+				s.contentSet[currentFile] = make(map[string]bool)
+			}
+			s.contentSet[currentFile][content] = true
+		}
+	}
+	return s
+}
+
+// detectChangedLines returns marked lines whose content is new to their file's diff.
+func detectChangedLines(prev *markedLineSnapshot, current markedLineSnapshot) map[string]bool {
+	if prev == nil {
+		return nil
+	}
+	flash := make(map[string]bool)
+	for key, content := range current.lines {
+		// Extract file from key "file:line"
+		file := key[:strings.LastIndex(key, ":")]
+		prevSet := prev.contentSet[file]
+		if prevSet != nil && prevSet[content] {
+			continue
+		}
+		flash[key] = true
+	}
+	if len(flash) == 0 {
+		return nil
+	}
+	return flash
 }
 
 func lineContent(highlighted map[string][]highlight.StyledLine, path string, lineNumber int) string {
@@ -555,6 +641,7 @@ func main() {
 		foldState:            foldState,
 		visibleIndices:       visibleIndices,
 		lineNumberWidth:      maxLineNumberWidth(rows),
+		prevSnapshot:         func() *markedLineSnapshot { s := newSnapshot(rows, rawLines, repoRoot); return &s }(),
 		repoRoot:             repoRoot,
 		userComments:         userComments,
 		commentsPath:         commentsPath,

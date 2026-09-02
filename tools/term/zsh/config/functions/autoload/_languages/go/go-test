@@ -13,7 +13,7 @@ setopt local_options err_return
 local expanded="$(file-expand --filter is-go --map go-test-path "$@")"
 
 # No testable files found
-[[ "$expanded" == "" ]] && return 1
+[[ "$expanded" == "" ]] && return 0
 
 local -a files=("${(@f)expanded}")
 
