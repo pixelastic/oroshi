@@ -26,6 +26,7 @@ _Avoid_: refresh, repaint
 - [FZF ctrl-r](scripts/bin/fzf/__docs/GLOSSARY-ctrl-r.md) — Eager/Lazy colorization strategies, History diff, Cache, Mutex
 - [Kitty Tab Bar](tools/term/kitty/config/GLOSSARY.md) — Tab Bar, Statusbar, Redraw, Reload, Notify, Markers (Notification, Fullscreen, Status)
 - [npm](tools/term/zsh/config/functions/autoload/npm/__docs/GLOSSARY.md) — Published, Deprecated — registry states and their relationship
+- [Meetup Announce](tools/ai/claude/config/skills/meetup-announce/GLOSSARY.md) — Windows, Messages, Drafts, State — the multi-channel, multi-invocation announcement lifecycle
 - [Prose Linting](tools/prose/GLOSSARY.md) — Error, Warning, Suggestion — severity levels for agent-driven prose correction
 - [rm](tools/term/zsh/config/functions/autoload/misc/rm/__docs/GLOSSARY.md) — Safe deletion, Recoverable — safety vocabulary for CLI and Claude rm/rmdir variants
 - [Language Toolchain](docs/toolchain/README.md) — Per-language scripts, shared dispatchers, NeoVim integration, AI integration
