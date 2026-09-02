@@ -25,6 +25,15 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
+autoload -Uz add-zsh-hook
+
+# Re-enable alias expansion so the next interactive command line is parsed
+# with aliases active
+function oroshi-aliases-precmd() {
+  setopt ALIASES
+}
+add-zsh-hook precmd oroshi-aliases-precmd
+
 # Dependencies {{{
 source ${0:A:h}/exit-code.zsh
 source ${0:A:h}/git.zsh
@@ -149,8 +158,6 @@ RPROMPT='$(oroshi-prompt-right)'
 # precmd {{{
 # Those methods are called right after each command, just before the prompt is
 # displayed. We use them to set some global variables used by the prompt
-autoload -Uz add-zsh-hook
-
 # Keep a reference to the last command exit code as it will probably be
 # overwritten by our other functions
 function oroshi-last-command-exit-store() {
@@ -235,6 +242,15 @@ function oroshi-chpwd() {
   oroshi-reload-fpath "$OROSHI_ROOT"
 }
 add-zsh-hook chpwd oroshi-chpwd
+# }}}
+
+# preexec {{{
+# Disable alias expansion before the command runs so $(cmd) inside functions
+# resolves to the real binary, not the alias
+function oroshi-aliases-preexec() {
+  setopt NO_ALIASES
+}
+add-zsh-hook preexec oroshi-aliases-preexec
 # }}}
 
 # Cursors {{{
