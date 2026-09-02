@@ -4,9 +4,6 @@
 # Usage (called by the orchestrator):
 # $ bats-lint-custom file.bats [file2.bats ...]
 
-# Guard: skip if already defined (e.g. mocked in tests)
-whence bats-lint-custom >/dev/null && return 0
-
 # Capture directory at source time ($0 is the file path when sourced, not inside a function)
 _batsLintRulesDir="${0:A:h}/../__rules"
 

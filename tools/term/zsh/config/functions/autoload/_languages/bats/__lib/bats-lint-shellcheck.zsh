@@ -4,9 +4,6 @@
 # Usage (called by the orchestrator):
 # $ bats-lint-shellcheck file.bats [file2.bats ...]
 
-# Guard: skip if already defined (e.g. mocked in tests)
-whence bats-lint-shellcheck >/dev/null && return 0
-
 function bats-lint-shellcheck() {
   # Shellcheck rules excluded for all BATS files (grow incrementally as false positives are found)
   local -a excludedRules=()
