@@ -1,0 +1,49 @@
+# Read a single Airtable record by ID, with optional field selection
+# Usage:
+# $ airtable-record-read --base appXXX --table Meetups --record recXXX
+# $ airtable-record-read --base appXXX --table Meetups --record recXXX --fields name,date
+setopt local_options err_return
+
+zparseopts -E -D \
+  -base:=flagBase \
+  -table:=flagTable \
+  -record:=flagRecord \
+  -fields:=flagFields
+
+local baseId=${flagBase[2]}
+local table=${flagTable[2]}
+local recordId=${flagRecord[2]}
+local fieldList=${flagFields[2]}
+
+# Token must be set
+if [[ "$AIRTABLE_TOKEN" == "" ]]; then
+  echoerr "AIRTABLE_TOKEN is not set"
+  return 1
+fi
+
+local url="https://api.airtable.com/v0/${baseId}/${table}"
+local query="filterByFormula=RECORD_ID()='${recordId}'"
+
+# Append field selectors from comma-separated list
+if [[ "$fieldList" != "" ]]; then
+  for field in ${(s/,/)fieldList}; do
+    query+="&fields[]=${field}"
+  done
+fi
+
+local response="$(curl \
+  --silent \
+  --fail \
+  --header "Authorization: Bearer ${AIRTABLE_TOKEN}" \
+  "${url}?${query}"
+)"
+
+local fields="$(jq '.records[0].fields' <<< "$response")"
+
+# No record found
+if [[ "$fields" == "null" ]]; then
+  echoerr "Record not found"
+  return 1
+fi
+
+echo "$fields"
