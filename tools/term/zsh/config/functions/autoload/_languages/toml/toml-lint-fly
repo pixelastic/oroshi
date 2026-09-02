@@ -1,0 +1,67 @@
+# Lint fly.toml files via fly config validate, output unified JSON
+# Non-fly.toml files are silently skipped
+# Usage:
+# $ toml-lint-fly fly.toml                    # Unified JSON array
+# $ toml-lint-fly config.toml fly.toml        # Only fly.toml is checked
+# $ toml-lint-fly config.toml other.toml      # [] (no fly.toml)
+setopt local_options err_return extendedglob
+
+local result=""
+
+for filepath in "$@"; do
+  filepath="${filepath:a}"
+
+  # Only process files named fly.toml
+  [[ "${filepath:t}" != "fly.toml" ]] && continue
+
+  # Run fly config validate
+  local flyOutput=""
+  flyOutput="$(fly config validate --config "$filepath" 2>&1)" || {
+    echoerr "Warning: fly config validate failed, skipping fly diagnostics"
+    continue
+  }
+
+  # Parse fly config validate output into unified JSON
+  local cleanOutput="$(printf '%s' "$flyOutput" | text-ansi-remove)"
+  local -a flyLines=("${(@f)cleanOutput}")
+
+  for line in "${flyLines[@]}"; do
+    # Skip non-warning/error lines
+    [[ ! "$line" =~ ^(WARN|WARNING|Error) ]] && continue
+
+    local level="warn"
+    [[ "$line" =~ ^Error ]] && level="error"
+
+    # Strip prefix (WARN, WARNING, Error followed by optional colon and space)
+    local message="${line#*(WARN|WARNING|Error)*( |: )}"
+
+    # Extract row/column if present
+    local lineNumber=1
+    local columnNumber=1
+    if [[ "$message" =~ "row ([0-9]+) column ([0-9]+)" ]]; then
+      lineNumber="${match[1]}"
+      columnNumber="${match[2]}"
+      message="${message//row [0-9]## column [0-9]##/}"
+    fi
+
+    message="$(text-trim "$message")"
+
+    local entry="$(jo \
+      file="$filepath" \
+      code="fly-validate" \
+      level="$level" \
+      line="$lineNumber" \
+      column="$columnNumber" \
+      message="$message")"
+    result+="${entry}\n"
+  done
+done
+
+# No diagnostics found
+if [[ "$result" == "" ]]; then
+  printf '[]\n'
+  return 0
+fi
+
+# Wrap individual JSON objects into array
+printf '%b' "$result" | jq -s '.'

@@ -1,0 +1,80 @@
+# Lint TOML files via eslint, with fly config validate for fly.toml
+# Default output is stylish format (violations grouped by file)
+# Usage:
+# $ toml-lint file.toml              # Stylish output (default)
+# $ toml-lint --json file.toml       # Unified JSON output
+# $ toml-lint --fix file.toml        # Fix then report remaining
+# $ toml-lint src/                   # Expand directory, lint all TOML files
+# $ toml-lint file1.toml file2.toml  # Multiple files
+setopt local_options err_return
+
+local scriptDirectory="${functions_source[$0]:A:h}"
+source "$scriptDirectory/../javascript/__lib/eslint-lint.zsh"
+
+zparseopts -E -D \
+  -fix=flagFix \
+  -json=flagJson
+local isFix=${#flagFix}
+local isJson=${#flagJson}
+
+# No inputs provided
+if [[ $# -eq 0 ]]; then
+  echoerr "Error: No files provided"
+  return 1
+fi
+
+# Expand directories and filter to TOML files
+local expanded="$(file-expand --filter is-toml "$@")"
+# No TOML files found after expansion
+if [[ "$expanded" == "" ]]; then
+  [[ $isJson == 1 ]] && printf '[]\n'
+  return 0
+fi
+local -a files=("${(@f)expanded}")
+
+# Fix mode: fix first, then fall through to lint
+if [[ $isFix == 1 ]]; then
+  toml-fix "${files[@]}"
+fi
+
+# Get eslint results as unified JSON
+local eslintJson="$(eslint-lint --json "${files[@]}" 2>/dev/null)"
+[[ "$eslintJson" == "" ]] && eslintJson="[]"
+
+# Get fly config validate results for any fly.toml files
+local flyJson="$(toml-lint-fly "${files[@]}")"
+
+# Merge eslint + fly results
+local result="$(printf '%s\n%s' "$eslintJson" "$flyJson" | jq -s 'add')"
+
+# JSON mode: output merged JSON
+if [[ $isJson == 1 ]]; then
+  printf '%s\n' "$result"
+  [[ "$result" != "[]" ]] && return 1
+  return 0
+fi
+
+# Stylish mode (default): format as grouped violations
+[[ "$result" == "[]" ]] && return 0
+
+local stylish="$(printf '%s' "$result" | jq -r '
+  group_by(.file)
+  | map(
+      (map("\(.line):\(.column)" | length) | max) as $lcw
+    | (map(.level | length) | max) as $lw
+    | (.[0].file) + "\n" +
+      (map(
+        "  " +
+        ("\(.line):\(.column)" | . + (" " * ($lcw - length))) +
+        "  " +
+        (.level + (" " * ($lw - (.level | length)))) +
+        "  " +
+        .message +
+        "  " +
+        .code
+      ) | join("\n"))
+    )
+  | join("\n\n")')"
+
+printf '%s\n' "$stylish"
+return 1
