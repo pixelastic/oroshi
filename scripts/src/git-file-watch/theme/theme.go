@@ -23,7 +23,7 @@ type colorEntry struct {
 }
 
 // requiredTokens lists all color tokens that must be present.
-var requiredTokens = []string{"git-added", "git-modified", "git-removed", "orange"}
+var requiredTokens = []string{"git-added", "git-modified", "git-removed", "orange", "gray", "gray-7"}
 
 // Load reads colors.json from oroshiRoot and returns a Theme.
 // It validates that all required tokens are present.

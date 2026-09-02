@@ -53,6 +53,7 @@ type model struct {
 	editTextArea         textarea.Model
 	statusMessage        string
 	viewportWidth        int
+	lineNumberWidth      int
 }
 
 func (m model) Init() tea.Cmd {
@@ -222,6 +223,7 @@ func (m *model) rebuildDisplay() {
 		m.nav.Cursor = max(0, len(rows)-1)
 	}
 	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileHeaders, m.filePaths, m.foldState)
+	m.lineNumberWidth = maxLineNumberWidth(rows)
 
 	m.userComments = comments.Reattach(m.userComments, rawLines)
 	_ = comments.Save(m.commentsPath, m.userComments)
@@ -324,46 +326,48 @@ func (m model) View() string {
 		isCursor := i == m.nav.Cursor
 		rendered++
 
-		var line string
 		switch r := row.(type) {
 		case layout.FileHeaderRow:
 			currentFile = r.Path
-			style := lipgloss.NewStyle().Bold(true)
-			line = style.Render(r.Path)
+			headerStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(m.theme.Hex("violet")))
+			label := headerStyle.Render(r.Path)
 			if m.foldState[r.Path] {
-				line += " [folded]"
+				label += " [folded]"
 			}
-			if isCursor {
-				line = ">" + line
-			} else {
-				line = " " + line
-			}
-		case layout.SeparatorRow:
-			if isCursor {
-				line = ">···"
-			} else {
-				line = " ···"
-			}
-		case layout.LineRow:
-			lineNumber := renderLineNumber(r, m.theme)
-			content := lineContent(m.highlighted, currentFile, r.LineNumber)
-			cursor := " "
-			if isCursor {
-				cursor = ">"
-			}
-			absolutePath := filepath.Join(m.repoRoot, currentFile)
-			line = cursor + commentIndicator(m.commentIndex, m.theme, absolutePath, r.LineNumber) + lineNumber + " " + content
-		}
-
-		if m.viewportWidth > 0 {
-			line = lipgloss.NewStyle().MaxWidth(m.viewportWidth).Render(line)
-		}
-		builder.WriteString(line)
-		builder.WriteByte('\n')
-
-		if m.editState.Active && i == m.editState.RowIndex {
-			builder.WriteString(m.editTextArea.View())
 			builder.WriteByte('\n')
+			builder.WriteString(label)
+			builder.WriteByte('\n')
+			builder.WriteByte('\n')
+			rendered += 2
+		case layout.SeparatorRow:
+			builder.WriteByte('\n')
+		case layout.LineRow:
+			lineNumber := renderLineNumber(r, m.theme, m.lineNumberWidth, isCursor)
+			content := dimContent(m.highlighted, m.rawLines, m.repoRoot, currentFile, r, m.theme)
+			absolutePath := filepath.Join(m.repoRoot, currentFile)
+			line := commentIndicator(m.commentIndex, m.theme, absolutePath, r.LineNumber) + lineNumber + " " + content
+
+			if m.viewportWidth > 0 {
+				line = lipgloss.NewStyle().MaxWidth(m.viewportWidth).Render(line)
+			}
+
+			if isCursor {
+				// Fill line to full width with cursor background
+				bgStyle := lipgloss.NewStyle().Background(lipgloss.Color(m.theme.Hex("gray-9")))
+				visible := lipgloss.Width(line)
+				pad := m.viewportWidth - visible
+				if pad > 0 {
+					line += bgStyle.Render(strings.Repeat(" ", pad))
+				}
+			}
+
+			builder.WriteString(line)
+			builder.WriteByte('\n')
+
+			if m.editState.Active && i == m.editState.RowIndex {
+				builder.WriteString(m.editTextArea.View())
+				builder.WriteByte('\n')
+			}
 		}
 	}
 
@@ -376,20 +380,47 @@ func (m model) View() string {
 	return builder.String()
 }
 
-func renderLineNumber(row layout.LineRow, th *theme.Theme) string {
-	numberString := fmt.Sprintf("%3d", row.LineNumber)
-	if row.Marker == nil {
-		return numberString
+func renderLineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor bool) string {
+	numberString := fmt.Sprintf("%*d", width, row.LineNumber)
+
+	if isCursor {
+		return lipgloss.NewStyle().
+			Foreground(lipgloss.Color(th.Hex("yellow"))).
+			Bold(true).
+			Render(numberString)
 	}
 
-	colorName := markerColorName(*row.Marker)
-	ansi, err := th.Color(colorName)
-	if err != nil {
-		return numberString
+	if row.Marker != nil {
+		colorName := markerColorName(*row.Marker)
+		ansi, err := th.Color(colorName)
+		if err == nil {
+			return lipgloss.NewStyle().Foreground(theme.ANSIToLipgloss(ansi)).Render(numberString)
+		}
 	}
 
-	style := lipgloss.NewStyle().Foreground(theme.ANSIToLipgloss(ansi))
-	return style.Render(numberString)
+	// Context lines: use gray
+	ansi, err := th.Color("gray")
+	if err == nil {
+		return lipgloss.NewStyle().Foreground(theme.ANSIToLipgloss(ansi)).Render(numberString)
+	}
+	return numberString
+}
+
+func maxLineNumberWidth(rows []layout.Row) int {
+	maxNum := 0
+	for _, row := range rows {
+		if lr, ok := row.(layout.LineRow); ok && lr.LineNumber > maxNum {
+			maxNum = lr.LineNumber
+		}
+	}
+	if maxNum == 0 {
+		return 1
+	}
+	width := 0
+	for n := maxNum; n > 0; n /= 10 {
+		width++
+	}
+	return width
 }
 
 func markerColorName(marker diff.Marker) string {
@@ -415,6 +446,37 @@ func lineContent(highlighted map[string][]highlight.StyledLine, path string, lin
 		return ""
 	}
 	return lines[index].Content
+}
+
+// dimContent returns syntax-highlighted content for changed lines,
+// and progressively dimmer plain content for context lines.
+func dimContent(highlighted map[string][]highlight.StyledLine, rawLines map[string][]string, repoRoot, currentFile string, row layout.LineRow, th *theme.Theme) string {
+	if row.Distance == 0 {
+		return lineContent(highlighted, currentFile, row.LineNumber)
+	}
+
+	// Context line: use raw content with dim color
+	absolutePath := filepath.Join(repoRoot, currentFile)
+	plain := rawLineContent(rawLines, absolutePath, row.LineNumber)
+	plain = strings.ReplaceAll(plain, "\t", "    ")
+
+	colorName := dimColorForDistance(row.Distance)
+	hex := th.Hex(colorName)
+	if hex == "" {
+		return plain
+	}
+	return lipgloss.NewStyle().Foreground(lipgloss.Color(hex)).Render(plain)
+}
+
+func dimColorForDistance(distance int) string {
+	switch {
+	case distance <= 1:
+		return "gray-4"
+	case distance <= 2:
+		return "gray-5"
+	default:
+		return "gray-6"
+	}
 }
 
 func findFileHeaders(rows []layout.Row) ([]int, []string) {
@@ -492,6 +554,7 @@ func main() {
 		filePaths:            filePaths,
 		foldState:            foldState,
 		visibleIndices:       visibleIndices,
+		lineNumberWidth:      maxLineNumberWidth(rows),
 		repoRoot:             repoRoot,
 		userComments:         userComments,
 		commentsPath:         commentsPath,

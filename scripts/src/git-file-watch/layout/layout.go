@@ -10,10 +10,12 @@ type Row interface {
 }
 
 // LineRow represents a file line with optional change marker.
+// Distance is 0 for changed lines, and increases for context lines further away.
 type LineRow struct {
 	LineNumber int
 	Content    string
 	Marker     *diff.Marker
+	Distance   int
 }
 
 func (LineRow) isRow() {}
@@ -102,10 +104,26 @@ func emitRows(path string, ranges []lineRange, markers map[int]diff.Marker) []Ro
 			if marker, ok := markers[line]; ok {
 				m := marker
 				row.Marker = &m
+			} else {
+				row.Distance = distanceToNearest(line, markers)
 			}
 			rows = append(rows, row)
 		}
 	}
 
 	return rows
+}
+
+func distanceToNearest(line int, markers map[int]diff.Marker) int {
+	best := 999
+	for markedLine := range markers {
+		d := line - markedLine
+		if d < 0 {
+			d = -d
+		}
+		if d < best {
+			best = d
+		}
+	}
+	return best
 }
