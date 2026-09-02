@@ -41,7 +41,7 @@ function fzf-regexp-source-raw() {
 # Transform raw ripgrep output (stdin) into FZF-suitable ▮-delimited lines
 # Globals: SEARCH_DIR
 function fzf-regexp-source-transform() {
-  local rawOutput="$(\cat)"
+  local rawOutput="$(cat)"
   [[ "$rawOutput" == "" ]] && return 0
 
   colors-load-definitions
@@ -110,7 +110,7 @@ function fzf-regexp-options() {
 
 # Shared fzf-postprocess for regexp scripts
 function fzf-regexp-postprocess() {
-  local input="$(\cat)"
+  local input="$(cat)"
   [[ "$input" == "" ]] && return 0
 
   for line in ${(f)input}; do

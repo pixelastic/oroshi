@@ -27,7 +27,6 @@ function oroshi-prompt-asynchronous-populate() {
     prompt-redraw $OROSHI_ZSH_PID
   }
 
-  async &
-  disown
+  async &!
   OROSHI_ASYNCHRONOUS_PID=$!
 }

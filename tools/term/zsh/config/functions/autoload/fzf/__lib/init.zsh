@@ -23,7 +23,7 @@ function fzf-preview() { return 0; }
 
 # Default postprocess — scripts can override by redefining after sourcing
 function fzf-postprocess() {
-  local input="$(\cat)"
+  local input="$(cat)"
   [[ "$input" == "" ]] && return 0
   local line
   for line in ${(f)input}; do

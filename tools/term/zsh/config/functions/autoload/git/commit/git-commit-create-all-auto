@@ -28,7 +28,7 @@ local message="$(git-commit-message "${messageArgs[@]}")"
 # Abort if message generation failed
 [[ "$message" == "" ]] && return 1
 
-echo "$message"
+print -r -- "$message"
 
 # Commit staged files (not git-commit-create-all, files are already staged)
 git-commit-create "${repoArgs[@]}" "$message" "$@"

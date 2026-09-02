@@ -35,7 +35,7 @@ function oroshi-reload-path() {
 
   # Go
   if [[ -d ~/.gvm/gos ]]; then
-    eval "$(\grep 'gvm_go_name=' ~/.gvm/environments/default 2>/dev/null)"
+    eval "$(grep 'gvm_go_name=' ~/.gvm/environments/default 2>/dev/null)"
     local goBinariesPath=~/.gvm/gos/${gvm_go_name}/bin
   fi
 
