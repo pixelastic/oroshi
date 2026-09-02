@@ -39,11 +39,11 @@ setup() {
   [[ "$(jq -r '.messages["early--office-paris--reminder"].state' "$stateFile")" == "pending" ]]
   [[ "$(jq -r '.messages["early--team-devmarketing--initial"].state' "$stateFile")" == "pending" ]]
   [[ "$(jq -r '.messages["early--help-recruiting--initial"].state' "$stateFile")" == "pending" ]]
-  [[ "$(jq -r '.messages["early--help-recruiting--reminder"].state' "$stateFile")" == "pending" ]]
   [[ "$(jq -r '.messages["early--topic-relevant--initial"].state' "$stateFile")" == "pending" ]]
   [[ "$(jq -r '.messages["last--office-paris--reminder"].state' "$stateFile")" == "pending" ]]
   [[ "$(jq -r '.messages["last--office-paris--reminder-today"].state' "$stateFile")" == "pending" ]]
   [[ "$(jq -r '.messages["last--team-devmarketing--reminder"].state' "$stateFile")" == "pending" ]]
+  [[ "$(jq -r '.messages["last--help-recruiting--reminder"].state' "$stateFile")" == "pending" ]]
 }
 
 @test "outputs the draft directory path" {

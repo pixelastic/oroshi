@@ -31,11 +31,11 @@ function resolve-draft-dir() {
     "early--office-paris--reminder"
     "early--team-devmarketing--initial"
     "early--help-recruiting--initial"
-    "early--help-recruiting--reminder"
     "early--topic-relevant--initial"
     "last--office-paris--reminder"
     "last--office-paris--reminder-today"
     "last--team-devmarketing--reminder"
+    "last--help-recruiting--reminder"
   )
 
   local messagesJson="{}"
