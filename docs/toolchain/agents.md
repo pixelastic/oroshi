@@ -67,10 +67,8 @@ All languages:
 
 1. Create `tools/ai/claude/config/skills/{lang}-writer/SKILL.md` with the
    appropriate workflow for the language category
-2. Run `tools/ai/claude/deploy` to symlink the new skill into `~/.claude/skills/`
-3. Reference the skill in `tools/ai/claude/config/CLAUDE.md`'s "use dedicated
-   skill per language" line
-4. Add a `Linting` entry to the `## Commands` section of the root CLAUDE.md
+2. Add a `Linting` entry to the `## Commands` section of the root CLAUDE.md
+3. (Optional) Add a `Testing` entry to the `## Commands` section of the root CLAUDE.md
 
 Programming languages only:
 
