@@ -3,9 +3,6 @@
 # Usage:
 # $ ralph-single <dir>    # Run a single ralph session on the plan dir
 
-# Guard: skip if already defined (e.g. mocked in tests)
-whence ralph-single >/dev/null && return 0
-
 function ralph-single() {
   setopt local_options err_return
   local dir="$1"

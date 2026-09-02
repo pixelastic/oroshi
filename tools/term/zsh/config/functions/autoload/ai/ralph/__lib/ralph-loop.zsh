@@ -3,9 +3,6 @@
 # Usage:
 # $ ralph-loop <dir> <maxLoops>
 
-# Guard: skip if already defined (e.g. mocked in tests)
-whence ralph-loop >/dev/null && return 0
-
 WATCHER_INTERVAL="${RALPH_WATCHER_INTERVAL:-5}"
 # In tests, set RALPH_TTY=/dev/null — /dev/tty requires a real terminal and will fail otherwise
 TTY_INPUT="${RALPH_TTY:-/dev/tty}"
