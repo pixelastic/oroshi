@@ -30,17 +30,16 @@ should enforce (not how to encode it).
 
 **Exit criterion:** Skill file written at the canonical location.
 
-Read `references/skill-template.md`.
 Create or update the skill file at the canonical location: `tools/ai/claude/config/skills/<name>/SKILL.md`.
 
-(Optional): When creating language-specific writer skill (e.g. `rust-writer`),
-ensure all universal rules from `code-writer/references/style.md` are present in
-the language skill's own `references/style.md`.
+Pick the right template for the skill type:
 
----
-
-### Step 2b — Language writer skills
-
+- **Config-language writer** (JSON, XML, YAML, TOML, etc.):
+  Read `references/config-writer.template.md`.
+- **Programming-language writer** (Go, Rust, JS, etc.):
+  Read `references/programming-writer.template.md`.
+- **Any other skill:**
+  Read `references/skill.template.md`.
 
 ---
 
@@ -61,4 +60,4 @@ Let the user commit.
 
 - [ ] User confirmed the skill captures their intent
 - [ ] Skill file at correct location (`tools/ai/claude/config/skills/<name>/SKILL.md`)
-- [ ] Skill structure matches `references/skill-template.md` (Goal + Exit criterion per step, Checklist, Rationalizations)
+- [ ] Skill structure matches the template selected in Step 2

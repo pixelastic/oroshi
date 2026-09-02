@@ -32,7 +32,7 @@ JSON is a configuration language — no test workflow, no TDD.
 
 | Rationalization | Reality |
 |---|---|
-| "The JSON looks fine, no need to lint" | `json-lint --fix` catches formatting and ordering issues you won't spot visually. Always lint. |
+| "The JSON looks fine, no need to lint" | `json-lint --fix` catches formatting issues you won't spot visually. Always lint. |
 | "I'll fix the lint errors later" | Lint after every modification. Later never comes. |
 
 ## Checklist
