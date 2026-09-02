@@ -4,7 +4,7 @@ bats_load_library 'helper'
   bats_run_zsh "
     setopt NO_ALIASES
     add-zsh-hook() { :; }
-    source '$BATS_TEST_DIRNAME/../index.zsh'
+    source '$BATS_TEST_DIRNAME/../hooks/aliases.zsh'
     oroshi-aliases-precmd
     [[ -o ALIASES ]] && echo 'on' || echo 'off'
   "
@@ -16,7 +16,7 @@ bats_load_library 'helper'
   bats_run_zsh "
     setopt ALIASES
     add-zsh-hook() { :; }
-    source '$BATS_TEST_DIRNAME/../index.zsh'
+    source '$BATS_TEST_DIRNAME/../hooks/aliases.zsh'
     oroshi-aliases-preexec
     [[ -o ALIASES ]] && echo 'on' || echo 'off'
   "

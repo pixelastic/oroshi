@@ -25,23 +25,13 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-autoload -Uz add-zsh-hook
-
-# Re-enable alias expansion so the next interactive command line is parsed
-# with aliases active
-function oroshi-aliases-precmd() {
-  setopt ALIASES
-}
-add-zsh-hook precmd oroshi-aliases-precmd
-
-# Dependencies {{{
+# Prompt populate dependencies {{{
 source ${0:A:h}/exit-code.zsh
 source ${0:A:h}/git.zsh
 source ${0:A:h}/node.zsh
 source ${0:A:h}/yarn.zsh
 source ${0:A:h}/path.zsh
 source ${0:A:h}/ruby.zsh
-source ${0:A:h}/slow.zsh
 # }}}
 
 # Overview {{{
@@ -134,6 +124,7 @@ function oroshi-prompt-left() {
   )
   echo $promptLeft
 }
+# shellcheck disable=SC2016
 PROMPT='$(oroshi-prompt-left)'
 
 function oroshi-prompt-right() {
@@ -151,109 +142,24 @@ function oroshi-prompt-right() {
   )
   echo -n $promptRight
 }
+# shellcheck disable=SC2016
 RPROMPT='$(oroshi-prompt-right)'
 
 # }}}
 
-# precmd {{{
-# Those methods are called right after each command, just before the prompt is
-# displayed. We use them to set some global variables used by the prompt
-# Keep a reference to the last command exit code as it will probably be
-# overwritten by our other functions
-function oroshi-last-command-exit-store() {
-  OROSHI_LAST_COMMAND_EXIT="$?"
-}
-add-zsh-hook precmd oroshi-last-command-exit-store
-
-# If current directory no longer exists (if deleted externally), go up to the
-# closest existing parent instead
-function oroshi-pwd-guard() {
-  [[ -d "$PWD" ]] && return
-
-  local parent="$PWD"
-  while [[ "$parent" != "/" ]]; do
-    parent="${parent:h}"
-    # Go to that parent if it exists
-    if [[ -d "$parent" ]]; then
-      cd "$parent"
-      return
-    fi
-  done
-  # Fallback to home if no parent found
-  cd "$HOME"
-}
-add-zsh-hook precmd oroshi-pwd-guard
-
-source ${0:A:h}/oroshi-git-env-store.zsh
-add-zsh-hook precmd oroshi-git-env-store
-
-# Synchronously populate prompt parts that are quick to generate
-function oroshi-prompt-synchronous-populate() {
-  for promptPart in $OROSHI_SYNCHRONOUS_PROMPT_PARTS; do
-    eval "oroshi-prompt-populate:${promptPart}"
-  done
-}
-add-zsh-hook precmd oroshi-prompt-synchronous-populate
-
-# Asynchronously populate prompt parts that are slow to generate
-function oroshi-prompt-asynchronous-populate() {
-  # Don't start another background generation if one is already occuring
-  if [[ "${OROSHI_ASYNCHRONOUS_PID}" != "0" ]]; then
-    return
-  fi
-  # # Kill the previous prompt generation process if it was already running
-  # # This allows keeping only one generation at a time
-  # if [[ "${OROSHI_ASYNCHRONOUS_PID}" != "0" ]]; then
-  #   kill -s HUP $OROSHI_ASYNCHRONOUS_PID >/dev/null 2>&1 || :
-  # fi
-
-  function async() {
-    # Save all new parts in a file
-    for promptPart in $OROSHI_ASYNCHRONOUS_PROMPT_PARTS; do
-      eval "oroshi-prompt-populate:${promptPart}"
-      echo $OROSHI_PROMPT_PARTS[$promptPart] >! ${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart}
-    done
-
-    prompt-redraw $OROSHI_ZSH_PID
-  }
-
-  async &!
-  OROSHI_ASYNCHRONOUS_PID=$!
-}
-add-zsh-hook precmd oroshi-prompt-asynchronous-populate
-# }}}
-
-# chpwd {{{
-# Update OROSHI_ROOT when entering an oroshi worktree
-function oroshi-chpwd() {
-  local isInOroshiWorktree="0"
-  [[ "$PWD" == "$OROSHI_WORKTREES_DIR/oroshi--"* ]] && isInOroshiWorktree="1"
-
-  # Return early if moving from regular dir to regular dir
-  [[ $isInOroshiWorktree == "0" && "$OROSHI_ROOT" == "$HOME/.oroshi" ]] && return 0
-  # Return early if moving inside an oroshi worktree
-  [[ "$PWD" == "$OROSHI_ROOT" || "$PWD" == "$OROSHI_ROOT/"* ]] && return 0
-
-  local newRoot="$HOME/.oroshi"
-  [[ "$isInOroshiWorktree" == "1" ]] && newRoot="$(git-directory-root)"
-
-  export OROSHI_ROOT="$newRoot"
-  oroshi-reload-path "$OROSHI_ROOT"
-  oroshi-reload-fpath "$OROSHI_ROOT"
-}
-add-zsh-hook chpwd oroshi-chpwd
-# }}}
-
-# preexec {{{
-# Disable alias expansion before the command runs so $(cmd) inside functions
-# resolves to the real binary, not the alias
-function oroshi-aliases-preexec() {
-  setopt NO_ALIASES
-}
-add-zsh-hook preexec oroshi-aliases-preexec
+# Hooks {{{
+source ${0:A:h}/hooks/index.zsh
 # }}}
 
 # Cursors {{{
-function _cursor-cmd() { colors-load-definitions; print -n "\e]12;${COLORS[emerald:hex]}\a" }
-function _cursor-ins() { colors-load-definitions; print -n "\e]12;${COLORS[yellow:hex]}\a" }
+function _cursor-cmd() {
+  colors-load-definitions
+  # shellcheck disable=SC1083
+  print -n "\e]12;${COLORS[emerald:hex]}\a"
+}
+function _cursor-ins() {
+  colors-load-definitions
+  # shellcheck disable=SC1083
+  print -n "\e]12;${COLORS[yellow:hex]}\a"
+}
 # }}}

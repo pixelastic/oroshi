@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  sourcePrefix="source '$BATS_TEST_DIRNAME/../oroshi-git-env-store.zsh'"
+  sourcePrefix="source '$BATS_TEST_DIRNAME/../hooks/git-env.zsh'"
 }
 
 @test "GIT_DIRECTORY_IS_WORKTREE is 1 when in a linked worktree" {

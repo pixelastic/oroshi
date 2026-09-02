@@ -2,10 +2,10 @@
 # Plays a sound when a command takes too long to run
 
 # Global state variable
-oroshiSlowCommandStartTime=0
+oroshi_slow_command_start_time=0
 
 # Preexec: Before command is executed
-function oroshiSlowCommandPreexec() {
+function oroshi-slow-command-preexec() {
   # Commands that should not trigger slow command notification
   # These are typically interactive tools or commands that open editors
   local allowList=(
@@ -43,23 +43,22 @@ function oroshiSlowCommandPreexec() {
 
   # Return early if command matches one of the allowed patterns
   if solkan --allow-list "${(j:,:)allowList}" "$expandedCommand" &>/dev/null; then
-    oroshiSlowCommandStartTime=-1
+    oroshi_slow_command_start_time=-1
     return
   fi
 
-  oroshiSlowCommandStartTime=$SECONDS
+  oroshi_slow_command_start_time=$SECONDS
 }
-add-zsh-hook preexec oroshiSlowCommandPreexec
 
 # Precmd: After command is executed
-function oroshiSlowCommandPrecmd() {
+function oroshi-slow-command-precmd() {
   local exitStatus="$?"
-  local startTime=$oroshiSlowCommandStartTime
+  local startTime=$oroshi_slow_command_start_time
   local commandDuration=$((SECONDS - startTime))
   local threshold=300 # in seconds
 
   # Reset start time
-  oroshiSlowCommandStartTime=0
+  oroshi_slow_command_start_time=0
 
   # Stop if allowed command
   [[ $startTime -eq -1 ]] && return
@@ -75,4 +74,3 @@ function oroshiSlowCommandPrecmd() {
   fi
   kitty-notify --sound slow-failure.mp3
 }
-add-zsh-hook precmd oroshiSlowCommandPrecmd

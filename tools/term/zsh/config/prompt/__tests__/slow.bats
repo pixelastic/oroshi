@@ -13,9 +13,9 @@ run_slow_precmd() {
   local duration="${2:-400}"
   bats_run_zsh "
     add-zsh-hook() { :; }
-    source '$BATS_TEST_DIRNAME/../slow.zsh'
-    oroshiSlowCommandStartTime=\$((SECONDS - $duration))
-    (exit $exitCode); oroshiSlowCommandPrecmd
+    source '$BATS_TEST_DIRNAME/../hooks/slow.zsh'
+    oroshi_slow_command_start_time=\$((SECONDS - $duration))
+    (exit $exitCode); oroshi-slow-command-precmd
   "
 }
 
