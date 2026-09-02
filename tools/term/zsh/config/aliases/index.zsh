@@ -7,13 +7,7 @@ for item in "${0:A:h}"/**/*.zsh; do
   source ${item}
 done
 
-# Inside of Claude, we disable some non-default aliases
+# Inside of Claude, disable all alias expansion
 if [[ "$CLAUDECODE" == "1" ]]; then
-  unalias 'cat'
-  unalias 'cp'
-  unalias 'diff'
-  unalias 'find'
-  unalias 'grep'
-  unalias 'ls'
-  unalias 'mv'
+  setopt NO_ALIASES
 fi
