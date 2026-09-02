@@ -1,7 +1,7 @@
 # Compute which messages to write this invocation
 # Usage:
 # $ compute-schedule <eventDate> <today> <stateJsonPath>
-# Outputs JSON array of {id, scheduledFor, scheduledAt, channel}
+# Outputs JSON object: {window, messages: [{id, scheduledFor, channel}]}
 
 # Guard: skip if already defined (e.g. mocked in tests)
 whence compute-schedule >/dev/null && return 0
@@ -28,7 +28,7 @@ function compute-schedule() {
     result="$(__compute_last "$stateJsonPath" "$today" "$dateMinus1" "$eventDate")"
   fi
 
-  echo "$result"
+  jo window="$window" messages="$result"
 }
 
 function __compute_early() {
@@ -95,13 +95,11 @@ function __compute_early() {
       local scheduledAt="$(__random_time 13 47 14 28)"
       result="$(echo "$result" | jq \
         --arg id "$id" \
-        --arg date "$nudgedDayMinus7" \
-        --arg time "$scheduledAt" \
+        --arg scheduled "${nudgedDayMinus7}T${scheduledAt}" \
         --arg channel "#$channel" \
       '. + [{
           "id": $id,
-          "scheduledFor": $date,
-          "scheduledAt": $time,
+          "scheduledFor": $scheduled,
           "channel": $channel
         }]')"
       continue
@@ -111,12 +109,11 @@ function __compute_early() {
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
       --arg id "$id" \
-      --arg time "$scheduledAt" \
+      --arg scheduled "${today}T${scheduledAt}" \
       --arg channel "#$channel" \
     '. + [{
         "id": $id,
-        "scheduledFor": "now",
-        "scheduledAt": $time,
+        "scheduledFor": $scheduled,
         "channel": $channel
       }]')"
   done
@@ -141,11 +138,10 @@ function __compute_last() {
   if [[ "$earlyInitialState" != "posted" ]]; then
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
-      --arg time "$scheduledAt" \
+      --arg scheduled "${today}T${scheduledAt}" \
     '. + [{
         "id": "early--office-paris--initial",
-        "scheduledFor": "now",
-        "scheduledAt": $time,
+        "scheduledFor": $scheduled,
         "channel": "#office-paris"
       }]')"
   fi
@@ -157,12 +153,10 @@ function __compute_last() {
   if [[ "$today" == "$dateMinus1" && "$reminderState" == "pending" ]]; then
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
-      --arg date "$dateMinus1" \
-      --arg time "$scheduledAt" \
+      --arg scheduled "${dateMinus1}T${scheduledAt}" \
     '. + [{
         "id": "last--office-paris--reminder",
-        "scheduledFor": $date,
-        "scheduledAt": $time,
+        "scheduledFor": $scheduled,
         "channel": "#office-paris"
       }]')"
   fi
@@ -177,12 +171,10 @@ function __compute_last() {
   if [[ "$todayState" == "pending" && $isDayMinus1OrDay0 -eq 1 ]]; then
     local scheduledAt="$(__random_time 10 47 11 28)"
     result="$(echo "$result" | jq \
-      --arg date "$eventDate" \
-      --arg time "$scheduledAt" \
+      --arg scheduled "${eventDate}T${scheduledAt}" \
     '. + [{
         "id": "last--office-paris--reminder-today",
-        "scheduledFor": $date,
-        "scheduledAt": $time,
+        "scheduledFor": $scheduled,
         "channel": "#office-paris"
       }]')"
   fi
@@ -194,12 +186,10 @@ function __compute_last() {
   if [[ "$devmarketingState" == "pending" && $isDayMinus1OrDay0 -eq 1 ]]; then
     local scheduledAt="$(__random_time 10 47 11 28)"
     result="$(echo "$result" | jq \
-      --arg date "$eventDate" \
-      --arg time "$scheduledAt" \
+      --arg scheduled "${eventDate}T${scheduledAt}" \
     '. + [{
         "id": "last--team-devmarketing--reminder",
-        "scheduledFor": $date,
-        "scheduledAt": $time,
+        "scheduledFor": $scheduled,
         "channel": "#team-devmarketing"
       }]')"
   fi
@@ -211,12 +201,10 @@ function __compute_last() {
   if [[ "$helpRecruitingState" == "pending" && "$today" == "$dateMinus1" ]]; then
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
-      --arg date "$dateMinus1" \
-      --arg time "$scheduledAt" \
+      --arg scheduled "${dateMinus1}T${scheduledAt}" \
     '. + [{
         "id": "last--help-recruiting--reminder",
-        "scheduledFor": $date,
-        "scheduledAt": $time,
+        "scheduledFor": $scheduled,
         "channel": "#help-recruiting"
       }]')"
   fi

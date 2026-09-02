@@ -23,7 +23,7 @@ setup() {
   download-assets() { return 0; }
 
   compute-schedule() {
-    echo '[{"id":"early--office-paris--initial","scheduledFor":"now","scheduledAt":"10:17","channel":"#office-paris"}]'
+    echo '{"window":"early","messages":[{"id":"early--office-paris--initial","scheduledFor":"2026-09-12T10:17","channel":"#office-paris"}]}'
   }
 
   kitty-window-create() { return 0; }
@@ -33,10 +33,11 @@ setup() {
 
 # -- Happy path --
 
-@test "returns valid JSON with draftDir, meetup, and messages fields" {
+@test "returns valid JSON with draftDir, window, meetup, and messages fields" {
   bats_run_zsh "meetup-announce-start recABC123"
   [[ "$status" -eq 0 ]]
   expect_json '.draftDir' "$DRAFT_DIR"
+  expect_json '.window' 'early'
   expect_json '.meetup.name' 'Paris Meetup'
   expect_json '.messages | length' '1'
 }
@@ -45,7 +46,7 @@ setup() {
   bats_run_zsh "meetup-announce-start recABC123"
   [[ "$status" -eq 0 ]]
   expect_json '.messages[0].id' 'early--office-paris--initial'
-  expect_json '.messages[0].scheduledFor' 'now'
+  expect_json '.messages[0].scheduledFor' '2026-09-12T10:17'
   expect_json '.messages[0].channel' '#office-paris'
 }
 

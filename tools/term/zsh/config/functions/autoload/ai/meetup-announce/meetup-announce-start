@@ -1,7 +1,7 @@
 # Initialize a meetup-announce draft and output JSON with all data the skill needs
 # Usage:
 # $ meetup-announce-start <recordId>
-# {"draftDir":"/tmp/...","meetup":{...},"messages":[...]}
+# {"draftDir":"/tmp/...","window":"early|last","meetup":{...},"messages":[...]}
 setopt local_options err_return
 
 local recordId="$1"
@@ -33,7 +33,9 @@ download-assets "$meetupJson" "$draftDir/assets"
 
 # Compute which messages to write
 local today="$(date +%Y-%m-%d)"
-local messagesJson="$(compute-schedule "$eventDate" "$today" "$draftDir/state.json")"
+local scheduleJson="$(compute-schedule "$eventDate" "$today" "$draftDir/state.json")"
+local window="$(echo "$scheduleJson" | jq -r '.window')"
+local messagesJson="$(echo "$scheduleJson" | jq -c '.messages')"
 
 # Open a Kitty split cd'd to the draft directory
 kitty-window-create --location vsplit --directory "$draftDir"
@@ -41,5 +43,6 @@ kitty-window-create --location vsplit --directory "$draftDir"
 # Output combined JSON for the skill
 jo \
   draftDir="$draftDir" \
+  window="$window" \
   meetup="$meetupJson" \
   messages="$messagesJson"
