@@ -50,7 +50,9 @@ local result="$(printf '%s' "$lintStderr" | \grep -E '^.+:[0-9]+: .+$' | jq -R -
           else "parse-error" end),
         level: "error",
         line: (.line | tonumber),
+        endLine: (.line | tonumber),
         column: 0,
+        endColumn: 0,
         message: (if (.rawMsg | test("^[a-zA-Z]+ error : "))
           then (.rawMsg | sub("^[a-zA-Z]+ error : "; ""))
           else .rawMsg end)

@@ -34,7 +34,9 @@ When there are no violations, output is empty (no output, exit 0).
     "code": "RULE_ID",
     "level": "error",
     "line": 1,
+    "endLine": 1,
     "column": 1,
+    "endColumn": 5,
     "message": "Description of the violation"
   }
 ]
@@ -47,8 +49,10 @@ When there are no violations, output is empty (no output, exit 0).
 | `file` | string | Absolute path to the file containing the violation |
 | `code` | string (optional) | Rule identifier from the underlying linter |
 | `level` | string | Severity: `error`, `warn`, `info`, or `hint` |
-| `line` | number | Line of the violation (1-based) |
-| `column` | number | Column of the violation (1-based) |
+| `line` | number | Start line of the violation (1-based) |
+| `endLine` | number | End line of the violation (1-based). Falls back to `line` when the underlying linter has no range info |
+| `column` | number | Start column of the violation (1-based) |
+| `endColumn` | number | End column of the violation (1-based). Falls back to `column` when the underlying linter has no range info |
 | `message` | string | Human-readable description of the violation |
 
 

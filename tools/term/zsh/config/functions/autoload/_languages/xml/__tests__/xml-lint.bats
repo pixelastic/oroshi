@@ -70,9 +70,11 @@ setup() {
   [[ "$(printf '%s' "$item" | jq -r '.code')" == "parser-error" ]]
   [[ "$(printf '%s' "$item" | jq -r '.level')" == "error" ]]
   [[ "$(printf '%s' "$item" | jq -r '.line')" == "2" ]]
+  [[ "$(printf '%s' "$item" | jq -r '.endLine')" == "2" ]]
   [[ "$(printf '%s' "$item" | jq -r '.column')" == "0" ]]
+  [[ "$(printf '%s' "$item" | jq -r '.endColumn')" == "0" ]]
   [[ "$(printf '%s' "$item" | jq -r '.message')" == "Premature end of data in tag root line 1" ]]
-  [[ "$(printf '%s' "$item" | jq 'keys | length')" == "6" ]]
+  [[ "$(printf '%s' "$item" | jq 'keys | length')" == "8" ]]
 }
 
 # --- Multiple files ---
