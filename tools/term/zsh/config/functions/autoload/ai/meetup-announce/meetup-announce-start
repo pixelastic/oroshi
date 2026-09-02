@@ -1,0 +1,45 @@
+# Initialize a meetup-announce draft and output JSON with all data the skill needs
+# Usage:
+# $ meetup-announce-start <recordId>
+# {"draftDir":"/tmp/...","meetup":{...},"messages":[...]}
+setopt local_options err_return
+
+local recordId="$1"
+
+# Guard: recordId is required
+if [[ "$recordId" == "" ]]; then
+  echoerr "Usage: meetup-announce-start <recordId>"
+  return 1
+fi
+
+# Source internal lib functions
+local libDir="${functions_source[$0]:A:h}/__lib"
+source "$libDir/fetch-meetup.zsh"
+source "$libDir/resolve-draft-dir.zsh"
+source "$libDir/download-assets.zsh"
+source "$libDir/compute-schedule.zsh"
+
+# Fetch meetup data from Airtable
+local meetupJson="$(fetch-meetup "$recordId")"
+[[ "$meetupJson" == "" ]] && return 1
+local meetupName="$(echo "$meetupJson" | jq -r '.name')"
+local eventDate="$(echo "$meetupJson" | jq -r '.date')"
+
+# Create or reuse draft directory
+local draftDir="$(resolve-draft-dir "$recordId" "$meetupName")"
+
+# Download assets to draft directory
+download-assets "$meetupJson" "$draftDir/assets"
+
+# Compute which messages to write
+local today="$(date +%Y-%m-%d)"
+local messagesJson="$(compute-schedule "$eventDate" "$today" "$draftDir/state.json")"
+
+# Open a Kitty split cd'd to the draft directory
+kitty-window-create --location vsplit --directory "$draftDir"
+
+# Output combined JSON for the skill
+jo \
+  draftDir="$draftDir" \
+  meetup="$meetupJson" \
+  messages="$messagesJson"
