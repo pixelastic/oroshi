@@ -9,6 +9,28 @@
     => lua-lint, lua-fix, lua-test
         => Display context-badge pretty in nvim Ctrl-Shift-Y
 
+---
+Graph
+
+aberlaas
+    -> release still need high thinking to make it work
+    -> will allow release aberlaas, so toml-lint will work
+
+
+rss2lunii
+    -> generating svg is buggy need a svg-fix
+    -> svg-toolchain
+        -> I don't want svgo as svg-fix, it will be svg-min
+        -> I need a way to lint/format xml files
+        -> xml-toolchain
+
+git-file-watch
+    -> side project, important so it unlocks upgrade of Claude
+        -> which will unlock fix terminal corruption
+            -> which will unlock ralph auto nightshift
+
+---
+
 - Add a lint rule to use `\{cmd}` instead of `command {cmd}` to bypass aliases
 - Make some slack-* commands to read updated in a specific channel
 - /debug-script skill doesn't work well with nodejs scripts that require a dependency. Need to see if it can use package.json for the deps?
@@ -20,6 +42,14 @@
 - Find tests best practices, review my tests, see what goes wrong, update test
 guidance, fix tests. Notably define when to do several tests, when to do one big
 test. Also when to use real dependencies and when to mock them.
+- vwR should close Claude sessions running in worktree. Currently seem to return
+  early if one ralph is running. Is this good or bad?
+- Ensure all linters use endLine/endColumn in their unified JSON output
+- xml toolchain didn't add the completions
+- Seems like the topbar reload script runs incrementally one more time each time
+  I get out of suspend. Or at least, it fires several times.
+- Add a zsh lint rule that flags short form arguments, with an allowlist of
+authorized short forms
 
 ---
 
