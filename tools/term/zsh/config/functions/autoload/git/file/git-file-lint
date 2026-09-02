@@ -15,6 +15,7 @@ local -A results=(
   js-files ""
   json-files ""
   python-files ""
+  toml-files ""
   xml-files ""
   zsh-files ""
 )
@@ -54,6 +55,11 @@ for rawLine in ${(f)rawFiles}; do
 
   if is-json "$fullPath"; then
     results[json-files]+="${fullPath} "
+    continue
+  fi
+
+  if is-toml "$fullPath"; then
+    results[toml-files]+="${fullPath} "
     continue
   fi
 
@@ -117,6 +123,10 @@ fi
 
 if [[ "$results[json-files]" != "" ]]; then
   displayLintText --header "JSON" "$(json-lint --fix ${=results[json-files]})"
+fi
+
+if [[ "$results[toml-files]" != "" ]]; then
+  displayLintText --header "TOML" "$(toml-lint --fix ${=results[toml-files]})"
 fi
 
 if [[ "$results[xml-files]" != "" ]]; then

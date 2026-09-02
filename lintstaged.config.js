@@ -20,6 +20,9 @@ export default {
   // JSON files
   '**/*.json': ['yarn precommit:lint json'],
 
+  // TOML files
+  '**/*.toml': ['yarn precommit:lint toml'],
+
   // XML files
   '**/*.xml': ['yarn precommit:lint xml'],
 

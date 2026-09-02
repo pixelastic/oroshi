@@ -303,6 +303,7 @@ compdef "_files -g '*.jsonc'" \
 # }}}
 # TOML {{{
 compdef "_files -g '*.toml'" \
+  toml-fix \
   toml-lint \
   toml2json
 # }}}
