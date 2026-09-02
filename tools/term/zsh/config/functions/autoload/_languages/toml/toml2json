@@ -1,0 +1,8 @@
+# Convert a TOML file to JSON
+# Usage:
+# $ toml2json config.toml    # JSON to stdout
+setopt local_options err_return
+
+local input=$1
+
+yq -p toml -o json "$input"
