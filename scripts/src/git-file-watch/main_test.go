@@ -146,13 +146,13 @@ func TestBuildCommentIndexMapsKeyToReviewText(t *testing.T) {
 		{Filepath: "/repo/file.go", LineNumber: 10, Review: "needs refactor"},
 	}
 
-	index := buildCommentIndex(input)
+	index := buildCommentIndex(input, "/repo")
 
-	assert.Equal(t, "needs refactor", index["/repo/file.go:10"])
+	assert.Equal(t, "needs refactor", index["file.go:10"])
 }
 
 func TestBuildCommentIndexReturnsEmptyMapForNoComments(t *testing.T) {
-	index := buildCommentIndex(nil)
+	index := buildCommentIndex(nil, "/repo")
 
 	assert.Empty(t, index)
 }
@@ -163,10 +163,10 @@ func TestBuildCommentIndexHandlesMultipleComments(t *testing.T) {
 		{Filepath: "/repo/b.go", LineNumber: 2, Review: "second"},
 	}
 
-	index := buildCommentIndex(input)
+	index := buildCommentIndex(input, "/repo")
 
-	assert.Equal(t, "first", index["/repo/a.go:1"])
-	assert.Equal(t, "second", index["/repo/b.go:2"])
+	assert.Equal(t, "first", index["a.go:1"])
+	assert.Equal(t, "second", index["b.go:2"])
 }
 
 // --- View: empty state ---
@@ -281,7 +281,7 @@ func TestViewRendersCommentAboveLine(t *testing.T) {
 	}
 	m := testModelWithRoot(th, rows, repoRoot)
 	m.commentIndex = map[string]string{
-		"/repo/file.go:10": "looks wrong",
+		"file.go:10": "looks wrong",
 	}
 
 	output := m.View()
@@ -299,7 +299,7 @@ func TestViewRendersCommentGutterBar(t *testing.T) {
 	}
 	m := testModelWithRoot(th, rows, repoRoot)
 	m.commentIndex = map[string]string{
-		"/repo/file.go:10": "fix this",
+		"file.go:10": "fix this",
 	}
 
 	output := m.View()
@@ -324,7 +324,7 @@ func TestViewRendersCommentBeforeCodeLine(t *testing.T) {
 	}
 	m := testModelWithRoot(th, rows, repoRoot)
 	m.commentIndex = map[string]string{
-		"/repo/file.go:10": "check this",
+		"file.go:10": "check this",
 	}
 
 	output := m.View()

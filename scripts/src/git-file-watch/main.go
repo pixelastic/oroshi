@@ -107,7 +107,7 @@ func (m model) updateEditing(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		result := editing.Save(m.editState, m.editTextArea.Value())
 		m.userComments = applyEditResult(m.userComments, result)
 		_ = comments.Save(m.commentsPath, m.userComments)
-		m.commentIndex = buildCommentIndex(m.userComments)
+		m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
 		m.editState = editing.Inactive()
 		return m, nil
 	case "esc":
@@ -172,7 +172,7 @@ func (m model) openEditing() (tea.Model, tea.Cmd) {
 	}
 	absolutePath := filepath.Join(m.repoRoot, relativePath)
 
-	lineContent := rawLineContent(m.rawLines, absolutePath, lineRow.LineNumber)
+	lineContent := rawLineContent(m.rawLines, relativePath, lineRow.LineNumber)
 	existingReview := comments.FindReview(m.userComments, absolutePath, lineRow.LineNumber)
 
 	m.editState = editing.Open(absolutePath, lineRow.LineNumber, lineContent, existingReview, m.nav.Cursor)
@@ -207,8 +207,8 @@ func applyEditResult(userComments []comments.Comment, result editing.SaveResult)
 	})
 }
 
-func rawLineContent(rawLines map[string][]string, absolutePath string, lineNumber int) string {
-	lines, ok := rawLines[absolutePath]
+func rawLineContent(rawLines map[string][]string, relativePath string, lineNumber int) string {
+	lines, ok := rawLines[relativePath]
 	if !ok {
 		return ""
 	}
@@ -226,7 +226,7 @@ func (m *model) rebuildDisplay() tea.Cmd {
 	}
 
 	// Detect changed marked lines
-	snap := newSnapshot(rows, rawLines, m.repoRoot)
+	snap := newSnapshot(rows, rawLines)
 	m.flashLines = detectChangedLines(m.prevSnapshot, snap)
 	m.prevSnapshot = &snap
 
@@ -241,9 +241,9 @@ func (m *model) rebuildDisplay() tea.Cmd {
 	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileHeaders, m.filePaths, m.foldState)
 	m.lineNumberWidth = maxLineNumberWidth(rows)
 
-	m.userComments = comments.Reattach(m.userComments, rawLines)
+	m.userComments = comments.Reattach(m.userComments, absoluteRawLines(rawLines, m.repoRoot))
 	_ = comments.Save(m.commentsPath, m.userComments)
-	m.commentIndex = buildCommentIndex(m.userComments)
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
 	m.editState = editing.Inactive()
 
 	if len(m.flashLines) > 0 {
@@ -282,7 +282,7 @@ func (m *model) reloadComments() {
 		return
 	}
 	m.userComments = loaded
-	m.commentIndex = buildCommentIndex(m.userComments)
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
 	m.editState = editing.Inactive()
 }
 
@@ -360,8 +360,7 @@ func (m model) renderCommentLine(commentText string) string {
 }
 
 func (m model) renderCodeLine(r layout.LineRow, currentFile string, isCursor bool) string {
-	absolutePath := filepath.Join(m.repoRoot, currentFile)
-	commentKey := fmt.Sprintf("%s:%d", absolutePath, r.LineNumber)
+	commentKey := fmt.Sprintf("%s:%d", currentFile, r.LineNumber)
 	commentText := m.commentIndex[commentKey]
 	hasComment := commentText != ""
 	flashKey := fmt.Sprintf("%s:%d", currentFile, r.LineNumber)
@@ -375,7 +374,7 @@ func (m model) renderCodeLine(r layout.LineRow, currentFile string, isCursor boo
 
 	gutter := renderGutter(r, m.theme, hasComment)
 	lineNumber := renderLineNumber(r, m.theme, m.lineNumberWidth, isCursor, isFlash, hasComment)
-	content := dimContent(m.highlighted, m.rawLines, m.repoRoot, currentFile, r, m.theme)
+	content := dimContent(m.highlighted, m.rawLines, currentFile, r, m.theme)
 	line := gutter + lineNumber + " " + content
 
 	if m.viewportWidth > 0 {
@@ -509,7 +508,7 @@ type markedLineSnapshot struct {
 	contentSet map[string]map[string]bool
 }
 
-func newSnapshot(rows []layout.Row, rawLines map[string][]string, repoRoot string) markedLineSnapshot {
+func newSnapshot(rows []layout.Row, rawLines map[string][]string) markedLineSnapshot {
 	s := markedLineSnapshot{
 		lines:      make(map[string]string),
 		contentSet: make(map[string]map[string]bool),
@@ -523,8 +522,7 @@ func newSnapshot(rows []layout.Row, rawLines map[string][]string, repoRoot strin
 			if r.Marker == nil {
 				continue
 			}
-			absolutePath := filepath.Join(repoRoot, currentFile)
-			content := rawLineContent(rawLines, absolutePath, r.LineNumber)
+			content := rawLineContent(rawLines, currentFile, r.LineNumber)
 			key := fmt.Sprintf("%s:%d", currentFile, r.LineNumber)
 			s.lines[key] = content
 			if s.contentSet[currentFile] == nil {
@@ -571,14 +569,13 @@ func lineContent(highlighted map[string][]highlight.StyledLine, path string, lin
 
 // dimContent returns syntax-highlighted content for changed lines,
 // and progressively dimmer plain content for context lines.
-func dimContent(highlighted map[string][]highlight.StyledLine, rawLines map[string][]string, repoRoot, currentFile string, row layout.LineRow, th *theme.Theme) string {
+func dimContent(highlighted map[string][]highlight.StyledLine, rawLines map[string][]string, currentFile string, row layout.LineRow, th *theme.Theme) string {
 	if row.Distance == 0 {
 		return lineContent(highlighted, currentFile, row.LineNumber)
 	}
 
 	// Context line: use raw content with dim color
-	absolutePath := filepath.Join(repoRoot, currentFile)
-	plain := rawLineContent(rawLines, absolutePath, row.LineNumber)
+	plain := rawLineContent(rawLines, currentFile, row.LineNumber)
 	plain = strings.ReplaceAll(plain, "\t", "    ")
 
 	colorName := dimColorForDistance(row.Distance)
@@ -676,11 +673,11 @@ func main() {
 		foldState:            foldState,
 		visibleIndices:       visibleIndices,
 		lineNumberWidth:      maxLineNumberWidth(rows),
-		prevSnapshot:         func() *markedLineSnapshot { s := newSnapshot(rows, rawLines, repoRoot); return &s }(),
+		prevSnapshot:         func() *markedLineSnapshot { s := newSnapshot(rows, rawLines); return &s }(),
 		repoRoot:             repoRoot,
 		userComments:         userComments,
 		commentsPath:         commentsPath,
-		commentIndex:         buildCommentIndex(userComments),
+		commentIndex:         buildCommentIndex(userComments, repoRoot),
 		nav: navigation.State{
 			RowCount: len(rows),
 		},
@@ -712,7 +709,7 @@ func buildDisplay(repoRoot string, th *theme.Theme) ([]layout.Row, map[string][]
 
 		lines := highlighter.Highlight(fileDiff.Path, string(content))
 		highlightedFiles[fileDiff.Path] = lines
-		rawLines[absolutePath] = strings.Split(string(content), "\n")
+		rawLines[fileDiff.Path] = strings.Split(string(content), "\n")
 
 		markers := diff.Classify(fileDiff.Hunks)
 		rows := layout.Build(fileDiff, markers, len(lines))
@@ -743,10 +740,21 @@ func resolveCommentsPath() (string, error) {
 	return filepath.Join(dir, slug+".json"), nil
 }
 
-func buildCommentIndex(userComments []comments.Comment) map[string]string {
+// absoluteRawLines converts relative-keyed rawLines to absolute-keyed,
+// for use with comments.Reattach which expects absolute paths.
+func absoluteRawLines(rawLines map[string][]string, repoRoot string) map[string][]string {
+	absolute := make(map[string][]string, len(rawLines))
+	for relativePath, lines := range rawLines {
+		absolute[filepath.Join(repoRoot, relativePath)] = lines
+	}
+	return absolute
+}
+
+func buildCommentIndex(userComments []comments.Comment, repoRoot string) map[string]string {
 	index := make(map[string]string, len(userComments))
 	for _, c := range userComments {
-		key := fmt.Sprintf("%s:%d", c.Filepath, c.LineNumber)
+		relativePath := strings.TrimPrefix(c.Filepath, repoRoot+"/")
+		key := fmt.Sprintf("%s:%d", relativePath, c.LineNumber)
 		index[key] = c.Review
 	}
 	return index
