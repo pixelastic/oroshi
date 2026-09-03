@@ -6,7 +6,8 @@ set -e
 # Allowlist (glob patterns)
 local -a allowlist=(
   "/tmp/oroshi/claude/**"
-  "*/plans/**"
+  "*/local/tmp/oroshi/claude/**"
+  "*/local/www/plans/**"
 )
 
 local inputJson="$(cat)"

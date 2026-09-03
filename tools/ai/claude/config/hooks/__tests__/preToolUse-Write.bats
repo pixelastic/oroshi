@@ -12,7 +12,14 @@ setup() {
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
 }
 
-@test "allow Write inside a plans/ directory" {
+@test "allow Write to local/tmp/oroshi/claude/ subpath" {
+  local input='{"tool_name":"Write","tool_input":{"file_path":"/home/tim/local/tmp/oroshi/claude/meetup-announce/recXXX/draft.md"}}'
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+}
+
+@test "allow Write inside local/www/plans/ directory" {
   local input='{"tool_name":"Write","tool_input":{"file_path":"/home/tim/local/www/plans/repo--feat-foo/PRD.md"}}'
   bats_run_zsh "$SCRIPT" <<<"$input"
   [[ "$status" -eq 0 ]]
