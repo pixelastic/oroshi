@@ -62,7 +62,8 @@ func setupTestFiles(t *testing.T) string {
 		"git-removed": {"ansi": 196, "hex": "#ff0000"},
 		"orange": {"ansi": 208, "hex": "#ff8700"},
 		"gray": {"ansi": 245, "hex": "#6b7280"},
-		"gray-7": {"ansi": 236, "hex": "#374151"}
+		"gray-7": {"ansi": 236, "hex": "#374151"},
+		"directory": {"ansi": 35, "hex": "#38a169"}
 	}`
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "colors.json"), []byte(colorsJSON), 0o644))
 	return root
@@ -81,6 +82,7 @@ func setupTestFilesWithoutToken(t *testing.T, missingToken string) string {
 		"orange":       {ANSI: 208, Hex: "#ff8700"},
 		"gray":         {ANSI: 245, Hex: "#6b7280"},
 		"gray-7":       {ANSI: 236, Hex: "#374151"},
+		"directory":    {ANSI: 35, Hex: "#38a169"},
 	}
 	delete(allTokens, missingToken)
 

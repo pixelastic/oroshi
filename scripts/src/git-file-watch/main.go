@@ -337,11 +337,13 @@ func (m model) View() string {
 
 	// Render visible rows within viewport
 	rendered := 0
+	fileCount := 0
 	for _, i := range m.visibleIndices {
 		if i < m.nav.ViewportOffset {
 			// Track current file for rows before viewport
 			if header, ok := m.rows[i].(layout.FileHeaderRow); ok {
 				currentFile = header.Path
+				fileCount++
 			}
 			continue
 		}
@@ -356,16 +358,29 @@ func (m model) View() string {
 		switch r := row.(type) {
 		case layout.FileHeaderRow:
 			currentFile = r.Path
-			headerStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(m.theme.Hex("violet")))
-			label := headerStyle.Render(r.Path)
+			fileCount++
+			if fileCount > 1 {
+				separatorStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(m.theme.Hex("gray-7")))
+				width := m.viewportWidth
+				if width <= 0 {
+					width = 80
+				}
+				builder.WriteString(separatorStyle.Render(strings.Repeat("─", width)))
+				builder.WriteByte('\n')
+				rendered++
+			}
+			if fileCount == 1 {
+				builder.WriteByte('\n')
+				rendered++
+			}
+			dir, file := filepath.Split(r.Path)
+			dirStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(m.theme.Hex("directory")))
+			label := " " + dirStyle.Render(dir) + file
 			if m.foldState[r.Path] {
 				label += " [folded]"
 			}
-			builder.WriteByte('\n')
 			builder.WriteString(label)
 			builder.WriteByte('\n')
-			builder.WriteByte('\n')
-			rendered += 2
 		case layout.SeparatorRow:
 			builder.WriteByte('\n')
 		case layout.LineRow:
