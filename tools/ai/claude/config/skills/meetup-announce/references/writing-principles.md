@@ -34,6 +34,13 @@ like a person wrote it.
 No "X is dead, long live Y." No marketing slogans. Start
 with a factual, direct statement.
 
+## Vary sentence length
+
+Mix short sentences (5–8 words) with medium (12–18) and
+long (20+). Never write 5+ consecutive sentences within
+3 words of each other in length. Monotone rhythm is the
+strongest AI signal.
+
 ## First person, active voice, future tense
 
 Write as Tim, the person hosting. "I could use a hand,"
