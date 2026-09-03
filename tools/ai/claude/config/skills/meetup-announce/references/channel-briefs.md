@@ -30,16 +30,22 @@ Reminder (standalone message, not a thread reply):
 
 ## #team-developer-marketing
 
-**Audience:** Internal DevRel/marketing team.
+**Audience:** Internal DevRel/marketing team (distributed, not
+all in Paris).
 
 **Angle:** Heads-up on what's being organized. Brand visibility,
-coordination, metrics.
+coordination, metrics. Specify "Paris offices" since the team is
+not all local.
 
 **Tone:** Informative, brief. Team context.
 
+**Before drafting:** Ask Tim if he has specific questions for the
+team to include in the message (for example, asking about Algolia's
+positioning in the meetup topic, or tagging a specific colleague).
+
 **Structure:** Single message, no thread.
 
-**Assets:** Teaser video + header image.
+**Assets:** Event poster + teaser video.
 
 ## #help-recruiting
 

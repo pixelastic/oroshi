@@ -4,6 +4,10 @@
 
 Always write in English, regardless of the meetup language.
 
+When the talks are not in English, explicitly describe
+what each talk will cover. The audience cannot read the
+event page to get that information themselves.
+
 ## Hook with the topic, not logistics
 
 The first sentence answers "why should I care," not
@@ -16,6 +20,9 @@ Explain the topic in plain terms. "Getting your brand
 cited by AI instead of ranked by Google" beats "search
 in the age of AI." Avoid vague, high-level descriptions.
 
+Name companies and people when you have the info.
+"Crealo's experience" not "a company's experience."
+
 ## Every sentence has a verb
 
 No noun-phrase-only sentences. "Three short talks covering
@@ -27,11 +34,14 @@ like a person wrote it.
 No "X is dead, long live Y." No marketing slogans. Start
 with a factual, direct statement.
 
-## First person, active voice
+## First person, active voice, future tense
 
 Write as Tim, the person hosting. "I could use a hand,"
 not "help is appreciated." "We're hosting," not "a meetup
 is being organized."
+
+Use future tense for upcoming events: "We'll be hosting"
+not "We're hosting." The event has not happened yet.
 
 ## Factual, no artificial urgency
 
