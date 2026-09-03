@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/charmbracelet/lipgloss"
 )
@@ -14,12 +15,23 @@ import (
 type Theme struct {
 	colors    map[string]int
 	hexColors map[string]string
+	filetypes map[string]filetypeEntry // keyed by extension (e.g. "go") or exact filename (e.g. ".envrc")
 }
 
 // colorEntry matches the shape of each value in colors.json.
 type colorEntry struct {
 	ANSI int    `json:"ansi"`
 	Hex  string `json:"hex"`
+}
+
+// filetypeEntry matches each value in filetypes.json.
+type filetypeEntry struct {
+	Bold    bool `json:"bold"`
+	Color   struct {
+		ANSI int    `json:"ansi"`
+		Hex  string `json:"hex"`
+	} `json:"color"`
+	Pattern string `json:"pattern"`
 }
 
 // requiredTokens lists all color tokens that must be present.
@@ -53,7 +65,18 @@ func Load(oroshiRoot string) (*Theme, error) {
 		}
 	}
 
-	return &Theme{colors: colors, hexColors: hexColors}, nil
+	// Load filetypes
+	filetypesPath := filepath.Join(oroshiRoot, "tools", "term", "zsh", "config", "theming", "dist", "filetypes.json")
+	filetypesRaw, err := os.ReadFile(filetypesPath)
+	if err != nil {
+		return nil, fmt.Errorf("reading filetypes.json: %w", err)
+	}
+	var filetypes map[string]filetypeEntry
+	if err := json.Unmarshal(filetypesRaw, &filetypes); err != nil {
+		return nil, fmt.Errorf("parsing filetypes.json: %w", err)
+	}
+
+	return &Theme{colors: colors, hexColors: hexColors, filetypes: filetypes}, nil
 }
 
 // Color returns the ANSI index for a named color.
@@ -68,6 +91,32 @@ func (t *Theme) Color(name string) (int, error) {
 // Hex returns the hex color string for a named color, or "" if not found.
 func (t *Theme) Hex(name string) string {
 	return t.hexColors[name]
+}
+
+// FilenameColor returns the lipgloss color and bold flag for a filename
+// based on its extension or exact name match in filetypes.json.
+func (t *Theme) FilenameColor(basename string) (lipgloss.Color, bool) {
+	// Try extension match first (e.g. "main.go" → ext "go")
+	ext := strings.TrimPrefix(filepath.Ext(basename), ".")
+	if ext != "" {
+		if entry, ok := t.filetypes[ext]; ok {
+			return resolveFiletypeColor(entry), entry.Bold
+		}
+	}
+	// Try exact filename match by scanning patterns
+	for _, entry := range t.filetypes {
+		if entry.Pattern == basename {
+			return resolveFiletypeColor(entry), entry.Bold
+		}
+	}
+	return lipgloss.Color(""), false
+}
+
+func resolveFiletypeColor(entry filetypeEntry) lipgloss.Color {
+	if entry.Color.Hex != "" {
+		return lipgloss.Color(entry.Color.Hex)
+	}
+	return lipgloss.Color(strconv.Itoa(entry.Color.ANSI))
 }
 
 // Lipgloss resolves a color token to a lipgloss.Color.

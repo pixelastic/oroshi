@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/comments"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
@@ -60,7 +61,7 @@ func TestViewShowsNoChangesWhenEmpty(t *testing.T) {
 
 	output := m.View()
 
-	assert.Contains(t, output, "No changes")
+	assert.Contains(t, output, "    No changes")
 }
 
 // --- View: file header ---
@@ -229,6 +230,153 @@ func TestViewDoesNotRenderReviewWhenNoComment(t *testing.T) {
 	assert.NotContains(t, output, "REVIEW:")
 }
 
+// --- Initial cursor position ---
+
+func TestFirstMarkedRowIndexReturnsFirstModifiedLine(t *testing.T) {
+	marker := diff.MarkerModified
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Distance: 2},
+		layout.LineRow{LineNumber: 2, Marker: &marker},
+		layout.LineRow{LineNumber: 3, Distance: 1},
+	}
+
+	result := firstMarkedRowIndex(rows)
+
+	assert.Equal(t, 2, result)
+}
+
+func TestFirstMarkedRowIndexReturnsZeroWhenNoMarkers(t *testing.T) {
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Distance: 2},
+	}
+
+	result := firstMarkedRowIndex(rows)
+
+	assert.Equal(t, 0, result)
+}
+
+// --- Keybinding: gg (go to top) ---
+
+func TestGGMovesToFirstCodeLine(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+		layout.LineRow{LineNumber: 2, Marker: &marker},
+		layout.LineRow{LineNumber: 3, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 3
+
+	m1, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'g'}})
+	m2, _ := m1.(model).updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'g'}})
+	result := m2.(model)
+
+	// Should land on first LineRow (index 1), not FileHeaderRow (index 0)
+	assert.Equal(t, 1, result.nav.Cursor)
+}
+
+// --- Keybinding: G (go to bottom) ---
+
+func TestShiftGMovesToBottomRow(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+		layout.LineRow{LineNumber: 2, Marker: &marker},
+		layout.LineRow{LineNumber: 3, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 0
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'G'}})
+	resultModel := result.(model)
+
+	assert.Equal(t, 3, resultModel.nav.Cursor)
+}
+
+// --- Cursor skips non-code rows ---
+
+func TestCursorSkipsFileHeaderWhenMovingDown(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "a.go"},          // 0
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
+		layout.FileHeaderRow{Path: "b.go"},          // 2
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 3
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 1
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'j'}})
+	resultModel := result.(model)
+
+	// Should skip the FileHeaderRow at index 2 and land on index 3
+	assert.Equal(t, 3, resultModel.nav.Cursor)
+}
+
+func TestCursorSkipsFileHeaderWhenMovingUp(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "a.go"},          // 0
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
+		layout.FileHeaderRow{Path: "b.go"},          // 2
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 3
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 3
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'k'}})
+	resultModel := result.(model)
+
+	// Should skip the FileHeaderRow at index 2 and land on index 1
+	assert.Equal(t, 1, resultModel.nav.Cursor)
+}
+
+func TestCursorSkipsSeparatorWhenMovingDown(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "a.go"},          // 0
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
+		layout.SeparatorRow{},                       // 2
+		layout.LineRow{LineNumber: 10, Marker: &marker}, // 3
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 1
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'j'}})
+	resultModel := result.(model)
+
+	// Should skip the SeparatorRow at index 2 and land on index 3
+	assert.Equal(t, 3, resultModel.nav.Cursor)
+}
+
+func TestGGLandsOnFirstCodeLine(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},          // 0
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
+		layout.LineRow{LineNumber: 2, Marker: &marker}, // 2
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 2
+
+	m1, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'g'}})
+	m2, _ := m1.(model).updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'g'}})
+	resultModel := m2.(model)
+
+	// Should land on first LineRow (index 1), not the FileHeaderRow (index 0)
+	assert.Equal(t, 1, resultModel.nav.Cursor)
+}
+
 // --- Helpers ---
 
 func loadTestTheme(t *testing.T) *theme.Theme {
@@ -253,6 +401,7 @@ func loadTestTheme(t *testing.T) *theme.Theme {
 	data, err := json.Marshal(colors)
 	require.NoError(t, err)
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "colors.json"), data, 0o644))
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "filetypes.json"), []byte(`{}`), 0o644))
 
 	th, err := theme.Load(root)
 	require.NoError(t, err)
@@ -266,14 +415,16 @@ func testModel(th *theme.Theme, rows []layout.Row) model {
 func testModelWithRoot(th *theme.Theme, rows []layout.Row, repoRoot string) model {
 	fileIndex := findFileHeaders(rows, nil)
 	visibleIndices := navigation.VisibleIndices(len(rows), fileIndex)
+	navIndices := navigableFromVisible(rows, visibleIndices)
 	return model{
-		theme:           th,
-		rows:            rows,
-		highlighted:     map[string][]highlight.StyledLine{},
-		rawLines:        map[string][]string{},
-		repoRoot:        repoRoot,
-		fileIndex:       fileIndex,
-		visibleIndices:  visibleIndices,
+		theme:            th,
+		rows:             rows,
+		highlighted:      map[string][]highlight.StyledLine{},
+		rawLines:         map[string][]string{},
+		repoRoot:         repoRoot,
+		fileIndex:        fileIndex,
+		visibleIndices:   visibleIndices,
+		navigableIndices: navIndices,
 		commentIndex:    map[string]string{},
 		flashLines:      map[string]bool{},
 		lineNumberWidth: render.MaxLineNumberWidth(rows),

@@ -46,9 +46,10 @@ type model struct {
 	rawLines             map[string][]string
 	watchChannel         <-chan struct{}
 	commentsWatchChannel <-chan struct{}
-	nav            navigation.State
-	fileIndex      navigation.FileIndex
-	visibleIndices []int
+	nav              navigation.State
+	fileIndex        navigation.FileIndex
+	visibleIndices   []int
+	navigableIndices []int
 	pendingKey           string
 	repoRoot             string
 	userComments         []comments.Comment
@@ -123,11 +124,19 @@ func (m model) updateEditing(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	m.statusMessage = ""
 	key := msg.String()
+	if m.pendingKey == "g" {
+		m.pendingKey = ""
+		if key == "g" {
+			m.nav = navigation.GoToTop(m.nav, m.navigableIndices, m.visibleIndices)
+		}
+		return m, nil
+	}
 	if m.pendingKey == "z" {
 		m.pendingKey = ""
 		if key == "a" {
 			m.nav, m.fileIndex = navigation.ToggleFold(m.nav, m.fileIndex)
 			m.visibleIndices = navigation.VisibleIndices(len(m.rows), m.fileIndex)
+			m.navigableIndices = navigableFromVisible(m.rows, m.visibleIndices)
 		}
 		return m, nil
 	}
@@ -135,13 +144,13 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "q", "ctrl+c":
 		return m, tea.Quit
 	case "j":
-		m.nav = navigation.MoveDownVisible(m.nav, m.visibleIndices)
+		m.nav = navigation.MoveDownVisible(m.nav, m.navigableIndices, m.visibleIndices)
 	case "k":
-		m.nav = navigation.MoveUpVisible(m.nav, m.visibleIndices)
+		m.nav = navigation.MoveUpVisible(m.nav, m.navigableIndices, m.visibleIndices)
 	case "l":
-		m.nav = navigation.NextFileHeader(m.nav, m.fileIndex, m.visibleIndices)
+		m.nav = navigation.NextFile(m.nav, m.fileIndex, m.navigableIndices, m.visibleIndices)
 	case "h":
-		m.nav = navigation.PrevFileHeader(m.nav, m.fileIndex, m.visibleIndices)
+		m.nav = navigation.PrevFile(m.nav, m.fileIndex, m.navigableIndices, m.visibleIndices)
 	case "i":
 		cmd := editor.NvimCommand(m.rows, m.nav.Cursor, m.repoRoot)
 		if cmd == nil {
@@ -154,6 +163,10 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m.sendReviewToClaude()
 	case "enter":
 		return m.openEditing()
+	case "g":
+		m.pendingKey = "g"
+	case "G":
+		m.nav = navigation.GoToBottom(m.nav, m.navigableIndices, m.visibleIndices)
 	case "z":
 		m.pendingKey = "z"
 	}
@@ -227,6 +240,7 @@ func (m *model) rebuildDisplay() tea.Cmd {
 		m.nav.Cursor = max(0, len(rows)-1)
 	}
 	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileIndex)
+	m.navigableIndices = navigableFromVisible(rows, m.visibleIndices)
 	m.lineNumberWidth = render.MaxLineNumberWidth(rows)
 
 	m.userComments = comments.Reattach(m.userComments, absoluteRawLines(rawLines, m.repoRoot))
@@ -317,7 +331,7 @@ func waitForCommentsChange(channel <-chan struct{}) tea.Cmd {
 
 func (m model) View() string {
 	if len(m.rows) == 0 {
-		return "\n" + lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-5")).Render("No changes") + "\n"
+		return "\n    " + lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-5")).Render("No changes") + "\n"
 	}
 
 	ctx := render.Context{
@@ -367,6 +381,25 @@ func (m model) View() string {
 		fmt.Fprintf(&builder, "\n%s\n", m.statusMessage)
 	}
 	return builder.String()
+}
+
+func navigableFromVisible(rows []layout.Row, visibleIndices []int) []int {
+	nav := make([]int, 0, len(visibleIndices))
+	for _, i := range visibleIndices {
+		if _, ok := rows[i].(layout.LineRow); ok {
+			nav = append(nav, i)
+		}
+	}
+	return nav
+}
+
+func firstMarkedRowIndex(rows []layout.Row) int {
+	for i, row := range rows {
+		if lr, ok := row.(layout.LineRow); ok && lr.Marker != nil {
+			return i
+		}
+	}
+	return 0
 }
 
 func findFileHeaders(rows []layout.Row, foldState map[string]bool) navigation.FileIndex {
@@ -439,6 +472,8 @@ func main() {
 
 	fileIndex := findFileHeaders(rows, nil)
 	visibleIndices := navigation.VisibleIndices(len(rows), fileIndex)
+	navIndices := navigableFromVisible(rows, visibleIndices)
+	initialCursor := firstMarkedRowIndex(rows)
 	p := tea.NewProgram(model{
 		theme:                th,
 		rows:                 rows,
@@ -448,6 +483,7 @@ func main() {
 		commentsWatchChannel: commentsWatchChannel,
 		fileIndex:            fileIndex,
 		visibleIndices:       visibleIndices,
+		navigableIndices:     navIndices,
 		lineNumberWidth:      render.MaxLineNumberWidth(rows),
 		prevSnapshot:         func() *flash.Snapshot { s := flash.NewSnapshot(rows, rawLines); return &s }(),
 		repoRoot:             repoRoot,
@@ -455,6 +491,7 @@ func main() {
 		commentsPath:         commentsPath,
 		commentIndex:         buildCommentIndex(userComments, repoRoot),
 		nav: navigation.State{
+			Cursor:   initialCursor,
 			RowCount: len(rows),
 		},
 	}, tea.WithAltScreen())

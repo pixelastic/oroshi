@@ -45,7 +45,15 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int) string {
 	}
 	dir, file := filepath.Split(row.Path)
 	dirStyle := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss("directory"))
-	label := " " + dirStyle.Render(dir) + file
+	styledFile := file
+	if color, bold := ctx.Theme.FilenameColor(file); color != "" {
+		s := lipgloss.NewStyle().Foreground(color)
+		if bold {
+			s = s.Bold(true)
+		}
+		styledFile = s.Render(file)
+	}
+	label := " " + dirStyle.Render(dir) + styledFile
 	if ctx.FoldState[row.Path] {
 		label += " [folded]"
 	}

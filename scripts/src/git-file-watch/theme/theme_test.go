@@ -71,6 +71,40 @@ func TestLipglossReturnsEmptyForUnknownToken(t *testing.T) {
 	assert.Empty(t, string(result))
 }
 
+// --- FilenameColor ---
+
+func TestFilenameColorReturnsColorForKnownExtension(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	color, bold := loaded.FilenameColor("main.go")
+
+	assert.Equal(t, "#38a169", string(color))
+	assert.True(t, bold)
+}
+
+func TestFilenameColorReturnsColorForExactFilename(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	color, bold := loaded.FilenameColor(".envrc")
+
+	assert.Equal(t, "#8b5cf6", string(color))
+	assert.False(t, bold)
+}
+
+func TestFilenameColorReturnsEmptyForUnknownExtension(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	color, _ := loaded.FilenameColor("file.unknownext")
+
+	assert.Empty(t, string(color))
+}
+
 // --- Helpers ---
 
 func setupTestFiles(t *testing.T) string {
@@ -88,6 +122,13 @@ func setupTestFiles(t *testing.T) string {
 		"directory": {"ansi": 35, "hex": "#38a169"}
 	}`
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "colors.json"), []byte(colorsJSON), 0o644))
+
+	filetypesJSON := `{
+		"go": {"bold": true, "color": {"ansi": 35, "hex": "#38a169", "name": "green"}, "pattern": "*.go"},
+		"_envrc": {"bold": false, "color": {"ansi": 174, "hex": "#8b5cf6", "name": "violet-4"}, "pattern": ".envrc"},
+		"js": {"bold": false, "color": {"ansi": 226, "hex": "#facc15", "name": "yellow"}, "pattern": "*.js"}
+	}`
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "filetypes.json"), []byte(filetypesJSON), 0o644))
 	return root
 }
 
@@ -111,5 +152,6 @@ func setupTestFilesWithoutToken(t *testing.T, missingToken string) string {
 	colorsJSON, err := json.Marshal(allTokens)
 	require.NoError(t, err)
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "colors.json"), colorsJSON, 0o644))
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "filetypes.json"), []byte(`{}`), 0o644))
 	return root
 }

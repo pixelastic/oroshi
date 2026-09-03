@@ -41,25 +41,55 @@ func MoveUp(state State) State {
 	return state
 }
 
-// NextFileHeader jumps the cursor to the next file header after the current position.
-func NextFileHeader(state State, index FileIndex, visibleIndices []int) State {
-	for _, headerIndex := range index.Headers {
+// NextFile jumps the cursor to the first navigable line of the next file.
+func NextFile(state State, index FileIndex, navigableIndices []int, visibleIndices []int) State {
+	for i, headerIndex := range index.Headers {
 		if headerIndex > state.Cursor {
-			state.Cursor = headerIndex
+			nextHeader := -1
+			if i+1 < len(index.Headers) {
+				nextHeader = index.Headers[i+1]
+			}
+			target := firstNavigableBetween(headerIndex, nextHeader, navigableIndices)
+			if target < 0 {
+				continue
+			}
+			state.Cursor = target
 			return clampViewportForIndices(state, visibleIndices)
 		}
 	}
 	return state
 }
 
-// PrevFileHeader jumps the cursor to the header of the file before the current one.
-func PrevFileHeader(state State, index FileIndex, visibleIndices []int) State {
-	currentFileIndex := currentFile(state.Cursor, index.Headers)
-	if currentFileIndex <= 0 {
-		return state
+// PrevFile jumps the cursor to the first navigable line of the previous file.
+func PrevFile(state State, index FileIndex, navigableIndices []int, visibleIndices []int) State {
+	fileIdx := currentFile(state.Cursor, index.Headers)
+	for i := fileIdx - 1; i >= 0; i-- {
+		nextHeader := -1
+		if i+1 < len(index.Headers) {
+			nextHeader = index.Headers[i+1]
+		}
+		target := firstNavigableBetween(index.Headers[i], nextHeader, navigableIndices)
+		if target < 0 {
+			continue
+		}
+		state.Cursor = target
+		return clampViewportForIndices(state, visibleIndices)
 	}
-	state.Cursor = index.Headers[currentFileIndex-1]
-	return clampViewportForIndices(state, visibleIndices)
+	return state
+}
+
+// firstNavigableBetween returns the first navigable index after headerIndex
+// and before endIndex (-1 means no upper bound).
+func firstNavigableBetween(headerIndex int, endIndex int, navigableIndices []int) int {
+	pos := sort.SearchInts(navigableIndices, headerIndex+1)
+	if pos >= len(navigableIndices) {
+		return -1
+	}
+	candidate := navigableIndices[pos]
+	if endIndex >= 0 && candidate >= endIndex {
+		return -1
+	}
+	return candidate
 }
 
 func clampViewportForIndices(state State, visibleIndices []int) State {
@@ -136,34 +166,66 @@ func ToggleFold(state State, index FileIndex) (State, FileIndex) {
 	return state, index
 }
 
-// MoveDownVisible moves the cursor to the next visible row, scrolling if needed.
-func MoveDownVisible(state State, visibleIndices []int) State {
-	if len(visibleIndices) == 0 {
+// MoveDownVisible moves the cursor to the next navigable row, scrolling the viewport using visible indices.
+func MoveDownVisible(state State, navigableIndices []int, visibleIndices []int) State {
+	if len(navigableIndices) == 0 {
 		return state
 	}
 
-	pos := sort.SearchInts(visibleIndices, state.Cursor+1)
-	if pos >= len(visibleIndices) {
+	pos := sort.SearchInts(navigableIndices, state.Cursor+1)
+	if pos >= len(navigableIndices) {
 		return state
 	}
 
-	state.Cursor = visibleIndices[pos]
+	state.Cursor = navigableIndices[pos]
 	return clampViewportVisible(state, visibleIndices)
 }
 
-// MoveUpVisible moves the cursor to the previous visible row, scrolling if needed.
-func MoveUpVisible(state State, visibleIndices []int) State {
-	if len(visibleIndices) == 0 {
+// MoveUpVisible moves the cursor to the previous navigable row, scrolling the viewport using visible indices.
+func MoveUpVisible(state State, navigableIndices []int, visibleIndices []int) State {
+	if len(navigableIndices) == 0 {
 		return state
 	}
 
-	pos := sort.SearchInts(visibleIndices, state.Cursor) - 1
+	pos := sort.SearchInts(navigableIndices, state.Cursor) - 1
 	if pos < 0 {
 		return state
 	}
 
-	state.Cursor = visibleIndices[pos]
+	state.Cursor = navigableIndices[pos]
 	return clampViewportVisible(state, visibleIndices)
+}
+
+// GoToTop moves the cursor to the first navigable row and scrolls viewport to the top.
+func GoToTop(state State, navigableIndices []int, visibleIndices []int) State {
+	if len(navigableIndices) == 0 {
+		return state
+	}
+	state.Cursor = navigableIndices[0]
+	if len(visibleIndices) > 0 {
+		state.ViewportOffset = visibleIndices[0]
+	}
+	return state
+}
+
+// GoToBottom moves the cursor to the last navigable row.
+func GoToBottom(state State, navigableIndices []int, visibleIndices []int) State {
+	if len(navigableIndices) == 0 {
+		return state
+	}
+	state.Cursor = navigableIndices[len(navigableIndices)-1]
+	return clampViewportVisible(state, visibleIndices)
+}
+
+// FirstMarkedRow returns the index of the first row that has a marker.
+// Returns 0 if no marked rows exist.
+func FirstMarkedRow(rowCount int, markedRows map[int]bool) int {
+	for i := 0; i < rowCount; i++ {
+		if markedRows[i] {
+			return i
+		}
+	}
+	return 0
 }
 
 func clampViewportVisible(state State, visibleIndices []int) State {

@@ -13,6 +13,29 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// --- FileHeader ---
+
+func TestFileHeaderContainsBasenameForKnownExtension(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80}
+	row := layout.FileHeaderRow{Path: "src/main.go"}
+
+	result := FileHeader(ctx, row, 1)
+
+	assert.Contains(t, result, "main.go")
+	assert.Contains(t, result, "src/")
+}
+
+func TestFileHeaderContainsBasenameForUnknownExtension(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80}
+	row := layout.FileHeaderRow{Path: "src/file.unknownext"}
+
+	result := FileHeader(ctx, row, 1)
+
+	assert.Contains(t, result, "file.unknownext")
+}
+
 // --- Gutter ---
 
 func TestGutterContainsBarCharacter(t *testing.T) {
@@ -156,6 +179,14 @@ func loadTestTheme(t *testing.T) *theme.Theme {
 	data, err := json.Marshal(colors)
 	require.NoError(t, err)
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "colors.json"), data, 0o644))
+
+	filetypes := map[string]map[string]interface{}{
+		"go": {"bold": true, "color": map[string]interface{}{"ansi": 35, "hex": "#38a169"}, "pattern": "*.go"},
+		"js": {"bold": false, "color": map[string]interface{}{"ansi": 226, "hex": "#facc15"}, "pattern": "*.js"},
+	}
+	ftData, err := json.Marshal(filetypes)
+	require.NoError(t, err)
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "filetypes.json"), ftData, 0o644))
 
 	th, err := theme.Load(root)
 	require.NoError(t, err)
