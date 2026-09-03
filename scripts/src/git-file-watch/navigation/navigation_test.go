@@ -67,6 +67,32 @@ func TestPrevFileLandsOnFirstCodeLineOfPrevFile(t *testing.T) {
 	assert.Equal(t, 1, result.Cursor)
 }
 
+func TestNextFileScrollsViewportToShowFileHeader(t *testing.T) {
+	state := State{Cursor: 1, ViewportOffset: 0, ViewportHeight: 5, RowCount: 20}
+	index := FileIndex{Headers: []int{0, 8, 15}}
+	navigable := []int{1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+
+	result := NextFile(state, index, navigable, visible)
+
+	assert.Equal(t, 9, result.Cursor)
+	// Viewport should start at the file header (8), not the cursor (9)
+	assert.Equal(t, 8, result.ViewportOffset)
+}
+
+func TestPrevFileScrollsViewportToShowFileHeader(t *testing.T) {
+	state := State{Cursor: 16, ViewportOffset: 15, ViewportHeight: 5, RowCount: 20}
+	index := FileIndex{Headers: []int{0, 8, 15}}
+	navigable := []int{1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+
+	result := PrevFile(state, index, navigable, visible)
+
+	// From file c (header 15), should go to file b (header 8, first code line 9)
+	assert.Equal(t, 9, result.Cursor)
+	assert.Equal(t, 8, result.ViewportOffset)
+}
+
 func TestNextFileAtLastFileDoesNotMove(t *testing.T) {
 	state := State{Cursor: 16, ViewportOffset: 10, ViewportHeight: 10, RowCount: 20}
 	index := FileIndex{Headers: []int{0, 8, 15}}

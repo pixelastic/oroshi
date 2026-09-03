@@ -42,6 +42,7 @@ func MoveUp(state State) State {
 }
 
 // NextFile jumps the cursor to the first navigable line of the next file.
+// The viewport scrolls to show the file header at the top.
 func NextFile(state State, index FileIndex, navigableIndices []int, visibleIndices []int) State {
 	for i, headerIndex := range index.Headers {
 		if headerIndex > state.Cursor {
@@ -54,13 +55,15 @@ func NextFile(state State, index FileIndex, navigableIndices []int, visibleIndic
 				continue
 			}
 			state.Cursor = target
-			return clampViewportForIndices(state, visibleIndices)
+			state.ViewportOffset = headerIndex
+			return state
 		}
 	}
 	return state
 }
 
 // PrevFile jumps the cursor to the first navigable line of the previous file.
+// The viewport scrolls to show the file header at the top.
 func PrevFile(state State, index FileIndex, navigableIndices []int, visibleIndices []int) State {
 	fileIdx := currentFile(state.Cursor, index.Headers)
 	for i := fileIdx - 1; i >= 0; i-- {
@@ -73,7 +76,8 @@ func PrevFile(state State, index FileIndex, navigableIndices []int, visibleIndic
 			continue
 		}
 		state.Cursor = target
-		return clampViewportForIndices(state, visibleIndices)
+		state.ViewportOffset = index.Headers[i]
+		return state
 	}
 	return state
 }
@@ -90,13 +94,6 @@ func firstNavigableBetween(headerIndex int, endIndex int, navigableIndices []int
 		return -1
 	}
 	return candidate
-}
-
-func clampViewportForIndices(state State, visibleIndices []int) State {
-	if len(visibleIndices) > 0 {
-		return clampViewportVisible(state, visibleIndices)
-	}
-	return clampViewport(state)
 }
 
 func currentFile(cursor int, fileHeaderIndices []int) int {

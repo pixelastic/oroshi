@@ -136,7 +136,7 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		if key == "a" {
 			m.nav, m.fileIndex = navigation.ToggleFold(m.nav, m.fileIndex)
 			m.visibleIndices = navigation.VisibleIndices(len(m.rows), m.fileIndex)
-			m.navigableIndices = navigableFromVisible(m.rows, m.visibleIndices)
+			m.navigableIndices = navigableFromVisible(m.rows, m.visibleIndices, m.fileIndex.FoldState)
 		}
 		return m, nil
 	}
@@ -240,7 +240,7 @@ func (m *model) rebuildDisplay() tea.Cmd {
 		m.nav.Cursor = max(0, len(rows)-1)
 	}
 	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileIndex)
-	m.navigableIndices = navigableFromVisible(rows, m.visibleIndices)
+	m.navigableIndices = navigableFromVisible(rows, m.visibleIndices, m.fileIndex.FoldState)
 	m.lineNumberWidth = render.MaxLineNumberWidth(rows)
 
 	m.userComments = comments.Reattach(m.userComments, absoluteRawLines(rawLines, m.repoRoot))
@@ -383,11 +383,16 @@ func (m model) View() string {
 	return builder.String()
 }
 
-func navigableFromVisible(rows []layout.Row, visibleIndices []int) []int {
+func navigableFromVisible(rows []layout.Row, visibleIndices []int, foldState map[string]bool) []int {
 	nav := make([]int, 0, len(visibleIndices))
 	for _, i := range visibleIndices {
-		if _, ok := rows[i].(layout.LineRow); ok {
+		switch r := rows[i].(type) {
+		case layout.LineRow:
 			nav = append(nav, i)
+		case layout.FileHeaderRow:
+			if foldState[r.Path] {
+				nav = append(nav, i)
+			}
 		}
 	}
 	return nav
@@ -472,7 +477,7 @@ func main() {
 
 	fileIndex := findFileHeaders(rows, nil)
 	visibleIndices := navigation.VisibleIndices(len(rows), fileIndex)
-	navIndices := navigableFromVisible(rows, visibleIndices)
+	navIndices := navigableFromVisible(rows, visibleIndices, fileIndex.FoldState)
 	initialCursor := firstMarkedRowIndex(rows)
 	p := tea.NewProgram(model{
 		theme:                th,

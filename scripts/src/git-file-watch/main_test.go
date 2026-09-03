@@ -377,6 +377,49 @@ func TestGGLandsOnFirstCodeLine(t *testing.T) {
 	assert.Equal(t, 1, resultModel.nav.Cursor)
 }
 
+// --- Cursor lands on folded file header ---
+
+func TestCursorCanLandOnFoldedFileHeader(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "a.go"},             // 0
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
+		layout.FileHeaderRow{Path: "b.go"},             // 2 (folded)
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 3 (hidden by fold)
+	}
+	m := testModel(th, rows)
+	m.fileIndex.FoldState["b.go"] = true
+	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileIndex)
+	m.navigableIndices = navigableFromVisible(rows, m.visibleIndices, m.fileIndex.FoldState)
+	m.nav.Cursor = 1
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'j'}})
+	resultModel := result.(model)
+
+	// Should land on the folded file header at index 2
+	assert.Equal(t, 2, resultModel.nav.Cursor)
+}
+
+func TestCursorSkipsUnfoldedFileHeader(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "a.go"},             // 0
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
+		layout.FileHeaderRow{Path: "b.go"},             // 2 (not folded)
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 3
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 1
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'j'}})
+	resultModel := result.(model)
+
+	// Should skip header at 2 and land on code line at 3
+	assert.Equal(t, 3, resultModel.nav.Cursor)
+}
+
 // --- Helpers ---
 
 func loadTestTheme(t *testing.T) *theme.Theme {
@@ -415,7 +458,7 @@ func testModel(th *theme.Theme, rows []layout.Row) model {
 func testModelWithRoot(th *theme.Theme, rows []layout.Row, repoRoot string) model {
 	fileIndex := findFileHeaders(rows, nil)
 	visibleIndices := navigation.VisibleIndices(len(rows), fileIndex)
-	navIndices := navigableFromVisible(rows, visibleIndices)
+	navIndices := navigableFromVisible(rows, visibleIndices, fileIndex.FoldState)
 	return model{
 		theme:            th,
 		rows:             rows,

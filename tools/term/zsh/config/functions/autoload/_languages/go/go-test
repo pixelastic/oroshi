@@ -26,7 +26,8 @@ done
 # Find the module root from the first file
 local moduleRoot="$(go-module-root "${files[1]}")"
 
-# Run go test for each unique package
+# Run go test from the module root so relative paths resolve correctly
+cd "$moduleRoot"
 local exitCode=0
 for dir in "${packageDirs[@]}"; do
   local relPath="${dir#"$moduleRoot"/}"
