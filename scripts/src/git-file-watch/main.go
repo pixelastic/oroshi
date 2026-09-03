@@ -326,115 +326,113 @@ func waitForCommentsChange(channel <-chan struct{}) tea.Cmd {
 	}
 }
 
-func (m model) View() string {
-	if len(m.rows) == 0 {
-		style := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-5"))
-		return "\n" + style.Render("No changes") + "\n"
+func (m model) renderFileHeader(r layout.FileHeaderRow, fileCount int) string {
+	var b strings.Builder
+	if fileCount > 1 {
+		separatorStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-7"))
+		width := m.viewportWidth
+		if width <= 0 {
+			width = 80
+		}
+		b.WriteString(separatorStyle.Render(strings.Repeat("─", width)))
+		b.WriteByte('\n')
+	}
+	if fileCount == 1 {
+		b.WriteByte('\n')
+	}
+	dir, file := filepath.Split(r.Path)
+	dirStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("directory"))
+	label := " " + dirStyle.Render(dir) + file
+	if m.foldState[r.Path] {
+		label += " [folded]"
+	}
+	b.WriteString(label)
+	b.WriteByte('\n')
+	return b.String()
+}
+
+func (m model) renderCommentLine(commentText string) string {
+	orangeStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("orange"))
+	gutter := orangeStyle.Render("▌")
+	numberPadding := strings.Repeat(" ", m.lineNumberWidth)
+	return gutter + numberPadding + " " + orangeStyle.Render("REVIEW: "+commentText) + "\n"
+}
+
+func (m model) renderCodeLine(r layout.LineRow, currentFile string, isCursor bool) string {
+	absolutePath := filepath.Join(m.repoRoot, currentFile)
+	commentKey := fmt.Sprintf("%s:%d", absolutePath, r.LineNumber)
+	commentText := m.commentIndex[commentKey]
+	hasComment := commentText != ""
+	flashKey := fmt.Sprintf("%s:%d", currentFile, r.LineNumber)
+	isFlash := m.flashLines[flashKey]
+
+	var b strings.Builder
+	// Render comment text above the line
+	if hasComment {
+		b.WriteString(m.renderCommentLine(commentText))
 	}
 
-	var builder strings.Builder
-	var currentFile string
+	gutter := renderGutter(r, m.theme, hasComment)
+	lineNumber := renderLineNumber(r, m.theme, m.lineNumberWidth, isCursor, isFlash, hasComment)
+	content := dimContent(m.highlighted, m.rawLines, m.repoRoot, currentFile, r, m.theme)
+	line := gutter + lineNumber + " " + content
 
-	// Render visible rows within viewport
-	rendered := 0
-	fileCount := 0
-	for _, i := range m.visibleIndices {
-		if i < m.nav.ViewportOffset {
-			// Track current file for rows before viewport
-			if header, ok := m.rows[i].(layout.FileHeaderRow); ok {
-				currentFile = header.Path
-				fileCount++
+	if m.viewportWidth > 0 {
+		line = lipgloss.NewStyle().MaxWidth(m.viewportWidth).Render(line)
+	}
+
+	if isCursor {
+		bgStyle := lipgloss.NewStyle().Background(m.theme.Lipgloss("gray-9"))
+		visible := lipgloss.Width(line)
+		pad := m.viewportWidth - visible
+		if pad > 0 {
+			line += bgStyle.Render(strings.Repeat(" ", pad))
+		}
+	}
+
+	b.WriteString(line)
+	b.WriteByte('\n')
+	return b.String()
+}
+
+func (m model) View() string {
+	if len(m.rows) == 0 {
+		return "\n" + lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-5")).Render("No changes") + "\n"
+	}
+	var builder strings.Builder
+	currentFile, rendered, fileCount := "", 0, 0
+	for _, i := range m.visibleIndices { // Render visible rows within viewport
+		if i < m.nav.ViewportOffset { // Track current file for rows before viewport
+			if h, ok := m.rows[i].(layout.FileHeaderRow); ok {
+				currentFile, fileCount = h.Path, fileCount+1
 			}
 			continue
 		}
 		if rendered >= m.nav.ViewportHeight {
 			break
 		}
-
-		row := m.rows[i]
-		isCursor := i == m.nav.Cursor
 		rendered++
-
-		switch r := row.(type) {
+		switch r := m.rows[i].(type) {
 		case layout.FileHeaderRow:
 			currentFile = r.Path
 			fileCount++
-			if fileCount > 1 {
-				separatorStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-7"))
-				width := m.viewportWidth
-				if width <= 0 {
-					width = 80
-				}
-				builder.WriteString(separatorStyle.Render(strings.Repeat("─", width)))
-				builder.WriteByte('\n')
-				rendered++
-			}
-			if fileCount == 1 {
-				builder.WriteByte('\n')
-				rendered++
-			}
-			dir, file := filepath.Split(r.Path)
-			dirStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("directory"))
-			label := " " + dirStyle.Render(dir) + file
-			if m.foldState[r.Path] {
-				label += " [folded]"
-			}
-			builder.WriteString(label)
-			builder.WriteByte('\n')
+			s := m.renderFileHeader(r, fileCount)
+			rendered += strings.Count(s, "\n") - 1
+			builder.WriteString(s)
 		case layout.SeparatorRow:
 			builder.WriteByte('\n')
 		case layout.LineRow:
-			absolutePath := filepath.Join(m.repoRoot, currentFile)
-			commentKey := fmt.Sprintf("%s:%d", absolutePath, r.LineNumber)
-			commentText := m.commentIndex[commentKey]
-			hasComment := commentText != ""
-			flashKey := fmt.Sprintf("%s:%d", currentFile, r.LineNumber)
-			isFlash := m.flashLines[flashKey]
-
-			// Render comment text above the line
-			if hasComment {
-				orangeStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("orange"))
-				commentGutter := orangeStyle.Render("▌")
-				numPad := strings.Repeat(" ", m.lineNumberWidth)
-				builder.WriteString(commentGutter + numPad + " " + orangeStyle.Render("REVIEW: "+commentText))
-				builder.WriteByte('\n')
-				rendered++
-			}
-
-			gutter := renderGutter(r, m.theme, hasComment)
-			lineNumber := renderLineNumber(r, m.theme, m.lineNumberWidth, isCursor, isFlash, hasComment)
-			content := dimContent(m.highlighted, m.rawLines, m.repoRoot, currentFile, r, m.theme)
-			line := gutter + lineNumber + " " + content
-
-			if m.viewportWidth > 0 {
-				line = lipgloss.NewStyle().MaxWidth(m.viewportWidth).Render(line)
-			}
-
-			if isCursor {
-				bgStyle := lipgloss.NewStyle().Background(m.theme.Lipgloss("gray-9"))
-				visible := lipgloss.Width(line)
-				pad := m.viewportWidth - visible
-				if pad > 0 {
-					line += bgStyle.Render(strings.Repeat(" ", pad))
-				}
-			}
-
-			builder.WriteString(line)
-			builder.WriteByte('\n')
-
+			s := m.renderCodeLine(r, currentFile, i == m.nav.Cursor)
+			rendered += strings.Count(s, "\n") - 1
+			builder.WriteString(s)
 			if m.editState.Active && i == m.editState.RowIndex {
-				builder.WriteString(m.editTextArea.View())
-				builder.WriteByte('\n')
+				builder.WriteString(m.editTextArea.View() + "\n")
 			}
 		}
 	}
-
 	if m.statusMessage != "" {
-		builder.WriteByte('\n')
-		builder.WriteString(m.statusMessage)
-		builder.WriteByte('\n')
+		fmt.Fprintf(&builder, "\n%s\n", m.statusMessage)
 	}
-
 	return builder.String()
 }
 
