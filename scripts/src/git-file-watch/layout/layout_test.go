@@ -174,6 +174,21 @@ func TestEmitsNilMarkerForContextLines(t *testing.T) {
 	}
 }
 
+func TestPopulatesFilePathOnEveryLineRow(t *testing.T) {
+	fd := fileDiffWithPath("src/main.go")
+	markers := map[int]diff.Marker{10: diff.MarkerAdded}
+
+	rows := Build(fd, markers, 20)
+
+	for _, row := range rows {
+		line, ok := row.(LineRow)
+		if !ok {
+			continue
+		}
+		assert.Equal(t, "src/main.go", line.FilePath, "line %d should carry file path", line.LineNumber)
+	}
+}
+
 func TestEmitsCorrectMarkerForClassifiedLines(t *testing.T) {
 	fd := fileDiffWithPath("file.go")
 	added := diff.MarkerAdded

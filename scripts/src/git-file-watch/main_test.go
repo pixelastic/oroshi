@@ -277,7 +277,7 @@ func TestViewRendersCommentAboveLine(t *testing.T) {
 	marker := diff.MarkerAdded
 	rows := []layout.Row{
 		layout.FileHeaderRow{Path: "file.go"},
-		layout.LineRow{LineNumber: 10, Marker: &marker},
+		layout.LineRow{FilePath: "file.go", LineNumber: 10, Marker: &marker},
 	}
 	m := testModelWithRoot(th, rows, repoRoot)
 	m.commentIndex = map[string]string{
@@ -295,7 +295,7 @@ func TestViewRendersCommentGutterBar(t *testing.T) {
 	marker := diff.MarkerAdded
 	rows := []layout.Row{
 		layout.FileHeaderRow{Path: "file.go"},
-		layout.LineRow{LineNumber: 10, Marker: &marker},
+		layout.LineRow{FilePath: "file.go", LineNumber: 10, Marker: &marker},
 	}
 	m := testModelWithRoot(th, rows, repoRoot)
 	m.commentIndex = map[string]string{
@@ -320,7 +320,7 @@ func TestViewRendersCommentBeforeCodeLine(t *testing.T) {
 	marker := diff.MarkerAdded
 	rows := []layout.Row{
 		layout.FileHeaderRow{Path: "file.go"},
-		layout.LineRow{LineNumber: 10, Marker: &marker},
+		layout.LineRow{FilePath: "file.go", LineNumber: 10, Marker: &marker},
 	}
 	m := testModelWithRoot(th, rows, repoRoot)
 	m.commentIndex = map[string]string{

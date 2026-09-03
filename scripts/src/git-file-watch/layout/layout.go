@@ -14,6 +14,7 @@ type Row interface {
 // LineRow represents a file line with optional change marker.
 // Distance is 0 for changed lines, and increases for context lines further away.
 type LineRow struct {
+	FilePath   string
 	LineNumber int
 	Content    string
 	Marker     *diff.Marker
@@ -96,7 +97,7 @@ func emitRows(path string, ranges []lineRange, markers map[int]diff.Marker) []Ro
 			rows = append(rows, SeparatorRow{})
 		}
 		for line := r.start; line <= r.end; line++ {
-			row := LineRow{LineNumber: line}
+			row := LineRow{FilePath: path, LineNumber: line}
 			if marker, ok := markers[line]; ok {
 				m := marker
 				row.Marker = &m

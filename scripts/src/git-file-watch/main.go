@@ -359,12 +359,11 @@ func (m model) renderCommentLine(commentText string) string {
 	return gutter + numberPadding + " " + orangeStyle.Render("REVIEW: "+commentText) + "\n"
 }
 
-func (m model) renderCodeLine(r layout.LineRow, currentFile string, isCursor bool) string {
-	commentKey := fmt.Sprintf("%s:%d", currentFile, r.LineNumber)
-	commentText := m.commentIndex[commentKey]
+func (m model) renderCodeLine(r layout.LineRow, isCursor bool) string {
+	key := fmt.Sprintf("%s:%d", r.FilePath, r.LineNumber)
+	commentText := m.commentIndex[key]
 	hasComment := commentText != ""
-	flashKey := fmt.Sprintf("%s:%d", currentFile, r.LineNumber)
-	isFlash := m.flashLines[flashKey]
+	isFlash := m.flashLines[key]
 
 	var b strings.Builder
 	// Render comment text above the line
@@ -374,7 +373,7 @@ func (m model) renderCodeLine(r layout.LineRow, currentFile string, isCursor boo
 
 	gutter := renderGutter(r, m.theme, hasComment)
 	lineNumber := renderLineNumber(r, m.theme, m.lineNumberWidth, isCursor, isFlash, hasComment)
-	content := dimContent(m.highlighted, m.rawLines, currentFile, r, m.theme)
+	content := dimContent(m.highlighted, m.rawLines, r.FilePath, r, m.theme)
 	line := gutter + lineNumber + " " + content
 
 	if m.viewportWidth > 0 {
@@ -400,11 +399,11 @@ func (m model) View() string {
 		return "\n" + lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-5")).Render("No changes") + "\n"
 	}
 	var builder strings.Builder
-	currentFile, rendered, fileCount := "", 0, 0
+	rendered, fileCount := 0, 0
 	for _, i := range m.visibleIndices { // Render visible rows within viewport
-		if i < m.nav.ViewportOffset { // Track current file for rows before viewport
-			if h, ok := m.rows[i].(layout.FileHeaderRow); ok {
-				currentFile, fileCount = h.Path, fileCount+1
+		if i < m.nav.ViewportOffset { // Track file count for rows before viewport
+			if _, ok := m.rows[i].(layout.FileHeaderRow); ok {
+				fileCount++
 			}
 			continue
 		}
@@ -414,7 +413,6 @@ func (m model) View() string {
 		rendered++
 		switch r := m.rows[i].(type) {
 		case layout.FileHeaderRow:
-			currentFile = r.Path
 			fileCount++
 			s := m.renderFileHeader(r, fileCount)
 			rendered += strings.Count(s, "\n") - 1
@@ -422,7 +420,7 @@ func (m model) View() string {
 		case layout.SeparatorRow:
 			builder.WriteByte('\n')
 		case layout.LineRow:
-			s := m.renderCodeLine(r, currentFile, i == m.nav.Cursor)
+			s := m.renderCodeLine(r, i == m.nav.Cursor)
 			rendered += strings.Count(s, "\n") - 1
 			builder.WriteString(s)
 			if m.editState.Active && i == m.editState.RowIndex {
@@ -513,23 +511,18 @@ func newSnapshot(rows []layout.Row, rawLines map[string][]string) markedLineSnap
 		lines:      make(map[string]string),
 		contentSet: make(map[string]map[string]bool),
 	}
-	var currentFile string
 	for _, row := range rows {
-		switch r := row.(type) {
-		case layout.FileHeaderRow:
-			currentFile = r.Path
-		case layout.LineRow:
-			if r.Marker == nil {
-				continue
-			}
-			content := rawLineContent(rawLines, currentFile, r.LineNumber)
-			key := fmt.Sprintf("%s:%d", currentFile, r.LineNumber)
-			s.lines[key] = content
-			if s.contentSet[currentFile] == nil {
-				s.contentSet[currentFile] = make(map[string]bool)
-			}
-			s.contentSet[currentFile][content] = true
+		r, ok := row.(layout.LineRow)
+		if !ok || r.Marker == nil {
+			continue
 		}
+		content := rawLineContent(rawLines, r.FilePath, r.LineNumber)
+		key := fmt.Sprintf("%s:%d", r.FilePath, r.LineNumber)
+		s.lines[key] = content
+		if s.contentSet[r.FilePath] == nil {
+			s.contentSet[r.FilePath] = make(map[string]bool)
+		}
+		s.contentSet[r.FilePath][content] = true
 	}
 	return s
 }
