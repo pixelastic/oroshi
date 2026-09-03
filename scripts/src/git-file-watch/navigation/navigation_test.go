@@ -197,6 +197,40 @@ func TestFoldingMovesCursorToFileHeader(t *testing.T) {
 	assert.Equal(t, 5, newState.Cursor)
 }
 
+func TestFoldingDoesNotScrollViewportWhenHeaderAlreadyVisible(t *testing.T) {
+	// Two files: a (header 0, folded) and b (header 5, open)
+	// Viewport starts at 0 with height 10 → shows rows 0..9
+	// Cursor on line 8 of file b, header at 5 is visible
+	// Folding file b should move cursor to header 5, viewport stays at 0
+	state := State{Cursor: 8, ViewportOffset: 0, ViewportHeight: 10, RowCount: 10}
+	index := FileIndex{
+		Headers:   []int{0, 5},
+		Paths:     []string{"a.go", "b.go"},
+		FoldState: map[string]bool{"a.go": true},
+	}
+
+	newState, _ := ToggleFold(state, index)
+
+	assert.Equal(t, 5, newState.Cursor)
+	assert.Equal(t, 0, newState.ViewportOffset)
+}
+
+func TestFoldingScrollsViewportWhenHeaderAboveViewport(t *testing.T) {
+	// Cursor on line 8 in file b, but viewport scrolled down past file b's header
+	state := State{Cursor: 8, ViewportOffset: 7, ViewportHeight: 3, RowCount: 10}
+	index := FileIndex{
+		Headers:   []int{0, 5},
+		Paths:     []string{"a.go", "b.go"},
+		FoldState: map[string]bool{},
+	}
+
+	newState, _ := ToggleFold(state, index)
+
+	// Cursor moves to header 5, viewport must scroll to show it
+	assert.Equal(t, 5, newState.Cursor)
+	assert.True(t, newState.ViewportOffset <= 5)
+}
+
 func TestUnfoldingKeepsCursorOnHeader(t *testing.T) {
 	state := State{Cursor: 5, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
 	index := FileIndex{

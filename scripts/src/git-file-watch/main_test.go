@@ -377,6 +377,48 @@ func TestGGLandsOnFirstCodeLine(t *testing.T) {
 	assert.Equal(t, 1, resultModel.nav.Cursor)
 }
 
+// --- Fold does not scroll viewport ---
+
+func TestFoldingSecondFileKeepsFirstFileVisible(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "a.go"},              // 0
+		layout.LineRow{LineNumber: 1, Marker: &marker},  // 1
+		layout.LineRow{LineNumber: 2, Marker: &marker},  // 2
+		layout.LineRow{LineNumber: 3, Marker: &marker},  // 3
+		layout.LineRow{LineNumber: 4, Marker: &marker},  // 4
+		layout.FileHeaderRow{Path: "b.go"},              // 5
+		layout.LineRow{LineNumber: 1, Marker: &marker},  // 6
+		layout.LineRow{LineNumber: 2, Marker: &marker},  // 7
+		layout.LineRow{LineNumber: 3, Marker: &marker},  // 8
+		layout.LineRow{LineNumber: 4, Marker: &marker},  // 9
+	}
+	m := testModel(th, rows)
+	m.nav.ViewportHeight = 4
+
+	// Fold file a — cursor on line 2, fold moves it to header 0
+	m.nav.Cursor = 2
+	m.pendingKey = "z"
+	r1, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'a'}})
+	m = r1.(model)
+	assert.Equal(t, 0, m.nav.Cursor)
+
+	// Navigate down to file b's last line — this scrolls the viewport
+	m.nav.Cursor = 9
+	m.nav.ViewportOffset = 6
+
+	// Fold file b — cursor should go to header 5, viewport should not hide file a
+	m.pendingKey = "z"
+	r2, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'a'}})
+	m = r2.(model)
+
+	assert.Equal(t, 5, m.nav.Cursor)
+	// After folding, both headers (0 and 5) should be visible
+	// Viewport should scroll back to show file a's header
+	assert.Equal(t, 0, m.nav.ViewportOffset)
+}
+
 // --- Cursor lands on folded file header ---
 
 func TestCursorCanLandOnFoldedFileHeader(t *testing.T) {

@@ -159,7 +159,13 @@ func ToggleFold(state State, index FileIndex) (State, FileIndex) {
 
 	index.FoldState[path] = true
 	state.Cursor = index.Headers[filePos]
-	state = clampViewport(state)
+	// After folding, fewer rows are visible. Scroll up to fill the viewport.
+	visibleCount := len(VisibleIndices(state.RowCount, index))
+	if visibleCount <= state.ViewportHeight {
+		state.ViewportOffset = 0
+	} else {
+		state = clampViewport(state)
+	}
 	return state, index
 }
 
