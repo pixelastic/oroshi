@@ -385,19 +385,16 @@ func testModel(th *theme.Theme, rows []layout.Row) model {
 }
 
 func testModelWithRoot(th *theme.Theme, rows []layout.Row, repoRoot string) model {
-	fileHeaders, filePaths := findFileHeaders(rows)
-	foldState := map[string]bool{}
-	visibleIndices := navigation.VisibleIndices(len(rows), fileHeaders, filePaths, foldState)
+	fileIndex := findFileHeaders(rows, nil)
+	visibleIndices := navigation.VisibleIndices(len(rows), fileIndex)
 	return model{
 		theme:           th,
 		rows:            rows,
 		highlighted:     map[string][]highlight.StyledLine{},
 		rawLines:        map[string][]string{},
 		repoRoot:        repoRoot,
-		foldState:       foldState,
+		fileIndex:       fileIndex,
 		visibleIndices:  visibleIndices,
-		fileHeaders:     fileHeaders,
-		filePaths:       filePaths,
 		commentIndex:    map[string]string{},
 		flashLines:      map[string]bool{},
 		lineNumberWidth: maxLineNumberWidth(rows),

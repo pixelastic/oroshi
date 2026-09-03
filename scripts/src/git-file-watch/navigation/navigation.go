@@ -10,6 +10,13 @@ type State struct {
 	RowCount       int
 }
 
+// FileIndex groups file header positions, paths, and fold state for navigation.
+type FileIndex struct {
+	Headers   []int
+	Paths     []string
+	FoldState map[string]bool
+}
+
 // MoveDown moves the cursor down one row, scrolling the viewport if needed.
 func MoveDown(state State) State {
 	if state.Cursor >= state.RowCount-1 {
@@ -35,10 +42,10 @@ func MoveUp(state State) State {
 }
 
 // NextFileHeader jumps the cursor to the next file header after the current position.
-func NextFileHeader(state State, fileHeaderIndices []int, visibleIndices []int) State {
-	for _, index := range fileHeaderIndices {
-		if index > state.Cursor {
-			state.Cursor = index
+func NextFileHeader(state State, index FileIndex, visibleIndices []int) State {
+	for _, headerIndex := range index.Headers {
+		if headerIndex > state.Cursor {
+			state.Cursor = headerIndex
 			return clampViewportForIndices(state, visibleIndices)
 		}
 	}
@@ -46,12 +53,12 @@ func NextFileHeader(state State, fileHeaderIndices []int, visibleIndices []int) 
 }
 
 // PrevFileHeader jumps the cursor to the header of the file before the current one.
-func PrevFileHeader(state State, fileHeaderIndices []int, visibleIndices []int) State {
-	currentFileIndex := currentFile(state.Cursor, fileHeaderIndices)
+func PrevFileHeader(state State, index FileIndex, visibleIndices []int) State {
+	currentFileIndex := currentFile(state.Cursor, index.Headers)
 	if currentFileIndex <= 0 {
 		return state
 	}
-	state.Cursor = fileHeaderIndices[currentFileIndex-1]
+	state.Cursor = index.Headers[currentFileIndex-1]
 	return clampViewportForIndices(state, visibleIndices)
 }
 
@@ -85,15 +92,15 @@ func clampViewport(state State) State {
 
 // VisibleIndices returns sorted indices of rows not hidden by fold state.
 // Folded files show only their header row; all content rows are hidden.
-func VisibleIndices(rowCount int, fileHeaderIndices []int, filePaths []string, foldState map[string]bool) []int {
+func VisibleIndices(rowCount int, index FileIndex) []int {
 	hidden := make(map[int]bool)
-	for i, headerIndex := range fileHeaderIndices {
-		if !foldState[filePaths[i]] {
+	for i, headerIndex := range index.Headers {
+		if !index.FoldState[index.Paths[i]] {
 			continue
 		}
 		endIndex := rowCount
-		if i+1 < len(fileHeaderIndices) {
-			endIndex = fileHeaderIndices[i+1]
+		if i+1 < len(index.Headers) {
+			endIndex = index.Headers[i+1]
 		}
 		for row := headerIndex + 1; row < endIndex; row++ {
 			hidden[row] = true
@@ -111,22 +118,22 @@ func VisibleIndices(rowCount int, fileHeaderIndices []int, filePaths []string, f
 
 // ToggleFold toggles the fold state for the file at the cursor position.
 // When folding, the cursor moves to the file header.
-func ToggleFold(state State, fileHeaderIndices []int, filePaths []string, foldState map[string]bool) (State, map[string]bool) {
-	fileIndex := currentFile(state.Cursor, fileHeaderIndices)
-	if fileIndex < 0 || fileIndex >= len(filePaths) {
-		return state, foldState
+func ToggleFold(state State, index FileIndex) (State, FileIndex) {
+	filePos := currentFile(state.Cursor, index.Headers)
+	if filePos < 0 || filePos >= len(index.Paths) {
+		return state, index
 	}
 
-	path := filePaths[fileIndex]
-	if foldState[path] {
-		delete(foldState, path)
-		return state, foldState
+	path := index.Paths[filePos]
+	if index.FoldState[path] {
+		delete(index.FoldState, path)
+		return state, index
 	}
 
-	foldState[path] = true
-	state.Cursor = fileHeaderIndices[fileIndex]
+	index.FoldState[path] = true
+	state.Cursor = index.Headers[filePos]
 	state = clampViewport(state)
-	return state, foldState
+	return state, index
 }
 
 // MoveDownVisible moves the cursor to the next visible row, scrolling if needed.

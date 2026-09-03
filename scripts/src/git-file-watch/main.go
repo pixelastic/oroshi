@@ -44,11 +44,9 @@ type model struct {
 	rawLines             map[string][]string
 	watchChannel         <-chan struct{}
 	commentsWatchChannel <-chan struct{}
-	nav                  navigation.State
-	fileHeaders          []int
-	filePaths            []string
-	foldState            map[string]bool
-	visibleIndices       []int
+	nav            navigation.State
+	fileIndex      navigation.FileIndex
+	visibleIndices []int
 	pendingKey           string
 	repoRoot             string
 	userComments         []comments.Comment
@@ -126,8 +124,8 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	if m.pendingKey == "z" {
 		m.pendingKey = ""
 		if key == "a" {
-			m.nav, m.foldState = navigation.ToggleFold(m.nav, m.fileHeaders, m.filePaths, m.foldState)
-			m.visibleIndices = navigation.VisibleIndices(len(m.rows), m.fileHeaders, m.filePaths, m.foldState)
+			m.nav, m.fileIndex = navigation.ToggleFold(m.nav, m.fileIndex)
+			m.visibleIndices = navigation.VisibleIndices(len(m.rows), m.fileIndex)
 		}
 		return m, nil
 	}
@@ -139,9 +137,9 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "k":
 		m.nav = navigation.MoveUpVisible(m.nav, m.visibleIndices)
 	case "l":
-		m.nav = navigation.NextFileHeader(m.nav, m.fileHeaders, m.visibleIndices)
+		m.nav = navigation.NextFileHeader(m.nav, m.fileIndex, m.visibleIndices)
 	case "h":
-		m.nav = navigation.PrevFileHeader(m.nav, m.fileHeaders, m.visibleIndices)
+		m.nav = navigation.PrevFileHeader(m.nav, m.fileIndex, m.visibleIndices)
 	case "i":
 		cmd := editor.NvimCommand(m.rows, m.nav.Cursor, m.repoRoot)
 		if cmd == nil {
@@ -233,12 +231,12 @@ func (m *model) rebuildDisplay() tea.Cmd {
 	m.rows = rows
 	m.highlighted = highlighted
 	m.rawLines = rawLines
-	m.fileHeaders, m.filePaths = findFileHeaders(rows)
+	m.fileIndex = findFileHeaders(rows, m.fileIndex.FoldState)
 	m.nav.RowCount = len(rows)
 	if m.nav.Cursor >= len(rows) {
 		m.nav.Cursor = max(0, len(rows)-1)
 	}
-	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileHeaders, m.filePaths, m.foldState)
+	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileIndex)
 	m.lineNumberWidth = maxLineNumberWidth(rows)
 
 	m.userComments = comments.Reattach(m.userComments, absoluteRawLines(rawLines, m.repoRoot))
@@ -344,7 +342,7 @@ func (m model) renderFileHeader(r layout.FileHeaderRow, fileCount int) string {
 	dir, file := filepath.Split(r.Path)
 	dirStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("directory"))
 	label := " " + dirStyle.Render(dir) + file
-	if m.foldState[r.Path] {
+	if m.fileIndex.FoldState[r.Path] {
 		label += " [folded]"
 	}
 	b.WriteString(label)
@@ -590,7 +588,7 @@ func dimColorForDistance(distance int) string {
 	}
 }
 
-func findFileHeaders(rows []layout.Row) ([]int, []string) {
+func findFileHeaders(rows []layout.Row, foldState map[string]bool) navigation.FileIndex {
 	var indices []int
 	var paths []string
 	for i, row := range rows {
@@ -599,7 +597,14 @@ func findFileHeaders(rows []layout.Row) ([]int, []string) {
 			paths = append(paths, header.Path)
 		}
 	}
-	return indices, paths
+	if foldState == nil {
+		foldState = map[string]bool{}
+	}
+	return navigation.FileIndex{
+		Headers:   indices,
+		Paths:     paths,
+		FoldState: foldState,
+	}
 }
 
 func main() {
@@ -651,9 +656,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	fileHeaders, filePaths := findFileHeaders(rows)
-	foldState := map[string]bool{}
-	visibleIndices := navigation.VisibleIndices(len(rows), fileHeaders, filePaths, foldState)
+	fileIndex := findFileHeaders(rows, nil)
+	visibleIndices := navigation.VisibleIndices(len(rows), fileIndex)
 	p := tea.NewProgram(model{
 		theme:                th,
 		rows:                 rows,
@@ -661,9 +665,7 @@ func main() {
 		rawLines:             rawLines,
 		watchChannel:         watchChannel,
 		commentsWatchChannel: commentsWatchChannel,
-		fileHeaders:          fileHeaders,
-		filePaths:            filePaths,
-		foldState:            foldState,
+		fileIndex:            fileIndex,
 		visibleIndices:       visibleIndices,
 		lineNumberWidth:      maxLineNumberWidth(rows),
 		prevSnapshot:         func() *markedLineSnapshot { s := newSnapshot(rows, rawLines); return &s }(),
