@@ -30,6 +30,9 @@ import (
 // DiffChangedMsg is sent when the watcher detects a new git diff.
 type DiffChangedMsg struct{}
 
+// GitIndexChangedMsg is sent when .git/index changes (commit, stage, unstage).
+type GitIndexChangedMsg struct{}
+
 // CommentsChangedMsg is sent when the comments file changes externally.
 type CommentsChangedMsg struct{}
 
@@ -45,6 +48,7 @@ type model struct {
 	highlighted          map[string][]highlight.StyledLine
 	rawLines             map[string][]string
 	watchChannel         <-chan struct{}
+	indexWatchChannel    <-chan struct{}
 	commentsWatchChannel <-chan struct{}
 	nav              navigation.State
 	fileIndex        navigation.FileIndex
@@ -69,6 +73,9 @@ func (m model) Init() tea.Cmd {
 	if m.watchChannel != nil {
 		commands = append(commands, waitForDiffChange(m.watchChannel))
 	}
+	if m.indexWatchChannel != nil {
+		commands = append(commands, waitForIndexChange(m.indexWatchChannel))
+	}
 	if m.commentsWatchChannel != nil {
 		commands = append(commands, waitForCommentsChange(m.commentsWatchChannel))
 	}
@@ -80,6 +87,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case DiffChangedMsg:
 		cmd := m.rebuildDisplay()
 		return m, tea.Batch(waitForDiffChange(m.watchChannel), cmd)
+	case GitIndexChangedMsg:
+		cmd := m.rebuildDisplay()
+		return m, tea.Batch(waitForIndexChange(m.indexWatchChannel), cmd)
 	case CommentsChangedMsg:
 		m.reloadComments()
 		return m, waitForCommentsChange(m.commentsWatchChannel)
@@ -322,6 +332,13 @@ func waitForDiffChange(channel <-chan struct{}) tea.Cmd {
 	}
 }
 
+func waitForIndexChange(channel <-chan struct{}) tea.Cmd {
+	return func() tea.Msg {
+		<-channel
+		return GitIndexChangedMsg{}
+	}
+}
+
 func waitForCommentsChange(channel <-chan struct{}) tea.Cmd {
 	return func() tea.Msg {
 		<-channel
@@ -469,6 +486,12 @@ func main() {
 		os.Exit(1)
 	}
 
+	indexWatchChannel, err := watcher.WatchFile(watcher.GitIndexPath(repoRoot))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
 	commentsWatchChannel, err := watcher.WatchFile(commentsPath)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -485,6 +508,7 @@ func main() {
 		highlighted:          highlighted,
 		rawLines:             rawLines,
 		watchChannel:         watchChannel,
+		indexWatchChannel:    indexWatchChannel,
 		commentsWatchChannel: commentsWatchChannel,
 		fileIndex:            fileIndex,
 		visibleIndices:       visibleIndices,

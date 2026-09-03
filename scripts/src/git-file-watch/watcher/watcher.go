@@ -64,6 +64,11 @@ func Watch(repoRoot string) (<-chan struct{}, error) {
 	return signals, nil
 }
 
+// GitIndexPath returns the path to .git/index for a repo root.
+func GitIndexPath(repoRoot string) string {
+	return repoRoot + "/.git/index"
+}
+
 func debounceLoop(fsWatcher *fsnotify.Watcher, repoRoot string, signals chan<- struct{}) {
 	defer func() { _ = fsWatcher.Close() }()
 

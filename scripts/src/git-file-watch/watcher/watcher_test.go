@@ -3,8 +3,35 @@ package watcher
 import (
 	"testing"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/stretchr/testify/assert"
 )
+
+// --- isMeaningfulEvent ---
+
+func TestGitIndexWriteIsMeaningful(t *testing.T) {
+	event := fsnotify.Event{Name: "/repo/.git/index", Op: fsnotify.Write}
+
+	assert.True(t, isMeaningfulEvent(event))
+}
+
+// --- shouldIgnoreDirectory ---
+
+func TestGitDirIsIgnored(t *testing.T) {
+	ignored := map[string]bool{".git": true}
+
+	assert.True(t, shouldIgnoreDirectory(".git", ignored))
+	assert.True(t, shouldIgnoreDirectory(".git/objects", ignored))
+	assert.True(t, shouldIgnoreDirectory(".git/refs", ignored))
+}
+
+// --- gitIndexPath ---
+
+func TestGitIndexPathReturnsGitIndex(t *testing.T) {
+	result := GitIndexPath("/repo")
+
+	assert.Equal(t, "/repo/.git/index", result)
+}
 
 // --- Signature dedup ---
 
