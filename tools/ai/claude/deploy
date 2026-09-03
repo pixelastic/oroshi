@@ -17,14 +17,21 @@ mv --force /tmp/claude.tmp.json ~/.claude.json
 
 # Skills {{{
 mkdir -p ~/.claude/skills
-# Symlink all custom skills from .oroshi to ~/.claude/skills/
-for oroshiPath in $CONFIG_DIR/skills/*; do
-  skillName="${oroshiPath:t}"
-  claudePath=~/.claude/skills/${skillName}
-  if [[ -d "$claudePath" ]] || [[ -L "$claudePath" ]]; then
-    rm $claudePath
-  fi
-  ln -s "${oroshiPath}" "${claudePath}"
+PRIVATE_SKILLS_DIRECTORY="${OROSHI_ROOT}/private/config/ai/claude/skills"
+
+# Symlink skills to ~/.claude/skills/ (public first, then private to override on conflict)
+SKILL_DIRECTORIES=($CONFIG_DIR/skills)
+[[ -d "$PRIVATE_SKILLS_DIRECTORY" ]] && SKILL_DIRECTORIES+=($PRIVATE_SKILLS_DIRECTORY)
+
+for skillDirectory in $SKILL_DIRECTORIES; do
+  for oroshiPath in $skillDirectory/*; do
+    skillName="${oroshiPath:t}"
+    claudePath=~/.claude/skills/${skillName}
+    if [[ -d "$claudePath" ]] || [[ -L "$claudePath" ]]; then
+      rm $claudePath
+    fi
+    ln -s "${oroshiPath}" "${claudePath}"
+  done
 done
 # }}}
 
