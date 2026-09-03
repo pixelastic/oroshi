@@ -50,6 +50,20 @@ setup() {
   [[ "$output" == *"Record not found"* ]]
 }
 
+@test "preserves escaped newlines in field values as valid JSON" {
+  # print -r avoids ZSH echo interpreting \n — mimics real curl binary output
+  curl() {
+    print -r -- '{"records":[{"id":"recABC","fields":{"name":"Paris Meetup","description":"Line one\nLine two\nLine three"}}]}'
+  }
+  bats_mock curl
+
+  bats_run_zsh "airtable-record-read --base appXXX --table Meetups --record recABC"
+  [[ "$status" -eq 0 ]]
+  # Output must be valid JSON — jq empty fails on control characters
+  echo "$output" | jq empty
+  expect_json '.name' 'Paris Meetup'
+}
+
 @test "exits non-zero with error message when token env var is missing" {
   unset AIRTABLE_TOKEN
 

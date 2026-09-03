@@ -65,6 +65,21 @@ setup() {
   [[ -f "$DRAFT_DIR/state.json" ]]
 }
 
+# -- Escaped newlines in meetup data --
+
+@test "parses meetup fields correctly when description contains escaped newlines" {
+  # print -r avoids ZSH echo interpreting \n — mimics real Airtable JSON with newlines in text fields
+  fetch-meetup() {
+    print -r -- '{"UUID":"abc-123","name":"Paris Meetup","date":"2026-09-15","startTime":"19:00","endTime":"22:00","description":"Line one\nLine two\nLine three","URL":"https://example.com","notes":"Note\nwith newlines","helpersFullName":["Alice"],"guestRegisteredCount":42,"guestAttendingCountFinal":35}'
+  }
+  bats_mock fetch-meetup
+
+  bats_run_zsh "meetup-announce-start recABC123"
+  [[ "$status" -eq 0 ]]
+  expect_json '.meetup.name' 'Paris Meetup'
+  expect_json '.meetup.date' '2026-09-15'
+}
+
 # -- Error handling --
 
 @test "exits non-zero when recordId is missing" {

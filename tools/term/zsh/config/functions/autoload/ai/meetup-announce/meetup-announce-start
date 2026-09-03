@@ -22,8 +22,8 @@ source "$libDir/compute-schedule.zsh"
 # Fetch meetup data from Airtable
 local meetupJson="$(fetch-meetup "$recordId")"
 [[ "$meetupJson" == "" ]] && return 1
-local meetupName="$(echo "$meetupJson" | jq -r '.name')"
-local eventDate="$(echo "$meetupJson" | jq -r '.date')"
+local meetupName="$(jq -r '.name' <<< "$meetupJson")"
+local eventDate="$(jq -r '.date' <<< "$meetupJson")"
 
 # Create or reuse draft directory
 local draftDir="$(resolve-draft-dir "$recordId" "$meetupName")"

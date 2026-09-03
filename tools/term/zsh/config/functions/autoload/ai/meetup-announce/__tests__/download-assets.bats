@@ -71,6 +71,17 @@ setup() {
   [[ "$(cat "$ASSETS_DIR/pictureMain.png")" != "old content" ]]
 }
 
+# -- Escaped newlines in JSON --
+
+@test "extracts URLs correctly when JSON contains escaped newlines in other fields" {
+  # JSON with \n escape sequences in string values — mimics Airtable API output
+  local meetupJson='{"description":"Line one\nLine two","notes":"Note\nwith newlines","pictureMain":[{"url":"https://example.com/main.png","filename":"main.png"}]}'
+
+  bats_run_zsh "$sourcePrefix && download-assets '$meetupJson' '$ASSETS_DIR'"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$ASSETS_DIR/pictureMain.png" ]]
+}
+
 # -- Partial data --
 
 @test "skips null fields without error" {
@@ -87,11 +98,8 @@ setup() {
 }
 
 @test "skips empty array fields without error" {
-  local meetupJson
-  meetupJson="$(jo -e \
-    pictureMain="$(jo -a "$(jo url=https://example.com/main.png filename=main.png)")" \
-    pictureLogo="$(jo -a)" \
-  )"
+  # Inline JSON avoids jo -e hanging on empty array values
+  local meetupJson='{"pictureMain":[{"url":"https://example.com/main.png","filename":"main.png"}],"pictureLogo":[]}'
 
   bats_run_zsh "$sourcePrefix && download-assets '$meetupJson' '$ASSETS_DIR'"
   [[ "$status" -eq 0 ]]

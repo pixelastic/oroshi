@@ -46,4 +46,4 @@ if [[ "$fields" == "null" ]]; then
   return 1
 fi
 
-echo "$fields"
+print -r -- "$fields"

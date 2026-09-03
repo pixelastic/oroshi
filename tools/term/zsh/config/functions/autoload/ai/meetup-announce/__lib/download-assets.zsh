@@ -23,12 +23,12 @@ function download-assets() {
   for field in "${fields[@]}"; do
     local jqPrefix=".${field}[0]"
 
-    local url="$(echo "$meetupJson" | jq -r "${jqPrefix}.url // empty")"
+    local url="$(jq -r "${jqPrefix}.url // empty" <<< "$meetupJson")"
 
     # Skip null or empty fields
     [[ "$url" == "" ]] && continue
 
-    local filename="$(echo "$meetupJson" | jq -r "${jqPrefix}.filename // empty")"
+    local filename="$(jq -r "${jqPrefix}.filename // empty" <<< "$meetupJson")"
     local ext="${filename:e}"
     local target="$assetsDir/$field.$ext"
 
