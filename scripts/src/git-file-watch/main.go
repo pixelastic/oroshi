@@ -17,6 +17,7 @@ import (
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/editing"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/editor"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/flash"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/git"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
@@ -58,7 +59,7 @@ type model struct {
 	viewportWidth        int
 	lineNumberWidth      int
 	flashLines           map[string]bool
-	prevSnapshot         *markedLineSnapshot
+	prevSnapshot         *flash.Snapshot
 }
 
 func (m model) Init() tea.Cmd {
@@ -170,7 +171,7 @@ func (m model) openEditing() (tea.Model, tea.Cmd) {
 	}
 	absolutePath := filepath.Join(m.repoRoot, relativePath)
 
-	lineContent := rawLineContent(m.rawLines, relativePath, lineRow.LineNumber)
+	lineContent := flash.RawLineContent(m.rawLines, relativePath, lineRow.LineNumber)
 	existingReview := comments.FindReview(m.userComments, absolutePath, lineRow.LineNumber)
 
 	m.editState = editing.Open(absolutePath, lineRow.LineNumber, lineContent, existingReview, m.nav.Cursor)
@@ -205,18 +206,6 @@ func applyEditResult(userComments []comments.Comment, result editing.SaveResult)
 	})
 }
 
-func rawLineContent(rawLines map[string][]string, relativePath string, lineNumber int) string {
-	lines, ok := rawLines[relativePath]
-	if !ok {
-		return ""
-	}
-	index := lineNumber - 1
-	if index < 0 || index >= len(lines) {
-		return ""
-	}
-	return lines[index]
-}
-
 func (m *model) rebuildDisplay() tea.Cmd {
 	rows, highlighted, rawLines, err := buildDisplay(m.repoRoot, m.theme)
 	if err != nil {
@@ -224,8 +213,8 @@ func (m *model) rebuildDisplay() tea.Cmd {
 	}
 
 	// Detect changed marked lines
-	snap := newSnapshot(rows, rawLines)
-	m.flashLines = detectChangedLines(m.prevSnapshot, snap)
+	snap := flash.NewSnapshot(rows, rawLines)
+	m.flashLines = flash.DetectChangedLines(m.prevSnapshot, snap)
 	m.prevSnapshot = &snap
 
 	m.rows = rows
@@ -496,56 +485,6 @@ func markerColorName(marker diff.Marker) string {
 	}
 }
 
-// markedLineSnapshot holds per-file sets of marked line contents.
-type markedLineSnapshot struct {
-	// keyed: "file:line" → content
-	lines map[string]string
-	// contentSet: "file" → set of content strings
-	contentSet map[string]map[string]bool
-}
-
-func newSnapshot(rows []layout.Row, rawLines map[string][]string) markedLineSnapshot {
-	s := markedLineSnapshot{
-		lines:      make(map[string]string),
-		contentSet: make(map[string]map[string]bool),
-	}
-	for _, row := range rows {
-		r, ok := row.(layout.LineRow)
-		if !ok || r.Marker == nil {
-			continue
-		}
-		content := rawLineContent(rawLines, r.FilePath, r.LineNumber)
-		key := fmt.Sprintf("%s:%d", r.FilePath, r.LineNumber)
-		s.lines[key] = content
-		if s.contentSet[r.FilePath] == nil {
-			s.contentSet[r.FilePath] = make(map[string]bool)
-		}
-		s.contentSet[r.FilePath][content] = true
-	}
-	return s
-}
-
-// detectChangedLines returns marked lines whose content is new to their file's diff.
-func detectChangedLines(prev *markedLineSnapshot, current markedLineSnapshot) map[string]bool {
-	if prev == nil {
-		return nil
-	}
-	flash := make(map[string]bool)
-	for key, content := range current.lines {
-		// Extract file from key "file:line"
-		file := key[:strings.LastIndex(key, ":")]
-		prevSet := prev.contentSet[file]
-		if prevSet != nil && prevSet[content] {
-			continue
-		}
-		flash[key] = true
-	}
-	if len(flash) == 0 {
-		return nil
-	}
-	return flash
-}
-
 func lineContent(highlighted map[string][]highlight.StyledLine, path string, lineNumber int) string {
 	lines, ok := highlighted[path]
 	if !ok {
@@ -566,7 +505,7 @@ func dimContent(highlighted map[string][]highlight.StyledLine, rawLines map[stri
 	}
 
 	// Context line: use raw content with dim color
-	plain := rawLineContent(rawLines, currentFile, row.LineNumber)
+	plain := flash.RawLineContent(rawLines, currentFile, row.LineNumber)
 	plain = strings.ReplaceAll(plain, "\t", "    ")
 
 	colorName := dimColorForDistance(row.Distance)
@@ -668,7 +607,7 @@ func main() {
 		fileIndex:            fileIndex,
 		visibleIndices:       visibleIndices,
 		lineNumberWidth:      maxLineNumberWidth(rows),
-		prevSnapshot:         func() *markedLineSnapshot { s := newSnapshot(rows, rawLines); return &s }(),
+		prevSnapshot:         func() *flash.Snapshot { s := flash.NewSnapshot(rows, rawLines); return &s }(),
 		repoRoot:             repoRoot,
 		userComments:         userComments,
 		commentsPath:         commentsPath,
