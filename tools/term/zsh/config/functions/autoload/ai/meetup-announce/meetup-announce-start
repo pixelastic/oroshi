@@ -38,7 +38,7 @@ local window="$(echo "$scheduleJson" | jq -r '.window')"
 local messagesJson="$(echo "$scheduleJson" | jq -c '.messages')"
 
 # Open a Kitty split cd'd to the draft directory
-kitty-window-create --location vsplit --directory "$draftDir"
+kitty-window-create "meetup-announce" --location vsplit --cwd "$draftDir"
 
 # Output combined JSON for the skill
 jo \
