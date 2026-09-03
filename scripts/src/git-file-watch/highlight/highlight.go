@@ -46,7 +46,7 @@ func (h *Highlighter) Highlight(filepath string, content string) []StyledLine {
 
 	lexer := lexers.Match(filepath)
 	if lexer == nil {
-		lines := splitPlain(content)
+		lines := splitLines(content)
 		h.cache[filepath] = cacheEntry{content: content, lines: lines}
 		return lines
 	}
@@ -60,17 +60,17 @@ func (h *Highlighter) Highlight(filepath string, content string) []StyledLine {
 func highlightContent(lexer chroma.Lexer, style *chroma.Style, content string) []StyledLine {
 	iterator, err := lexer.Tokenise(nil, content)
 	if err != nil {
-		return splitPlain(content)
+		return splitLines(content)
 	}
 
 	formatter := formatters.Get("terminal16m")
 
 	var buf bytes.Buffer
 	if err := formatter.Format(&buf, style, iterator); err != nil {
-		return splitPlain(content)
+		return splitLines(content)
 	}
 
-	return splitStyled(buf.String())
+	return splitLines(buf.String())
 }
 
 func buildStyle(colors ColorProvider) *chroma.Style {
@@ -111,22 +111,7 @@ func expandTabs(s string) string {
 	return strings.ReplaceAll(s, "\t", strings.Repeat(" ", tabWidth))
 }
 
-func splitStyled(rendered string) []StyledLine {
-	// Remove trailing newline to avoid empty last line
-	rendered = strings.TrimSuffix(rendered, "\n")
-	if rendered == "" {
-		return nil
-	}
-
-	raw := strings.Split(rendered, "\n")
-	lines := make([]StyledLine, len(raw))
-	for i, line := range raw {
-		lines[i] = StyledLine{Content: expandTabs(line)}
-	}
-	return lines
-}
-
-func splitPlain(content string) []StyledLine {
+func splitLines(content string) []StyledLine {
 	content = strings.TrimSuffix(content, "\n")
 	if content == "" {
 		return nil
