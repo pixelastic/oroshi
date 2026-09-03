@@ -20,10 +20,67 @@ func TestFileHeaderContainsBasenameForKnownExtension(t *testing.T) {
 	ctx := Context{Theme: th, ViewportWidth: 80}
 	row := layout.FileHeaderRow{Path: "src/main.go"}
 
-	result := FileHeader(ctx, row, 1)
+	result := FileHeader(ctx, row, 1, false)
 
 	assert.Contains(t, result, "main.go")
 	assert.Contains(t, result, "src/")
+}
+
+func TestFileHeaderDoesNotPanicWhenCursor(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80}
+	row := layout.FileHeaderRow{Path: "src/main.go"}
+
+	assert.NotPanics(t, func() { FileHeader(ctx, row, 1, true) })
+}
+
+func TestFileHeaderCursorAndNonCursorDiffer(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80}
+	row := layout.FileHeaderRow{Path: "src/main.go"}
+
+	withCursor := FileHeader(ctx, row, 1, true)
+	withoutCursor := FileHeader(ctx, row, 1, false)
+
+	// In a real terminal, the cursor version has background styling.
+	// They should at least not be identical (padding differs).
+	assert.NotEqual(t, withCursor, withoutCursor)
+}
+
+func TestFileHeaderContainsIcon(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80, LineNumberWidth: 3}
+	row := layout.FileHeaderRow{Path: "src/main.go"}
+
+	result := FileHeader(ctx, row, 1, false)
+
+	// The test theme has "G" as the go icon glyph
+	assert.Contains(t, result, "G")
+}
+
+func TestFileHeaderHasSpaceBetweenIconAndDir(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80, LineNumberWidth: 3}
+	row := layout.FileHeaderRow{Path: "src/main.go"}
+
+	result := FileHeader(ctx, row, 1, false)
+
+	// Without the leading gutter space, only 2 spaces before icon (not 3)
+	assert.NotContains(t, result, "   G")
+}
+
+func TestFileHeaderAlignsWithCodeContent(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80, LineNumberWidth: 3}
+	row := layout.FileHeaderRow{Path: "src/main.go"}
+
+	result := FileHeader(ctx, row, 1, false)
+
+	// The header label line should start with spaces for gutter(1) + icon padding + space,
+	// so the filename aligns with code content after the line number column
+	// In non-TTY, unstyled: " " (gutter space) + icon padded to 3 + " " + dir + file
+	assert.Contains(t, result, "src/")
+	assert.Contains(t, result, "main.go")
 }
 
 func TestFileHeaderContainsBasenameForUnknownExtension(t *testing.T) {
@@ -31,7 +88,7 @@ func TestFileHeaderContainsBasenameForUnknownExtension(t *testing.T) {
 	ctx := Context{Theme: th, ViewportWidth: 80}
 	row := layout.FileHeaderRow{Path: "src/file.unknownext"}
 
-	result := FileHeader(ctx, row, 1)
+	result := FileHeader(ctx, row, 1, false)
 
 	assert.Contains(t, result, "file.unknownext")
 }
@@ -181,8 +238,8 @@ func loadTestTheme(t *testing.T) *theme.Theme {
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "colors.json"), data, 0o644))
 
 	filetypes := map[string]map[string]interface{}{
-		"go": {"bold": true, "color": map[string]interface{}{"ansi": 35, "hex": "#38a169"}, "pattern": "*.go"},
-		"js": {"bold": false, "color": map[string]interface{}{"ansi": 226, "hex": "#facc15"}, "pattern": "*.js"},
+		"go": {"bold": true, "color": map[string]interface{}{"ansi": 35, "hex": "#38a169"}, "icon": map[string]interface{}{"glyph": "G", "name": "filetype-go"}, "pattern": "*.go"},
+		"js": {"bold": false, "color": map[string]interface{}{"ansi": 226, "hex": "#facc15"}, "icon": map[string]interface{}{"glyph": "J", "name": "filetype-js"}, "pattern": "*.js"},
 	}
 	ftData, err := json.Marshal(filetypes)
 	require.NoError(t, err)

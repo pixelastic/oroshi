@@ -29,7 +29,7 @@ type Context struct {
 }
 
 // FileHeader renders a file header row with directory coloring and separator.
-func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int) string {
+func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int, isCursor bool) string {
 	var b strings.Builder
 	if fileCount > 1 {
 		separatorStyle := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss("gray-7"))
@@ -46,16 +46,41 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int) string {
 	dir, file := filepath.Split(row.Path)
 	dirStyle := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss("directory"))
 	styledFile := file
-	if color, bold := ctx.Theme.FilenameColor(file); color != "" {
-		s := lipgloss.NewStyle().Foreground(color)
-		if bold {
+	fileColor, fileBold := ctx.Theme.FilenameColor(file)
+	if fileColor != "" {
+		s := lipgloss.NewStyle().Foreground(fileColor)
+		if fileBold {
 			s = s.Bold(true)
 		}
 		styledFile = s.Render(file)
 	}
-	label := " " + dirStyle.Render(dir) + styledFile
+
+	// Icon in the line number column, colored like the filename
+	icon := ctx.Theme.FilenameIcon(file)
+	iconCol := strings.Repeat(" ", ctx.LineNumberWidth)
+	if icon != "" {
+		pad := ctx.LineNumberWidth - 1
+		if pad < 0 {
+			pad = 0
+		}
+		styledIcon := icon
+		if fileColor != "" {
+			styledIcon = lipgloss.NewStyle().Foreground(fileColor).Render(icon)
+		}
+		iconCol = strings.Repeat(" ", pad) + styledIcon
+	}
+
+	label := iconCol + "  " + dirStyle.Render(dir) + styledFile
 	if ctx.FoldState[row.Path] {
 		label += " [folded]"
+	}
+	if isCursor && ctx.ViewportWidth > 0 {
+		bgStyle := lipgloss.NewStyle().Background(ctx.Theme.Lipgloss("gray-9"))
+		visible := lipgloss.Width(label)
+		pad := ctx.ViewportWidth - visible
+		if pad > 0 {
+			label += bgStyle.Render(strings.Repeat(" ", pad))
+		}
 	}
 	b.WriteString(label)
 	b.WriteByte('\n')

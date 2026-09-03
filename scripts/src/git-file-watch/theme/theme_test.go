@@ -105,6 +105,28 @@ func TestFilenameColorReturnsEmptyForUnknownExtension(t *testing.T) {
 	assert.Empty(t, string(color))
 }
 
+// --- FilenameIcon ---
+
+func TestFilenameIconReturnsGlyphForKnownExtension(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	icon := loaded.FilenameIcon("main.go")
+
+	assert.Equal(t, "G", icon)
+}
+
+func TestFilenameIconReturnsEmptyForUnknownExtension(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	icon := loaded.FilenameIcon("file.unknownext")
+
+	assert.Empty(t, icon)
+}
+
 // --- Helpers ---
 
 func setupTestFiles(t *testing.T) string {
@@ -124,9 +146,9 @@ func setupTestFiles(t *testing.T) string {
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "colors.json"), []byte(colorsJSON), 0o644))
 
 	filetypesJSON := `{
-		"go": {"bold": true, "color": {"ansi": 35, "hex": "#38a169", "name": "green"}, "pattern": "*.go"},
+		"go": {"bold": true, "color": {"ansi": 35, "hex": "#38a169", "name": "green"}, "icon": {"glyph": "G", "name": "filetype-go"}, "pattern": "*.go"},
 		"_envrc": {"bold": false, "color": {"ansi": 174, "hex": "#8b5cf6", "name": "violet-4"}, "pattern": ".envrc"},
-		"js": {"bold": false, "color": {"ansi": 226, "hex": "#facc15", "name": "yellow"}, "pattern": "*.js"}
+		"js": {"bold": false, "color": {"ansi": 226, "hex": "#facc15", "name": "yellow"}, "icon": {"glyph": "J", "name": "filetype-js"}, "pattern": "*.js"}
 	}`
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "filetypes.json"), []byte(filetypesJSON), 0o644))
 	return root

@@ -363,7 +363,7 @@ func (m model) View() string {
 		switch r := m.rows[i].(type) {
 		case layout.FileHeaderRow:
 			fileCount++
-			s := render.FileHeader(ctx, r, fileCount)
+			s := render.FileHeader(ctx, r, fileCount, i == m.nav.Cursor)
 			rendered += strings.Count(s, "\n") - 1
 			builder.WriteString(s)
 		case layout.SeparatorRow:

@@ -31,6 +31,9 @@ type filetypeEntry struct {
 		ANSI int    `json:"ansi"`
 		Hex  string `json:"hex"`
 	} `json:"color"`
+	Icon struct {
+		Glyph string `json:"glyph"`
+	} `json:"icon"`
 	Pattern string `json:"pattern"`
 }
 
@@ -96,20 +99,33 @@ func (t *Theme) Hex(name string) string {
 // FilenameColor returns the lipgloss color and bold flag for a filename
 // based on its extension or exact name match in filetypes.json.
 func (t *Theme) FilenameColor(basename string) (lipgloss.Color, bool) {
-	// Try extension match first (e.g. "main.go" → ext "go")
+	if entry, ok := t.resolveFiletype(basename); ok {
+		return resolveFiletypeColor(entry), entry.Bold
+	}
+	return lipgloss.Color(""), false
+}
+
+// FilenameIcon returns the icon glyph for a filename, or "" if not found.
+func (t *Theme) FilenameIcon(basename string) string {
+	if entry, ok := t.resolveFiletype(basename); ok {
+		return entry.Icon.Glyph
+	}
+	return ""
+}
+
+func (t *Theme) resolveFiletype(basename string) (filetypeEntry, bool) {
 	ext := strings.TrimPrefix(filepath.Ext(basename), ".")
 	if ext != "" {
 		if entry, ok := t.filetypes[ext]; ok {
-			return resolveFiletypeColor(entry), entry.Bold
+			return entry, true
 		}
 	}
-	// Try exact filename match by scanning patterns
 	for _, entry := range t.filetypes {
 		if entry.Pattern == basename {
-			return resolveFiletypeColor(entry), entry.Bold
+			return entry, true
 		}
 	}
-	return lipgloss.Color(""), false
+	return filetypeEntry{}, false
 }
 
 func resolveFiletypeColor(entry filetypeEntry) lipgloss.Color {
