@@ -1,6 +1,7 @@
 package watcher
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/fsnotify/fsnotify"
@@ -25,12 +26,14 @@ func TestGitDirIsIgnored(t *testing.T) {
 	assert.True(t, shouldIgnoreDirectory(".git/refs", ignored))
 }
 
-// --- gitIndexPath ---
+// --- GitIndexPath ---
 
-func TestGitIndexPathReturnsGitIndex(t *testing.T) {
-	result := GitIndexPath("/repo")
+func TestGitIndexPathUsesGitRevParse(t *testing.T) {
+	// This test runs in the actual repo, so git rev-parse works
+	result, err := GitIndexPath()
 
-	assert.Equal(t, "/repo/.git/index", result)
+	assert.NoError(t, err)
+	assert.True(t, strings.HasSuffix(result, "/index"), "should end with /index, got: "+result)
 }
 
 // --- Signature dedup ---

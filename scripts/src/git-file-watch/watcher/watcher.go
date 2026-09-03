@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -64,9 +65,16 @@ func Watch(repoRoot string) (<-chan struct{}, error) {
 	return signals, nil
 }
 
-// GitIndexPath returns the path to .git/index for a repo root.
-func GitIndexPath(repoRoot string) string {
-	return repoRoot + "/.git/index"
+// GitIndexPath returns the path to the git index file.
+// Works correctly for both normal repos and worktrees.
+func GitIndexPath() (string, error) {
+	cmd := exec.Command("git", "rev-parse", "--git-dir")
+	output, err := cmd.Output()
+	if err != nil {
+		return "", fmt.Errorf("finding git dir: %w", err)
+	}
+	gitDir := strings.TrimSpace(string(output))
+	return filepath.Join(gitDir, "index"), nil
 }
 
 func debounceLoop(fsWatcher *fsnotify.Watcher, repoRoot string, signals chan<- struct{}) {

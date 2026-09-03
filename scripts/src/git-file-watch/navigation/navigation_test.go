@@ -309,6 +309,19 @@ func TestMoveUpVisibleAtFirstRowDoesNotMove(t *testing.T) {
 	assert.Equal(t, 0, result.Cursor)
 }
 
+func TestMoveUpVisibleScrollsViewportToShowHeaderAboveCursor(t *testing.T) {
+	// Cursor on first navigable row (1), viewport starts at 1 (header at 0 is hidden)
+	state := State{Cursor: 1, ViewportOffset: 1, ViewportHeight: 5, RowCount: 6}
+	navigable := []int{1, 3, 4, 5}          // code lines only
+	visible := []int{0, 1, 2, 3, 4, 5}      // includes header at 0
+
+	result := MoveUpVisible(state, navigable, visible)
+
+	// Cursor can't move (already first navigable), but viewport should scroll up
+	assert.Equal(t, 1, result.Cursor)
+	assert.Equal(t, 0, result.ViewportOffset)
+}
+
 func TestMoveDownVisibleScrollsViewport(t *testing.T) {
 	state := State{Cursor: 4, ViewportOffset: 2, ViewportHeight: 3, RowCount: 15}
 	navigable := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}

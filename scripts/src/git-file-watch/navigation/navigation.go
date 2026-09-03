@@ -192,6 +192,10 @@ func MoveUpVisible(state State, navigableIndices []int, visibleIndices []int) St
 
 	pos := sort.SearchInts(navigableIndices, state.Cursor) - 1
 	if pos < 0 {
+		// Cursor can't move, but scroll viewport up if there's visible content above
+		if len(visibleIndices) > 0 && state.ViewportOffset > visibleIndices[0] {
+			state.ViewportOffset = visibleIndices[0]
+		}
 		return state
 	}
 
