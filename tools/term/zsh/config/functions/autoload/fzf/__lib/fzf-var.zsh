@@ -19,7 +19,7 @@ function fzf-var-read() {
   local defaultValue="$2"
   local saveFilepath="${OROSHI_TMP_FOLDER}/fzf/var/${KITTY_WINDOW_ID}/${key}"
   if [[ -f "$saveFilepath" ]]; then
-    cat "$saveFilepath"
+    \cat "$saveFilepath"
     return 0
   fi
   echo "$defaultValue"
