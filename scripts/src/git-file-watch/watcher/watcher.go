@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/git"
 )
 
 const (
@@ -68,7 +69,7 @@ func debounceLoop(fsWatcher *fsnotify.Watcher, repoRoot string, signals chan<- s
 
 	tracker := NewSignatureTracker()
 	// Seed the tracker with current diff so initial identical diffs don't signal
-	if initial, err := runGitDiff(repoRoot); err == nil {
+	if initial, err := git.Diff(repoRoot); err == nil {
 		tracker.Changed(initial)
 	}
 
@@ -93,7 +94,7 @@ func debounceLoop(fsWatcher *fsnotify.Watcher, repoRoot string, signals chan<- s
 			deadlineTimer.Stop()
 			deadlineTimer = nil
 		}
-		diffOutput, err := runGitDiff(repoRoot)
+		diffOutput, err := git.Diff(repoRoot)
 		if err != nil {
 			return
 		}
@@ -201,12 +202,3 @@ func shouldIgnoreDirectory(relativePath string, ignoredDirs map[string]bool) boo
 	return false
 }
 
-func runGitDiff(repoRoot string) (string, error) {
-	cmd := exec.Command("git", "diff")
-	cmd.Dir = repoRoot
-	output, err := cmd.Output()
-	if err != nil {
-		return "", fmt.Errorf("running git diff: %w", err)
-	}
-	return string(output), nil
-}

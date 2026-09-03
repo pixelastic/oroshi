@@ -17,6 +17,7 @@ import (
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/editing"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/editor"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/git"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/navigation"
@@ -219,7 +220,7 @@ func rawLineContent(rawLines map[string][]string, absolutePath string, lineNumbe
 }
 
 func (m *model) rebuildDisplay() tea.Cmd {
-	rows, highlighted, rawLines, err := buildDisplay(m.theme)
+	rows, highlighted, rawLines, err := buildDisplay(m.repoRoot, m.theme)
 	if err != nil {
 		return nil
 	}
@@ -624,13 +625,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	rows, highlighted, rawLines, err := buildDisplay(th)
+	repoRoot, err := git.RepoRoot()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 
-	repoRoot, err := gitRepoRoot()
+	rows, highlighted, rawLines, err := buildDisplay(repoRoot, th)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -690,13 +691,8 @@ func main() {
 	}
 }
 
-func buildDisplay(th *theme.Theme) ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
-	repoRoot, err := gitRepoRoot()
-	if err != nil {
-		return nil, nil, nil, err
-	}
-
-	raw, err := runGitDiff(repoRoot)
+func buildDisplay(repoRoot string, th *theme.Theme) ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
+	raw, err := git.Diff(repoRoot)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -724,25 +720,6 @@ func buildDisplay(th *theme.Theme) ([]layout.Row, map[string][]highlight.StyledL
 	}
 
 	return allRows, highlightedFiles, rawLines, nil
-}
-
-func gitRepoRoot() (string, error) {
-	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
-	output, err := cmd.Output()
-	if err != nil {
-		return "", fmt.Errorf("finding git root: %w", err)
-	}
-	return strings.TrimSpace(string(output)), nil
-}
-
-func runGitDiff(repoRoot string) (string, error) {
-	cmd := exec.Command("git", "diff")
-	cmd.Dir = repoRoot
-	output, err := cmd.Output()
-	if err != nil {
-		return "", fmt.Errorf("running git diff: %w", err)
-	}
-	return string(output), nil
 }
 
 func resolveCommentsPath() (string, error) {
