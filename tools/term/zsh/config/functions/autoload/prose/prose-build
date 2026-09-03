@@ -24,6 +24,8 @@ local packages=(${(s:,:)packagesLine#*= })
 local needsSync="0"
 for pkg in "${packages[@]}"; do
   pkg="${pkg// /}"
+  # URL packages: extract directory name from zip filename
+  [[ "$pkg" == http* ]] && pkg="${pkg:t:r}"
   [[ ! -d "$stylesDir/$pkg" ]] && needsSync="1"
 done
 [[ "$needsSync" == "1" ]] && vale sync --config "$defaultFile"
