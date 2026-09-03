@@ -9,17 +9,24 @@ and meet people. Help welcoming guests is appreciated but optional.
 
 **Tone:** Casual, first-person. You're talking to coworkers.
 
-**Structure:** Main message + thread reply.
+**Structure:**
+
+Initial (main message + thread reply):
 - Main message: hook (topic explained concretely), talks overview
   (company names + what each covers), social proof (registration
-  count), closing invitation to stay, raw registration link.
+  count), closing invitation to stay and help, raw registration link.
 - Thread reply: full speaker list (first name, last name, company,
   talk subject), language and recording note, CTA emoji for headcount
   ("drop a :pizza:"), reminder that no registration is needed.
 
-**Assets:** Attach to main message: event poster, teaser video,
-program (all available assets). Give a visual sense of the event
-without requiring people to read.
+Reminder (standalone message, not a thread reply):
+- Brief recap of the topic for people who missed the initial.
+- Registration count, talk start time, link.
+
+**Assets:**
+- Initial: event poster + teaser video + program (all available).
+  Give a visual sense of the event without requiring people to read.
+- Reminder: event poster only.
 
 ## #team-developer-marketing
 

@@ -39,6 +39,9 @@ Social proof is fine: "120+ people registered." Scarcity
 is not: "almost no spots left." Internal audiences do not
 need pressure. State facts, let people decide.
 
+Always use the registration count (`guestRegisteredCount`),
+not an estimated attendance. Say "registered," not "expected."
+
 ## Internal notes stay internal
 
 Organizer backgrounds, series concepts, partnership
@@ -61,6 +64,23 @@ does not reliably render pasted markdown.
 
 If the date is in the hook, do not repeat it in a
 logistics block. Say each piece of information once.
+
+## Reminders are self-contained
+
+A reminder is a new message, not a thread reply. Start
+with "Reminder:" then briefly recap the topic for people
+who missed the original. Keep it short: topic, social
+proof, CTA, link. Do not repeat the full initial message.
+
+## Draft metadata
+
+After the message body, add a `---` section with:
+- Schedule time in human-readable format (for example,
+  "Monday, September 8 at 2:06 PM")
+- Attach instructions listing which assets to drag-drop
+
+Initial messages posted immediately do not need a schedule
+line.
 
 ## Past examples
 
