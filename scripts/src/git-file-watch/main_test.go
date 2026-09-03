@@ -85,6 +85,46 @@ func TestRenderLineNumberDoesNotPanic(t *testing.T) {
 	assert.NotPanics(t, func() { renderLineNumber(row, th, 3, true, true, true) })
 }
 
+// --- lineColor ---
+
+func TestLineColorReturnsOrangeWhenHasComment(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	row := layout.LineRow{LineNumber: 5, Marker: &marker}
+
+	result := lineColor(row, th, true)
+
+	assert.Equal(t, th.Lipgloss("orange"), result)
+}
+
+func TestLineColorReturnsOrangeWhenHasCommentAndNoMarker(t *testing.T) {
+	th := loadTestTheme(t)
+	row := layout.LineRow{LineNumber: 5}
+
+	result := lineColor(row, th, true)
+
+	assert.Equal(t, th.Lipgloss("orange"), result)
+}
+
+func TestLineColorReturnsMarkerColorWhenNoComment(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	row := layout.LineRow{LineNumber: 5, Marker: &marker}
+
+	result := lineColor(row, th, false)
+
+	assert.Equal(t, th.Lipgloss("git-added"), result)
+}
+
+func TestLineColorReturnsGrayWhenNoMarkerAndNoComment(t *testing.T) {
+	th := loadTestTheme(t)
+	row := layout.LineRow{LineNumber: 5}
+
+	result := lineColor(row, th, false)
+
+	assert.Equal(t, th.Lipgloss("gray"), result)
+}
+
 // --- markerColorName ---
 
 func TestMarkerColorNameReturnsGitAddedForAdded(t *testing.T) {

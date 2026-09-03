@@ -438,16 +438,18 @@ func (m model) View() string {
 	return builder.String()
 }
 
-func renderGutter(row layout.LineRow, th *theme.Theme, hasComment bool) string {
-	const bar = "▌"
+func lineColor(row layout.LineRow, th *theme.Theme, hasComment bool) lipgloss.Color {
 	if hasComment {
-		return lipgloss.NewStyle().Foreground(th.Lipgloss("orange")).Render(bar)
+		return th.Lipgloss("orange")
 	}
 	if row.Marker != nil {
-		colorName := markerColorName(*row.Marker)
-		return lipgloss.NewStyle().Foreground(th.Lipgloss(colorName)).Render(bar)
+		return th.Lipgloss(markerColorName(*row.Marker))
 	}
-	return lipgloss.NewStyle().Foreground(th.Lipgloss("gray-7")).Render(bar)
+	return th.Lipgloss("gray")
+}
+
+func renderGutter(row layout.LineRow, th *theme.Theme, hasComment bool) string {
+	return lipgloss.NewStyle().Foreground(lineColor(row, th, hasComment)).Render("▌")
 }
 
 func renderLineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor bool, isFlash bool, hasComment bool) string {
@@ -467,19 +469,7 @@ func renderLineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor b
 			Render(numberString)
 	}
 
-	if hasComment {
-		return lipgloss.NewStyle().
-			Foreground(th.Lipgloss("orange")).
-			Render(numberString)
-	}
-
-	if row.Marker != nil {
-		colorName := markerColorName(*row.Marker)
-		return lipgloss.NewStyle().Foreground(th.Lipgloss(colorName)).Render(numberString)
-	}
-
-	// Context lines: use gray
-	return lipgloss.NewStyle().Foreground(th.Lipgloss("gray")).Render(numberString)
+	return lipgloss.NewStyle().Foreground(lineColor(row, th, hasComment)).Render(numberString)
 }
 
 func maxLineNumberWidth(rows []layout.Row) int {
