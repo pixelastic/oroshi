@@ -19,7 +19,13 @@ if [[ "$OROSHI_DISABLE_WORKTREE_AWARE" != "1" ]]; then
 
   # Switch to the worktree if we're in an oroshi worktree
   if [[ "$PWD" == "$OROSHI_WORKTREES_DIR/oroshi--"* ]]; then
-    export OROSHI_ROOT="$(git rev-parse --show-toplevel)"
+    # If in a submodule, we get the superproject, otherwise we get the toplevel
+    local superproject="$(git rev-parse --show-superproject-working-tree)"
+    if [[ "$superproject" != "" ]]; then
+      export OROSHI_ROOT="$superproject"
+    else
+      export OROSHI_ROOT="$(git rev-parse --show-toplevel)"
+    fi
   fi
 fi
 

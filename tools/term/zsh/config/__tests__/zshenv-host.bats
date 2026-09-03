@@ -61,6 +61,38 @@ mock_env() {
   [[ "$output" = "guest" ]]
 }
 
+@test "OROSHI_ROOT is worktree root when inside a submodule of an oroshi worktree" {
+  # Create a worktrees/ folder
+  worktreeRoot="$BATS_TMP_DIR/worktrees"
+  mkdir -p "$worktreeRoot"
+
+  # Add a git repo inside of it (to act as a worktree)
+  worktreeDirName="oroshi--with-submodule"
+  bats_git_dir "worktrees/$worktreeDirName"
+
+  # Create a separate repo to use as a submodule source
+  submoduleOrigin="$BATS_TMP_DIR/sub-origin"
+  git init "$submoduleOrigin"
+  touch "$submoduleOrigin/README.md"
+  git -C "$submoduleOrigin" add .
+  git -C "$submoduleOrigin" commit -m "init"
+
+  # Add the submodule inside the worktree repo
+  git -C "$worktreeRoot/$worktreeDirName" -c protocol.file.allow=always submodule add "$submoduleOrigin" private
+  git -C "$worktreeRoot/$worktreeDirName" commit -m "add submodule"
+
+  # Add a fake zshenv-guest.zsh so sourcing succeeds
+  zshenvConfigDir="$worktreeRoot/$worktreeDirName/tools/term/zsh/config/"
+  mkdir -p "$zshenvConfigDir"
+  echo "" > "$zshenvConfigDir/zshenv-guest.zsh"
+
+  # OROSHI_ROOT should be the worktree root, not the submodule root
+  mock_env "MOCK_OROSHI_WORKTREES_DIR" "$worktreeRoot"
+  run_bare_zsh "cd '$worktreeRoot/$worktreeDirName/private'; $sourcePrefix && echo \$OROSHI_ROOT"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$worktreeRoot/$worktreeDirName" ]]
+}
+
 # --- Worktree-aware integration ---
 
 @test "outside any worktree, chains resolve from ~/.oroshi" {

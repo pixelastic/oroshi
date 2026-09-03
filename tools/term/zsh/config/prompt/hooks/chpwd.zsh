@@ -12,7 +12,7 @@ function oroshi-chpwd() {
   [[ "$PWD" == "$OROSHI_ROOT" || "$PWD" == "$OROSHI_ROOT/"* ]] && return 0
 
   local newRoot="$HOME/.oroshi"
-  [[ "$isInOroshiWorktree" == "1" ]] && newRoot="$(git-directory-root)"
+  [[ "$isInOroshiWorktree" == "1" ]] && newRoot="$(git-directory-root --force)"
 
   export OROSHI_ROOT="$newRoot"
   oroshi-reload-path "$OROSHI_ROOT"
