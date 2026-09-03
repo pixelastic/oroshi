@@ -1,35 +1,70 @@
 # Writing Principles
 
-> Placeholder — will be tuned in issue 08.
+## Language
 
-## Respect their attention
+Always write in English, regardless of the meetup language.
 
-The reader's time > your thoroughness. Every word must
-earn its place. No repetitions — say it once. Stop writing
-when the point is made.
+## Hook with the topic, not logistics
 
-## Important thing first
+The first sentence answers "why should I care," not
+"when is it." Lead with what the event is about, not
+the date or venue.
 
-Inverted pyramid: lead with the answer or key info, never
-build up to a conclusion. If the reader stops after the
-first sentence, they have the essential.
+## Be concrete, not generic
 
-## Scannable
+Explain the topic in plain terms. "Getting your brand
+cited by AI instead of ranked by Google" beats "search
+in the age of AI." Avoid vague, high-level descriptions.
 
-People scan, they don't read. Structure should guide the
-eye so the reader gets the gist without reading every word.
-Formatting allowlist: bullets, numbered lists, `code`
-backticks. No bold, no links, no headers. Let whitespace
-breathe.
+## Every sentence has a verb
 
-## Complete in one message
+No noun-phrase-only sentences. "Three short talks covering
+X" reads like AI output. "We'll have three talks" reads
+like a person wrote it.
 
-Don't make them pull information out of you — give the
-answer, the why, and a reference if useful, all upfront.
-But stay open: inform, don't close the conversation.
+## No cliché catchphrases
 
-## Sound human
+No "X is dead, long live Y." No marketing slogans. Start
+with a factual, direct statement.
 
-Write like a colleague, not a report. Light emoji is OK
-when it takes the edge off. Avoid categorical phrasing that
-sounds robotic.
+## First person, active voice
+
+Write as Tim, the person hosting. "I could use a hand,"
+not "help is appreciated." "We're hosting," not "a meetup
+is being organized."
+
+## Factual, no artificial urgency
+
+Social proof is fine: "120+ people registered." Scarcity
+is not: "almost no spots left." Internal audiences do not
+need pressure. State facts, let people decide.
+
+## Internal notes stay internal
+
+Organizer backgrounds, series concepts, partnership
+details from Airtable notes are context for writing,
+not content for the message. Only include what helps
+the reader decide to attend or help.
+
+## No decorative emoji
+
+No emoji in prose. Only use emoji as a functional
+CTA (for example, "drop a :pizza: to help me count").
+
+## Raw link at the end
+
+Put the registration URL as a raw link on its own line,
+at the end of the main message. No markdown links. Slack
+does not reliably render pasted markdown.
+
+## No redundancy
+
+If the date is in the hook, do not repeat it in a
+logistics block. Say each piece of information once.
+
+## Past examples
+
+Previously posted drafts live in
+`$OROSHI_TMP_FOLDER/claude/meetup-announce/<recordId>/`.
+Look there for inspiration, but follow these principles
+over any older draft.
