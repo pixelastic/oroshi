@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
+	"github.com/charmbracelet/lipgloss"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/theme"
@@ -91,6 +93,41 @@ func TestFileHeaderContainsBasenameForUnknownExtension(t *testing.T) {
 	result := FileHeader(ctx, row, 1, false)
 
 	assert.Contains(t, result, "file.unknownext")
+}
+
+// --- applyCursorHighlight ---
+
+func TestApplyCursorHighlightContainsContent(t *testing.T) {
+	th := loadTestTheme(t)
+
+	result := applyCursorHighlight("hello", th, 20)
+
+	assert.Contains(t, result, "hello")
+}
+
+func TestApplyCursorHighlightPadsToViewportWidth(t *testing.T) {
+	th := loadTestTheme(t)
+
+	result := applyCursorHighlight("hi", th, 10)
+
+	assert.Equal(t, 10, lipgloss.Width(result))
+}
+
+func TestApplyCursorHighlightStartsWithBgEscape(t *testing.T) {
+	th := loadTestTheme(t)
+
+	result := applyCursorHighlight("x", th, 5)
+
+	// Should start with an ANSI 24-bit background escape sequence
+	assert.True(t, strings.HasPrefix(result, "\x1b[48;2;"), "should start with bg escape code")
+}
+
+func TestApplyCursorHighlightEndsWithReset(t *testing.T) {
+	th := loadTestTheme(t)
+
+	result := applyCursorHighlight("x", th, 5)
+
+	assert.True(t, strings.HasSuffix(result, "\x1b[0m"), "should end with ANSI reset")
 }
 
 // --- Gutter ---

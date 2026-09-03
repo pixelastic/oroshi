@@ -75,12 +75,7 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int, isCursor b
 		label += " [folded]"
 	}
 	if isCursor && ctx.ViewportWidth > 0 {
-		bgStyle := lipgloss.NewStyle().Background(ctx.Theme.Lipgloss("gray-9"))
-		visible := lipgloss.Width(label)
-		pad := ctx.ViewportWidth - visible
-		if pad > 0 {
-			label += bgStyle.Render(strings.Repeat(" ", pad))
-		}
+		label = applyCursorHighlight(label, ctx.Theme, ctx.ViewportWidth)
 	}
 	b.WriteString(label)
 	b.WriteByte('\n')
@@ -116,18 +111,42 @@ func CodeLine(ctx Context, row layout.LineRow, isCursor bool) string {
 		line = lipgloss.NewStyle().MaxWidth(ctx.ViewportWidth).Render(line)
 	}
 
-	if isCursor {
-		bgStyle := lipgloss.NewStyle().Background(ctx.Theme.Lipgloss("gray-9"))
-		visible := lipgloss.Width(line)
-		pad := ctx.ViewportWidth - visible
-		if pad > 0 {
-			line += bgStyle.Render(strings.Repeat(" ", pad))
-		}
+	if isCursor && ctx.ViewportWidth > 0 {
+		line = applyCursorHighlight(line, ctx.Theme, ctx.ViewportWidth)
 	}
 
 	b.WriteString(line)
 	b.WriteByte('\n')
 	return b.String()
+}
+
+// applyCursorHighlight applies background color to the entire line and pads to viewport width.
+// It uses raw ANSI escapes to inject a background that survives lipgloss resets.
+func applyCursorHighlight(line string, th *theme.Theme, viewportWidth int) string {
+	visible := lipgloss.Width(line)
+	pad := viewportWidth - visible
+	if pad > 0 {
+		line += strings.Repeat(" ", pad)
+	}
+	hex := th.Hex("gray-9")
+	if hex == "" {
+		return line
+	}
+	r, g, b := parseHexColor(hex)
+	bgCode := fmt.Sprintf("\x1b[48;2;%d;%d;%dm", r, g, b)
+	// Re-apply background after every ANSI reset so it persists through styled segments
+	line = strings.ReplaceAll(line, "\x1b[0m", "\x1b[0m"+bgCode)
+	return bgCode + line + "\x1b[0m"
+}
+
+func parseHexColor(hex string) (uint8, uint8, uint8) {
+	hex = strings.TrimPrefix(hex, "#")
+	if len(hex) != 6 {
+		return 0, 0, 0
+	}
+	var r, g, b uint8
+	_, _ = fmt.Sscanf(hex, "%02x%02x%02x", &r, &g, &b)
+	return r, g, b
 }
 
 // Gutter renders the left gutter bar character with appropriate color.
