@@ -1,0 +1,1884 @@
+{
+  "7z": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.7z"
+  },
+  "_algolia_api_key": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "group": "minor",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    },
+    "pattern": "_algolia_api_key"
+  },
+  "_envrc": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": ".envrc"
+  },
+  "_eslintignore": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": ".eslintignore"
+  },
+  "_fdignore": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": ".fdignore"
+  },
+  "_gitattributes": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": ".gitattributes"
+  },
+  "_gitignore": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": ".gitignore"
+  },
+  "_gitmodules": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": ".gitmodules"
+  },
+  "_npmrc": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": ".npmrc"
+  },
+  "_nvmrc": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": ".nvmrc"
+  },
+  "_prettierignore": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": ".prettierignore"
+  },
+  "_stylelintignore": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": ".stylelintignore"
+  },
+  "_yarnrc": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": ".yarnrc"
+  },
+  "archive": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    }
+  },
+  "au3": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.au3"
+  },
+  "audio": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue-5"
+    },
+    "icon": {
+      "glyph": "",
+      "name": "filetype-audio"
+    }
+  },
+  "avi": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue"
+    },
+    "group": "video",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-video"
+    },
+    "pattern": "*.avi"
+  },
+  "avif": {
+    "bold": false,
+    "color": {
+      "ansi": 85,
+      "hex": "#be185d",
+      "name": "pink"
+    },
+    "group": "image",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-image"
+    },
+    "pattern": "*.avif"
+  },
+  "bash": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.bash"
+  },
+  "bats": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.bats"
+  },
+  "binary": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue"
+    },
+    "icon": {
+      "glyph": "",
+      "name": "filetype-binary"
+    }
+  },
+  "bmp": {
+    "bold": false,
+    "color": {
+      "ansi": 85,
+      "hex": "#be185d",
+      "name": "pink"
+    },
+    "group": "image",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-image"
+    },
+    "pattern": "*.bmp"
+  },
+  "bz2": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.bz2"
+  },
+  "c": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.c"
+  },
+  "cbr": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.cbr"
+  },
+  "cbz": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.cbz"
+  },
+  "cfg": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": "*.cfg"
+  },
+  "cjs": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.cjs"
+  },
+  "codeowners": {
+    "bold": false,
+    "color": {
+      "ansi": 145,
+      "hex": "#d97706",
+      "name": "amber"
+    },
+    "group": "text",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-text"
+    },
+    "pattern": "CODEOWNERS"
+  },
+  "conf": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": "*.conf"
+  },
+  "config": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    }
+  },
+  "css": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.css"
+  },
+  "csv": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": "*.csv"
+  },
+  "deb": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.deb"
+  },
+  "desktop": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": "*.desktop"
+  },
+  "dockerfile": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "Dockerfile"
+  },
+  "ebook": {
+    "bold": true,
+    "color": {
+      "ansi": 75,
+      "hex": "#0891b2",
+      "name": "cyan-5"
+    },
+    "icon": {
+      "glyph": "",
+      "name": "filetype-ebook"
+    }
+  },
+  "eot": {
+    "bold": false,
+    "color": {
+      "ansi": 86,
+      "hex": "#9d174d",
+      "name": "pink-6"
+    },
+    "group": "font",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-font"
+    },
+    "pattern": "*.eot"
+  },
+  "epub": {
+    "bold": true,
+    "color": {
+      "ansi": 75,
+      "hex": "#0891b2",
+      "name": "cyan-5"
+    },
+    "group": "ebook",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-ebook"
+    },
+    "pattern": "*.epub"
+  },
+  "exe": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue"
+    },
+    "group": "binary",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-binary"
+    },
+    "pattern": "*.exe"
+  },
+  "font": {
+    "bold": false,
+    "color": {
+      "ansi": 86,
+      "hex": "#9d174d",
+      "name": "pink-6"
+    },
+    "icon": {
+      "glyph": "",
+      "name": "filetype-font"
+    }
+  },
+  "gemfile": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "Gemfile"
+  },
+  "gemspec": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.gemspec"
+  },
+  "gif": {
+    "bold": false,
+    "color": {
+      "ansi": 85,
+      "hex": "#be185d",
+      "name": "pink"
+    },
+    "group": "image",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-image"
+    },
+    "pattern": "*.gif"
+  },
+  "go": {
+    "bold": false,
+    "color": {
+      "ansi": 165,
+      "hex": "#0284c7",
+      "name": "sky-5"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "󰟓",
+      "name": "filetype-go"
+    },
+    "pattern": "*.go"
+  },
+  "guardfile": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "Guardfile"
+  },
+  "gz": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.gz"
+  },
+  "html": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.html"
+  },
+  "htmlz": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.htmlz"
+  },
+  "ico": {
+    "bold": false,
+    "color": {
+      "ansi": 85,
+      "hex": "#be185d",
+      "name": "pink"
+    },
+    "group": "image",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-image"
+    },
+    "pattern": "*.ico"
+  },
+  "image": {
+    "bold": false,
+    "color": {
+      "ansi": 85,
+      "hex": "#be185d",
+      "name": "pink"
+    },
+    "icon": {
+      "glyph": "",
+      "name": "filetype-image"
+    }
+  },
+  "ini": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": "*.ini"
+  },
+  "jpeg": {
+    "bold": false,
+    "color": {
+      "ansi": 85,
+      "hex": "#be185d",
+      "name": "pink"
+    },
+    "group": "image",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-image"
+    },
+    "pattern": "*.jpeg"
+  },
+  "jpg": {
+    "bold": false,
+    "color": {
+      "ansi": 85,
+      "hex": "#be185d",
+      "name": "pink"
+    },
+    "group": "image",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-image"
+    },
+    "pattern": "*.jpg"
+  },
+  "js": {
+    "bold": false,
+    "color": {
+      "ansi": 44,
+      "hex": "#ecc94b",
+      "name": "yellow-4"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-js"
+    },
+    "pattern": "*.js"
+  },
+  "js_map": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "group": "minor",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    },
+    "pattern": "*.js.map"
+  },
+  "json": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.json"
+  },
+  "jsonc": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.jsonc"
+  },
+  "jsonl": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.jsonl"
+  },
+  "jsx": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.jsx"
+  },
+  "kbd": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.kbd"
+  },
+  "license": {
+    "bold": false,
+    "color": {
+      "ansi": 145,
+      "hex": "#d97706",
+      "name": "amber"
+    },
+    "group": "text",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-text"
+    },
+    "pattern": "LICENSE"
+  },
+  "lock": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "group": "minor",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    },
+    "pattern": "*.lock"
+  },
+  "log": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "group": "minor",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    },
+    "pattern": "*.log"
+  },
+  "lua": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.lua"
+  },
+  "m4a": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue-5"
+    },
+    "group": "audio",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-audio"
+    },
+    "pattern": "*.m4a"
+  },
+  "maintainers": {
+    "bold": false,
+    "color": {
+      "ansi": 145,
+      "hex": "#d97706",
+      "name": "amber"
+    },
+    "group": "text",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-text"
+    },
+    "pattern": "MAINTAINERS"
+  },
+  "md": {
+    "bold": false,
+    "color": {
+      "ansi": 145,
+      "hex": "#d97706",
+      "name": "amber"
+    },
+    "group": "text",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-md"
+    },
+    "pattern": "*.md"
+  },
+  "min_css": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "group": "minor",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    },
+    "pattern": "*.min.css"
+  },
+  "min_js": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "group": "minor",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    },
+    "pattern": "*.min.js"
+  },
+  "minor": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    }
+  },
+  "mjs": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.mjs"
+  },
+  "mk": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.mk"
+  },
+  "mkv": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue"
+    },
+    "group": "video",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-video"
+    },
+    "pattern": "*.mkv"
+  },
+  "mobi": {
+    "bold": false,
+    "color": {
+      "ansi": 75,
+      "hex": "#0891b2",
+      "name": "cyan-5"
+    },
+    "group": "ebook",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-ebook"
+    },
+    "pattern": "*.mobi"
+  },
+  "mod": {
+    "bold": false,
+    "color": {
+      "ansi": 166,
+      "hex": "#0369a1",
+      "name": "sky-6"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.mod"
+  },
+  "mp3": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue-5"
+    },
+    "group": "audio",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-audio"
+    },
+    "pattern": "*.mp3"
+  },
+  "mp4": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue"
+    },
+    "group": "video",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-video"
+    },
+    "pattern": "*.mp4"
+  },
+  "mpg": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue"
+    },
+    "group": "video",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-video"
+    },
+    "pattern": "*.mpg"
+  },
+  "ogg": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue-5"
+    },
+    "group": "audio",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-audio"
+    },
+    "pattern": "*.ogg"
+  },
+  "opt": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": "*.opt"
+  },
+  "otf": {
+    "bold": false,
+    "color": {
+      "ansi": 86,
+      "hex": "#9d174d",
+      "name": "pink-6"
+    },
+    "group": "font",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-font"
+    },
+    "pattern": "*.otf"
+  },
+  "part": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "group": "minor",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    },
+    "pattern": "*.part"
+  },
+  "pdf": {
+    "bold": true,
+    "color": {
+      "ansi": 46,
+      "hex": "#b7791f",
+      "name": "yellow-6"
+    },
+    "group": "pdf",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-pdf"
+    },
+    "pattern": "*.pdf"
+  },
+  "pid": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "group": "minor",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    },
+    "pattern": "*.pid"
+  },
+  "png": {
+    "bold": false,
+    "color": {
+      "ansi": 85,
+      "hex": "#be185d",
+      "name": "pink"
+    },
+    "group": "image",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-image"
+    },
+    "pattern": "*.png"
+  },
+  "ps1": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.ps1"
+  },
+  "pug": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.pug"
+  },
+  "py": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.py"
+  },
+  "rakefile": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "Rakefile"
+  },
+  "rar": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.rar"
+  },
+  "raw": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "group": "minor",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    },
+    "pattern": "*.raw"
+  },
+  "rb": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.rb"
+  },
+  "readme": {
+    "bold": false,
+    "color": {
+      "ansi": 145,
+      "hex": "#d97706",
+      "name": "amber"
+    },
+    "group": "text",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-text"
+    },
+    "pattern": "README"
+  },
+  "rmp": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": "*.rmp"
+  },
+  "rs": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.rs"
+  },
+  "ru": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.ru"
+  },
+  "sass": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.sass"
+  },
+  "script": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    }
+  },
+  "scss": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.scss"
+  },
+  "service": {
+    "bold": false,
+    "color": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "group": "config",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-config"
+    },
+    "pattern": "*.service"
+  },
+  "session": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "group": "minor",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    },
+    "pattern": "*.session"
+  },
+  "sh": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.sh"
+  },
+  "sum": {
+    "bold": false,
+    "color": {
+      "ansi": 225,
+      "hex": "#525252",
+      "name": "neutral"
+    },
+    "group": "minor",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-minor"
+    },
+    "pattern": "*.sum"
+  },
+  "svg": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.svg"
+  },
+  "tar": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.tar"
+  },
+  "tar_bz2": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.tar.bz2"
+  },
+  "tar_gz": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.tar.gz"
+  },
+  "tar_lzma": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.tar.lzma"
+  },
+  "tar_xz": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.tar.xz"
+  },
+  "tbz2": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.tbz2"
+  },
+  "text": {
+    "bold": false,
+    "color": {
+      "ansi": 145,
+      "hex": "#d97706",
+      "name": "amber"
+    },
+    "icon": {
+      "glyph": "",
+      "name": "filetype-text"
+    }
+  },
+  "tgz": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.tgz"
+  },
+  "theme": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.theme"
+  },
+  "tmtheme": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.tmTheme"
+  },
+  "toml": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.toml"
+  },
+  "ts": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.ts"
+  },
+  "tsx": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.tsx"
+  },
+  "ttf": {
+    "bold": false,
+    "color": {
+      "ansi": 86,
+      "hex": "#9d174d",
+      "name": "pink-6"
+    },
+    "group": "font",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-font"
+    },
+    "pattern": "*.ttf"
+  },
+  "txt": {
+    "bold": false,
+    "color": {
+      "ansi": 145,
+      "hex": "#d97706",
+      "name": "amber"
+    },
+    "group": "text",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-text"
+    },
+    "pattern": "*.txt"
+  },
+  "txz": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.txz"
+  },
+  "vagrantfile": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "Vagrantfile"
+  },
+  "video": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue"
+    },
+    "icon": {
+      "glyph": "",
+      "name": "filetype-video"
+    }
+  },
+  "vim": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-vim"
+    },
+    "pattern": "*.vim"
+  },
+  "vtt": {
+    "bold": false,
+    "color": {
+      "ansi": 145,
+      "hex": "#d97706",
+      "name": "amber"
+    },
+    "group": "text",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-text"
+    },
+    "pattern": "*.vtt"
+  },
+  "vue": {
+    "bold": false,
+    "color": {
+      "ansi": 34,
+      "hex": "#48bb78",
+      "name": "green-4"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-vue"
+    },
+    "pattern": "*.vue"
+  },
+  "wav": {
+    "bold": true,
+    "color": {
+      "ansi": 55,
+      "hex": "#3182ce",
+      "name": "blue-5"
+    },
+    "group": "audio",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-audio"
+    },
+    "pattern": "*.wav"
+  },
+  "woff": {
+    "bold": false,
+    "color": {
+      "ansi": 86,
+      "hex": "#9d174d",
+      "name": "pink-6"
+    },
+    "group": "font",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-font"
+    },
+    "pattern": "*.woff"
+  },
+  "woff2": {
+    "bold": false,
+    "color": {
+      "ansi": 86,
+      "hex": "#9d174d",
+      "name": "pink-6"
+    },
+    "group": "font",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-font"
+    },
+    "pattern": "*.woff2"
+  },
+  "xml": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.xml"
+  },
+  "xz": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.xz"
+  },
+  "yaml": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.yaml"
+  },
+  "yml": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.yml"
+  },
+  "z": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.Z"
+  },
+  "zip": {
+    "bold": true,
+    "color": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green"
+    },
+    "group": "archive",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-archive"
+    },
+    "pattern": "*.zip"
+  },
+  "zsh": {
+    "bold": false,
+    "color": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "group": "script",
+    "icon": {
+      "glyph": "",
+      "name": "filetype-script"
+    },
+    "pattern": "*.zsh"
+  }
+}

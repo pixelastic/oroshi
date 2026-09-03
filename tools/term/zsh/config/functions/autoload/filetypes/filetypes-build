@@ -1,80 +1,110 @@
-# Build dist/filetypes.zsh from src/filetypes.jsonc
-# Resolves color/icon keys to values via colors-load-definitions and icons-load-definitions.
+# Build dist/filetypes.json and dist/filetypes.zsh from src/filetypes.jsonc
+# Reads dist/colors.json and dist/icons.json to resolve color/icon keys.
 # Usage:
 #   $ filetypes-build
+# Output:
+#   dist/filetypes.json — {"key":{"color":{name,ansi,hex},"icon":{name,glyph},"bold":bool,...}}
+#   dist/filetypes.zsh  — FILETYPES[key:attr]=value
 setopt local_options err_return
 
 local themingRoot="$OROSHI_ROOT/tools/term/zsh/config/theming"
 local srcJsonc="$themingRoot/src/filetypes.jsonc"
 local srcJson="$(jsonc2json "$srcJsonc")"
 local distDir="$themingRoot/dist"
+local distJson="$distDir/filetypes.json"
 local distZsh="$distDir/filetypes.zsh"
-
-colors-load-definitions
-icons-load-definitions
 
 mkdir -p "$distDir"
 
-# One jq pass: flatten all groups and patterns into ▮-separated lines.
-#   type▮key▮pattern▮colorKey▮iconKey▮bold▮group
-local flatData="$(jq -r --arg sep $'\u25ae' '
-  [
-    to_entries[] |
-    .key as $name |
-    .value as $group |
-    ($group.color) as $color |
-    ($group.icon) as $icon |
-    (if $group.bold then "1" else "0" end) as $bold |
-    [
-      (["group", $name, "", $color, $icon, $bold, ""] | join($sep)),
-      ($group.patterns[] |
-        if type == "string" then
-          ["pattern",
-            (. | ascii_downcase | gsub("[.]";"_")),
-            "*." + ., $color, $icon, $bold, $name
-          ] | join($sep)
+# Generate dist/filetypes.json — resolved color/icon objects, keys sorted {{{
+function generateDistJson() {
+  jq -n \
+    --argjson src "$srcJson" \
+    --argjson colors "$(cat "$distDir/colors.json")" \
+    --argjson icons "$(cat "$distDir/icons.json")" \
+  '
+    [$src | to_entries[]
+      | .key as $name
+      | .value as $group
+      | ($group.color) as $gColor
+      | ($group.icon) as $gIcon
+      | (if $group.bold then true else false end) as $gBold
+      | # Group entry
+      {
+        key: $name,
+        value: {
+          color: { name: $gColor, ansi: $colors[$gColor].ansi, hex: $colors[$gColor].hex },
+          icon: { name: $gIcon, glyph: $icons[$gIcon] },
+          bold: $gBold
+        }
+      },
+
+      # Pattern entries
+      ($group.patterns[]
+        | if type == "string" then
+          {
+            key: (. | ascii_downcase | gsub("[.]";"_")),
+            value: {
+              color: { name: $gColor, ansi: $colors[$gColor].ansi, hex: $colors[$gColor].hex },
+              icon: { name: $gIcon, glyph: $icons[$gIcon] },
+              bold: $gBold,
+              pattern: ("*." + .),
+              group: $name
+            }
+          }
         elif .filename then
-          ["pattern", (.filename | ascii_downcase | gsub("[.]";"_")), .filename,
-            (.color // $color), (.icon // $icon),
-            (if .bold == null then $bold elif .bold then "1" else "0" end), $name
-          ] | join($sep)
+          (.color // $gColor) as $c
+          | (.icon // $gIcon) as $i
+          | (if .bold == null then $gBold elif .bold then true else false end) as $b
+          | {
+            key: (.filename | ascii_downcase | gsub("[.]";"_")),
+            value: {
+              color: { name: $c, ansi: $colors[$c].ansi, hex: $colors[$c].hex },
+              icon: { name: $i, glyph: $icons[$i] },
+              bold: $b,
+              pattern: .filename,
+              group: $name
+            }
+          }
         elif .extension then
-          ["pattern", (.extension | ascii_downcase | gsub("[.]";"_")), "*." + .extension,
-            (.color // $color), (.icon // $icon),
-            (if .bold == null then $bold elif .bold then "1" else "0" end), $name
-          ] | join($sep)
+          (.color // $gColor) as $c
+          | (.icon // $gIcon) as $i
+          | (if .bold == null then $gBold elif .bold then true else false end) as $b
+          | {
+            key: (.extension | ascii_downcase | gsub("[.]";"_")),
+            value: {
+              color: { name: $c, ansi: $colors[$c].ansi, hex: $colors[$c].hex },
+              icon: { name: $i, glyph: $icons[$i] },
+              bold: $b,
+              pattern: ("*." + .extension),
+              group: $name
+            }
+          }
         end
       )
-    ][]
-  ] | sort_by(split($sep)[1]) | .[]
-' <<<"$srcJson")"
+    ] | sort_by(.key) | from_entries
+  ' | jq --sort-keys '.' >"$distJson"
+}
+# }}}
 
-local output="# zsh-lint disable-file=commandTooLong
-typeset -gA FILETYPES"
+# Generate dist/filetypes.zsh from dist/filetypes.json {{{
+function generateDistZsh() {
+  {
+    echo "# zsh-lint disable-file=commandTooLong"
+    echo "typeset -gA FILETYPES"
+    jq -r '
+      to_entries[]
+      | .key as $key
+      | .value
+      | "FILETYPES[\($key):color]=\(.color.ansi)",
+        "FILETYPES[\($key):icon]=\"\(.icon.glyph)\"",
+        "FILETYPES[\($key):bold]=\(if .bold then 1 else 0 end)",
+        (if .pattern then "FILETYPES[\($key):pattern]=\(.pattern)" else empty end),
+        (if .group then "FILETYPES[\($key):group]=\(.group)" else empty end)
+    ' "$distJson"
+  } >"$distZsh"
+}
+# }}}
 
-for line in ${(f)flatData}; do
-  [[ "$line" == "" ]] && continue
-
-  # type▮key▮pattern▮colorKey▮iconKey▮bold▮group (uniform 7 fields)
-  local parts=("${(@ps/▮/)line}")
-  local type="$parts[1]"
-  local key="$parts[2]"
-  local pattern="$parts[3]"
-  local colorKey="$parts[4]"
-  local iconKey="$parts[5]"
-  local bold="$parts[6]"
-  local group="$parts[7]"
-
-  # zsh-lint disable=missingColorsLoad
-  output+=$'\n'"FILETYPES[${key}:color]=${COLORS[$colorKey]}"
-  # zsh-lint disable=missingIconsLoad
-  output+=$'\n'"FILETYPES[${key}:icon]=\"${ICONS[$iconKey]}\""
-  output+=$'\n'"FILETYPES[${key}:bold]=$bold"
-
-  if [[ "$type" == "pattern" ]]; then
-    output+=$'\n'"FILETYPES[${key}:pattern]=$pattern"
-    output+=$'\n'"FILETYPES[${key}:group]=$group"
-  fi
-done
-
-echo "$output" >"$distZsh"
+generateDistJson
+generateDistZsh
