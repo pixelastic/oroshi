@@ -29,10 +29,10 @@ index 1234567..abcdefg 100644
 	assert.Equal(t, 1, result[0].Hunks[0].NewStart)
 	assert.Equal(t, 4, result[0].Hunks[0].NewCount)
 	require.Len(t, result[0].Hunks[0].Lines, 4)
-	assert.Equal(t, DiffLine{Content: "context line", Kind: "context"}, result[0].Hunks[0].Lines[0])
-	assert.Equal(t, DiffLine{Content: "added line", Kind: "added"}, result[0].Hunks[0].Lines[1])
-	assert.Equal(t, DiffLine{Content: "another context", Kind: "context"}, result[0].Hunks[0].Lines[2])
-	assert.Equal(t, DiffLine{Content: "last context", Kind: "context"}, result[0].Hunks[0].Lines[3])
+	assert.Equal(t, DiffLine{Content: "context line", Kind: KindContext}, result[0].Hunks[0].Lines[0])
+	assert.Equal(t, DiffLine{Content: "added line", Kind: KindAdded}, result[0].Hunks[0].Lines[1])
+	assert.Equal(t, DiffLine{Content: "another context", Kind: KindContext}, result[0].Hunks[0].Lines[2])
+	assert.Equal(t, DiffLine{Content: "last context", Kind: KindContext}, result[0].Hunks[0].Lines[3])
 }
 
 func TestParsesSingleFileDiffWithMultipleHunks(t *testing.T) {
@@ -129,9 +129,9 @@ func TestMarksAddedLinesAsAdded(t *testing.T) {
 			NewStart: 1, NewCount: 3,
 			OldStart: 1, OldCount: 2,
 			Lines: []DiffLine{
-				{Content: "context", Kind: "context"},
-				{Content: "new line", Kind: "added"},
-				{Content: "context", Kind: "context"},
+				{Content: "context", Kind: KindContext},
+				{Content: "new line", Kind: KindAdded},
+				{Content: "context", Kind: KindContext},
 			},
 		},
 	}
@@ -145,9 +145,9 @@ func TestMarksAddedLinesAdjacentToRemovedAsModified(t *testing.T) {
 			NewStart: 1, NewCount: 2,
 			OldStart: 1, OldCount: 2,
 			Lines: []DiffLine{
-				{Content: "old line", Kind: "removed"},
-				{Content: "new line", Kind: "added"},
-				{Content: "context", Kind: "context"},
+				{Content: "old line", Kind: KindRemoved},
+				{Content: "new line", Kind: KindAdded},
+				{Content: "context", Kind: KindContext},
 			},
 		},
 	}
@@ -161,9 +161,9 @@ func TestMarksOrphanedRemovedLinesAsDeletedOnNearestSurvivingLine(t *testing.T) 
 			NewStart: 1, NewCount: 2,
 			OldStart: 1, OldCount: 3,
 			Lines: []DiffLine{
-				{Content: "context before", Kind: "context"},
-				{Content: "deleted line", Kind: "removed"},
-				{Content: "context after", Kind: "context"},
+				{Content: "context before", Kind: KindContext},
+				{Content: "deleted line", Kind: KindRemoved},
+				{Content: "context after", Kind: KindContext},
 			},
 		},
 	}
@@ -178,9 +178,9 @@ func TestHandlesHunkWithOnlyAdditions(t *testing.T) {
 			NewStart: 1, NewCount: 3,
 			OldStart: 1, OldCount: 0,
 			Lines: []DiffLine{
-				{Content: "line one", Kind: "added"},
-				{Content: "line two", Kind: "added"},
-				{Content: "line three", Kind: "added"},
+				{Content: "line one", Kind: KindAdded},
+				{Content: "line two", Kind: KindAdded},
+				{Content: "line three", Kind: KindAdded},
 			},
 		},
 	}
@@ -196,9 +196,9 @@ func TestHandlesHunkWithOnlyDeletions(t *testing.T) {
 			NewStart: 5, NewCount: 1,
 			OldStart: 5, OldCount: 3,
 			Lines: []DiffLine{
-				{Content: "removed one", Kind: "removed"},
-				{Content: "removed two", Kind: "removed"},
-				{Content: "surviving", Kind: "context"},
+				{Content: "removed one", Kind: KindRemoved},
+				{Content: "removed two", Kind: KindRemoved},
+				{Content: "surviving", Kind: KindContext},
 			},
 		},
 	}
@@ -212,11 +212,11 @@ func TestHandlesHunkWithMixedAdditionsAndDeletions(t *testing.T) {
 			NewStart: 1, NewCount: 4,
 			OldStart: 1, OldCount: 3,
 			Lines: []DiffLine{
-				{Content: "context", Kind: "context"},
-				{Content: "old", Kind: "removed"},
-				{Content: "new", Kind: "added"},
-				{Content: "fresh", Kind: "added"},
-				{Content: "context", Kind: "context"},
+				{Content: "context", Kind: KindContext},
+				{Content: "old", Kind: KindRemoved},
+				{Content: "new", Kind: KindAdded},
+				{Content: "fresh", Kind: KindAdded},
+				{Content: "context", Kind: KindContext},
 			},
 		},
 	}

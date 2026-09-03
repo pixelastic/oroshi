@@ -6,6 +6,15 @@ import (
 	"strings"
 )
 
+// LineKind represents the type of a line within a hunk.
+type LineKind int
+
+const (
+	KindContext LineKind = iota
+	KindAdded
+	KindRemoved
+)
+
 // Marker represents the type of change on a line.
 type Marker int
 
@@ -18,7 +27,7 @@ const (
 // DiffLine represents a single line within a hunk.
 type DiffLine struct {
 	Content string
-	Kind    string // "added", "removed", "context"
+	Kind    LineKind
 }
 
 // Hunk represents a contiguous block of changes.
@@ -89,17 +98,17 @@ func Parse(raw string) []FileDiff {
 		if strings.HasPrefix(line, "+") {
 			currentHunk.Lines = append(currentHunk.Lines, DiffLine{
 				Content: line[1:],
-				Kind:    "added",
+				Kind:    KindAdded,
 			})
 		} else if strings.HasPrefix(line, "-") {
 			currentHunk.Lines = append(currentHunk.Lines, DiffLine{
 				Content: line[1:],
-				Kind:    "removed",
+				Kind:    KindRemoved,
 			})
 		} else if strings.HasPrefix(line, " ") {
 			currentHunk.Lines = append(currentHunk.Lines, DiffLine{
 				Content: line[1:],
-				Kind:    "context",
+				Kind:    KindContext,
 			})
 		}
 	}
@@ -128,14 +137,14 @@ func Classify(hunks []Hunk) map[int]Marker {
 func classifyHunk(hunk Hunk, markers map[int]Marker) {
 	// Build groups of consecutive removed and added lines
 	type lineGroup struct {
-		kind       string
+		kind       LineKind
 		startIndex int
 		count      int
 	}
 
 	var groups []lineGroup
 	for i, line := range hunk.Lines {
-		if line.Kind == "context" {
+		if line.Kind == KindContext {
 			continue
 		}
 		if len(groups) > 0 && groups[len(groups)-1].kind == line.Kind &&
@@ -156,7 +165,7 @@ func classifyHunk(hunk Hunk, markers map[int]Marker) {
 			if i == targetIndex {
 				return lineNum
 			}
-			if line.Kind != "removed" {
+			if line.Kind != KindRemoved {
 				lineNum++
 			}
 		}
@@ -165,13 +174,13 @@ func classifyHunk(hunk Hunk, markers map[int]Marker) {
 
 	// Process groups: pair removed+added as modified
 	for i, group := range groups {
-		if group.kind != "added" {
+		if group.kind != KindAdded {
 			continue
 		}
 
 		// Check if preceding group is removed (adjacent)
 		hasAdjacentRemoved := false
-		if i > 0 && groups[i-1].kind == "removed" {
+		if i > 0 && groups[i-1].kind == KindRemoved {
 			adjacentEnd := groups[i-1].startIndex + groups[i-1].count
 			if adjacentEnd == group.startIndex {
 				hasAdjacentRemoved = true
@@ -197,7 +206,7 @@ func classifyHunk(hunk Hunk, markers map[int]Marker) {
 
 	// Process orphaned removed groups
 	for i, group := range groups {
-		if group.kind != "removed" {
+		if group.kind != KindRemoved {
 			continue
 		}
 		if removedHasAdjacent[i] {
