@@ -52,7 +52,7 @@ type model struct {
 	repoRoot             string
 	userComments         []comments.Comment
 	commentsPath         string
-	commentIndex         map[string]bool
+	commentIndex         map[string]string
 	editState            editing.State
 	editTextArea         textarea.Model
 	statusMessage        string
@@ -327,6 +327,11 @@ func waitForCommentsChange(channel <-chan struct{}) tea.Cmd {
 }
 
 func (m model) View() string {
+	if len(m.rows) == 0 {
+		style := lipgloss.NewStyle().Foreground(lipgloss.Color(m.theme.Hex("gray-5")))
+		return "\n" + style.Render("No changes") + "\n"
+	}
+
 	var builder strings.Builder
 	var currentFile string
 
@@ -364,12 +369,27 @@ func (m model) View() string {
 		case layout.SeparatorRow:
 			builder.WriteByte('\n')
 		case layout.LineRow:
+			absolutePath := filepath.Join(m.repoRoot, currentFile)
+			commentKey := fmt.Sprintf("%s:%d", absolutePath, r.LineNumber)
+			commentText := m.commentIndex[commentKey]
+			hasComment := commentText != ""
 			flashKey := fmt.Sprintf("%s:%d", currentFile, r.LineNumber)
 			isFlash := m.flashLines[flashKey]
-			lineNumber := renderLineNumber(r, m.theme, m.lineNumberWidth, isCursor, isFlash)
+
+			// Render comment text above the line
+			if hasComment {
+				orangeStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(m.theme.Hex("orange")))
+				commentGutter := orangeStyle.Render("▌")
+				numPad := strings.Repeat(" ", m.lineNumberWidth)
+				builder.WriteString(commentGutter + numPad + " " + orangeStyle.Render("REVIEW: "+commentText))
+				builder.WriteByte('\n')
+				rendered++
+			}
+
+			gutter := renderGutter(r, m.theme, hasComment)
+			lineNumber := renderLineNumber(r, m.theme, m.lineNumberWidth, isCursor, isFlash, hasComment)
 			content := dimContent(m.highlighted, m.rawLines, m.repoRoot, currentFile, r, m.theme)
-			absolutePath := filepath.Join(m.repoRoot, currentFile)
-			line := commentIndicator(m.commentIndex, m.theme, absolutePath, r.LineNumber) + lineNumber + " " + content
+			line := gutter + lineNumber + " " + content
 
 			if m.viewportWidth > 0 {
 				line = lipgloss.NewStyle().MaxWidth(m.viewportWidth).Render(line)
@@ -403,7 +423,22 @@ func (m model) View() string {
 	return builder.String()
 }
 
-func renderLineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor bool, isFlash bool) string {
+func renderGutter(row layout.LineRow, th *theme.Theme, hasComment bool) string {
+	const bar = "▌"
+	if hasComment {
+		return lipgloss.NewStyle().Foreground(lipgloss.Color(th.Hex("orange"))).Render(bar)
+	}
+	if row.Marker != nil {
+		colorName := markerColorName(*row.Marker)
+		ansi, err := th.Color(colorName)
+		if err == nil {
+			return lipgloss.NewStyle().Foreground(theme.ANSIToLipgloss(ansi)).Render(bar)
+		}
+	}
+	return lipgloss.NewStyle().Foreground(lipgloss.Color(th.Hex("gray-7"))).Render(bar)
+}
+
+func renderLineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor bool, isFlash bool, hasComment bool) string {
 	numberString := fmt.Sprintf("%*d", width, row.LineNumber)
 
 	if isFlash {
@@ -417,6 +452,12 @@ func renderLineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor b
 		return lipgloss.NewStyle().
 			Foreground(lipgloss.Color(th.Hex("yellow"))).
 			Bold(true).
+			Render(numberString)
+	}
+
+	if hasComment {
+		return lipgloss.NewStyle().
+			Foreground(lipgloss.Color(th.Hex("orange"))).
 			Render(numberString)
 	}
 
@@ -732,24 +773,12 @@ func resolveCommentsPath() (string, error) {
 	return filepath.Join(dir, slug+".json"), nil
 }
 
-func buildCommentIndex(userComments []comments.Comment) map[string]bool {
-	index := make(map[string]bool, len(userComments))
+func buildCommentIndex(userComments []comments.Comment) map[string]string {
+	index := make(map[string]string, len(userComments))
 	for _, c := range userComments {
 		key := fmt.Sprintf("%s:%d", c.Filepath, c.LineNumber)
-		index[key] = true
+		index[key] = c.Review
 	}
 	return index
 }
 
-func commentIndicator(index map[string]bool, th *theme.Theme, absolutePath string, lineNumber int) string {
-	key := fmt.Sprintf("%s:%d", absolutePath, lineNumber)
-	if !index[key] {
-		return " "
-	}
-	ansi, err := th.Color("orange")
-	if err != nil {
-		return "●"
-	}
-	style := lipgloss.NewStyle().Foreground(theme.ANSIToLipgloss(ansi))
-	return style.Render("●")
-}
