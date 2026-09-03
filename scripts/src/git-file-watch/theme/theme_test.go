@@ -49,6 +49,28 @@ func TestReturnsErrorWhenRequiredTokenIsMissing(t *testing.T) {
 	assert.Error(t, err)
 }
 
+// --- Lipgloss ---
+
+func TestLipglossReturnsNonEmptyForKnownToken(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	result := loaded.Lipgloss("git-added")
+
+	assert.NotEmpty(t, string(result))
+}
+
+func TestLipglossReturnsEmptyForUnknownToken(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	result := loaded.Lipgloss("nonexistent")
+
+	assert.Empty(t, string(result))
+}
+
 // --- Helpers ---
 
 func setupTestFiles(t *testing.T) string {

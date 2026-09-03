@@ -328,7 +328,7 @@ func waitForCommentsChange(channel <-chan struct{}) tea.Cmd {
 
 func (m model) View() string {
 	if len(m.rows) == 0 {
-		style := lipgloss.NewStyle().Foreground(lipgloss.Color(m.theme.Hex("gray-5")))
+		style := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-5"))
 		return "\n" + style.Render("No changes") + "\n"
 	}
 
@@ -360,7 +360,7 @@ func (m model) View() string {
 			currentFile = r.Path
 			fileCount++
 			if fileCount > 1 {
-				separatorStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(m.theme.Hex("gray-7")))
+				separatorStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-7"))
 				width := m.viewportWidth
 				if width <= 0 {
 					width = 80
@@ -374,7 +374,7 @@ func (m model) View() string {
 				rendered++
 			}
 			dir, file := filepath.Split(r.Path)
-			dirStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(m.theme.Hex("directory")))
+			dirStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("directory"))
 			label := " " + dirStyle.Render(dir) + file
 			if m.foldState[r.Path] {
 				label += " [folded]"
@@ -393,7 +393,7 @@ func (m model) View() string {
 
 			// Render comment text above the line
 			if hasComment {
-				orangeStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(m.theme.Hex("orange")))
+				orangeStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("orange"))
 				commentGutter := orangeStyle.Render("▌")
 				numPad := strings.Repeat(" ", m.lineNumberWidth)
 				builder.WriteString(commentGutter + numPad + " " + orangeStyle.Render("REVIEW: "+commentText))
@@ -411,7 +411,7 @@ func (m model) View() string {
 			}
 
 			if isCursor {
-				bgStyle := lipgloss.NewStyle().Background(lipgloss.Color(m.theme.Hex("gray-9")))
+				bgStyle := lipgloss.NewStyle().Background(m.theme.Lipgloss("gray-9"))
 				visible := lipgloss.Width(line)
 				pad := m.viewportWidth - visible
 				if pad > 0 {
@@ -441,16 +441,13 @@ func (m model) View() string {
 func renderGutter(row layout.LineRow, th *theme.Theme, hasComment bool) string {
 	const bar = "▌"
 	if hasComment {
-		return lipgloss.NewStyle().Foreground(lipgloss.Color(th.Hex("orange"))).Render(bar)
+		return lipgloss.NewStyle().Foreground(th.Lipgloss("orange")).Render(bar)
 	}
 	if row.Marker != nil {
 		colorName := markerColorName(*row.Marker)
-		ansi, err := th.Color(colorName)
-		if err == nil {
-			return lipgloss.NewStyle().Foreground(theme.ANSIToLipgloss(ansi)).Render(bar)
-		}
+		return lipgloss.NewStyle().Foreground(th.Lipgloss(colorName)).Render(bar)
 	}
-	return lipgloss.NewStyle().Foreground(lipgloss.Color(th.Hex("gray-7"))).Render(bar)
+	return lipgloss.NewStyle().Foreground(th.Lipgloss("gray-7")).Render(bar)
 }
 
 func renderLineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor bool, isFlash bool, hasComment bool) string {
@@ -458,38 +455,31 @@ func renderLineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor b
 
 	if isFlash {
 		return lipgloss.NewStyle().
-			Foreground(lipgloss.Color(th.Hex("amber-3"))).
+			Foreground(th.Lipgloss("amber-3")).
 			Bold(true).
 			Render(numberString)
 	}
 
 	if isCursor {
 		return lipgloss.NewStyle().
-			Foreground(lipgloss.Color(th.Hex("yellow"))).
+			Foreground(th.Lipgloss("yellow")).
 			Bold(true).
 			Render(numberString)
 	}
 
 	if hasComment {
 		return lipgloss.NewStyle().
-			Foreground(lipgloss.Color(th.Hex("orange"))).
+			Foreground(th.Lipgloss("orange")).
 			Render(numberString)
 	}
 
 	if row.Marker != nil {
 		colorName := markerColorName(*row.Marker)
-		ansi, err := th.Color(colorName)
-		if err == nil {
-			return lipgloss.NewStyle().Foreground(theme.ANSIToLipgloss(ansi)).Render(numberString)
-		}
+		return lipgloss.NewStyle().Foreground(th.Lipgloss(colorName)).Render(numberString)
 	}
 
 	// Context lines: use gray
-	ansi, err := th.Color("gray")
-	if err == nil {
-		return lipgloss.NewStyle().Foreground(theme.ANSIToLipgloss(ansi)).Render(numberString)
-	}
-	return numberString
+	return lipgloss.NewStyle().Foreground(th.Lipgloss("gray")).Render(numberString)
 }
 
 func maxLineNumberWidth(rows []layout.Row) int {
@@ -603,11 +593,11 @@ func dimContent(highlighted map[string][]highlight.StyledLine, rawLines map[stri
 	plain = strings.ReplaceAll(plain, "\t", "    ")
 
 	colorName := dimColorForDistance(row.Distance)
-	hex := th.Hex(colorName)
-	if hex == "" {
+	color := th.Lipgloss(colorName)
+	if color == "" {
 		return plain
 	}
-	return lipgloss.NewStyle().Foreground(lipgloss.Color(hex)).Render(plain)
+	return lipgloss.NewStyle().Foreground(color).Render(plain)
 }
 
 func dimColorForDistance(distance int) string {

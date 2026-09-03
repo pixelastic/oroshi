@@ -70,7 +70,15 @@ func (t *Theme) Hex(name string) string {
 	return t.hexColors[name]
 }
 
-// ANSIToLipgloss converts an ANSI 256 index to a lipgloss Color.
-func ANSIToLipgloss(ansi int) lipgloss.Color {
+// Lipgloss resolves a color token to a lipgloss.Color.
+// Prefers hex (true-color), falls back to ANSI.
+func (t *Theme) Lipgloss(name string) lipgloss.Color {
+	if hex := t.hexColors[name]; hex != "" {
+		return lipgloss.Color(hex)
+	}
+	ansi, ok := t.colors[name]
+	if !ok {
+		return lipgloss.Color("")
+	}
 	return lipgloss.Color(strconv.Itoa(ansi))
 }
