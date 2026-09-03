@@ -1,6 +1,8 @@
 package layout
 
 import (
+	"sort"
+
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
 )
 
@@ -61,16 +63,10 @@ func expandRanges(markers map[int]diff.Marker, totalLines int) []lineRange {
 		}
 		ranges = append(ranges, lineRange{start: start, end: end})
 	}
-	sortRanges(ranges)
+	sort.Slice(ranges, func(i, j int) bool {
+		return ranges[i].start < ranges[j].start
+	})
 	return ranges
-}
-
-func sortRanges(ranges []lineRange) {
-	for i := 1; i < len(ranges); i++ {
-		for j := i; j > 0 && ranges[j].start < ranges[j-1].start; j-- {
-			ranges[j], ranges[j-1] = ranges[j-1], ranges[j]
-		}
-	}
 }
 
 func mergeRanges(ranges []lineRange) []lineRange {
