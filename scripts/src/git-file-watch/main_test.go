@@ -12,132 +12,11 @@ import (
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/navigation"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/render"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/theme"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
-
-// --- renderGutter ---
-
-func TestRenderGutterContainsBarCharacter(t *testing.T) {
-	th := loadTestTheme(t)
-	row := layout.LineRow{LineNumber: 5}
-
-	result := renderGutter(row, th, false)
-
-	assert.Contains(t, result, "▌")
-}
-
-func TestRenderGutterReturnsSameOutputForSameInputs(t *testing.T) {
-	th := loadTestTheme(t)
-	row := layout.LineRow{LineNumber: 5}
-
-	a := renderGutter(row, th, false)
-	b := renderGutter(row, th, false)
-
-	assert.Equal(t, a, b)
-}
-
-func TestRenderGutterCommentChangesOutput(t *testing.T) {
-	th := loadTestTheme(t)
-	marker := diff.MarkerAdded
-	row := layout.LineRow{LineNumber: 5, Marker: &marker}
-
-	withComment := renderGutter(row, th, true)
-	withoutComment := renderGutter(row, th, false)
-
-	// In non-TTY both may strip to same unstyled string,
-	// but the function should still be callable without panic
-	_ = withComment
-	_ = withoutComment
-}
-
-// --- renderLineNumber ---
-
-func TestRenderLineNumberContainsNumber(t *testing.T) {
-	th := loadTestTheme(t)
-	row := layout.LineRow{LineNumber: 42}
-
-	result := renderLineNumber(row, th, 3, false, false, false)
-
-	assert.Contains(t, result, "42")
-}
-
-func TestRenderLineNumberPadsToWidth(t *testing.T) {
-	th := loadTestTheme(t)
-	row := layout.LineRow{LineNumber: 5}
-
-	result := renderLineNumber(row, th, 4, false, false, false)
-
-	assert.Contains(t, result, "   5")
-}
-
-func TestRenderLineNumberDoesNotPanic(t *testing.T) {
-	th := loadTestTheme(t)
-	marker := diff.MarkerAdded
-	row := layout.LineRow{LineNumber: 10, Marker: &marker}
-
-	// Exercise all priority branches without panicking
-	assert.NotPanics(t, func() { renderLineNumber(row, th, 3, false, false, false) })
-	assert.NotPanics(t, func() { renderLineNumber(row, th, 3, false, false, true) })
-	assert.NotPanics(t, func() { renderLineNumber(row, th, 3, true, false, false) })
-	assert.NotPanics(t, func() { renderLineNumber(row, th, 3, true, true, false) })
-	assert.NotPanics(t, func() { renderLineNumber(row, th, 3, true, true, true) })
-}
-
-// --- lineColor ---
-
-func TestLineColorReturnsOrangeWhenHasComment(t *testing.T) {
-	th := loadTestTheme(t)
-	marker := diff.MarkerAdded
-	row := layout.LineRow{LineNumber: 5, Marker: &marker}
-
-	result := lineColor(row, th, true)
-
-	assert.Equal(t, th.Lipgloss("orange"), result)
-}
-
-func TestLineColorReturnsOrangeWhenHasCommentAndNoMarker(t *testing.T) {
-	th := loadTestTheme(t)
-	row := layout.LineRow{LineNumber: 5}
-
-	result := lineColor(row, th, true)
-
-	assert.Equal(t, th.Lipgloss("orange"), result)
-}
-
-func TestLineColorReturnsMarkerColorWhenNoComment(t *testing.T) {
-	th := loadTestTheme(t)
-	marker := diff.MarkerAdded
-	row := layout.LineRow{LineNumber: 5, Marker: &marker}
-
-	result := lineColor(row, th, false)
-
-	assert.Equal(t, th.Lipgloss("git-added"), result)
-}
-
-func TestLineColorReturnsGrayWhenNoMarkerAndNoComment(t *testing.T) {
-	th := loadTestTheme(t)
-	row := layout.LineRow{LineNumber: 5}
-
-	result := lineColor(row, th, false)
-
-	assert.Equal(t, th.Lipgloss("gray"), result)
-}
-
-// --- markerColorName ---
-
-func TestMarkerColorNameReturnsGitAddedForAdded(t *testing.T) {
-	assert.Equal(t, "git-added", markerColorName(diff.MarkerAdded))
-}
-
-func TestMarkerColorNameReturnsGitModifiedForModified(t *testing.T) {
-	assert.Equal(t, "git-modified", markerColorName(diff.MarkerModified))
-}
-
-func TestMarkerColorNameReturnsGitRemovedForDeleted(t *testing.T) {
-	assert.Equal(t, "git-removed", markerColorName(diff.MarkerDeleted))
-}
 
 // --- buildCommentIndex ---
 
@@ -397,7 +276,7 @@ func testModelWithRoot(th *theme.Theme, rows []layout.Row, repoRoot string) mode
 		visibleIndices:  visibleIndices,
 		commentIndex:    map[string]string{},
 		flashLines:      map[string]bool{},
-		lineNumberWidth: maxLineNumberWidth(rows),
+		lineNumberWidth: render.MaxLineNumberWidth(rows),
 		nav: navigation.State{
 			RowCount:       len(rows),
 			ViewportHeight: 40,

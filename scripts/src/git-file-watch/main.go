@@ -22,6 +22,7 @@ import (
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/navigation"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/render"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/theme"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/watcher"
 )
@@ -226,7 +227,7 @@ func (m *model) rebuildDisplay() tea.Cmd {
 		m.nav.Cursor = max(0, len(rows)-1)
 	}
 	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileIndex)
-	m.lineNumberWidth = maxLineNumberWidth(rows)
+	m.lineNumberWidth = render.MaxLineNumberWidth(rows)
 
 	m.userComments = comments.Reattach(m.userComments, absoluteRawLines(rawLines, m.repoRoot))
 	_ = comments.Save(m.commentsPath, m.userComments)
@@ -314,77 +315,24 @@ func waitForCommentsChange(channel <-chan struct{}) tea.Cmd {
 	}
 }
 
-func (m model) renderFileHeader(r layout.FileHeaderRow, fileCount int) string {
-	var b strings.Builder
-	if fileCount > 1 {
-		separatorStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-7"))
-		width := m.viewportWidth
-		if width <= 0 {
-			width = 80
-		}
-		b.WriteString(separatorStyle.Render(strings.Repeat("─", width)))
-		b.WriteByte('\n')
-	}
-	if fileCount == 1 {
-		b.WriteByte('\n')
-	}
-	dir, file := filepath.Split(r.Path)
-	dirStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("directory"))
-	label := " " + dirStyle.Render(dir) + file
-	if m.fileIndex.FoldState[r.Path] {
-		label += " [folded]"
-	}
-	b.WriteString(label)
-	b.WriteByte('\n')
-	return b.String()
-}
-
-func (m model) renderCommentLine(commentText string) string {
-	orangeStyle := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("orange"))
-	gutter := orangeStyle.Render("▌")
-	numberPadding := strings.Repeat(" ", m.lineNumberWidth)
-	return gutter + numberPadding + " " + orangeStyle.Render("REVIEW: "+commentText) + "\n"
-}
-
-func (m model) renderCodeLine(r layout.LineRow, isCursor bool) string {
-	key := fmt.Sprintf("%s:%d", r.FilePath, r.LineNumber)
-	commentText := m.commentIndex[key]
-	hasComment := commentText != ""
-	isFlash := m.flashLines[key]
-
-	var b strings.Builder
-	// Render comment text above the line
-	if hasComment {
-		b.WriteString(m.renderCommentLine(commentText))
-	}
-
-	gutter := renderGutter(r, m.theme, hasComment)
-	lineNumber := renderLineNumber(r, m.theme, m.lineNumberWidth, isCursor, isFlash, hasComment)
-	content := dimContent(m.highlighted, m.rawLines, r.FilePath, r, m.theme)
-	line := gutter + lineNumber + " " + content
-
-	if m.viewportWidth > 0 {
-		line = lipgloss.NewStyle().MaxWidth(m.viewportWidth).Render(line)
-	}
-
-	if isCursor {
-		bgStyle := lipgloss.NewStyle().Background(m.theme.Lipgloss("gray-9"))
-		visible := lipgloss.Width(line)
-		pad := m.viewportWidth - visible
-		if pad > 0 {
-			line += bgStyle.Render(strings.Repeat(" ", pad))
-		}
-	}
-
-	b.WriteString(line)
-	b.WriteByte('\n')
-	return b.String()
-}
-
 func (m model) View() string {
 	if len(m.rows) == 0 {
 		return "\n" + lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-5")).Render("No changes") + "\n"
 	}
+
+	ctx := render.Context{
+		Theme:           m.theme,
+		RepoRoot:        m.repoRoot,
+		Highlighted:     m.highlighted,
+		RawLines:        m.rawLines,
+		CommentIndex:    m.commentIndex,
+		FlashLines:      m.flashLines,
+		FoldState:       m.fileIndex.FoldState,
+		LineNumberWidth: m.lineNumberWidth,
+		ViewportWidth:   m.viewportWidth,
+		Cursor:          m.nav.Cursor,
+	}
+
 	var builder strings.Builder
 	rendered, fileCount := 0, 0
 	for _, i := range m.visibleIndices { // Render visible rows within viewport
@@ -401,13 +349,13 @@ func (m model) View() string {
 		switch r := m.rows[i].(type) {
 		case layout.FileHeaderRow:
 			fileCount++
-			s := m.renderFileHeader(r, fileCount)
+			s := render.FileHeader(ctx, r, fileCount)
 			rendered += strings.Count(s, "\n") - 1
 			builder.WriteString(s)
 		case layout.SeparatorRow:
 			builder.WriteByte('\n')
 		case layout.LineRow:
-			s := m.renderCodeLine(r, i == m.nav.Cursor)
+			s := render.CodeLine(ctx, r, i == m.nav.Cursor)
 			rendered += strings.Count(s, "\n") - 1
 			builder.WriteString(s)
 			if m.editState.Active && i == m.editState.RowIndex {
@@ -419,112 +367,6 @@ func (m model) View() string {
 		fmt.Fprintf(&builder, "\n%s\n", m.statusMessage)
 	}
 	return builder.String()
-}
-
-func lineColor(row layout.LineRow, th *theme.Theme, hasComment bool) lipgloss.Color {
-	if hasComment {
-		return th.Lipgloss("orange")
-	}
-	if row.Marker != nil {
-		return th.Lipgloss(markerColorName(*row.Marker))
-	}
-	return th.Lipgloss("gray")
-}
-
-func renderGutter(row layout.LineRow, th *theme.Theme, hasComment bool) string {
-	return lipgloss.NewStyle().Foreground(lineColor(row, th, hasComment)).Render("▌")
-}
-
-func renderLineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor bool, isFlash bool, hasComment bool) string {
-	numberString := fmt.Sprintf("%*d", width, row.LineNumber)
-
-	if isFlash {
-		return lipgloss.NewStyle().
-			Foreground(th.Lipgloss("amber-3")).
-			Bold(true).
-			Render(numberString)
-	}
-
-	if isCursor {
-		return lipgloss.NewStyle().
-			Foreground(th.Lipgloss("yellow")).
-			Bold(true).
-			Render(numberString)
-	}
-
-	return lipgloss.NewStyle().Foreground(lineColor(row, th, hasComment)).Render(numberString)
-}
-
-func maxLineNumberWidth(rows []layout.Row) int {
-	maxNum := 0
-	for _, row := range rows {
-		if lr, ok := row.(layout.LineRow); ok && lr.LineNumber > maxNum {
-			maxNum = lr.LineNumber
-		}
-	}
-	if maxNum == 0 {
-		return 1
-	}
-	width := 0
-	for n := maxNum; n > 0; n /= 10 {
-		width++
-	}
-	return width
-}
-
-func markerColorName(marker diff.Marker) string {
-	switch marker {
-	case diff.MarkerAdded:
-		return "git-added"
-	case diff.MarkerModified:
-		return "git-modified"
-	case diff.MarkerDeleted:
-		return "git-removed"
-	default:
-		return ""
-	}
-}
-
-func lineContent(highlighted map[string][]highlight.StyledLine, path string, lineNumber int) string {
-	lines, ok := highlighted[path]
-	if !ok {
-		return ""
-	}
-	index := lineNumber - 1
-	if index < 0 || index >= len(lines) {
-		return ""
-	}
-	return lines[index].Content
-}
-
-// dimContent returns syntax-highlighted content for changed lines,
-// and progressively dimmer plain content for context lines.
-func dimContent(highlighted map[string][]highlight.StyledLine, rawLines map[string][]string, currentFile string, row layout.LineRow, th *theme.Theme) string {
-	if row.Distance == 0 {
-		return lineContent(highlighted, currentFile, row.LineNumber)
-	}
-
-	// Context line: use raw content with dim color
-	plain := flash.RawLineContent(rawLines, currentFile, row.LineNumber)
-	plain = strings.ReplaceAll(plain, "\t", "    ")
-
-	colorName := dimColorForDistance(row.Distance)
-	color := th.Lipgloss(colorName)
-	if color == "" {
-		return plain
-	}
-	return lipgloss.NewStyle().Foreground(color).Render(plain)
-}
-
-func dimColorForDistance(distance int) string {
-	switch {
-	case distance <= 1:
-		return "gray-4"
-	case distance <= 2:
-		return "gray-5"
-	default:
-		return "gray-6"
-	}
 }
 
 func findFileHeaders(rows []layout.Row, foldState map[string]bool) navigation.FileIndex {
@@ -606,7 +448,7 @@ func main() {
 		commentsWatchChannel: commentsWatchChannel,
 		fileIndex:            fileIndex,
 		visibleIndices:       visibleIndices,
-		lineNumberWidth:      maxLineNumberWidth(rows),
+		lineNumberWidth:      render.MaxLineNumberWidth(rows),
 		prevSnapshot:         func() *flash.Snapshot { s := flash.NewSnapshot(rows, rawLines); return &s }(),
 		repoRoot:             repoRoot,
 		userComments:         userComments,
