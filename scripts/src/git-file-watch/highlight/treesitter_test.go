@@ -194,6 +194,56 @@ func stripANSI(s string) string {
 	return result.String()
 }
 
+// --- General predicates ---
+
+func TestSkipsMatchesWithUnevaluatedGeneralPredicates(t *testing.T) {
+	home, err := os.UserHomeDir()
+	require.NoError(t, err)
+
+	parserDir := filepath.Join(home, ".local/share/nvim/lazy/nvim-treesitter/parser")
+	queryDir := filepath.Join(home, ".local/share/nvim/lazy/nvim-treesitter/queries")
+
+	if _, err := os.Stat(filepath.Join(parserDir, "javascript.so")); os.IsNotExist(err) {
+		t.Skip("nvim-treesitter javascript.so not found")
+	}
+
+	loader := NewLoader(parserDir, queryDir)
+	loaded := loader.Load("app.js")
+	require.NotNil(t, loaded)
+
+	// The syntax map has @variable (purple) and Constant (orange).
+	// Without predicate filtering, #lua-match? patterns cause all identifiers
+	// to match @constant, painting them orange instead of purple.
+	path := writeSyntaxJSON(t, map[string]map[string]any{
+		"default": {
+			"@variable": map[string]any{"color": "variable"},
+			"Constant":  map[string]any{"color": "constant"},
+		},
+	})
+	colors := hexStub{"variable": "#a78bfa", "constant": "#ea580c"}
+	syntaxMap, err := LoadSyntaxMap(path, colors)
+	require.NoError(t, err)
+
+	source := []byte("const message = 'hello';\n")
+	lines := HighlightTreeSitter(loaded, "javascript", source, syntaxMap)
+
+	variableANSI := hexToANSI("#a78bfa")
+	constantANSI := hexToANSI("#ea580c")
+
+	hasVariable := false
+	hasConstant := false
+	for _, line := range lines {
+		if strings.Contains(line.Content, variableANSI) {
+			hasVariable = true
+		}
+		if strings.Contains(line.Content, constantANSI) {
+			hasConstant = true
+		}
+	}
+	assert.True(t, hasVariable, "identifiers should use @variable color (purple), not @constant")
+	assert.False(t, hasConstant, "identifiers should not use Constant color (orange) from unfiltered #lua-match?")
+}
+
 // --- Edge cases ---
 
 func TestHandlesEmptySourceInput(t *testing.T) {

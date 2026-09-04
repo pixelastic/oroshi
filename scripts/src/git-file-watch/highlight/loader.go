@@ -79,10 +79,10 @@ func (l *Loader) Load(path string) *LoadedLanguage {
 	}
 
 	queryPath := filepath.Join(l.queryDir, lang, "highlights.scm")
-	queryContent, err := os.ReadFile(queryPath)
-	if err != nil {
+	if _, err := os.Stat(queryPath); err != nil {
 		return nil
 	}
+	queryContent := resolveInherits(queryPath, l.queryDir)
 
 	language, err := loadGrammar(grammarPath, lang)
 	if err != nil {
@@ -113,6 +113,38 @@ func loadGrammar(path string, lang string) (*tree_sitter.Language, error) {
 	purego.RegisterFunc(&languageFunc, ptr)
 
 	return tree_sitter.NewLanguage(languageFunc()), nil
+}
+
+// resolveInherits reads a highlights.scm file and inlines any
+// "; inherits: lang1,lang2" directive by prepending the inherited queries.
+func resolveInherits(queryPath string, queryDir string) []byte {
+	content, err := os.ReadFile(queryPath)
+	if err != nil {
+		return nil
+	}
+
+	firstLine, rest, _ := strings.Cut(string(content), "\n")
+	trimmed := strings.TrimSpace(firstLine)
+	if !strings.HasPrefix(trimmed, "; inherits:") {
+		return content
+	}
+
+	parents := strings.TrimPrefix(trimmed, "; inherits:")
+	var combined []byte
+	for _, parent := range strings.Split(parents, ",") {
+		parent = strings.TrimSpace(parent)
+		if parent == "" {
+			continue
+		}
+		parentPath := filepath.Join(queryDir, parent, "highlights.scm")
+		parentContent := resolveInherits(parentPath, queryDir)
+		if len(parentContent) > 0 {
+			combined = append(combined, parentContent...)
+			combined = append(combined, '\n')
+		}
+	}
+	combined = append(combined, []byte(rest)...)
+	return combined
 }
 
 func extensionForFile(path string) string {

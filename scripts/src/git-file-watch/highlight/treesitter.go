@@ -79,6 +79,12 @@ func collectCaptures(query *tree_sitter.Query, root *tree_sitter.Node, source []
 	var spans []captureSpan
 	captures := cursor.Captures(query, root, source)
 	for match, captureIndex := captures.Next(); match != nil; match, captureIndex = captures.Next() {
+		// Skip patterns with general predicates (e.g. #lua-match?) that we
+		// cannot evaluate — matching them unconditionally causes wrong captures.
+		if len(query.GeneralPredicates(match.PatternIndex)) > 0 {
+			continue
+		}
+
 		capture := match.Captures[captureIndex]
 		styleIndex := int(capture.Index)
 		if styleIndex >= len(captureStyles) {

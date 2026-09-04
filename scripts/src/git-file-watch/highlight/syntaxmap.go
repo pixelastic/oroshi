@@ -60,7 +60,8 @@ func LoadSyntaxMap(path string, colors ColorProvider) (*SyntaxMap, error) {
 }
 
 // Resolve returns the style for a capture name in the given language.
-// Resolution order: language override → default → hierarchy fallback (strip last dot segment).
+// Resolution order: language override → default → hierarchy fallback (strip last dot segment)
+// → vim highlight group fallback (e.g. "comment" → "Comment").
 func (m *SyntaxMap) Resolve(language string, captureName string) SyntaxStyle {
 	name := captureName
 	for {
@@ -74,10 +75,18 @@ func (m *SyntaxMap) Resolve(language string, captureName string) SyntaxStyle {
 
 		lastDot := strings.LastIndex(name, ".")
 		if lastDot == -1 {
-			return SyntaxStyle{}
+			break
 		}
 		name = name[:lastDot]
 	}
+
+	// Fallback: try the vim highlight group convention (title-cased, no @ prefix).
+	// In Neovim, @comment links to Comment, @keyword to Keyword, etc.
+	vimGroup := strings.ToUpper(name[:1]) + name[1:]
+	if entry, ok := m.defaults[vimGroup]; ok {
+		return m.entryToStyle(entry)
+	}
+	return SyntaxStyle{}
 }
 
 // RecognizedNames returns all unique capture names (without @ prefix) known to this map.
