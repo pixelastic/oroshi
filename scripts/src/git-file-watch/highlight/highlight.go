@@ -2,6 +2,7 @@ package highlight
 
 import (
 	"bytes"
+	"fmt"
 	"strings"
 
 	"github.com/alecthomas/chroma/v2"
@@ -23,10 +24,12 @@ type cacheEntry struct {
 // It tries tree-sitter first when a loader and syntax map are available,
 // falling back to Chroma otherwise.
 type Highlighter struct {
-	cache     map[string]cacheEntry
-	style     *chroma.Style
-	loader    *Loader
-	syntaxMap *SyntaxMap
+	cache         map[string]cacheEntry
+	style         *chroma.Style
+	loader        *Loader
+	syntaxMap     *SyntaxMap
+	syntaxMapPath string
+	colors        ColorProvider
 }
 
 // ColorProvider returns a hex color for a named token.
@@ -46,8 +49,10 @@ func New(colors ColorProvider) *Highlighter {
 // falls back to Chroma when no grammar is available.
 func NewWithTreeSitter(colors ColorProvider, syntaxMapPath string, grammarDir string, queryDir string) *Highlighter {
 	h := &Highlighter{
-		cache: make(map[string]cacheEntry),
-		style: buildStyle(colors),
+		cache:         make(map[string]cacheEntry),
+		style:         buildStyle(colors),
+		syntaxMapPath: syntaxMapPath,
+		colors:        colors,
 	}
 
 	syntaxMap, err := LoadSyntaxMap(syntaxMapPath, colors)
@@ -74,6 +79,27 @@ func (h *Highlighter) Highlight(filepath string, content string) []StyledLine {
 
 	h.cache[filepath] = cacheEntry{content: content, lines: lines}
 	return lines
+}
+
+// ReloadSyntaxMap re-reads neovim-syntax.json from disk and rebuilds the
+// capture-to-color mapping.
+func (h *Highlighter) ReloadSyntaxMap() error {
+	if h.syntaxMapPath == "" {
+		return fmt.Errorf("no syntax map path configured")
+	}
+
+	syntaxMap, err := LoadSyntaxMap(h.syntaxMapPath, h.colors)
+	if err != nil {
+		return fmt.Errorf("reloading syntax map: %w", err)
+	}
+	h.syntaxMap = syntaxMap
+	return nil
+}
+
+// InvalidateCache clears the highlight cache so all files are re-highlighted
+// on the next call.
+func (h *Highlighter) InvalidateCache() {
+	h.cache = make(map[string]cacheEntry)
 }
 
 func (h *Highlighter) highlightWithTreeSitter(filepath string, content string) []StyledLine {

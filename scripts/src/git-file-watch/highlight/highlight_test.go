@@ -1,6 +1,7 @@
 package highlight
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -271,4 +272,97 @@ func TestInvalidatesTreeSitterCacheWhenContentChanges(t *testing.T) {
 	require.NotEmpty(t, first)
 	require.NotEmpty(t, second)
 	assert.NotEqual(t, first[0].Content, second[0].Content)
+}
+
+// --- Hot-reload ---
+
+func TestCacheIsEmptyAfterInvalidateCache(t *testing.T) {
+	grammarDir, queryDir := treeSitterDirs(t)
+
+	syntaxMapPath := writeSyntaxJSON(t, map[string]map[string]any{
+		"default": {"@keyword": map[string]any{"color": "keyword"}},
+	})
+	colors := newRoutingColors()
+	h := NewWithTreeSitter(colors, syntaxMapPath, grammarDir, queryDir)
+
+	h.Highlight("main.go", "package main\n")
+	require.NotEmpty(t, h.cache)
+
+	h.InvalidateCache()
+	assert.Empty(t, h.cache)
+}
+
+func TestReloadSyntaxMapReturnsErrorWhenFileMissing(t *testing.T) {
+	grammarDir, queryDir := treeSitterDirs(t)
+
+	syntaxMapPath := writeSyntaxJSON(t, map[string]map[string]any{
+		"default": {"@keyword": map[string]any{"color": "keyword"}},
+	})
+	colors := newRoutingColors()
+	h := NewWithTreeSitter(colors, syntaxMapPath, grammarDir, queryDir)
+
+	// Remove the file to simulate a temporary write
+	require.NoError(t, os.Remove(syntaxMapPath))
+
+	err := h.ReloadSyntaxMap()
+	assert.Error(t, err)
+
+	// Existing syntax map should still be intact — highlighting still works
+	lines := h.Highlight("main.go", "package main\n")
+	assert.NotEmpty(t, lines)
+}
+
+func TestHighlightUsesNewMappingAfterReloadSyntaxMap(t *testing.T) {
+	grammarDir, queryDir := treeSitterDirs(t)
+
+	// Write syntax map with color-a for keywords
+	dir := t.TempDir()
+	syntaxMapPath := filepath.Join(dir, "neovim-syntax.json")
+	raw, err := json.Marshal(map[string]map[string]any{
+		"default": {"@keyword": map[string]any{"color": "color-a"}},
+	})
+	require.NoError(t, err)
+	require.NoError(t, os.WriteFile(syntaxMapPath, raw, 0o644))
+
+	colors := hexStub{
+		"color-a":      "#ff0000",
+		"color-b":      "#00ff00",
+		"gray-3":       "#d1d5db",
+		"keyword":      "#38a169",
+		"boolean":      "#f59e0b",
+		"yellow-3":     "#f6e05e",
+		"variable-type": "#f87171",
+		"function":     "#d69e2e",
+		"orange":       "#ea580c",
+		"key":          "#c4b5fd",
+		"variable":     "#a78bfa",
+		"constant":     "#ea580c",
+		"red-3":        "#f87171",
+		"string":       "#3182ce",
+		"number":       "#3182ce",
+		"comment":      "#6b7280",
+		"punctuation":  "#0f766e",
+	}
+	h := NewWithTreeSitter(colors, syntaxMapPath, grammarDir, queryDir)
+
+	code := "package main\n"
+	firstLines := h.Highlight("main.go", code)
+	require.NotEmpty(t, firstLines)
+	assert.True(t, strings.Contains(firstLines[0].Content, hexToANSI("#ff0000")),
+		"first highlight should use color-a (#ff0000)")
+
+	// Overwrite syntax map with color-b for keywords
+	raw, err = json.Marshal(map[string]map[string]any{
+		"default": {"@keyword": map[string]any{"color": "color-b"}},
+	})
+	require.NoError(t, err)
+	require.NoError(t, os.WriteFile(syntaxMapPath, raw, 0o644))
+
+	require.NoError(t, h.ReloadSyntaxMap())
+	h.InvalidateCache()
+
+	secondLines := h.Highlight("main.go", code)
+	require.NotEmpty(t, secondLines)
+	assert.True(t, strings.Contains(secondLines[0].Content, hexToANSI("#00ff00")),
+		"second highlight should use color-b (#00ff00)")
 }

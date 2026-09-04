@@ -36,6 +36,9 @@ type GitIndexChangedMsg struct{}
 // CommentsChangedMsg is sent when the comments file changes externally.
 type CommentsChangedMsg struct{}
 
+// SyntaxMapChangedMsg is sent when neovim-syntax.json changes on disk.
+type SyntaxMapChangedMsg struct{}
+
 // EditorFinishedMsg is sent when the external editor exits.
 type EditorFinishedMsg struct{ err error }
 
@@ -47,13 +50,15 @@ type model struct {
 	rows                 []layout.Row
 	highlighted          map[string][]highlight.StyledLine
 	rawLines             map[string][]string
-	watchChannel         <-chan struct{}
-	indexWatchChannel    <-chan struct{}
+	watchChannel          <-chan struct{}
+	indexWatchChannel     <-chan struct{}
 	commentsWatchChannel <-chan struct{}
-	nav              navigation.State
-	fileIndex        navigation.FileIndex
-	visibleIndices   []int
-	navigableIndices []int
+	syntaxMapWatchChannel <-chan struct{}
+	highlighter          *highlight.Highlighter
+	nav                  navigation.State
+	fileIndex            navigation.FileIndex
+	visibleIndices       []int
+	navigableIndices     []int
 	pendingKey           string
 	repoRoot             string
 	userComments         []comments.Comment
@@ -80,6 +85,9 @@ func (m model) Init() tea.Cmd {
 	if m.commentsWatchChannel != nil {
 		commands = append(commands, waitForCommentsChange(m.commentsWatchChannel))
 	}
+	if m.syntaxMapWatchChannel != nil {
+		commands = append(commands, waitForSyntaxMapChange(m.syntaxMapWatchChannel))
+	}
 	return tea.Batch(commands...)
 }
 
@@ -94,6 +102,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case CommentsChangedMsg:
 		m.reloadComments()
 		return m, waitForCommentsChange(m.commentsWatchChannel)
+	case SyntaxMapChangedMsg:
+		if err := m.highlighter.ReloadSyntaxMap(); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return m, waitForSyntaxMapChange(m.syntaxMapWatchChannel)
+		}
+		m.highlighter.InvalidateCache()
+		cmd := m.rebuildDisplay()
+		return m, tea.Batch(waitForSyntaxMapChange(m.syntaxMapWatchChannel), cmd)
 	case EditorFinishedMsg:
 		m.rebuildDisplay()
 		return m, nil
@@ -232,7 +248,7 @@ func applyEditResult(userComments []comments.Comment, result editing.SaveResult)
 }
 
 func (m *model) rebuildDisplay() tea.Cmd {
-	rows, highlighted, rawLines, err := buildDisplay(m.repoRoot, m.theme, m.oroshiRoot)
+	rows, highlighted, rawLines, err := buildDisplay(m.repoRoot, m.highlighter)
 	if err != nil {
 		return nil
 	}
@@ -344,6 +360,13 @@ func waitForCommentsChange(channel <-chan struct{}) tea.Cmd {
 	return func() tea.Msg {
 		<-channel
 		return CommentsChangedMsg{}
+	}
+}
+
+func waitForSyntaxMapChange(channel <-chan struct{}) tea.Cmd {
+	return func() tea.Msg {
+		<-channel
+		return SyntaxMapChangedMsg{}
 	}
 }
 
@@ -463,7 +486,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	rows, highlighted, rawLines, err := buildDisplay(repoRoot, th, oroshiRoot)
+	home, err := os.UserHomeDir()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	syntaxMapPath := filepath.Join(oroshiRoot, "tools/term/zsh/config/theming/dist/neovim-syntax.json")
+	grammarDir := filepath.Join(home, ".local/share/nvim/lazy/nvim-treesitter/parser")
+	queryDir := filepath.Join(home, ".local/share/nvim/lazy/nvim-treesitter/queries")
+	highlighter := highlight.NewWithTreeSitter(th, syntaxMapPath, grammarDir, queryDir)
+
+	rows, highlighted, rawLines, err := buildDisplay(repoRoot, highlighter)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -505,6 +539,12 @@ func main() {
 		os.Exit(1)
 	}
 
+	syntaxMapWatchChannel, err := watcher.WatchFile(syntaxMapPath)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
 	fileIndex := findFileHeaders(rows, nil)
 	visibleIndices := navigation.VisibleIndices(len(rows), fileIndex)
 	navIndices := navigableFromVisible(rows, visibleIndices, fileIndex.FoldState)
@@ -516,8 +556,10 @@ func main() {
 		rawLines:             rawLines,
 		watchChannel:         watchChannel,
 		indexWatchChannel:    indexWatchChannel,
-		commentsWatchChannel: commentsWatchChannel,
-		fileIndex:            fileIndex,
+		commentsWatchChannel:  commentsWatchChannel,
+		syntaxMapWatchChannel: syntaxMapWatchChannel,
+		highlighter:           highlighter,
+		fileIndex:             fileIndex,
 		visibleIndices:       visibleIndices,
 		navigableIndices:     navIndices,
 		lineNumberWidth:      render.MaxLineNumberWidth(rows),
@@ -538,23 +580,13 @@ func main() {
 	}
 }
 
-func buildDisplay(repoRoot string, th *theme.Theme, oroshiRoot string) ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
+func buildDisplay(repoRoot string, highlighter *highlight.Highlighter) ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
 	raw, err := git.Diff(repoRoot)
 	if err != nil {
 		return nil, nil, nil, err
 	}
 
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return nil, nil, nil, fmt.Errorf("resolving home dir: %w", err)
-	}
-
-	syntaxMapPath := filepath.Join(oroshiRoot, "tools/term/zsh/config/theming/dist/neovim-syntax.json")
-	grammarDir := filepath.Join(home, ".local/share/nvim/lazy/nvim-treesitter/parser")
-	queryDir := filepath.Join(home, ".local/share/nvim/lazy/nvim-treesitter/queries")
-
 	fileDiffs := diff.Parse(raw)
-	highlighter := highlight.NewWithTreeSitter(th, syntaxMapPath, grammarDir, queryDir)
 	highlightedFiles := make(map[string][]highlight.StyledLine)
 	rawLines := make(map[string][]string)
 	var allRows []layout.Row
