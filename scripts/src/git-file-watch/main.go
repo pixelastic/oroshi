@@ -66,6 +66,7 @@ type model struct {
 	lineNumberWidth      int
 	flashLines           map[string]bool
 	prevSnapshot         *flash.Snapshot
+	oroshiRoot           string
 }
 
 func (m model) Init() tea.Cmd {
@@ -231,7 +232,7 @@ func applyEditResult(userComments []comments.Comment, result editing.SaveResult)
 }
 
 func (m *model) rebuildDisplay() tea.Cmd {
-	rows, highlighted, rawLines, err := buildDisplay(m.repoRoot, m.theme)
+	rows, highlighted, rawLines, err := buildDisplay(m.repoRoot, m.theme, m.oroshiRoot)
 	if err != nil {
 		return nil
 	}
@@ -462,7 +463,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	rows, highlighted, rawLines, err := buildDisplay(repoRoot, th)
+	rows, highlighted, rawLines, err := buildDisplay(repoRoot, th, oroshiRoot)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -522,6 +523,7 @@ func main() {
 		lineNumberWidth:      render.MaxLineNumberWidth(rows),
 		prevSnapshot:         func() *flash.Snapshot { s := flash.NewSnapshot(rows, rawLines); return &s }(),
 		repoRoot:             repoRoot,
+		oroshiRoot:           oroshiRoot,
 		userComments:         userComments,
 		commentsPath:         commentsPath,
 		commentIndex:         buildCommentIndex(userComments, repoRoot),
@@ -536,14 +538,23 @@ func main() {
 	}
 }
 
-func buildDisplay(repoRoot string, th *theme.Theme) ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
+func buildDisplay(repoRoot string, th *theme.Theme, oroshiRoot string) ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
 	raw, err := git.Diff(repoRoot)
 	if err != nil {
 		return nil, nil, nil, err
 	}
 
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return nil, nil, nil, fmt.Errorf("resolving home dir: %w", err)
+	}
+
+	syntaxMapPath := filepath.Join(oroshiRoot, "tools/term/zsh/config/theming/dist/neovim-syntax.json")
+	grammarDir := filepath.Join(home, ".local/share/nvim/lazy/nvim-treesitter/parser")
+	queryDir := filepath.Join(home, ".local/share/nvim/lazy/nvim-treesitter/queries")
+
 	fileDiffs := diff.Parse(raw)
-	highlighter := highlight.New(th)
+	highlighter := highlight.NewWithTreeSitter(th, syntaxMapPath, grammarDir, queryDir)
 	highlightedFiles := make(map[string][]highlight.StyledLine)
 	rawLines := make(map[string][]string)
 	var allRows []layout.Row

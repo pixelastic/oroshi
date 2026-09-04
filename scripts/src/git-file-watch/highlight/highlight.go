@@ -20,9 +20,13 @@ type cacheEntry struct {
 }
 
 // Highlighter applies syntax highlighting with caching.
+// It tries tree-sitter first when a loader and syntax map are available,
+// falling back to Chroma otherwise.
 type Highlighter struct {
-	cache map[string]cacheEntry
-	style *chroma.Style
+	cache     map[string]cacheEntry
+	style     *chroma.Style
+	loader    *Loader
+	syntaxMap *SyntaxMap
 }
 
 // ColorProvider returns a hex color for a named token.
@@ -30,7 +34,7 @@ type ColorProvider interface {
 	Hex(name string) string
 }
 
-// New creates a Highlighter using colors from the given provider.
+// New creates a Highlighter using Chroma only.
 func New(colors ColorProvider) *Highlighter {
 	return &Highlighter{
 		cache: make(map[string]cacheEntry),
@@ -38,23 +42,62 @@ func New(colors ColorProvider) *Highlighter {
 	}
 }
 
+// NewWithTreeSitter creates a Highlighter that tries tree-sitter first and
+// falls back to Chroma when no grammar is available.
+func NewWithTreeSitter(colors ColorProvider, syntaxMapPath string, grammarDir string, queryDir string) *Highlighter {
+	h := &Highlighter{
+		cache: make(map[string]cacheEntry),
+		style: buildStyle(colors),
+	}
+
+	syntaxMap, err := LoadSyntaxMap(syntaxMapPath, colors)
+	if err != nil {
+		return h
+	}
+	h.syntaxMap = syntaxMap
+	h.loader = NewLoader(grammarDir, queryDir)
+
+	return h
+}
+
 // Highlight returns syntax-highlighted lines for the given file content.
+// It tries tree-sitter when a grammar is available, falling back to Chroma.
 func (h *Highlighter) Highlight(filepath string, content string) []StyledLine {
 	if cached, ok := h.cache[filepath]; ok && cached.content == content {
 		return cached.lines
 	}
 
+	lines := h.highlightWithTreeSitter(filepath, content)
+	if lines == nil {
+		lines = h.highlightWithChroma(filepath, content)
+	}
+
+	h.cache[filepath] = cacheEntry{content: content, lines: lines}
+	return lines
+}
+
+func (h *Highlighter) highlightWithTreeSitter(filepath string, content string) []StyledLine {
+	if h.loader == nil || h.syntaxMap == nil {
+		return nil
+	}
+
+	loaded := h.loader.Load(filepath)
+	if loaded == nil {
+		return nil
+	}
+
+	language := LanguageFromExtension(filepath)
+	return HighlightTreeSitter(loaded, language, []byte(content), h.syntaxMap)
+}
+
+func (h *Highlighter) highlightWithChroma(filepath string, content string) []StyledLine {
 	lexer := lexers.Match(filepath)
 	if lexer == nil {
-		lines := splitLines(content)
-		h.cache[filepath] = cacheEntry{content: content, lines: lines}
-		return lines
+		return splitLines(content)
 	}
 	lexer = chroma.Coalesce(lexer)
 
-	lines := highlightContent(lexer, h.style, content)
-	h.cache[filepath] = cacheEntry{content: content, lines: lines}
-	return lines
+	return highlightContent(lexer, h.style, content)
 }
 
 func highlightContent(lexer chroma.Lexer, style *chroma.Style, content string) []StyledLine {
