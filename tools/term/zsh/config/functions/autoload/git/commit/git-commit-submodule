@@ -1,11 +1,20 @@
 # Commit the content of a specific submodule with a chore() message
 # Usage:
-# $ git-commit-submodule ./scripts/bin/img
+# $ git-commit-submodule ./scripts/bin/img           # Relative to CWD
+# $ git-commit-submodule /repo/scripts/bin/img       # Absolute path
 setopt local_options err_return
 
 local submodulePath="$1"
 local submoduleName="${submodulePath:t}"
-local gitRoot="$(git-directory-root --force)"
+
+local gitRoot
+if [[ "$submodulePath" == /* ]]; then
+  # Absolute path: derive git root from the submodule's parent repo
+  gitRoot="$(git-directory-root --force "$submodulePath")"
+  submodulePath="${submodulePath#"$gitRoot"/}"
+else
+  gitRoot="$(git-directory-root --force)"
+fi
 
 # Use submodule latest commit as body for root commit
 local subjectLine="$(git -C "$gitRoot/$submodulePath" log -1 --format=%s)"

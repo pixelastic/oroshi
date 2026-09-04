@@ -59,6 +59,31 @@ setup() {
 	[[ "$body" == *"chore: update deps"* ]]
 }
 
+@test "accepts absolute path and derives git root from it" {
+	bats_run_zsh "git-commit-submodule $BATS_TMP_DIR/main/private"
+	[[ "$status" -eq 0 ]]
+
+	local subject="$(git -C "$BATS_TMP_DIR/main" log -1 --format=%s)"
+	[[ "$subject" == "chore(private): Update private submodule" ]]
+
+	local body="$(git -C "$BATS_TMP_DIR/main" log -1 --format=%b)"
+	[[ "$body" == *"fix: resolve edge case"* ]]
+}
+
+@test "accepts absolute path with nested submodule" {
+	git init "$BATS_TMP_DIR/nested-source2" --initial-branch main
+	git -C "$BATS_TMP_DIR/nested-source2" commit --allow-empty --message "feat: deep feature"
+	git -c protocol.file.allow=always -C "$BATS_TMP_DIR/main" submodule add "$BATS_TMP_DIR/nested-source2" ./scripts/bin/img
+	git -C "$BATS_TMP_DIR/main" commit --message "add nested submodule"
+	git -C "$BATS_TMP_DIR/main/scripts/bin/img" commit --allow-empty --message "chore: nested update"
+
+	bats_run_zsh "git-commit-submodule $BATS_TMP_DIR/main/scripts/bin/img"
+	[[ "$status" -eq 0 ]]
+
+	local subject="$(git -C "$BATS_TMP_DIR/main" log -1 --format=%s)"
+	[[ "$subject" == "chore(img): Update scripts/bin/img submodule" ]]
+}
+
 @test "still works when submodule log returns empty" {
 	git() {
 		if [[ "$1" == "-C" && "$3" == "log" ]]; then

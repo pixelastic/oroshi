@@ -1,0 +1,55 @@
+# Auto-commit all dirty submodules and their pointers in the parent
+# Usage:
+# $ git-submodule-commit-all-auto             # Current repo
+# $ git-submodule-commit-all-auto --repo /p   # Specific repo
+setopt local_options err_return
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local repoPath=${flagRepo[2]:-.}
+
+local repoArgs=()
+[[ "$repoPath" != "." ]] && repoArgs=("$repoPath")
+
+# Compare dirty files against list of submodules to see if a submodule need a
+# commit
+local dirtyFiles="$(git-file-list-dirty-raw "${repoArgs[@]}")"
+[[ "$dirtyFiles" == "" ]] && return 0
+
+local submoduleList="$(git-submodule-list-raw "${repoArgs[@]}")"
+[[ "$submoduleList" == "" ]] && return 0
+
+# Build set of submodule names for intersection
+typeset -A submoduleNames
+local rawLine
+for rawLine in ${(f)submoduleList}; do
+  local fields=(${(@ps/▮/)rawLine})
+  submoduleNames[$fields[1]]=1
+done
+
+# Extract dirty file paths and intersect with submodule names
+local dirtySubmodules=()
+for rawLine in ${(f)dirtyFiles}; do
+  local fields=(${(@ps/▮/)rawLine})
+  local filePath=$fields[1]
+
+  # Skip files that aren't submodules
+  [[ "${submoduleNames[$filePath]}" == "" ]] && continue
+
+  # Skip submodules that only have a changed pointer (no dirty files inside)
+  local dirtyCount="$(git-directory-dirty-count "${repoPath}/${filePath}")"
+  [[ "$dirtyCount" == "0" ]] && continue
+
+  dirtySubmodules+=("$filePath")
+done
+
+# Nothing to commit
+[[ ${#dirtySubmodules} -eq 0 ]] && return 0
+
+for filePath in "${dirtySubmodules[@]}"; do
+  # Commit inside the submodule
+  git-commit-create-all-auto "${repoPath}/${filePath}"
+  # Commit the submodule change in the main repo
+  git-commit-submodule "${repoPath}/${filePath}"
+done
