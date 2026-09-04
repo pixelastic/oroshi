@@ -3,8 +3,13 @@
 # $ git-worktree-pull
 setopt local_options err_return
 
+# Abort if submodules in main are not clean/synced
+git-worktree-submodule-preflight
+
 local previousCommit="$(git rev-parse HEAD)"
 
+# Rebase main into worktree
 git rebase main
 
+# Update dependencies if needed
 git-dependencies-update "$previousCommit" --async

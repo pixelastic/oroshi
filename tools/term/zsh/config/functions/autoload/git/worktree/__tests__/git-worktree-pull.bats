@@ -2,34 +2,27 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  cd "$BATS_GIT_DIR" || return 1
-  git checkout --quiet -b fix/bug
-  git checkout --quiet main
-  git commit --allow-empty --quiet -m "main work"
-  git checkout --quiet fix/bug
+  bats_git_worktree 'fix/bug'
 }
 
-@test "rebases fix/bug on top of main" {
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "git-worktree-pull"
+@test "rebases worktree on top of main" {
+  git -C "$BATS_GIT_DIR" commit --allow-empty --quiet -m "main work"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-pull"
   [[ "$status" -eq 0 ]]
-}
-
-@test "fix/bug contains main commits after pull" {
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "git-worktree-pull"
-  run git log --oneline
+  run git -C "${BATS_GIT_WORKTREES}my-repo--fix-bug" log --oneline
   [[ "$output" == *"main work"* ]]
 }
 
-@test "calls git-dependencies-update with pre-rebase commit after successful rebase" {
+@test "calls git-dependencies-update with pre-rebase commit" {
   git-dependencies-update() { echo "$@" >> "$BATS_TMP_DIR/dep-update-calls"; }
   bats_mock git-dependencies-update
   bats_disable_worktree_aware
 
-  cd "$BATS_GIT_DIR"
-  local preRebaseCommit="$(git rev-parse HEAD)"
-  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-pull"
+  git -C "$BATS_GIT_DIR" commit --allow-empty --quiet -m "main work"
+  local preRebaseCommit="$(git -C "${BATS_GIT_WORKTREES}my-repo--fix-bug" rev-parse HEAD)"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-pull"
   [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/dep-update-calls")" == "$preRebaseCommit --async" ]]
 }
@@ -39,30 +32,37 @@ setup() {
   bats_mock git-dependencies-update
   bats_disable_worktree_aware
 
-  # Create a conflict: modify same file on main and fix/bug
-  cd "$BATS_GIT_DIR"
-  git checkout --quiet main
-  echo "main content" > conflict.txt
-  git add conflict.txt
-  git commit --quiet -m "main change"
-  git checkout --quiet fix/bug
-  echo "bug content" > conflict.txt
-  git add conflict.txt
-  git commit --quiet -m "bug change"
+  # Create a conflict on both sides
+  echo "main content" > "$BATS_GIT_DIR/conflict.txt"
+  git -C "$BATS_GIT_DIR" add conflict.txt
+  git -C "$BATS_GIT_DIR" commit --quiet -m "main change"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-pull"
+  echo "bug content" > "${BATS_GIT_WORKTREES}my-repo--fix-bug/conflict.txt"
+  git -C "${BATS_GIT_WORKTREES}my-repo--fix-bug" add conflict.txt
+  git -C "${BATS_GIT_WORKTREES}my-repo--fix-bug" commit --quiet -m "bug change"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-pull"
   [[ "$status" -ne 0 ]]
   [[ ! -f "$BATS_TMP_DIR/dep-update-calls" ]]
 }
 
-@test "returns 1 if main does not exist" {
-  git init --quiet "$BATS_TMP_DIR/no-main"
-  git -C "$BATS_TMP_DIR/no-main" config user.email "bats@oroshi"
-  git -C "$BATS_TMP_DIR/no-main" config user.name "Bats"
-  git -C "$BATS_TMP_DIR/no-main" symbolic-ref HEAD refs/heads/develop
-  git -C "$BATS_TMP_DIR/no-main" commit --allow-empty --quiet -m "init"
-  git -C "$BATS_TMP_DIR/no-main" checkout --quiet -b fix/bug
-  cd "$BATS_TMP_DIR/no-main"
-  bats_run_zsh "git-worktree-pull"
+@test "aborts if preflight fails, rebase never happens" {
+  git-worktree-submodule-preflight() {
+    echo "my-sub has uncommitted changes"
+    return 1
+  }
+  git-dependencies-update() { :; }
+  bats_mock git-worktree-submodule-preflight git-dependencies-update
+  bats_disable_worktree_aware
+
+  git -C "$BATS_GIT_DIR" commit --allow-empty --quiet -m "main work"
+  local headBefore="$(git -C "${BATS_GIT_WORKTREES}my-repo--fix-bug" rev-parse HEAD)"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-pull"
   [[ "$status" -ne 0 ]]
+  [[ "$output" == *"my-sub has uncommitted changes"* ]]
+
+  # HEAD unchanged — rebase never ran
+  local headAfter="$(git -C "${BATS_GIT_WORKTREES}my-repo--fix-bug" rev-parse HEAD)"
+  [[ "$headBefore" == "$headAfter" ]]
 }
