@@ -1,4 +1,4 @@
-# Update all submodules in a repo
+# Update all submodules and checkout their configured branch
 # Usage:
 # $ git-submodule-update-all         # Current directory
 # $ git-submodule-update-all /path   # Specific path
@@ -7,3 +7,17 @@ setopt local_options err_return
 local repoPath="${1:-.}"
 
 git -C "$repoPath" submodule update
+
+# Checkout each submodule's configured branch instead of detached HEAD
+local rawList="$(git-submodule-list-raw "$repoPath")"
+[[ "$rawList" == "" ]] && return 0
+
+local rawLine
+for rawLine in ${(f)rawList}; do
+  local fields=(${(@ps/▮/)rawLine})
+  local name=$fields[1]
+
+  # Checkout the configured branch instead of detached HEAD
+  local branch="$(git-submodule-branch --repo "$repoPath" "$name")"
+  git-branch-switch --no-dependencies --repo "${repoPath}/${name}" "$branch"
+done

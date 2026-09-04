@@ -1,17 +1,31 @@
 # Display a config value
 # Usage:
-# $ git-config-get branch.main.remote  # Display the value
+# $ git-config-get branch.main.remote                            # From repo config
+# $ git-config-get --file .gitmodules submodule.private.branch   # From specific file
+# $ git-config-get --repo /path branch.main.remote               # In specific repo
 setopt local_options err_return
+
+zparseopts -E -D \
+  -file:=flagFile \
+  -repo:=flagRepo
+
+local filePath=${flagFile[2]}
+local repoPath=${flagRepo[2]}
 local configName="$1"
 
-if [[ "$configName" == '' ]]; then
+# No config key provided
+if [[ "$configName" == "" ]]; then
   echo "✘ You must pass a config name"
   return 1
 fi
 
-local configValue="$(git config --get "$configName" 2>/dev/null)"
-if [[ "$configValue" == '' ]]; then
-  return 1
-fi
+local gitArgs=()
+[[ "$repoPath" != "" ]] && gitArgs+=(-C "$repoPath")
+gitArgs+=(config --get)
+[[ "$filePath" != "" ]] && gitArgs+=(--file "$filePath")
+gitArgs+=("$configName")
+
+local configValue="$(git "${gitArgs[@]}" 2>/dev/null)"
+[[ "$configValue" == "" ]] && return 1
 
 echo $configValue

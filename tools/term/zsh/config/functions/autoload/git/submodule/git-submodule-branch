@@ -1,0 +1,17 @@
+# Return the branch configured in .gitmodules for a submodule, or main
+# Usage:
+# $ git-submodule-branch private              # Current repo
+# $ git-submodule-branch --repo /path private # Specific repo
+setopt local_options err_return
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local repoPath=${flagRepo[2]}
+local submoduleName="$1"
+
+local configArgs=(--file .gitmodules)
+[[ "$repoPath" != "" ]] && configArgs+=(--repo "$repoPath")
+
+local branch="$(git-config-get "${configArgs[@]}" "submodule.${submoduleName}.branch" || echo "main")"
+echo "$branch"

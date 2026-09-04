@@ -2,10 +2,21 @@
 # If several elements are passed, switch to the first one that exists
 #
 # Usage :
-# $ git-branch-switch main         # Move to the main branch
-# $ git-branch-switch 13cd455      # Go into detached HEAD at this commit
-# $ git-branch-switch main master  # Go to main or master
+# $ git-branch-switch main                                 # Move to the main branch
+# $ git-branch-switch 13cd455                               # Go into detached HEAD at this commit
+# $ git-branch-switch main master                           # Go to main or master
+# $ git-branch-switch --no-dependencies main                # Skip dependency update
+# $ git-branch-switch --repo /path --no-dependencies main   # Target a specific repo
 setopt local_options err_return
+
+zparseopts -E -D \
+  -no-dependencies=flagNoDependencies \
+  -repo:=flagRepo
+
+local isNoDependencies=${#flagNoDependencies}
+local repoPath=${flagRepo[2]}
+local gitArgs=()
+[[ "$repoPath" != "" ]] && gitArgs+=(-C "$repoPath")
 
 # # Not possible to change a worktree branch
 # if git-directory-is-worktree; then
@@ -15,17 +26,17 @@ setopt local_options err_return
 
 for commitRef in $@; do
   # Skip non-existing commits
-  if ! git-commit-exists $commitRef; then
-    continue
-  fi
+  local commitType="$(git "${gitArgs[@]}" cat-file -t $commitRef 2>/dev/null)"
+  [[ ! "$commitType" =~ "commit" ]] && continue
 
-  local previousCommit="$(git-commit-current)"
+  # Capture previous commit for dependency update
+  [[ $isNoDependencies == 0 ]] && local previousCommit="$(git-commit-current)"
 
   # Switch to the branch
-  git checkout --quiet $commitRef
+  git "${gitArgs[@]}" checkout --quiet $commitRef
 
   # Update dependencies if needed
-  git-dependencies-update $previousCommit --async
+  [[ $isNoDependencies == 0 ]] && git-dependencies-update $previousCommit --async
 
   # Stop when we found a matching branch
   return 0
