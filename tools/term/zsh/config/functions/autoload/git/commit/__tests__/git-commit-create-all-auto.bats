@@ -96,6 +96,83 @@ setup() {
 	[[ "$addArgs" == "--repo /tmp/my-repo" ]]
 }
 
+@test "calls git-submodule-commit-all-auto when repo has submodules" {
+	git-directory-has-submodules() { return 0; }
+	git-submodule-commit-all-auto() { echo "$@" > "$BATS_TMP_DIR/submodule-args.txt"; }
+	git-directory-dirty-count() { echo "3"; }
+	git-file-add() { :; }
+	git-commit-message() { echo "feat: parent changes"; }
+	git-commit-create() { :; }
+	bats_mock git-directory-has-submodules git-submodule-commit-all-auto git-directory-dirty-count git-file-add git-commit-message git-commit-create
+
+	bats_run_zsh "git-commit-create-all-auto"
+	[[ "$status" -eq 0 ]]
+	[[ -f "$BATS_TMP_DIR/submodule-args.txt" ]]
+}
+
+@test "skips submodule step when repo has no submodules" {
+	git-directory-has-submodules() { return 1; }
+	git-submodule-commit-all-auto() { echo "called" > "$BATS_TMP_DIR/submodule-called.txt"; }
+	git-file-add() { :; }
+	git-commit-message() { echo "feat: changes"; }
+	git-commit-create() { :; }
+	bats_mock git-directory-has-submodules git-submodule-commit-all-auto git-file-add git-commit-message git-commit-create
+
+	bats_run_zsh "git-commit-create-all-auto"
+	[[ "$status" -eq 0 ]]
+	[[ ! -f "$BATS_TMP_DIR/submodule-called.txt" ]]
+}
+
+@test "returns 0 when submodule commits leave no remaining changes" {
+	git-directory-has-submodules() { return 0; }
+	git-submodule-commit-all-auto() { :; }
+	git-directory-dirty-count() { echo "0"; }
+	git-file-add() { echo "called" > "$BATS_TMP_DIR/add-called.txt"; }
+	git-commit-message() { echo "should not run"; }
+	git-commit-create() { echo "called" > "$BATS_TMP_DIR/create-called.txt"; }
+	bats_mock git-directory-has-submodules git-submodule-commit-all-auto git-directory-dirty-count git-file-add git-commit-message git-commit-create
+
+	bats_run_zsh "git-commit-create-all-auto"
+	[[ "$status" -eq 0 ]]
+	[[ ! -f "$BATS_TMP_DIR/add-called.txt" ]]
+	[[ ! -f "$BATS_TMP_DIR/create-called.txt" ]]
+}
+
+@test "threads --repo to git-submodule-commit-all-auto" {
+	git-directory-has-submodules() { return 0; }
+	git-submodule-commit-all-auto() { echo "$@" > "$BATS_TMP_DIR/submodule-args.txt"; }
+	git-directory-dirty-count() { echo "2"; }
+	git-file-add() { :; }
+	git-commit-message() { echo "fix: something"; }
+	git-commit-create() { :; }
+	bats_mock git-directory-has-submodules git-submodule-commit-all-auto git-directory-dirty-count git-file-add git-commit-message git-commit-create
+
+	bats_run_zsh "git-commit-create-all-auto /tmp/my-repo"
+	[[ "$status" -eq 0 ]]
+
+	local submoduleArgs="$(cat "$BATS_TMP_DIR/submodule-args.txt")"
+	[[ "$submoduleArgs" == "--repo /tmp/my-repo" ]]
+}
+
+@test "threads --repo to git-directory-has-submodules" {
+	git-directory-has-submodules() {
+		echo "$@" > "$BATS_TMP_DIR/has-submodules-args.txt"
+		return 0
+	}
+	git-submodule-commit-all-auto() { :; }
+	git-directory-dirty-count() { echo "1"; }
+	git-file-add() { :; }
+	git-commit-message() { echo "fix: something"; }
+	git-commit-create() { :; }
+	bats_mock git-directory-has-submodules git-submodule-commit-all-auto git-directory-dirty-count git-file-add git-commit-message git-commit-create
+
+	bats_run_zsh "git-commit-create-all-auto /tmp/my-repo"
+	[[ "$status" -eq 0 ]]
+
+	local hasSubmodulesArgs="$(cat "$BATS_TMP_DIR/has-submodules-args.txt")"
+	[[ "$hasSubmodulesArgs" == "--repo /tmp/my-repo" ]]
+}
+
 @test "aborts without committing when git-commit-message fails" {
 	git-file-add() { :; }
 	git-commit-message() { return 1; }

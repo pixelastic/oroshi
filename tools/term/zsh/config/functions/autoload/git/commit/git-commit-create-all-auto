@@ -18,6 +18,15 @@ fi
 local repoArgs=()
 [[ "$repoPath" != "" ]] && repoArgs=(--repo "$repoPath")
 
+# Commit dirty submodules first (internal + pointer commits)
+if git-directory-has-submodules "${repoArgs[@]}"; then
+  git-submodule-commit-all-auto "${repoArgs[@]}"
+
+  # Stop if only changes were in subdmodules
+  local dirtyCount="$(git-directory-dirty-count "${repoPath:-.}")"
+  [[ "$dirtyCount" == "0" ]] && return 0
+fi
+
 # Stage all files first so git-commit-message sees the diff
 git-file-add "${repoArgs[@]}"
 
