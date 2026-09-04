@@ -139,3 +139,40 @@ setup() {
   local calls="$(cat "$BATS_TMP_DIR/calls")"
   [[ "$(echo "$calls" | wc -l)" -eq 1 ]]
 }
+
+# --- Custom filter ---
+
+@test "--filter is-svg: passes custom filter to file-expand" {
+  local file="$BATS_TMP_DIR/test.svg"
+  echo '<svg/>' > "$file"
+
+  file-expand() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/expand_args"
+    printf '%s\n' "$file"
+  }
+  bats_mock file-expand
+  bats_disable_worktree_aware
+
+  bats_run_zsh "xml-fix --filter is-svg $file"
+  [[ "$status" -eq 0 ]]
+  local filterArg="$(sed -n '2p' "$BATS_TMP_DIR/expand_args")"
+  [[ "$filterArg" == "is-svg" ]]
+}
+
+@test "without --filter: still uses is-xml default" {
+  local file="$BATS_TMP_DIR/test.xml"
+  echo '<root/>' > "$file"
+
+  file-expand() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/expand_args"
+    printf '%s\n' "$file"
+  }
+  bats_mock file-expand
+  bats_disable_worktree_aware
+
+  bats_run_zsh "xml-fix $file"
+  [[ "$status" -eq 0 ]]
+  local args="$(cat "$BATS_TMP_DIR/expand_args")"
+  [[ "$args" == *"--filter"* ]]
+  [[ "$args" == *"is-xml"* ]]
+}

@@ -1,18 +1,21 @@
 # Lint XML files for well-formedness via xmllint
 # Default output is stylish format (violations grouped by file)
 # Usage:
-# $ xml-lint ./path/to/file.xml          # Stylish output (default)
-# $ xml-lint --json ./path/to/file.xml   # Unified JSON output
-# $ xml-lint --fix ./path/to/file.xml    # Fix first, then report remaining
-# $ xml-lint ./src/                      # Expand directory to XML files
-# $ xml-lint file1.xml file2.xml         # Multiple files
+# $ xml-lint ./path/to/file.xml              # Stylish output (default)
+# $ xml-lint --json ./path/to/file.xml       # Unified JSON output
+# $ xml-lint --fix ./path/to/file.xml        # Fix first, then report remaining
+# $ xml-lint --filter is-svg file.svg        # Use custom file filter
+# $ xml-lint ./src/                          # Expand directory to XML files
+# $ xml-lint file1.xml file2.xml             # Multiple files
 setopt local_options err_return
 
 zparseopts -E -D \
   -fix=flagFix \
-  -json=flagJson
+  -json=flagJson \
+  -filter:=flagFilter
 local isFix=${#flagFix}
 local isJson=${#flagJson}
+local filterCmd="${flagFilter[2]:-is-xml}"
 
 # No inputs provided
 if [[ $# -eq 0 ]]; then
@@ -21,7 +24,7 @@ if [[ $# -eq 0 ]]; then
 fi
 
 # Expand directories and filter to XML files
-local expanded="$(file-expand --filter is-xml "$@")"
+local expanded="$(file-expand --filter "$filterCmd" "$@")"
 if [[ "$expanded" == "" ]]; then
   [[ $isJson == 1 ]] && printf '[]\n'
   return 0

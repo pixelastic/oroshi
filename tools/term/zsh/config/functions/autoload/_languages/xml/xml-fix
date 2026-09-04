@@ -5,6 +5,7 @@
 # $ xml-fix ./src/                                       # Expand directory, fix all XML files
 # $ xml-fix --stdout ./path/to/file.xml                 # Output fixed code to stdout
 # $ xml-fix --original-path /real/path.xml /tmp/file.xml # Resolve config from real path
+# $ xml-fix --filter is-svg file.svg                    # Use custom file filter
 setopt local_options err_return
 
 local scriptDirectory="${functions_source[$0]:A:h}"
@@ -12,9 +13,11 @@ source "$scriptDirectory/../javascript/__lib/prettier-fix.zsh"
 
 zparseopts -E -D \
   -stdout=flagStdout \
-  -original-path:=flagOriginalPath
+  -original-path:=flagOriginalPath \
+  -filter:=flagFilter
 local isStdout=${#flagStdout}
 local originalPath="${flagOriginalPath[2]}"
+local filterCmd="${flagFilter[2]:-is-xml}"
 
 local hasOriginalPath=0
 [[ "$originalPath" != "" ]] && hasOriginalPath=1
@@ -28,7 +31,7 @@ local isDirectory=0
 [[ $isSingleFileOnly -eq 1 && $isDirectory -eq 1 ]] && return 1
 
 # Expand directories, resolve file list
-local expanded="$(file-expand --filter is-xml "$@")"
+local expanded="$(file-expand --filter "$filterCmd" "$@")"
 local -a files=("${(@f)expanded}")
 
 # Stdout mode: swap the file for a temp copy

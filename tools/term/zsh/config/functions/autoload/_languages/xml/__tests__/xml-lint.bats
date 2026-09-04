@@ -136,6 +136,65 @@ setup() {
   [[ "$output" == *"Premature end of data"* ]]
 }
 
+# --- Custom filter ---
+
+@test "--filter is-svg: passes custom filter to file-expand" {
+  local file="$BATS_TMP_DIR/test.svg"
+  printf '<svg/>\n' > "$file"
+
+  file-expand() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/expand_args"
+    printf '%s\n' "$file"
+  }
+  bats_mock file-expand
+  bats_disable_worktree_aware
+
+  bats_run_zsh "xml-lint --filter is-svg $file"
+  [[ "$status" -eq 0 ]]
+  # file-expand received --filter is-svg (not is-xml)
+  local filterArg="$(sed -n '2p' "$BATS_TMP_DIR/expand_args")"
+  [[ "$filterArg" == "is-svg" ]]
+}
+
+@test "--filter is-svg: passes filter to file-expand with multiple files" {
+  local svgFile="$BATS_TMP_DIR/icon.svg"
+  local xmlFile="$BATS_TMP_DIR/data.xml"
+  printf '<svg/>\n' > "$svgFile"
+  printf '<root/>\n' > "$xmlFile"
+
+  # file-expand with is-svg filter only returns the .svg file
+  file-expand() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/expand_args"
+    printf '%s\n' "$svgFile"
+  }
+  bats_mock file-expand
+  bats_disable_worktree_aware
+
+  bats_run_zsh "xml-lint --json --filter is-svg $svgFile $xmlFile"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "[]" ]]
+  local filterArg="$(sed -n '2p' "$BATS_TMP_DIR/expand_args")"
+  [[ "$filterArg" == "is-svg" ]]
+}
+
+@test "without --filter: still uses is-xml default" {
+  local file="$BATS_TMP_DIR/test.xml"
+  printf '<root/>\n' > "$file"
+
+  file-expand() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/expand_args"
+    printf '%s\n' "$file"
+  }
+  bats_mock file-expand
+  bats_disable_worktree_aware
+
+  bats_run_zsh "xml-lint $file"
+  [[ "$status" -eq 0 ]]
+  local args="$(cat "$BATS_TMP_DIR/expand_args")"
+  [[ "$args" == *"--filter"* ]]
+  [[ "$args" == *"is-xml"* ]]
+}
+
 # --- Error: no files provided ---
 
 @test "errors when no files provided" {
