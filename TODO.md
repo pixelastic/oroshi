@@ -50,6 +50,8 @@ test. Also when to use real dependencies and when to mock them.
   I get out of suspend. Or at least, it fires several times.
 - Add a zsh lint rule that flags short form arguments, with an allowlist of
 authorized short forms
+- See if we add a `{lang}-min` to compress files in the toolchain (useful for
+svg, maybe for js as well)
 
 ---
 
