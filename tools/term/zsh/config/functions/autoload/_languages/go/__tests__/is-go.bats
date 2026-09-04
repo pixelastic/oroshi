@@ -43,3 +43,12 @@ setup() {
   bats_run_zsh "is-go $BATS_TMP_DIR/nonexistent.go"
   [[ "$status" -eq 1 ]]
 }
+
+@test "exits 0 for a symlink to a .go file" {
+  local target="$BATS_TMP_DIR/foo.go"
+  local link="$BATS_TMP_DIR/foo-link.go"
+  echo "package main" > "$target"
+  ln -s "$target" "$link"
+  bats_run_zsh "is-go $link"
+  [[ "$status" -eq 0 ]]
+}

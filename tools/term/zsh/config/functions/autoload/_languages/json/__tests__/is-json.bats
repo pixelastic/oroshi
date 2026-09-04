@@ -29,3 +29,12 @@ setup() {
   bats_run_zsh "is-json $BATS_TMP_DIR/nonexistent.json"
   [[ "$status" -eq 1 ]]
 }
+
+@test "exits 0 for a symlink to a .json file" {
+  local target="$BATS_TMP_DIR/foo.json"
+  local link="$BATS_TMP_DIR/foo-link.json"
+  echo '{}' > "$target"
+  ln -s "$target" "$link"
+  bats_run_zsh "is-json $link"
+  [[ "$status" -eq 0 ]]
+}

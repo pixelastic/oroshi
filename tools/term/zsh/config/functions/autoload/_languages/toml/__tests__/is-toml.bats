@@ -29,3 +29,12 @@ setup() {
   bats_run_zsh "is-toml $dir"
   [[ "$status" -eq 1 ]]
 }
+
+@test "exits 0 for a symlink to a .toml file" {
+  local target="$BATS_TMP_DIR/foo.toml"
+  local link="$BATS_TMP_DIR/foo-link.toml"
+  echo 'key = "value"' > "$target"
+  ln -s "$target" "$link"
+  bats_run_zsh "is-toml $link"
+  [[ "$status" -eq 0 ]]
+}

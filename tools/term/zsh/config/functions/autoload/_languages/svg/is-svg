@@ -1,0 +1,15 @@
+# Boolean: is the given file an SVG file?
+# Usage:
+# $ is-svg /path/to/image.svg    # exit 0 (.svg extension)
+# $ is-svg /path/to/script.js    # exit 1
+setopt local_options err_return
+
+local filepath="$1"
+
+# Directories and missing files are not SVG files
+[[ ! -f "$filepath" ]] && return 1
+
+# .svg extension → SVG file
+[[ "$filepath" == *.svg ]] && return 0
+
+return 1

@@ -29,3 +29,12 @@ setup() {
   bats_run_zsh "is-xml $BATS_TMP_DIR/nonexistent.xml"
   [[ "$status" -eq 1 ]]
 }
+
+@test "exits 0 for a symlink to a .xml file" {
+  local target="$BATS_TMP_DIR/foo.xml"
+  local link="$BATS_TMP_DIR/foo-link.xml"
+  echo '<root/>' > "$target"
+  ln -s "$target" "$link"
+  bats_run_zsh "is-xml $link"
+  [[ "$status" -eq 0 ]]
+}

@@ -36,3 +36,12 @@ setup() {
   bats_run_zsh "is-python $BATS_TMP_DIR/nonexistent.py"
   [[ "$status" -eq 1 ]]
 }
+
+@test "exits 0 for a symlink to a .py file" {
+  local target="$BATS_TMP_DIR/foo.py"
+  local link="$BATS_TMP_DIR/foo-link.py"
+  echo "print('hi')" > "$target"
+  ln -s "$target" "$link"
+  bats_run_zsh "is-python $link"
+  [[ "$status" -eq 0 ]]
+}
