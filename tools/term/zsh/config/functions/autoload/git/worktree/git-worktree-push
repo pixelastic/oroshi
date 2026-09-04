@@ -1,12 +1,31 @@
 # Push current worktree into main and sync dependencies
+# Runs submodule preflight, pushes changed submodules, then merges
 # Usage:
 # $ git-worktree-push
 setopt local_options err_return
 
 local currentBranch="$(git-branch-current)"
 local mainPath="$(git-worktree-main)"
-local previousCommit="$(git -C "$mainPath" rev-parse HEAD)"
 
+# Abort if submodules in Git Repo Main are not clean/synced
+git-worktree-submodule-preflight
+
+# Push submodules whose pointer differs between Worktree and Git Repo Main
+local submoduleList="$(git-submodule-list-raw "$mainPath")"
+for rawLine in ${(f)submoduleList}; do
+  local fields=(${(@ps/▮/)rawLine})
+  local submoduleName=$fields[1]
+
+  # If the submodule is at the same pointer in the worktree and in main, skip it
+  git-worktree-submodule-pointer-differs "$submoduleName" || continue
+
+  # Push the submodule to its remote
+  git-branch-push --repo "$PWD/$submoduleName"
+done
+
+# Push the worktree to main
+local previousCommit="$(git -C "$mainPath" rev-parse HEAD)"
 git -C "$mainPath" merge --ff-only "$currentBranch"
 
+# Update dependencies if needed
 git-dependencies-update --repo "$mainPath" "$previousCommit" --async

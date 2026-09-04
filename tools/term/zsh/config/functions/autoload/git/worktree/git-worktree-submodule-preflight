@@ -20,10 +20,8 @@ for rawLine in ${(f)submoduleList}; do
   local fields=(${(@ps/▮/)rawLine})
   local submoduleName=$fields[1]
 
-  # Skip if submodule pointer is same in Worktree and Git Repo Main
-  local worktreePointer="$(git -C "$worktreePath" rev-parse ":$submoduleName" 2>/dev/null)"
-  local mainPointer="$(git -C "$mainPath" rev-parse ":$submoduleName" 2>/dev/null)"
-  [[ "$worktreePointer" == "$mainPointer" ]] && continue
+  # Skip if submodule pointer is same in worktree and main
+  git-worktree-submodule-pointer-differs "$submoduleName" "$worktreePath" || continue
 
   # Failure if main's submodule has uncommitted changes
   local dirtyCount="$(git-directory-dirty-count "$mainPath/$submoduleName")"

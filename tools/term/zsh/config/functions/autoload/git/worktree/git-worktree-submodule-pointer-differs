@@ -1,0 +1,15 @@
+# Check if a submodule pointer differs between worktree and main
+# Returns 0 if pointers differ, 1 if identical
+# Usage:
+# $ git-worktree-submodule-pointer-differs my-sub            # current directory
+# $ git-worktree-submodule-pointer-differs my-sub /path/to   # given worktree
+setopt local_options err_return
+
+local submoduleName="$1"
+local worktreePath="${2:-$PWD}"
+local mainPath="$(git-worktree-main "$worktreePath")"
+
+local worktreePointer="$(git -C "$worktreePath" rev-parse ":$submoduleName" 2>/dev/null)"
+local mainPointer="$(git -C "$mainPath" rev-parse ":$submoduleName" 2>/dev/null)"
+
+[[ "$worktreePointer" != "$mainPointer" ]]
