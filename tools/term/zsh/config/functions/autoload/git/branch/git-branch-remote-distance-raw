@@ -1,0 +1,30 @@
+# Machine-readable ahead/behind count between a branch and its remote counterpart
+# Output: ahead▮behind
+# Usage:
+# $ git-branch-remote-distance-raw             # current branch in current repo
+# $ git-branch-remote-distance-raw main        # specified branch
+# $ git-branch-remote-distance-raw --repo /p   # current branch in specified repo
+# $ git-branch-remote-distance-raw --repo /p main
+setopt local_options err_return
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local repoPath=${flagRepo[2]}
+local repoArgs=()
+[[ "$repoPath" != "" ]] && repoArgs=(-C "$repoPath")
+
+local branchSource="$1"
+[[ "$branchSource" == "" ]] && branchSource="$(git-branch-current ${repoPath:+"$repoPath"})"
+
+# Stop if branch doesn't exist
+local repoFlag=()
+[[ "$repoPath" != "" ]] && repoFlag=(--repo "$repoPath")
+git-branch-exists "${repoFlag[@]}" "$branchSource" || return 1
+
+local rawOutput="$(git "${repoArgs[@]}" branch --list -vv --no-color "$branchSource")"
+
+local ahead="$(echo "$rawOutput" | sed -n "s/.*ahead \([0-9]*\).*/\1/p")"
+local behind="$(echo "$rawOutput" | sed -n "s/.*behind \([0-9]*\).*/\1/p")"
+
+echo "${ahead:-0}▮${behind:-0}"

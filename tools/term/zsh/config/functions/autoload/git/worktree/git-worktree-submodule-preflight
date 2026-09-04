@@ -1,0 +1,49 @@
+# Verify Git Repo Main's submodules are clean and synced with remote
+# Checks submodules whose pointer differs between the Worktree and Git Repo Main
+# Usage:
+# $ git-worktree-submodule-preflight            # current directory
+# $ git-worktree-submodule-preflight /path/to   # given worktree path
+setopt local_options err_return
+
+local worktreePath="${1:-$PWD}"
+
+# Stop if not in a worktree
+git-directory-is-worktree "$worktreePath" || return 1
+
+# Stop if no submodules
+local mainPath="$(git-worktree-main "$worktreePath")"
+local submoduleList="$(git-submodule-list-raw "$mainPath")"
+[[ "$submoduleList" == "" ]] && return 0
+
+local hasFailure=0
+for rawLine in ${(f)submoduleList}; do
+  local fields=(${(@ps/▮/)rawLine})
+  local submoduleName=$fields[1]
+
+  # Skip if submodule pointer is same in Worktree and Git Repo Main
+  local worktreePointer="$(git -C "$worktreePath" rev-parse ":$submoduleName" 2>/dev/null)"
+  local mainPointer="$(git -C "$mainPath" rev-parse ":$submoduleName" 2>/dev/null)"
+  [[ "$worktreePointer" == "$mainPointer" ]] && continue
+
+  # Failure if main's submodule has uncommitted changes
+  local dirtyCount="$(git-directory-dirty-count "$mainPath/$submoduleName")"
+  if [[ "$dirtyCount" != "0" ]]; then
+    echo "$submoduleName in main repo has uncommitted changes. Commit them first."
+    hasFailure=1
+    continue
+  fi
+
+  # Fetch latest from remote
+  git -C "$mainPath/$submoduleName" fetch --quiet
+
+  # Failure if main's submodule has unpushed commits
+  local remoteDistance="$(git-branch-remote-distance-raw --repo "$mainPath/$submoduleName" 2>/dev/null)"
+  local distanceFields=(${(@ps/▮/)remoteDistance})
+  if [[ $distanceFields[1] -gt 0 ]]; then
+    echo "$submoduleName in main has unpushed commits. Push them first"
+    hasFailure=1
+    continue
+  fi
+done
+
+return $hasFailure

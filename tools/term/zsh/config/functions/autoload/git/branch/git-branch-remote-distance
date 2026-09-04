@@ -1,26 +1,13 @@
 # Count how many commits the branch is ahead/behind of its remote counterpart
-#
 # Usage:
-# $ git-branch-distance main      # Compare the specified branch to its remote
-# $ git-branch-distance           # Compare the current branch to its remote
-#
-# Output:
-# First line is how many commits ahead the main branch is
-# Second line is how many commits behind the main branch is
-# Main branch, default to the current branch
+# $ git-branch-remote-distance             # current branch in current repo
+# $ git-branch-remote-distance main        # specified branch in current repo
+# $ git-branch-remote-distance --repo /p   # current branch in specified repo
+# $ git-branch-remote-distance --repo /p main
+# Output: "ahead N, behind M"
 setopt local_options err_return
-local branchSource="$1"
-if [[ "$branchSource" == "" ]]; then
-  branchSource="$(git-branch-current)"
-fi
-if ! git-branch-exists "$branchSource"; then
-  echo "✘ Branch $branchSource does not exist"
-  return 1
-fi
 
-local rawOutput="$(git branch --list -vv --no-color "$branchSource")"
+local rawDistance="$(git-branch-remote-distance-raw "$@")"
+local fields=(${(@ps/▮/)rawDistance})
 
-local ahead="$(echo "$rawOutput" | sed -n "s/.*ahead \([0-9]*\).*/\1/p")"
-local behind="$(echo "$rawOutput" | sed -n "s/.*behind \([0-9]*\).*/\1/p")"
-
-echo "ahead ${ahead:=0}, behind ${behind:=0}"
+echo "ahead ${fields[1]}, behind ${fields[2]}"
