@@ -92,6 +92,14 @@ ENDJSON
   [[ "$channelDevmarketing" == "#team-devmarketing" ]]
 }
 
+@test "early messages include state field" {
+  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  # All pending in default setup — every message should have state "pending"
+  local allPending="$(echo "$output" | jq '[.messages[].state] | all(. == "pending")')"
+  [[ "$allPending" == "true" ]]
+}
+
 @test "topic-relevant is last in order" {
   bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
   [[ "$status" -eq 0 ]]
@@ -125,14 +133,21 @@ ENDJSON
   [[ "$count" -eq 4 ]]
 }
 
-@test "skips reminder if its initial was never posted and is not in this batch" {
-  # office-paris initial is "drafted" — not pending (not in batch), not posted
+@test "includes drafted initial and its reminder in batch" {
   jq '.messages["early--office-paris--initial"].state = "drafted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
   bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local ids="$(echo "$output" | jq -r '.messages[].id')"
-  [[ "$ids" != *"early--office-paris--initial"* ]]
-  [[ "$ids" != *"early--office-paris--reminder"* ]]
+  [[ "$ids" == *"early--office-paris--initial"* ]]
+  [[ "$ids" == *"early--office-paris--reminder"* ]]
+}
+
+@test "drafted message has state drafted in output" {
+  jq '.messages["early--office-paris--initial"].state = "drafted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  local state="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--initial") | .state')"
+  [[ "$state" == "drafted" ]]
 }
 
 # -- Last window — D-1 --

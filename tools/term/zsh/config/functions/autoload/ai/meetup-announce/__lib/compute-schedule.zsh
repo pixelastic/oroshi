@@ -1,7 +1,7 @@
 # Compute which messages to write this invocation
 # Usage:
 # $ compute-schedule <eventDate> <today> <stateJsonPath>
-# Outputs JSON object: {window, messages: [{id, scheduledFor, channel}]}
+# Outputs JSON object: {window, messages: [{id, scheduledFor, channel, state}]}
 
 # Guard: skip if already defined (e.g. mocked in tests)
 whence compute-schedule >/dev/null && return 0
@@ -53,7 +53,7 @@ function __compute_early() {
     "early--topic-relevant--initial"
   )
 
-  # Track which initials are in this batch (pending)
+  # Track which initials are in this batch (pending or drafted)
   local -A initialInBatch
   local id
   for id in "${earlyMessages[@]}"; do
@@ -63,7 +63,7 @@ function __compute_early() {
       --arg id "$id" \
       '.messages[$id].state' \
       "$stateJsonPath")"
-    [[ "$state" == "pending" ]] && initialInBatch[$id]=1
+    [[ "$state" == "pending" || "$state" == "drafted" ]] && initialInBatch[$id]=1
   done
 
   local result="[]"
@@ -74,8 +74,8 @@ function __compute_early() {
       '.messages[$id].state' \
       "$stateJsonPath")"
 
-    # Skip already-processed messages
-    [[ "$state" != "pending" ]] && continue
+    # Skip already-posted messages
+    [[ "$state" == "posted" ]] && continue
 
     local channel="$(__extract_channel "$id")"
 
@@ -97,10 +97,12 @@ function __compute_early() {
         --arg id "$id" \
         --arg scheduled "${nudgedDayMinus7}T${scheduledAt}" \
         --arg channel "#$channel" \
+        --arg state "$state" \
       '. + [{
           "id": $id,
           "scheduledFor": $scheduled,
-          "channel": $channel
+          "channel": $channel,
+          "state": $state
         }]')"
       continue
     fi
@@ -111,10 +113,12 @@ function __compute_early() {
       --arg id "$id" \
       --arg scheduled "${today}T${scheduledAt}" \
       --arg channel "#$channel" \
+      --arg state "$state" \
     '. + [{
         "id": $id,
         "scheduledFor": $scheduled,
-        "channel": $channel
+        "channel": $channel,
+        "state": $state
       }]')"
   done
 
@@ -139,10 +143,12 @@ function __compute_last() {
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${today}T${scheduledAt}" \
+      --arg state "$earlyInitialState" \
     '. + [{
         "id": "early--office-paris--initial",
         "scheduledFor": $scheduled,
-        "channel": "#office-paris"
+        "channel": "#office-paris",
+        "state": $state
       }]')"
   fi
 
@@ -154,10 +160,12 @@ function __compute_last() {
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${dateMinus1}T${scheduledAt}" \
+      --arg state "$reminderState" \
     '. + [{
         "id": "last--office-paris--reminder",
         "scheduledFor": $scheduled,
-        "channel": "#office-paris"
+        "channel": "#office-paris",
+        "state": $state
       }]')"
   fi
 
@@ -172,10 +180,12 @@ function __compute_last() {
     local scheduledAt="$(__random_time 10 47 11 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${eventDate}T${scheduledAt}" \
+      --arg state "$todayState" \
     '. + [{
         "id": "last--office-paris--reminder-today",
         "scheduledFor": $scheduled,
-        "channel": "#office-paris"
+        "channel": "#office-paris",
+        "state": $state
       }]')"
   fi
 
@@ -187,10 +197,12 @@ function __compute_last() {
     local scheduledAt="$(__random_time 10 47 11 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${eventDate}T${scheduledAt}" \
+      --arg state "$devmarketingState" \
     '. + [{
         "id": "last--team-devmarketing--reminder",
         "scheduledFor": $scheduled,
-        "channel": "#team-devmarketing"
+        "channel": "#team-devmarketing",
+        "state": $state
       }]')"
   fi
 
@@ -202,10 +214,12 @@ function __compute_last() {
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${dateMinus1}T${scheduledAt}" \
+      --arg state "$helpRecruitingState" \
     '. + [{
         "id": "last--help-recruiting--reminder",
         "scheduledFor": $scheduled,
-        "channel": "#help-recruiting"
+        "channel": "#help-recruiting",
+        "state": $state
       }]')"
   fi
 
