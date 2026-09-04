@@ -36,6 +36,7 @@ M.onInit = function()
   F.onWrite("*tools/git/git/config/src/gitconfig", executeCommand("$OROSHI_ROOT/tools/git/git/config/generate-config")) -- Git
   F.onWrite("*tools/git/hunk/config/src/config.toml", executeCommand("$OROSHI_ROOT/tools/git/hunk/config/generate-config")) -- Hunk
   F.onWrite("*tools/term/kitty/config/colors.conf", executeCommand("colors-reload")) -- Kitty
+  F.onWrite("*colorscheme/syntax.lua", executeCommand("$OROSHI_ROOT/tools/vim/nvim/config/generate-syntax")) -- Syntax
 end
 
 return M

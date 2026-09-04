@@ -1,0 +1,591 @@
+{
+  "bash": {
+    "@constant.bash": {
+      "color": "variable"
+    },
+    "@function.builtin.bash": {
+      "color": "green"
+    },
+    "@keyword.directive.bash": {
+      "color": "yellow"
+    }
+  },
+  "c": {
+    "@keyword.directive.define.c": {
+      "color": "yellow"
+    },
+    "@keyword.type.c": {
+      "color": "variable-type"
+    }
+  },
+  "css": {
+    "@attribute.css": {
+      "color": "red-3"
+    },
+    "@keyword.directive.css": {
+      "color": "yellow"
+    },
+    "@keyword.modifier.css": {
+      "bold": true,
+      "color": "red-4"
+    },
+    "@property.css": {
+      "color": "red-3"
+    },
+    "@tag.css": {
+      "bold": true,
+      "color": "green"
+    },
+    "cssAttrRegion": {
+      "color": "keyword"
+    },
+    "cssUnitDecorators": {
+      "color": "white"
+    }
+  },
+  "default": {
+    "@comment.note.comment": {
+      "bold": true,
+      "color": "todo"
+    },
+    "@comment.note.vimdoc": {
+      "bold": true,
+      "color": "yellow"
+    },
+    "@keyword.directive": {
+      "color": "orange"
+    },
+    "@keyword.import": {
+      "bold": true,
+      "color": "yellow-4"
+    },
+    "@markup.heading.1": {
+      "bold": true,
+      "color": "purple-3"
+    },
+    "@markup.heading.2": {
+      "bold": true,
+      "color": "blue-3"
+    },
+    "@markup.heading.3": {
+      "bold": true,
+      "color": "green-7"
+    },
+    "@markup.heading.4": {
+      "bold": true,
+      "color": "yellow-5"
+    },
+    "@markup.heading.5": {
+      "bold": true,
+      "color": "orange-6"
+    },
+    "@markup.heading.6": {
+      "bold": true,
+      "color": "red-6"
+    },
+    "@markup.link": {
+      "color": "link"
+    },
+    "@operator": {
+      "color": "punctuation"
+    },
+    "@property": {
+      "color": "key"
+    },
+    "@punctuation": {
+      "color": "punctuation"
+    },
+    "@variable": {
+      "color": "variable"
+    },
+    "@variable.member": {
+      "color": "key"
+    },
+    "Added": {
+      "color": "git-added"
+    },
+    "Boolean": {
+      "bold": true,
+      "color": "boolean"
+    },
+    "Changed": {
+      "color": "git-modified"
+    },
+    "Comment": {
+      "color": "comment"
+    },
+    "Conditional": {
+      "color": "statement"
+    },
+    "Constant": {
+      "bold": true,
+      "color": "constant"
+    },
+    "Define": {
+      "color": "statement"
+    },
+    "Delimiter": {
+      "color": "punctuation"
+    },
+    "DiffDelete": {
+      "color": "git-removed"
+    },
+    "Error": {
+      "bold": true,
+      "color": "error"
+    },
+    "Exception": {
+      "bold": true,
+      "color": "yellow"
+    },
+    "Float": {
+      "color": "blue"
+    },
+    "Function": {
+      "color": "function"
+    },
+    "Identifier": {
+      "color": "variable"
+    },
+    "Include": {
+      "color": "import"
+    },
+    "Keyword": {
+      "color": "keyword"
+    },
+    "Macro": {
+      "color": "red-3"
+    },
+    "Number": {
+      "bold": true,
+      "color": "number"
+    },
+    "Operator": {
+      "color": "punctuation"
+    },
+    "PreProc": {
+      "color": "header"
+    },
+    "Removed": {
+      "color": "git-removed"
+    },
+    "Repeat": {
+      "color": "statement"
+    },
+    "Special": {
+      "color": "special-char"
+    },
+    "SpecialChar": {
+      "color": "special-char"
+    },
+    "SpecialComment": {
+      "bold": true,
+      "color": "comment"
+    },
+    "SpecialKey": {
+      "color": "special-char"
+    },
+    "Statement": {
+      "color": "statement"
+    },
+    "StorageClass": {
+      "color": "variable-type"
+    },
+    "String": {
+      "color": "string"
+    },
+    "Structure": {
+      "color": "variable-type"
+    },
+    "Tag": {
+      "color": "variable-type"
+    },
+    "Title": {
+      "color": "header"
+    },
+    "Todo": {
+      "bg": "red-6",
+      "bold": true,
+      "color": "orange-2"
+    },
+    "Type": {
+      "color": "variable-type"
+    },
+    "Typedef": {
+      "color": "variable-type"
+    },
+    "diffAdded": {
+      "color": "git-added"
+    },
+    "diffFile": {
+      "color": "header"
+    },
+    "diffLine": {
+      "color": "terminal"
+    },
+    "diffRemoved": {
+      "color": "git-removed"
+    },
+    "diffSubname": {
+      "color": "comment"
+    },
+    "gitcommitBranch": {
+      "color": "git-branch"
+    },
+    "gitcommitDiff": {
+      "color": "comment"
+    },
+    "gitcommitDiscardedFile": {
+      "color": "violet-2"
+    },
+    "gitcommitHeader": {
+      "color": "comment"
+    },
+    "gitcommitOverflow": {
+      "color": "text"
+    },
+    "gitcommitSelectedFile": {
+      "color": "file"
+    },
+    "gitcommitSummary": {
+      "color": "text"
+    },
+    "gitcommitUntrackedFile": {
+      "color": "git-added"
+    }
+  },
+  "dockerfile": {
+    "dockerfileFrom": {
+      "color": "symbol"
+    },
+    "dockerfileKeyword": {
+      "color": "function"
+    },
+    "dockerfileShell": {
+      "color": "green"
+    },
+    "dockerfileValue": {
+      "color": "variable"
+    }
+  },
+  "gitconfig": {
+    "@markup.heading.git_config": {
+      "color": "green"
+    },
+    "@string.special.git_config": {
+      "color": "string"
+    },
+    "@string.special.path.git_config": {
+      "color": "directory"
+    }
+  },
+  "gitignore": {
+    "@string.special.path.gitignore": {
+      "color": "text"
+    }
+  },
+  "go": {
+    "@boolean.gotmpl": {
+      "bg": "sky-0",
+      "bold": true,
+      "color": "boolean"
+    },
+    "@comment.gotmpl": {
+      "bg": "sky-0",
+      "color": "comment"
+    },
+    "@function.gotmpl": {
+      "bg": "sky-0",
+      "color": "function"
+    },
+    "@keyword.conditional.gotmpl": {
+      "bg": "sky-0",
+      "color": "orange"
+    },
+    "@keyword.directive.gotmpl": {
+      "bg": "sky-0",
+      "color": "yellow"
+    },
+    "@operator.gotmpl": {
+      "bg": "sky-0",
+      "color": "punctuation"
+    },
+    "@punctuation.bracket.gotmpl": {
+      "bg": "sky-0",
+      "color": "punctuation"
+    },
+    "@punctuation.delimiter.gotmpl": {
+      "bg": "sky-0",
+      "color": "punctuation"
+    },
+    "@string.gotmpl": {
+      "bg": "sky-0",
+      "color": "string"
+    },
+    "@variable.gotmpl": {
+      "bg": "sky-0",
+      "color": "variable"
+    },
+    "@variable.member.gotmpl": {
+      "bg": "sky-0",
+      "color": "variable"
+    }
+  },
+  "help": {
+    "@label.vimdoc": {
+      "color": "green-7"
+    },
+    "@markup.heading.1.vimdoc": {
+      "color": "blue-3"
+    }
+  },
+  "html": {
+    "@constant.html": {
+      "bold": true,
+      "color": "yellow"
+    },
+    "@markup.heading.html": {
+      "bold": true,
+      "color": "purple-3"
+    },
+    "@tag.attribute.html": {
+      "color": "variable-type"
+    },
+    "@tag.delimiter.html": {
+      "color": "punctuation"
+    },
+    "@tag.html": {
+      "color": "keyword"
+    },
+    "htmlTag": {
+      "color": "keyword"
+    }
+  },
+  "javascript": {
+    "@keyword.exception.javascript": {
+      "bold": true,
+      "color": "yellow"
+    }
+  },
+  "json": {
+    "jsonQuote": {
+      "color": "string"
+    }
+  },
+  "jsx": {
+    "@tag.builtin.javascript": {
+      "color": "keyword"
+    },
+    "@tag.delimiter.javascript": {
+      "color": "punctuation"
+    },
+    "@tag.javascript": {
+      "color": "function"
+    }
+  },
+  "lua": {
+    "@constructor.lua": {
+      "color": "punctuation"
+    },
+    "@keyword.directive.lua": {
+      "color": "yellow"
+    },
+    "@keyword.function.lua": {
+      "color": "keyword"
+    },
+    "@keyword.lua": {
+      "color": "variable-type"
+    },
+    "@keyword.repeat.lua": {
+      "color": "keyword"
+    },
+    "@keyword.return.lua": {
+      "color": "keyword"
+    },
+    "@label.lua": {
+      "bold": true,
+      "color": "yellow-3"
+    }
+  },
+  "markdown": {
+    "@label.markdown": {
+      "color": "blue-4"
+    },
+    "@markup.heading.1.markdown": {
+      "bold": true,
+      "color": "purple-3"
+    },
+    "@markup.heading.2.markdown": {
+      "bold": true,
+      "color": "blue-3"
+    },
+    "@markup.heading.3.markdown": {
+      "bold": true,
+      "color": "green-7"
+    },
+    "@markup.heading.4.markdown": {
+      "bold": true,
+      "color": "yellow-5"
+    },
+    "@markup.heading.5.markdown": {
+      "bold": true,
+      "color": "orange-6"
+    },
+    "@markup.heading.6.markdown": {
+      "bold": true,
+      "color": "red-6"
+    },
+    "@markup.link.label.markdown_inline": {
+      "color": "string"
+    },
+    "@markup.link.markdown_inline": {
+      "color": "punctuation"
+    },
+    "@markup.link.url.markdown_inline": {
+      "color": "link"
+    },
+    "@markup.list.markdown": {
+      "color": "punctuation"
+    },
+    "@markup.quote.markdown": {
+      "bold": true,
+      "color": "gray-4",
+      "italic": true
+    },
+    "@markup.raw.block.markdown": {
+      "color": "string"
+    },
+    "@markup.raw.markdown_inline": {
+      "color": "string"
+    },
+    "@markup.strong.markdown_inline": {
+      "bold": true,
+      "color": "text"
+    },
+    "@punctuation.special.markdown": {
+      "color": "punctuation"
+    },
+    "markdownIdDeclaration": {
+      "color": "variable-type"
+    },
+    "markdownUrl": {
+      "color": "link"
+    }
+  },
+  "python": {
+    "@function.method.call.python": {
+      "color": "green"
+    },
+    "@keyword.directive.python": {
+      "color": "yellow"
+    },
+    "@keyword.exception.python": {
+      "bold": true,
+      "color": "orange"
+    },
+    "@keyword.import.python": {
+      "color": "yellow"
+    }
+  },
+  "rust": {
+    "@keyword.modifier.rust": {
+      "color": "variable-type"
+    },
+    "@keyword.type.rust": {
+      "color": "variable-type"
+    }
+  },
+  "sh": {
+    "shOption": {
+      "color": "symbol"
+    },
+    "shVarAssign": {
+      "color": "punctuation"
+    }
+  },
+  "toml": {
+    "tomlDotInKey": {
+      "color": "punctuation"
+    }
+  },
+  "typescript": {
+    "@tag.builtin.tsx": {
+      "color": "keyword"
+    },
+    "@tag.delimiter.tsx": {
+      "color": "punctuation"
+    }
+  },
+  "vim": {
+    "@function.macro.vim": {
+      "color": "teal"
+    },
+    "@keyword.vim": {
+      "color": "teal"
+    },
+    "@label.vim": {
+      "color": "string"
+    }
+  },
+  "vue": {
+    "@function.method.vue": {
+      "color": "orange"
+    },
+    "@markup.raw.vue": {
+      "bg": "gray-8",
+      "color": "red-7"
+    },
+    "@punctuation.special.vue": {
+      "color": "string"
+    },
+    "@tag.delimiter.vue": {
+      "color": "punctuation"
+    },
+    "@tag.vue": {
+      "color": "keyword"
+    },
+    "@variable.member.vue": {
+      "color": "orange"
+    },
+    "@variable.vue": {
+      "color": "orange"
+    },
+    "htmlTag": {
+      "color": "orange"
+    }
+  },
+  "yaml": {
+    "@property.yaml": {
+      "color": "variable"
+    }
+  },
+  "zsh": {
+    "zshBrackets": {
+      "color": "punctuation"
+    },
+    "zshDeref": {
+      "color": "variable"
+    },
+    "zshException": {
+      "color": "yellow"
+    },
+    "zshFunction": {
+      "color": "yellow"
+    },
+    "zshOperator": {
+      "color": "punctuation"
+    },
+    "zshParentheses": {
+      "color": "punctuation"
+    },
+    "zshRedir": {
+      "color": "orange"
+    },
+    "zshVariable": {
+      "color": "variable"
+    },
+    "zshVariableDef": {
+      "color": "variable-definition"
+    }
+  }
+}

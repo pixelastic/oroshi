@@ -1,0 +1,104 @@
+#!/usr/bin/env zsh
+# Parse syntax.lua highlight groups into neovim-syntax.json
+# Usage:
+# $ generate-syntax
+set -e
+
+local currentDir=${0:a:h}
+local inputFile="$currentDir/lua/oroshi/colorscheme/syntax.lua"
+local outputFile="$OROSHI_ROOT/tools/term/zsh/config/theming/dist/neovim-syntax.json"
+
+# UI-specific group prefixes to skip
+local -a UI_PREFIXES=(RenderMarkdown htmlHead)
+
+local currentLang="default"
+local inLangSpecific=0
+local result='null'
+local group
+local color
+local targetLang
+local skip
+local entry
+local content="$(<"$inputFile")"
+local line
+local prefix
+local -a joArgs
+local RE_LANG_START='^-- Language specific'
+local RE_FOLD_CLOSE='^-+\s*[}][}][}]'
+local RE_FOLD_OPEN='^-+\s+(.+)\s+[{][{][{]'
+local RE_HL='hl\("([^"]+)",\s*"([^"]+)"'
+
+for line in ${(@f)content}; do
+  # Track entering the "Language specific" outer section
+  if [[ "$line" =~ $RE_LANG_START ]]; then
+    inLangSpecific=1
+    continue
+  fi
+
+  # Track language sub-sections inside "Language specific"
+  if (( inLangSpecific )); then
+    # Closing fold marker — check depth
+    if [[ "$line" =~ $RE_FOLD_CLOSE ]]; then
+      if [[ "$currentLang" != "default" ]]; then
+        # Leaving a language section, go back to default
+        currentLang="default"
+        continue
+      fi
+      # Leaving "Language specific"
+      inLangSpecific=0
+      continue
+    fi
+
+    # Opening fold marker for a language section
+    if [[ "$line" =~ $RE_FOLD_OPEN ]]; then
+      currentLang="${(L)match[1]}"
+      continue
+    fi
+  fi
+
+  # Skip non-hl lines
+  [[ ! "$line" =~ $RE_HL ]] && continue
+
+  group="${match[1]}"
+  color="${match[2]}"
+
+  # Skip "none" color entries
+  [[ "$color" == "none" ]] && continue
+
+  # Skip UI-specific groups
+  skip=0
+  for prefix in "${UI_PREFIXES[@]}"; do
+    if [[ "$group" == ${prefix}* ]]; then
+      skip=1
+      break
+    fi
+  done
+  (( skip )) && continue
+
+  # Determine target language key
+  targetLang="$currentLang"
+
+  # Check for filetype override in options
+  if [[ "$line" =~ 'filetype\s*=\s*"([^"]+)"' ]]; then
+    targetLang="${match[1]}"
+  fi
+
+  # Build the entry object with jo
+  joArgs=(color="$color")
+  if [[ "$line" =~ 'bold\s*=\s*true' ]]; then
+    joArgs+=(bold=true)
+  fi
+  if [[ "$line" =~ 'italic\s*=\s*true' ]]; then
+    joArgs+=(italic=true)
+  fi
+  if [[ "$line" =~ 'bg\s*=\s*"([^"]+)"' ]]; then
+    joArgs+=(bg="${match[1]}")
+  fi
+  entry="$(jo "${joArgs[@]}")"
+
+  # Add entry to result under the target language key
+  result="$(echo "$result" | jq --arg lang "$targetLang" --arg group "$group" --argjson entry "$entry" '.[$lang][$group] = $entry')"
+done
+
+# Write sorted output
+echo "$result" | jq -S '.' > "$outputFile"

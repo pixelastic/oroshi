@@ -38,4 +38,6 @@ export default {
     'yarn run colors-build-and-stage',
   'tools/term/zsh/config/functions/autoload/**/{colors,filetypes,icons,project}-build':
     'yarn run colors-build-and-stage',
+  'tools/vim/nvim/config/lua/oroshi/colorscheme/syntax.lua':
+    'yarn run colors-build-and-stage',
 };
