@@ -23,6 +23,9 @@ export default {
   // TOML files
   '**/*.toml': ['yarn precommit:lint toml'],
 
+  // SVG files
+  '**/*.svg': ['yarn precommit:lint svg'],
+
   // XML files
   '**/*.xml': ['yarn precommit:lint xml'],
 

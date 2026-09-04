@@ -328,6 +328,74 @@ setup() {
   grep -q -- '--fix' "$BATS_TMP_DIR/.go-lint-args"
 }
 
+# ─── SVG ─────────────────────────────────────────────────────────────────────
+
+@test "exits 0 when is-svg true and svg-lint has no output" {
+  echo '<svg></svg>' > "$BATS_GIT_DIR/icon.svg"
+  bats_git add icon.svg
+  bats_git commit --quiet -m "add icon.svg"
+  echo 'changed' >> "$BATS_GIT_DIR/icon.svg"
+
+  is-svg() { return 0; }
+  svg-lint() { printf ''; }
+  bats_mock is-svg svg-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+}
+
+@test "shows SVG header and errors when is-svg true and svg-lint has output" {
+  echo '<svg></svg>' > "$BATS_GIT_DIR/icon.svg"
+  bats_git add icon.svg
+  bats_git commit --quiet -m "add icon.svg"
+  echo 'changed' >> "$BATS_GIT_DIR/icon.svg"
+
+  is-svg() { return 0; }
+  svg-lint() {
+    printf 'icon.svg:1: parser error : Extra content at the end of the document\n'
+    return 1
+  }
+  bats_mock is-svg svg-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" =~ "── SVG ──" ]]
+  [[ "$output" =~ icon.svg ]]
+}
+
+@test "exits 0 when is-svg is false for all dirty files" {
+  echo '<svg></svg>' > "$BATS_GIT_DIR/icon.svg"
+  bats_git add icon.svg
+  bats_git commit --quiet -m "add icon.svg"
+  echo 'changed' >> "$BATS_GIT_DIR/icon.svg"
+
+  is-svg() { return 1; }
+  bats_mock is-svg
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+}
+
+@test "calls svg-lint with --fix flag when dirty svg files are found" {
+  echo '<svg></svg>' > "$BATS_GIT_DIR/icon.svg"
+  bats_git add icon.svg
+  bats_git commit --quiet -m "add icon.svg"
+  echo 'changed' >> "$BATS_GIT_DIR/icon.svg"
+
+  is-svg() { return 0; }
+  svg-lint() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/.svg-lint-args"
+    printf ''
+  }
+  bats_mock is-svg svg-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  grep -q -- '--fix' "$BATS_TMP_DIR/.svg-lint-args"
+}
+
 # ─── ALL ──────────────────────────────────────────────────────────────────────
 
 @test "shows both headers when both zsh and bats have errors" {
