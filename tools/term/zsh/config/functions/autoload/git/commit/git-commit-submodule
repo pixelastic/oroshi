@@ -7,6 +7,11 @@ local submodulePath="$1"
 local submoduleName="${submodulePath:t}"
 local gitRoot="$(git-directory-root --force)"
 
-cd "$gitRoot"
-git add $submodulePath
-git commit --message "chore(${submoduleName}): Update $submodulePath submodule"
+# Use submodule latest commit as body for root commit
+local subjectLine="$(git -C "$gitRoot/$submodulePath" log -1 --format=%s)"
+local message="chore(${submoduleName}): Update $submodulePath submodule"
+[[ "$subjectLine" != "" ]] && message+=$'\n\n'"$subjectLine"
+
+# Commit the submodule changes to the root repository
+git -C "$gitRoot" add $submodulePath
+git -C "$gitRoot" commit --message "$message"
