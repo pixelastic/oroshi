@@ -144,17 +144,18 @@ func VisibleIndices(rowCount int, index FileIndex) []int {
 }
 
 // ToggleFold toggles the fold state for the file at the cursor position.
-// When folding, the cursor moves to the file header.
-func ToggleFold(state State, index FileIndex) (State, FileIndex) {
+// When folding, the cursor moves to the file header and folded is true.
+// When unfolding, the cursor stays on the header and folded is false.
+func ToggleFold(state State, index FileIndex) (State, FileIndex, bool) {
 	filePos := currentFile(state.Cursor, index.Headers)
 	if filePos < 0 || filePos >= len(index.Paths) {
-		return state, index
+		return state, index, false
 	}
 
 	path := index.Paths[filePos]
 	if index.FoldState[path] {
 		delete(index.FoldState, path)
-		return state, index
+		return state, index, false
 	}
 
 	index.FoldState[path] = true
@@ -166,7 +167,7 @@ func ToggleFold(state State, index FileIndex) (State, FileIndex) {
 	} else {
 		state = clampViewport(state)
 	}
-	return state, index
+	return state, index, true
 }
 
 // MoveDownVisible moves the cursor to the next navigable row, scrolling the viewport using visible indices.

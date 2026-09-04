@@ -161,9 +161,18 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	if m.pendingKey == "z" {
 		m.pendingKey = ""
 		if key == "a" {
-			m.nav, m.fileIndex = navigation.ToggleFold(m.nav, m.fileIndex)
+			var folded bool
+			m.nav, m.fileIndex, folded = navigation.ToggleFold(m.nav, m.fileIndex)
 			m.visibleIndices = navigation.VisibleIndices(len(m.rows), m.fileIndex)
 			m.navigableIndices = navigableFromVisible(m.rows, m.visibleIndices, m.fileIndex.FoldState)
+			if folded {
+				foldedHeader := m.nav.Cursor
+				m.nav = navigation.NextFile(m.nav, m.fileIndex, m.navigableIndices, m.visibleIndices)
+				// Keep the folded header visible so the user sees the fold
+				if m.nav.Cursor != foldedHeader {
+					m.nav.ViewportOffset = foldedHeader
+				}
+			}
 		}
 		return m, nil
 	}

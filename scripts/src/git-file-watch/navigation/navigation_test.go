@@ -166,7 +166,7 @@ func TestToggleFoldOnUnfoldedFileFoldsIt(t *testing.T) {
 		FoldState: map[string]bool{},
 	}
 
-	_, newIndex := ToggleFold(state, index)
+	_, newIndex, _ := ToggleFold(state, index)
 
 	assert.True(t, newIndex.FoldState["b.go"])
 }
@@ -179,7 +179,7 @@ func TestToggleFoldOnFoldedFileUnfoldsIt(t *testing.T) {
 		FoldState: map[string]bool{"b.go": true},
 	}
 
-	_, newIndex := ToggleFold(state, index)
+	_, newIndex, _ := ToggleFold(state, index)
 
 	assert.False(t, newIndex.FoldState["b.go"])
 }
@@ -192,7 +192,7 @@ func TestFoldingMovesCursorToFileHeader(t *testing.T) {
 		FoldState: map[string]bool{},
 	}
 
-	newState, _ := ToggleFold(state, index)
+	newState, _, _ := ToggleFold(state, index)
 
 	assert.Equal(t, 5, newState.Cursor)
 }
@@ -209,7 +209,7 @@ func TestFoldingDoesNotScrollViewportWhenHeaderAlreadyVisible(t *testing.T) {
 		FoldState: map[string]bool{"a.go": true},
 	}
 
-	newState, _ := ToggleFold(state, index)
+	newState, _, _ := ToggleFold(state, index)
 
 	assert.Equal(t, 5, newState.Cursor)
 	assert.Equal(t, 0, newState.ViewportOffset)
@@ -224,7 +224,7 @@ func TestFoldingScrollsViewportWhenHeaderAboveViewport(t *testing.T) {
 		FoldState: map[string]bool{},
 	}
 
-	newState, _ := ToggleFold(state, index)
+	newState, _, _ := ToggleFold(state, index)
 
 	// Cursor moves to header 5, viewport must scroll to show it
 	assert.Equal(t, 5, newState.Cursor)
@@ -239,9 +239,101 @@ func TestUnfoldingKeepsCursorOnHeader(t *testing.T) {
 		FoldState: map[string]bool{"b.go": true},
 	}
 
-	newState, _ := ToggleFold(state, index)
+	newState, _, _ := ToggleFold(state, index)
 
 	assert.Equal(t, 5, newState.Cursor)
+}
+
+func TestToggleFoldReturnsTrueWhenFolding(t *testing.T) {
+	state := State{Cursor: 7, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	index := FileIndex{
+		Headers:   []int{0, 5, 10},
+		Paths:     []string{"a.go", "b.go", "c.go"},
+		FoldState: map[string]bool{},
+	}
+
+	_, _, folded := ToggleFold(state, index)
+
+	assert.True(t, folded)
+}
+
+func TestToggleFoldReturnsFalseWhenUnfolding(t *testing.T) {
+	state := State{Cursor: 5, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	index := FileIndex{
+		Headers:   []int{0, 5, 10},
+		Paths:     []string{"a.go", "b.go", "c.go"},
+		FoldState: map[string]bool{"b.go": true},
+	}
+
+	_, _, folded := ToggleFold(state, index)
+
+	assert.False(t, folded)
+}
+
+func TestFoldThenNextFileAdvancesToNextFileFirstLine(t *testing.T) {
+	// Cursor on line 7 in file b, fold it, then advance
+	state := State{Cursor: 7, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	index := FileIndex{
+		Headers:   []int{0, 5, 10},
+		Paths:     []string{"a.go", "b.go", "c.go"},
+		FoldState: map[string]bool{},
+	}
+
+	newState, newIndex, folded := ToggleFold(state, index)
+	assert.True(t, folded)
+
+	// Simulate main.go: after fold, recalculate navigable/visible then NextFile
+	// b.go is folded → its header (5) is navigable, its content (6-9) is hidden
+	navigable := []int{1, 2, 3, 4, 5, 11, 12, 13, 14}
+	visible := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
+
+	newState = NextFile(newState, newIndex, navigable, visible)
+
+	assert.Equal(t, 11, newState.Cursor)
+}
+
+func TestFoldKeepsViewportOnFoldedHeader(t *testing.T) {
+	// Cursor on line 7 in file b, fold it, then advance to file c
+	// Viewport should stay on file b's header so the user sees the fold
+	state := State{Cursor: 7, ViewportOffset: 5, ViewportHeight: 10, RowCount: 15}
+	index := FileIndex{
+		Headers:   []int{0, 5, 10},
+		Paths:     []string{"a.go", "b.go", "c.go"},
+		FoldState: map[string]bool{},
+	}
+
+	newState, newIndex, folded := ToggleFold(state, index)
+	assert.True(t, folded)
+	foldedHeader := newState.Cursor // header 5
+
+	navigable := []int{1, 2, 3, 4, 5, 11, 12, 13, 14}
+	visible := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
+	newState = NextFile(newState, newIndex, navigable, visible)
+	newState.ViewportOffset = foldedHeader
+
+	assert.Equal(t, 11, newState.Cursor, "cursor should be on next file's first line")
+	assert.Equal(t, 5, newState.ViewportOffset, "viewport should show folded file header")
+}
+
+func TestFoldLastFileKeepsCursorOnHeader(t *testing.T) {
+	state := State{Cursor: 12, ViewportOffset: 0, ViewportHeight: 20, RowCount: 15}
+	index := FileIndex{
+		Headers:   []int{0, 5, 10},
+		Paths:     []string{"a.go", "b.go", "c.go"},
+		FoldState: map[string]bool{},
+	}
+
+	newState, newIndex, folded := ToggleFold(state, index)
+	assert.True(t, folded)
+
+	// c.go is last file, folded → header 10 is navigable, no next file
+	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 10}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+	newState = NextFile(newState, newIndex, navigable, visible)
+
+	// No next file → cursor stays on folded header
+	assert.Equal(t, 10, newState.Cursor)
 }
 
 // --- Navigation with folds ---

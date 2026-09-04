@@ -397,18 +397,20 @@ func TestFoldingSecondFileKeepsFirstFileVisible(t *testing.T) {
 	m := testModel(th, rows)
 	m.nav.ViewportHeight = 4
 
-	// Fold file a — cursor on line 2, fold moves it to header 0
+	// Fold file a — cursor advances to first line of file b
+	// Viewport stays on file a's header so the fold is visible
 	m.nav.Cursor = 2
 	m.pendingKey = "z"
 	r1, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'a'}})
 	m = r1.(model)
-	assert.Equal(t, 0, m.nav.Cursor)
+	assert.Equal(t, 6, m.nav.Cursor)
+	assert.Equal(t, 0, m.nav.ViewportOffset, "folded file a header should be visible")
 
 	// Navigate down to file b's last line — this scrolls the viewport
 	m.nav.Cursor = 9
 	m.nav.ViewportOffset = 6
 
-	// Fold file b — cursor should go to header 5, viewport should not hide file a
+	// Fold file b — last file, cursor stays on header 5
 	m.pendingKey = "z"
 	r2, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'a'}})
 	m = r2.(model)
