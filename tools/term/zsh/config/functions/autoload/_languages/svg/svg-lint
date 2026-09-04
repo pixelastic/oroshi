@@ -1,0 +1,40 @@
+# Lint SVG files via xml-lint
+# Intercepts --fix to call svg-fix first, then delegates to xml-lint --filter is-svg
+# Usage:
+# $ svg-lint ./path/to/file.svg              # Stylish output (default)
+# $ svg-lint --json ./path/to/file.svg       # Unified JSON output
+# $ svg-lint --fix ./path/to/file.svg        # Fix first, then report remaining
+# $ svg-lint ./src/                          # Expand directory to SVG files
+setopt local_options err_return
+
+zparseopts -E -D \
+  -fix=flagFix \
+  -json=flagJson
+local isFix=${#flagFix}
+local isJson=${#flagJson}
+
+# No inputs provided
+if [[ $# -eq 0 ]]; then
+  echoerr "Error: No files provided"
+  return 1
+fi
+
+# Expand directories and filter to SVG files
+local expanded="$(file-expand --filter is-svg "$@")"
+if [[ "$expanded" == "" ]]; then
+  [[ $isJson == 1 ]] && printf '[]\n'
+  return 0
+fi
+local -a files=("${(@f)expanded}")
+
+# Fix mode: run svg-fix on expanded files first
+if [[ $isFix == 1 ]]; then
+  svg-fix "${files[@]}"
+fi
+
+# Build xml-lint args
+local -a lintArgs=(--filter is-svg)
+[[ $isJson == 1 ]] && lintArgs+=(--json)
+lintArgs+=("${files[@]}")
+
+xml-lint "${lintArgs[@]}"
