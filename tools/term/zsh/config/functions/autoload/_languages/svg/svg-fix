@@ -1,0 +1,10 @@
+# Fix SVG files via xml-fix
+# Usage:
+# $ svg-fix ./path/to/file.svg                          # Fix file in place
+# $ svg-fix file1.svg file2.svg                          # Fix multiple files in place
+# $ svg-fix ./src/                                       # Expand directory, fix all SVG files
+# $ svg-fix --stdout ./path/to/file.svg                  # Output fixed code to stdout
+# $ svg-fix --original-path /real/path.svg /tmp/file.svg # Resolve config from real path
+setopt local_options err_return
+
+xml-fix --filter is-svg "$@"
