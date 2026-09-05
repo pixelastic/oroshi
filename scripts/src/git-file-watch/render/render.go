@@ -112,7 +112,12 @@ func CodeLine(ctx Context, row layout.LineRow, isCursor bool) string {
 	}
 
 	if isCursor && ctx.ViewportWidth > 0 {
-		line = applyCursorHighlight(line, ctx.Theme, ctx.ViewportWidth)
+		line = applyLineBackground(line, ctx.Theme.Hex("yellow-0"), ctx.ViewportWidth)
+	} else if row.Marker != nil && ctx.ViewportWidth > 0 {
+		bgColor := MarkerBgColorName(*row.Marker)
+		if bgColor != "" {
+			line = applyLineBackground(line, ctx.Theme.Hex(bgColor), ctx.ViewportWidth)
+		}
 	}
 
 	b.WriteString(line)
@@ -120,17 +125,21 @@ func CodeLine(ctx Context, row layout.LineRow, isCursor bool) string {
 	return b.String()
 }
 
-// applyCursorHighlight applies background color to the entire line and pads to viewport width.
-// It uses raw ANSI escapes to inject a background that survives lipgloss resets.
+// applyCursorHighlight applies the cursor background color to the entire line.
 func applyCursorHighlight(line string, th *theme.Theme, viewportWidth int) string {
+	return applyLineBackground(line, th.Hex("yellow-0"), viewportWidth)
+}
+
+// applyLineBackground applies a hex background color to the entire line and pads to viewport width.
+// It uses raw ANSI escapes to inject a background that survives lipgloss resets.
+func applyLineBackground(line string, hex string, viewportWidth int) string {
+	if hex == "" {
+		return line
+	}
 	visible := lipgloss.Width(line)
 	pad := viewportWidth - visible
 	if pad > 0 {
 		line += strings.Repeat(" ", pad)
-	}
-	hex := th.Hex("gray-9")
-	if hex == "" {
-		return line
 	}
 	r, g, b := parseHexColor(hex)
 	bgCode := fmt.Sprintf("\x1b[48;2;%d;%d;%dm", r, g, b)
@@ -186,15 +195,30 @@ func LineColor(row layout.LineRow, th *theme.Theme, hasComment bool) lipgloss.Co
 	return th.Lipgloss("gray")
 }
 
-// MarkerColorName maps a diff marker to its theme color name.
+// MarkerColorName maps a diff marker to its foreground theme color name.
+// Uses the same colors as Neovim's GitSigns gutter highlights.
 func MarkerColorName(marker diff.Marker) string {
 	switch marker {
 	case diff.MarkerAdded:
-		return "git-added"
+		return "green-7"
 	case diff.MarkerModified:
-		return "git-modified"
+		return "purple"
 	case diff.MarkerDeleted:
-		return "git-removed"
+		return "red-8"
+	default:
+		return ""
+	}
+}
+
+// MarkerBgColorName maps a diff marker to its background theme color name.
+func MarkerBgColorName(marker diff.Marker) string {
+	switch marker {
+	case diff.MarkerAdded:
+		return "green-0"
+	case diff.MarkerModified:
+		return "purple-0"
+	case diff.MarkerDeleted:
+		return "red-0"
 	default:
 		return ""
 	}

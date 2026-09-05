@@ -223,7 +223,7 @@ func TestLineColorReturnsMarkerColorWhenNoComment(t *testing.T) {
 
 	result := LineColor(row, th, false)
 
-	assert.Equal(t, th.Lipgloss("git-added"), result)
+	assert.Equal(t, th.Lipgloss("green-7"), result)
 }
 
 func TestLineColorReturnsGrayWhenNoMarkerAndNoComment(t *testing.T) {
@@ -237,16 +237,72 @@ func TestLineColorReturnsGrayWhenNoMarkerAndNoComment(t *testing.T) {
 
 // --- MarkerColorName ---
 
-func TestMarkerColorNameReturnsGitAddedForAdded(t *testing.T) {
-	assert.Equal(t, "git-added", MarkerColorName(diff.MarkerAdded))
+func TestMarkerColorNameReturnsGreen7ForAdded(t *testing.T) {
+	assert.Equal(t, "green-7", MarkerColorName(diff.MarkerAdded))
 }
 
-func TestMarkerColorNameReturnsGitModifiedForModified(t *testing.T) {
-	assert.Equal(t, "git-modified", MarkerColorName(diff.MarkerModified))
+func TestMarkerColorNameReturnsPurpleForModified(t *testing.T) {
+	assert.Equal(t, "purple", MarkerColorName(diff.MarkerModified))
 }
 
-func TestMarkerColorNameReturnsGitRemovedForDeleted(t *testing.T) {
-	assert.Equal(t, "git-removed", MarkerColorName(diff.MarkerDeleted))
+func TestMarkerColorNameReturnsRed8ForDeleted(t *testing.T) {
+	assert.Equal(t, "red-8", MarkerColorName(diff.MarkerDeleted))
+}
+
+// --- MarkerBgColorName ---
+
+func TestMarkerBgColorNameReturnsGreen0ForAdded(t *testing.T) {
+	assert.Equal(t, "green-0", MarkerBgColorName(diff.MarkerAdded))
+}
+
+func TestMarkerBgColorNameReturnsPurple0ForModified(t *testing.T) {
+	assert.Equal(t, "purple-0", MarkerBgColorName(diff.MarkerModified))
+}
+
+func TestMarkerBgColorNameReturnsRed0ForDeleted(t *testing.T) {
+	assert.Equal(t, "red-0", MarkerBgColorName(diff.MarkerDeleted))
+}
+
+func TestMarkerBgColorNameReturnsEmptyForNoMarker(t *testing.T) {
+	assert.Equal(t, "", MarkerBgColorName(diff.Marker(0)))
+}
+
+// --- CodeLine background ---
+
+func TestCodeLineWithMarkerHasBgEscape(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	row := layout.LineRow{LineNumber: 1, Marker: &marker, FilePath: "main.go"}
+	ctx := Context{Theme: th, ViewportWidth: 40, LineNumberWidth: 3}
+
+	result := CodeLine(ctx, row, false)
+
+	assert.Contains(t, result, "\x1b[48;2;", "should contain ANSI background escape")
+}
+
+func TestCodeLineWithoutMarkerHasNoBgEscape(t *testing.T) {
+	th := loadTestTheme(t)
+	row := layout.LineRow{LineNumber: 1, FilePath: "main.go", Distance: 1}
+	ctx := Context{Theme: th, ViewportWidth: 40, LineNumberWidth: 3}
+
+	result := CodeLine(ctx, row, false)
+
+	assert.NotContains(t, result, "\x1b[48;2;", "context lines should have no background")
+}
+
+func TestCodeLineCursorOverridesMarkerBg(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	row := layout.LineRow{LineNumber: 1, Marker: &marker, FilePath: "main.go"}
+	ctx := Context{Theme: th, ViewportWidth: 40, LineNumberWidth: 3}
+
+	cursorResult := CodeLine(ctx, row, true)
+	nonCursorResult := CodeLine(ctx, row, false)
+
+	// Cursor line should use yellow-0 background, not green-0
+	assert.NotEqual(t, cursorResult, nonCursorResult)
+	// yellow-0 is #1a1a0f → rgb(26,26,15)
+	assert.Contains(t, cursorResult, "\x1b[48;2;26;26;15m", "cursor should use yellow-0 bg")
 }
 
 // --- Helpers ---
@@ -261,6 +317,12 @@ func loadTestTheme(t *testing.T) *theme.Theme {
 		"git-added":    {"ansi": 40, "hex": "#00d700"},
 		"git-modified": {"ansi": 135, "hex": "#af5fff"},
 		"git-removed":  {"ansi": 196, "hex": "#ff0000"},
+		"green-0":      {"ansi": 30, "hex": "#0f1a0f"},
+		"green-7":      {"ansi": 37, "hex": "#276749"},
+		"purple":       {"ansi": 65, "hex": "#805ad5"},
+		"purple-0":     {"ansi": 60, "hex": "#201325"},
+		"red-0":        {"ansi": 20, "hex": "#250f0f"},
+		"red-8":        {"ansi": 28, "hex": "#7f1d1d"},
 		"orange":       {"ansi": 208, "hex": "#ff8700"},
 		"gray":         {"ansi": 245, "hex": "#6b7280"},
 		"gray-5":       {"ansi": 240, "hex": "#4b5563"},
@@ -268,6 +330,7 @@ func loadTestTheme(t *testing.T) *theme.Theme {
 		"gray-9":       {"ansi": 234, "hex": "#1f2937"},
 		"directory":    {"ansi": 35, "hex": "#38a169"},
 		"yellow":       {"ansi": 226, "hex": "#facc15"},
+		"yellow-0":     {"ansi": 232, "hex": "#1a1a0f"},
 		"amber-3":      {"ansi": 214, "hex": "#fbbf24"},
 	}
 	data, err := json.Marshal(colors)
