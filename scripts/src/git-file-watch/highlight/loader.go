@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/ebitengine/purego"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/shebang"
 	tree_sitter "github.com/tree-sitter/go-tree-sitter"
 )
 
@@ -68,10 +69,21 @@ func NewLoader(parserDir string, queryDir string) *Loader {
 	}
 }
 
+// interpreterToLanguage maps shebang interpreter names to tree-sitter languages.
+var interpreterToLanguage = map[string]string{
+	"zsh":     "bash",
+	"bash":    "bash",
+	"sh":      "bash",
+	"python":  "python",
+	"python3": "python",
+	"node":    "javascript",
+	"ruby":    "ruby",
+	"perl":    "perl",
+}
+
 // LanguageForFile returns the tree-sitter language name for a filepath.
-// It checks the extension first, then falls back to path-based rules
-// for extensionless files (e.g. zsh autoload functions).
-func LanguageForFile(path string) string {
+// It checks the extension first, then path-based rules, then shebang.
+func LanguageForFile(path string, firstLine string) string {
 	ext := strings.TrimPrefix(extensionForFile(path), ".")
 	if lang, ok := extensionToLanguage[ext]; ok {
 		return lang
@@ -82,14 +94,19 @@ func LanguageForFile(path string) string {
 				return p.language
 			}
 		}
+		if interp := shebang.Interpreter(firstLine); interp != "" {
+			if lang, ok := interpreterToLanguage[interp]; ok {
+				return lang
+			}
+		}
 	}
 	return ext
 }
 
 // Load resolves the language for filepath and loads its grammar and highlight query.
 // Returns nil if either the grammar .so or highlights.scm is missing.
-func (l *Loader) Load(path string) *LoadedLanguage {
-	lang := LanguageForFile(path)
+func (l *Loader) Load(path string, firstLine string) *LoadedLanguage {
+	lang := LanguageForFile(path, firstLine)
 
 	grammarPath := filepath.Join(l.parserDir, lang+".so")
 	if _, err := os.Stat(grammarPath); err != nil {

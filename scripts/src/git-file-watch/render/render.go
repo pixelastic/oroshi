@@ -44,9 +44,10 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int, isCursor b
 		b.WriteByte('\n')
 	}
 	dir, file := filepath.Split(row.Path)
+	firstLine := firstLineForFile(ctx.RawLines, row.Path)
 	dirStyle := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss("directory"))
 	styledFile := file
-	fileColor, fileBold := ctx.Theme.FilenameColor(file)
+	fileColor, fileBold := ctx.Theme.FilenameColorForPath(row.Path, firstLine)
 	if fileColor != "" {
 		s := lipgloss.NewStyle().Foreground(fileColor)
 		if fileBold {
@@ -56,7 +57,7 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int, isCursor b
 	}
 
 	// Icon in the line number column, colored like the filename
-	icon := ctx.Theme.FilenameIcon(file)
+	icon := ctx.Theme.FilenameIconForPath(row.Path, firstLine)
 	iconCol := strings.Repeat(" ", ctx.LineNumberWidth)
 	if icon != "" {
 		pad := ctx.LineNumberWidth - 1
@@ -259,6 +260,14 @@ func DimContent(highlighted map[string][]highlight.StyledLine, rawLines map[stri
 		return plain
 	}
 	return lipgloss.NewStyle().Foreground(color).Render(plain)
+}
+
+func firstLineForFile(rawLines map[string][]string, path string) string {
+	lines := rawLines[path]
+	if len(lines) > 0 {
+		return lines[0]
+	}
+	return ""
 }
 
 func lineContent(highlighted map[string][]highlight.StyledLine, path string, lineNumber int) string {

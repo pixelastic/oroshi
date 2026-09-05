@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/shebang"
 )
 
 // Theme holds resolved colors from oroshi theming.
@@ -111,6 +112,69 @@ func (t *Theme) FilenameIcon(basename string) string {
 		return entry.Icon.Glyph
 	}
 	return ""
+}
+
+// pathFiletypes maps path substrings to filetype keys for extensionless files.
+var pathFiletypes = []struct {
+	contains    string
+	filetypeKey string
+}{
+	{"tools/term/zsh/config/functions/autoload/", "zsh"},
+}
+
+// interpreterToFiletype maps shebang interpreter names to filetype keys.
+var interpreterToFiletype = map[string]string{
+	"zsh":     "zsh",
+	"bash":    "sh",
+	"sh":      "sh",
+	"python":  "py",
+	"python3": "py",
+	"node":    "js",
+	"ruby":    "rb",
+}
+
+// FilenameColorForPath returns the color for a file, using path-based rules
+// and shebang as fallbacks for extensionless files.
+func (t *Theme) FilenameColorForPath(path string, firstLine string) (lipgloss.Color, bool) {
+	if entry, ok := t.resolveFiletypeForPath(path, firstLine); ok {
+		return resolveFiletypeColor(entry), entry.Bold
+	}
+	return lipgloss.Color(""), false
+}
+
+// FilenameIconForPath returns the icon for a file, using path-based rules
+// and shebang as fallbacks for extensionless files.
+func (t *Theme) FilenameIconForPath(path string, firstLine string) string {
+	if entry, ok := t.resolveFiletypeForPath(path, firstLine); ok {
+		return entry.Icon.Glyph
+	}
+	return ""
+}
+
+func (t *Theme) resolveFiletypeForPath(path string, firstLine string) (filetypeEntry, bool) {
+	basename := filepath.Base(path)
+	if entry, ok := t.resolveFiletype(basename); ok {
+		return entry, true
+	}
+	ext := strings.TrimPrefix(filepath.Ext(basename), ".")
+	if ext != "" {
+		return filetypeEntry{}, false
+	}
+	for _, p := range pathFiletypes {
+		if strings.Contains(path, p.contains) {
+			if entry, ok := t.filetypes[p.filetypeKey]; ok {
+				return entry, true
+			}
+		}
+	}
+	if interp := shebang.Interpreter(firstLine); interp != "" {
+		if ftKey, ok := interpreterToFiletype[interp]; ok {
+			if entry, ok := t.filetypes[ftKey]; ok {
+				return entry, true
+			}
+		}
+	}
+	return filetypeEntry{}, false
 }
 
 func (t *Theme) resolveFiletype(basename string) (filetypeEntry, bool) {

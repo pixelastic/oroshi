@@ -12,50 +12,82 @@ import (
 // --- Language resolution ---
 
 func TestResolvesGoFilepathToGoLanguage(t *testing.T) {
-	result := LanguageForFile("main.go")
+	result := LanguageForFile("main.go", "")
 	assert.Equal(t, "go", result)
 }
 
 func TestResolvesJsFilepathToJavascriptLanguage(t *testing.T) {
-	result := LanguageForFile("app.js")
+	result := LanguageForFile("app.js", "")
 	assert.Equal(t, "javascript", result)
 }
 
 func TestResolvesTypescriptFilepathToTypescriptLanguage(t *testing.T) {
-	result := LanguageForFile("index.ts")
+	result := LanguageForFile("index.ts", "")
 	assert.Equal(t, "typescript", result)
 }
 
 func TestResolvesBatsFilepathToBashLanguage(t *testing.T) {
-	result := LanguageForFile("helper.bats")
+	result := LanguageForFile("helper.bats", "")
 	assert.Equal(t, "bash", result)
 }
 
 func TestResolvesUnknownExtensionToExtensionItself(t *testing.T) {
-	result := LanguageForFile("file.gleam")
+	result := LanguageForFile("file.gleam", "")
 	assert.Equal(t, "gleam", result)
 }
 
 // --- Path-based resolution ---
 
 func TestResolvesZshAutoloadFunctionToBash(t *testing.T) {
-	result := LanguageForFile("tools/term/zsh/config/functions/autoload/git/git-current-branch")
+	result := LanguageForFile("tools/term/zsh/config/functions/autoload/git/git-current-branch", "")
 	assert.Equal(t, "bash", result)
 }
 
 func TestResolvesNestedZshAutoloadFunctionToBash(t *testing.T) {
-	result := LanguageForFile("tools/term/zsh/config/functions/autoload/ai/claude/mcp/claude-mcp-add")
+	result := LanguageForFile("tools/term/zsh/config/functions/autoload/ai/claude/mcp/claude-mcp-add", "")
 	assert.Equal(t, "bash", result)
 }
 
 func TestDoesNotOverrideExtensionForFileInAutoloadDir(t *testing.T) {
-	result := LanguageForFile("tools/term/zsh/config/functions/autoload/colors/colors.json")
+	result := LanguageForFile("tools/term/zsh/config/functions/autoload/colors/colors.json", "")
 	assert.Equal(t, "json", result)
 }
 
 func TestDoesNotMatchAutoloadPathOutsideExpectedDir(t *testing.T) {
-	result := LanguageForFile("some/other/path/no-extension")
+	result := LanguageForFile("some/other/path/no-extension", "")
 	assert.Equal(t, "", result)
+}
+
+// --- Shebang-based resolution ---
+
+func TestResolvesZshShebangToBash(t *testing.T) {
+	result := LanguageForFile("scripts/onStartup", "#!/bin/zsh")
+	assert.Equal(t, "bash", result)
+}
+
+func TestResolvesBashShebangToBash(t *testing.T) {
+	result := LanguageForFile("scripts/build", "#!/usr/bin/env bash")
+	assert.Equal(t, "bash", result)
+}
+
+func TestResolvesPython3ShebangToPython(t *testing.T) {
+	result := LanguageForFile("scripts/deploy", "#!/usr/bin/env python3")
+	assert.Equal(t, "python", result)
+}
+
+func TestResolvesNodeShebangToJavascript(t *testing.T) {
+	result := LanguageForFile("scripts/cli", "#!/usr/bin/env node")
+	assert.Equal(t, "javascript", result)
+}
+
+func TestExtensionTakesPriorityOverShebang(t *testing.T) {
+	result := LanguageForFile("main.go", "#!/bin/zsh")
+	assert.Equal(t, "go", result)
+}
+
+func TestPathPatternTakesPriorityOverShebang(t *testing.T) {
+	result := LanguageForFile("tools/term/zsh/config/functions/autoload/git/git-foo", "#!/bin/bash")
+	assert.Equal(t, "bash", result)
 }
 
 // --- Missing resources ---
@@ -72,7 +104,7 @@ func TestReturnsNilWhenGrammarFileIsMissing(t *testing.T) {
 	// no .so file
 
 	loader := NewLoader(parserDir, queryDir)
-	result := loader.Load("main.go")
+	result := loader.Load("main.go", "")
 	assert.Nil(t, result)
 }
 
@@ -87,7 +119,7 @@ func TestReturnsNilWhenHighlightQueryIsMissing(t *testing.T) {
 	// no highlights.scm
 
 	loader := NewLoader(parserDir, queryDir)
-	result := loader.Load("main.go")
+	result := loader.Load("main.go", "")
 	assert.Nil(t, result)
 }
 
@@ -193,7 +225,7 @@ func TestLoadsGrammarAndQueryFromNvimTreesitter(t *testing.T) {
 	}
 
 	loader := NewLoader(parserDir, queryDir)
-	result := loader.Load("main.go")
+	result := loader.Load("main.go", "")
 
 	require.NotNil(t, result)
 	assert.NotNil(t, result.Language, "grammar language pointer should not be nil")

@@ -127,6 +127,93 @@ func TestFilenameIconReturnsEmptyForUnknownExtension(t *testing.T) {
 	assert.Empty(t, icon)
 }
 
+// --- FilenameColorForPath ---
+
+func TestFilenameColorForPathReturnsZshColorForAutoloadFunction(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	color, _ := loaded.FilenameColorForPath("tools/term/zsh/config/functions/autoload/context/context-path", "")
+
+	assert.Equal(t, "#a78bfa", string(color))
+}
+
+func TestFilenameIconForPathReturnsZshIconForAutoloadFunction(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	icon := loaded.FilenameIconForPath("tools/term/zsh/config/functions/autoload/context/context-path", "")
+
+	assert.Equal(t, "Z", icon)
+}
+
+func TestFilenameColorForPathStillWorksForNormalFiles(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	color, bold := loaded.FilenameColorForPath("src/main.go", "")
+
+	assert.Equal(t, "#38a169", string(color))
+	assert.True(t, bold)
+}
+
+func TestFilenameColorForPathIgnoresAutoloadFilesWithExtension(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	// A .js file under autoload should still resolve as JS, not ZSH
+	color, _ := loaded.FilenameColorForPath("tools/term/zsh/config/functions/autoload/test/file.js", "")
+
+	assert.Equal(t, "#facc15", string(color))
+}
+
+// --- Shebang-based filetype ---
+
+func TestFilenameColorForPathResolvesZshShebang(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	color, _ := loaded.FilenameColorForPath("scripts/onStartup", "#!/bin/zsh")
+
+	assert.Equal(t, "#a78bfa", string(color))
+}
+
+func TestFilenameIconForPathResolvesZshShebang(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	icon := loaded.FilenameIconForPath("scripts/onStartup", "#!/bin/zsh")
+
+	assert.Equal(t, "Z", icon)
+}
+
+func TestFilenameColorForPathResolvesBashShebang(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	color, _ := loaded.FilenameColorForPath("scripts/build", "#!/usr/bin/env bash")
+
+	assert.Equal(t, "#a78bfa", string(color))
+}
+
+func TestPathPatternTakesPriorityOverShebang(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+
+	// Autoload path → zsh, even with a bash shebang
+	color, _ := loaded.FilenameColorForPath("tools/term/zsh/config/functions/autoload/git/git-foo", "#!/bin/bash")
+
+	assert.Equal(t, "#a78bfa", string(color))
+}
+
 // --- Helpers ---
 
 func setupTestFiles(t *testing.T) string {
@@ -147,6 +234,8 @@ func setupTestFiles(t *testing.T) string {
 
 	filetypesJSON := `{
 		"go": {"bold": true, "color": {"ansi": 35, "hex": "#38a169", "name": "green"}, "icon": {"glyph": "G", "name": "filetype-go"}, "pattern": "*.go"},
+		"zsh": {"bold": false, "color": {"ansi": 173, "hex": "#a78bfa", "name": "violet-3"}, "icon": {"glyph": "Z", "name": "filetype-script"}, "pattern": "*.zsh"},
+		"sh": {"bold": false, "color": {"ansi": 173, "hex": "#a78bfa", "name": "violet-3"}, "icon": {"glyph": "S", "name": "filetype-script"}, "pattern": "*.sh"},
 		"_envrc": {"bold": false, "color": {"ansi": 174, "hex": "#8b5cf6", "name": "violet-4"}, "pattern": ".envrc"},
 		"js": {"bold": false, "color": {"ansi": 226, "hex": "#facc15", "name": "yellow"}, "icon": {"glyph": "J", "name": "filetype-js"}, "pattern": "*.js"}
 	}`

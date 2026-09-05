@@ -107,12 +107,13 @@ func (h *Highlighter) highlightWithTreeSitter(filepath string, content string) [
 		return nil
 	}
 
-	loaded := h.loader.Load(filepath)
+	firstLine, _, _ := strings.Cut(content, "\n")
+	loaded := h.loader.Load(filepath, firstLine)
 	if loaded == nil {
 		return nil
 	}
 
-	language := LanguageForFile(filepath)
+	language := LanguageForFile(filepath, firstLine)
 	return HighlightTreeSitter(loaded, language, []byte(content), h.syntaxMap)
 }
 

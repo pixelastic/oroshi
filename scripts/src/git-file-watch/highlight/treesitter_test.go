@@ -28,7 +28,7 @@ func loadGoGrammar(t *testing.T) *LoadedLanguage {
 	}
 
 	loader := NewLoader(parserDir, queryDir)
-	loaded := loader.Load("main.go")
+	loaded := loader.Load("main.go", "")
 	require.NotNil(t, loaded)
 	return loaded
 }
@@ -208,7 +208,7 @@ func TestSkipsMatchesWithUnevaluatedGeneralPredicates(t *testing.T) {
 	}
 
 	loader := NewLoader(parserDir, queryDir)
-	loaded := loader.Load("app.js")
+	loaded := loader.Load("app.js", "")
 	require.NotNil(t, loaded)
 
 	// The syntax map has @variable (purple) and Constant (orange).
