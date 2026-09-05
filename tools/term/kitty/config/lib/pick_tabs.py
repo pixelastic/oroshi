@@ -59,7 +59,9 @@ def pick_tabs_to_display(screen: Screen):
 
 # Returns the width of a given tab
 def get_tab_width(tab_id):
-    return len(tabState["manifest"][tab_id]["title"]) + SEPARATOR_LENGTH
+    tab = tabState["manifest"][tab_id]
+    marker = tab.get("notificationMarker", "")
+    return len(tab["title"]) + len(marker) + SEPARATOR_LENGTH
 
 
 # Returns the full tabBar width if we display all tabs

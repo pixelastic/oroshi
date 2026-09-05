@@ -48,6 +48,12 @@ def test_get_tab_width_returns_title_length_plus_one():
     assert pick_tabs.get_tab_width(1) == 6  # len("hello") + 1
 
 
+def test_get_tab_width_includes_notification_marker():
+    _setup_tabs(["hello"], active_index_1based=1)
+    tabState["manifest"][1]["notificationMarker"] = "XX"
+    assert pick_tabs.get_tab_width(1) == 8  # len("hello") + len("XX") + 1
+
+
 # --- get_full_tab_bar_width ---
 
 
