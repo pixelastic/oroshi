@@ -72,6 +72,7 @@ type model struct {
 	flashLines           map[string]bool
 	prevSnapshot         *flash.Snapshot
 	oroshiRoot           string
+	showHelp             bool
 }
 
 func (m model) Init() tea.Cmd {
@@ -121,6 +122,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.viewportWidth = msg.Width
 		return m, nil
 	case tea.KeyMsg:
+		if m.showHelp {
+			m.showHelp = false
+			return m, nil
+		}
 		if m.editState.Active {
 			return m.updateEditing(msg)
 		}
@@ -209,6 +214,8 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.nav = navigation.GoToBottom(m.nav, m.navigableIndices, m.visibleIndices)
 	case "z":
 		m.pendingKey = "z"
+	case "?":
+		m.showHelp = true
 	}
 	return m, nil
 }
@@ -384,6 +391,9 @@ func waitForSyntaxMapChange(channel <-chan struct{}) tea.Cmd {
 }
 
 func (m model) View() string {
+	if m.showHelp {
+		return m.renderHelp()
+	}
 	if len(m.rows) == 0 {
 		return "\n    " + lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-5")).Render("No changes") + "\n"
 	}
@@ -435,6 +445,38 @@ func (m model) View() string {
 		fmt.Fprintf(&builder, "\n%s\n", m.statusMessage)
 	}
 	return builder.String()
+}
+
+func (m model) renderHelp() string {
+	title := lipgloss.NewStyle().
+		Bold(true).
+		Foreground(m.theme.Lipgloss("yellow")).
+		Render("Keybindings")
+
+	dim := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray"))
+	key := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("yellow")).Bold(true)
+
+	lines := []struct{ k, desc string }{
+		{"j / k", "Line down / up"},
+		{"d / u", "Half page down / up"},
+		{"l / h", "Next / previous file"},
+		{"gg", "Go to top"},
+		{"G", "Go to bottom"},
+		{"za", "Toggle fold"},
+		{"enter", "Add/edit comment"},
+		{"i", "Open in Neovim"},
+		{"r", "Send review to Claude"},
+		{"?", "Show this help"},
+		{"q", "Quit"},
+	}
+
+	var b strings.Builder
+	b.WriteString("\n  " + title + "\n\n")
+	for _, l := range lines {
+		b.WriteString("  " + key.Render(fmt.Sprintf("%-10s", l.k)) + " " + dim.Render(l.desc) + "\n")
+	}
+	b.WriteString("\n  " + dim.Render("Press any key to close") + "\n")
+	return b.String()
 }
 
 func navigableFromVisible(rows []layout.Row, visibleIndices []int, foldState map[string]bool) []int {
