@@ -6,8 +6,9 @@ setopt local_options err_return
 
 local targetDir="${1:-.}"
 
-local rawList="$(git -C "$targetDir" submodule status)"
 local gitRoot="$(git-directory-root "$targetDir")"
+# Run from gitRoot so submodule paths are relative to the repo root
+local rawList="$(git -C "$gitRoot" submodule status)"
 
 # No submodules
 [[ "$rawList" == "" ]] && return 0
