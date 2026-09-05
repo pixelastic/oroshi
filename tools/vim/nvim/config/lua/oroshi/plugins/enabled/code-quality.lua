@@ -10,6 +10,7 @@ local javascriptHelper = O_require("oroshi/filetypes/javascript")
 local jsonHelper = O_require("oroshi/filetypes/json")
 local luaHelper = O_require("oroshi/filetypes/lua")
 local pythonHelper = O_require("oroshi/filetypes/python")
+local svgHelper = O_require("oroshi/filetypes/svg")
 local tomlHelper = O_require("oroshi/filetypes/toml")
 local xmlHelper = O_require("oroshi/filetypes/xml")
 local zshHelper = O_require("oroshi/filetypes/zsh")
@@ -136,6 +137,12 @@ local config = {
     },
     sh = {
       formatters = { "shfmt" },
+    },
+    svg = {
+      linters = { "oroshi_svg_lint" },
+      formatters = { "oroshi_svg_fix" },
+      configureLinter = svgHelper.configureLinter,
+      configureFormatter = svgHelper.configureFormatter,
     },
     toml = {
       lsp = { "taplo" },
