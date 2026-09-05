@@ -515,7 +515,7 @@ func TestCommitFinishedMsgRebuildsDisplay(t *testing.T) {
 	assert.NotNil(t, resultModel.theme)
 }
 
-func TestCtrlSInEditModeDoesNotTriggerCommit(t *testing.T) {
+func TestEnterInEditModeSavesComment(t *testing.T) {
 	th := loadTestTheme(t)
 	marker := diff.MarkerAdded
 	rows := []layout.Row{
@@ -526,10 +526,32 @@ func TestCtrlSInEditModeDoesNotTriggerCommit(t *testing.T) {
 	m.editState = editing.Open("/repo/file.go", 1, "content", "", 1)
 	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
 
-	_, cmd := m.Update(tea.KeyMsg{Type: tea.KeyCtrlS})
+	result, cmd := m.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	resultModel := result.(model)
 
-	// In edit mode, ctrl+s saves the comment (returns nil cmd), not exec a process
-	assert.Nil(t, cmd, "ctrl+s in edit mode should save comment, not exec commit")
+	assert.Nil(t, cmd, "enter in edit mode should save comment, not exec a process")
+	assert.False(t, resultModel.editState.Active, "edit mode should be closed after enter")
+}
+
+func TestCtrlDInEditModeCancelsWithoutSaving(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.editState = editing.Open("/repo/file.go", 1, "content", "old review", 1)
+	m.userComments = []comments.Comment{
+		{Filepath: "/repo/file.go", LineNumber: 1, LineContent: "content", Review: "old review"},
+	}
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+
+	result, _ := m.Update(tea.KeyMsg{Type: tea.KeyCtrlD})
+	resultModel := result.(model)
+
+	assert.False(t, resultModel.editState.Active, "edit mode should be closed after ctrl+d")
+	assert.Equal(t, "old review", resultModel.userComments[0].Review, "comment should not be modified")
 }
 
 // --- Help screen shows ctrl+s ---

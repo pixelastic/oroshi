@@ -142,14 +142,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m model) updateEditing(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch msg.String() {
-	case "ctrl+s":
+	case "enter":
 		result := editing.Save(m.editState, m.editTextArea.Value())
 		m.userComments = applyEditResult(m.userComments, result)
 		_ = comments.Save(m.commentsPath, m.userComments)
 		m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
 		m.editState = editing.Inactive()
 		return m, nil
-	case "esc":
+	case "esc", "ctrl+d":
 		m.editState = editing.Inactive()
 		return m, nil
 	}
@@ -250,6 +250,7 @@ func (m model) openEditing() (tea.Model, tea.Cmd) {
 	m.editState = editing.Open(absolutePath, lineRow.LineNumber, lineContent, existingReview, m.nav.Cursor)
 
 	ta := textarea.New()
+	ta.KeyMap.InsertNewline.SetKeys("⏎")
 	ta.SetWidth(60)
 	ta.SetHeight(3)
 	ta.ShowLineNumbers = false
@@ -407,7 +408,8 @@ func (m model) View() string {
 		return m.renderHelp()
 	}
 	if len(m.rows) == 0 {
-		return "\n    " + lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-5")).Render("No changes") + "\n"
+		noChanges := lipgloss.NewStyle().Foreground(m.theme.Lipgloss("gray-5")).Render("No changes")
+		return "\n    " + noChanges + "\n"
 	}
 
 	ctx := render.Context{
@@ -476,6 +478,7 @@ func (m model) renderHelp() string {
 		{"G", "Go to bottom"},
 		{"za", "Toggle fold"},
 		{"enter", "Add/edit comment"},
+		{"", "  enter: save, shift+enter: newline, ctrl+d: cancel"},
 		{"i", "Open in Neovim"},
 		{"r", "Send review to Claude"},
 		{"ctrl+s", "Auto-commit all"},
