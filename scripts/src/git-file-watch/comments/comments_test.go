@@ -1,13 +1,17 @@
 package comments
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
+	"regexp"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+var hexPattern = regexp.MustCompile(`^[0-9a-f]{8}$`)
 
 // --- Load ---
 
@@ -60,19 +64,22 @@ func TestUpsertAddsNewComment(t *testing.T) {
 	comments := []Comment{}
 	comment := Comment{Filepath: "/a.go", LineNumber: 5, LineContent: "hello", Review: "fix"}
 
-	result := Upsert(comments, comment)
+	result, err := Upsert(comments, comment, "abc123")
+	require.NoError(t, err)
 
 	require.Len(t, result, 1)
-	assert.Equal(t, comment, result[0])
+	assert.Equal(t, "/a.go", result[0].Filepath)
+	assert.Equal(t, "fix", result[0].Review)
 }
 
 func TestUpsertUpdatesExistingCommentAtSameFilepathAndLineNumber(t *testing.T) {
 	comments := []Comment{
-		{Filepath: "/a.go", LineNumber: 5, LineContent: "hello", Review: "old"},
+		{ID: "aabb0011", Filepath: "/a.go", LineNumber: 5, LineContent: "hello", Review: "old", CommitHash: "orig"},
 	}
 	updated := Comment{Filepath: "/a.go", LineNumber: 5, LineContent: "hello changed", Review: "new"}
 
-	result := Upsert(comments, updated)
+	result, err := Upsert(comments, updated, "newhead")
+	require.NoError(t, err)
 
 	require.Len(t, result, 1)
 	assert.Equal(t, "new", result[0].Review)
@@ -187,4 +194,119 @@ func TestReattachHandlesMultipleCommentsInSameFile(t *testing.T) {
 	assert.Equal(t, 3, result[0].LineNumber)
 	// "stays" found at line 1
 	assert.Equal(t, 1, result[1].LineNumber)
+}
+
+// --- Upsert ID generation ---
+
+func TestUpsertGeneratesEightCharHexIDForNewComment(t *testing.T) {
+	comments := []Comment{}
+	comment := Comment{Filepath: "/a.go", LineNumber: 5, LineContent: "hello", Review: "fix"}
+
+	result, err := Upsert(comments, comment, "abc123")
+	require.NoError(t, err)
+
+	require.Len(t, result, 1)
+	assert.Regexp(t, hexPattern, result[0].ID)
+}
+
+func TestUpsertPreservesExistingIDOnUpdate(t *testing.T) {
+	comments := []Comment{
+		{ID: "deadbeef", Filepath: "/a.go", LineNumber: 5, LineContent: "hello", Review: "old", CommitHash: "abc123"},
+	}
+	updated := Comment{Filepath: "/a.go", LineNumber: 5, LineContent: "changed", Review: "new"}
+
+	result, err := Upsert(comments, updated, "def456")
+	require.NoError(t, err)
+
+	require.Len(t, result, 1)
+	assert.Equal(t, "deadbeef", result[0].ID)
+}
+
+func TestUpsertProducesDifferentIDsForConsecutiveCalls(t *testing.T) {
+	var err error
+	comments := []Comment{}
+	first := Comment{Filepath: "/a.go", LineNumber: 1, LineContent: "line1", Review: "r1"}
+	second := Comment{Filepath: "/b.go", LineNumber: 2, LineContent: "line2", Review: "r2"}
+
+	comments, err = Upsert(comments, first, "abc")
+	require.NoError(t, err)
+	comments, err = Upsert(comments, second, "abc")
+	require.NoError(t, err)
+
+	require.Len(t, comments, 2)
+	assert.NotEqual(t, comments[0].ID, comments[1].ID)
+}
+
+// --- Upsert commit hash ---
+
+func TestUpsertStoresCommitHashOnNewComment(t *testing.T) {
+	comments := []Comment{}
+	comment := Comment{Filepath: "/a.go", LineNumber: 5, LineContent: "hello", Review: "fix"}
+
+	result, err := Upsert(comments, comment, "abc123def")
+	require.NoError(t, err)
+
+	require.Len(t, result, 1)
+	assert.Equal(t, "abc123def", result[0].CommitHash)
+}
+
+func TestUpsertPreservesExistingCommitHashOnUpdate(t *testing.T) {
+	comments := []Comment{
+		{ID: "deadbeef", Filepath: "/a.go", LineNumber: 5, LineContent: "hello", Review: "old", CommitHash: "original"},
+	}
+	updated := Comment{Filepath: "/a.go", LineNumber: 5, LineContent: "changed", Review: "new"}
+
+	result, err := Upsert(comments, updated, "newhead")
+	require.NoError(t, err)
+
+	require.Len(t, result, 1)
+	assert.Equal(t, "original", result[0].CommitHash)
+}
+
+// --- Persistence with ID and CommitHash ---
+
+func TestSaveWritesIDAndCommitHashToJSON(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "comments.json")
+	input := []Comment{
+		{ID: "aabbccdd", Filepath: "/a.go", LineNumber: 5, LineContent: "hello", Review: "fix", CommitHash: "abc123"},
+	}
+
+	err := Save(path, input)
+	require.NoError(t, err)
+
+	raw, err := os.ReadFile(path)
+	require.NoError(t, err)
+
+	var parsed []map[string]interface{}
+	require.NoError(t, json.Unmarshal(raw, &parsed))
+	require.Len(t, parsed, 1)
+	assert.Equal(t, "aabbccdd", parsed[0]["id"])
+	assert.Equal(t, "abc123", parsed[0]["commitHash"])
+}
+
+func TestLoadReadsIDAndCommitHashFromJSON(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "comments.json")
+	data := `[{"id":"aabbccdd","filepath":"/a.go","lineNumber":5,"lineContent":"hello","review":"fix","commitHash":"abc123"}]`
+	require.NoError(t, os.WriteFile(path, []byte(data), 0o644))
+
+	comments, err := Load(path)
+	require.NoError(t, err)
+	require.Len(t, comments, 1)
+	assert.Equal(t, "aabbccdd", comments[0].ID)
+	assert.Equal(t, "abc123", comments[0].CommitHash)
+}
+
+func TestLoadHandlesJSONWithoutIDAndCommitHash(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "comments.json")
+	data := `[{"filepath":"/a.go","lineNumber":5,"lineContent":"hello","review":"fix"}]`
+	require.NoError(t, os.WriteFile(path, []byte(data), 0o644))
+
+	comments, err := Load(path)
+	require.NoError(t, err)
+	require.Len(t, comments, 1)
+	assert.Equal(t, "", comments[0].ID)
+	assert.Equal(t, "", comments[0].CommitHash)
 }

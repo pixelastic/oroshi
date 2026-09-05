@@ -144,7 +144,19 @@ func (m model) updateEditing(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch msg.String() {
 	case "enter":
 		result := editing.Save(m.editState, m.editTextArea.Value())
-		m.userComments = applyEditResult(m.userComments, result)
+		commitHash, err := git.Head(m.repoRoot)
+		if err != nil {
+			m.statusMessage = fmt.Sprintf("error: %s", err)
+			m.editState = editing.Inactive()
+			return m, nil
+		}
+		updated, err := applyEditResult(m.userComments, result, commitHash)
+		if err != nil {
+			m.statusMessage = fmt.Sprintf("error: %s", err)
+			m.editState = editing.Inactive()
+			return m, nil
+		}
+		m.userComments = updated
 		_ = comments.Save(m.commentsPath, m.userComments)
 		m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
 		m.editState = editing.Inactive()
@@ -268,16 +280,16 @@ func (m model) openEditing() (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-func applyEditResult(userComments []comments.Comment, result editing.SaveResult) []comments.Comment {
+func applyEditResult(userComments []comments.Comment, result editing.SaveResult, commitHash string) ([]comments.Comment, error) {
 	if result.IsEmpty {
-		return comments.Delete(userComments, result.FilePath, result.LineNumber)
+		return comments.Delete(userComments, result.FilePath, result.LineNumber), nil
 	}
 	return comments.Upsert(userComments, comments.Comment{
 		Filepath:    result.FilePath,
 		LineNumber:  result.LineNumber,
 		LineContent: result.LineContent,
 		Review:      result.Text,
-	})
+	}, commitHash)
 }
 
 func (m *model) rebuildDisplay() tea.Cmd {

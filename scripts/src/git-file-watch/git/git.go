@@ -16,6 +16,17 @@ func RepoRoot() (string, error) {
 	return strings.TrimSpace(string(output)), nil
 }
 
+// Head returns the current HEAD commit hash.
+func Head(repoRoot string) (string, error) {
+	cmd := exec.Command("git", "rev-parse", "HEAD")
+	cmd.Dir = repoRoot
+	output, err := cmd.Output()
+	if err != nil {
+		return "", fmt.Errorf("resolving HEAD: %w", err)
+	}
+	return strings.TrimSpace(string(output)), nil
+}
+
 // Diff runs git diff in the given directory and returns the raw output.
 func Diff(repoRoot string) (string, error) {
 	cmd := exec.Command("git", "diff")

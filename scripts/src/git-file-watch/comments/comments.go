@@ -1,6 +1,7 @@
 package comments
 
 import (
+	"crypto/rand"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -9,10 +10,12 @@ import (
 
 // Comment represents a review annotation attached to a specific file line.
 type Comment struct {
+	ID          string `json:"id"`
 	Filepath    string `json:"filepath"`
 	LineNumber  int    `json:"lineNumber"`
 	LineContent string `json:"lineContent"`
 	Review      string `json:"review"`
+	CommitHash  string `json:"commitHash"`
 }
 
 // Load reads a JSON array of comments from disk.
@@ -49,14 +52,33 @@ func Save(path string, comments []Comment) error {
 }
 
 // Upsert adds a comment or updates an existing one matched by filepath+lineNumber.
-func Upsert(comments []Comment, comment Comment) []Comment {
+// New comments get an 8-char hex id and the provided commitHash.
+// Existing comments preserve their original id and commitHash.
+func Upsert(comments []Comment, comment Comment, commitHash string) ([]Comment, error) {
 	for i, existing := range comments {
 		if existing.Filepath == comment.Filepath && existing.LineNumber == comment.LineNumber {
+			comment.ID = existing.ID
+			comment.CommitHash = existing.CommitHash
 			comments[i] = comment
-			return comments
+			return comments, nil
 		}
 	}
-	return append(comments, comment)
+	id, err := generateID()
+	if err != nil {
+		return nil, fmt.Errorf("generating comment id: %w", err)
+	}
+	comment.ID = id
+	comment.CommitHash = commitHash
+	return append(comments, comment), nil
+}
+
+// generateID returns an 8-character random hex string using crypto/rand.
+func generateID() (string, error) {
+	buf := make([]byte, 4)
+	if _, err := rand.Read(buf); err != nil {
+		return "", fmt.Errorf("reading random bytes: %w", err)
+	}
+	return fmt.Sprintf("%x", buf), nil
 }
 
 // Delete removes a comment by filepath+lineNumber. No-op if not found.
