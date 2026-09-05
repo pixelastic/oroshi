@@ -52,6 +52,7 @@ test. Also when to use real dependencies and when to mock them.
 authorized short forms
 - See if we add a `{lang}-min` to compress files in the toolchain (useful for
 svg, maybe for js as well)
+- Seems like new files are not displayed by git-file-watch
 
 ---
 
