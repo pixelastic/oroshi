@@ -310,3 +310,57 @@ func TestLoadHandlesJSONWithoutIDAndCommitHash(t *testing.T) {
 	assert.Equal(t, "", comments[0].ID)
 	assert.Equal(t, "", comments[0].CommitHash)
 }
+
+// --- ClearStale ---
+
+func TestClearStaleRemovesCommentsWithMismatchedCommitHash(t *testing.T) {
+	input := []Comment{
+		{Filepath: "/a.go", LineNumber: 1, Review: "old", CommitHash: "aaa111"},
+		{Filepath: "/b.go", LineNumber: 2, Review: "current", CommitHash: "bbb222"},
+	}
+
+	result := ClearStale(input, "bbb222")
+
+	require.Len(t, result, 1)
+	assert.Equal(t, "/b.go", result[0].Filepath)
+}
+
+func TestClearStalePreservesCommentsMatchingHead(t *testing.T) {
+	input := []Comment{
+		{Filepath: "/a.go", LineNumber: 1, Review: "ok", CommitHash: "abc123"},
+		{Filepath: "/b.go", LineNumber: 2, Review: "also ok", CommitHash: "abc123"},
+	}
+
+	result := ClearStale(input, "abc123")
+
+	assert.Len(t, result, 2)
+}
+
+func TestClearStaleRemovesCommentsWithEmptyCommitHash(t *testing.T) {
+	input := []Comment{
+		{Filepath: "/a.go", LineNumber: 1, Review: "legacy", CommitHash: ""},
+		{Filepath: "/b.go", LineNumber: 2, Review: "current", CommitHash: "abc123"},
+	}
+
+	result := ClearStale(input, "abc123")
+
+	require.Len(t, result, 1)
+	assert.Equal(t, "/b.go", result[0].Filepath)
+}
+
+func TestClearStaleReturnsEmptySliceWhenAllStale(t *testing.T) {
+	input := []Comment{
+		{Filepath: "/a.go", LineNumber: 1, Review: "old", CommitHash: "old111"},
+		{Filepath: "/b.go", LineNumber: 2, Review: "legacy", CommitHash: ""},
+	}
+
+	result := ClearStale(input, "newhead")
+
+	assert.Empty(t, result)
+}
+
+func TestClearStaleReturnsEmptySliceForEmptyInput(t *testing.T) {
+	result := ClearStale([]Comment{}, "abc123")
+
+	assert.Empty(t, result)
+}

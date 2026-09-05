@@ -74,6 +74,7 @@ type model struct {
 	lineNumberWidth      int
 	flashLines           map[string]bool
 	prevSnapshot         *flash.Snapshot
+	resolveHead          func(string) (string, error)
 	oroshiRoot           string
 	showHelp             bool
 }
@@ -102,6 +103,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, tea.Batch(waitForDiffChange(m.watchChannel), cmd)
 	case GitIndexChangedMsg:
 		cmd := m.rebuildDisplay()
+		m.clearStaleComments()
 		return m, tea.Batch(waitForIndexChange(m.indexWatchChannel), cmd)
 	case CommentsChangedMsg:
 		m.reloadComments()
@@ -369,6 +371,16 @@ func (m model) sendReviewToClaude() (tea.Model, tea.Cmd) {
 
 	m.statusMessage = "review sent to Claude"
 	return m, nil
+}
+
+func (m *model) clearStaleComments() {
+	head, err := m.resolveHead(m.repoRoot)
+	if err != nil {
+		return
+	}
+	m.userComments = comments.ClearStale(m.userComments, head)
+	_ = comments.Save(m.commentsPath, m.userComments)
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
 }
 
 func (m *model) reloadComments() {
@@ -669,6 +681,7 @@ func main() {
 		navigableIndices:     navIndices,
 		lineNumberWidth:      render.MaxLineNumberWidth(rows),
 		prevSnapshot:         func() *flash.Snapshot { s := flash.NewSnapshot(rows, rawLines); return &s }(),
+		resolveHead:          git.Head,
 		repoRoot:             repoRoot,
 		oroshiRoot:           oroshiRoot,
 		userComments:         userComments,

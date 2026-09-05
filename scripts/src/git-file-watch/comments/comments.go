@@ -133,6 +133,18 @@ func Reattach(comments []Comment, fileLines map[string][]string) []Comment {
 	return result
 }
 
+// ClearStale removes comments whose commitHash doesn't match the current HEAD.
+// Comments with an empty commitHash (legacy) are also removed.
+func ClearStale(comments []Comment, headHash string) []Comment {
+	result := make([]Comment, 0, len(comments))
+	for _, comment := range comments {
+		if comment.CommitHash == headHash {
+			result = append(result, comment)
+		}
+	}
+	return result
+}
+
 // findContent returns the 1-based line number where content is found, or 0 if not found.
 func findContent(lines []string, content string) int {
 	for i, line := range lines {

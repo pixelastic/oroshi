@@ -726,6 +726,97 @@ func TestHelpScreenShowsCtrlS(t *testing.T) {
 	assert.Contains(t, output, "Auto-commit all")
 }
 
+// --- GitIndexChangedMsg: stale comment clearing ---
+
+func TestGitIndexChangedMsgRemovesStaleComments(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+	m.resolveHead = func(_ string) (string, error) { return "newhead", nil }
+	m.userComments = []comments.Comment{
+		{Filepath: "/repo/file.go", LineNumber: 1, Review: "stale", CommitHash: "oldhead"},
+		{Filepath: "/repo/file.go", LineNumber: 2, Review: "fresh", CommitHash: "newhead"},
+	}
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+
+	result, _ := m.Update(GitIndexChangedMsg{})
+	resultModel := result.(model)
+
+	require.Len(t, resultModel.userComments, 1)
+	assert.Equal(t, "fresh", resultModel.userComments[0].Review)
+}
+
+func TestGitIndexChangedMsgRemovesCommentsWithEmptyCommitHash(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+	m.resolveHead = func(_ string) (string, error) { return "abc123", nil }
+	m.userComments = []comments.Comment{
+		{Filepath: "/repo/file.go", LineNumber: 1, Review: "legacy", CommitHash: ""},
+	}
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+
+	result, _ := m.Update(GitIndexChangedMsg{})
+	resultModel := result.(model)
+
+	assert.Empty(t, resultModel.userComments)
+}
+
+func TestGitIndexChangedMsgPreservesCommentsWhenHeadUnchanged(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+	m.resolveHead = func(_ string) (string, error) { return "samehead", nil }
+	m.userComments = []comments.Comment{
+		{Filepath: "/repo/file.go", LineNumber: 1, Review: "keep me", CommitHash: "samehead"},
+		{Filepath: "/repo/file.go", LineNumber: 2, Review: "keep me too", CommitHash: "samehead"},
+	}
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+
+	result, _ := m.Update(GitIndexChangedMsg{})
+	resultModel := result.(model)
+
+	assert.Len(t, resultModel.userComments, 2)
+}
+
+func TestGitIndexChangedMsgRebuildCommentIndexAfterClearing(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+	m.resolveHead = func(_ string) (string, error) { return "newhead", nil }
+	m.userComments = []comments.Comment{
+		{Filepath: "/repo/file.go", LineNumber: 1, Review: "stale", CommitHash: "oldhead"},
+		{Filepath: "/repo/file.go", LineNumber: 2, Review: "fresh", CommitHash: "newhead"},
+	}
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+
+	result, _ := m.Update(GitIndexChangedMsg{})
+	resultModel := result.(model)
+
+	assert.NotContains(t, resultModel.commentIndex, "file.go:1")
+	assert.Equal(t, "fresh", resultModel.commentIndex["file.go:2"])
+}
+
 // --- Helpers ---
 
 func loadTestTheme(t *testing.T) *theme.Theme {
