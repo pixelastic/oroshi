@@ -28,12 +28,7 @@ function _load_test_mocks() {
   # No mock file to apply
   [[ "$MOCK_OVERRIDE" == "" ]] && return
 
-  builtin source "$MOCK_OVERRIDE"
-
-  # Redefine source so any subsequent source call re-applies mocks
-  function source() {
-    builtin source "$@"
-    builtin source "$MOCK_OVERRIDE"
-  }
+  # Re-apply mocks after every command so sourced files can't shadow them
+  trap 'builtin source "$MOCK_OVERRIDE"' DEBUG
 }
 _load_test_mocks
