@@ -238,9 +238,30 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, tea.ExecProcess(cmd, func(err error) tea.Msg {
 			return CommitFinishedMsg{err: err}
 		})
+	case "x", "delete":
+		return m.deleteComment()
 	case "?":
 		m.showHelp = true
 	}
+	return m, nil
+}
+
+func (m model) deleteComment() (tea.Model, tea.Cmd) {
+	lineRow, ok := m.rows[m.nav.Cursor].(layout.LineRow)
+	if !ok {
+		return m, nil
+	}
+
+	relativePath := editor.CurrentFilePath(m.rows, m.nav.Cursor)
+	if relativePath == "" {
+		return m, nil
+	}
+	absolutePath := filepath.Join(m.repoRoot, relativePath)
+
+	m.userComments = comments.Delete(m.userComments, absolutePath, lineRow.LineNumber)
+	_ = comments.Save(m.commentsPath, m.userComments)
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+
 	return m, nil
 }
 
@@ -491,6 +512,7 @@ func (m model) renderHelp() string {
 		{"za", "Toggle fold"},
 		{"enter", "Add/edit comment"},
 		{"", "  enter: save, shift+enter: newline, ctrl+d: cancel"},
+		{"x", "Delete comment"},
 		{"i", "Open in Neovim"},
 		{"r", "Send review to Claude"},
 		{"ctrl+s", "Auto-commit all"},

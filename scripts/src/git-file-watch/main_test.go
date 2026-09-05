@@ -554,7 +554,166 @@ func TestCtrlDInEditModeCancelsWithoutSaving(t *testing.T) {
 	assert.Equal(t, "old review", resultModel.userComments[0].Review, "comment should not be modified")
 }
 
-// --- Help screen shows ctrl+s ---
+// --- Keybinding: x / delete (delete comment) ---
+
+func TestXOnLineWithCommentRemovesItFromUserComments(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 10, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 1
+	m.userComments = []comments.Comment{
+		{Filepath: "/repo/file.go", LineNumber: 10, Review: "fix this"},
+	}
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'x'}})
+	resultModel := result.(model)
+
+	assert.Empty(t, resultModel.userComments)
+}
+
+func TestXOnLineWithCommentClearsCommentIndexEntry(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 10, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 1
+	m.userComments = []comments.Comment{
+		{Filepath: "/repo/file.go", LineNumber: 10, Review: "fix this"},
+	}
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'x'}})
+	resultModel := result.(model)
+
+	assert.Empty(t, resultModel.commentIndex)
+}
+
+func TestDeleteKeyBehavesIdenticallyToX(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 10, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 1
+	m.userComments = []comments.Comment{
+		{Filepath: "/repo/file.go", LineNumber: 10, Review: "fix this"},
+	}
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyDelete})
+	resultModel := result.(model)
+
+	assert.Empty(t, resultModel.userComments)
+}
+
+func TestXOnLineWithoutCommentDoesNotChangeUserComments(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 10, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 1
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'x'}})
+	resultModel := result.(model)
+
+	assert.Empty(t, resultModel.userComments)
+}
+
+func TestXOnLineWithoutCommentReturnsNilCommand(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 10, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 1
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+
+	_, cmd := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'x'}})
+
+	assert.Nil(t, cmd)
+}
+
+func TestXOnFileHeaderRowDoesNothing(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 1, Marker: &marker},
+		layout.FileHeaderRow{Path: "other.go"},
+		layout.LineRow{FilePath: "other.go", LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	// Place cursor on folded header so it's navigable
+	m.fileIndex.FoldState["other.go"] = true
+	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileIndex)
+	m.navigableIndices = navigableFromVisible(rows, m.visibleIndices, m.fileIndex.FoldState)
+	m.nav.Cursor = 2
+	m.userComments = []comments.Comment{
+		{Filepath: "/repo/file.go", LineNumber: 1, Review: "keep me"},
+	}
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'x'}})
+	resultModel := result.(model)
+
+	assert.Len(t, resultModel.userComments, 1, "comment should not be removed")
+}
+
+func TestXOnSeparatorRowDoesNothing(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 1, Marker: &marker},
+		layout.SeparatorRow{},
+		layout.LineRow{FilePath: "file.go", LineNumber: 10, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 2
+	m.userComments = []comments.Comment{
+		{Filepath: "/repo/file.go", LineNumber: 1, Review: "keep me"},
+	}
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'x'}})
+	resultModel := result.(model)
+
+	assert.Len(t, resultModel.userComments, 1, "comment should not be removed")
+}
+
+// --- Help screen ---
+
+func TestHelpScreenShowsDeleteComment(t *testing.T) {
+	th := loadTestTheme(t)
+	m := testModel(th, []layout.Row{})
+	m.showHelp = true
+
+	output := m.View()
+
+	assert.Contains(t, output, "x")
+	assert.Contains(t, output, "Delete comment")
+}
 
 func TestHelpScreenShowsCtrlS(t *testing.T) {
 	th := loadTestTheme(t)
