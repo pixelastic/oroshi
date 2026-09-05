@@ -1,5 +1,5 @@
-# Return a filesystem-safe identifier for the current context
-# Repo Name from main, repoName--branchSlug from a worktree
+# Return a filesystem-safe identifier for a given context
+# Example: oroshi--context-slug
 # Usage:
 # $ context-slug                                  # oroshi
 # $ context-slug /some/path                       # oroshi--yarn-sync
@@ -16,32 +16,23 @@ local projectOverride="${flagProject[2]}"
 local branchOverride="${flagBranch[2]}"
 local targetPath="${1:-$PWD}"
 
-# Project: flag or derived from GitHub remote
-local project="$projectOverride"
-if [[ "$project" == "" ]]; then
-  project="$(git-github-project-name "$targetPath" 2>/dev/null)" || true
-fi
+# Use context-raw for all info
+local rawArgs=(--reply)
+[[ "$projectOverride" != "" ]] && rawArgs+=(--project "$projectOverride")
+[[ "$branchOverride" != "" ]] && rawArgs+=(--branch "$branchOverride")
+rawArgs+=("$targetPath")
 
-# Fallback to git root basename with leading dots stripped
-if [[ "$project" == "" ]]; then
-  local rootDir="$(git-directory-root "$targetPath")"
-  local baseName="${rootDir:t}"
-  project="${baseName#.}"
-fi
+context-raw "${rawArgs[@]}"
+local fields=("${(@ps/▮/)REPLY}")
+local project="${fields[1]}"
+local branch="${fields[2]}"
 
-# Branch override: always append slug
-if [[ "$branchOverride" != "" ]]; then
-  local branchSlug="$(git-branch-slug "$branchOverride")"
-  echo "${project}--${branchSlug}"
-  return 0
-fi
-
-# Not a worktree: return just project
-if ! git-directory-is-worktree "$targetPath"; then
+# No branch: return just project
+if [[ "$branch" == "" ]]; then
   echo "$project"
   return 0
 fi
 
-# Worktree: append branch slug
-local branchSlug="$(git-branch-slug --repo "$targetPath")"
+# Slugify branch and append
+local branchSlug="$(git-branch-slug "$branch")"
 echo "${project}--${branchSlug}"

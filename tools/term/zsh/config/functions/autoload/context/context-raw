@@ -1,0 +1,70 @@
+# Return project▮branch▮root for a given path
+# Branch is raw (not slugified), empty if not in a worktree
+# Usage:
+# $ context-raw                                  # myproject▮▮/repos/myproject
+# $ context-raw /path/in/worktree                # myproject▮feat/x▮/worktrees/myproject--feat_x
+# $ context-raw --project myapp                  # myapp▮▮/repos/myproject
+# $ context-raw --branch feat/x                  # myproject▮feat/x▮/repos/myproject
+# $ context-raw --reply                          # writes to $REPLY instead of stdout
+setopt local_options err_return
+
+zparseopts -E -D \
+  -reply=flagReply \
+  -project:=flagProject \
+  -branch:=flagBranch
+
+local isReply=${#flagReply}
+local projectOverride="${flagProject[2]}"
+local branchOverride="${flagBranch[2]}"
+local effectivePath="${1:-$PWD}"
+
+# Submodule detection: if inside a submodule whose superproject is a worktree,
+# resolve everything from the superproject
+local superproject=""
+superproject="$(git -C "$effectivePath" rev-parse --show-superproject-working-tree 2>/dev/null)" || true
+if [[ "$superproject" != "" ]] && git-directory-is-worktree "$superproject"; then
+  effectivePath="$superproject"
+fi
+
+# Project: override, else project-name, else github, else git root basename
+local project="$projectOverride"
+if [[ "$project" == "" ]]; then
+  project="$(project-name "$effectivePath" 2>/dev/null)" || true
+fi
+if [[ "$project" == "" ]]; then
+  project="$(git-github-project-name "$effectivePath" 2>/dev/null)" || true
+fi
+if [[ "$project" == "" ]]; then
+  local rootDir=""
+  rootDir="$(git-directory-root "$effectivePath" 2>/dev/null)" || true
+  if [[ "$rootDir" != "" ]]; then
+    local baseName="${rootDir:t}"
+    project="${baseName#.}"
+  fi
+fi
+
+# No project found at all — return empty
+[[ "$project" == "" ]] && return 0
+
+# Branch: override (always), else worktree branch, else empty
+local branch="$branchOverride"
+if [[ "$branch" == "" ]] && git-directory-is-worktree "$effectivePath"; then
+  branch="$(git-branch-current "$effectivePath")"
+fi
+
+# Root: worktree root or project-path, else empty
+local root=""
+if git-directory-is-worktree "$effectivePath"; then
+  root="$(git-directory-root "$effectivePath")"
+else
+  root="$(project-path "$project" 2>/dev/null)" || true
+fi
+
+local result="${project}▮${branch}▮${root}"
+
+if [[ $isReply == 1 ]]; then
+  REPLY="$result"
+  return 0
+fi
+
+echo "$result"

@@ -1,94 +1,117 @@
 bats_load_library 'helper'
 
-# Mock all collaborators for unit tests
+# Mock all collaborators — context-slug now delegates to context-raw
 _mock_defaults() {
-  git-github-project-name() { echo "oroshi"; }
-  git-directory-is-worktree() { return 1; }
-  git-directory-root() { echo "/home/user/repos/oroshi"; }
+  context-raw() { REPLY="oroshi▮▮/repos/oroshi"; }
   git-branch-slug() { echo "yarn-sync"; }
-  bats_mock git-github-project-name git-directory-is-worktree git-directory-root git-branch-slug
+  bats_mock context-raw git-branch-slug
 }
 
 setup() {
   bats_tmp_dir
 }
 
-@test "in main repo: returns repo name from github" {
+@test "regular repo: returns project name" {
   _mock_defaults
   bats_run_zsh "cd $BATS_TMP_DIR && context-slug"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "oroshi" ]]
 }
 
-@test "in worktree: returns repoName--branchSlug" {
+@test "worktree: returns project--branchSlug" {
   _mock_defaults
-  git-directory-is-worktree() { return 0; }
-  bats_mock git-directory-is-worktree
+  context-raw() { REPLY="oroshi▮feat/something▮/worktrees/oroshi--feat_something"; }
+  git-branch-slug() { echo "feat_something"; }
+  bats_mock context-raw git-branch-slug
   bats_run_zsh "cd $BATS_TMP_DIR && context-slug"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "oroshi--yarn-sync" ]]
+  [[ "$output" = "oroshi--feat_something" ]]
 }
 
-@test "github fallback: uses git root basename with leading dot stripped" {
+@test "submodule-in-worktree: returns project--superprojectBranchSlug" {
   _mock_defaults
-  git-github-project-name() { return 1; }
-  git-directory-root() { echo "/home/user/repos/.dotfiles"; }
-  bats_mock git-github-project-name git-directory-root
+  context-raw() { REPLY="parent▮feature-branch▮/worktrees/parent--feature-branch"; }
+  git-branch-slug() { echo "feature-branch"; }
+  bats_mock context-raw git-branch-slug
   bats_run_zsh "cd $BATS_TMP_DIR && context-slug"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "dotfiles" ]]
+  [[ "$output" = "parent--feature-branch" ]]
 }
 
-@test "explicit path: resolves slug from target path, not PWD" {
-  bats_git_dir 'other-repo'
-  bats_git remote add origin git@github.com:someone/other-repo.git
-  bats_disable_worktree_aware
-  bats_run_zsh "context-slug $BATS_GIT_DIR"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "other-repo" ]]
-}
-
-@test "--project only in worktree: overrides project, branch from context" {
-  _mock_defaults
-  git-directory-is-worktree() { return 0; }
-  bats_mock git-directory-is-worktree
-  bats_run_zsh "cd $BATS_TMP_DIR && context-slug --project myapp"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "myapp--yarn-sync" ]]
-}
-
-@test "--branch only on main: project from repo, slug from flag" {
-  _mock_defaults
+@test "--project and --branch: forwarded to context-raw" {
+  context-raw() {
+    echo "$@" > "$BATS_TMP_DIR/raw-args.txt"
+    REPLY="myapp▮feat/x▮/repos/myapp"
+  }
   git-branch-slug() { echo "feat_x"; }
-  bats_mock git-branch-slug
-  bats_run_zsh "cd $BATS_TMP_DIR && context-slug --branch feat/x"
+  bats_mock context-raw git-branch-slug
+  bats_run_zsh "cd $BATS_TMP_DIR && context-slug --project myapp --branch feat/x"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "oroshi--feat_x" ]]
+  [[ "$output" = "myapp--feat_x" ]]
+  local args="$(cat "$BATS_TMP_DIR/raw-args.txt")"
+  [[ "$args" == *"--project"* ]]
+  [[ "$args" == *"myapp"* ]]
+  [[ "$args" == *"--branch"* ]]
+  [[ "$args" == *"feat/x"* ]]
 }
 
-@test "--project + --branch: returns project--branchSlug, ignores path" {
-  _mock_defaults
+@test "--project and --branch with path: path forwarded to context-raw" {
+  context-raw() {
+    echo "$@" > "$BATS_TMP_DIR/raw-args.txt"
+    REPLY="myapp▮my-branch▮/repos/myapp"
+  }
   git-branch-slug() { echo "my-branch"; }
-  bats_mock git-branch-slug
-  bats_run_zsh "cd $BATS_TMP_DIR && context-slug --project myapp --branch my-branch"
+  bats_mock context-raw git-branch-slug
+  bats_run_zsh "cd $BATS_TMP_DIR && context-slug --project myapp --branch my-branch /some/path"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "myapp--my-branch" ]]
-}
-
-@test "--project + --branch + path: path is ignored" {
-  _mock_defaults
-  git-branch-slug() { echo "my-branch"; }
-  bats_mock git-branch-slug
-  bats_run_zsh "cd $BATS_TMP_DIR && context-slug --project myapp --branch my-branch /some/other/path"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "myapp--my-branch" ]]
+  local args="$(cat "$BATS_TMP_DIR/raw-args.txt")"
+  [[ "$args" == *"/some/path"* ]]
 }
 
 @test "--branch with slashes: branch is slugified" {
   _mock_defaults
+  context-raw() { REPLY="oroshi▮feat/deep/nested▮/repos/oroshi"; }
   git-branch-slug() { echo "feat_deep_nested"; }
-  bats_mock git-branch-slug
+  bats_mock context-raw git-branch-slug
   bats_run_zsh "cd $BATS_TMP_DIR && context-slug --branch feat/deep/nested"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "oroshi--feat_deep_nested" ]]
+}
+
+@test "--project only in worktree: overrides project, branch from context" {
+  context-raw() {
+    echo "$@" > "$BATS_TMP_DIR/raw-args.txt"
+    REPLY="myapp▮feat/something▮/worktrees/myapp--feat_something"
+  }
+  git-branch-slug() { echo "feat_something"; }
+  bats_mock context-raw git-branch-slug
+  bats_run_zsh "cd $BATS_TMP_DIR && context-slug --project myapp"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "myapp--feat_something" ]]
+  local args="$(cat "$BATS_TMP_DIR/raw-args.txt")"
+  [[ "$args" == *"--project"* ]]
+  [[ "$args" == *"myapp"* ]]
+}
+
+@test "explicit path: forwards path to context-raw" {
+  context-raw() {
+    echo "$@" > "$BATS_TMP_DIR/raw-args.txt"
+    REPLY="other-repo▮▮/repos/other-repo"
+  }
+  git-branch-slug() { echo ""; }
+  bats_mock context-raw git-branch-slug
+  bats_run_zsh "cd $BATS_TMP_DIR && context-slug /some/other/path"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "other-repo" ]]
+  local args="$(cat "$BATS_TMP_DIR/raw-args.txt")"
+  [[ "$args" == *"/some/other/path"* ]]
+}
+
+@test "empty branch from context-raw: no separator appended" {
+  _mock_defaults
+  bats_run_zsh "cd $BATS_TMP_DIR && context-slug"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "oroshi" ]]
+  [[ "$output" != *"--"* ]]
 }
