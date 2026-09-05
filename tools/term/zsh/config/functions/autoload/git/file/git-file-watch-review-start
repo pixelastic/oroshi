@@ -1,0 +1,12 @@
+# Output simplified JSON of review comments (without commitHash)
+# Usage:
+# $ git-file-watch-review-start
+setopt local_options err_return
+
+local slug="$(context-slug)"
+local commentsFile="${OROSHI_TMP_FOLDER}/git-file-watch/${slug}.json"
+
+# No file or empty file
+[[ -s "$commentsFile" ]] || { echo "[]"; return 0; }
+
+jq -c '[.[] | {id, filepath, lineNumber, lineContent, review}]' "$commentsFile"
