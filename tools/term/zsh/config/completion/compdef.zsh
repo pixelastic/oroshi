@@ -301,6 +301,11 @@ compdef "_files -g '*.jsonl'" \
 compdef "_files -g '*.jsonc'" \
   jsonc2json
 # }}}
+# SVG {{{
+compdef "_files -g '*.svg'" \
+  svg-fix \
+  svg-lint
+# }}}
 # TOML {{{
 compdef "_files -g '*.toml'" \
   toml-fix \
