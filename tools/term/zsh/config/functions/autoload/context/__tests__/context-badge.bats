@@ -8,8 +8,8 @@ setup() {
     COLORS[git-worktree]=42
     COLORS[git-worktree-foreground]=99
   }
-  project-name() { echo "my-project"; }
-  git-worktree-name() { echo ""; }
+  # Default: simple project, no worktree branch
+  context-raw() { REPLY="my-project▮▮/repos/my-project"; }
   projects-load-definitions() {
     typeset -gA PROJECTS
     PROJECTS[my-project:background:ansi]=77
@@ -21,7 +21,7 @@ setup() {
     typeset -gA ICONS
     ICONS[badge-separator]="S"
   }
-  bats_mock colors-load-definitions project-name git-worktree-name projects-load-definitions icons-load-definitions
+  bats_mock colors-load-definitions context-raw projects-load-definitions icons-load-definitions
 }
 
 # --- Simple project ---
@@ -49,14 +49,27 @@ setup() {
 # --- Worktree ---
 
 @test "worktree: output contains project name and branch" {
-  git-worktree-name() { echo "fix/bug"; }
-  bats_mock git-worktree-name
+  context-raw() { REPLY="my-project▮fix/bug▮/worktrees/my-project--fix_bug"; }
+  bats_mock context-raw
 
   bats_run_zsh "context-badge /some/path"
   local actual="$(bats_strip_ansi "$output")"
 
   [[ "$status" -eq 0 ]]
   [[ "$actual" == " x my-project S fix/bug S" ]]
+}
+
+# --- Submodule-in-worktree ---
+
+@test "submodule-in-worktree: badge contains superproject worktree branch" {
+  context-raw() { REPLY="my-project▮feat/x▮/worktrees/my-project--feat_x"; }
+  bats_mock context-raw
+
+  bats_run_zsh "context-badge /some/submodule/path"
+  local actual="$(bats_strip_ansi "$output")"
+
+  [[ "$status" -eq 0 ]]
+  [[ "$actual" == " x my-project S feat/x S" ]]
 }
 
 # --- hideNameInPrompt ---
@@ -76,4 +89,15 @@ setup() {
 
   [[ "$status" -eq 0 ]]
   [[ "$actual" == " x S" ]]
+}
+
+# --- No project ---
+
+@test "no project: empty output" {
+  context-raw() { REPLY="▮▮"; }
+  bats_mock context-raw
+
+  bats_run_zsh "context-badge /tmp/random"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
 }

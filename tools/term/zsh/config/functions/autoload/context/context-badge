@@ -18,9 +18,17 @@ local isZsh=${#flagZsh}
 
 local reference="${1:-$PWD}"
 
-# project info
-local projectName="$(project-name "$reference")"
+# Resolve project and branch from context-raw
+local REPLY=""
+context-raw --reply "$reference"
+local fields=("${(@ps/▮/)REPLY}")
+local projectName="$fields[1]"
+local worktreeBranch="$fields[2]"
+
+# No project detected
 [[ "$projectName" == "" ]] && return 0
+
+# project info
 local projectIcon=$PROJECTS[${projectName}:icon]
 local projectBackground=$PROJECTS[${projectName}:background:ansi]
 local projectForeground=$PROJECTS[${projectName}:foreground:ansi]
@@ -31,8 +39,7 @@ local projectDisplay=" ${projectIcon}"
 # separator info
 local separatorIcon="$ICONS[badge-separator]"
 
-# worktreeinfo
-local worktreeName="$(git-worktree-name "$reference")"
+# worktree info
 local worktreeForeground=$COLORS[git-worktree-foreground]
 local worktreeBackground=$COLORS[git-worktree]
 
@@ -48,12 +55,12 @@ function _colorize() {
 _colorize "${projectDisplay} " $projectForeground $projectBackground
 
 # Final separator if no worktree
-if [[ $worktreeName == "" ]]; then
+if [[ "$worktreeBranch" == "" ]]; then
   _colorize "${separatorIcon}" $projectBackground
   return 0
 fi
 
 # Worktree badge
 _colorize "${separatorIcon}" $projectBackground $worktreeBackground
-_colorize " ${worktreeName} " $worktreeForeground $worktreeBackground
+_colorize " ${worktreeBranch} " $worktreeForeground $worktreeBackground
 _colorize "${separatorIcon}" $worktreeBackground
