@@ -2,6 +2,7 @@
 # Called whenever the PC boots
 # Function to reload the Gnome topbar config, as Gnome extensions tend to lose
 # their settings when coming from sleep.
+# zsh-lint disable-file=noWhileRead
 set -e
 
 # Setup debug log
@@ -37,16 +38,15 @@ function processLogLine() {
   debug $input
   if ((currentTime - lastEventTime < timeBetweenEvents)); then return; fi
 
-  # Found, reload the bar
-  reloadTopBar
+  # TODO(topbar-reload): Re-enable reload once we know if it's needed on wake
+  # reloadTopBar
+  debug "WakeUpScreen signal received (reload disabled for testing)"
   lastEventTime=$currentTime
 }
-#
 dbus-monitor \
-  --session "type='signal',interface=org.gnome.ScreenSaver,member=WakeUpScreen" |
-  # zsh-lint disable=noWhileRead
-  while IFS= read -r logLine; do
-    processLogLine "$logLine"
-  done
+  --session "type='signal',interface=org.gnome.ScreenSaver,member=WakeUpScreen" \
+  | while IFS= read -r logLine; do
+  processLogLine "$logLine"
+done
 
 debug "==== </onstartup> ===="
