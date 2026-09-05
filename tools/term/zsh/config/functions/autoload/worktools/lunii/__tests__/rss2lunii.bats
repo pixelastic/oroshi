@@ -143,7 +143,7 @@ BASH
 }
 
 @test "deletes existing PNG images when --force-img is set" {
-  local episodesDir="$BATS_TMP_DIR/mypack/Choisis ton histoire"
+  local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
   mkdir -p "$episodesDir"
   touch "$episodesDir/20240101 Episode One.item.png"
 
@@ -160,7 +160,7 @@ BASH
 }
 
 @test "preserves JPEG images when --force-img is set" {
-  local episodesDir="$BATS_TMP_DIR/mypack/Choisis ton histoire"
+  local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
   mkdir -p "$episodesDir"
   touch "$episodesDir/20240101 Episode One.item.jpeg"
 

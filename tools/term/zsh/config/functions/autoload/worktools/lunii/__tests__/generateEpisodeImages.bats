@@ -9,7 +9,7 @@ _lib_dir() {
 }
 
 @test "all JPEGs same hash: calls claude-api for each, produces PNGs, preserves JPEGs" {
-  local episodesDir="$BATS_TMP_DIR/mypack/Choisis ton histoire"
+  local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
   mkdir -p "$episodesDir"
   echo "same content" > "$episodesDir/20240101 Episode One.item.jpeg"
   echo "same content" > "$episodesDir/20240102 Episode Two.item.jpeg"
@@ -18,6 +18,7 @@ _lib_dir() {
     echo "called" >> "$BATS_TMP_DIR/claude_api_calls.txt"
     echo "<svg></svg>"
   }
+  svg-fix() { :; }
   svg2png() {
     for f in "$@"; do touch "${f%.svg}.png"; done
   }
@@ -25,7 +26,7 @@ _lib_dir() {
     local noExt="${1%.*}"
     touch "${noExt}.png"
   }
-  bats_mock claude-api svg2png resizeToLunii
+  bats_mock claude-api svg-fix svg2png resizeToLunii
 
   local libDir="$(_lib_dir)"
   bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack"
@@ -45,7 +46,7 @@ _lib_dir() {
 }
 
 @test "mixed hashes: claude-api for duplicates, resizeToLunii for unique, all PNGs produced" {
-  local episodesDir="$BATS_TMP_DIR/mypack/Choisis ton histoire"
+  local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
   mkdir -p "$episodesDir"
   echo "same content" > "$episodesDir/20240101 Episode One.item.jpeg"
   echo "same content" > "$episodesDir/20240102 Episode Two.item.jpeg"
@@ -55,6 +56,7 @@ _lib_dir() {
     echo "called" >> "$BATS_TMP_DIR/claude_api_calls.txt"
     echo "<svg></svg>"
   }
+  svg-fix() { :; }
   svg2png() {
     for f in "$@"; do touch "${f%.svg}.png"; done
   }
@@ -63,7 +65,7 @@ _lib_dir() {
     local noExt="${1%.*}"
     touch "${noExt}.png"
   }
-  bats_mock claude-api svg2png resizeToLunii
+  bats_mock claude-api svg-fix svg2png resizeToLunii
 
   local libDir="$(_lib_dir)"
   bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack"
@@ -89,7 +91,7 @@ _lib_dir() {
 }
 
 @test "skips episodes with existing .item.png" {
-  local episodesDir="$BATS_TMP_DIR/mypack/Choisis ton histoire"
+  local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
   mkdir -p "$episodesDir"
   echo "same content" > "$episodesDir/20240101 Episode One.item.jpeg"
   echo "same content" > "$episodesDir/20240102 Episode Two.item.jpeg"
@@ -101,6 +103,7 @@ _lib_dir() {
     echo "called" >> "$BATS_TMP_DIR/claude_api_calls.txt"
     echo "<svg></svg>"
   }
+  svg-fix() { :; }
   svg2png() {
     for f in "$@"; do touch "${f%.svg}.png"; done
   }
@@ -108,7 +111,7 @@ _lib_dir() {
     local noExt="${1%.*}"
     touch "${noExt}.png"
   }
-  bats_mock claude-api svg2png resizeToLunii
+  bats_mock claude-api svg-fix svg2png resizeToLunii
 
   local libDir="$(_lib_dir)"
   bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack"
@@ -120,7 +123,7 @@ _lib_dir() {
 }
 
 @test "idempotent: second run with all PNGs present does nothing" {
-  local episodesDir="$BATS_TMP_DIR/mypack/Choisis ton histoire"
+  local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
   mkdir -p "$episodesDir"
   echo "content" > "$episodesDir/20240101 Episode One.item.jpeg"
   echo "content" > "$episodesDir/20240102 Episode Two.item.jpeg"
