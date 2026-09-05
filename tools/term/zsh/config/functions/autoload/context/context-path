@@ -1,15 +1,29 @@
 # Return the path relative to the Context Root
 # No leading slash; empty string if at root or outside all known projects
 # Usage:
-# $ context-path /path/to/project/src/foo    # Returns src/foo
-# $ context-path /path/to/project            # Returns ""
+# $ context-path /path/to/project/src/foo      # Returns src/foo
+# $ context-path /path/to/project              # Returns ""
+# $ context-path --reply /path/to/project      # Writes to $REPLY instead of stdout
 setopt local_options err_return
 
+zparseopts -E -D \
+  -reply=flagReply
+
+local isReply=${#flagReply}
 local targetPath="${1:-$PWD}"
 
-local root="$(context-root "$targetPath")"
-# Outside known projects there is no Context Path
-[[ "$root" == "" ]] && return 0
+context-root --reply "$targetPath"
 
+# Outside known projects there is no Context Path
+[[ "$REPLY" == "" ]] && return 0
+
+local root="$REPLY"
 local rel="${targetPath#"$root"}"
-echo "${rel#/}"
+local result="${rel#/}"
+
+if [[ $isReply == 1 ]]; then
+  REPLY="$result"
+  return 0
+fi
+
+echo "$result"

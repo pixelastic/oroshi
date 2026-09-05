@@ -2,46 +2,44 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-
-  projects-load-definitions() { true; }
-  project-path() { echo "project-path:$1"; }
-  git-directory-root() { echo "git-directory-root:$1"; }
-  bats_mock projects-load-definitions project-path git-directory-root
 }
 
-@test "in project: passes arg through project-name then to project-path" {
-  project-name() { echo "project-name:$1"; }
-  git-directory-is-worktree() { return 1; }
-  bats_mock project-name git-directory-is-worktree
-  bats_run_zsh "context-root /my/path"
+@test "regular repo: returns project path" {
+  context-raw() { REPLY="myproject▮▮/repos/myproject"; }
+  bats_mock context-raw
+  bats_run_zsh "context-root /repos/myproject/src"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "project-path:project-name:/my/path" ]]
+  [[ "$output" = "/repos/myproject" ]]
 }
 
-@test "in worktree: passes arg to git-directory-root" {
-  project-name() { echo "project-name:$1"; }
-  git-directory-is-worktree() { return 0; }
-  bats_mock project-name git-directory-is-worktree
-  bats_run_zsh "context-root /my/path"
+@test "worktree: returns worktree root" {
+  context-raw() { REPLY="myproject▮feat/x▮/worktrees/myproject--feat_x"; }
+  bats_mock context-raw
+  bats_run_zsh "context-root /worktrees/myproject--feat_x/src"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "git-directory-root:/my/path" ]]
+  [[ "$output" = "/worktrees/myproject--feat_x" ]]
+}
+
+@test "submodule-in-worktree: returns superproject worktree root" {
+  context-raw() { REPLY="oroshi▮announce-skill▮/worktrees/oroshi--announce-skill"; }
+  bats_mock context-raw
+  bats_run_zsh "context-root /worktrees/oroshi--announce-skill/private/config"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "/worktrees/oroshi--announce-skill" ]]
 }
 
 @test "outside known project: returns empty" {
-  project-name() { echo ""; }
-  git-directory-is-worktree() { return 1; }
-  bats_mock project-name git-directory-is-worktree
-  bats_run_zsh "context-root /my/path"
+  context-raw() { true; }
+  bats_mock context-raw
+  bats_run_zsh "context-root /tmp/random"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 }
 
-@test "no arg: uses \$PWD" {
-  project-name() { echo "project-name:$1"; }
-  git-directory-is-worktree() { return 1; }
-  bats_mock project-name git-directory-is-worktree
-  cd "$BATS_TMP_DIR"
-  bats_run_zsh "context-root"
+@test "--reply: writes to REPLY instead of stdout" {
+  context-raw() { REPLY="myproject▮▮/repos/myproject"; }
+  bats_mock context-raw
+  bats_run_zsh "context-root --reply /repos/myproject/src && echo \$REPLY"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "project-path:project-name:$BATS_TMP_DIR" ]]
+  [[ "$output" = "/repos/myproject" ]]
 }

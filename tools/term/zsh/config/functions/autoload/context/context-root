@@ -2,25 +2,29 @@
 # Worktree root if inside a linked worktree; project root otherwise
 # Returns empty string if path belongs to no known project
 # Usage:
-# $ context-root /path/inside/worktree    # Returns worktree root
-# $ context-root /path/inside/project    # Returns project root
+# $ context-root /path/inside/worktree      # Returns worktree root
+# $ context-root /path/inside/project       # Returns project root
+# $ context-root --reply /path/to/project   # Writes to $REPLY instead of stdout
 setopt local_options err_return
 
-projects-load-definitions
+zparseopts -E -D \
+  -reply=flagReply
 
-# targetPath is the argument, or fallback to current dir
+local isReply=${#flagReply}
 local targetPath="${1:-$PWD}"
-local rawPath="${targetPath%/}"
+
+REPLY=""
+context-raw --reply "$targetPath"
 
 # No root outside of a known project
-local projectName="$(project-name "$targetPath")"
-[[ "$projectName" == "" ]] && return 0
+[[ "$REPLY" == "" ]] && return 0
 
-# Worktree: return the worktree root
-if git-directory-is-worktree "$rawPath"; then
-  git-directory-root "$rawPath"
+local fields=("${(@ps/▮/)REPLY}")
+local root="${fields[3]}"
+
+if [[ $isReply == 1 ]]; then
+  REPLY="$root"
   return 0
 fi
 
-# Not a worktree, then it might not even be a git repo, we need to find the project path
-project-path $projectName
+echo "$root"

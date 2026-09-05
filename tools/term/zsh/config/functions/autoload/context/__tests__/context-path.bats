@@ -1,30 +1,45 @@
 bats_load_library 'helper'
 
 setup() {
-  projects-load-definitions() { true; }
-  bats_mock projects-load-definitions
+  bats_tmp_dir
 }
 
-@test "path inside project: returns sub-path without leading slash" {
-  context-root() { echo "/my/root"; }
+@test "returns path relative to context root" {
+  context-root() { REPLY="/my/root"; }
   bats_mock context-root
   bats_run_zsh "context-path /my/root/src/foo"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "src/foo" ]]
 }
 
-@test "path at project root: returns empty string" {
-  context-root() { echo "/my/root"; }
+@test "at context root: returns empty" {
+  context-root() { REPLY="/my/root"; }
   bats_mock context-root
   bats_run_zsh "context-path /my/root"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 }
 
-@test "path outside all known projects: returns empty string" {
-  context-root() { echo ""; }
+@test "outside known project: returns empty" {
+  context-root() { REPLY=""; }
   bats_mock context-root
   bats_run_zsh "context-path /tmp/unregistered"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
+}
+
+@test "submodule-in-worktree: returns path relative to superproject worktree root" {
+  context-root() { REPLY="/worktrees/oroshi--announce-skill"; }
+  bats_mock context-root
+  bats_run_zsh "context-path /worktrees/oroshi--announce-skill/private/config"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "private/config" ]]
+}
+
+@test "--reply: writes to REPLY instead of stdout" {
+  context-root() { REPLY="/my/root"; }
+  bats_mock context-root
+  bats_run_zsh "context-path --reply /my/root/src/foo && echo \$REPLY"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "src/foo" ]]
 }
