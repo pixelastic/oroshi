@@ -201,6 +201,10 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m.openEditing()
 	case "g":
 		m.pendingKey = "g"
+	case "d", "D":
+		m.nav = navigation.PageDown(m.nav, m.navigableIndices, m.visibleIndices)
+	case "u", "U":
+		m.nav = navigation.PageUp(m.nav, m.navigableIndices, m.visibleIndices)
 	case "G":
 		m.nav = navigation.GoToBottom(m.nav, m.navigableIndices, m.visibleIndices)
 	case "z":

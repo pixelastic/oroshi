@@ -446,6 +446,51 @@ func TestMoveUpVisibleSkipsHeaderRow(t *testing.T) {
 	assert.Equal(t, 1, result.Cursor)
 }
 
+// --- Scroll margin ---
+
+func TestPageUpKeepsCursorVisibleWithMargin(t *testing.T) {
+	// Cursor at 14, viewport [10..19], half page = 5 → cursor lands at 9
+	// Viewport should scroll so cursor is not at the very edge
+	state := State{Cursor: 14, ViewportOffset: 10, ViewportHeight: 10, RowCount: 30}
+	navigable := make([]int, 29)
+	visible := make([]int, 30)
+	for i := range visible {
+		visible[i] = i
+		if i > 0 {
+			navigable[i-1] = i
+		}
+	}
+
+	result := PageUp(state, navigable, visible)
+
+	assert.Equal(t, 9, result.Cursor)
+	// Cursor should not be at the very top of viewport — at least 2 lines of margin
+	assert.True(t, result.ViewportOffset <= result.Cursor-2,
+		"viewport %d should be at least 2 below cursor %d", result.ViewportOffset, result.Cursor)
+}
+
+func TestPageDownKeepsCursorVisibleWithMargin(t *testing.T) {
+	// Cursor at 5, viewport [0..9], half page = 5 → cursor lands at 10
+	// Viewport should scroll so cursor has room below
+	state := State{Cursor: 5, ViewportOffset: 0, ViewportHeight: 10, RowCount: 30}
+	navigable := make([]int, 29)
+	visible := make([]int, 30)
+	for i := range visible {
+		visible[i] = i
+		if i > 0 {
+			navigable[i-1] = i
+		}
+	}
+
+	result := PageDown(state, navigable, visible)
+
+	assert.Equal(t, 10, result.Cursor)
+	// Cursor should not be at the very bottom of viewport — at least 2 lines of margin below
+	viewportEnd := result.ViewportOffset + result.ViewportHeight - 1
+	assert.True(t, viewportEnd >= result.Cursor+2,
+		"viewport end %d should be at least 2 above cursor %d", viewportEnd, result.Cursor)
+}
+
 // --- GoToTop / GoToBottom ---
 
 func TestGoToTopMovesCursorToFirstNavigableRow(t *testing.T) {
@@ -509,6 +554,99 @@ func TestGoToBottomScrollsViewport(t *testing.T) {
 
 	assert.Equal(t, 14, result.Cursor)
 	assert.True(t, result.ViewportOffset > 0)
+}
+
+// --- PageDown / PageUp ---
+
+func TestPageDownMovesCursorHalfScreenDown(t *testing.T) {
+	state := State{Cursor: 2, ViewportOffset: 0, ViewportHeight: 10, RowCount: 20}
+	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+
+	result := PageDown(state, navigable, visible)
+
+	assert.Equal(t, 7, result.Cursor)
+}
+
+func TestPageDownScrollsViewport(t *testing.T) {
+	state := State{Cursor: 8, ViewportOffset: 5, ViewportHeight: 6, RowCount: 20}
+	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+
+	result := PageDown(state, navigable, visible)
+
+	assert.True(t, result.ViewportOffset > 5)
+}
+
+func TestPageDownAtBottomDoesNotMove(t *testing.T) {
+	state := State{Cursor: 19, ViewportOffset: 15, ViewportHeight: 10, RowCount: 20}
+	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+
+	result := PageDown(state, navigable, visible)
+
+	assert.Equal(t, 19, result.Cursor)
+}
+
+func TestPageDownClampsToLastNavigableRow(t *testing.T) {
+	state := State{Cursor: 17, ViewportOffset: 14, ViewportHeight: 10, RowCount: 20}
+	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+
+	result := PageDown(state, navigable, visible)
+
+	assert.Equal(t, 19, result.Cursor)
+}
+
+func TestPageUpMovesCursorHalfScreenUp(t *testing.T) {
+	state := State{Cursor: 12, ViewportOffset: 10, ViewportHeight: 10, RowCount: 20}
+	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+
+	result := PageUp(state, navigable, visible)
+
+	assert.Equal(t, 7, result.Cursor)
+}
+
+func TestPageUpScrollsViewport(t *testing.T) {
+	state := State{Cursor: 12, ViewportOffset: 10, ViewportHeight: 10, RowCount: 20}
+	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+
+	result := PageUp(state, navigable, visible)
+
+	assert.True(t, result.ViewportOffset < 10)
+}
+
+func TestPageUpAtTopDoesNotMove(t *testing.T) {
+	state := State{Cursor: 1, ViewportOffset: 0, ViewportHeight: 10, RowCount: 20}
+	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+
+	result := PageUp(state, navigable, visible)
+
+	assert.Equal(t, 1, result.Cursor)
+}
+
+func TestPageUpClampsToFirstNavigableRow(t *testing.T) {
+	state := State{Cursor: 4, ViewportOffset: 0, ViewportHeight: 10, RowCount: 20}
+	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+
+	result := PageUp(state, navigable, visible)
+
+	assert.Equal(t, 1, result.Cursor)
+}
+
+func TestPageDownSkipsFoldedContent(t *testing.T) {
+	// Rows 6-9 are folded (hidden), visible jumps from 5→10
+	state := State{Cursor: 3, ViewportOffset: 0, ViewportHeight: 10, RowCount: 20}
+	navigable := []int{1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 16, 17, 18, 19}
+	visible := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
+
+	result := PageDown(state, navigable, visible)
+
+	assert.True(t, result.Cursor > 3)
 }
 
 // --- Default fold state ---

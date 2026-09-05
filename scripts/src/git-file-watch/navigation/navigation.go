@@ -240,6 +240,70 @@ func FirstMarkedRow(rowCount int, markedRows map[int]bool) int {
 	return 0
 }
 
+// PageDown moves the cursor down by half a viewport height within visible rows.
+func PageDown(state State, navigableIndices []int, visibleIndices []int) State {
+	if len(navigableIndices) == 0 || len(visibleIndices) == 0 {
+		return state
+	}
+
+	visPos := sort.SearchInts(visibleIndices, state.Cursor)
+	targetVisPos := visPos + state.ViewportHeight/2
+	if targetVisPos >= len(visibleIndices) {
+		targetVisPos = len(visibleIndices) - 1
+	}
+	targetRow := visibleIndices[targetVisPos]
+
+	navPos := sort.SearchInts(navigableIndices, targetRow)
+	if navPos >= len(navigableIndices) {
+		navPos = len(navigableIndices) - 1
+	}
+	state.Cursor = navigableIndices[navPos]
+	return centerViewportOnCursor(state, visibleIndices)
+}
+
+// PageUp moves the cursor up by half a viewport height within visible rows.
+func PageUp(state State, navigableIndices []int, visibleIndices []int) State {
+	if len(navigableIndices) == 0 || len(visibleIndices) == 0 {
+		return state
+	}
+
+	visPos := sort.SearchInts(visibleIndices, state.Cursor)
+	targetVisPos := visPos - state.ViewportHeight/2
+	if targetVisPos < 0 {
+		targetVisPos = 0
+	}
+	targetRow := visibleIndices[targetVisPos]
+
+	navPos := sort.SearchInts(navigableIndices, targetRow)
+	if navPos >= len(navigableIndices) {
+		navPos = len(navigableIndices) - 1
+	}
+	state.Cursor = navigableIndices[navPos]
+	return centerViewportOnCursor(state, visibleIndices)
+}
+
+// centerViewportOnCursor positions the viewport so the cursor is roughly centered.
+func centerViewportOnCursor(state State, visibleIndices []int) State {
+	cursorPos := sort.SearchInts(visibleIndices, state.Cursor)
+	if cursorPos >= len(visibleIndices) || visibleIndices[cursorPos] != state.Cursor {
+		return clampViewportVisible(state, visibleIndices)
+	}
+
+	newStart := cursorPos - state.ViewportHeight/2
+	if newStart < 0 {
+		newStart = 0
+	}
+	maxStart := len(visibleIndices) - state.ViewportHeight
+	if maxStart < 0 {
+		maxStart = 0
+	}
+	if newStart > maxStart {
+		newStart = maxStart
+	}
+	state.ViewportOffset = visibleIndices[newStart]
+	return state
+}
+
 // DefaultFoldState returns a fold state map with test files pre-folded.
 // Matches: __tests__/ dirs, _test.go, .test.{js,ts,tsx}, .spec.{js,ts,tsx}
 func DefaultFoldState(paths []string) map[string]bool {
