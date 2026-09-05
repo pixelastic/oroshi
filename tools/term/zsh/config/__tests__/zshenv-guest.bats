@@ -79,3 +79,18 @@ mock_command() {
   [[ "$status" -eq 0 ]]
   [[ "${lines[2]}" = "real" ]]
 }
+
+@test "isolation: DEBUG trap activates when MOCK_OVERRIDE is set" {
+  mock_env "MOCK_OVERRIDE" "$BATS_TMP_DIR/mock-override.zsh"
+  echo "# noop" > "$BATS_TMP_DIR/mock-override.zsh"
+
+  run_bare_zsh "$sourcePrefix; trap"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"DEBUG"* ]]
+}
+
+@test "isolation: no DEBUG trap when MOCK_OVERRIDE is unset" {
+  run_bare_zsh "$sourcePrefix; trap"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"DEBUG"* ]]
+}
