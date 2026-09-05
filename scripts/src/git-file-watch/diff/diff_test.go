@@ -121,6 +121,33 @@ index 1234567..abcdefg 100644
 	assert.Equal(t, 12, hunk.NewCount)
 }
 
+// --- New file parsing ---
+
+func TestParsesNewFileDiff(t *testing.T) {
+	raw := `diff --git a/new.go b/new.go
+new file mode 100644
+--- /dev/null
++++ b/new.go
+@@ -0,0 +1,3 @@
++package main
++
++func main() {}
+`
+	result := Parse(raw)
+	require.Len(t, result, 1)
+	assert.Equal(t, "new.go", result[0].Path)
+	require.Len(t, result[0].Hunks, 1)
+	hunk := result[0].Hunks[0]
+	assert.Equal(t, 0, hunk.OldStart)
+	assert.Equal(t, 0, hunk.OldCount)
+	assert.Equal(t, 1, hunk.NewStart)
+	assert.Equal(t, 3, hunk.NewCount)
+	require.Len(t, hunk.Lines, 3)
+	assert.Equal(t, KindAdded, hunk.Lines[0].Kind)
+	assert.Equal(t, KindAdded, hunk.Lines[1].Kind)
+	assert.Equal(t, KindAdded, hunk.Lines[2].Kind)
+}
+
 // --- Classification ---
 
 func TestMarksAddedLinesAsAdded(t *testing.T) {
@@ -204,6 +231,26 @@ func TestHandlesHunkWithOnlyDeletions(t *testing.T) {
 	}
 	markers := Classify(hunks)
 	assert.Equal(t, MarkerDeleted, markers[5])
+}
+
+func TestMarksAllLinesAsAddedForNewFileHunk(t *testing.T) {
+	hunks := []Hunk{
+		{
+			NewStart: 1, NewCount: 4,
+			OldStart: 0, OldCount: 0,
+			Lines: []DiffLine{
+				{Content: "package main", Kind: KindAdded},
+				{Content: "", Kind: KindAdded},
+				{Content: "func main() {}", Kind: KindAdded},
+				{Content: "// end", Kind: KindAdded},
+			},
+		},
+	}
+	markers := Classify(hunks)
+	assert.Len(t, markers, 4)
+	for i := 1; i <= 4; i++ {
+		assert.Equal(t, MarkerAdded, markers[i], "line %d should be MarkerAdded", i)
+	}
 }
 
 func TestHandlesHunkWithMixedAdditionsAndDeletions(t *testing.T) {
