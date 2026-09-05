@@ -85,6 +85,46 @@ setup() {
   [[ "$(cat "$BATS_TMP_DIR/push-calls")" == *"--repo"*"my-sub"* ]]
 }
 
+@test "calls colors-reload when color source files changed in oroshi worktree" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 0; }
+  git-file-has-changed() { return 0; }
+  colors-reload() { echo "colors-reload called" >> "$BATS_TMP_DIR/colors-calls"; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed colors-reload
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/colors-calls" ]]
+  [[ "$output" == *"Updating colors..."* ]]
+}
+
+@test "does not call colors-reload when no color files changed" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 0; }
+  git-file-has-changed() { return 1; }
+  colors-reload() { echo "colors-reload called" >> "$BATS_TMP_DIR/colors-calls"; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed colors-reload
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/colors-calls" ]]
+  [[ "$output" != *"Updating colors..."* ]]
+}
+
+@test "does not call colors-reload for a non-oroshi repo" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 1; }
+  colors-reload() { echo "colors-reload called" >> "$BATS_TMP_DIR/colors-calls"; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi colors-reload
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/colors-calls" ]]
+}
+
 @test "skips submodule push when pointers are identical" {
   # Fresh repo with submodule + worktree (same pointer in both)
   bats_git_dir 'sub-repo'

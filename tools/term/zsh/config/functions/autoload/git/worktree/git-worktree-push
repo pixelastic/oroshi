@@ -29,3 +29,26 @@ git -C "$mainPath" merge --ff-only "$currentBranch"
 
 # Update dependencies if needed
 git-dependencies-update --repo "$mainPath" "$previousCommit" --async
+
+# Stop here if not an oroshi worktree
+git-worktree-is-oroshi || return 0
+
+# Check if any of the color source files changed
+git-file-has-changed \
+  tools/term/kitty/config/colors.conf \
+  tools/term/zsh/config/theming/src/colors.jsonc \
+  tools/term/zsh/config/theming/src/icons.jsonc \
+  tools/term/zsh/config/theming/src/filetypes.jsonc \
+  tools/term/zsh/config/theming/src/projects.jsonc \
+  tools/cli/bat/config/src/oroshi.xml \
+  tools/cli/rg/config/src/rgrc.conf \
+  tools/git/git/config/src/gitconfig \
+  tools/git/hunk/config/src/config.toml \
+  tools/ai/claude/config/themes/src/oroshi.json \
+  tools/vim/nvim/config/lua/oroshi/colorscheme/syntax.lua \
+  --from "$previousCommit" \
+  --repo "$mainPath" \
+  || return 0
+
+echo "Updating colors..."
+OROSHI_ROOT="$mainPath" colors-reload
