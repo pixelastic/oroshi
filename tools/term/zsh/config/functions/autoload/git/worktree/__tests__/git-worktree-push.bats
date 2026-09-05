@@ -93,6 +93,13 @@ setup() {
   bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed colors-reload
   bats_disable_worktree_aware
 
+  # Mock deploy script (also triggered when git-file-has-changed returns 0)
+  mkdir -p "$BATS_GIT_DIR/tools/ai/claude"
+  cat > "$BATS_GIT_DIR/tools/ai/claude/deploy" <<EOF
+#!/usr/bin/env zsh
+EOF
+  chmod +x "$BATS_GIT_DIR/tools/ai/claude/deploy"
+
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
   [[ "$status" -eq 0 ]]
   [[ -f "$BATS_TMP_DIR/colors-calls" ]]
@@ -123,6 +130,66 @@ setup() {
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
   [[ "$status" -eq 0 ]]
   [[ ! -f "$BATS_TMP_DIR/colors-calls" ]]
+}
+
+@test "calls deploy when skill beacon files changed in oroshi worktree" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 0; }
+  git-file-has-changed() { return 0; }
+  colors-reload() { :; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed colors-reload
+  bats_disable_worktree_aware
+
+  mkdir -p "$BATS_GIT_DIR/tools/ai/claude"
+  cat > "$BATS_GIT_DIR/tools/ai/claude/deploy" <<EOF
+#!/usr/bin/env zsh
+echo "deploy called" >> "$BATS_TMP_DIR/deploy-calls"
+EOF
+  chmod +x "$BATS_GIT_DIR/tools/ai/claude/deploy"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/deploy-calls" ]]
+  [[ "$output" == *"Deploying skills..."* ]]
+}
+
+@test "does not call deploy when no skill files changed" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 0; }
+  git-file-has-changed() { return 1; }
+  colors-reload() { :; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed colors-reload
+  bats_disable_worktree_aware
+
+  mkdir -p "$BATS_GIT_DIR/tools/ai/claude"
+  cat > "$BATS_GIT_DIR/tools/ai/claude/deploy" <<EOF
+#!/usr/bin/env zsh
+echo "deploy called" >> "$BATS_TMP_DIR/deploy-calls"
+EOF
+  chmod +x "$BATS_GIT_DIR/tools/ai/claude/deploy"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/deploy-calls" ]]
+  [[ "$output" != *"Deploying skills..."* ]]
+}
+
+@test "does not call deploy for a non-oroshi repo" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 1; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi
+  bats_disable_worktree_aware
+
+  mkdir -p "$BATS_GIT_DIR/tools/ai/claude"
+  cat > "$BATS_GIT_DIR/tools/ai/claude/deploy" <<EOF
+#!/usr/bin/env zsh
+echo "deploy called" >> "$BATS_TMP_DIR/deploy-calls"
+EOF
+  chmod +x "$BATS_GIT_DIR/tools/ai/claude/deploy"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/deploy-calls" ]]
 }
 
 @test "skips submodule push when pointers are identical" {

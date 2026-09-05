@@ -33,8 +33,8 @@ git-dependencies-update --repo "$mainPath" "$previousCommit" --async
 # Stop here if not an oroshi worktree
 git-worktree-is-oroshi || return 0
 
-# Check if any of the color source files changed
-git-file-has-changed \
+# Reload colors if any color source files changed
+if git-file-has-changed \
   tools/term/kitty/config/colors.conf \
   tools/term/zsh/config/theming/src/colors.jsonc \
   tools/term/zsh/config/theming/src/icons.jsonc \
@@ -47,8 +47,20 @@ git-file-has-changed \
   tools/ai/claude/config/themes/src/oroshi.json \
   tools/vim/nvim/config/lua/oroshi/colorscheme/syntax.lua \
   --from "$previousCommit" \
-  --repo "$mainPath" \
-  || return 0
+  --repo "$mainPath";
+then
+  echo "Updating colors..."
+  OROSHI_ROOT="$mainPath" colors-reload
+fi
 
-echo "Updating colors..."
-OROSHI_ROOT="$mainPath" colors-reload
+# Deploy skills if any skill beacon files changed
+if git-file-has-changed \
+  tools/ai/claude/config/claude.json \
+  tools/ai/claude/config/skills/ \
+  private/config/ai/claude/skills/ \
+  --from "$previousCommit" \
+  --repo "$mainPath";
+then
+  echo "Deploying skills..."
+  "$mainPath/tools/ai/claude/deploy"
+fi
