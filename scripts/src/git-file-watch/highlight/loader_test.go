@@ -12,23 +12,50 @@ import (
 // --- Language resolution ---
 
 func TestResolvesGoFilepathToGoLanguage(t *testing.T) {
-	result := LanguageFromExtension("main.go")
+	result := LanguageForFile("main.go")
 	assert.Equal(t, "go", result)
 }
 
 func TestResolvesJsFilepathToJavascriptLanguage(t *testing.T) {
-	result := LanguageFromExtension("app.js")
+	result := LanguageForFile("app.js")
 	assert.Equal(t, "javascript", result)
 }
 
 func TestResolvesTypescriptFilepathToTypescriptLanguage(t *testing.T) {
-	result := LanguageFromExtension("index.ts")
+	result := LanguageForFile("index.ts")
 	assert.Equal(t, "typescript", result)
 }
 
+func TestResolvesBatsFilepathToBashLanguage(t *testing.T) {
+	result := LanguageForFile("helper.bats")
+	assert.Equal(t, "bash", result)
+}
+
 func TestResolvesUnknownExtensionToExtensionItself(t *testing.T) {
-	result := LanguageFromExtension("file.gleam")
+	result := LanguageForFile("file.gleam")
 	assert.Equal(t, "gleam", result)
+}
+
+// --- Path-based resolution ---
+
+func TestResolvesZshAutoloadFunctionToBash(t *testing.T) {
+	result := LanguageForFile("tools/term/zsh/config/functions/autoload/git/git-current-branch")
+	assert.Equal(t, "bash", result)
+}
+
+func TestResolvesNestedZshAutoloadFunctionToBash(t *testing.T) {
+	result := LanguageForFile("tools/term/zsh/config/functions/autoload/ai/claude/mcp/claude-mcp-add")
+	assert.Equal(t, "bash", result)
+}
+
+func TestDoesNotOverrideExtensionForFileInAutoloadDir(t *testing.T) {
+	result := LanguageForFile("tools/term/zsh/config/functions/autoload/colors/colors.json")
+	assert.Equal(t, "json", result)
+}
+
+func TestDoesNotMatchAutoloadPathOutsideExpectedDir(t *testing.T) {
+	result := LanguageForFile("some/other/path/no-extension")
+	assert.Equal(t, "", result)
 }
 
 // --- Missing resources ---

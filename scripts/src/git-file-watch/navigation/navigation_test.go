@@ -511,6 +511,40 @@ func TestGoToBottomScrollsViewport(t *testing.T) {
 	assert.True(t, result.ViewportOffset > 0)
 }
 
+// --- Default fold state ---
+
+func TestDefaultFoldStateFoldsTestDirFile(t *testing.T) {
+	paths := []string{"src/app.go", "src/__tests__/app.bats"}
+	result := DefaultFoldState(paths)
+	assert.True(t, result["src/__tests__/app.bats"])
+	assert.False(t, result["src/app.go"])
+}
+
+func TestDefaultFoldStateFoldsGoTestFile(t *testing.T) {
+	paths := []string{"pkg/loader.go", "pkg/loader_test.go"}
+	result := DefaultFoldState(paths)
+	assert.True(t, result["pkg/loader_test.go"])
+	assert.False(t, result["pkg/loader.go"])
+}
+
+func TestDefaultFoldStateFoldsJsTestFile(t *testing.T) {
+	paths := []string{"src/utils.js", "src/utils.test.js"}
+	result := DefaultFoldState(paths)
+	assert.True(t, result["src/utils.test.js"])
+}
+
+func TestDefaultFoldStateFoldsSpecFile(t *testing.T) {
+	paths := []string{"src/utils.ts", "src/utils.spec.ts"}
+	result := DefaultFoldState(paths)
+	assert.True(t, result["src/utils.spec.ts"])
+}
+
+func TestDefaultFoldStateReturnsEmptyMapWhenNoTestFiles(t *testing.T) {
+	paths := []string{"main.go", "lib/utils.go"}
+	result := DefaultFoldState(paths)
+	assert.Empty(t, result)
+}
+
 // --- FirstMarkedRow ---
 
 func TestFirstMarkedRowReturnsFirstMarkedIndex(t *testing.T) {

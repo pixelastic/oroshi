@@ -467,7 +467,7 @@ func findFileHeaders(rows []layout.Row, foldState map[string]bool) navigation.Fi
 		}
 	}
 	if foldState == nil {
-		foldState = map[string]bool{}
+		foldState = navigation.DefaultFoldState(paths)
 	}
 	return navigation.FileIndex{
 		Headers:   indices,

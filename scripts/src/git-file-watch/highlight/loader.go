@@ -28,6 +28,7 @@ var extensionToLanguage = map[string]string{
 	"yml":  "yaml",
 	"md":   "markdown",
 	"sh":   "bash",
+	"bats": "bash",
 	"zsh":  "bash",
 	"go":   "go",
 	"lua":  "lua",
@@ -37,6 +38,14 @@ var extensionToLanguage = map[string]string{
 	"toml": "toml",
 	"xml":  "xml",
 	"vue":  "vue",
+}
+
+// pathPatterns maps path substrings to languages for extensionless files.
+var pathPatterns = []struct {
+	contains string
+	language string
+}{
+	{"tools/term/zsh/config/functions/autoload/", "bash"},
 }
 
 // LoadedLanguage holds a tree-sitter grammar and its highlight query.
@@ -59,11 +68,20 @@ func NewLoader(parserDir string, queryDir string) *Loader {
 	}
 }
 
-// LanguageFromExtension returns the tree-sitter language name for a filepath.
-func LanguageFromExtension(filepath string) string {
-	ext := strings.TrimPrefix(extensionForFile(filepath), ".")
+// LanguageForFile returns the tree-sitter language name for a filepath.
+// It checks the extension first, then falls back to path-based rules
+// for extensionless files (e.g. zsh autoload functions).
+func LanguageForFile(path string) string {
+	ext := strings.TrimPrefix(extensionForFile(path), ".")
 	if lang, ok := extensionToLanguage[ext]; ok {
 		return lang
+	}
+	if ext == "" {
+		for _, p := range pathPatterns {
+			if strings.Contains(path, p.contains) {
+				return p.language
+			}
+		}
 	}
 	return ext
 }
@@ -71,7 +89,7 @@ func LanguageFromExtension(filepath string) string {
 // Load resolves the language for filepath and loads its grammar and highlight query.
 // Returns nil if either the grammar .so or highlights.scm is missing.
 func (l *Loader) Load(path string) *LoadedLanguage {
-	lang := LanguageFromExtension(path)
+	lang := LanguageForFile(path)
 
 	grammarPath := filepath.Join(l.parserDir, lang+".so")
 	if _, err := os.Stat(grammarPath); err != nil {

@@ -112,7 +112,7 @@ func (h *Highlighter) highlightWithTreeSitter(filepath string, content string) [
 		return nil
 	}
 
-	language := LanguageFromExtension(filepath)
+	language := LanguageForFile(filepath)
 	return HighlightTreeSitter(loaded, language, []byte(content), h.syntaxMap)
 }
 

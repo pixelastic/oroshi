@@ -1,6 +1,10 @@
 package navigation
 
-import "sort"
+import (
+	"path/filepath"
+	"sort"
+	"strings"
+)
 
 // State tracks cursor position and viewport offset.
 type State struct {
@@ -234,6 +238,37 @@ func FirstMarkedRow(rowCount int, markedRows map[int]bool) int {
 		}
 	}
 	return 0
+}
+
+// DefaultFoldState returns a fold state map with test files pre-folded.
+// Matches: __tests__/ dirs, _test.go, .test.{js,ts,tsx}, .spec.{js,ts,tsx}
+func DefaultFoldState(paths []string) map[string]bool {
+	state := map[string]bool{}
+	for _, path := range paths {
+		if isTestFile(path) {
+			state[path] = true
+		}
+	}
+	return state
+}
+
+var testSuffixes = []string{
+	"_test.go",
+	".test.js", ".test.ts", ".test.tsx",
+	".spec.js", ".spec.ts", ".spec.tsx",
+}
+
+func isTestFile(path string) bool {
+	if strings.Contains(path, "__tests__/") {
+		return true
+	}
+	base := filepath.Base(path)
+	for _, suffix := range testSuffixes {
+		if strings.HasSuffix(base, suffix) {
+			return true
+		}
+	}
+	return false
 }
 
 func clampViewportVisible(state State, visibleIndices []int) State {
