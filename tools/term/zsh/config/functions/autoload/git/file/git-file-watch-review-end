@@ -1,0 +1,22 @@
+# Remove processed review comments by ID
+# Usage:
+# $ git-file-watch-review-end id1 id2 ...
+setopt local_options err_return
+
+# At least one ID required
+if [[ $# -eq 0 ]]; then
+  echoerr "Usage: git-file-watch-review-end <id>..."
+  return 1
+fi
+
+local slug="$(context-slug)"
+local commentsFile="${OROSHI_TMP_FOLDER}/git-file-watch/${slug}.json"
+
+# No file, nothing to remove
+[[ ! -f "$commentsFile" ]] && return 0
+
+# Build jq filter array from arguments
+local idsJson="$(printf '%s\n' "$@" | jq -R . | jq -sc .)"
+local filtered="$(jq --argjson ids "$idsJson" '[.[] | select(.id as $id | $ids | index($id) | not)]' "$commentsFile")"
+
+echo "$filtered" > "$commentsFile"
