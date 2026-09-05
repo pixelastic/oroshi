@@ -1,37 +1,34 @@
-# Check if a specific file changed, relative to commits
+# Check if file(s) changed, relative to commits
 # Usage:
-# $ git-file-has-changed package.json                       # Working dir against last commit
-# $ git-file-has-changed package.json abcdef                # Since specific commit
-# $ git-file-has-changed package.json abcdef d34db33f       # Between two commits
-# $ git-file-has-changed package.json --repo /path/to/repo  # In a different repo
+# $ git-file-has-changed package.json                                  # Working dir against last commit
+# $ git-file-has-changed package.json yarn.lock                        # Multiple paths, any changed
+# $ git-file-has-changed package.json --from abcdef                    # Since specific commit
+# $ git-file-has-changed package.json --from abcdef --to d34db33f      # Between two commits
+# $ git-file-has-changed package.json --repo /path/to/repo             # In a different repo
 setopt local_options err_return
 
 zparseopts -E -D \
-  -repo:=flagRepo
+  -repo:=flagRepo \
+  -from:=flagFrom \
+  -to:=flagTo
 
 local repoPath="${flagRepo[2]}"
-local filepath="$1"
-local commitStart="$2"
-local commitEnd="$3"
+local commitFrom="${flagFrom[2]}"
+local commitTo="${flagTo[2]}"
+local paths=("$@")
 
 local gitCmd=(git)
 [[ "$repoPath" != "" ]] && gitCmd=(git -C "$repoPath")
 
-# Changes in working directory
-if [[ "$commitStart" == "" && "$commitEnd" == "" ]]; then
-  local changed="$("${gitCmd[@]}" diff --name-only "$filepath")"
-  [[ "$changed" != "" ]] && return 0
-  return 1
-fi
+# Build commit range: empty (working dir), open-ended, or bounded
+local range=""
+[[ "$commitFrom" != "" && "$commitTo" == "" ]] && range="${commitFrom}.."
+[[ "$commitFrom" != "" && "$commitTo" != "" ]] && range="${commitFrom}..${commitTo}"
 
-# Changes since specific commit
-if [[ "$commitEnd" == "" ]]; then
-  local changed="$("${gitCmd[@]}" diff --name-only "${commitStart}.." -- "$filepath")"
-  [[ "$changed" != "" ]] && return 0
-  return 1
-fi
+local diffArgs=("${gitCmd[@]}" diff --name-only)
+[[ "$range" != "" ]] && diffArgs+=("$range")
+diffArgs+=(-- "${paths[@]}")
 
-# Changes between two commits
-local changed="$("${gitCmd[@]}" diff --name-only "${commitStart}..${commitEnd}" -- "$filepath")"
+local changed="$("${diffArgs[@]}")"
 [[ "$changed" != "" ]] && return 0
 return 1

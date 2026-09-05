@@ -18,29 +18,31 @@ local beaconPatterns=("${gitRoot}/Gemfile" "${gitRoot}/*.gemspec")
 local lockfilePath="$(git-dependencies-in-progress-lockfile ruby --repo "$repoPath")"
 local updateCommand="cd ${gitRoot} && bundle install"
 
-# Convert all glob patterns to exact filepaths
+# Resolve glob patterns to existing beacon files
 local beaconFilepaths=()
 for beaconPattern in $beaconPatterns; do
-  beaconFilepaths+=($(glob $beaconPattern))
+  for match in $(glob $beaconPattern); do
+    [[ -f "$match" ]] && beaconFilepaths+=("$match")
+  done
 done
 
-for beaconFilepath in $beaconFilepaths; do
-  # Skip if the file doesn't exist
-  [[ ! -f "$beaconFilepath" ]] && continue
+# No beacon files in this repo
+[[ ${#beaconFilepaths} -eq 0 ]] && return 0
 
-  # Skip if the file didn't change since the commit
-  if [[ "$originCommit" != "" ]] && ! git-file-has-changed "$beaconFilepath" "$originCommit" --repo "$repoPath"; then
-    continue
-  fi
+# When a reference commit is provided, skip if no beacon file changed
+if [[ "$originCommit" != "" ]]; then
+  # Stop if no file changed
+  ! git-file-has-changed "${beaconFilepaths[@]}" \
+    --from "$originCommit" \
+    --repo "$repoPath" \
+    && return 0
+fi
 
-  # Either update deps right now, or in the background
-  if [[ "$flagAsync" != "" ]]; then
-    # Update dependencies and write a lockfile while doing it
-    fork "$updateCommand" "$lockfilePath"
-  else
-    eval "$updateCommand"
-  fi
+# Either update deps right now, or in the background
+if [[ "$flagAsync" != "" ]]; then
+  # Update dependencies and write a lockfile while doing it
+  fork "$updateCommand" "$lockfilePath"
+  return
+fi
 
-  # Stop once the update has been done once
-  break
-done
+eval "$updateCommand"

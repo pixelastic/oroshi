@@ -21,15 +21,20 @@ local updateCommand="cd ${gitRoot} && yarn install"
 # No beacon file in this repo
 [[ ! -f "$beaconFilepath" ]] && return 0
 
-# Beacon file didn't change since the commit
-if [[ "$originCommit" != "" ]] && ! git-file-has-changed "$beaconFilepath" "$originCommit" --repo "$repoPath"; then
-  return 0
+# When a reference commit is provided, skip if beacon file didn't change
+if [[ "$originCommit" != "" ]]; then
+  # Stop if file didn't change
+  ! git-file-has-changed "$beaconFilepath" \
+    --from "$originCommit" \
+    --repo "$repoPath" \
+    && return 0
 fi
 
 # Either update deps right now, or in the background
 if [[ "$flagAsync" != "" ]]; then
   # Update dependencies and write a lockfile while doing it
   fork "$updateCommand" "$lockfilePath"
-else
-  eval "$updateCommand"
+  return
 fi
+
+eval "$updateCommand"
