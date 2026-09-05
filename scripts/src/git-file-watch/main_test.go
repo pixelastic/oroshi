@@ -10,6 +10,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/comments"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/editing"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/navigation"
@@ -462,6 +463,86 @@ func TestCursorSkipsUnfoldedFileHeader(t *testing.T) {
 
 	// Should skip header at 2 and land on code line at 3
 	assert.Equal(t, 3, resultModel.nav.Cursor)
+}
+
+// --- Keybinding: ctrl+s (auto-commit) ---
+
+func TestCtrlSInNormalModeReturnsExecCommand(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 1
+
+	_, cmd := m.updateNormal(tea.KeyMsg{Type: tea.KeyCtrlS})
+
+	assert.NotNil(t, cmd, "ctrl+s should return a command to exec the commit process")
+}
+
+func TestCtrlSInNormalModeDoesNotMoveCursor(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+		layout.LineRow{LineNumber: 2, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 2
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyCtrlS})
+	resultModel := result.(model)
+
+	assert.Equal(t, 2, resultModel.nav.Cursor)
+}
+
+func TestCommitFinishedMsgRebuildsDisplay(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+
+	result, _ := m.Update(CommitFinishedMsg{err: nil})
+	resultModel := result.(model)
+
+	// Model should still be valid after handling CommitFinishedMsg
+	assert.NotNil(t, resultModel.theme)
+}
+
+func TestCtrlSInEditModeDoesNotTriggerCommit(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.editState = editing.Open("/repo/file.go", 1, "content", "", 1)
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+
+	_, cmd := m.Update(tea.KeyMsg{Type: tea.KeyCtrlS})
+
+	// In edit mode, ctrl+s saves the comment (returns nil cmd), not exec a process
+	assert.Nil(t, cmd, "ctrl+s in edit mode should save comment, not exec commit")
+}
+
+// --- Help screen shows ctrl+s ---
+
+func TestHelpScreenShowsCtrlS(t *testing.T) {
+	th := loadTestTheme(t)
+	m := testModel(th, []layout.Row{})
+	m.showHelp = true
+
+	output := m.View()
+
+	assert.Contains(t, output, "ctrl+s")
+	assert.Contains(t, output, "Auto-commit all")
 }
 
 // --- Helpers ---

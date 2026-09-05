@@ -42,6 +42,9 @@ type SyntaxMapChangedMsg struct{}
 // EditorFinishedMsg is sent when the external editor exits.
 type EditorFinishedMsg struct{ err error }
 
+// CommitFinishedMsg is sent when the commit process exits.
+type CommitFinishedMsg struct{ err error }
+
 // FlashExpiredMsg is sent when the flash highlight should be cleared.
 type FlashExpiredMsg struct{}
 
@@ -114,6 +117,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case EditorFinishedMsg:
 		m.rebuildDisplay()
 		return m, nil
+	case CommitFinishedMsg:
+		cmd := m.rebuildDisplay()
+		return m, cmd
 	case FlashExpiredMsg:
 		m.flashLines = nil
 		return m, nil
@@ -214,6 +220,12 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.nav = navigation.GoToBottom(m.nav, m.navigableIndices, m.visibleIndices)
 	case "z":
 		m.pendingKey = "z"
+	case "ctrl+s":
+		cmd := exec.Command("bin-zsh", "git-commit-create-all-auto")
+		cmd.Dir = m.repoRoot
+		return m, tea.ExecProcess(cmd, func(err error) tea.Msg {
+			return CommitFinishedMsg{err: err}
+		})
 	case "?":
 		m.showHelp = true
 	}
@@ -466,6 +478,7 @@ func (m model) renderHelp() string {
 		{"enter", "Add/edit comment"},
 		{"i", "Open in Neovim"},
 		{"r", "Send review to Claude"},
+		{"ctrl+s", "Auto-commit all"},
 		{"?", "Show this help"},
 		{"q", "Quit"},
 	}
