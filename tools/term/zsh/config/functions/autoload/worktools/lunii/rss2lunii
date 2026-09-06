@@ -1,21 +1,24 @@
 # Convert an RSS feed to a Lunii pack using studio-pack-generator
 # Usage:
-# $ rss2lunii <url>             # Convert feed with defaults
-# $ rss2lunii <url> --force-img # Regenerate images
-# $ rss2lunii <url> --force-tts # Regenerate TTS audio
+# $ rss2lunii <url>                          # Convert feed with defaults
+# $ rss2lunii <url> --output-dir ~/Podcasts  # Download to specific directory
+# $ rss2lunii <url> --force-img              # Regenerate images
+# $ rss2lunii <url> --force-tts              # Regenerate TTS audio
 setopt local_options err_return
 
 zparseopts -E -D \
   -force-img=flagForceImg \
-  -force-tts=flagForceTts
+  -force-tts=flagForceTts \
+  -output-dir:=flagOutputDir
 
 local isForceImg=${#flagForceImg}
 local isForceTts=${#flagForceTts}
+local outputDir="${flagOutputDir[2]:-.}"
 
 local url="$1"
 
 if [[ "$url" == "" ]]; then
-  echoerr "Usage: rss2lunii <url> [--force-img] [--force-tts]"
+  echoerr "Usage: rss2lunii <url> [--output-dir <path>] [--force-img] [--force-tts]"
   return 1
 fi
 
@@ -32,13 +35,13 @@ source "$libDir/resizeToLunii.zsh"
 source "$libDir/resizeThumbnail.zsh"
 
 local packTitle="$(getRssTitle "$url")"
-local packDir="./${packTitle}"
+local packDir="${outputDir}/${packTitle}"
 
 [[ $isForceImg -eq 1 ]] && deleteCachedImages "$packDir"
 [[ $isForceTts -eq 1 ]] && deleteCachedTts "$packDir"
 
-downloadAndProcessRss "$url"
+downloadAndProcessRss "$url" --output-dir "$outputDir"
 localizeEpisodesFolder "$packDir"
 generateEpisodeImages "$packDir"
 resizeThumbnail "$packDir"
-repackAsZip "$packDir"
+repackAsZip "$packDir" --output-dir "$outputDir"
