@@ -1,0 +1,36 @@
+# Generate an SVG illustration from a text description using Claude
+# Usage:
+# $ txt2svg "A colored butterfly next to a rose"          # → a-colored-butterfly-next-to-a-rose.svg
+# $ txt2svg --output butterfly.svg "A butterfly"           # → butterfly.svg
+setopt local_options err_return
+
+zparseopts -E -D -output:=flagOutput
+
+local prompt="$1"
+
+if [[ "$prompt" == "" ]]; then
+  echoerr "Usage: txt2svg [--output <file>] <prompt>"
+  return 1
+fi
+
+local systemPrompt="Generate an SVG illustration. Output only valid SVG markup, no explanation."
+
+local svgContent=$(claude-api --system "$systemPrompt" "$prompt")
+
+# Strip markdown fences Claude may wrap around the SVG
+svgContent=$(echo "$svgContent" | sed '/^```/d')
+
+local tmpFile=$(mktemp --suffix=.svg)
+echo "$svgContent" > "$tmpFile"
+svg-fix "$tmpFile"
+
+# Determine output path
+local outputPath="${flagOutput[2]}"
+if [[ "$outputPath" == "" ]]; then
+  # Slugify first 5 words of prompt to generate filename
+  outputPath=$(echo "$prompt" | awk '{for(i=1;i<=5&&i<=NF;i++) printf "%s ", $i}' | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g; s/--*/-/g; s/^-//; s/-$//')
+  outputPath="${outputPath}.svg"
+fi
+
+mv "$tmpFile" "$outputPath"
+echo "$outputPath"

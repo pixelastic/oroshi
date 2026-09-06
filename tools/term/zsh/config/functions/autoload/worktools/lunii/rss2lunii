@@ -35,13 +35,17 @@ source "$libDir/resizeToLunii.zsh"
 source "$libDir/resizeThumbnail.zsh"
 
 local packTitle="$(getRssTitle "$url")"
-local packDir="${outputDir}/${packTitle}"
+local packDir="./${packTitle}"
 
-[[ $isForceImg -eq 1 ]] && deleteCachedImages "$packDir"
-[[ $isForceTts -eq 1 ]] && deleteCachedTts "$packDir"
+(
+  cd "$outputDir"
 
-downloadAndProcessRss "$url" --output-dir "$outputDir"
-localizeEpisodesFolder "$packDir"
-generateEpisodeImages "$packDir"
-resizeThumbnail "$packDir"
-repackAsZip "$packDir" --output-dir "$outputDir"
+  [[ $isForceImg -eq 1 ]] && deleteCachedImages "$packDir"
+  [[ $isForceTts -eq 1 ]] && deleteCachedTts "$packDir"
+
+  downloadAndProcessRss "$url"
+  localizeEpisodesFolder "$packDir"
+  generateEpisodeImages "$packDir"
+  resizeThumbnail "$packDir"
+  repackAsZip "$packDir"
+)

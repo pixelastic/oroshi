@@ -6,7 +6,7 @@ function generateEpisodeImages() {
   local packDir=$1
   local episodesDir="$packDir/Choose your story"
 
-  local svgSystemPrompt="Generate a monochrome SVG illustration. Black shapes on white background. Flat shapes, no gradients, no shadows. Playful and rounded, child-friendly (not corporate). One central object or scene. Use viewBox=\"0 0 320 240\". Output only the SVG markup, no explanation."
+  local svgStyle="Monochrome, black shapes on white background. Flat shapes, no gradients, no shadows. Playful and rounded, child-friendly. One central object or scene. viewBox 0 0 320 240."
 
   # Collect JPEGs that still need a PNG
   local jpegsToProcess=()
@@ -44,11 +44,8 @@ function generateEpisodeImages() {
     if [[ ${hashCount[$hash]} -gt 1 ]]; then
       # Duplicate hash: same cover reused → generate SVG illustration
       echo "[$current/$total] Generating SVG: $title"
-      local svgContent=$(claude-api --system "$svgSystemPrompt" "Illustrate: $title")
-
       local tmpSvg=$(mktemp --suffix=.svg)
-      echo "$svgContent" > "$tmpSvg"
-      svg-fix "$tmpSvg"
+      txt2svg --output "$tmpSvg" "$svgStyle $title"
 
       echo "[$current/$total] Converting to PNG: $title"
       svg2png "$tmpSvg"

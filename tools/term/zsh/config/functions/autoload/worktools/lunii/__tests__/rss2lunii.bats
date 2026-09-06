@@ -255,33 +255,22 @@ BASH
   [[ $(wc -l < "$BATS_TMP_DIR/spg_calls.txt") -eq 2 ]]
 }
 
-@test "--output-dir passes path as --output-folder to studio-pack-generator" {
-  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
+@test "--output-dir runs pipeline inside the target directory" {
+  local targetDir="$BATS_TMP_DIR/podcasts"
+  mkdir -p "$targetDir"
+
+  studio-pack-generator() { pwd >> "$BATS_TMP_DIR/spg_cwd.txt"; }
   eval "$(_curl_rss_only)"
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
-  bats_run_zsh "rss2lunii --output-dir $BATS_TMP_DIR https://example.com/feed.xml"
+  bats_run_zsh "rss2lunii --output-dir $targetDir https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  local allCalls="$(cat "$BATS_TMP_DIR/spg_calls.txt")"
-  [[ "$allCalls" != *"--output-folder ."* ]]
-  [[ "$allCalls" == *"--output-folder $BATS_TMP_DIR"* ]]
-}
-
-@test "--output-dir is not passed through to studio-pack-generator" {
-  studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
-  eval "$(_curl_rss_only)"
-  bats_mock studio-pack-generator curl
-  bats_disable_worktree_aware
-
-  export OPENAI_API_KEY=test-key
-  bats_run_zsh "rss2lunii --output-dir $BATS_TMP_DIR https://example.com/feed.xml"
-  [[ "$status" -eq 0 ]]
-
-  local allCalls="$(cat "$BATS_TMP_DIR/spg_calls.txt")"
-  [[ "$allCalls" != *"--output-dir"* ]]
+  # studio-pack-generator was called from inside the target directory
+  local cwd="$(head -1 "$BATS_TMP_DIR/spg_cwd.txt")"
+  [[ "$cwd" == "$targetDir" ]]
 }
 
 @test "--force-img and --force-tts are not passed to studio-pack-generator" {
