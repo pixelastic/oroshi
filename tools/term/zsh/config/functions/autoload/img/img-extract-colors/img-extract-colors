@@ -1,0 +1,11 @@
+# Extract 6 semantic color swatches from an image via node-vibrant
+# Usage:
+# $ img-extract-colors ./path/to/image.png
+setopt local_options err_return
+
+local output=$(node ${functions_source[$0]:A:h}/__lib/img-extract-colors.js "$@")
+
+# Abort if node returned no output
+[[ "$output" == "" ]] && return 1
+
+print -r -- "$output"

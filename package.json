@@ -20,6 +20,7 @@
     "golgoth": "3.1.0",
     "googleapis": "173.0.0",
     "jsonc-parser": "3.3.1",
+    "node-vibrant": "4.0.4",
     "pietro": "0.6.1",
     "prettier": "3.6.2",
     "solkan": "0.12.0"
