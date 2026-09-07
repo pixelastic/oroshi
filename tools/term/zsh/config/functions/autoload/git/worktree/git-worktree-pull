@@ -4,12 +4,15 @@
 setopt local_options err_return
 
 # Abort if submodules in main are not clean/synced
+echo "Checking submodules..."
 git-worktree-submodule-preflight
 
 local previousCommit="$(git rev-parse HEAD)"
 
 # Rebase main into worktree
+echo "Rebasing on main..."
 git rebase main
 
 # Update dependencies if needed
+echo "Updating dependencies..."
 git-dependencies-update "$previousCommit" --async

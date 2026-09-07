@@ -46,6 +46,20 @@ setup() {
   [[ ! -f "$BATS_TMP_DIR/dep-update-calls" ]]
 }
 
+@test "echoes status lines before each step" {
+  git-dependencies-update() { :; }
+  bats_mock git-dependencies-update
+  bats_disable_worktree_aware
+
+  git -C "$BATS_GIT_DIR" commit --allow-empty --quiet -m "main work"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-pull"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"Checking submodules..."* ]]
+  [[ "$output" == *"Rebasing on main..."* ]]
+  [[ "$output" == *"Updating dependencies..."* ]]
+}
+
 @test "aborts if preflight fails, rebase never happens" {
   git-worktree-submodule-preflight() {
     echo "my-sub has uncommitted changes"

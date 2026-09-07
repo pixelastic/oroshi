@@ -8,6 +8,7 @@ local currentBranch="$(git-branch-current)"
 local mainPath="$(git-worktree-main)"
 
 # Abort if submodules in Git Repo Main are not clean/synced
+echo "Checking submodules..."
 git-worktree-submodule-preflight
 
 # Push submodules whose pointer differs between Worktree and Git Repo Main
@@ -20,14 +21,17 @@ for rawLine in ${(f)submoduleList}; do
   git-worktree-submodule-pointer-differs "$submoduleName" || continue
 
   # Push the submodule to its remote
-  git-branch-push --repo "$PWD/$submoduleName"
+  echo "Pushing $submoduleName..."
+  git-branch-push-pretty --repo "$PWD/$submoduleName"
 done
 
 # Push the worktree to main
+echo "Merging into main..."
 local previousCommit="$(git -C "$mainPath" rev-parse HEAD)"
 git -C "$mainPath" merge --ff-only "$currentBranch"
 
 # Update dependencies if needed
+echo "Updating dependencies..."
 git-dependencies-update --repo "$mainPath" "$previousCommit" --async
 
 # Stop here if not an oroshi worktree

@@ -29,6 +29,53 @@ setup() {
   [[ "$(cat "$BATS_TMP_DIR/dep-update-calls")" == "--repo $mainPath $preMergeHead --async" ]]
 }
 
+@test "echoes status lines before each step" {
+  git-dependencies-update() { :; }
+  bats_mock git-dependencies-update
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"Checking submodules..."* ]]
+  [[ "$output" == *"Merging into main..."* ]]
+  [[ "$output" == *"Updating dependencies..."* ]]
+}
+
+@test "uses git-branch-push-pretty and echoes Pushing for changed submodule" {
+  # Fresh repo with submodule + worktree
+  bats_git_dir 'sub-repo'
+  bats_git_submodule "$BATS_GIT_DIR" 'my-sub'
+  bats_git_worktree 'fix/bug'
+  local worktree="${BATS_GIT_WORKTREES}sub-repo--fix-bug"
+
+  # Advance submodule pointer in worktree so it differs from main
+  local upstream="$BATS_TMP_DIR/sub-upstream-my-sub"
+  git -C "$upstream" commit --allow-empty --quiet -m "advance"
+  local newHash="$(git -C "$upstream" rev-parse HEAD)"
+  git -C "$worktree" update-index --cacheinfo "160000,$newHash,my-sub"
+  git -C "$worktree" commit --quiet -m "update sub pointer"
+
+  # Mock collaborators
+  git-worktree-submodule-preflight() { return 0; }
+  git-branch-push-pretty() { echo "$@" >> "$BATS_TMP_DIR/pretty-push-calls"; }
+  git-branch-push() {
+    echo "WRONG: plain push called" >> "$BATS_TMP_DIR/plain-push-calls"
+  }
+  git-dependencies-update() { :; }
+  git-submodule-list-raw() { echo "my-sub▮abc12345▮main"; }
+  bats_mock git-worktree-submodule-preflight git-branch-push-pretty git-branch-push git-dependencies-update git-submodule-list-raw
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $worktree && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  # git-branch-push-pretty was called, not git-branch-push
+  [[ -f "$BATS_TMP_DIR/pretty-push-calls" ]]
+  [[ ! -f "$BATS_TMP_DIR/plain-push-calls" ]]
+  [[ "$(cat "$BATS_TMP_DIR/pretty-push-calls")" == *"--repo"*"my-sub"* ]]
+  # Status line for the submodule push
+  [[ "$output" == *"Pushing my-sub..."* ]]
+}
+
 @test "returns 1 if history has diverged" {
   cd "$BATS_GIT_DIR"
   git commit --allow-empty -m "main work"
@@ -73,10 +120,10 @@ setup() {
 
   # Mock collaborators
   git-worktree-submodule-preflight() { return 0; }
-  git-branch-push() { echo "$@" >> "$BATS_TMP_DIR/push-calls"; }
+  git-branch-push-pretty() { echo "$@" >> "$BATS_TMP_DIR/push-calls"; }
   git-dependencies-update() { :; }
   git-submodule-list-raw() { echo "my-sub▮abc12345▮main"; }
-  bats_mock git-worktree-submodule-preflight git-branch-push git-dependencies-update git-submodule-list-raw
+  bats_mock git-worktree-submodule-preflight git-branch-push-pretty git-dependencies-update git-submodule-list-raw
   bats_disable_worktree_aware
 
   bats_run_zsh "cd $worktree && git-worktree-push"
@@ -202,17 +249,17 @@ EOF
 
   # Mock collaborators
   git-worktree-submodule-preflight() { return 0; }
-  git-branch-push() { echo "$@" >> "$BATS_TMP_DIR/push-calls"; }
+  git-branch-push-pretty() { echo "$@" >> "$BATS_TMP_DIR/push-calls"; }
   git-dependencies-update() { :; }
   git-submodule-list-raw() { echo "my-sub▮abc12345▮main"; }
-  bats_mock git-worktree-submodule-preflight git-branch-push git-dependencies-update git-submodule-list-raw
+  bats_mock git-worktree-submodule-preflight git-branch-push-pretty git-dependencies-update git-submodule-list-raw
   bats_disable_worktree_aware
 
   local mainHeadBefore="$(git -C "$BATS_GIT_DIR" rev-parse HEAD)"
 
   bats_run_zsh "cd $worktree && git-worktree-push"
   [[ "$status" -eq 0 ]]
-  # git-branch-push should NOT have been called
+  # git-branch-push-pretty should NOT have been called
   [[ ! -f "$BATS_TMP_DIR/push-calls" ]]
   # Merge still happened — main HEAD advanced
   local mainHeadAfter="$(git -C "$BATS_GIT_DIR" rev-parse HEAD)"
