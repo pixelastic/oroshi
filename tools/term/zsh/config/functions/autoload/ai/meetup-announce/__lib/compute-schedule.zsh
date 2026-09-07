@@ -107,16 +107,13 @@ function __compute_early() {
       continue
     fi
 
-    # Initial
-    local scheduledAt="$(__random_time 9 47 10 28)"
+    # Initial — no scheduledFor, posted immediately
     result="$(echo "$result" | jq \
       --arg id "$id" \
-      --arg scheduled "${today}T${scheduledAt}" \
       --arg channel "#$channel" \
       --arg state "$state" \
     '. + [{
         "id": $id,
-        "scheduledFor": $scheduled,
         "channel": $channel,
         "state": $state
       }]')"
@@ -140,13 +137,10 @@ function __compute_last() {
     '.messages["early--office-paris--initial"].state' \
     "$stateJsonPath")"
   if [[ "$earlyInitialState" != "posted" ]]; then
-    local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
-      --arg scheduled "${today}T${scheduledAt}" \
       --arg state "$earlyInitialState" \
     '. + [{
         "id": "early--office-paris--initial",
-        "scheduledFor": $scheduled,
         "channel": "#office-paris",
         "state": $state
       }]')"

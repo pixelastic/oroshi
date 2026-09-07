@@ -76,11 +76,11 @@ ENDJSON
   [[ "$scheduled" == 2026-09-15T* ]]
 }
 
-@test "early initials scheduled for today" {
+@test "early initials do not have scheduledFor" {
   bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
   [[ "$status" -eq 0 ]]
-  local dates="$(echo "$output" | jq -r '[.messages[] | select(.id | endswith("--initial")) | .scheduledFor | split("T")[0]] | unique | .[]')"
-  [[ "$dates" == "2026-09-12" ]]
+  local count="$(echo "$output" | jq '[.messages[] | select(.id | endswith("--initial")) | select(.scheduledFor)] | length')"
+  [[ "$count" -eq 0 ]]
 }
 
 @test "early messages include channel field" {
@@ -280,17 +280,6 @@ ENDJSON
 
 # -- Time randomization --
 
-@test "early initial time is between 09:47 and 10:28" {
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
-  [[ "$status" -eq 0 ]]
-  local time="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--initial") | .scheduledFor | split("T")[1]')"
-  local hour="${time%%:*}"
-  local min="${time##*:}"
-  local totalMin=$(( 10#$hour * 60 + 10#$min ))
-  [[ $totalMin -ge 587 ]]  # 09:47
-  [[ $totalMin -le 628 ]]  # 10:28
-}
-
 @test "early reminder time is between 13:47 and 14:28" {
   bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
   [[ "$status" -eq 0 ]]
@@ -302,10 +291,10 @@ ENDJSON
   [[ $totalMin -le 868 ]]  # 14:28
 }
 
-@test "times are not identical across messages in the same batch" {
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+@test "initials have no scheduledFor in last window catch-up" {
+  # All pending — early initial never posted, catch-up in last window
+  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-21 $STATE_FILE"
   [[ "$status" -eq 0 ]]
-  # Initials (4 messages in 09:47-10:28 range) should not all share one time
-  local uniqueInitialTimes="$(echo "$output" | jq '[.messages[] | select(.id | endswith("--initial")) | .scheduledFor | split("T")[1]] | unique | length')"
-  [[ "$uniqueInitialTimes" -ge 2 ]]
+  local hasScheduled="$(echo "$output" | jq '[.messages[] | select(.id == "early--office-paris--initial") | select(.scheduledFor)] | length')"
+  [[ "$hasScheduled" -eq 0 ]]
 }
