@@ -853,7 +853,7 @@ func testModel(th *theme.Theme, rows []layout.Row) model {
 }
 
 func testModelWithRoot(th *theme.Theme, rows []layout.Row, repoRoot string) model {
-	fileIndex := findFileHeaders(rows, nil)
+	fileIndex := findFileHeaders(rows, navigation.FileIndex{})
 	visibleIndices := navigation.VisibleIndices(len(rows), fileIndex)
 	navIndices := navigableFromVisible(rows, visibleIndices, fileIndex.FoldState)
 	return model{

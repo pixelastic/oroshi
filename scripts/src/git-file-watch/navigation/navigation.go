@@ -316,6 +316,28 @@ func DefaultFoldState(paths []string) map[string]bool {
 	return state
 }
 
+// FoldNewTestFiles returns an updated fold state that preserves existing
+// folds/unfolds and auto-folds test files not present in previousPaths.
+func FoldNewTestFiles(foldState map[string]bool, previousPaths []string, currentPaths []string) map[string]bool {
+	known := make(map[string]bool, len(previousPaths))
+	for _, path := range previousPaths {
+		known[path] = true
+	}
+
+	result := make(map[string]bool, len(foldState))
+	for k, v := range foldState {
+		result[k] = v
+	}
+
+	for _, path := range currentPaths {
+		if !known[path] && isTestFile(path) {
+			result[path] = true
+		}
+	}
+
+	return result
+}
+
 var testSuffixes = []string{
 	"_test.go",
 	".test.js", ".test.ts", ".test.tsx",

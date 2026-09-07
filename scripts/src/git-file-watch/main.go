@@ -329,7 +329,7 @@ func (m *model) rebuildDisplay() tea.Cmd {
 	m.rows = rows
 	m.highlighted = highlighted
 	m.rawLines = rawLines
-	m.fileIndex = findFileHeaders(rows, m.fileIndex.FoldState)
+	m.fileIndex = findFileHeaders(rows, m.fileIndex)
 	m.nav.RowCount = len(rows)
 	if m.nav.Cursor >= len(rows) {
 		m.nav.Cursor = max(0, len(rows)-1)
@@ -565,7 +565,7 @@ func firstMarkedRowIndex(rows []layout.Row) int {
 	return 0
 }
 
-func findFileHeaders(rows []layout.Row, foldState map[string]bool) navigation.FileIndex {
+func findFileHeaders(rows []layout.Row, previous navigation.FileIndex) navigation.FileIndex {
 	var indices []int
 	var paths []string
 	for i, row := range rows {
@@ -574,8 +574,11 @@ func findFileHeaders(rows []layout.Row, foldState map[string]bool) navigation.Fi
 			paths = append(paths, header.Path)
 		}
 	}
-	if foldState == nil {
+	var foldState map[string]bool
+	if previous.FoldState == nil {
 		foldState = navigation.DefaultFoldState(paths)
+	} else {
+		foldState = navigation.FoldNewTestFiles(previous.FoldState, previous.Paths, paths)
 	}
 	return navigation.FileIndex{
 		Headers:   indices,
@@ -662,7 +665,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	fileIndex := findFileHeaders(rows, nil)
+	fileIndex := findFileHeaders(rows, navigation.FileIndex{})
 	visibleIndices := navigation.VisibleIndices(len(rows), fileIndex)
 	navIndices := navigableFromVisible(rows, visibleIndices, fileIndex.FoldState)
 	initialCursor := firstMarkedRowIndex(rows)
