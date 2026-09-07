@@ -1,24 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE xkbConfigRegistry SYSTEM "xkb.dtd">
 <xkbConfigRegistry version="1.1">
   <layoutList>
     <layout>
       <configItem>
-        <!-- This means to look in the "symbols/fr" file -->
-        <name>fr</name>
+        <!-- This means to look in the "symbols/oroshi" file -->
+        <name>oroshi</name>
+        <!-- Displayed in the topbar -->
+        <shortDescription>oroshi</shortDescription>
+        <!-- Displayed in the Settings keyboard selector -->
+        <description>Oroshi</description>
       </configItem>
-      <variantList>
-        <variant>
-          <configItem>
-            <!-- This means to look in the xkb_symbols section named "oroshi" -->
-            <name>oroshi</name>
-            <!-- Displayed in the topbar -->
-            <shortDescription>oroshi</shortDescription>
-            <!-- Displayed in the Settings keyboard selector -->
-            <description>French (Oroshi)</description>
-          </configItem>
-        </variant>
-      </variantList>
     </layout>
   </layoutList>
 </xkbConfigRegistry>

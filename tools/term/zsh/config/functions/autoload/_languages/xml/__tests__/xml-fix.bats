@@ -176,3 +176,23 @@ setup() {
   [[ "$args" == *"--filter"* ]]
   [[ "$args" == *"is-xml"* ]]
 }
+
+# --- Integration ---
+
+@test "integration: fixes poorly formatted XML in place" {
+  unset MOCK_OVERRIDE
+
+  local file="$BATS_TMP_DIR/test.xml"
+  cat > "$file" << 'XML'
+<?xml version="1.0" encoding="UTF-8"?><root><child   attr="value"  /><child>text</child></root>
+XML
+
+  bats_run_zsh "xml-fix $file"
+  [[ "$status" -eq 0 ]]
+
+  local result="$(cat "$file")"
+  # Should have been reformatted with proper indentation
+  [[ "$result" == *$'\n'* ]]
+  [[ "$result" == *"<root>"* ]]
+  [[ "$result" == *"<child"* ]]
+}
