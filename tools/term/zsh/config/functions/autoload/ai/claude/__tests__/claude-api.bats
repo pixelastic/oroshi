@@ -174,6 +174,7 @@ BASH
   [[ "$output" == *"error"* ]] || [[ "$output" == *"Error"* ]]
 }
 
+
 @test "returns exit code 1 and prints to stderr on empty response" {
   eval "$(_mock_curl_empty)"
   bats_mock curl

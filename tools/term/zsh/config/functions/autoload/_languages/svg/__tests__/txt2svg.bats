@@ -15,7 +15,8 @@ setup() {
     echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240"><rect/></svg>'
   }
   svg-fix() { :; }
-  bats_mock claude-api svg-fix
+  svg-lint() { echo "[]"; }
+  bats_mock claude-api svg-fix svg-lint
   bats_disable_worktree_aware
 
   bats_run_zsh "cd $BATS_TMP_DIR && txt2svg 'A colored butterfly next to a beautiful rose in a garden'"
@@ -28,7 +29,8 @@ setup() {
     echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240"><rect/></svg>'
   }
   svg-fix() { :; }
-  bats_mock claude-api svg-fix
+  svg-lint() { echo "[]"; }
+  bats_mock claude-api svg-fix svg-lint
 
   bats_run_zsh "txt2svg --output $BATS_TMP_DIR/custom.svg 'A butterfly'"
   [[ "$status" -eq 0 ]]
@@ -40,7 +42,8 @@ setup() {
     echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240"><rect/></svg>'
   }
   svg-fix() { :; }
-  bats_mock claude-api svg-fix
+  svg-lint() { echo "[]"; }
+  bats_mock claude-api svg-fix svg-lint
 
   bats_run_zsh "txt2svg --output $BATS_TMP_DIR/out.svg 'A butterfly'"
   [[ "$status" -eq 0 ]]
@@ -52,7 +55,8 @@ setup() {
     printf '```svg\n<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240"><rect/></svg>\n```\n'
   }
   svg-fix() { :; }
-  bats_mock claude-api svg-fix
+  svg-lint() { echo "[]"; }
+  bats_mock claude-api svg-fix svg-lint
 
   bats_run_zsh "txt2svg --output $BATS_TMP_DIR/out.svg 'A butterfly'"
   [[ "$status" -eq 0 ]]
@@ -64,7 +68,8 @@ setup() {
     echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240"><rect/></svg>'
   }
   svg-fix() { echo "$1" >> "$BATS_TMP_DIR/svgfix_calls.txt"; }
-  bats_mock claude-api svg-fix
+  svg-lint() { echo "[]"; }
+  bats_mock claude-api svg-fix svg-lint
 
   bats_run_zsh "txt2svg --output $BATS_TMP_DIR/out.svg 'A butterfly'"
   [[ "$status" -eq 0 ]]
@@ -73,13 +78,78 @@ setup() {
   [[ $(wc -l < "$BATS_TMP_DIR/svgfix_calls.txt") -eq 1 ]]
 }
 
+@test "errors when claude-api fails" {
+  claude-api() { return 1; }
+  svg-fix() { :; }
+  bats_mock claude-api svg-fix
+
+  bats_run_zsh "txt2svg --output $BATS_TMP_DIR/out.svg 'A butterfly'"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"claude-api failed"* ]]
+}
+
+@test "errors when claude-api returns empty response" {
+  claude-api() { echo ""; }
+  svg-fix() { :; }
+  bats_mock claude-api svg-fix
+
+  bats_run_zsh "txt2svg --output $BATS_TMP_DIR/out.svg 'A butterfly'"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"empty response"* ]]
+}
+
+@test "retries with Claude when svg-lint finds issues" {
+  local callCount=0
+  claude-api() {
+    callCount=$((callCount + 1))
+    echo "$callCount" >> "$BATS_TMP_DIR/api_calls.txt"
+    echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240"><rect/></svg>'
+  }
+  svg-fix() { :; }
+  local lintCallCount=0
+  svg-lint() {
+    lintCallCount=$((lintCallCount + 1))
+    echo "$lintCallCount" >> "$BATS_TMP_DIR/lint_calls.txt"
+    # Fail first lint, pass second
+    if [[ $(wc -l < "$BATS_TMP_DIR/lint_calls.txt") -le 1 ]]; then
+      echo '[{"message":"unclosed tag","line":1}]'
+      return 1
+    fi
+    echo "[]"
+  }
+  bats_mock claude-api svg-fix svg-lint
+
+  bats_run_zsh "txt2svg --output $BATS_TMP_DIR/out.svg 'A butterfly'"
+  [[ "$status" -eq 0 ]]
+
+  # Initial call + 1 fix attempt = 2 API calls
+  [[ $(wc -l < "$BATS_TMP_DIR/api_calls.txt") -eq 2 ]]
+}
+
+@test "fails after max retry attempts with lint details" {
+  claude-api() {
+    echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240"><rect/></svg>'
+  }
+  svg-fix() { :; }
+  svg-lint() {
+    echo '[{"message":"unclosed tag"}]'
+    return 1
+  }
+  bats_mock claude-api svg-fix svg-lint
+
+  bats_run_zsh "txt2svg --output $BATS_TMP_DIR/out.svg 'A butterfly'"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"lint issues after"* ]]
+}
+
 @test "passes hardcoded system prompt to claude-api" {
   claude-api() {
     echo "$@" >> "$BATS_TMP_DIR/claude_calls.txt"
     echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240"><rect/></svg>'
   }
   svg-fix() { :; }
-  bats_mock claude-api svg-fix
+  svg-lint() { echo "[]"; }
+  bats_mock claude-api svg-fix svg-lint
 
   bats_run_zsh "txt2svg --output $BATS_TMP_DIR/out.svg 'Lulu a peur'"
   [[ "$status" -eq 0 ]]

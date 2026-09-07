@@ -76,6 +76,7 @@
   "du",
   "echo",
   "env",
+  "eslint-fix",
   "eslint-lint",
   "eslint_d",
   "exa",

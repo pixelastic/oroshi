@@ -15,14 +15,72 @@ fi
 
 local systemPrompt="Generate an SVG illustration. Output only valid SVG markup, no explanation."
 
-local svgContent=$(claude-api --system "$systemPrompt" "$prompt")
+echoerr "txt2svg: calling Claude API..."
+local svgContent
+if ! svgContent=$(claude-api --system "$systemPrompt" "$prompt"); then
+  echoerr "txt2svg: claude-api failed"
+  return 1
+fi
+
+# Guard: empty response
+if [[ "$svgContent" == "" ]]; then
+  echoerr "txt2svg: claude-api returned empty response"
+  return 1
+fi
 
 # Strip markdown fences Claude may wrap around the SVG
+echoerr "txt2svg: stripping markdown fences..."
 svgContent=$(echo "$svgContent" | sed '/^```/d')
 
 local tmpFile=$(mktemp --suffix=.svg)
 echo "$svgContent" > "$tmpFile"
-svg-fix "$tmpFile"
+
+local maxAttempts=3
+local attempt=0
+while (( attempt < maxAttempts )); do
+  attempt=$((attempt + 1))
+
+  # Fix (may fail on broken XML) then lint
+  echoerr "txt2svg: fixing SVG..."
+  svg-fix "$tmpFile" 2>/dev/null || true
+  echoerr "txt2svg: linting SVG..."
+  local lintOutput=$(svg-lint --json "$tmpFile" 2>/dev/null)
+  local issueCount=$(echo "$lintOutput" | jq 'length')
+
+  # Clean SVG — done
+  [[ "$issueCount" == "0" ]] && break
+
+  # Max retries reached — fail with lint details
+  if (( attempt >= maxAttempts )); then
+    echoerr "txt2svg: still $issueCount lint issues after $maxAttempts attempts:"
+    echoerr "$lintOutput"
+    rm -f "$tmpFile"
+    return 1
+  fi
+
+  # Ask Claude to fix the lint issues
+  echoerr "txt2svg: $issueCount lint issues, asking Claude to fix" \
+    "(attempt $attempt/$maxAttempts)..."
+  local currentSvg=$(cat "$tmpFile")
+  local fixPrompt="Fix these XML/SVG lint errors. Output only the corrected SVG, no explanation.
+
+Errors:
+$lintOutput
+
+SVG:
+$currentSvg"
+
+  local fixedSvg
+  if ! fixedSvg=$(claude-api --system "$systemPrompt" "$fixPrompt"); then
+    echoerr "txt2svg: claude-api fix attempt failed"
+    rm -f "$tmpFile"
+    return 1
+  fi
+
+  # Strip fences and write back
+  fixedSvg=$(echo "$fixedSvg" | sed '/^```/d')
+  echo "$fixedSvg" > "$tmpFile"
+done
 
 # Determine output path
 local outputPath="${flagOutput[2]}"
@@ -33,4 +91,5 @@ if [[ "$outputPath" == "" ]]; then
 fi
 
 mv "$tmpFile" "$outputPath"
+echoerr "txt2svg: saved to $outputPath"
 echo "$outputPath"
