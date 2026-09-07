@@ -23,7 +23,7 @@ function _needsRebuild() {
 
 if _needsRebuild; then
   echoerr "Rebuilding ${commandName}..."
-  "${sourceDirectory}/build"
+  (cd "$OROSHI_ROOT" && "${sourceDirectory}/build")
 fi
 
 "$binaryPath" "$@"
