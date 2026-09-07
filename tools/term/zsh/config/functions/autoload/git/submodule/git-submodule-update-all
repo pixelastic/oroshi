@@ -16,8 +16,12 @@ local rawLine
 for rawLine in ${(f)rawList}; do
   local fields=(${(@ps/▮/)rawLine})
   local name=$fields[1]
+  local targetCommit=$fields[2]
 
   # Checkout the configured branch instead of detached HEAD
   local branch="$(git-submodule-branch --repo "$repoPath" "$name")"
   git-branch-switch --no-dependencies --repo "${repoPath}/${name}" "$branch"
+
+  # Advance the branch to the commit that submodule update checked out
+  git -C "${repoPath}/${name}" merge --ff-only "$targetCommit" 2>/dev/null || true
 done
