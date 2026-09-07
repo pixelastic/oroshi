@@ -304,21 +304,21 @@ func centerViewportOnCursor(state State, visibleIndices []int) State {
 	return state
 }
 
-// DefaultFoldState returns a fold state map with test files pre-folded.
-// Matches: __tests__/ dirs, _test.go, .test.{js,ts,tsx}, .spec.{js,ts,tsx}
+// DefaultFoldState returns a fold state map with noisy files pre-folded.
+// Matches: test files, lock files (yarn.lock, package-lock.json, etc.)
 func DefaultFoldState(paths []string) map[string]bool {
 	state := map[string]bool{}
 	for _, path := range paths {
-		if isTestFile(path) {
+		if shouldAutoFold(path) {
 			state[path] = true
 		}
 	}
 	return state
 }
 
-// FoldNewTestFiles returns an updated fold state that preserves existing
-// folds/unfolds and auto-folds test files not present in previousPaths.
-func FoldNewTestFiles(foldState map[string]bool, previousPaths []string, currentPaths []string) map[string]bool {
+// FoldNewFiles returns an updated fold state that preserves existing
+// folds/unfolds and auto-folds noisy files not present in previousPaths.
+func FoldNewFiles(foldState map[string]bool, previousPaths []string, currentPaths []string) map[string]bool {
 	known := make(map[string]bool, len(previousPaths))
 	for _, path := range previousPaths {
 		known[path] = true
@@ -330,7 +330,7 @@ func FoldNewTestFiles(foldState map[string]bool, previousPaths []string, current
 	}
 
 	for _, path := range currentPaths {
-		if !known[path] && isTestFile(path) {
+		if !known[path] && shouldAutoFold(path) {
 			result[path] = true
 		}
 	}
@@ -344,11 +344,19 @@ var testSuffixes = []string{
 	".spec.js", ".spec.ts", ".spec.tsx",
 }
 
-func isTestFile(path string) bool {
+var lockFiles = map[string]bool{
+	"yarn.lock": true,
+	"go.sum":    true,
+}
+
+func shouldAutoFold(path string) bool {
 	if strings.Contains(path, "__tests__/") {
 		return true
 	}
 	base := filepath.Base(path)
+	if lockFiles[base] {
+		return true
+	}
 	for _, suffix := range testSuffixes {
 		if strings.HasSuffix(base, suffix) {
 			return true
