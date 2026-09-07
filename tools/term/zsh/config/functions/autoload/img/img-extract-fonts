@@ -1,0 +1,27 @@
+# Identify fonts in an image via the WhatFontIs API
+# Usage:
+# $ img-extract-fonts ./path/to/image.png
+setopt local_options err_return
+
+# API key must be set
+if [[ "${WHATFONTIS_API_KEY:-}" == "" ]]; then
+  echoerr "WHATFONTIS_API_KEY is not set"
+  return 1
+fi
+
+local imagePath=$1
+local base64Content="$(base64 --wrap=0 "$imagePath")"
+
+local response="$(curl \
+    --silent \
+    --show-error \
+    --fail \
+    --form "API_KEY=$WHATFONTIS_API_KEY" \
+    --form "IMAGEBASE64=1" \
+    --form "urlimagebase64=$base64Content" \
+    --form "NOTTEXTBOXSDETECTION=0" \
+    --form "limit=20" \
+  "https://www.whatfontis.com/api2/")"
+
+# Filter to only the fields we need
+print -r -- "$(echo "$response" | jq '[.[] | {title, url, type, site}]')"
