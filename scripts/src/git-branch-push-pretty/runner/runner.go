@@ -15,6 +15,7 @@ import (
 func ParseArgs(args []string, runner func(string, ...string) (string, error)) (string, string, []string, error) {
 	var positional []string
 	var flags []string
+	repoPath := ""
 
 	for i := 0; i < len(args); i++ {
 		if strings.HasPrefix(args[i], "-") {
@@ -23,6 +24,7 @@ func ParseArgs(args []string, runner func(string, ...string) (string, error)) (s
 			if args[i] == "--repo" && i+1 < len(args) {
 				i++
 				flags = append(flags, args[i])
+				repoPath = flags[len(flags)-1]
 			}
 		} else {
 			positional = append(positional, args[i])
@@ -39,7 +41,11 @@ func ParseArgs(args []string, runner func(string, ...string) (string, error)) (s
 	}
 
 	if branch == "" {
-		output, err := runner("bin-zsh", "git-branch-current")
+		resolveArgs := []string{"git-branch-current"}
+		if repoPath != "" {
+			resolveArgs = append(resolveArgs, repoPath)
+		}
+		output, err := runner("bin-zsh", resolveArgs...)
 		if err != nil {
 			return "", "", nil, err
 		}
@@ -47,7 +53,11 @@ func ParseArgs(args []string, runner func(string, ...string) (string, error)) (s
 	}
 
 	if remote == "" {
-		output, err := runner("bin-zsh", "git-remote-current")
+		resolveArgs := []string{"git-remote-current"}
+		if repoPath != "" {
+			resolveArgs = append(resolveArgs, repoPath)
+		}
+		output, err := runner("bin-zsh", resolveArgs...)
 		if err != nil {
 			return "", "", nil, err
 		}

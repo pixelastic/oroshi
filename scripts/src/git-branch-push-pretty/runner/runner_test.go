@@ -78,6 +78,102 @@ func TestParseArgsPassesThroughFlags(t *testing.T) {
 	assert.Contains(t, pushArgs, "--force")
 }
 
+func TestParseArgsPassesRepoPathToBranchCurrent(t *testing.T) {
+	var calls [][]string
+	runner := func(name string, args ...string) (string, error) {
+		calls = append(calls, args)
+		if len(args) > 0 && args[0] == "git-branch-current" {
+			return "feature\n", nil
+		}
+		if len(args) > 0 && args[0] == "git-remote-current" {
+			return "origin\n", nil
+		}
+		return "", nil
+	}
+	_, _, _, err := ParseArgs([]string{"--repo", "/tmp/myrepo"}, runner)
+	require.NoError(t, err)
+	// Find the git-branch-current call
+	for _, call := range calls {
+		if len(call) > 0 && call[0] == "git-branch-current" {
+			require.Len(t, call, 2, "git-branch-current should receive repo path")
+			assert.Equal(t, "/tmp/myrepo", call[1])
+			return
+		}
+	}
+	t.Fatal("git-branch-current was never called")
+}
+
+func TestParseArgsPassesRepoPathToRemoteCurrent(t *testing.T) {
+	var calls [][]string
+	runner := func(name string, args ...string) (string, error) {
+		calls = append(calls, args)
+		if len(args) > 0 && args[0] == "git-branch-current" {
+			return "main\n", nil
+		}
+		if len(args) > 0 && args[0] == "git-remote-current" {
+			return "upstream\n", nil
+		}
+		return "", nil
+	}
+	_, _, _, err := ParseArgs([]string{"--repo", "/tmp/myrepo"}, runner)
+	require.NoError(t, err)
+	// Find the git-remote-current call
+	for _, call := range calls {
+		if len(call) > 0 && call[0] == "git-remote-current" {
+			require.Len(t, call, 2, "git-remote-current should receive repo path")
+			assert.Equal(t, "/tmp/myrepo", call[1])
+			return
+		}
+	}
+	t.Fatal("git-remote-current was never called")
+}
+
+func TestParseArgsWithoutRepoCallsBranchCurrentWithoutPath(t *testing.T) {
+	var calls [][]string
+	runner := func(name string, args ...string) (string, error) {
+		calls = append(calls, args)
+		if len(args) > 0 && args[0] == "git-branch-current" {
+			return "main\n", nil
+		}
+		if len(args) > 0 && args[0] == "git-remote-current" {
+			return "origin\n", nil
+		}
+		return "", nil
+	}
+	_, _, _, err := ParseArgs([]string{}, runner)
+	require.NoError(t, err)
+	for _, call := range calls {
+		if len(call) > 0 && call[0] == "git-branch-current" {
+			assert.Len(t, call, 1, "git-branch-current should not receive repo path")
+			return
+		}
+	}
+	t.Fatal("git-branch-current was never called")
+}
+
+func TestParseArgsWithoutRepoCallsRemoteCurrentWithoutPath(t *testing.T) {
+	var calls [][]string
+	runner := func(name string, args ...string) (string, error) {
+		calls = append(calls, args)
+		if len(args) > 0 && args[0] == "git-branch-current" {
+			return "main\n", nil
+		}
+		if len(args) > 0 && args[0] == "git-remote-current" {
+			return "origin\n", nil
+		}
+		return "", nil
+	}
+	_, _, _, err := ParseArgs([]string{}, runner)
+	require.NoError(t, err)
+	for _, call := range calls {
+		if len(call) > 0 && call[0] == "git-remote-current" {
+			assert.Len(t, call, 1, "git-remote-current should not receive repo path")
+			return
+		}
+	}
+	t.Fatal("git-remote-current was never called")
+}
+
 // --- Event to message conversion ---
 
 func TestEventToMsgConvertsProgress(t *testing.T) {
