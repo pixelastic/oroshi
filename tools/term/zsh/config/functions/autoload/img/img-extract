@@ -1,0 +1,20 @@
+# Extract colors and fonts from an image into a single JSON object
+# Usage:
+# $ img-extract ./path/to/image.png
+setopt local_options err_return
+
+local imagePath="$1"
+
+# Split local/assignment so err_return propagates sub-command failures
+# zsh-lint disable=noSplitLocal
+local colors
+colors="$(img-extract-colors "$imagePath")"
+
+# zsh-lint disable=noSplitLocal
+local fonts
+fonts="$(img-extract-fonts "$imagePath")"
+
+print -r -- "$(jq --null-input \
+	--argjson colors "$colors" \
+	--argjson fonts "$fonts" \
+	'{ colors: $colors, fonts: $fonts }')"

@@ -10,7 +10,8 @@ if [[ "${WHATFONTIS_API_KEY:-}" == "" ]]; then
 fi
 
 local imagePath=$1
-local base64Content="$(base64 --wrap=0 "$imagePath")"
+local tmpBase64="$(mktemp)"
+base64 --wrap=0 "$imagePath" > "$tmpBase64"
 
 local response="$(curl \
     --silent \
@@ -18,10 +19,12 @@ local response="$(curl \
     --fail \
     --form "API_KEY=$WHATFONTIS_API_KEY" \
     --form "IMAGEBASE64=1" \
-    --form "urlimagebase64=$base64Content" \
+    --form "urlimagebase64=<$tmpBase64" \
     --form "NOTTEXTBOXSDETECTION=0" \
-    --form "limit=20" \
+    --form "FREEFONTS=1" \
+    --form "limit=5" \
   "https://www.whatfontis.com/api2/")"
+rm -f "$tmpBase64"
 
 # Filter to only the fields we need
 print -r -- "$(echo "$response" | jq '[.[] | {title, url, type, site}]')"
