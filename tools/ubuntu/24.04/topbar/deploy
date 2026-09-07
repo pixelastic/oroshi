@@ -20,7 +20,7 @@ dconf write /org/gnome/shell/extensions/just-perfection/activities-button false
 dconf write /org/gnome/shell/extensions/unite/show-window-buttons "'never'"
 
 # Spotify Controls + Track Info
-# position: 'rightmost-left' (default) places it in the left panel box — use right panel instead
+# position: leftmost in the right panel box
 dconf write /org/gnome/shell/extensions/spotify-controls/position "'leftmost-right'"
 # Show only the track title, no playback buttons or Spotify icon
 dconf write /org/gnome/shell/extensions/spotify-controls/show-playback-controls false
@@ -59,12 +59,12 @@ $extensionSrc/oroshi-statuses/reload
 # To ensure consistent placement, disable all first then enable in order.
 
 local topbarExtensions=(
-  spotify-controls@Sonath21               # Spotify Controls + Track Info
   oroshi-statuses@oroshi                  # Oroshi Statuses (Slack status)
   oroshi-modes@oroshi                     # Oroshi Modes
   ubuntu-appindicators@ubuntu.com         # App Indicators (Dropbox, etc.)
   just-perfection-desktop@just-perfection # Just Perfection + Clock
   unite@hardpixel.eu                      # Unite (reduce spacing)
+  spotify-controls@Sonath21               # Spotify Controls + Track Info
 )
 
 # Disable all topbar extensions

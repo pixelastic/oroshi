@@ -162,7 +162,8 @@ class OroshiStatuses {
     if (!this._button) {
       this._icon = new St.Icon({
         style_class: 'system-status-icon',
-        icon_size: 20,
+        icon_size: 16,
+        style: 'icon-size: 16px;',
       });
       this._button = new PanelMenu.Button(0.0, INDICATOR_ID, false);
       this._button.add_child(this._icon);
