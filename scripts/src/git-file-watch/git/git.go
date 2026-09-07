@@ -73,10 +73,25 @@ func UntrackedFiles(repoRoot string) ([]string, error) {
 	return strings.Split(raw, "\n"), nil
 }
 
+// Submodules returns relative paths of initialized submodules.
+func Submodules(repoRoot string) []string {
+	cmd := exec.Command("git", "submodule", "foreach", "--quiet", "echo $sm_path")
+	cmd.Dir = repoRoot
+	output, err := cmd.Output()
+	if err != nil {
+		return nil
+	}
+	raw := strings.TrimSpace(string(output))
+	if raw == "" {
+		return nil
+	}
+	return strings.Split(raw, "\n")
+}
+
 // Diff runs git diff in the given directory and returns the raw output,
-// including synthetic diffs for untracked files.
+// including synthetic diffs for untracked files and submodule diffs.
 func Diff(repoRoot string) (string, error) {
-	cmd := exec.Command("git", "diff")
+	cmd := exec.Command("git", "diff", "--ignore-submodules=all")
 	cmd.Dir = repoRoot
 	output, err := cmd.Output()
 	if err != nil {
@@ -84,19 +99,63 @@ func Diff(repoRoot string) (string, error) {
 	}
 
 	result := string(output)
+	result += untrackedDiffs(repoRoot, "")
 
-	untracked, err := UntrackedFiles(repoRoot)
-	if err != nil {
-		return result, nil
-	}
+	for _, sub := range Submodules(repoRoot) {
+		subRoot := filepath.Join(repoRoot, sub)
 
-	for _, path := range untracked {
-		content, readErr := os.ReadFile(filepath.Join(repoRoot, path))
-		if readErr != nil {
-			continue
+		subCmd := exec.Command("git", "diff")
+		subCmd.Dir = subRoot
+		subOutput, subErr := subCmd.Output()
+		if subErr == nil && len(subOutput) > 0 {
+			result += prefixDiffPaths(string(subOutput), sub)
 		}
-		result += SyntheticNewFileDiff(path, string(content))
+
+		result += untrackedDiffs(subRoot, sub)
 	}
 
 	return result, nil
+}
+
+func untrackedDiffs(directory, pathPrefix string) string {
+	untracked, err := UntrackedFiles(directory)
+	if err != nil {
+		return ""
+	}
+	var result string
+	for _, path := range untracked {
+		content, readErr := os.ReadFile(filepath.Join(directory, path))
+		if readErr != nil {
+			continue
+		}
+		displayPath := path
+		if pathPrefix != "" {
+			displayPath = pathPrefix + "/" + path
+		}
+		result += SyntheticNewFileDiff(displayPath, string(content))
+	}
+	return result
+}
+
+// prefixDiffPaths prepends a submodule path to all file paths in raw diff output.
+func prefixDiffPaths(raw, prefix string) string {
+	if raw == "" {
+		return ""
+	}
+	lines := strings.Split(strings.TrimSuffix(raw, "\n"), "\n")
+	var b strings.Builder
+	for _, line := range lines {
+		switch {
+		case strings.HasPrefix(line, "diff --git a/"):
+			line = strings.Replace(line, " a/", " a/"+prefix+"/", 1)
+			line = strings.Replace(line, " b/", " b/"+prefix+"/", 1)
+		case strings.HasPrefix(line, "--- a/"):
+			line = "--- a/" + prefix + "/" + line[6:]
+		case strings.HasPrefix(line, "+++ b/"):
+			line = "+++ b/" + prefix + "/" + line[6:]
+		}
+		b.WriteString(line)
+		b.WriteByte('\n')
+	}
+	return b.String()
 }
