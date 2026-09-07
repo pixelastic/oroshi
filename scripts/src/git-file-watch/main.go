@@ -491,6 +491,9 @@ func (m model) View() string {
 			builder.WriteString(s)
 		case layout.SeparatorRow:
 			builder.WriteByte('\n')
+		case layout.BinaryRow:
+			s := render.BinaryLine(ctx)
+			builder.WriteString(s)
 		case layout.LineRow:
 			s := render.CodeLine(ctx, r, i == m.nav.Cursor)
 			rendered += strings.Count(s, "\n") - 1
@@ -568,17 +571,23 @@ func firstMarkedRowIndex(rows []layout.Row) int {
 func findFileHeaders(rows []layout.Row, previous navigation.FileIndex) navigation.FileIndex {
 	var indices []int
 	var paths []string
+	binaryPaths := map[string]bool{}
+	var lastHeader string
 	for i, row := range rows {
 		if header, ok := row.(layout.FileHeaderRow); ok {
 			indices = append(indices, i)
 			paths = append(paths, header.Path)
+			lastHeader = header.Path
+		}
+		if _, ok := row.(layout.BinaryRow); ok && lastHeader != "" {
+			binaryPaths[lastHeader] = true
 		}
 	}
 	var foldState map[string]bool
 	if previous.FoldState == nil {
-		foldState = navigation.DefaultFoldState(paths)
+		foldState = navigation.DefaultFoldState(paths, binaryPaths)
 	} else {
-		foldState = navigation.FoldNewFiles(previous.FoldState, previous.Paths, paths)
+		foldState = navigation.FoldNewFiles(previous.FoldState, previous.Paths, paths, binaryPaths)
 	}
 	return navigation.FileIndex{
 		Headers:   indices,
@@ -713,6 +722,12 @@ func buildDisplay(repoRoot string, highlighter *highlight.Highlighter) ([]layout
 	var allRows []layout.Row
 
 	for _, fileDiff := range fileDiffs {
+		if fileDiff.Binary {
+			rows := layout.Build(fileDiff, nil, 0)
+			allRows = append(allRows, rows...)
+			continue
+		}
+
 		absolutePath := filepath.Join(repoRoot, fileDiff.Path)
 		content, readErr := os.ReadFile(absolutePath)
 		if readErr != nil {

@@ -305,11 +305,11 @@ func centerViewportOnCursor(state State, visibleIndices []int) State {
 }
 
 // DefaultFoldState returns a fold state map with noisy files pre-folded.
-// Matches: test files, lock files (yarn.lock, package-lock.json, etc.)
-func DefaultFoldState(paths []string) map[string]bool {
+// Matches: test files, lock files, binary files.
+func DefaultFoldState(paths []string, binaryPaths map[string]bool) map[string]bool {
 	state := map[string]bool{}
 	for _, path := range paths {
-		if shouldAutoFold(path) {
+		if shouldAutoFold(path) || binaryPaths[path] {
 			state[path] = true
 		}
 	}
@@ -318,7 +318,7 @@ func DefaultFoldState(paths []string) map[string]bool {
 
 // FoldNewFiles returns an updated fold state that preserves existing
 // folds/unfolds and auto-folds noisy files not present in previousPaths.
-func FoldNewFiles(foldState map[string]bool, previousPaths []string, currentPaths []string) map[string]bool {
+func FoldNewFiles(foldState map[string]bool, previousPaths []string, currentPaths []string, binaryPaths map[string]bool) map[string]bool {
 	known := make(map[string]bool, len(previousPaths))
 	for _, path := range previousPaths {
 		known[path] = true
@@ -330,7 +330,7 @@ func FoldNewFiles(foldState map[string]bool, previousPaths []string, currentPath
 	}
 
 	for _, path := range currentPaths {
-		if !known[path] && shouldAutoFold(path) {
+		if !known[path] && (shouldAutoFold(path) || binaryPaths[path]) {
 			result[path] = true
 		}
 	}

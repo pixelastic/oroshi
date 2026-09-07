@@ -653,40 +653,48 @@ func TestPageDownSkipsFoldedContent(t *testing.T) {
 
 func TestDefaultFoldStateFoldsTestDirFile(t *testing.T) {
 	paths := []string{"src/app.go", "src/__tests__/app.bats"}
-	result := DefaultFoldState(paths)
+	result := DefaultFoldState(paths, nil)
 	assert.True(t, result["src/__tests__/app.bats"])
 	assert.False(t, result["src/app.go"])
 }
 
 func TestDefaultFoldStateFoldsGoTestFile(t *testing.T) {
 	paths := []string{"pkg/loader.go", "pkg/loader_test.go"}
-	result := DefaultFoldState(paths)
+	result := DefaultFoldState(paths, nil)
 	assert.True(t, result["pkg/loader_test.go"])
 	assert.False(t, result["pkg/loader.go"])
 }
 
 func TestDefaultFoldStateFoldsJsTestFile(t *testing.T) {
 	paths := []string{"src/utils.js", "src/utils.test.js"}
-	result := DefaultFoldState(paths)
+	result := DefaultFoldState(paths, nil)
 	assert.True(t, result["src/utils.test.js"])
 }
 
 func TestDefaultFoldStateFoldsSpecFile(t *testing.T) {
 	paths := []string{"src/utils.ts", "src/utils.spec.ts"}
-	result := DefaultFoldState(paths)
+	result := DefaultFoldState(paths, nil)
 	assert.True(t, result["src/utils.spec.ts"])
 }
 
 func TestDefaultFoldStateFoldsYarnLock(t *testing.T) {
 	paths := []string{"src/app.go", "yarn.lock"}
-	result := DefaultFoldState(paths)
+	result := DefaultFoldState(paths, nil)
 	assert.True(t, result["yarn.lock"])
+	assert.False(t, result["src/app.go"])
+}
+
+func TestDefaultFoldStateFoldsBinaryFiles(t *testing.T) {
+	paths := []string{"src/app.go", "logo.png"}
+	binary := map[string]bool{"logo.png": true}
+	result := DefaultFoldState(paths, binary)
+	assert.True(t, result["logo.png"])
 	assert.False(t, result["src/app.go"])
 }
 
 func TestDefaultFoldStateReturnsEmptyMapWhenNoAutoFoldFiles(t *testing.T) {
 	paths := []string{"main.go", "lib/utils.go"}
-	result := DefaultFoldState(paths)
+	result := DefaultFoldState(paths, nil)
 	assert.Empty(t, result)
 }
 
@@ -697,7 +705,7 @@ func TestFoldNewFilesAutoFoldsNewTestFile(t *testing.T) {
 	previousPaths := []string{"src/app.go"}
 	currentPaths := []string{"src/app.go", "src/app_test.go"}
 
-	result := FoldNewFiles(existing, previousPaths, currentPaths)
+	result := FoldNewFiles(existing, previousPaths, currentPaths, nil)
 
 	assert.True(t, result["src/app_test.go"])
 }
@@ -707,7 +715,7 @@ func TestFoldNewFilesPreservesUserUnfold(t *testing.T) {
 	previousPaths := []string{"src/app.go", "src/app_test.go"}
 	currentPaths := []string{"src/app.go", "src/app_test.go"}
 
-	result := FoldNewFiles(existing, previousPaths, currentPaths)
+	result := FoldNewFiles(existing, previousPaths, currentPaths, nil)
 
 	assert.False(t, result["src/app_test.go"])
 }
@@ -717,7 +725,7 @@ func TestFoldNewFilesDoesNotFoldNewNonTestFile(t *testing.T) {
 	previousPaths := []string{"src/app.go"}
 	currentPaths := []string{"src/app.go", "src/utils.go"}
 
-	result := FoldNewFiles(existing, previousPaths, currentPaths)
+	result := FoldNewFiles(existing, previousPaths, currentPaths, nil)
 
 	assert.False(t, result["src/utils.go"])
 }
@@ -727,7 +735,7 @@ func TestFoldNewFilesPreservesExistingFolds(t *testing.T) {
 	previousPaths := []string{"src/app.go", "src/old_test.go"}
 	currentPaths := []string{"src/app.go", "src/old_test.go", "src/new_test.go"}
 
-	result := FoldNewFiles(existing, previousPaths, currentPaths)
+	result := FoldNewFiles(existing, previousPaths, currentPaths, nil)
 
 	assert.True(t, result["src/old_test.go"])
 	assert.True(t, result["src/new_test.go"])
@@ -738,7 +746,7 @@ func TestFoldNewFilesHandlesTestDirFile(t *testing.T) {
 	previousPaths := []string{"src/app.go"}
 	currentPaths := []string{"src/app.go", "src/__tests__/app.bats"}
 
-	result := FoldNewFiles(existing, previousPaths, currentPaths)
+	result := FoldNewFiles(existing, previousPaths, currentPaths, nil)
 
 	assert.True(t, result["src/__tests__/app.bats"])
 }
@@ -748,7 +756,7 @@ func TestFoldNewFilesHandlesJsSpecFile(t *testing.T) {
 	previousPaths := []string{"src/app.js"}
 	currentPaths := []string{"src/app.js", "src/app.spec.ts"}
 
-	result := FoldNewFiles(existing, previousPaths, currentPaths)
+	result := FoldNewFiles(existing, previousPaths, currentPaths, nil)
 
 	assert.True(t, result["src/app.spec.ts"])
 }
@@ -758,9 +766,20 @@ func TestFoldNewFilesAutoFoldsNewYarnLock(t *testing.T) {
 	previousPaths := []string{"src/app.go"}
 	currentPaths := []string{"src/app.go", "yarn.lock"}
 
-	result := FoldNewFiles(existing, previousPaths, currentPaths)
+	result := FoldNewFiles(existing, previousPaths, currentPaths, nil)
 
 	assert.True(t, result["yarn.lock"])
+}
+
+func TestFoldNewFilesAutoFoldsNewBinaryFile(t *testing.T) {
+	existing := map[string]bool{}
+	previousPaths := []string{"src/app.go"}
+	currentPaths := []string{"src/app.go", "logo.png"}
+	binary := map[string]bool{"logo.png": true}
+
+	result := FoldNewFiles(existing, previousPaths, currentPaths, binary)
+
+	assert.True(t, result["logo.png"])
 }
 
 // --- FirstMarkedRow ---

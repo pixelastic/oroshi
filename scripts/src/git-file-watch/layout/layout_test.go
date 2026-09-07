@@ -215,3 +215,16 @@ func TestEmitsCorrectMarkerForClassifiedLines(t *testing.T) {
 		}
 	}
 }
+
+// --- Binary files ---
+
+func TestBuildEmitsHeaderAndBinaryRowForBinaryFile(t *testing.T) {
+	fd := diff.FileDiff{Path: "image.png", Binary: true}
+	rows := Build(fd, nil, 0)
+
+	require.Len(t, rows, 2)
+	_, isHeader := rows[0].(FileHeaderRow)
+	assert.True(t, isHeader)
+	_, isBinary := rows[1].(BinaryRow)
+	assert.True(t, isBinary)
+}

@@ -273,3 +273,35 @@ func TestHandlesHunkWithMixedAdditionsAndDeletions(t *testing.T) {
 	// "fresh" is added with no adjacent removed → Added
 	assert.Equal(t, MarkerAdded, markers[3])
 }
+
+// --- Binary file parsing ---
+
+func TestParsesBinaryFileDiff(t *testing.T) {
+	raw := `diff --git a/image.png b/image.png
+Binary files /dev/null and b/image.png differ
+`
+	result := Parse(raw)
+	require.Len(t, result, 1)
+	assert.Equal(t, "image.png", result[0].Path)
+	assert.True(t, result[0].Binary)
+	assert.Empty(t, result[0].Hunks)
+}
+
+func TestParsesBinaryFileAmongTextFiles(t *testing.T) {
+	raw := `diff --git a/file.txt b/file.txt
+index 1234567..abcdefg 100644
+--- a/file.txt
++++ b/file.txt
+@@ -1,3 +1,4 @@
+ context line
++added line
+ another context
+ last context
+diff --git a/logo.png b/logo.png
+Binary files a/logo.png and b/logo.png differ
+`
+	result := Parse(raw)
+	require.Len(t, result, 2)
+	assert.False(t, result[0].Binary)
+	assert.True(t, result[1].Binary)
+}

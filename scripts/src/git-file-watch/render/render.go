@@ -83,6 +83,13 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int, isCursor b
 	return b.String()
 }
 
+// BinaryLine renders a placeholder for binary file content.
+func BinaryLine(ctx Context) string {
+	style := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss("gray-5")).Italic(true)
+	padding := strings.Repeat(" ", ctx.LineNumberWidth+2)
+	return padding + style.Render("Binary file") + "\n"
+}
+
 // CommentLine renders a comment annotation above a code line.
 func CommentLine(ctx Context, commentText string) string {
 	orangeStyle := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss("orange"))

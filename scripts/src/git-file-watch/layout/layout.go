@@ -35,6 +35,11 @@ type FileHeaderRow struct {
 
 func (FileHeaderRow) isRow() {}
 
+// BinaryRow represents a placeholder for binary file content.
+type BinaryRow struct{}
+
+func (BinaryRow) isRow() {}
+
 type lineRange struct {
 	start int
 	end   int
@@ -42,6 +47,9 @@ type lineRange struct {
 
 // Build expands marked lines with context, merges ranges, and emits rows.
 func Build(fileDiff diff.FileDiff, markers map[int]diff.Marker, totalLines int) []Row {
+	if fileDiff.Binary {
+		return []Row{FileHeaderRow{Path: fileDiff.Path}, BinaryRow{}}
+	}
 	if len(markers) == 0 {
 		return []Row{FileHeaderRow{Path: fileDiff.Path}}
 	}
