@@ -76,6 +76,14 @@ setup() {
   [[ "$status" -eq 2 ]]
 }
 
+@test "em dash text: real Vale fires oroshi.NoEmDash and exits 1" {
+  local file="$BATS_TMP_DIR/emdash.md"
+  printf 'Use a hyphen — not an em dash.\n' > "$file"
+  bats_run_zsh "prose-lint $file"
+  [[ "$status" -eq 1 ]]
+  [[ "$(printf '%s' "$output" | jq -r '.[].rule')" == *"oroshi.NoEmDash"* ]]
+}
+
 @test "Vale crash: stderr from Vale is printed to the caller" {
   vale() {
     printf 'vale: fatal error\n' >&2
