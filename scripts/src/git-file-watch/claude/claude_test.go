@@ -55,7 +55,7 @@ func TestSendsCorrectTextToCorrectWindowID(t *testing.T) {
 	err := SendReview(runner, 42, 3)
 	require.NoError(t, err)
 	assert.Equal(t, "bin-zsh", capturedName)
-	assert.Equal(t, []string{"kitty-window-send-text", "42", "/git-file-watch-review\n"}, capturedArgs)
+	assert.Equal(t, []string{"kitty-window-send-text", "42", "/git-file-watch-review\r"}, capturedArgs)
 }
 
 func TestReturnsErrorWhenNoCommentsExist(t *testing.T) {

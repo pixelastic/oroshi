@@ -29,7 +29,7 @@ func SendReview(run CommandRunner, windowID int, commentCount int) error {
 	if commentCount == 0 {
 		return fmt.Errorf("no comments to send")
 	}
-	_, err := run("bin-zsh", "kitty-window-send-text", fmt.Sprintf("%d", windowID), "/git-file-watch-review\n")
+	_, err := run("bin-zsh", "kitty-window-send-text", fmt.Sprintf("%d", windowID), "/git-file-watch-review\r")
 	if err != nil {
 		return fmt.Errorf("sending review to claude: %w", err)
 	}
