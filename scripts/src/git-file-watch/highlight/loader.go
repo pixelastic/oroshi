@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/ebitengine/purego"
-	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/shebang"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/filetype"
 	tree_sitter "github.com/tree-sitter/go-tree-sitter"
 )
 
@@ -41,14 +41,6 @@ var extensionToLanguage = map[string]string{
 	"vue":  "vue",
 }
 
-// pathPatterns maps path substrings to languages for extensionless files.
-var pathPatterns = []struct {
-	contains string
-	language string
-}{
-	{"tools/term/zsh/config/functions/autoload/", "bash"},
-}
-
 // LoadedLanguage holds a tree-sitter grammar and its highlight query.
 type LoadedLanguage struct {
 	Language       *tree_sitter.Language
@@ -69,38 +61,14 @@ func NewLoader(parserDir string, queryDir string) *Loader {
 	}
 }
 
-// interpreterToLanguage maps shebang interpreter names to tree-sitter languages.
-var interpreterToLanguage = map[string]string{
-	"zsh":     "bash",
-	"bash":    "bash",
-	"sh":      "bash",
-	"python":  "python",
-	"python3": "python",
-	"node":    "javascript",
-	"ruby":    "ruby",
-	"perl":    "perl",
-}
-
 // LanguageForFile returns the tree-sitter language name for a filepath.
 // It checks the extension first, then path-based rules, then shebang.
 func LanguageForFile(path string, firstLine string) string {
-	ext := strings.TrimPrefix(extensionForFile(path), ".")
-	if lang, ok := extensionToLanguage[ext]; ok {
+	result := filetype.Resolve(path, firstLine)
+	if lang, ok := extensionToLanguage[result.Language]; ok {
 		return lang
 	}
-	if ext == "" {
-		for _, p := range pathPatterns {
-			if strings.Contains(path, p.contains) {
-				return p.language
-			}
-		}
-		if interp := shebang.Interpreter(firstLine); interp != "" {
-			if lang, ok := interpreterToLanguage[interp]; ok {
-				return lang
-			}
-		}
-	}
-	return ext
+	return result.Language
 }
 
 // Load resolves the language for filepath and loads its grammar and highlight query.
@@ -182,6 +150,3 @@ func resolveInherits(queryPath string, queryDir string) []byte {
 	return combined
 }
 
-func extensionForFile(path string) string {
-	return filepath.Ext(path)
-}

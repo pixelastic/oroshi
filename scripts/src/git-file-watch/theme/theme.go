@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/shebang"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/filetype"
 )
 
 // Theme holds resolved colors from oroshi theming.
@@ -114,25 +114,6 @@ func (t *Theme) FilenameIcon(basename string) string {
 	return ""
 }
 
-// pathFiletypes maps path substrings to filetype keys for extensionless files.
-var pathFiletypes = []struct {
-	contains    string
-	filetypeKey string
-}{
-	{"tools/term/zsh/config/functions/autoload/", "zsh"},
-}
-
-// interpreterToFiletype maps shebang interpreter names to filetype keys.
-var interpreterToFiletype = map[string]string{
-	"zsh":     "zsh",
-	"bash":    "sh",
-	"sh":      "sh",
-	"python":  "py",
-	"python3": "py",
-	"node":    "js",
-	"ruby":    "rb",
-}
-
 // FilenameColorForPath returns the color for a file, using path-based rules
 // and shebang as fallbacks for extensionless files.
 func (t *Theme) FilenameColorForPath(path string, firstLine string) (lipgloss.Color, bool) {
@@ -160,19 +141,12 @@ func (t *Theme) resolveFiletypeForPath(path string, firstLine string) (filetypeE
 	if ext != "" {
 		return filetypeEntry{}, false
 	}
-	for _, p := range pathFiletypes {
-		if strings.Contains(path, p.contains) {
-			if entry, ok := t.filetypes[p.filetypeKey]; ok {
-				return entry, true
-			}
-		}
+	resolved := filetype.Resolve(path, firstLine)
+	if resolved.FiletypeKey == "" {
+		return filetypeEntry{}, false
 	}
-	if interp := shebang.Interpreter(firstLine); interp != "" {
-		if ftKey, ok := interpreterToFiletype[interp]; ok {
-			if entry, ok := t.filetypes[ftKey]; ok {
-				return entry, true
-			}
-		}
+	if entry, ok := t.filetypes[resolved.FiletypeKey]; ok {
+		return entry, true
 	}
 	return filetypeEntry{}, false
 }
