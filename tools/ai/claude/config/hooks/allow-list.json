@@ -157,6 +157,8 @@
   "git-file-lint",
   "git-file-list-dirty-raw",
   "git-file-test",
+  "git-file-watch-review-end",
+  "git-file-watch-review-start",
   "git-github-open",
   "git-github-project-name",
   "git-github-repo-description",
