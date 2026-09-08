@@ -369,7 +369,6 @@ func (m model) sendReviewToClaude() (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 
-	m.statusMessage = "review sent to Claude"
 	return m, nil
 }
 
