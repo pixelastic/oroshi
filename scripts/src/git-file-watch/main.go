@@ -205,9 +205,9 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "q", "ctrl+c":
 		return m, tea.Quit
 	case "j":
-		m.nav = navigation.MoveDownVisible(m.nav, m.navigableIndices, m.visibleIndices)
+		m.nav = navigation.MoveDownVisible(m.nav, m.navigableIndices, m.visibleIndices, m.fileIndex.Headers)
 	case "k":
-		m.nav = navigation.MoveUpVisible(m.nav, m.navigableIndices, m.visibleIndices)
+		m.nav = navigation.MoveUpVisible(m.nav, m.navigableIndices, m.visibleIndices, m.fileIndex.Headers)
 	case "l":
 		m.nav = navigation.NextFile(m.nav, m.fileIndex, m.navigableIndices, m.visibleIndices)
 	case "h":
@@ -227,11 +227,11 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "g":
 		m.pendingKey = "g"
 	case "d", "D":
-		m.nav = navigation.PageDown(m.nav, m.navigableIndices, m.visibleIndices)
+		m.nav = navigation.PageDown(m.nav, m.navigableIndices, m.visibleIndices, m.fileIndex.Headers)
 	case "u", "U":
-		m.nav = navigation.PageUp(m.nav, m.navigableIndices, m.visibleIndices)
+		m.nav = navigation.PageUp(m.nav, m.navigableIndices, m.visibleIndices, m.fileIndex.Headers)
 	case "G":
-		m.nav = navigation.GoToBottom(m.nav, m.navigableIndices, m.visibleIndices)
+		m.nav = navigation.GoToBottom(m.nav, m.navigableIndices, m.visibleIndices, m.fileIndex.Headers)
 	case "z":
 		m.pendingKey = "z"
 	case "ctrl+s":

@@ -366,7 +366,7 @@ func TestMoveDownVisibleSkipsFoldedContent(t *testing.T) {
 	navigable := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
 	visible := navigable
 
-	result := MoveDownVisible(state, navigable, visible)
+	result := MoveDownVisible(state, navigable, visible, nil)
 
 	assert.Equal(t, 10, result.Cursor)
 }
@@ -376,7 +376,7 @@ func TestMoveUpVisibleSkipsFoldedContent(t *testing.T) {
 	navigable := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
 	visible := navigable
 
-	result := MoveUpVisible(state, navigable, visible)
+	result := MoveUpVisible(state, navigable, visible, nil)
 
 	assert.Equal(t, 5, result.Cursor)
 }
@@ -386,7 +386,7 @@ func TestMoveDownVisibleAtLastRowDoesNotMove(t *testing.T) {
 	navigable := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
 	visible := navigable
 
-	result := MoveDownVisible(state, navigable, visible)
+	result := MoveDownVisible(state, navigable, visible, nil)
 
 	assert.Equal(t, 14, result.Cursor)
 }
@@ -396,7 +396,7 @@ func TestMoveUpVisibleAtFirstRowDoesNotMove(t *testing.T) {
 	navigable := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
 	visible := navigable
 
-	result := MoveUpVisible(state, navigable, visible)
+	result := MoveUpVisible(state, navigable, visible, nil)
 
 	assert.Equal(t, 0, result.Cursor)
 }
@@ -407,7 +407,7 @@ func TestMoveUpVisibleScrollsViewportToShowHeaderAboveCursor(t *testing.T) {
 	navigable := []int{1, 3, 4, 5}          // code lines only
 	visible := []int{0, 1, 2, 3, 4, 5}      // includes header at 0
 
-	result := MoveUpVisible(state, navigable, visible)
+	result := MoveUpVisible(state, navigable, visible, nil)
 
 	// Cursor can't move (already first navigable), but viewport should scroll up
 	assert.Equal(t, 1, result.Cursor)
@@ -419,10 +419,27 @@ func TestMoveDownVisibleScrollsViewport(t *testing.T) {
 	navigable := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14}
 	visible := navigable
 
-	result := MoveDownVisible(state, navigable, visible)
+	result := MoveDownVisible(state, navigable, visible, nil)
 
 	assert.Equal(t, 5, result.Cursor)
 	assert.Equal(t, 3, result.ViewportOffset)
+}
+
+func TestMoveDownVisibleScrollsExtraForFileHeaders(t *testing.T) {
+	// rows: header(0), line(1), line(2), line(3), header(4), line(5), line(6), line(7)
+	// ViewportHeight=7 terminal lines. Without headers that fits 7 rows.
+	// But 2 headers × 2 lines = 4 header lines + 6 code lines = 10 terminal lines.
+	// Cursor at line(6), moving to line(7). With header awareness, viewport must scroll.
+	state := State{Cursor: 6, ViewportOffset: 0, ViewportHeight: 7, RowCount: 8}
+	navigable := []int{1, 2, 3, 5, 6, 7}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7}
+	headers := []int{0, 4}
+
+	result := MoveDownVisible(state, navigable, visible, headers)
+
+	assert.Equal(t, 7, result.Cursor)
+	// Viewport must have scrolled because 8 rows + 2 extra header lines = 10 > 7
+	assert.True(t, result.ViewportOffset > 0, "viewport should scroll to account for multi-line headers")
 }
 
 func TestMoveDownVisibleSkipsHeaderRow(t *testing.T) {
@@ -431,7 +448,7 @@ func TestMoveDownVisibleSkipsHeaderRow(t *testing.T) {
 	navigable := []int{1, 3, 4, 5}
 	visible := []int{0, 1, 2, 3, 4, 5}
 
-	result := MoveDownVisible(state, navigable, visible)
+	result := MoveDownVisible(state, navigable, visible, nil)
 
 	assert.Equal(t, 3, result.Cursor)
 }
@@ -441,7 +458,7 @@ func TestMoveUpVisibleSkipsHeaderRow(t *testing.T) {
 	navigable := []int{1, 3, 4, 5}
 	visible := []int{0, 1, 2, 3, 4, 5}
 
-	result := MoveUpVisible(state, navigable, visible)
+	result := MoveUpVisible(state, navigable, visible, nil)
 
 	assert.Equal(t, 1, result.Cursor)
 }
@@ -461,7 +478,7 @@ func TestPageUpKeepsCursorVisibleWithMargin(t *testing.T) {
 		}
 	}
 
-	result := PageUp(state, navigable, visible)
+	result := PageUp(state, navigable, visible, nil)
 
 	assert.Equal(t, 9, result.Cursor)
 	// Cursor should not be at the very top of viewport — at least 2 lines of margin
@@ -482,7 +499,7 @@ func TestPageDownKeepsCursorVisibleWithMargin(t *testing.T) {
 		}
 	}
 
-	result := PageDown(state, navigable, visible)
+	result := PageDown(state, navigable, visible, nil)
 
 	assert.Equal(t, 10, result.Cursor)
 	// Cursor should not be at the very bottom of viewport — at least 2 lines of margin below
@@ -530,7 +547,7 @@ func TestGoToBottomMovesCursorToLastNavigableRow(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14}
 	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
 
-	result := GoToBottom(state, navigable, visible)
+	result := GoToBottom(state, navigable, visible, nil)
 
 	assert.Equal(t, 14, result.Cursor)
 }
@@ -540,7 +557,7 @@ func TestGoToBottomAtBottomDoesNotMove(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14}
 	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
 
-	result := GoToBottom(state, navigable, visible)
+	result := GoToBottom(state, navigable, visible, nil)
 
 	assert.Equal(t, 14, result.Cursor)
 }
@@ -550,7 +567,7 @@ func TestGoToBottomScrollsViewport(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14}
 	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
 
-	result := GoToBottom(state, navigable, visible)
+	result := GoToBottom(state, navigable, visible, nil)
 
 	assert.Equal(t, 14, result.Cursor)
 	assert.True(t, result.ViewportOffset > 0)
@@ -563,7 +580,7 @@ func TestPageDownMovesCursorHalfScreenDown(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
 	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
 
-	result := PageDown(state, navigable, visible)
+	result := PageDown(state, navigable, visible, nil)
 
 	assert.Equal(t, 7, result.Cursor)
 }
@@ -573,7 +590,7 @@ func TestPageDownScrollsViewport(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
 	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
 
-	result := PageDown(state, navigable, visible)
+	result := PageDown(state, navigable, visible, nil)
 
 	assert.True(t, result.ViewportOffset > 5)
 }
@@ -583,7 +600,7 @@ func TestPageDownAtBottomDoesNotMove(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
 	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
 
-	result := PageDown(state, navigable, visible)
+	result := PageDown(state, navigable, visible, nil)
 
 	assert.Equal(t, 19, result.Cursor)
 }
@@ -593,7 +610,7 @@ func TestPageDownClampsToLastNavigableRow(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
 	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
 
-	result := PageDown(state, navigable, visible)
+	result := PageDown(state, navigable, visible, nil)
 
 	assert.Equal(t, 19, result.Cursor)
 }
@@ -603,7 +620,7 @@ func TestPageUpMovesCursorHalfScreenUp(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
 	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
 
-	result := PageUp(state, navigable, visible)
+	result := PageUp(state, navigable, visible, nil)
 
 	assert.Equal(t, 7, result.Cursor)
 }
@@ -613,7 +630,7 @@ func TestPageUpScrollsViewport(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
 	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
 
-	result := PageUp(state, navigable, visible)
+	result := PageUp(state, navigable, visible, nil)
 
 	assert.True(t, result.ViewportOffset < 10)
 }
@@ -623,7 +640,7 @@ func TestPageUpAtTopDoesNotMove(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
 	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
 
-	result := PageUp(state, navigable, visible)
+	result := PageUp(state, navigable, visible, nil)
 
 	assert.Equal(t, 1, result.Cursor)
 }
@@ -633,7 +650,7 @@ func TestPageUpClampsToFirstNavigableRow(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 16, 17, 18, 19}
 	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
 
-	result := PageUp(state, navigable, visible)
+	result := PageUp(state, navigable, visible, nil)
 
 	assert.Equal(t, 1, result.Cursor)
 }
@@ -644,7 +661,7 @@ func TestPageDownSkipsFoldedContent(t *testing.T) {
 	navigable := []int{1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 16, 17, 18, 19}
 	visible := []int{0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
 
-	result := PageDown(state, navigable, visible)
+	result := PageDown(state, navigable, visible, nil)
 
 	assert.True(t, result.Cursor > 3)
 }

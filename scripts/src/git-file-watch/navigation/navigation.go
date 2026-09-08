@@ -175,7 +175,7 @@ func ToggleFold(state State, index FileIndex) (State, FileIndex, bool) {
 }
 
 // MoveDownVisible moves the cursor to the next navigable row, scrolling the viewport using visible indices.
-func MoveDownVisible(state State, navigableIndices []int, visibleIndices []int) State {
+func MoveDownVisible(state State, navigableIndices []int, visibleIndices []int, headers []int) State {
 	if len(navigableIndices) == 0 {
 		return state
 	}
@@ -186,11 +186,11 @@ func MoveDownVisible(state State, navigableIndices []int, visibleIndices []int) 
 	}
 
 	state.Cursor = navigableIndices[pos]
-	return clampViewportVisible(state, visibleIndices)
+	return clampViewportVisible(state, visibleIndices, headers)
 }
 
 // MoveUpVisible moves the cursor to the previous navigable row, scrolling the viewport using visible indices.
-func MoveUpVisible(state State, navigableIndices []int, visibleIndices []int) State {
+func MoveUpVisible(state State, navigableIndices []int, visibleIndices []int, headers []int) State {
 	if len(navigableIndices) == 0 {
 		return state
 	}
@@ -205,7 +205,7 @@ func MoveUpVisible(state State, navigableIndices []int, visibleIndices []int) St
 	}
 
 	state.Cursor = navigableIndices[pos]
-	return clampViewportVisible(state, visibleIndices)
+	return clampViewportVisible(state, visibleIndices, headers)
 }
 
 // GoToTop moves the cursor to the first navigable row and scrolls viewport to the top.
@@ -221,12 +221,12 @@ func GoToTop(state State, navigableIndices []int, visibleIndices []int) State {
 }
 
 // GoToBottom moves the cursor to the last navigable row.
-func GoToBottom(state State, navigableIndices []int, visibleIndices []int) State {
+func GoToBottom(state State, navigableIndices []int, visibleIndices []int, headers []int) State {
 	if len(navigableIndices) == 0 {
 		return state
 	}
 	state.Cursor = navigableIndices[len(navigableIndices)-1]
-	return clampViewportVisible(state, visibleIndices)
+	return clampViewportVisible(state, visibleIndices, headers)
 }
 
 // FirstMarkedRow returns the index of the first row that has a marker.
@@ -241,7 +241,7 @@ func FirstMarkedRow(rowCount int, markedRows map[int]bool) int {
 }
 
 // PageDown moves the cursor down by half a viewport height within visible rows.
-func PageDown(state State, navigableIndices []int, visibleIndices []int) State {
+func PageDown(state State, navigableIndices []int, visibleIndices []int, headers []int) State {
 	if len(navigableIndices) == 0 || len(visibleIndices) == 0 {
 		return state
 	}
@@ -258,11 +258,11 @@ func PageDown(state State, navigableIndices []int, visibleIndices []int) State {
 		navPos = len(navigableIndices) - 1
 	}
 	state.Cursor = navigableIndices[navPos]
-	return centerViewportOnCursor(state, visibleIndices)
+	return centerViewportOnCursor(state, visibleIndices, headers)
 }
 
 // PageUp moves the cursor up by half a viewport height within visible rows.
-func PageUp(state State, navigableIndices []int, visibleIndices []int) State {
+func PageUp(state State, navigableIndices []int, visibleIndices []int, headers []int) State {
 	if len(navigableIndices) == 0 || len(visibleIndices) == 0 {
 		return state
 	}
@@ -279,14 +279,14 @@ func PageUp(state State, navigableIndices []int, visibleIndices []int) State {
 		navPos = len(navigableIndices) - 1
 	}
 	state.Cursor = navigableIndices[navPos]
-	return centerViewportOnCursor(state, visibleIndices)
+	return centerViewportOnCursor(state, visibleIndices, headers)
 }
 
 // centerViewportOnCursor positions the viewport so the cursor is roughly centered.
-func centerViewportOnCursor(state State, visibleIndices []int) State {
+func centerViewportOnCursor(state State, visibleIndices []int, headers []int) State {
 	cursorPos := sort.SearchInts(visibleIndices, state.Cursor)
 	if cursorPos >= len(visibleIndices) || visibleIndices[cursorPos] != state.Cursor {
-		return clampViewportVisible(state, visibleIndices)
+		return clampViewportVisible(state, visibleIndices, headers)
 	}
 
 	newStart := cursorPos - state.ViewportHeight/2
@@ -365,25 +365,55 @@ func shouldAutoFold(path string) bool {
 	return false
 }
 
-func clampViewportVisible(state State, visibleIndices []int) State {
+func clampViewportVisible(state State, visibleIndices []int, headers []int) State {
 	if state.Cursor < state.ViewportOffset {
 		state.ViewportOffset = state.Cursor
 		return state
 	}
 
+	headerSet := makeHeaderSet(headers)
 	viewportStart := sort.SearchInts(visibleIndices, state.ViewportOffset)
 	cursorPos := sort.SearchInts(visibleIndices, state.Cursor)
 	if cursorPos >= len(visibleIndices) || visibleIndices[cursorPos] != state.Cursor {
 		return state
 	}
 
-	count := cursorPos - viewportStart + 1
-	if count > state.ViewportHeight {
-		newStart := cursorPos - state.ViewportHeight + 1
-		if newStart < 0 {
-			newStart = 0
+	// Count terminal lines (file headers take 2 lines each)
+	termLines := 0
+	for i := viewportStart; i <= cursorPos; i++ {
+		termLines++
+		if headerSet[visibleIndices[i]] {
+			termLines++
+		}
+	}
+
+	if termLines > state.ViewportHeight {
+		// Walk backwards from cursor to find viewport start that fits
+		remaining := state.ViewportHeight
+		newStart := cursorPos
+		for newStart > 0 {
+			cost := 1
+			if headerSet[visibleIndices[newStart]] {
+				cost = 2
+			}
+			if remaining-cost < 0 {
+				break
+			}
+			remaining -= cost
+			if remaining <= 0 {
+				break
+			}
+			newStart--
 		}
 		state.ViewportOffset = visibleIndices[newStart]
 	}
 	return state
+}
+
+func makeHeaderSet(headers []int) map[int]bool {
+	set := make(map[int]bool, len(headers))
+	for _, h := range headers {
+		set[h] = true
+	}
+	return set
 }
