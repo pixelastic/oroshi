@@ -220,7 +220,7 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, tea.ExecProcess(cmd, func(err error) tea.Msg {
 			return EditorFinishedMsg{err: err}
 		})
-	case "r":
+	case "ctrl+r":
 		return m.sendReviewToClaude()
 	case "enter":
 		return m.openEditing()

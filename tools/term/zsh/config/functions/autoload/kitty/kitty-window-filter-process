@@ -1,0 +1,33 @@
+# Find the window ID running a given process in a tab
+# Usage:
+# $ kitty-window-filter-process claude          # Search current tab
+# $ kitty-window-filter-process claude --tab 5  # Search specific tab
+setopt local_options err_return
+
+zparseopts -E -D \
+  -tab:=flagTab
+
+local processName="$1"
+
+# No process name given
+if [[ "$processName" == "" ]]; then
+  echo "Usage: kitty-window-filter-process <process-name> [--tab <tabId>]"
+  return 2
+fi
+
+local tabId=${flagTab[2]:-$(kitty-tab-id)}
+
+local windowId=$(kitty-remote ls | jq -r --arg tabId "$tabId" --arg proc "$processName" '
+  .[0].tabs[]
+  | select(.id == ($tabId | tonumber))
+  | .windows[]
+  | select(.foreground_processes[].cmdline[0] // "" | split("/") | last == $proc)
+  | .id
+')
+
+# No matching window
+if [[ "$windowId" == "" ]]; then
+  return 1
+fi
+
+echo "$windowId"
