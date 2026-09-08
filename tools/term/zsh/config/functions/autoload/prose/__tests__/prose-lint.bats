@@ -62,3 +62,29 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" == '[]' ]]
 }
+
+@test "Vale crash: exits 2 when Vale exits >= 2" {
+  vale() {
+    printf 'vale: fatal error\n' >&2
+    return 2
+  }
+  bats_mock vale
+
+  local file="$BATS_TMP_DIR/crash.md"
+  printf 'Some text.\n' > "$file"
+  bats_run_zsh "prose-lint $file"
+  [[ "$status" -eq 2 ]]
+}
+
+@test "Vale crash: stderr from Vale is printed to the caller" {
+  vale() {
+    printf 'vale: fatal error\n' >&2
+    return 2
+  }
+  bats_mock vale
+
+  local file="$BATS_TMP_DIR/crash.md"
+  printf 'Some text.\n' > "$file"
+  bats_run_zsh "prose-lint $file"
+  [[ "$output" == *"vale: fatal error"* ]]
+}
