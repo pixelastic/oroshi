@@ -21,6 +21,13 @@ type FileIndex struct {
 	FoldState map[string]bool
 }
 
+// ViewContext bundles the indices that navigation functions need.
+type ViewContext struct {
+	Navigable []int
+	Visible   []int
+	Headers   []int
+}
+
 // MoveDown moves the cursor down one row, scrolling the viewport if needed.
 func MoveDown(state State) State {
 	if state.Cursor >= state.RowCount-1 {
@@ -47,14 +54,14 @@ func MoveUp(state State) State {
 
 // NextFile jumps the cursor to the first navigable line of the next file.
 // The viewport scrolls to show the file header at the top.
-func NextFile(state State, index FileIndex, navigableIndices []int, visibleIndices []int) State {
+func NextFile(state State, index FileIndex, vc ViewContext) State {
 	for i, headerIndex := range index.Headers {
 		if headerIndex > state.Cursor {
 			nextHeader := -1
 			if i+1 < len(index.Headers) {
 				nextHeader = index.Headers[i+1]
 			}
-			target := firstNavigableBetween(headerIndex, nextHeader, navigableIndices)
+			target := firstNavigableBetween(headerIndex, nextHeader, vc.Navigable)
 			if target < 0 {
 				continue
 			}
@@ -68,14 +75,14 @@ func NextFile(state State, index FileIndex, navigableIndices []int, visibleIndic
 
 // PrevFile jumps the cursor to the first navigable line of the previous file.
 // The viewport scrolls to show the file header at the top.
-func PrevFile(state State, index FileIndex, navigableIndices []int, visibleIndices []int) State {
+func PrevFile(state State, index FileIndex, vc ViewContext) State {
 	fileIdx := currentFile(state.Cursor, index.Headers)
 	for i := fileIdx - 1; i >= 0; i-- {
 		nextHeader := -1
 		if i+1 < len(index.Headers) {
 			nextHeader = index.Headers[i+1]
 		}
-		target := firstNavigableBetween(index.Headers[i], nextHeader, navigableIndices)
+		target := firstNavigableBetween(index.Headers[i], nextHeader, vc.Navigable)
 		if target < 0 {
 			continue
 		}
@@ -175,58 +182,58 @@ func ToggleFold(state State, index FileIndex) (State, FileIndex, bool) {
 }
 
 // MoveDownVisible moves the cursor to the next navigable row, scrolling the viewport using visible indices.
-func MoveDownVisible(state State, navigableIndices []int, visibleIndices []int, headers []int) State {
-	if len(navigableIndices) == 0 {
+func MoveDownVisible(state State, vc ViewContext) State {
+	if len(vc.Navigable) == 0 {
 		return state
 	}
 
-	pos := sort.SearchInts(navigableIndices, state.Cursor+1)
-	if pos >= len(navigableIndices) {
+	pos := sort.SearchInts(vc.Navigable, state.Cursor+1)
+	if pos >= len(vc.Navigable) {
 		return state
 	}
 
-	state.Cursor = navigableIndices[pos]
-	return clampViewportVisible(state, visibleIndices, headers)
+	state.Cursor = vc.Navigable[pos]
+	return clampViewportVisible(state, vc.Visible, vc.Headers)
 }
 
 // MoveUpVisible moves the cursor to the previous navigable row, scrolling the viewport using visible indices.
-func MoveUpVisible(state State, navigableIndices []int, visibleIndices []int, headers []int) State {
-	if len(navigableIndices) == 0 {
+func MoveUpVisible(state State, vc ViewContext) State {
+	if len(vc.Navigable) == 0 {
 		return state
 	}
 
-	pos := sort.SearchInts(navigableIndices, state.Cursor) - 1
+	pos := sort.SearchInts(vc.Navigable, state.Cursor) - 1
 	if pos < 0 {
 		// Cursor can't move, but scroll viewport up if there's visible content above
-		if len(visibleIndices) > 0 && state.ViewportOffset > visibleIndices[0] {
-			state.ViewportOffset = visibleIndices[0]
+		if len(vc.Visible) > 0 && state.ViewportOffset > vc.Visible[0] {
+			state.ViewportOffset = vc.Visible[0]
 		}
 		return state
 	}
 
-	state.Cursor = navigableIndices[pos]
-	return clampViewportVisible(state, visibleIndices, headers)
+	state.Cursor = vc.Navigable[pos]
+	return clampViewportVisible(state, vc.Visible, vc.Headers)
 }
 
 // GoToTop moves the cursor to the first navigable row and scrolls viewport to the top.
-func GoToTop(state State, navigableIndices []int, visibleIndices []int) State {
-	if len(navigableIndices) == 0 {
+func GoToTop(state State, vc ViewContext) State {
+	if len(vc.Navigable) == 0 {
 		return state
 	}
-	state.Cursor = navigableIndices[0]
-	if len(visibleIndices) > 0 {
-		state.ViewportOffset = visibleIndices[0]
+	state.Cursor = vc.Navigable[0]
+	if len(vc.Visible) > 0 {
+		state.ViewportOffset = vc.Visible[0]
 	}
 	return state
 }
 
 // GoToBottom moves the cursor to the last navigable row.
-func GoToBottom(state State, navigableIndices []int, visibleIndices []int, headers []int) State {
-	if len(navigableIndices) == 0 {
+func GoToBottom(state State, vc ViewContext) State {
+	if len(vc.Navigable) == 0 {
 		return state
 	}
-	state.Cursor = navigableIndices[len(navigableIndices)-1]
-	return clampViewportVisible(state, visibleIndices, headers)
+	state.Cursor = vc.Navigable[len(vc.Navigable)-1]
+	return clampViewportVisible(state, vc.Visible, vc.Headers)
 }
 
 // FirstMarkedRow returns the index of the first row that has a marker.
@@ -241,45 +248,45 @@ func FirstMarkedRow(rowCount int, markedRows map[int]bool) int {
 }
 
 // PageDown moves the cursor down by half a viewport height within visible rows.
-func PageDown(state State, navigableIndices []int, visibleIndices []int, headers []int) State {
-	if len(navigableIndices) == 0 || len(visibleIndices) == 0 {
+func PageDown(state State, vc ViewContext) State {
+	if len(vc.Navigable) == 0 || len(vc.Visible) == 0 {
 		return state
 	}
 
-	visPos := sort.SearchInts(visibleIndices, state.Cursor)
+	visPos := sort.SearchInts(vc.Visible, state.Cursor)
 	targetVisPos := visPos + state.ViewportHeight/2
-	if targetVisPos >= len(visibleIndices) {
-		targetVisPos = len(visibleIndices) - 1
+	if targetVisPos >= len(vc.Visible) {
+		targetVisPos = len(vc.Visible) - 1
 	}
-	targetRow := visibleIndices[targetVisPos]
+	targetRow := vc.Visible[targetVisPos]
 
-	navPos := sort.SearchInts(navigableIndices, targetRow)
-	if navPos >= len(navigableIndices) {
-		navPos = len(navigableIndices) - 1
+	navPos := sort.SearchInts(vc.Navigable, targetRow)
+	if navPos >= len(vc.Navigable) {
+		navPos = len(vc.Navigable) - 1
 	}
-	state.Cursor = navigableIndices[navPos]
-	return centerViewportOnCursor(state, visibleIndices, headers)
+	state.Cursor = vc.Navigable[navPos]
+	return centerViewportOnCursor(state, vc.Visible, vc.Headers)
 }
 
 // PageUp moves the cursor up by half a viewport height within visible rows.
-func PageUp(state State, navigableIndices []int, visibleIndices []int, headers []int) State {
-	if len(navigableIndices) == 0 || len(visibleIndices) == 0 {
+func PageUp(state State, vc ViewContext) State {
+	if len(vc.Navigable) == 0 || len(vc.Visible) == 0 {
 		return state
 	}
 
-	visPos := sort.SearchInts(visibleIndices, state.Cursor)
+	visPos := sort.SearchInts(vc.Visible, state.Cursor)
 	targetVisPos := visPos - state.ViewportHeight/2
 	if targetVisPos < 0 {
 		targetVisPos = 0
 	}
-	targetRow := visibleIndices[targetVisPos]
+	targetRow := vc.Visible[targetVisPos]
 
-	navPos := sort.SearchInts(navigableIndices, targetRow)
-	if navPos >= len(navigableIndices) {
-		navPos = len(navigableIndices) - 1
+	navPos := sort.SearchInts(vc.Navigable, targetRow)
+	if navPos >= len(vc.Navigable) {
+		navPos = len(vc.Navigable) - 1
 	}
-	state.Cursor = navigableIndices[navPos]
-	return centerViewportOnCursor(state, visibleIndices, headers)
+	state.Cursor = vc.Navigable[navPos]
+	return centerViewportOnCursor(state, vc.Visible, vc.Headers)
 }
 
 // centerViewportOnCursor positions the viewport so the cursor is roughly centered.

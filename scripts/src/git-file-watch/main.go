@@ -60,8 +60,7 @@ type model struct {
 	highlighter          *highlight.Highlighter
 	nav                  navigation.State
 	fileIndex            navigation.FileIndex
-	visibleIndices       []int
-	navigableIndices     []int
+	viewContext          navigation.ViewContext
 	pendingKey           string
 	repoRoot             string
 	userComments         []comments.Comment
@@ -178,7 +177,7 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	if m.pendingKey == "g" {
 		m.pendingKey = ""
 		if key == "g" {
-			m.nav = navigation.GoToTop(m.nav, m.navigableIndices, m.visibleIndices)
+			m.nav = navigation.GoToTop(m.nav, m.viewContext)
 		}
 		return m, nil
 	}
@@ -190,7 +189,7 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.refreshIndices()
 			if folded {
 				foldedHeader := m.nav.Cursor
-				m.nav = navigation.NextFile(m.nav, m.fileIndex, m.navigableIndices, m.visibleIndices)
+				m.nav = navigation.NextFile(m.nav, m.fileIndex, m.viewContext)
 				// Keep the folded header visible so the user sees the fold
 				if m.nav.Cursor != foldedHeader {
 					m.nav.ViewportOffset = foldedHeader
@@ -203,13 +202,13 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "q", "ctrl+c":
 		return m, tea.Quit
 	case "j":
-		m.nav = navigation.MoveDownVisible(m.nav, m.navigableIndices, m.visibleIndices, m.fileIndex.Headers)
+		m.nav = navigation.MoveDownVisible(m.nav, m.viewContext)
 	case "k":
-		m.nav = navigation.MoveUpVisible(m.nav, m.navigableIndices, m.visibleIndices, m.fileIndex.Headers)
+		m.nav = navigation.MoveUpVisible(m.nav, m.viewContext)
 	case "l":
-		m.nav = navigation.NextFile(m.nav, m.fileIndex, m.navigableIndices, m.visibleIndices)
+		m.nav = navigation.NextFile(m.nav, m.fileIndex, m.viewContext)
 	case "h":
-		m.nav = navigation.PrevFile(m.nav, m.fileIndex, m.navigableIndices, m.visibleIndices)
+		m.nav = navigation.PrevFile(m.nav, m.fileIndex, m.viewContext)
 	case "i":
 		cmd := editor.NvimCommand(m.rows, m.nav.Cursor, m.repoRoot)
 		if cmd == nil {
@@ -225,11 +224,11 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "g":
 		m.pendingKey = "g"
 	case "d", "D":
-		m.nav = navigation.PageDown(m.nav, m.navigableIndices, m.visibleIndices, m.fileIndex.Headers)
+		m.nav = navigation.PageDown(m.nav, m.viewContext)
 	case "u", "U":
-		m.nav = navigation.PageUp(m.nav, m.navigableIndices, m.visibleIndices, m.fileIndex.Headers)
+		m.nav = navigation.PageUp(m.nav, m.viewContext)
 	case "G":
-		m.nav = navigation.GoToBottom(m.nav, m.navigableIndices, m.visibleIndices, m.fileIndex.Headers)
+		m.nav = navigation.GoToBottom(m.nav, m.viewContext)
 	case "z":
 		m.pendingKey = "z"
 	case "ctrl+s":
@@ -395,8 +394,12 @@ func (m model) cursorLineContext() (layout.LineRow, string, string, bool) {
 }
 
 func (m *model) refreshIndices() {
-	m.visibleIndices = navigation.VisibleIndices(len(m.rows), m.fileIndex)
-	m.navigableIndices = navigableFromVisible(m.rows, m.visibleIndices, m.fileIndex.FoldState)
+	visible := navigation.VisibleIndices(len(m.rows), m.fileIndex)
+	m.viewContext = navigation.ViewContext{
+		Navigable: navigableFromVisible(m.rows, visible, m.fileIndex.FoldState),
+		Visible:   visible,
+		Headers:   m.fileIndex.Headers,
+	}
 }
 
 func runCommand(name string, args ...string) (string, error) {
@@ -478,7 +481,7 @@ func (m model) View() string {
 
 	var builder strings.Builder
 	rendered, fileCount := 0, 0
-	for _, i := range m.visibleIndices { // Render visible rows within viewport
+	for _, i := range m.viewContext.Visible { // Render visible rows within viewport
 		if i < m.nav.ViewportOffset { // Track file count for rows before viewport
 			if _, ok := m.rows[i].(layout.FileHeaderRow); ok {
 				fileCount++

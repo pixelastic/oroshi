@@ -435,8 +435,7 @@ func TestCursorCanLandOnFoldedFileHeader(t *testing.T) {
 	}
 	m := testModel(th, rows)
 	m.fileIndex.FoldState["b.go"] = true
-	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileIndex)
-	m.navigableIndices = navigableFromVisible(rows, m.visibleIndices, m.fileIndex.FoldState)
+	m.refreshIndices()
 	m.nav.Cursor = 1
 
 	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'j'}})
@@ -664,8 +663,7 @@ func TestXOnFileHeaderRowDoesNothing(t *testing.T) {
 	m := testModel(th, rows)
 	// Place cursor on folded header so it's navigable
 	m.fileIndex.FoldState["other.go"] = true
-	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileIndex)
-	m.navigableIndices = navigableFromVisible(rows, m.visibleIndices, m.fileIndex.FoldState)
+	m.refreshIndices()
 	m.nav.Cursor = 2
 	m.userComments = []comments.Comment{
 		{Filepath: "/repo/file.go", LineNumber: 1, Review: "keep me"},
@@ -854,8 +852,12 @@ func testModel(th *theme.Theme, rows []layout.Row) model {
 
 func testModelWithRoot(th *theme.Theme, rows []layout.Row, repoRoot string) model {
 	fileIndex := findFileHeaders(rows, navigation.FileIndex{})
-	visibleIndices := navigation.VisibleIndices(len(rows), fileIndex)
-	navIndices := navigableFromVisible(rows, visibleIndices, fileIndex.FoldState)
+	visible := navigation.VisibleIndices(len(rows), fileIndex)
+	vc := navigation.ViewContext{
+		Navigable: navigableFromVisible(rows, visible, fileIndex.FoldState),
+		Visible:   visible,
+		Headers:   fileIndex.Headers,
+	}
 	return model{
 		theme:            th,
 		rows:             rows,
@@ -863,8 +865,7 @@ func testModelWithRoot(th *theme.Theme, rows []layout.Row, repoRoot string) mode
 		rawLines:         map[string][]string{},
 		repoRoot:         repoRoot,
 		fileIndex:        fileIndex,
-		visibleIndices:   visibleIndices,
-		navigableIndices: navIndices,
+		viewContext:      vc,
 		commentIndex:    map[string]string{},
 		flashLines:      map[string]bool{},
 		lineNumberWidth: render.MaxLineNumberWidth(rows),
