@@ -1,10 +1,16 @@
 package layout
 
 import (
+	"fmt"
 	"sort"
 
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
 )
+
+// LineKey returns the canonical "file:line" key used to index line-level data.
+func LineKey(path string, lineNumber int) string {
+	return fmt.Sprintf("%s:%d", path, lineNumber)
+}
 
 // Row is a display row in the layout output.
 type Row interface {

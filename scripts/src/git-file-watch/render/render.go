@@ -100,7 +100,7 @@ func CommentLine(ctx Context, commentText string) string {
 
 // CodeLine renders a single code line with gutter, line number, and content.
 func CodeLine(ctx Context, row layout.LineRow, isCursor bool) string {
-	key := fmt.Sprintf("%s:%d", row.FilePath, row.LineNumber)
+	key := layout.LineKey(row.FilePath, row.LineNumber)
 	commentText := ctx.CommentIndex[key]
 	hasComment := commentText != ""
 	isFlash := ctx.FlashLines[key]

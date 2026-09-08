@@ -228,3 +228,9 @@ func TestBuildEmitsHeaderAndBinaryRowForBinaryFile(t *testing.T) {
 	_, isBinary := rows[1].(BinaryRow)
 	assert.True(t, isBinary)
 }
+
+// --- LineKey ---
+
+func TestLineKeyFormatsPathAndLineNumber(t *testing.T) {
+	assert.Equal(t, "src/main.go:42", LineKey("src/main.go", 42))
+}

@@ -780,7 +780,7 @@ func buildCommentIndex(userComments []comments.Comment, repoRoot string) map[str
 	index := make(map[string]string, len(userComments))
 	for _, c := range userComments {
 		relativePath := strings.TrimPrefix(c.Filepath, repoRoot+"/")
-		key := fmt.Sprintf("%s:%d", relativePath, c.LineNumber)
+		key := layout.LineKey(relativePath, c.LineNumber)
 		index[key] = c.Review
 	}
 	return index

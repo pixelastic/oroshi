@@ -1,7 +1,6 @@
 package flash
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
@@ -28,7 +27,7 @@ func NewSnapshot(rows []layout.Row, rawLines map[string][]string) Snapshot {
 			continue
 		}
 		content := RawLineContent(rawLines, r.FilePath, r.LineNumber)
-		key := fmt.Sprintf("%s:%d", r.FilePath, r.LineNumber)
+		key := layout.LineKey(r.FilePath, r.LineNumber)
 		s.Lines[key] = content
 		if s.ContentSet[r.FilePath] == nil {
 			s.ContentSet[r.FilePath] = make(map[string]bool)
