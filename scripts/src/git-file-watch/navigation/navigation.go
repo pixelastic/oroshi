@@ -28,30 +28,6 @@ type ViewContext struct {
 	Headers   []int
 }
 
-// MoveDown moves the cursor down one row, scrolling the viewport if needed.
-func MoveDown(state State) State {
-	if state.Cursor >= state.RowCount-1 {
-		return state
-	}
-	state.Cursor++
-	if state.Cursor >= state.ViewportOffset+state.ViewportHeight {
-		state.ViewportOffset = state.Cursor - state.ViewportHeight + 1
-	}
-	return state
-}
-
-// MoveUp moves the cursor up one row, scrolling the viewport if needed.
-func MoveUp(state State) State {
-	if state.Cursor <= 0 {
-		return state
-	}
-	state.Cursor--
-	if state.Cursor < state.ViewportOffset {
-		state.ViewportOffset = state.Cursor
-	}
-	return state
-}
-
 // NextFile jumps the cursor to the first navigable line of the next file.
 // The viewport scrolls to show the file header at the top.
 func NextFile(state State, index FileIndex, vc ViewContext) State {
@@ -234,17 +210,6 @@ func GoToBottom(state State, vc ViewContext) State {
 	}
 	state.Cursor = vc.Navigable[len(vc.Navigable)-1]
 	return clampViewportVisible(state, vc.Visible, vc.Headers)
-}
-
-// FirstMarkedRow returns the index of the first row that has a marker.
-// Returns 0 if no marked rows exist.
-func FirstMarkedRow(rowCount int, markedRows map[int]bool) int {
-	for i := 0; i < rowCount; i++ {
-		if markedRows[i] {
-			return i
-		}
-	}
-	return 0
 }
 
 // PageDown moves the cursor down by half a viewport height within visible rows.

@@ -81,16 +81,16 @@ type model struct {
 func (m model) Init() tea.Cmd {
 	var commands []tea.Cmd
 	if m.watchChannel != nil {
-		commands = append(commands, waitForDiffChange(m.watchChannel))
+		commands = append(commands, waitForChange[DiffChangedMsg](m.watchChannel))
 	}
 	if m.indexWatchChannel != nil {
-		commands = append(commands, waitForIndexChange(m.indexWatchChannel))
+		commands = append(commands, waitForChange[GitIndexChangedMsg](m.indexWatchChannel))
 	}
 	if m.commentsWatchChannel != nil {
-		commands = append(commands, waitForCommentsChange(m.commentsWatchChannel))
+		commands = append(commands, waitForChange[CommentsChangedMsg](m.commentsWatchChannel))
 	}
 	if m.syntaxMapWatchChannel != nil {
-		commands = append(commands, waitForSyntaxMapChange(m.syntaxMapWatchChannel))
+		commands = append(commands, waitForChange[SyntaxMapChangedMsg](m.syntaxMapWatchChannel))
 	}
 	return tea.Batch(commands...)
 }
@@ -99,22 +99,22 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case DiffChangedMsg:
 		cmd := m.rebuildDisplay()
-		return m, tea.Batch(waitForDiffChange(m.watchChannel), cmd)
+		return m, tea.Batch(waitForChange[DiffChangedMsg](m.watchChannel), cmd)
 	case GitIndexChangedMsg:
 		cmd := m.rebuildDisplay()
 		m.clearStaleComments()
-		return m, tea.Batch(waitForIndexChange(m.indexWatchChannel), cmd)
+		return m, tea.Batch(waitForChange[GitIndexChangedMsg](m.indexWatchChannel), cmd)
 	case CommentsChangedMsg:
 		m.reloadComments()
-		return m, waitForCommentsChange(m.commentsWatchChannel)
+		return m, waitForChange[CommentsChangedMsg](m.commentsWatchChannel)
 	case SyntaxMapChangedMsg:
 		if err := m.highlighter.ReloadSyntaxMap(); err != nil {
 			fmt.Fprintln(os.Stderr, err)
-			return m, waitForSyntaxMapChange(m.syntaxMapWatchChannel)
+			return m, waitForChange[SyntaxMapChangedMsg](m.syntaxMapWatchChannel)
 		}
 		m.highlighter.InvalidateCache()
 		cmd := m.rebuildDisplay()
-		return m, tea.Batch(waitForSyntaxMapChange(m.syntaxMapWatchChannel), cmd)
+		return m, tea.Batch(waitForChange[SyntaxMapChangedMsg](m.syntaxMapWatchChannel), cmd)
 	case EditorFinishedMsg:
 		m.rebuildDisplay()
 		return m, nil
@@ -429,31 +429,11 @@ func currentTabID() (int, error) {
 	return tabID, nil
 }
 
-func waitForDiffChange(channel <-chan struct{}) tea.Cmd {
+func waitForChange[T tea.Msg](channel <-chan struct{}) tea.Cmd {
 	return func() tea.Msg {
 		<-channel
-		return DiffChangedMsg{}
-	}
-}
-
-func waitForIndexChange(channel <-chan struct{}) tea.Cmd {
-	return func() tea.Msg {
-		<-channel
-		return GitIndexChangedMsg{}
-	}
-}
-
-func waitForCommentsChange(channel <-chan struct{}) tea.Cmd {
-	return func() tea.Msg {
-		<-channel
-		return CommentsChangedMsg{}
-	}
-}
-
-func waitForSyntaxMapChange(channel <-chan struct{}) tea.Cmd {
-	return func() tea.Msg {
-		<-channel
-		return SyntaxMapChangedMsg{}
+		var zero T
+		return zero
 	}
 }
 

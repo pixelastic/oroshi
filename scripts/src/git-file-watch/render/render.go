@@ -113,7 +113,7 @@ func CodeLine(ctx Context, row layout.LineRow, isCursor bool) string {
 
 	gutter := Gutter(row, ctx.Theme, hasComment)
 	lineNumber := LineNumber(row, ctx.Theme, ctx.LineNumberWidth, isCursor, isFlash, hasComment)
-	content := DimContent(ctx.Highlighted, ctx.RawLines, row.FilePath, row, ctx.Theme)
+	content := DimContent(ctx, row)
 	line := gutter + lineNumber + " " + content
 
 	if ctx.ViewportWidth > 0 {
@@ -243,17 +243,17 @@ func MaxLineNumberWidth(rows []layout.Row) int {
 
 // DimContent returns syntax-highlighted content for changed lines,
 // and progressively dimmer plain content for context lines.
-func DimContent(highlighted map[string][]highlight.StyledLine, rawLines map[string][]string, currentFile string, row layout.LineRow, th *theme.Theme) string {
+func DimContent(ctx Context, row layout.LineRow) string {
 	if row.Distance == 0 {
-		return lineContent(highlighted, currentFile, row.LineNumber)
+		return lineContent(ctx.Highlighted, row.FilePath, row.LineNumber)
 	}
 
 	// Context line: use raw content with dim color
-	plain := flash.RawLineContent(rawLines, currentFile, row.LineNumber)
+	plain := flash.RawLineContent(ctx.RawLines, row.FilePath, row.LineNumber)
 	plain = strings.ReplaceAll(plain, "\t", "    ")
 
 	colorName := dimColorForDistance(row.Distance)
-	color := th.Lipgloss(colorName)
+	color := ctx.Theme.Lipgloss(colorName)
 	if color == "" {
 		return plain
 	}
