@@ -514,6 +514,23 @@ func TestCommitFinishedMsgRebuildsDisplay(t *testing.T) {
 	assert.NotNil(t, resultModel.theme)
 }
 
+func TestReloadCommentsDoesNotWriteFile(t *testing.T) {
+	th := loadTestTheme(t)
+	m := testModel(th, []layout.Row{})
+	commentsPath := filepath.Join(t.TempDir(), "comments.json")
+	require.NoError(t, os.WriteFile(commentsPath, []byte(`[{"id":"abc","filepath":"/repo/file.go","lineNumber":1,"lineContent":"x","review":"test","commitHash":"h"}]`), 0o644))
+	m.commentsPath = commentsPath
+
+	info1, err := os.Stat(commentsPath)
+	require.NoError(t, err)
+
+	m.Update(CommentsChangedMsg{})
+
+	info2, err := os.Stat(commentsPath)
+	require.NoError(t, err)
+	assert.Equal(t, info1.ModTime(), info2.ModTime(), "reloadComments should not write back to the comments file (would trigger infinite watcher loop)")
+}
+
 func TestEnterInEditModeSavesComment(t *testing.T) {
 	th := loadTestTheme(t)
 	marker := diff.MarkerAdded

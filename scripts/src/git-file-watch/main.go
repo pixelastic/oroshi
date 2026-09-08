@@ -369,7 +369,7 @@ func (m *model) reloadComments() {
 		return
 	}
 	m.userComments = loaded
-	m.persistComments()
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
 	m.editState = editing.Inactive()
 }
 
