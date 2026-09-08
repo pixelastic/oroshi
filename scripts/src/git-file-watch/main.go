@@ -159,8 +159,7 @@ func (m model) updateEditing(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			return m, nil
 		}
 		m.userComments = updated
-		_ = comments.Save(m.commentsPath, m.userComments)
-		m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+		m.persistComments()
 		m.editState = editing.Inactive()
 		return m, nil
 	case "esc", "ctrl+d":
@@ -188,8 +187,7 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		if key == "a" {
 			var folded bool
 			m.nav, m.fileIndex, folded = navigation.ToggleFold(m.nav, m.fileIndex)
-			m.visibleIndices = navigation.VisibleIndices(len(m.rows), m.fileIndex)
-			m.navigableIndices = navigableFromVisible(m.rows, m.visibleIndices, m.fileIndex.FoldState)
+			m.refreshIndices()
 			if folded {
 				foldedHeader := m.nav.Cursor
 				m.nav = navigation.NextFile(m.nav, m.fileIndex, m.navigableIndices, m.visibleIndices)
@@ -249,35 +247,22 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) deleteComment() (tea.Model, tea.Cmd) {
-	lineRow, ok := m.rows[m.nav.Cursor].(layout.LineRow)
+	lineRow, _, absolutePath, ok := m.cursorLineContext()
 	if !ok {
 		return m, nil
 	}
 
-	relativePath := editor.CurrentFilePath(m.rows, m.nav.Cursor)
-	if relativePath == "" {
-		return m, nil
-	}
-	absolutePath := filepath.Join(m.repoRoot, relativePath)
-
 	m.userComments = comments.Delete(m.userComments, absolutePath, lineRow.LineNumber)
-	_ = comments.Save(m.commentsPath, m.userComments)
-	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+	m.persistComments()
 
 	return m, nil
 }
 
 func (m model) openEditing() (tea.Model, tea.Cmd) {
-	lineRow, ok := m.rows[m.nav.Cursor].(layout.LineRow)
+	lineRow, relativePath, absolutePath, ok := m.cursorLineContext()
 	if !ok {
 		return m, nil
 	}
-
-	relativePath := editor.CurrentFilePath(m.rows, m.nav.Cursor)
-	if relativePath == "" {
-		return m, nil
-	}
-	absolutePath := filepath.Join(m.repoRoot, relativePath)
 
 	lineContent := flash.RawLineContent(m.rawLines, relativePath, lineRow.LineNumber)
 	existingReview := comments.FindReview(m.userComments, absolutePath, lineRow.LineNumber)
@@ -334,13 +319,11 @@ func (m *model) rebuildDisplay() tea.Cmd {
 	if m.nav.Cursor >= len(rows) {
 		m.nav.Cursor = max(0, len(rows)-1)
 	}
-	m.visibleIndices = navigation.VisibleIndices(len(rows), m.fileIndex)
-	m.navigableIndices = navigableFromVisible(rows, m.visibleIndices, m.fileIndex.FoldState)
+	m.refreshIndices()
 	m.lineNumberWidth = render.MaxLineNumberWidth(rows)
 
 	m.userComments = comments.Reattach(m.userComments, absoluteRawLines(rawLines, m.repoRoot))
-	_ = comments.Save(m.commentsPath, m.userComments)
-	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+	m.persistComments()
 	m.editState = editing.Inactive()
 
 	if len(m.flashLines) > 0 {
@@ -378,8 +361,7 @@ func (m *model) clearStaleComments() {
 		return
 	}
 	m.userComments = comments.ClearStale(m.userComments, head)
-	_ = comments.Save(m.commentsPath, m.userComments)
-	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+	m.persistComments()
 }
 
 func (m *model) reloadComments() {
@@ -388,8 +370,33 @@ func (m *model) reloadComments() {
 		return
 	}
 	m.userComments = loaded
-	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+	m.persistComments()
 	m.editState = editing.Inactive()
+}
+
+func (m *model) persistComments() {
+	_ = comments.Save(m.commentsPath, m.userComments)
+	m.commentIndex = buildCommentIndex(m.userComments, m.repoRoot)
+}
+
+func (m model) cursorLineContext() (layout.LineRow, string, string, bool) {
+	lineRow, ok := m.rows[m.nav.Cursor].(layout.LineRow)
+	if !ok {
+		return layout.LineRow{}, "", "", false
+	}
+
+	relativePath := editor.CurrentFilePath(m.rows, m.nav.Cursor)
+	if relativePath == "" {
+		return layout.LineRow{}, "", "", false
+	}
+
+	absolutePath := filepath.Join(m.repoRoot, relativePath)
+	return lineRow, relativePath, absolutePath, true
+}
+
+func (m *model) refreshIndices() {
+	m.visibleIndices = navigation.VisibleIndices(len(m.rows), m.fileIndex)
+	m.navigableIndices = navigableFromVisible(m.rows, m.visibleIndices, m.fileIndex.FoldState)
 }
 
 func runCommand(name string, args ...string) (string, error) {
@@ -674,35 +681,33 @@ func main() {
 	}
 
 	fileIndex := findFileHeaders(rows, navigation.FileIndex{})
-	visibleIndices := navigation.VisibleIndices(len(rows), fileIndex)
-	navIndices := navigableFromVisible(rows, visibleIndices, fileIndex.FoldState)
 	initialCursor := firstMarkedRowIndex(rows)
-	p := tea.NewProgram(model{
-		theme:                th,
-		rows:                 rows,
-		highlighted:          highlighted,
-		rawLines:             rawLines,
-		watchChannel:         watchChannel,
-		indexWatchChannel:    indexWatchChannel,
+	m := model{
+		theme:                 th,
+		rows:                  rows,
+		highlighted:           highlighted,
+		rawLines:              rawLines,
+		watchChannel:          watchChannel,
+		indexWatchChannel:     indexWatchChannel,
 		commentsWatchChannel:  commentsWatchChannel,
 		syntaxMapWatchChannel: syntaxMapWatchChannel,
 		highlighter:           highlighter,
 		fileIndex:             fileIndex,
-		visibleIndices:       visibleIndices,
-		navigableIndices:     navIndices,
-		lineNumberWidth:      render.MaxLineNumberWidth(rows),
-		prevSnapshot:         func() *flash.Snapshot { s := flash.NewSnapshot(rows, rawLines); return &s }(),
-		resolveHead:          git.Head,
-		repoRoot:             repoRoot,
-		oroshiRoot:           oroshiRoot,
-		userComments:         userComments,
-		commentsPath:         commentsPath,
-		commentIndex:         buildCommentIndex(userComments, repoRoot),
+		lineNumberWidth:       render.MaxLineNumberWidth(rows),
+		prevSnapshot:          func() *flash.Snapshot { s := flash.NewSnapshot(rows, rawLines); return &s }(),
+		resolveHead:           git.Head,
+		repoRoot:              repoRoot,
+		oroshiRoot:            oroshiRoot,
+		userComments:          userComments,
+		commentsPath:          commentsPath,
+		commentIndex:          buildCommentIndex(userComments, repoRoot),
 		nav: navigation.State{
 			Cursor:   initialCursor,
 			RowCount: len(rows),
 		},
-	}, tea.WithAltScreen())
+	}
+	m.refreshIndices()
+	p := tea.NewProgram(m, tea.WithAltScreen())
 	if _, err := p.Run(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
