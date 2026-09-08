@@ -81,3 +81,27 @@ setup() {
   # Called with no arguments (no origin commit)
   [[ "$(cat "$BATS_TMP_DIR/dep-update-calls")" == "called:" ]]
 }
+
+@test "calls prose-build when creating an oroshi worktree" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 0; }
+  prose-build() { echo "called" >> "$BATS_TMP_DIR/prose-build-calls"; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi prose-build
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/prose"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/prose-build-calls" ]]
+}
+
+@test "does not call prose-build for a non-oroshi worktree" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 1; }
+  prose-build() { echo "called" >> "$BATS_TMP_DIR/prose-build-calls"; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi prose-build
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/not-oroshi"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/prose-build-calls" ]]
+}

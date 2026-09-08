@@ -68,3 +68,13 @@ then
   echo "Deploying skills..."
   "$mainPath/tools/ai/claude/deploy"
 fi
+
+# Rebuild prose (Vale packages) if any prose source files changed
+if git-file-has-changed \
+  tools/prose/vale/src/ \
+  --from "$previousCommit" \
+  --repo "$mainPath";
+then
+  echo "Building prose..."
+  OROSHI_ROOT="$mainPath" prose-build
+fi

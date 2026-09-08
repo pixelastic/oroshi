@@ -137,7 +137,8 @@ setup() {
   git-worktree-is-oroshi() { return 0; }
   git-file-has-changed() { return 0; }
   colors-reload() { echo "colors-reload called" >> "$BATS_TMP_DIR/colors-calls"; }
-  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed colors-reload
+  prose-build() { :; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed colors-reload prose-build
   bats_disable_worktree_aware
 
   # Mock deploy script (also triggered when git-file-has-changed returns 0)
@@ -184,7 +185,8 @@ EOF
   git-worktree-is-oroshi() { return 0; }
   git-file-has-changed() { return 0; }
   colors-reload() { :; }
-  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed colors-reload
+  prose-build() { :; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed colors-reload prose-build
   bats_disable_worktree_aware
 
   mkdir -p "$BATS_GIT_DIR/tools/ai/claude"
@@ -237,6 +239,55 @@ EOF
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
   [[ "$status" -eq 0 ]]
   [[ ! -f "$BATS_TMP_DIR/deploy-calls" ]]
+}
+
+@test "calls prose-build when prose source files changed in oroshi worktree" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 0; }
+  git-file-has-changed() { return 0; }
+  colors-reload() { :; }
+  prose-build() { echo "OROSHI_ROOT=$OROSHI_ROOT" >> "$BATS_TMP_DIR/prose-build-calls"; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed colors-reload prose-build
+  bats_disable_worktree_aware
+
+  # Mock deploy script (also triggered when git-file-has-changed returns 0)
+  mkdir -p "$BATS_GIT_DIR/tools/ai/claude"
+  cat > "$BATS_GIT_DIR/tools/ai/claude/deploy" <<EOF
+#!/usr/bin/env zsh
+EOF
+  chmod +x "$BATS_GIT_DIR/tools/ai/claude/deploy"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/prose-build-calls" ]]
+  [[ "$(cat "$BATS_TMP_DIR/prose-build-calls")" == "OROSHI_ROOT=$BATS_GIT_DIR" ]]
+  [[ "$output" == *"Building prose..."* ]]
+}
+
+@test "does not call prose-build when no prose files changed" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 0; }
+  git-file-has-changed() { return 1; }
+  prose-build() { echo "called" >> "$BATS_TMP_DIR/prose-build-calls"; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed prose-build
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/prose-build-calls" ]]
+  [[ "$output" != *"Building prose..."* ]]
+}
+
+@test "does not call prose-build for a non-oroshi repo" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 1; }
+  prose-build() { echo "called" >> "$BATS_TMP_DIR/prose-build-calls"; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi prose-build
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/prose-build-calls" ]]
 }
 
 @test "skips submodule push when pointers are identical" {

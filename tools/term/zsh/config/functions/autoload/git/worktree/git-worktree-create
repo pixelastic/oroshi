@@ -40,3 +40,9 @@ cd "$worktreeDir"
 
 # Sync all dependencies (node, ruby, submodules)
 git-dependencies-update
+
+# Stop here if not an oroshi worktree
+git-worktree-is-oroshi || return 0
+
+# Build prose (Vale packages)
+prose-build
