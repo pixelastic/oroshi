@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/color"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/flash"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
@@ -149,21 +150,11 @@ func applyLineBackground(line string, hex string, viewportWidth int) string {
 	if pad > 0 {
 		line += strings.Repeat(" ", pad)
 	}
-	r, g, b := parseHexColor(hex)
+	r, g, b := color.ParseHexColor(hex)
 	bgCode := fmt.Sprintf("\x1b[48;2;%d;%d;%dm", r, g, b)
 	// Re-apply background after every ANSI reset so it persists through styled segments
 	line = strings.ReplaceAll(line, "\x1b[0m", "\x1b[0m"+bgCode)
 	return bgCode + line + "\x1b[0m"
-}
-
-func parseHexColor(hex string) (uint8, uint8, uint8) {
-	hex = strings.TrimPrefix(hex, "#")
-	if len(hex) != 6 {
-		return 0, 0, 0
-	}
-	var r, g, b uint8
-	_, _ = fmt.Sscanf(hex, "%02x%02x%02x", &r, &g, &b)
-	return r, g, b
 }
 
 // Gutter renders the left gutter bar character with appropriate color.

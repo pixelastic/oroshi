@@ -6,6 +6,8 @@ import (
 	"strings"
 
 	tree_sitter "github.com/tree-sitter/go-tree-sitter"
+
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/color"
 )
 
 // HighlightTreeSitter highlights source code using tree-sitter and returns styled lines.
@@ -155,18 +157,9 @@ func styleToANSI(style SyntaxStyle) string {
 		parts = append(parts, "3")
 	}
 	if style.ColorHex != "" {
-		r, g, b := hexToRGB(style.ColorHex)
+		r, g, b := color.ParseHexColor(style.ColorHex)
 		parts = append(parts, fmt.Sprintf("38;2;%d;%d;%d", r, g, b))
 	}
 	return "\033[" + strings.Join(parts, ";") + "m"
 }
 
-func hexToRGB(hex string) (int, int, int) {
-	hex = strings.TrimPrefix(hex, "#")
-	if len(hex) != 6 {
-		return 0, 0, 0
-	}
-	var r, g, b int
-	_, _ = fmt.Sscanf(hex, "%02x%02x%02x", &r, &g, &b)
-	return r, g, b
-}
