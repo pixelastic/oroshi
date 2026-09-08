@@ -17,6 +17,11 @@ fi
 
 mkdir -p "$DIST_DIR"
 
+# Symlink vocabulary source into the location Vale expects
+local vocabLink="$VALE_DIR/styles/config/vocabularies/oroshi"
+mkdir -p "${vocabLink:h}"
+ln -sfn "$SRC_DIR/vocabularies/oroshi" "$vocabLink"
+
 # Sync third-party style packages if any are missing
 local stylesDir="$VALE_DIR/styles"
 local packagesLine="$(grep '^Packages' "$defaultFile")"
