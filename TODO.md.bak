@@ -53,6 +53,10 @@ authorized short forms
 - See if we add a `{lang}-min` to compress files in the toolchain (useful for
 svg, maybe for js as well)
 - Seems like new files are not displayed by git-file-watch
+- Sidequests shouldn't save their files in /tmp, it gets deleted on reboot and I
+  could lose context if I didn't get to a /plan
+- meetup-announce should use bulletpoints (in #team-devmarketing) for
+scannability
 
 ---
 
