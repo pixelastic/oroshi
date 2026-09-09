@@ -143,41 +143,44 @@ BASH
   [[ -f "$BATS_TMP_DIR/mypack/ep1-generated.item.mp3" ]]
 }
 
-@test "deletes existing PNG images when --force-img is set" {
+@test "--force-generate-episode-thumbnails deletes PNGs and regenerates via SVG" {
   local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
   mkdir -p "$episodesDir"
+  echo "unique A" > "$episodesDir/20240101 Episode One.item.jpeg"
+  echo "unique B" > "$episodesDir/20240102 Episode Two.item.jpeg"
   touch "$episodesDir/20240101 Episode One.item.png"
+  touch "$episodesDir/20240102 Episode Two.item.png"
 
   studio-pack-generator() { :; }
   eval "$(_curl_rss_only)"
-  bats_mock studio-pack-generator curl
+  txt2svg() {
+    echo "called" >> "$BATS_TMP_DIR/txt2svg_calls.txt"
+    local outputPath=""
+    while [[ $# -gt 0 ]]; do
+      case "$1" in
+        --output) outputPath="$2"; shift 2 ;;
+        *) shift ;;
+      esac
+    done
+    echo "<svg></svg>" > "$outputPath"
+  }
+  svg2png() {
+    for f in "$@"; do touch "${f%.svg}.png"; done
+  }
+  resizeToLunii() {
+    local noExt="${1%.*}"
+    touch "${noExt}.png"
+  }
+  bats_mock studio-pack-generator curl txt2svg svg2png resizeToLunii
   bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-openai-key
-  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-img https://example.com/feed.xml"
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-generate-episode-thumbnails https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
-  [[ ! -f "$episodesDir/20240101 Episode One.item.png" ]]
-}
-
-@test "preserves JPEG images when --force-img is set" {
-  local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
-  mkdir -p "$episodesDir"
-  touch "$episodesDir/20240101 Episode One.item.jpeg"
-
-  studio-pack-generator() { :; }
-  eval "$(_curl_rss_only)"
-  # md5sum and magick needed by generateEpisodeImages after PNG is deleted
-  md5sum() { echo "abc123  $1"; }
-  magick() { touch "${@[-1]}"; }
-  bats_mock studio-pack-generator curl md5sum magick
-  bats_disable_worktree_aware
-
-  export OPENAI_API_KEY=test-openai-key
-  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-img https://example.com/feed.xml"
-  [[ "$status" -eq 0 ]]
-
-  [[ -f "$episodesDir/20240101 Episode One.item.jpeg" ]]
+  # txt2svg called for all episodes despite unique hashes
+  [[ -f "$BATS_TMP_DIR/txt2svg_calls.txt" ]]
+  [[ $(wc -l < "$BATS_TMP_DIR/txt2svg_calls.txt") -eq 2 ]]
 }
 
 @test "resizes thumbnail to 320x240" {
@@ -273,7 +276,7 @@ BASH
   [[ "$cwd" == "$targetDir" ]]
 }
 
-@test "--force-img and --force-tts are not passed to studio-pack-generator" {
+@test "custom flags are not passed to studio-pack-generator" {
   mkdir -p "$BATS_TMP_DIR/mypack"
 
   studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
@@ -282,11 +285,11 @@ BASH
   bats_disable_worktree_aware
 
   export OPENAI_API_KEY=test-key
-  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-img --force-tts https://example.com/feed.xml"
+  bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-generate-episode-thumbnails --force-tts https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
   local allCalls="$(cat "$BATS_TMP_DIR/spg_calls.txt")"
-  [[ "$allCalls" != *"--force-img"* ]]
+  [[ "$allCalls" != *"--force-generate-episode-thumbnails"* ]]
   [[ "$allCalls" != *"--force-tts"* ]]
 }
 

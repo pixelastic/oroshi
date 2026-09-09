@@ -176,7 +176,7 @@ _lib_dir() {
   [[ "$args" == *"320 240"* ]]
 }
 
-@test "--generate-all forces SVG generation for all episodes even with unique hashes" {
+@test "--force-generate-all forces SVG generation for all episodes even with unique hashes" {
   local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
   mkdir -p "$episodesDir"
   echo "unique content A" > "$episodesDir/20240101 Episode One.item.jpeg"
@@ -205,7 +205,7 @@ _lib_dir() {
   bats_mock txt2svg svg2png resizeToLunii
 
   local libDir="$(_lib_dir)"
-  bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack --generate-all"
+  bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack --force-generate-all"
   [[ "$status" -eq 0 ]]
 
   # txt2svg called for all 3 episodes despite unique hashes

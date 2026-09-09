@@ -1,33 +1,30 @@
 # Convert an RSS feed to a Lunii pack using studio-pack-generator
 # Usage:
-# $ rss2lunii <url>                              # Convert feed with defaults
-# $ rss2lunii <url> --output-dir ~/Podcasts      # Download to specific directory
-# $ rss2lunii <url> --force-img                  # Regenerate images
-# $ rss2lunii <url> --force-tts                  # Regenerate TTS audio
-# $ rss2lunii <url> --generate-episode-thumbnails # Force SVG generation for all episodes
+# $ rss2lunii <url>                                        # Convert feed with defaults
+# $ rss2lunii <url> --output-dir ~/Podcasts                # Download to specific directory
+# $ rss2lunii <url> --force-tts                            # Regenerate TTS audio
+# $ rss2lunii <url> --force-generate-episode-thumbnails    # Regenerate all episode thumbnails via SVG
 setopt local_options err_return
 
 zparseopts -E -D \
-  -force-img=flagForceImg \
   -force-tts=flagForceTts \
-  -generate-episode-thumbnails=flagGenerateEpisodeThumbnails \
+  -force-generate-episode-thumbnails=flagForceGenerateEpisodeThumbnails \
   -output-dir:=flagOutputDir
 
-local isForceImg=${#flagForceImg}
 local isForceTts=${#flagForceTts}
-local isGenerateEpisodeThumbnails=${#flagGenerateEpisodeThumbnails}
+local isForceGenerateEpisodeThumbnails=${#flagForceGenerateEpisodeThumbnails}
 local outputDir="${flagOutputDir[2]:-.}"
 
 local url="$1"
 
 if [[ "$url" == "" ]]; then
-  echoerr "Usage: rss2lunii <url> [--output-dir <path>] [--force-img] [--force-tts]"
+  echoerr "Usage: rss2lunii <url> [--output-dir <path>]" \
+    "[--force-tts] [--force-generate-episode-thumbnails]"
   return 1
 fi
 
 # Source helper functions
 local libDir="${functions_source[$0]:A:h}/__lib"
-source "$libDir/deleteCachedImages.zsh"
 source "$libDir/deleteCachedTts.zsh"
 source "$libDir/downloadAndProcessRss.zsh"
 source "$libDir/generateEpisodeImages.zsh"
@@ -43,13 +40,12 @@ local packDir="./${packTitle}"
 (
   cd "$outputDir"
 
-  [[ $isForceImg -eq 1 ]] && deleteCachedImages "$packDir"
   [[ $isForceTts -eq 1 ]] && deleteCachedTts "$packDir"
 
   downloadAndProcessRss "$url"
   localizeEpisodesFolder "$packDir"
   local -a generateArgs=("$packDir")
-  [[ $isGenerateEpisodeThumbnails -eq 1 ]] && generateArgs+=(--generate-all)
+  [[ $isForceGenerateEpisodeThumbnails -eq 1 ]] && generateArgs+=(--force-generate-all)
   generateEpisodeImages "${generateArgs[@]}"
   resizeThumbnail "$packDir"
   repackAsZip "$packDir"

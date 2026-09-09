@@ -1,20 +1,24 @@
 # Generate episode thumbnails: duplicate source thumbnails get Claude SVG, unique ones get resized
 # Usage:
-# $ generateEpisodeImages <packDir>                  # Auto-detect duplicates
-# $ generateEpisodeImages <packDir> --generate-all   # Force SVG generation for all
+# $ generateEpisodeImages <packDir>                          # Auto-detect duplicates
+# $ generateEpisodeImages <packDir> --force-generate-all     # Delete cache and force SVG for all
 function generateEpisodeImages() {
   setopt local_options err_return
 
   local packDir=$1
-  local isGenerateAll=0
-  [[ "${2:-}" == "--generate-all" ]] && isGenerateAll=1
+  local isForceGenerateAll=0
+  [[ "${2:-}" == "--force-generate-all" ]] && isForceGenerateAll=1
   local episodesDir="$packDir/Choose your story"
 
   local svgStyle="Monochrome, white shapes on black background. Flat shapes, no gradients, no shadows. Playful and rounded, child-friendly. One central object or scene. viewBox 0 0 320 240."
 
-  # Collect JPEGs that still need a PNG
+  # Clear cached PNGs when forcing regeneration
+  local cachedPngs=("$episodesDir"/*.item.png(N))
+  [[ $isForceGenerateAll -eq 1 && ${#cachedPngs} -gt 0 ]] && rm -f $cachedPngs
+
+  # Collect JPEGs (.jpeg and .jpg) that still need a PNG
   local jpegsToProcess=()
-  for jpeg in "$episodesDir"/*.item.jpeg(N); do
+  for jpeg in "$episodesDir"/*.item.jpeg(N) "$episodesDir"/*.item.jpg(N); do
     local pngPath="${jpeg:r}.png"
 
     # Skip if PNG already exists
@@ -44,9 +48,10 @@ function generateEpisodeImages() {
     local title="${baseName#[0-9]## }"
     title="${title#- }"
     title="${title%.item.jpeg}"
+    title="${title%.item.jpg}"
 
-    if [[ $isGenerateAll -eq 1 || ${hashCount[$hash]} -gt 1 ]]; then
-      # Generated episode thumbnail: duplicate source or forced via --generate-all
+    if [[ $isForceGenerateAll -eq 1 || ${hashCount[$hash]} -gt 1 ]]; then
+      # Generated episode thumbnail: duplicate source or forced via --force-generate-all
       echo "[$current/$total] Generating SVG: $title"
       local tmpSvg=$(mktemp --suffix=.svg)
       txt2svg --output "$tmpSvg" "$svgStyle $title"
