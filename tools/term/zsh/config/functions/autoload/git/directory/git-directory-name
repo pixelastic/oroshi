@@ -1,0 +1,27 @@
+# Returns the best human-readable name for a git repository
+# Fallback chain: project-name → git-github-project-name → directory basename
+# Usage:
+# $ git-directory-name            # Name of current repo
+# $ git-directory-name /path/to   # Name of repo at path
+setopt local_options err_return extendedglob
+
+local targetPath="${1:-$PWD}"
+
+# Registered project name
+local name="$(project-name "$targetPath")"
+if [[ "$name" != "" ]]; then
+  echo "$name"
+  return 0
+fi
+
+# GitHub remote name
+name="$(git-github-project-name "$targetPath")" || true
+if [[ "$name" != "" ]]; then
+  echo "$name"
+  return 0
+fi
+
+# Directory basename with leading dots stripped
+local root="$(git-directory-root "$targetPath")"
+local basename="${root:t}"
+echo "${basename##.#}"
