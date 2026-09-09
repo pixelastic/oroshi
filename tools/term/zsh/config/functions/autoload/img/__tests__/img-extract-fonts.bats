@@ -70,7 +70,7 @@ setup() {
 	[[ "$args" == *"urlimagebase64="* ]]
 }
 
-@test "passes limit=5 and FREEFONTS=1 to the API" {
+@test "passes limit=10 and FREEFONTS=1 to the API" {
 	curl() {
 		echo "$@" > "$BATS_TMP_DIR/curl_args.txt"
 		echo '[]'
@@ -81,6 +81,6 @@ setup() {
 	bats_run_zsh "img-extract-fonts $BATS_TMP_DIR/test.png"
 	local args
 	args=$(cat "$BATS_TMP_DIR/curl_args.txt")
-	[[ "$args" == *"limit=5"* ]]
+	[[ "$args" == *"limit=10"* ]]
 	[[ "$args" == *"FREEFONTS=1"* ]]
 }

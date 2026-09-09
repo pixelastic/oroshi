@@ -22,7 +22,7 @@ local response="$(curl \
     --form "urlimagebase64=<$tmpBase64" \
     --form "NOTTEXTBOXSDETECTION=0" \
     --form "FREEFONTS=1" \
-    --form "limit=5" \
+    --form "limit=10" \
   "https://www.whatfontis.com/api2/")"
 rm -f "$tmpBase64"
 

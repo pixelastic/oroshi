@@ -6,7 +6,7 @@ function generateEpisodeImages() {
   local packDir=$1
   local episodesDir="$packDir/Choose your story"
 
-  local svgStyle="Monochrome, black shapes on white background. Flat shapes, no gradients, no shadows. Playful and rounded, child-friendly. One central object or scene. viewBox 0 0 320 240."
+  local svgStyle="Monochrome, white shapes on black background. Flat shapes, no gradients, no shadows. Playful and rounded, child-friendly. One central object or scene. viewBox 0 0 320 240."
 
   # Collect JPEGs that still need a PNG
   local jpegsToProcess=()
