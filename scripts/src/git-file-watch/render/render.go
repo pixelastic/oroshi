@@ -27,6 +27,7 @@ type Context struct {
 	LineNumberWidth int
 	ViewportWidth   int
 	Cursor          int
+	ReviewSent      bool
 }
 
 // FileHeader renders a file header row with directory coloring and separator.
@@ -94,10 +95,11 @@ func BinaryLine(ctx Context) string {
 
 // CommentLine renders a comment annotation above a code line.
 func CommentLine(ctx Context, commentText string) string {
-	orangeStyle := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss("orange"))
-	gutter := orangeStyle.Render("▌")
+	colorName := commentColorName(ctx.ReviewSent)
+	style := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss(colorName))
+	gutter := style.Render("▌")
 	numberPadding := strings.Repeat(" ", ctx.LineNumberWidth)
-	return gutter + numberPadding + " " + orangeStyle.Render("REVIEW: "+commentText) + "\n"
+	return gutter + numberPadding + " " + style.Render("REVIEW: "+commentText) + "\n"
 }
 
 // CodeLine renders a single code line with gutter, line number, and content.
@@ -112,8 +114,8 @@ func CodeLine(ctx Context, row layout.LineRow, isCursor bool) string {
 		b.WriteString(CommentLine(ctx, commentText))
 	}
 
-	gutter := Gutter(row, ctx.Theme, hasComment)
-	lineNumber := LineNumber(row, ctx.Theme, ctx.LineNumberWidth, isCursor, isFlash, hasComment)
+	gutter := Gutter(row, ctx.Theme, hasComment, ctx.ReviewSent)
+	lineNumber := LineNumber(row, ctx.Theme, ctx.LineNumberWidth, isCursor, isFlash, hasComment, ctx.ReviewSent)
 	content := DimContent(ctx, row)
 	line := gutter + lineNumber + " " + content
 
@@ -159,12 +161,12 @@ func applyLineBackground(line string, hex string, viewportWidth int) string {
 }
 
 // Gutter renders the left gutter bar character with appropriate color.
-func Gutter(row layout.LineRow, th *theme.Theme, hasComment bool) string {
-	return lipgloss.NewStyle().Foreground(LineColor(row, th, hasComment)).Render("▌")
+func Gutter(row layout.LineRow, th *theme.Theme, hasComment bool, reviewSent bool) string {
+	return lipgloss.NewStyle().Foreground(LineColor(row, th, hasComment, reviewSent)).Render("▌")
 }
 
 // LineNumber renders a padded line number with priority-based coloring.
-func LineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor bool, isFlash bool, hasComment bool) string {
+func LineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor bool, isFlash bool, hasComment bool, reviewSent bool) string {
 	numberString := fmt.Sprintf("%*d", width, row.LineNumber)
 
 	if isFlash {
@@ -181,13 +183,13 @@ func LineNumber(row layout.LineRow, th *theme.Theme, width int, isCursor bool, i
 			Render(numberString)
 	}
 
-	return lipgloss.NewStyle().Foreground(LineColor(row, th, hasComment)).Render(numberString)
+	return lipgloss.NewStyle().Foreground(LineColor(row, th, hasComment, reviewSent)).Render(numberString)
 }
 
 // LineColor returns the appropriate color for a line based on comment/marker state.
-func LineColor(row layout.LineRow, th *theme.Theme, hasComment bool) lipgloss.Color {
+func LineColor(row layout.LineRow, th *theme.Theme, hasComment bool, reviewSent bool) lipgloss.Color {
 	if hasComment {
-		return th.Lipgloss("orange")
+		return th.Lipgloss(commentColorName(reviewSent))
 	}
 	if row.Marker != nil {
 		return th.Lipgloss(MarkerColorName(*row.Marker))
@@ -290,4 +292,11 @@ func dimColorForDistance(distance int) string {
 	default:
 		return "gray-6"
 	}
+}
+
+func commentColorName(reviewSent bool) string {
+	if reviewSent {
+		return "orange-8"
+	}
+	return "orange"
 }

@@ -76,6 +76,7 @@ type model struct {
 	resolveHead          func(string) (string, error)
 	oroshiRoot           string
 	showHelp             bool
+	reviewSent           bool
 }
 
 func (m model) Init() tea.Cmd {
@@ -160,6 +161,7 @@ func (m model) updateEditing(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.userComments = updated
 		m.persistComments()
 		m.editState = editing.Inactive()
+		m.reviewSent = false
 		return m, nil
 	case "esc", "ctrl+d":
 		m.editState = editing.Inactive()
@@ -351,6 +353,7 @@ func (m model) sendReviewToClaude() (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 
+	m.reviewSent = true
 	return m, nil
 }
 
@@ -457,6 +460,7 @@ func (m model) View() string {
 		LineNumberWidth: m.lineNumberWidth,
 		ViewportWidth:   m.viewportWidth,
 		Cursor:          m.nav.Cursor,
+		ReviewSent:      m.reviewSent,
 	}
 
 	var builder strings.Builder

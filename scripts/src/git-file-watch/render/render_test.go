@@ -136,7 +136,7 @@ func TestGutterContainsBarCharacter(t *testing.T) {
 	th := loadTestTheme(t)
 	row := layout.LineRow{LineNumber: 5}
 
-	result := Gutter(row, th, false)
+	result := Gutter(row, th, false, false)
 
 	assert.Contains(t, result, "▌")
 }
@@ -145,8 +145,8 @@ func TestGutterReturnsSameOutputForSameInputs(t *testing.T) {
 	th := loadTestTheme(t)
 	row := layout.LineRow{LineNumber: 5}
 
-	a := Gutter(row, th, false)
-	b := Gutter(row, th, false)
+	a := Gutter(row, th, false, false)
+	b := Gutter(row, th, false, false)
 
 	assert.Equal(t, a, b)
 }
@@ -158,8 +158,8 @@ func TestGutterCommentChangesOutput(t *testing.T) {
 
 	// In non-TTY both may strip to same unstyled string,
 	// but the function should still be callable without panic
-	assert.NotPanics(t, func() { Gutter(row, th, true) })
-	assert.NotPanics(t, func() { Gutter(row, th, false) })
+	assert.NotPanics(t, func() { Gutter(row, th, true, false) })
+	assert.NotPanics(t, func() { Gutter(row, th, false, false) })
 }
 
 // --- LineNumber ---
@@ -168,7 +168,7 @@ func TestLineNumberContainsNumber(t *testing.T) {
 	th := loadTestTheme(t)
 	row := layout.LineRow{LineNumber: 42}
 
-	result := LineNumber(row, th, 3, false, false, false)
+	result := LineNumber(row, th, 3, false, false, false, false)
 
 	assert.Contains(t, result, "42")
 }
@@ -177,7 +177,7 @@ func TestLineNumberPadsToWidth(t *testing.T) {
 	th := loadTestTheme(t)
 	row := layout.LineRow{LineNumber: 5}
 
-	result := LineNumber(row, th, 4, false, false, false)
+	result := LineNumber(row, th, 4, false, false, false, false)
 
 	assert.Contains(t, result, "   5")
 }
@@ -188,11 +188,11 @@ func TestLineNumberDoesNotPanic(t *testing.T) {
 	row := layout.LineRow{LineNumber: 10, Marker: &marker}
 
 	// Exercise all priority branches without panicking
-	assert.NotPanics(t, func() { LineNumber(row, th, 3, false, false, false) })
-	assert.NotPanics(t, func() { LineNumber(row, th, 3, false, false, true) })
-	assert.NotPanics(t, func() { LineNumber(row, th, 3, true, false, false) })
-	assert.NotPanics(t, func() { LineNumber(row, th, 3, true, true, false) })
-	assert.NotPanics(t, func() { LineNumber(row, th, 3, true, true, true) })
+	assert.NotPanics(t, func() { LineNumber(row, th, 3, false, false, false, false) })
+	assert.NotPanics(t, func() { LineNumber(row, th, 3, false, false, true, false) })
+	assert.NotPanics(t, func() { LineNumber(row, th, 3, true, false, false, false) })
+	assert.NotPanics(t, func() { LineNumber(row, th, 3, true, true, false, false) })
+	assert.NotPanics(t, func() { LineNumber(row, th, 3, true, true, true, false) })
 }
 
 // --- LineColor ---
@@ -202,7 +202,7 @@ func TestLineColorReturnsOrangeWhenHasComment(t *testing.T) {
 	marker := diff.MarkerAdded
 	row := layout.LineRow{LineNumber: 5, Marker: &marker}
 
-	result := LineColor(row, th, true)
+	result := LineColor(row, th, true, false)
 
 	assert.Equal(t, th.Lipgloss("orange"), result)
 }
@@ -211,7 +211,7 @@ func TestLineColorReturnsOrangeWhenHasCommentAndNoMarker(t *testing.T) {
 	th := loadTestTheme(t)
 	row := layout.LineRow{LineNumber: 5}
 
-	result := LineColor(row, th, true)
+	result := LineColor(row, th, true, false)
 
 	assert.Equal(t, th.Lipgloss("orange"), result)
 }
@@ -221,7 +221,7 @@ func TestLineColorReturnsMarkerColorWhenNoComment(t *testing.T) {
 	marker := diff.MarkerAdded
 	row := layout.LineRow{LineNumber: 5, Marker: &marker}
 
-	result := LineColor(row, th, false)
+	result := LineColor(row, th, false, false)
 
 	assert.Equal(t, th.Lipgloss("green-7"), result)
 }
@@ -230,9 +230,40 @@ func TestLineColorReturnsGrayWhenNoMarkerAndNoComment(t *testing.T) {
 	th := loadTestTheme(t)
 	row := layout.LineRow{LineNumber: 5}
 
-	result := LineColor(row, th, false)
+	result := LineColor(row, th, false, false)
 
 	assert.Equal(t, th.Lipgloss("gray"), result)
+}
+
+// --- LineColor: reviewSent ---
+
+func TestLineColorReturnsDimOrangeWhenReviewSent(t *testing.T) {
+	th := loadTestTheme(t)
+	row := layout.LineRow{LineNumber: 5}
+
+	result := LineColor(row, th, true, true)
+
+	assert.Equal(t, th.Lipgloss("orange-8"), result)
+}
+
+func TestLineColorReturnsOrangeWhenReviewNotSent(t *testing.T) {
+	th := loadTestTheme(t)
+	row := layout.LineRow{LineNumber: 5}
+
+	result := LineColor(row, th, true, false)
+
+	assert.Equal(t, th.Lipgloss("orange"), result)
+}
+
+// --- CommentLine: reviewSent ---
+
+func TestCommentLineKeepsReviewPrefixWhenReviewSent(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, LineNumberWidth: 3, ReviewSent: true}
+
+	result := CommentLine(ctx, "fix this")
+
+	assert.Contains(t, result, "REVIEW:")
 }
 
 // --- MarkerColorName ---
@@ -324,6 +355,7 @@ func loadTestTheme(t *testing.T) *theme.Theme {
 		"red-0":        {"ansi": 20, "hex": "#250f0f"},
 		"red-8":        {"ansi": 28, "hex": "#7f1d1d"},
 		"orange":       {"ansi": 208, "hex": "#ff8700"},
+		"orange-8":     {"ansi": 108, "hex": "#7c2d12"},
 		"gray":         {"ansi": 245, "hex": "#6b7280"},
 		"gray-5":       {"ansi": 240, "hex": "#4b5563"},
 		"gray-7":       {"ansi": 236, "hex": "#374151"},

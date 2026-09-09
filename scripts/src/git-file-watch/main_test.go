@@ -845,6 +845,7 @@ func loadTestTheme(t *testing.T) *theme.Theme {
 		"git-modified": {"ansi": 135, "hex": "#af5fff"},
 		"git-removed":  {"ansi": 196, "hex": "#ff0000"},
 		"orange":       {"ansi": 208, "hex": "#ff8700"},
+		"orange-8":     {"ansi": 108, "hex": "#7c2d12"},
 		"gray":         {"ansi": 245, "hex": "#6b7280"},
 		"gray-5":       {"ansi": 240, "hex": "#4b5563"},
 		"gray-7":       {"ansi": 236, "hex": "#374151"},
