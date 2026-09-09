@@ -44,7 +44,8 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int, isCursor b
 	if fileCount == 1 {
 		b.WriteByte('\n')
 	}
-	dir, file := filepath.Split(row.Path)
+	pathWidth := ctx.ViewportWidth - ctx.LineNumberWidth - 2
+	dir, file := filepath.Split(FitPath(row.Path, pathWidth))
 	firstLine := firstLineForFile(ctx.RawLines, row.Path)
 	dirStyle := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss("directory"))
 	styledFile := file
