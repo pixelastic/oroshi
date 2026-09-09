@@ -176,6 +176,46 @@ _lib_dir() {
   [[ "$args" == *"320 240"* ]]
 }
 
+@test "--generate-all forces SVG generation for all episodes even with unique hashes" {
+  local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
+  mkdir -p "$episodesDir"
+  echo "unique content A" > "$episodesDir/20240101 Episode One.item.jpeg"
+  echo "unique content B" > "$episodesDir/20240102 Episode Two.item.jpeg"
+  echo "unique content C" > "$episodesDir/20240103 Episode Three.item.jpeg"
+
+  txt2svg() {
+    echo "called" >> "$BATS_TMP_DIR/txt2svg_calls.txt"
+    local outputPath=""
+    while [[ $# -gt 0 ]]; do
+      case "$1" in
+        --output) outputPath="$2"; shift 2 ;;
+        *) shift ;;
+      esac
+    done
+    echo "<svg></svg>" > "$outputPath"
+  }
+  svg2png() {
+    for f in "$@"; do touch "${f%.svg}.png"; done
+  }
+  resizeToLunii() {
+    echo "$1" >> "$BATS_TMP_DIR/resize_calls.txt"
+    local noExt="${1%.*}"
+    touch "${noExt}.png"
+  }
+  bats_mock txt2svg svg2png resizeToLunii
+
+  local libDir="$(_lib_dir)"
+  bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack --generate-all"
+  [[ "$status" -eq 0 ]]
+
+  # txt2svg called for all 3 episodes despite unique hashes
+  [[ -f "$BATS_TMP_DIR/txt2svg_calls.txt" ]]
+  [[ $(wc -l < "$BATS_TMP_DIR/txt2svg_calls.txt") -eq 3 ]]
+
+  # resizeToLunii never called on source JPEGs
+  run ! grep -q ".item.jpeg" "$BATS_TMP_DIR/resize_calls.txt"
+}
+
 @test "idempotent: second run with all PNGs present does nothing" {
   local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
   mkdir -p "$episodesDir"

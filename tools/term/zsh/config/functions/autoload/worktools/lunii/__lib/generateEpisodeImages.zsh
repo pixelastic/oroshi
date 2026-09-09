@@ -1,9 +1,13 @@
-# Generate episode images via hash-dedup: duplicate covers get Claude SVG, unique covers get resized
-# Usage: generateEpisodeImages <packDir>
+# Generate episode thumbnails: duplicate source thumbnails get Claude SVG, unique ones get resized
+# Usage:
+# $ generateEpisodeImages <packDir>                  # Auto-detect duplicates
+# $ generateEpisodeImages <packDir> --generate-all   # Force SVG generation for all
 function generateEpisodeImages() {
   setopt local_options err_return
 
   local packDir=$1
+  local isGenerateAll=0
+  [[ "${2:-}" == "--generate-all" ]] && isGenerateAll=1
   local episodesDir="$packDir/Choose your story"
 
   local svgStyle="Monochrome, white shapes on black background. Flat shapes, no gradients, no shadows. Playful and rounded, child-friendly. One central object or scene. viewBox 0 0 320 240."
@@ -41,8 +45,8 @@ function generateEpisodeImages() {
     title="${title#- }"
     title="${title%.item.jpeg}"
 
-    if [[ ${hashCount[$hash]} -gt 1 ]]; then
-      # Duplicate hash: same cover reused → generate SVG illustration
+    if [[ $isGenerateAll -eq 1 || ${hashCount[$hash]} -gt 1 ]]; then
+      # Generated episode thumbnail: duplicate source or forced via --generate-all
       echo "[$current/$total] Generating SVG: $title"
       local tmpSvg=$(mktemp --suffix=.svg)
       txt2svg --output "$tmpSvg" "$svgStyle $title"
@@ -54,7 +58,7 @@ function generateEpisodeImages() {
       mv "$tmpPng" "$pngPath"
       rm -f "$tmpSvg"
     else
-      # Unique hash: distinct artwork → resize JPEG to PNG
+      # Source episode thumbnail: unique artwork → resize JPEG to PNG
       echo "[$current/$total] Resizing: $title"
       resizeToLunii "$jpeg"
     fi
