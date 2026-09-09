@@ -15,6 +15,27 @@ local mainPath="$(git-worktree-main "$worktreePath")"
 local submoduleList="$(git-submodule-list-raw "$mainPath")"
 [[ "$submoduleList" == "" ]] && return 0
 
+# Load theming for colorized error messages
+colors-load-definitions
+icons-load-definitions
+projects-load-definitions
+
+# Resolve project name and color for error messages
+local projectName=""
+local projectDisplay=""
+projectName="$(project-name "$mainPath" 2>/dev/null)" || true
+if [[ "$projectName" != "" ]]; then
+  local projectIcon="$PROJECTS[$projectName:icon]"
+  local projectColor="$PROJECTS[$projectName:foreground:ansi]"
+  projectDisplay="$(colorize "$projectIcon $projectName" "$projectColor")"
+else
+  projectName="$(git-github-project-name --repo "$mainPath" 2>/dev/null)" || projectName="${mainPath:t}"
+  projectDisplay="$(colorize "$projectName" "$COLORS[directory]")"
+fi
+
+local colorizedMain="$(git-branch-colorize "main")"
+local colorizedError="$(colorize "✘" "$COLORS[error]")"
+
 local hasFailure=0
 for rawLine in ${(f)submoduleList}; do
   local fields=(${(@ps/▮/)rawLine})
@@ -23,10 +44,15 @@ for rawLine in ${(f)submoduleList}; do
   # Skip if submodule pointer is same in worktree and main
   git-worktree-submodule-pointer-differs "$submoduleName" "$worktreePath" || continue
 
+  local colorizedIcon="$(colorize "$ICONS[git-submodule]" "$COLORS[git-submodule]")"
+  local colorizedName="$(colorize "$submoduleName" "$COLORS[directory]")"
+
   # Failure if main's submodule has uncommitted changes
   local dirtyCount="$(git-directory-dirty-count "$mainPath/$submoduleName")"
   if [[ "$dirtyCount" != "0" ]]; then
-    echo "$submoduleName in main repo has uncommitted changes. Commit them first."
+    local prefix="$colorizedError $colorizedIcon $colorizedName"
+    local location="in $colorizedMain $projectDisplay repo"
+    echo "$prefix $location has uncommitted changes. Commit them first."
     hasFailure=1
     continue
   fi
@@ -38,7 +64,9 @@ for rawLine in ${(f)submoduleList}; do
   local remoteDistance="$(git-branch-remote-distance-raw --repo "$mainPath/$submoduleName" 2>/dev/null)"
   local distanceFields=(${(@ps/▮/)remoteDistance})
   if [[ $distanceFields[1] -gt 0 ]]; then
-    echo "$submoduleName in main has unpushed commits. Push them first"
+    local prefix="$colorizedError $colorizedIcon $colorizedName"
+    local location="in $colorizedMain $projectDisplay repo"
+    echo "$prefix $location has unpushed commits. Push them first."
     hasFailure=1
     continue
   fi

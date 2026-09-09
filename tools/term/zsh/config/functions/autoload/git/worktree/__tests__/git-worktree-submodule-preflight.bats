@@ -12,7 +12,16 @@ setup() {
     printf 'my-sub▮abc12345▮main\nother-sub▮def67890▮main\n'
   }
   git-directory-dirty-count() { echo 0; }
-  bats_mock git-worktree-main git-submodule-list-raw git-directory-dirty-count
+  # Mock project-name to return empty (no registered project) so basename fallback kicks in
+  project-name() { return 1; }
+  git-github-project-name() { return 1; }
+  # Mock theming to passthrough so substring matching works
+  colors-load-definitions() { typeset -gA COLORS; }
+  icons-load-definitions() { typeset -gA ICONS; }
+  projects-load-definitions() { typeset -gA PROJECTS; }
+  colorize() { echo -n "$1"; }
+  git-branch-colorize() { echo -n "$1"; }
+  bats_mock git-worktree-main git-submodule-list-raw git-directory-dirty-count project-name git-github-project-name colors-load-definitions icons-load-definitions projects-load-definitions colorize git-branch-colorize
   bats_disable_worktree_aware
 }
 
@@ -59,6 +68,8 @@ _advance_ahead() {
   [[ "$status" -eq 1 ]]
   [[ "$output" == *"my-sub"* ]]
   [[ "$output" == *"commit"* ]]
+  [[ "$output" == *"main"* ]]
+  [[ "$output" == *"my-repo"* ]]
 }
 
 @test "changed pointer, main submodule ahead of remote: returns 1 with error" {
@@ -68,6 +79,8 @@ _advance_ahead() {
   [[ "$status" -eq 1 ]]
   [[ "$output" == *"my-sub"* ]]
   [[ "$output" == *"push"* ]]
+  [[ "$output" == *"main"* ]]
+  [[ "$output" == *"my-repo"* ]]
 }
 
 @test "multiple submodules, one failing: identifies failing submodule" {
