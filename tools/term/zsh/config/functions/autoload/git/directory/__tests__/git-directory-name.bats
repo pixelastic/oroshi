@@ -28,8 +28,8 @@ setup() {
 @test "returns directory basename when both project-name and git-github-project-name fail" {
   project-name() { return 1; }
   git-github-project-name() { return 1; }
-  git-directory-root() { echo "/home/user/repos/my-repo"; }
-  bats_mock project-name git-github-project-name git-directory-root
+  git-worktree-main() { echo "/home/user/repos/my-repo"; }
+  bats_mock project-name git-github-project-name git-worktree-main
 
   bats_run_zsh "git-directory-name /some/path"
   [[ "$status" -eq 0 ]]
@@ -39,8 +39,8 @@ setup() {
 @test "strips all leading dots from basename fallback" {
   project-name() { return 1; }
   git-github-project-name() { return 1; }
-  git-directory-root() { echo "/home/user/repos/.oroshi"; }
-  bats_mock project-name git-github-project-name git-directory-root
+  git-worktree-main() { echo "/home/user/repos/.oroshi"; }
+  bats_mock project-name git-github-project-name git-worktree-main
 
   bats_run_zsh "git-directory-name /some/path"
   [[ "$status" -eq 0 ]]
@@ -50,8 +50,8 @@ setup() {
 @test "strips multiple leading dots from basename fallback" {
   project-name() { return 1; }
   git-github-project-name() { return 1; }
-  git-directory-root() { echo "/home/user/repos/..foo"; }
-  bats_mock project-name git-github-project-name git-directory-root
+  git-worktree-main() { echo "/home/user/repos/..foo"; }
+  bats_mock project-name git-github-project-name git-worktree-main
 
   bats_run_zsh "git-directory-name /some/path"
   [[ "$status" -eq 0 ]]

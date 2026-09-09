@@ -11,12 +11,7 @@ git-directory-is-repository || return 1
 # Branch name required
 [[ "$branch" == "" ]] && return 1
 
-# Repo name: prefer GitHub project name, fall back to folder name (strip leading dots)
-local repoName="$(git-github-project-name)"
-if [[ "$repoName" == "" ]]; then
-  local repoMain="$(git-worktree-main)"
-  repoName="${${repoMain:t}##.#}"
-fi
+local repoName="$(git-directory-name)"
 
 # Branch Slug: replace / with _
 local branchSlug="$(git-branch-slug "$branch")"

@@ -26,21 +26,10 @@ if [[ "$superproject" != "" ]] && git-directory-is-worktree "$superproject"; the
   effectivePath="$superproject"
 fi
 
-# Project: override, else project-name, else github, else git root basename
+# Project: override, else git-directory-name fallback chain
 local project="$projectOverride"
 if [[ "$project" == "" ]]; then
-  project="$(project-name "$effectivePath" 2>/dev/null)" || true
-fi
-if [[ "$project" == "" ]]; then
-  project="$(git-github-project-name "$effectivePath" 2>/dev/null)" || true
-fi
-if [[ "$project" == "" ]]; then
-  local rootDir=""
-  rootDir="$(git-directory-root "$effectivePath" 2>/dev/null)" || true
-  if [[ "$rootDir" != "" ]]; then
-    local baseName="${rootDir:t}"
-    project="${baseName#.}"
-  fi
+  project="$(git-directory-name "$effectivePath")"
 fi
 
 # No project found at all — return empty

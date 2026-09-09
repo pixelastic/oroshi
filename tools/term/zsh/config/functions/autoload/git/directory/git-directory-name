@@ -21,7 +21,7 @@ if [[ "$name" != "" ]]; then
   return 0
 fi
 
-# Directory basename with leading dots stripped
-local root="$(git-directory-root "$targetPath")"
+# Directory basename with leading dots stripped (main repo, not worktree)
+local root="$(git-worktree-main "$targetPath")"
 local basename="${root:t}"
 echo "${basename##.#}"

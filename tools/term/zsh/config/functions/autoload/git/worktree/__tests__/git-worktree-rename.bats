@@ -4,7 +4,10 @@ setup() {
   bats_git_dir 'my-repo'
   bats_git_worktree 'feature'
 
+  git-directory-name() { echo "$BATS_GIT_REPO_NAME"; }
+  bats_mock git-directory-name
   bats_mock_env OROSHI_WORKTREES_DIR "$BATS_GIT_WORKTREES"
+  bats_disable_worktree_aware
 }
 
 # 1-argument form
