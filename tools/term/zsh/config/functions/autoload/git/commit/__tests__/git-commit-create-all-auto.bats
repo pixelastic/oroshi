@@ -186,6 +186,21 @@ setup() {
 	[[ ! -f "$BATS_TMP_DIR/create-called.txt" ]]
 }
 
+@test "aborts when git-directory-dirty-count returns empty string" {
+	git-directory-has-submodules() { return 0; }
+	git-submodule-commit-all-auto() { :; }
+	git-directory-dirty-count() { echo ""; }
+	git-file-add() { echo "called" > "$BATS_TMP_DIR/add-called.txt"; }
+	git-commit-message() { echo "should not run"; }
+	git-commit-create() { echo "called" > "$BATS_TMP_DIR/create-called.txt"; }
+	bats_mock git-directory-has-submodules git-submodule-commit-all-auto git-directory-dirty-count git-file-add git-commit-message git-commit-create
+
+	bats_run_zsh "git-commit-create-all-auto"
+	[[ "$status" -ne 0 ]]
+	[[ ! -f "$BATS_TMP_DIR/add-called.txt" ]]
+	[[ ! -f "$BATS_TMP_DIR/create-called.txt" ]]
+}
+
 @test "aborts without committing when git-commit-message exits non-zero despite producing stdout" {
 	git-file-add() { :; }
 	git-commit-message() {

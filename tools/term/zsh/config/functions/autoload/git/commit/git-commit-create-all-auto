@@ -24,6 +24,8 @@ if git-directory-has-submodules "${repoArgs[@]}"; then
 
   # Stop if only changes were in subdmodules
   local dirtyCount="$(git-directory-dirty-count "${repoPath:-.}")"
+  # Guard against sub-command failure (local swallows exit code)
+  [[ "$dirtyCount" == "" ]] && return 1
   [[ "$dirtyCount" == "0" ]] && return 0
 fi
 
