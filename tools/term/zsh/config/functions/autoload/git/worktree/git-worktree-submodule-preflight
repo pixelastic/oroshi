@@ -20,17 +20,13 @@ colors-load-definitions
 icons-load-definitions
 projects-load-definitions
 
-# Resolve project name and color for error messages
-local projectName=""
+# Resolve project name and display for error messages
+local repoName="$(git-directory-name "$mainPath")"
 local projectDisplay=""
-projectName="$(project-name "$mainPath" 2>/dev/null)" || true
-if [[ "$projectName" != "" ]]; then
-  local projectIcon="$PROJECTS[$projectName:icon]"
-  local projectColor="$PROJECTS[$projectName:foreground:ansi]"
-  projectDisplay="$(colorize "$projectIcon $projectName" "$projectColor")"
+if [[ "$PROJECTS[$repoName:foreground:ansi]" != "" ]]; then
+  projectDisplay="$(colorize "$PROJECTS[$repoName:icon] $repoName" "$PROJECTS[$repoName:foreground:ansi]")"
 else
-  projectName="$(git-github-project-name --repo "$mainPath" 2>/dev/null)" || projectName="${mainPath:t}"
-  projectDisplay="$(colorize "$projectName" "$COLORS[directory]")"
+  projectDisplay="$(colorize "$repoName" "$COLORS[directory]")"
 fi
 
 local colorizedMain="$(git-branch-colorize "main")"

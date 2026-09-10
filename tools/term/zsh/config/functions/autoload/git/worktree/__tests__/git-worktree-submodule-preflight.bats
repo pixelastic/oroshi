@@ -12,16 +12,18 @@ setup() {
     printf 'my-sub▮abc12345▮main\nother-sub▮def67890▮main\n'
   }
   git-directory-dirty-count() { echo 0; }
-  # Mock project-name to return empty (no registered project) so basename fallback kicks in
-  project-name() { return 1; }
-  git-github-project-name() { return 1; }
+  # Mock git-directory-name — distinct from basename to prove it's used
+  git-directory-name() { echo "resolved-name"; }
   # Mock theming to passthrough so substring matching works
-  colors-load-definitions() { typeset -gA COLORS; }
+  colors-load-definitions() {
+    typeset -gA COLORS
+    typeset -gA PROJECTS
+  }
   icons-load-definitions() { typeset -gA ICONS; }
-  projects-load-definitions() { typeset -gA PROJECTS; }
+  projects-load-definitions() { true; }
   colorize() { echo -n "$1"; }
   git-branch-colorize() { echo -n "$1"; }
-  bats_mock git-worktree-main git-submodule-list-raw git-directory-dirty-count project-name git-github-project-name colors-load-definitions icons-load-definitions projects-load-definitions colorize git-branch-colorize
+  bats_mock git-worktree-main git-submodule-list-raw git-directory-dirty-count git-directory-name colors-load-definitions icons-load-definitions projects-load-definitions colorize git-branch-colorize
   bats_disable_worktree_aware
 }
 
@@ -69,7 +71,7 @@ _advance_ahead() {
   [[ "$output" == *"my-sub"* ]]
   [[ "$output" == *"commit"* ]]
   [[ "$output" == *"main"* ]]
-  [[ "$output" == *"my-repo"* ]]
+  [[ "$output" == *"resolved-name"* ]]
 }
 
 @test "changed pointer, main submodule ahead of remote: returns 1 with error" {
@@ -80,7 +82,7 @@ _advance_ahead() {
   [[ "$output" == *"my-sub"* ]]
   [[ "$output" == *"push"* ]]
   [[ "$output" == *"main"* ]]
-  [[ "$output" == *"my-repo"* ]]
+  [[ "$output" == *"resolved-name"* ]]
 }
 
 @test "multiple submodules, one failing: identifies failing submodule" {
