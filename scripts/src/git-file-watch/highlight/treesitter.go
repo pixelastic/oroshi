@@ -130,12 +130,19 @@ func buildStyledLines(source []byte, byteStyles []int, captureStyles []SyntaxSty
 				builder.WriteString("\033[0m")
 			}
 			if style != -1 {
-				ansiCode := styleToANSI(captureStyles[style])
-				builder.WriteString(ansiCode)
+				builder.WriteString(styleToANSI(captureStyles[style]))
 			}
 			currentStyle = style
 		}
-		builder.WriteByte(b)
+		// At newlines, close the style and re-emit it on the next line
+		// so each line is self-contained after splitLines.
+		if b == '\n' && currentStyle != -1 {
+			builder.WriteString("\033[0m")
+			builder.WriteByte('\n')
+			builder.WriteString(styleToANSI(captureStyles[currentStyle]))
+		} else {
+			builder.WriteByte(b)
+		}
 	}
 	if currentStyle != -1 {
 		builder.WriteString("\033[0m")

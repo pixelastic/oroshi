@@ -91,6 +91,20 @@ func TestReturnsUnstyledContentForUnknownFileTypes(t *testing.T) {
 	}
 }
 
+// --- Multiline comment continuity (Chroma) ---
+
+func TestChromaMultiLineJSCommentHasStyleOnEveryLine(t *testing.T) {
+	h := New(stubColors{})
+	code := "/**\n * line two\n * line three\n */\nconst x = 1;\n"
+	lines := h.Highlight("app.js", code)
+
+	require.True(t, len(lines) >= 4)
+	for _, idx := range []int{0, 1, 2, 3} {
+		assert.True(t, containsANSI(lines[idx].Content),
+			"line %d of multiline comment should have ANSI styling, got: %q", idx, lines[idx].Content)
+	}
+}
+
 // --- Caching ---
 
 func TestCachesResultForUnchangedContent(t *testing.T) {

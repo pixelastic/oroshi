@@ -194,6 +194,42 @@ func stripANSI(s string) string {
 	return result.String()
 }
 
+// --- Multiline style continuity ---
+
+func TestMultiLineCommentHasStyleOnEveryLine(t *testing.T) {
+	loaded := loadGoGrammar(t)
+	syntaxMap := testSyntaxMap(t, nil)
+
+	source := []byte("package main\n\n/*\nline two\nline three\n*/\n")
+	lines := HighlightTreeSitter(loaded, "go", source, syntaxMap)
+
+	commentANSI := hexToANSI("#6b7280")
+	require.True(t, len(lines) >= 5)
+	// Lines 2-5 (0-indexed) are the comment block
+	for _, idx := range []int{2, 3, 4, 5} {
+		assert.Contains(t, lines[idx].Content, commentANSI,
+			"line %d of multiline comment should have comment color", idx)
+	}
+}
+
+func TestMultiLineStyleCarriesAcrossNewlines(t *testing.T) {
+	source := []byte("aaa\nbbb\nccc\n")
+	byteStyles := make([]int, len(source))
+	for i := range byteStyles {
+		byteStyles[i] = 0
+	}
+	captureStyles := []SyntaxStyle{{ColorHex: "#6b7280"}}
+
+	lines := buildStyledLines(source, byteStyles, captureStyles)
+
+	ansi := hexToANSI("#6b7280")
+	// All 3 content lines should have the style
+	for i := range 3 {
+		assert.Contains(t, lines[i].Content, ansi,
+			"line %d should have style re-emitted after newline", i)
+	}
+}
+
 // --- General predicates ---
 
 func TestSkipsMatchesWithUnevaluatedGeneralPredicates(t *testing.T) {
