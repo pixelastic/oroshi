@@ -189,13 +189,9 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			var folded bool
 			m.nav, m.fileIndex, folded = navigation.ToggleFold(m.nav, m.fileIndex)
 			m.refreshIndices()
-			if folded {
-				foldedHeader := m.nav.Cursor
-				m.nav = navigation.NextFile(m.nav, m.fileIndex, m.viewContext)
-				// Keep the folded header visible so the user sees the fold
-				if m.nav.Cursor != foldedHeader {
-					m.nav.ViewportOffset = foldedHeader
-				}
+			if !folded {
+				// Unfold: move cursor to first line of the file
+				m.nav = navigation.MoveDownVisible(m.nav, m.viewContext)
 			}
 		}
 		return m, nil

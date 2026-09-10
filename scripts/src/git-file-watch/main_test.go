@@ -398,13 +398,12 @@ func TestFoldingSecondFileKeepsFirstFileVisible(t *testing.T) {
 	m := testModel(th, rows)
 	m.nav.ViewportHeight = 4
 
-	// Fold file a — cursor advances to first line of file b
-	// Viewport stays on file a's header so the fold is visible
+	// Fold file a — cursor stays on file a's header
 	m.nav.Cursor = 2
 	m.pendingKey = "z"
 	r1, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'a'}})
 	m = r1.(model)
-	assert.Equal(t, 6, m.nav.Cursor)
+	assert.Equal(t, 0, m.nav.Cursor)
 	assert.Equal(t, 0, m.nav.ViewportOffset, "folded file a header should be visible")
 
 	// Navigate down to file b's last line — this scrolls the viewport
@@ -420,6 +419,50 @@ func TestFoldingSecondFileKeepsFirstFileVisible(t *testing.T) {
 	// After folding, both headers (0 and 5) should be visible
 	// Viewport should scroll back to show file a's header
 	assert.Equal(t, 0, m.nav.ViewportOffset)
+}
+
+func TestFoldingStaysCursorOnHeader(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "a.go"},             // 0
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
+		layout.LineRow{LineNumber: 2, Marker: &marker}, // 2
+		layout.FileHeaderRow{Path: "b.go"},             // 3
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 4
+	}
+	m := testModel(th, rows)
+	m.nav.Cursor = 2 // on a line inside file a
+
+	m.pendingKey = "z"
+	r, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'a'}})
+	result := r.(model)
+
+	// After folding file a, cursor should be on file a's header, not jump to file b
+	assert.Equal(t, 0, result.nav.Cursor, "cursor should stay on the folded file's header")
+}
+
+func TestUnfoldingMovesCursorToFirstLine(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "a.go"},             // 0
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
+		layout.LineRow{LineNumber: 2, Marker: &marker}, // 2
+		layout.FileHeaderRow{Path: "b.go"},             // 3
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 4
+	}
+	m := testModel(th, rows)
+	m.fileIndex.FoldState["a.go"] = true
+	m.refreshIndices()
+	m.nav.Cursor = 0 // on folded header
+
+	m.pendingKey = "z"
+	r, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'a'}})
+	result := r.(model)
+
+	// After unfolding, cursor should move to the first line of the file
+	assert.Equal(t, 1, result.nav.Cursor, "cursor should move to first line after unfolding")
 }
 
 // --- Cursor lands on folded file header ---
