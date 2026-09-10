@@ -4,16 +4,8 @@ import { commitWithoutHint } from './commitWithoutHint.js';
 import { init } from './config.js';
 import { formatMessage } from './format.js';
 import { getCommitHint } from './getCommitHint.js';
-import { getDeletedPlanName } from './getDeletedPlanName.js';
 
 init(process.argv[2]);
-
-// Short-circuit for plan deletion commits — no API call needed
-const deletedPlanName = await getDeletedPlanName();
-if (deletedPlanName) {
-  console.log(`plan(${deletedPlanName}): delete completed plan`);
-  process.exit(0);
-}
 
 // Different prompt/diff if we have a COMMIT_HINT.md (from ralph) or not
 const commitHint = await getCommitHint();

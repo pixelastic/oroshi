@@ -1,8 +1,8 @@
-import { _ } from 'golgoth';
 import { absolute, dirname, read } from 'firost';
 import { getCommitHint } from './getCommitHint.js';
 import { getDiff } from './getDiff.js';
-import { getPlanDir } from './getPlanDir.js';
+
+export let __;
 
 export const commitWithHint = {
   /**
@@ -17,23 +17,14 @@ export const commitWithHint = {
   },
 
   /**
-   * Returns git diff of staged files, excluding plan noise siblings.
+   * Returns git diff of staged files, excluding noise.
    * @returns {Promise<string>} Diff output, or empty string if no relevant files
    */
   async getDiff() {
-    const absolutePlanDir = await getPlanDir();
-    const relativePlanDir = _.chain(absolutePlanDir)
-      .split('/')
-      .compact()
-      .slice(-2)
-      .join('/')
-      .value();
-    const excludedFiles = [
-      'yarn.lock',
-      `${relativePlanDir}/state.json`,
-      `${relativePlanDir}/review-log.md`,
-      `${relativePlanDir}/GUIDANCE.md`,
-    ];
-    return getDiff(excludedFiles);
+    return __.getDiff(['yarn.lock']);
   },
+};
+
+__ = {
+  getDiff,
 };
