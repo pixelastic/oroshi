@@ -90,7 +90,7 @@ setup() {
   [[ "$status" -eq 0 ]]
 
   local calls="$(cat "$BATS_TMP_DIR/git-calls.txt")"
-  [[ "$calls" == *"-C /repo/private merge --ff-only abc12345"* ]]
+  [[ "$calls" == *"-C /repo/private merge --quiet --ff-only abc12345"* ]]
 }
 
 @test "fast-forwards each submodule to its own target commit" {
@@ -109,8 +109,8 @@ setup() {
   [[ "$status" -eq 0 ]]
 
   local calls="$(cat "$BATS_TMP_DIR/git-calls.txt")"
-  [[ "$calls" == *"-C /repo/alpha merge --ff-only aaa11111"* ]]
-  [[ "$calls" == *"-C /repo/beta merge --ff-only bbb22222"* ]]
+  [[ "$calls" == *"-C /repo/alpha merge --quiet --ff-only aaa11111"* ]]
+  [[ "$calls" == *"-C /repo/beta merge --quiet --ff-only bbb22222"* ]]
 }
 
 @test "silently ignores ff-only failure when branch has diverged" {
