@@ -29,6 +29,8 @@ type Context struct {
 	Cursor          int
 	ReviewSent      bool
 	ScreenFlash     bool
+	EditingRowIndex int
+	EditingView     string
 }
 
 // FileHeader renders a file header row with directory coloring and separator.
@@ -110,13 +112,31 @@ func CodeLine(ctx Context, row layout.LineRow, isCursor bool) string {
 	hasComment := commentText != ""
 	isFlash := ctx.FlashLines[key]
 
+	isEditing := ctx.EditingView != "" && ctx.EditingRowIndex == ctx.Cursor && isCursor
+
 	var b strings.Builder
-	if hasComment {
+	if isEditing {
+		// Show the textarea above the line, indented to align with code
+		indent := strings.Repeat(" ", ctx.LineNumberWidth+2)
+		for _, editLine := range strings.Split(ctx.EditingView, "\n") {
+			if editLine != "" {
+				b.WriteString(indent + editLine)
+			}
+			b.WriteByte('\n')
+		}
+	} else if hasComment {
 		b.WriteString(CommentLine(ctx, commentText))
 	}
 
-	gutter := Gutter(row, ctx.Theme, hasComment, ctx.ReviewSent)
-	lineNumber := LineNumber(row, ctx.Theme, ctx.LineNumberWidth, isCursor, isFlash, hasComment, ctx.ReviewSent)
+	var gutter, lineNumber string
+	if isEditing {
+		orangeStyle := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss("orange"))
+		gutter = orangeStyle.Render("▌")
+		lineNumber = orangeStyle.Bold(true).Render(fmt.Sprintf("%*d", ctx.LineNumberWidth, row.LineNumber))
+	} else {
+		gutter = Gutter(row, ctx.Theme, hasComment, ctx.ReviewSent)
+		lineNumber = LineNumber(row, ctx.Theme, ctx.LineNumberWidth, isCursor, isFlash, hasComment, ctx.ReviewSent)
+	}
 	content := DimContent(ctx, row)
 	line := gutter + lineNumber + " " + content
 
@@ -124,7 +144,9 @@ func CodeLine(ctx Context, row layout.LineRow, isCursor bool) string {
 		line = lipgloss.NewStyle().MaxWidth(ctx.ViewportWidth).Render(line)
 	}
 
-	if isCursor && ctx.ViewportWidth > 0 {
+	if isEditing && ctx.ViewportWidth > 0 {
+		line = ApplyLineBackground(line, ctx.Theme.Hex("orange-0"), ctx.ViewportWidth)
+	} else if isCursor && ctx.ViewportWidth > 0 {
 		line = ApplyLineBackground(line, ctx.Theme.Hex("yellow-0"), ctx.ViewportWidth)
 	} else if row.Marker != nil && ctx.ViewportWidth > 0 {
 		bgColor := MarkerBgColorName(*row.Marker)

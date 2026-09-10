@@ -278,16 +278,28 @@ func (m model) openEditing() (tea.Model, tea.Cmd) {
 
 	m.editState = editing.Open(absolutePath, lineRow.LineNumber, lineContent, existingReview, m.nav.Cursor)
 
+	orangeColor := m.theme.Lipgloss("orange")
+
+	// textarea width: viewport minus indent (gutter+linenum+space), borders, padding
+	indent := m.lineNumberWidth + 2
+	taWidth := m.viewportWidth - indent - 4 // 4 = border(2) + padding(2)
+	if taWidth < 30 {
+		taWidth = 30
+	}
+
 	ta := textarea.New()
 	ta.KeyMap.InsertNewline.SetKeys("⏎")
-	ta.SetWidth(60)
+	ta.SetWidth(taWidth)
 	ta.SetHeight(3)
 	ta.ShowLineNumbers = false
 	ta.Prompt = "  "
 	ta.FocusedStyle.Base = lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("240")).
+		BorderForeground(orangeColor).
 		Padding(0, 1)
+	ta.FocusedStyle.Text = lipgloss.NewStyle().Foreground(orangeColor)
+	ta.FocusedStyle.Placeholder = lipgloss.NewStyle().Foreground(orangeColor)
+	ta.FocusedStyle.CursorLine = lipgloss.NewStyle().Foreground(orangeColor)
 	if existingReview != "" {
 		ta.SetValue(existingReview)
 	}
@@ -477,6 +489,8 @@ func (m model) View() string {
 		Cursor:          m.nav.Cursor,
 		ReviewSent:      m.reviewSent,
 		ScreenFlash:     m.screenFlash,
+		EditingRowIndex: m.editState.RowIndex,
+		EditingView:     editingView(m.editState, m.editTextArea),
 	}
 
 	var builder strings.Builder
@@ -507,9 +521,6 @@ func (m model) View() string {
 			s := render.CodeLine(ctx, r, i == m.nav.Cursor)
 			rendered += strings.Count(s, "\n") - 1
 			builder.WriteString(s)
-			if m.editState.Active && i == m.editState.RowIndex {
-				builder.WriteString(m.editTextArea.View() + "\n")
-			}
 		}
 	}
 	if m.statusMessage != "" {
@@ -562,6 +573,16 @@ func (m model) renderHelp() string {
 	}
 	b.WriteString("\n  " + dim.Render("Press any key to close") + "\n")
 	return b.String()
+}
+
+func editingView(state editing.State, ta textarea.Model) string {
+	if !state.Active {
+		return ""
+	}
+	view := ta.View()
+	// Inject "Review" title into the top border (replace same-width run of dashes)
+	view = strings.Replace(view, "──────────", "─ Review ─", 1)
+	return view
 }
 
 func navigableFromVisible(rows []layout.Row, visibleIndices []int, foldState map[string]bool) []int {
