@@ -39,6 +39,21 @@ func TestSyntheticNewFileDiffReturnsEmptyForEmptyContent(t *testing.T) {
 	assert.Empty(t, SyntheticNewFileDiff("file.txt", "\n"))
 }
 
+func TestSyntheticNewFileDiffReturnsBinaryMarkerForBinaryContent(t *testing.T) {
+	binaryContent := "PNG\x89\x00\x1a\x00"
+	result := SyntheticNewFileDiff("image.png", binaryContent)
+
+	assert.Contains(t, result, "Binary files")
+	assert.NotContains(t, result, "@@")
+}
+
+func TestSyntheticNewFileDiffTreatsTextContentAsText(t *testing.T) {
+	result := SyntheticNewFileDiff("file.txt", "hello world\n")
+
+	assert.Contains(t, result, "+hello world")
+	assert.NotContains(t, result, "Binary files")
+}
+
 // --- prefixDiffPaths ---
 
 func TestPrefixDiffPathsRewritesDiffGitLine(t *testing.T) {

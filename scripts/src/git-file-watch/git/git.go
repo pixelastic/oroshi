@@ -30,10 +30,14 @@ func Head(repoRoot string) (string, error) {
 }
 
 // SyntheticNewFileDiff generates a git-diff-formatted string for an untracked file,
-// showing all lines as added.
+// showing all lines as added. Binary files (containing null bytes) get a
+// "Binary files ... differ" marker instead of line content.
 func SyntheticNewFileDiff(path string, content string) string {
 	if content == "" {
 		return ""
+	}
+	if strings.ContainsRune(content, 0) {
+		return fmt.Sprintf("diff --git a/%s b/%s\nnew file mode 100644\nBinary files /dev/null and b/%s differ\n", path, path, path)
 	}
 	lines := strings.Split(content, "\n")
 	// Trim trailing empty lines from final newline
