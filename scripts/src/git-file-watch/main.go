@@ -221,6 +221,8 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		})
 	case "ctrl+r":
 		return m.sendReviewToClaude()
+	case "ctrl+y":
+		return m.copyFilePath()
 	case "enter":
 		return m.openEditing()
 	case "g":
@@ -354,6 +356,16 @@ func (m model) sendReviewToClaude() (tea.Model, tea.Cmd) {
 	}
 
 	m.reviewSent = true
+	return m, nil
+}
+
+func (m model) copyFilePath() (tea.Model, tea.Cmd) {
+	relativePath := editor.CurrentFilePath(m.rows, m.nav.Cursor)
+	if relativePath == "" {
+		return m, nil
+	}
+	absolutePath := filepath.Join(m.repoRoot, relativePath)
+	_ = exec.Command("bin-zsh", "clipboard-write", absolutePath).Run()
 	return m, nil
 }
 
@@ -522,6 +534,7 @@ func (m model) renderHelp() string {
 		{"", "  enter: save, shift+enter: newline, ctrl+d: cancel"},
 		{"x", "Delete comment"},
 		{"i", "Open in Neovim"},
+		{"ctrl+y", "Copy file path"},
 		{"r", "Send review to Claude"},
 		{"ctrl+s", "Auto-commit all"},
 		{"?", "Show this help"},
