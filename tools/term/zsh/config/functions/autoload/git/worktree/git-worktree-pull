@@ -10,9 +10,11 @@ git-worktree-submodule-preflight
 local previousCommit="$(git rev-parse HEAD)"
 
 # Rebase main into worktree
+echo
 echo "Rebasing on main..."
 git rebase main
 
 # Update dependencies if needed
+echo
 echo "Updating dependencies..."
 git-dependencies-update "$previousCommit" --async
