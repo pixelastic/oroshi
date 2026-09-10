@@ -355,6 +355,7 @@ func loadTestTheme(t *testing.T) *theme.Theme {
 		"red-0":        {"ansi": 20, "hex": "#250f0f"},
 		"red-8":        {"ansi": 28, "hex": "#7f1d1d"},
 		"orange":       {"ansi": 208, "hex": "#ff8700"},
+		"orange-0":     {"ansi": 100, "hex": "#1a120f"},
 		"orange-8":     {"ansi": 108, "hex": "#7c2d12"},
 		"gray":         {"ansi": 245, "hex": "#6b7280"},
 		"gray-5":       {"ansi": 240, "hex": "#4b5563"},

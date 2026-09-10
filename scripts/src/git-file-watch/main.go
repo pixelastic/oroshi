@@ -48,6 +48,9 @@ type CommitFinishedMsg struct{ err error }
 // FlashExpiredMsg is sent when the flash highlight should be cleared.
 type FlashExpiredMsg struct{}
 
+// ReviewSentMsg is sent when the review has been sent to Claude.
+type ReviewSentMsg struct{ err error }
+
 type model struct {
 	theme                *theme.Theme
 	rows                 []layout.Row
@@ -77,6 +80,7 @@ type model struct {
 	oroshiRoot           string
 	showHelp             bool
 	reviewSent           bool
+	screenFlash          bool
 }
 
 func (m model) Init() tea.Cmd {
@@ -122,6 +126,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case CommitFinishedMsg:
 		cmd := m.rebuildDisplay()
 		return m, cmd
+	case ReviewSentMsg:
+		m.screenFlash = false
+		if msg.err == nil {
+			m.reviewSent = true
+		}
+		return m, nil
 	case FlashExpiredMsg:
 		m.flashLines = nil
 		return m, nil
@@ -334,25 +344,22 @@ func (m *model) rebuildDisplay() tea.Cmd {
 }
 
 func (m model) sendReviewToClaude() (tea.Model, tea.Cmd) {
-	tabID, err := currentTabID()
-	if err != nil {
-		m.statusMessage = fmt.Sprintf("error: %s", err)
-		return m, nil
+	m.screenFlash = true
+	commentCount := len(m.userComments)
+	return m, func() tea.Msg {
+		tabID, err := currentTabID()
+		if err != nil {
+			return ReviewSentMsg{err: err}
+		}
+		windowID, err := claude.FindClaudeWindow(runCommand, tabID)
+		if err != nil {
+			return ReviewSentMsg{err: err}
+		}
+		if err := claude.SendReview(runCommand, windowID, commentCount); err != nil {
+			return ReviewSentMsg{err: err}
+		}
+		return ReviewSentMsg{}
 	}
-
-	windowID, err := claude.FindClaudeWindow(runCommand, tabID)
-	if err != nil {
-		m.statusMessage = fmt.Sprintf("error: %s", err)
-		return m, nil
-	}
-
-	if err := claude.SendReview(runCommand, windowID, len(m.userComments)); err != nil {
-		m.statusMessage = err.Error()
-		return m, nil
-	}
-
-	m.reviewSent = true
-	return m, nil
 }
 
 func (m model) copyFilePath() (tea.Model, tea.Cmd) {
@@ -469,6 +476,7 @@ func (m model) View() string {
 		ViewportWidth:   m.viewportWidth,
 		Cursor:          m.nav.Cursor,
 		ReviewSent:      m.reviewSent,
+		ScreenFlash:     m.screenFlash,
 	}
 
 	var builder strings.Builder
@@ -507,7 +515,17 @@ func (m model) View() string {
 	if m.statusMessage != "" {
 		fmt.Fprintf(&builder, "\n%s\n", m.statusMessage)
 	}
-	return builder.String()
+	output := builder.String()
+	if m.screenFlash && m.viewportWidth > 0 {
+		flashBg := m.theme.Hex("orange-0")
+		var flashed strings.Builder
+		for _, line := range strings.Split(output, "\n") {
+			flashed.WriteString(render.ApplyLineBackground(line, flashBg, m.viewportWidth))
+			flashed.WriteByte('\n')
+		}
+		return flashed.String()
+	}
+	return output
 }
 
 func (m model) renderHelp() string {

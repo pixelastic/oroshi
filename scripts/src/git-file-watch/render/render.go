@@ -28,6 +28,7 @@ type Context struct {
 	ViewportWidth   int
 	Cursor          int
 	ReviewSent      bool
+	ScreenFlash     bool
 }
 
 // FileHeader renders a file header row with directory coloring and separator.
@@ -124,11 +125,11 @@ func CodeLine(ctx Context, row layout.LineRow, isCursor bool) string {
 	}
 
 	if isCursor && ctx.ViewportWidth > 0 {
-		line = applyLineBackground(line, ctx.Theme.Hex("yellow-0"), ctx.ViewportWidth)
+		line = ApplyLineBackground(line, ctx.Theme.Hex("yellow-0"), ctx.ViewportWidth)
 	} else if row.Marker != nil && ctx.ViewportWidth > 0 {
 		bgColor := MarkerBgColorName(*row.Marker)
 		if bgColor != "" {
-			line = applyLineBackground(line, ctx.Theme.Hex(bgColor), ctx.ViewportWidth)
+			line = ApplyLineBackground(line, ctx.Theme.Hex(bgColor), ctx.ViewportWidth)
 		}
 	}
 
@@ -139,12 +140,12 @@ func CodeLine(ctx Context, row layout.LineRow, isCursor bool) string {
 
 // applyCursorHighlight applies the cursor background color to the entire line.
 func applyCursorHighlight(line string, th *theme.Theme, viewportWidth int) string {
-	return applyLineBackground(line, th.Hex("yellow-0"), viewportWidth)
+	return ApplyLineBackground(line, th.Hex("yellow-0"), viewportWidth)
 }
 
-// applyLineBackground applies a hex background color to the entire line and pads to viewport width.
+// ApplyLineBackground applies a hex background color to the entire line and pads to viewport width.
 // It uses raw ANSI escapes to inject a background that survives lipgloss resets.
-func applyLineBackground(line string, hex string, viewportWidth int) string {
+func ApplyLineBackground(line string, hex string, viewportWidth int) string {
 	if hex == "" {
 		return line
 	}
