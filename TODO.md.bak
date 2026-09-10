@@ -58,6 +58,7 @@ svg, maybe for js as well)
 - meetup-announce should use bulletpoints (in #team-devmarketing) for
 scannability
 - Tell claue to run log analysis in subagents
+- Show in Claude statusbar the number of subagents running
 
 ---
 

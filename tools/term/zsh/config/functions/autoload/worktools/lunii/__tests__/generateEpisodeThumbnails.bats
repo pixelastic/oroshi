@@ -8,7 +8,7 @@ _lib_dir() {
   echo "${BATS_TEST_DIRNAME}/../__lib"
 }
 
-@test "all JPEGs same hash: calls txt2svg for each, produces PNGs, preserves JPEGs" {
+@test "all JPEGs same hash: calls txt2svg for each, produces PNGs, cleans up source JPEGs" {
   local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
   mkdir -p "$episodesDir"
   echo "same content" > "$episodesDir/20240101 Episode One.item.jpeg"
@@ -36,7 +36,7 @@ _lib_dir() {
   bats_mock txt2svg svg2png resizeToLunii
 
   local libDir="$(_lib_dir)"
-  bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack"
+  bats_run_zsh "source $libDir/generateEpisodeThumbnails.zsh && generateEpisodeThumbnails $BATS_TMP_DIR/mypack"
   [[ "$status" -eq 0 ]]
 
   # txt2svg called once per episode
@@ -47,9 +47,9 @@ _lib_dir() {
   [[ -f "$episodesDir/20240101 Episode One.item.png" ]]
   [[ -f "$episodesDir/20240102 Episode Two.item.png" ]]
 
-  # JPEGs preserved
-  [[ -f "$episodesDir/20240101 Episode One.item.jpeg" ]]
-  [[ -f "$episodesDir/20240102 Episode Two.item.jpeg" ]]
+  # Source JPEGs cleaned up
+  [[ ! -f "$episodesDir/20240101 Episode One.item.jpeg" ]]
+  [[ ! -f "$episodesDir/20240102 Episode Two.item.jpeg" ]]
 }
 
 @test "mixed hashes: txt2svg for duplicates, resizeToLunii for unique, all PNGs produced" {
@@ -81,7 +81,7 @@ _lib_dir() {
   bats_mock txt2svg svg2png resizeToLunii
 
   local libDir="$(_lib_dir)"
-  bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack"
+  bats_run_zsh "source $libDir/generateEpisodeThumbnails.zsh && generateEpisodeThumbnails $BATS_TMP_DIR/mypack"
   [[ "$status" -eq 0 ]]
 
   # txt2svg called only for the 2 duplicate-hash episodes
@@ -97,10 +97,10 @@ _lib_dir() {
   [[ -f "$episodesDir/20240102 Episode Two.item.png" ]]
   [[ -f "$episodesDir/20240103 Episode Three.item.png" ]]
 
-  # All JPEGs preserved
-  [[ -f "$episodesDir/20240101 Episode One.item.jpeg" ]]
-  [[ -f "$episodesDir/20240102 Episode Two.item.jpeg" ]]
-  [[ -f "$episodesDir/20240103 Episode Three.item.jpeg" ]]
+  # Source JPEGs cleaned up
+  [[ ! -f "$episodesDir/20240101 Episode One.item.jpeg" ]]
+  [[ ! -f "$episodesDir/20240102 Episode Two.item.jpeg" ]]
+  [[ ! -f "$episodesDir/20240103 Episode Three.item.jpeg" ]]
 }
 
 @test "skips episodes with existing .item.png" {
@@ -133,7 +133,7 @@ _lib_dir() {
   bats_mock txt2svg svg2png resizeToLunii
 
   local libDir="$(_lib_dir)"
-  bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack"
+  bats_run_zsh "source $libDir/generateEpisodeThumbnails.zsh && generateEpisodeThumbnails $BATS_TMP_DIR/mypack"
   [[ "$status" -eq 0 ]]
 
   # txt2svg called for Episode Two and Three (Episode One skipped)
@@ -168,7 +168,7 @@ _lib_dir() {
   bats_mock txt2svg svg2png resizeToLunii
 
   local libDir="$(_lib_dir)"
-  bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack"
+  bats_run_zsh "source $libDir/generateEpisodeThumbnails.zsh && generateEpisodeThumbnails $BATS_TMP_DIR/mypack"
   [[ "$status" -eq 0 ]]
 
   local args="$(cat "$BATS_TMP_DIR/txt2svg_args.txt")"
@@ -205,7 +205,7 @@ _lib_dir() {
   bats_mock txt2svg svg2png resizeToLunii
 
   local libDir="$(_lib_dir)"
-  bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack --force-generate-all"
+  bats_run_zsh "source $libDir/generateEpisodeThumbnails.zsh && generateEpisodeThumbnails $BATS_TMP_DIR/mypack --force-generate-all"
   [[ "$status" -eq 0 ]]
 
   # txt2svg called for all 3 episodes despite unique hashes
@@ -216,7 +216,7 @@ _lib_dir() {
   run ! grep -q ".item.jpeg" "$BATS_TMP_DIR/resize_calls.txt"
 }
 
-@test "idempotent: second run with all PNGs present does nothing" {
+@test "idempotent: second run with all PNGs present skips generation but cleans up JPEGs" {
   local episodesDir="$BATS_TMP_DIR/mypack/Choose your story"
   mkdir -p "$episodesDir"
   echo "content" > "$episodesDir/20240101 Episode One.item.jpeg"
@@ -235,10 +235,14 @@ _lib_dir() {
   bats_mock txt2svg svg2png resizeToLunii
 
   local libDir="$(_lib_dir)"
-  bats_run_zsh "source $libDir/generateEpisodeImages.zsh && generateEpisodeImages $BATS_TMP_DIR/mypack"
+  bats_run_zsh "source $libDir/generateEpisodeThumbnails.zsh && generateEpisodeThumbnails $BATS_TMP_DIR/mypack"
   [[ "$status" -eq 0 ]]
 
-  # Nothing was called
+  # No generation happened
   [[ ! -f "$BATS_TMP_DIR/txt2svg_calls.txt" ]]
   [[ ! -f "$BATS_TMP_DIR/resize_calls.txt" ]]
+
+  # Source JPEGs cleaned up
+  [[ ! -f "$episodesDir/20240101 Episode One.item.jpeg" ]]
+  [[ ! -f "$episodesDir/20240102 Episode Two.item.jpeg" ]]
 }

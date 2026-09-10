@@ -1,6 +1,6 @@
 # Fit+pad the pack thumbnail to exactly 320x240 with black padding
-# Usage: resizeThumbnail <packDir>
-function resizeThumbnail() {
+# Usage: resizePodcastThumbnail <packDir>
+function resizePodcastThumbnail() {
   local packDir=$1
 
   local thumbnails=("$packDir"/thumbnail.png(N) "$packDir"/thumbnail.jpeg(N) "$packDir"/0-item.png(N))

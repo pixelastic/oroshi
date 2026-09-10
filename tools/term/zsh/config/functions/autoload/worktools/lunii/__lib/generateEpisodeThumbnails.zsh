@@ -1,8 +1,8 @@
 # Generate episode thumbnails: duplicate source thumbnails get Claude SVG, unique ones get resized
 # Usage:
-# $ generateEpisodeImages <packDir>                          # Auto-detect duplicates
-# $ generateEpisodeImages <packDir> --force-generate-all     # Delete cache and force SVG for all
-function generateEpisodeImages() {
+# $ generateEpisodeThumbnails <packDir>                          # Auto-detect duplicates
+# $ generateEpisodeThumbnails <packDir> --force-generate-all     # Delete cache and force SVG for all
+function generateEpisodeThumbnails() {
   setopt local_options err_return
 
   local packDir=$1
@@ -27,8 +27,11 @@ function generateEpisodeImages() {
     jpegsToProcess+=("$jpeg")
   done
 
-  # Nothing to process
-  [[ ${#jpegsToProcess} -eq 0 ]] && return 0
+  # Nothing to generate — clean up source JPEGs that have a PNG and return
+  if [[ ${#jpegsToProcess} -eq 0 ]]; then
+    _cleanupSourceJpegs "$episodesDir"
+    return 0
+  fi
 
   # Build hash → count map to detect duplicates
   local -A hashCount
@@ -67,5 +70,15 @@ function generateEpisodeImages() {
       echo "[$current/$total] Resizing: $title"
       resizeToLunii "$jpeg"
     fi
+  done
+
+  _cleanupSourceJpegs "$episodesDir"
+}
+
+# Remove source JPEGs that have a corresponding PNG
+function _cleanupSourceJpegs() {
+  local dir=$1
+  for jpeg in "$dir"/*.item.jpeg(N) "$dir"/*.item.jpg(N); do
+    [[ -f "${jpeg:r}.png" ]] && rm -f "$jpeg"
   done
 }
