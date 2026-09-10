@@ -33,7 +33,9 @@ git-file-add "${repoArgs[@]}"
 # Generate commit message from staged diff
 local messageArgs=()
 [[ "$repoPath" != "" ]] && messageArgs=("$repoPath")
-local message="$(git-commit-message "${messageArgs[@]}")"
+# zsh-lint disable=noSplitLocal
+local message
+message="$(git-commit-message "${messageArgs[@]}")"
 # Abort if message generation failed
 [[ "$message" == "" ]] && return 1
 

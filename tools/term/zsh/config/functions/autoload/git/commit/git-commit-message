@@ -3,7 +3,9 @@
 # $ git-commit-message
 setopt local_options err_return
 
-local output=$(node ${functions_source[$0]:A:h}/__lib/git-commit-message.js "$@")
+# zsh-lint disable=noSplitLocal
+local output
+output=$(node ${functions_source[$0]:A:h}/__lib/git-commit-message.js "$@")
 
 [[ "$output" == "" ]] && return 1
 

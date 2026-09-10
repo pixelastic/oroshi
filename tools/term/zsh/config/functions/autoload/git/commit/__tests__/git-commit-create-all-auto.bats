@@ -185,3 +185,19 @@ setup() {
 	[[ "$status" -ne 0 ]]
 	[[ ! -f "$BATS_TMP_DIR/create-called.txt" ]]
 }
+
+@test "aborts without committing when git-commit-message exits non-zero despite producing stdout" {
+	git-file-add() { :; }
+	git-commit-message() {
+		echo "error output"
+		return 1
+	}
+	git-commit-create() {
+		echo "should not run" > "$BATS_TMP_DIR/create-called.txt"
+	}
+	bats_mock git-file-add git-commit-message git-commit-create
+
+	bats_run_zsh "git-commit-create-all-auto"
+	[[ "$status" -ne 0 ]]
+	[[ ! -f "$BATS_TMP_DIR/create-called.txt" ]]
+}

@@ -29,3 +29,14 @@ setup() {
 	[[ "$status" -ne 0 ]]
 	[[ "$output" == "" ]]
 }
+
+@test "exits non-zero when node exits non-zero despite producing stdout" {
+	node() {
+		echo "error output on stdout"
+		return 1
+	}
+	bats_mock node
+
+	bats_run_zsh "git-commit-message"
+	[[ "$status" -ne 0 ]]
+}
