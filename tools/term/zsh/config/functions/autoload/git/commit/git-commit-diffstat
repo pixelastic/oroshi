@@ -1,0 +1,35 @@
+# Show a pretty diff stat between two commits
+# Usage:
+# $ git-commit-diffstat abc123                        # From abc123 to HEAD
+# $ git-commit-diffstat abc123 --to def456            # From abc123 to def456
+# $ git-commit-diffstat abc123 --repo /path/to/repo   # In a specific repo
+setopt local_options err_return
+
+zparseopts -E -D \
+  -to:=flagTo \
+  -repo:=flagRepo
+
+local from="$1"
+
+# Missing positional argument
+if [[ "$from" == "" ]]; then
+  echoerr "Usage: git-commit-diffstat <old-ref> [--to <new-ref>] [--repo <path>]"
+  return 1
+fi
+
+local repo=${flagRepo[2]:-$PWD}
+local to=${flagTo[2]:-$(cd "$repo" && git-commit-current)}
+
+# Validate from ref exists
+if ! (cd "$repo" && git-commit-exists "$from"); then
+  echoerr "Ref not found: $from"
+  return 1
+fi
+
+# Validate to ref exists
+if ! (cd "$repo" && git-commit-exists "$to"); then
+  echoerr "Ref not found: $to"
+  return 1
+fi
+
+go-run-oroshi git-commit-diffstat "$from" "$to" "$repo"
