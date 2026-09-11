@@ -15,7 +15,7 @@ fi
 git-file-add --repo "$planDirectory"
 
 # Commit to the plan repo
-local commitMessage="$(git-commit-message)"
+local commitMessage="$(git-commit-message "$planDirectory")"
 git-commit-create --repo "$planDirectory" "$commitMessage"
 
 # Notify user that plan is done

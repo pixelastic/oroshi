@@ -2,86 +2,103 @@ bats_load_library 'helper'
 
 # Setup: create a plan dir as a git repo with an initial commit and a dirty file
 setup() {
-  bats_tmp_dir
-  export MOCK_OROSHI_PLANS_DIR="$BATS_TMP_DIR/plans"
-  mkdir -p "$MOCK_OROSHI_PLANS_DIR"
+	bats_tmp_dir
+	export MOCK_OROSHI_PLANS_DIR="$BATS_TMP_DIR/plans"
+	mkdir -p "$MOCK_OROSHI_PLANS_DIR"
 }
 
 _mock_plan_repo() {
-  local planDir="$MOCK_OROSHI_PLANS_DIR/repo--my-feature"
-  git init --initial-branch=main --quiet "$planDir"
-  git -C "$planDir" config user.email "bats@oroshi"
-  git -C "$planDir" config user.name "Bats"
-  git -C "$planDir" commit --allow-empty --quiet --message="init"
+	local planDir="$MOCK_OROSHI_PLANS_DIR/repo--my-feature"
+	git init --initial-branch=main --quiet "$planDir"
+	git -C "$planDir" config user.email "bats@oroshi"
+	git -C "$planDir" config user.name "Bats"
+	git -C "$planDir" commit --allow-empty --quiet --message="init"
 
-  # Add a dirty file so there's something to commit
-  echo "state" > "$planDir/state.json"
+	# Add a dirty file so there's something to commit
+	echo "state" > "$planDir/state.json"
 
-  echo "$planDir"
+	echo "$planDir"
 }
 
 @test "exits 1 when plan directory doesn't exist" {
-  bats_run_zsh "plan-end /nonexistent/path"
-  [[ "$status" -eq 1 ]]
-  [[ "$output" == *"plan directory"* ]]
+	bats_run_zsh "plan-end /nonexistent/path"
+	[[ "$status" -eq 1 ]]
+	[[ "$output" == *"plan directory"* ]]
 }
 
 @test "commits all plan files to the plan's own git repo" {
-  local planDir="$(_mock_plan_repo)"
+	local planDir="$(_mock_plan_repo)"
 
-  git-commit-message() { echo "plan: update"; }
-  kitty-notify() { :; }
-  claude-stop() { :; }
-  bats_mock git-commit-message kitty-notify claude-stop
+	# Mock only the LLM call and side-effects, not the commit message pipeline
+	claude-api() { echo "plan(my-feature): update plan artifacts"; }
+	kitty-notify() { :; }
+	claude-stop() { :; }
+	bats_mock claude-api kitty-notify claude-stop
 
-  bats_run_zsh "plan-end $planDir"
-  [[ "$status" -eq 0 ]]
+	bats_run_zsh "plan-end $planDir"
+	[[ "$status" -eq 0 ]]
 
-  # Plan repo has a new commit (2 total: init + plan-end)
-  [[ "$(git -C "$planDir" log --oneline | wc -l)" -eq 2 ]]
+	# Plan repo has a new commit (2 total: init + plan-end)
+	[[ "$(git -C "$planDir" log --oneline | wc -l)" -eq 2 ]]
 }
 
 @test "plan repo working tree is clean after commit" {
-  local planDir="$(_mock_plan_repo)"
+	local planDir="$(_mock_plan_repo)"
 
-  git-commit-message() { echo "plan: update"; }
-  kitty-notify() { :; }
-  claude-stop() { :; }
-  bats_mock git-commit-message kitty-notify claude-stop
+	claude-api() { echo "plan(my-feature): update plan artifacts"; }
+	kitty-notify() { :; }
+	claude-stop() { :; }
+	bats_mock claude-api kitty-notify claude-stop
 
-  bats_run_zsh "plan-end $planDir"
-  [[ "$status" -eq 0 ]]
+	bats_run_zsh "plan-end $planDir"
+	[[ "$status" -eq 0 ]]
 
-  # No uncommitted changes
-  [[ -z "$(git -C "$planDir" status --porcelain)" ]]
+	# No uncommitted changes
+	[[ -z "$(git -C "$planDir" status --porcelain)" ]]
+}
+
+@test "commit message comes from git-commit-message, not hardcoded" {
+	local planDir="$(_mock_plan_repo)"
+
+	claude-api() { echo "plan(my-feature): add PRD and issues"; }
+	kitty-notify() { :; }
+	claude-stop() { :; }
+	bats_mock claude-api kitty-notify claude-stop
+
+	bats_run_zsh "plan-end $planDir"
+	[[ "$status" -eq 0 ]]
+
+	# Commit message matches what claude-api returned
+	local lastMessage="$(git -C "$planDir" log -1 --format=%s)"
+	[[ "$lastMessage" == "plan(my-feature): add PRD and issues" ]]
 }
 
 @test "calls claude-stop" {
-  local planDir="$(_mock_plan_repo)"
+	local planDir="$(_mock_plan_repo)"
 
-  git-commit-message() { echo "plan: update"; }
-  kitty-notify() { :; }
-  claude-stop() { echo "stopped" > "$BATS_TMP_DIR/claude-stopped.txt"; }
-  bats_mock git-commit-message kitty-notify claude-stop
+	claude-api() { echo "plan: update"; }
+	kitty-notify() { :; }
+	claude-stop() { echo "stopped" > "$BATS_TMP_DIR/claude-stopped.txt"; }
+	bats_mock claude-api kitty-notify claude-stop
 
-  bats_run_zsh "plan-end $planDir"
-  [[ "$status" -eq 0 ]]
-  [[ -f "$BATS_TMP_DIR/claude-stopped.txt" ]]
+	bats_run_zsh "plan-end $planDir"
+	[[ "$status" -eq 0 ]]
+	[[ -f "$BATS_TMP_DIR/claude-stopped.txt" ]]
 }
 
 @test "calls kitty-notify --sound notification.mp3 before claude-stop" {
-  local planDir="$(_mock_plan_repo)"
+	local planDir="$(_mock_plan_repo)"
 
-  git-commit-message() { echo "plan: update"; }
-  kitty-notify() { echo "notify:$*" >> "$BATS_TMP_DIR/call-order.txt"; }
-  claude-stop() { echo "stop" >> "$BATS_TMP_DIR/call-order.txt"; }
-  bats_mock git-commit-message kitty-notify claude-stop
+	claude-api() { echo "plan: update"; }
+	kitty-notify() { echo "notify:$*" >> "$BATS_TMP_DIR/call-order.txt"; }
+	claude-stop() { echo "stop" >> "$BATS_TMP_DIR/call-order.txt"; }
+	bats_mock claude-api kitty-notify claude-stop
 
-  bats_run_zsh "plan-end $planDir"
-  [[ "$status" -eq 0 ]]
+	bats_run_zsh "plan-end $planDir"
+	[[ "$status" -eq 0 ]]
 
-  # kitty-notify called with correct args
-  [[ "$(sed -n '1p' "$BATS_TMP_DIR/call-order.txt")" == "notify:--sound notification.mp3" ]]
-  # kitty-notify called before claude-stop
-  [[ "$(sed -n '2p' "$BATS_TMP_DIR/call-order.txt")" == "stop" ]]
+	# kitty-notify called with correct args
+	[[ "$(sed -n '1p' "$BATS_TMP_DIR/call-order.txt")" == "notify:--sound notification.mp3" ]]
+	# kitty-notify called before claude-stop
+	[[ "$(sed -n '2p' "$BATS_TMP_DIR/call-order.txt")" == "stop" ]]
 }
