@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Build the git-commit-diffstat binary
+# Usage:
+# $ build
+set -e
+setopt local_options err_return
+
+local binaryName="git-commit-diffstat"
+local srcDirectory="${OROSHI_ROOT}/scripts/src/${binaryName}"
+
+go build \
+  -o "${srcDirectory}/dist/${binaryName}" \
+  "${srcDirectory}"
