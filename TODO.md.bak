@@ -59,6 +59,8 @@ svg, maybe for js as well)
 scannability
 - Tell claue to run log analysis in subagents
 - Show in Claude statusbar the number of subagents running
+- theme.go in git-branch-pretty, git-file-watch and git-commit-diffstat is
+similar and might need to be extracted in a shared helper
 
 ---
 
