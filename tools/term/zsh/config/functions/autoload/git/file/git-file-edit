@@ -4,9 +4,9 @@
 setopt local_options err_return
 
 local gitRoot="$(git-directory-root)"
-local rawFiles="$(git-file-list-dirty-raw)"
+local rawFiles="$(git-file-list-dirty-raw --include-submodules)"
 
-# Nothing to open if working tree is clean
+# Nothing to open if working tree and all submodules are clean
 [[ "$rawFiles" == "" ]] && return 0
 
 # Collect dirty plan artifacts (GUIDANCE.md, review-log.md) from external plan repo

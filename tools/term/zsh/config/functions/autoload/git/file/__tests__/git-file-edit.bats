@@ -416,6 +416,52 @@ setup_plan_repo() {
   [[ "$output" != *"state.json"* ]]
 }
 
+# Submodule tests
+
+@test "opens dirty files from submodules when top-level is clean" {
+  bats_git_submodule "$BATS_GIT_DIR" my-sub
+  echo "content" > "$BATS_GIT_DIR/my-sub/sub-file.txt"
+  git -C "$BATS_GIT_DIR/my-sub" add sub-file.txt
+  git -C "$BATS_GIT_DIR/my-sub" commit --quiet -m "add sub-file"
+  echo "modified" > "$BATS_GIT_DIR/my-sub/sub-file.txt"
+
+  filetypes-load-definitions() { :; }
+  filetypes-group() { REPLY="text"; }
+  nvim() {
+    shift
+    printf '%s\n' "$@"
+  }
+  bats_mock filetypes-load-definitions filetypes-group nvim
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"my-sub/sub-file.txt"* ]]
+}
+
+@test "opens both top-level and submodule dirty files together" {
+  bats_git_submodule "$BATS_GIT_DIR" my-sub
+  echo "content" > "$BATS_GIT_DIR/my-sub/sub-file.txt"
+  git -C "$BATS_GIT_DIR/my-sub" add sub-file.txt
+  git -C "$BATS_GIT_DIR/my-sub" commit --quiet -m "add sub-file"
+  echo "modified" > "$BATS_GIT_DIR/file.txt"
+  echo "modified" > "$BATS_GIT_DIR/my-sub/sub-file.txt"
+
+  filetypes-load-definitions() { :; }
+  filetypes-group() { REPLY="text"; }
+  nvim() {
+    shift
+    printf '%s\n' "$@"
+  }
+  bats_mock filetypes-load-definitions filetypes-group nvim
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"file.txt"* ]]
+  [[ "$output" == *"my-sub/sub-file.txt"* ]]
+}
+
 @test "sorts paired files adjacent, unpaired at natural position" {
   mkdir -p "$BATS_GIT_DIR/src/__tests__"
   echo "x" > "$BATS_GIT_DIR/config.txt"

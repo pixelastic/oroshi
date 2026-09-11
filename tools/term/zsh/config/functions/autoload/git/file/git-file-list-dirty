@@ -1,6 +1,9 @@
 # List all dirty files (modified, added, or deleted since last commit) with colors
+# Usage:
+# $ git-file-list-dirty                        # current directory
+# $ git-file-list-dirty --include-submodules   # include submodule dirty files
 setopt local_options err_return
-local rawFiles="$(git-file-list-dirty-raw)"
+local rawFiles="$(git-file-list-dirty-raw "$@")"
 
 for rawLine in ${(f)rawFiles}; do
   local splitLine=(${(@ps/▮/)rawLine})

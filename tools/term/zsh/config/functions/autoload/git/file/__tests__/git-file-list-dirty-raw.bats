@@ -90,6 +90,58 @@ setup() {
   [[ "$output" = "my file.txt▮A" ]]
 }
 
+# Submodule tests
+
+@test "--include-submodules lists dirty submodule files prefixed with submodule path" {
+  bats_git_submodule "$BATS_GIT_DIR" my-sub
+  echo "content" > "$BATS_GIT_DIR/my-sub/sub-file.txt"
+  git -C "$BATS_GIT_DIR/my-sub" add sub-file.txt
+  git -C "$BATS_GIT_DIR/my-sub" commit --quiet -m "add sub-file"
+  echo "modified" > "$BATS_GIT_DIR/my-sub/sub-file.txt"
+
+  bats_disable_worktree_aware
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-list-dirty-raw --include-submodules"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"my-sub/sub-file.txt▮M"* ]]
+}
+
+@test "--include-submodules lists both top-level and submodule dirty files" {
+  bats_git_submodule "$BATS_GIT_DIR" my-sub
+  echo "content" > "$BATS_GIT_DIR/my-sub/sub-file.txt"
+  git -C "$BATS_GIT_DIR/my-sub" add sub-file.txt
+  git -C "$BATS_GIT_DIR/my-sub" commit --quiet -m "add sub-file"
+  echo "modified" > "$BATS_GIT_DIR/tracked.txt"
+  echo "modified" > "$BATS_GIT_DIR/my-sub/sub-file.txt"
+
+  bats_disable_worktree_aware
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-list-dirty-raw --include-submodules"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"tracked.txt▮M"* ]]
+  [[ "$output" == *"my-sub/sub-file.txt▮M"* ]]
+}
+
+@test "--include-submodules returns empty when top-level and submodules are clean" {
+  bats_git_submodule "$BATS_GIT_DIR" my-sub
+
+  bats_disable_worktree_aware
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-list-dirty-raw --include-submodules"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+}
+
+@test "without --include-submodules does not list submodule inner files" {
+  bats_git_submodule "$BATS_GIT_DIR" my-sub
+  echo "content" > "$BATS_GIT_DIR/my-sub/sub-file.txt"
+  git -C "$BATS_GIT_DIR/my-sub" add sub-file.txt
+  git -C "$BATS_GIT_DIR/my-sub" commit --quiet -m "add sub-file"
+  echo "modified" > "$BATS_GIT_DIR/my-sub/sub-file.txt"
+
+  bats_disable_worktree_aware
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-list-dirty-raw"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"sub-file.txt"* ]]
+}
+
 @test "returns empty output for a clean path argument" {
   bats_disable_worktree_aware
   export MOCK_OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"

@@ -2,11 +2,41 @@
 # Output format: filepath▮STATUS (renames: filepath▮STATUS▮oldpath)
 # STATUS can be: M (Modified), A (Added), D (Deleted), R (Renamed)
 # Usage:
-# $ git-file-list-dirty-raw           # current directory
-# $ git-file-list-dirty-raw /path     # from given path
+# $ git-file-list-dirty-raw                        # current directory
+# $ git-file-list-dirty-raw /path                  # from given path
+# $ git-file-list-dirty-raw --include-submodules   # include submodule dirty files
 setopt local_options err_return
 
-local rawOutput="$(git-status-raw "$@")"
+zparseopts -E -D \
+  -include-submodules=flagIncludeSubmodules
+
+local includeSubmodules=${#flagIncludeSubmodules}
+local targetPath="${1:-.}"
+local gitRoot="$(git-directory-root "$targetPath")"
+
+local rawOutput="$(git-status-raw "$targetPath")"
+
+# Collect dirty files from submodules, prefixed with submodule relative path
+if [[ $includeSubmodules == 1 ]]; then
+  local submoduleList="$(git-submodule-list-raw "$targetPath" 2>/dev/null)"
+
+  for submoduleLine in ${(f)submoduleList}; do
+    local submoduleParts=(${(@ps/▮/)submoduleLine})
+    local submodulePath=$submoduleParts[1]
+
+    local submoduleDirtyFiles="$(git-file-list-dirty-raw "${gitRoot}/${submodulePath}" 2>/dev/null)"
+    for submoduleDirtyLine in ${(f)submoduleDirtyFiles}; do
+      local submoduleFields=(${(@ps/▮/)submoduleDirtyLine})
+      local prefixedPath="${submodulePath}/${submoduleFields[1]}"
+      local submoduleStatus=$submoduleFields[2]
+
+      local submoduleOutput="${prefixedPath}▮${submoduleStatus}"
+      # Append prefixed old path for renames
+      [[ "$submoduleFields[3]" != "" ]] && submoduleOutput+="▮${submodulePath}/${submoduleFields[3]}"
+      echo "$submoduleOutput"
+    done
+  done
+fi
 
 # Nothing to report if clean
 [[ "$rawOutput" == "" ]] && return 0
