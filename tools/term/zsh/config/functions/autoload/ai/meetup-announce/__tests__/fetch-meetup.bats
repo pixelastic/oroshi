@@ -4,12 +4,12 @@ setup() {
   bats_tmp_dir
   export AIRTABLE_DEVREL_MEETUPS_TOKEN_READONLY="test-token-123"
   sourcePrefix="source '${OROSHI_ROOT}/tools/term/zsh/config/functions/autoload/ai/meetup-announce/__lib/fetch-meetup.zsh'"
-  EXPECTED_FIELDS="UUID,name,date,startTime,endTime,description,URL,notes,helpersFullName,guestRegisteredCount,guestAttendingCountFinal,pictureMain,pictureLogo,pictureBackground,horizontalScreen,verticalScreen,signagePrint"
+  EXPECTED_FIELDS="UUID,name,date,startTime,endTime,description,URL,notes,helpersFullName,guestRegisteredCount,guestAttendingCountFinal"
 }
 
 @test "returns JSON containing all expected fields" {
   airtable-record-read() {
-    echo '{"UUID":"abc-123","name":"Paris Meetup","date":"2026-09-15","startTime":"19:00","endTime":"22:00","description":"A great meetup","URL":"https://example.com","notes":"Some notes","helpersFullName":["Alice","Bob"],"guestRegisteredCount":42,"guestAttendingCountFinal":35,"pictureMain":"https://img/main.jpg","pictureLogo":"https://img/logo.jpg","pictureBackground":"https://img/bg.jpg","horizontalScreen":"https://img/h.jpg","verticalScreen":"https://img/v.jpg","signagePrint":"https://img/s.jpg"}'
+    echo '{"UUID":"abc-123","name":"Paris Meetup","date":"2026-09-15","startTime":"19:00","endTime":"22:00","description":"A great meetup","URL":"https://example.com","notes":"Some notes","helpersFullName":["Alice","Bob"],"guestRegisteredCount":42,"guestAttendingCountFinal":35}'
   }
   bats_mock airtable-record-read
 
@@ -23,7 +23,7 @@ setup() {
   expect_json '.description' 'A great meetup'
   expect_json '.URL' 'https://example.com'
   expect_json '.notes' 'Some notes'
-  expect_json '.signagePrint' 'https://img/s.jpg'
+  expect_json '.helpersFullName[0]' 'Alice'
 }
 
 @test "does not return fields outside the expected list" {

@@ -24,7 +24,7 @@ function resolve-draft-dir() {
   fi
 
   # New draft directory — create folder structure + state.json
-  mkdir -p "$draftDir/assets"
+  mkdir -p "$draftDir"
 
   local messageIds=(
     "early--office-paris--initial"

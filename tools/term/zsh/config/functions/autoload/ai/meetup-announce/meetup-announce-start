@@ -16,7 +16,6 @@ fi
 local libDir="${functions_source[$0]:A:h}/__lib"
 source "$libDir/fetch-meetup.zsh"
 source "$libDir/resolve-draft-dir.zsh"
-source "$libDir/download-assets.zsh"
 source "$libDir/compute-schedule.zsh"
 
 # Fetch meetup data from Airtable
@@ -27,9 +26,6 @@ local eventDate="$(jq -r '.date' <<< "$meetupJson")"
 
 # Create or reuse draft directory
 local draftDir="$(resolve-draft-dir "$recordId" "$meetupName")"
-
-# Download assets to draft directory
-download-assets "$meetupJson" "$draftDir/assets"
 
 # Compute which messages to write
 local today="$(date +%Y-%m-%d)"

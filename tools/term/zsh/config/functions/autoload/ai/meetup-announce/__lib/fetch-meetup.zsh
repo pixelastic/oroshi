@@ -22,12 +22,6 @@ function fetch-meetup() {
     helpersFullName
     guestRegisteredCount
     guestAttendingCountFinal
-    pictureMain
-    pictureLogo
-    pictureBackground
-    horizontalScreen
-    verticalScreen
-    signagePrint
   )
   local fieldList="${(j/,/)fields}"
 

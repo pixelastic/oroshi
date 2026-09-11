@@ -4,7 +4,7 @@ setup() {
   bats_tmp_dir
 
   DRAFT_DIR="$BATS_TMP_DIR/claude/meetup-announce/recABC123"
-  mkdir -p "$DRAFT_DIR/assets"
+  mkdir -p "$DRAFT_DIR"
 
   # state.json — resolve-draft-dir would normally create this
   echo '{"meetupId":"recABC123","meetupName":"Paris Meetup","messages":{}}' > "$DRAFT_DIR/state.json"
@@ -20,15 +20,13 @@ setup() {
 
   resolve-draft-dir() { echo "$DRAFT_DIR"; }
 
-  download-assets() { return 0; }
-
   compute-schedule() {
     echo '{"window":"early","messages":[{"id":"early--office-paris--initial","scheduledFor":"2026-09-12T10:17","channel":"#office-paris"}]}'
   }
 
   kitty-window-create() { return 0; }
 
-  bats_mock fetch-meetup resolve-draft-dir download-assets compute-schedule kitty-window-create
+  bats_mock fetch-meetup resolve-draft-dir compute-schedule kitty-window-create
 }
 
 # -- Happy path --
@@ -52,11 +50,10 @@ setup() {
 
 # -- Integration --
 
-@test "draft directory exists after execution with assets/ subdirectory" {
+@test "draft directory exists after execution" {
   bats_run_zsh "meetup-announce-start recABC123"
   [[ "$status" -eq 0 ]]
   [[ -d "$DRAFT_DIR" ]]
-  [[ -d "$DRAFT_DIR/assets" ]]
 }
 
 @test "state.json exists in draft directory" {
