@@ -7,7 +7,9 @@ setup() {
 # Merged output
 
 @test "outputs JSON with both colors and fonts keys" {
-	img-extract-colors() { echo '{"Vibrant":"#ff0000"}'; }
+	img-extract-colors() {
+		echo '{"background":"#ff0000","text":null,"accent":null,"muted":null}'
+	}
 	img-extract-fonts() {
 		echo '[{"title":"Roboto","url":"https://example.com","type":"free","site":"google"}]'
 	}
@@ -21,13 +23,15 @@ setup() {
 }
 
 @test "colors value matches img-extract-colors output" {
-	img-extract-colors() { echo '{"Vibrant":"#ff0000","Muted":"#888888"}'; }
+	img-extract-colors() {
+		echo '{"background":"#ff0000","text":"#000000","accent":"#00ff00","muted":"#888888"}'
+	}
 	img-extract-fonts() { echo '[]'; }
 	bats_mock img-extract-colors img-extract-fonts
 
 	bats_run_zsh "img-extract $BATS_TMP_DIR/test.png"
 	local colors
-	colors=$(echo "$output" | jq -r '.colors.Vibrant')
+	colors=$(echo "$output" | jq -r '.colors.background')
 	[[ "$colors" == "#ff0000" ]]
 }
 

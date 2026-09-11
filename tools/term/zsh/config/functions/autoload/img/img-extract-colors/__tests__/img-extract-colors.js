@@ -21,32 +21,30 @@ async function runScript(fixture) {
 }
 
 describe('img-extract-colors', () => {
-  it('returns all 6 swatch keys', async () => {
+  it('returns exactly 4 semantic keys', async () => {
     const actual = await runScript('colorful.png');
 
-    expect(_.keys(actual)).toEqual([
-      'Vibrant',
-      'DarkVibrant',
-      'LightVibrant',
-      'Muted',
-      'DarkMuted',
-      'LightMuted',
+    expect(_.chain(actual).keys().sort().value()).toEqual([
+      'accent',
+      'background',
+      'muted',
+      'text',
     ]);
   });
 
-  it('returns hex strings for present swatches', async () => {
+  it('returns hex strings or null for each key', async () => {
     const actual = await runScript('colorful.png');
 
-    const hexPattern = /^#[0-9a-f]{6}$/i;
-    const presentSwatches = _.chain(actual).values().compact().value();
-    _.each(presentSwatches, (value) => {
-      expect(value).toMatch(hexPattern);
+    const hexOrNull = /^(#[0-9a-f]{6}|null)$/i;
+    _.each(['background', 'text', 'accent', 'muted'], (key) => {
+      expect(String(actual[key])).toMatch(hexOrNull);
     });
   });
 
-  it('returns null for swatches that node-vibrant cannot extract', async () => {
+  it('returns null for roles that cannot be extracted', async () => {
     const actual = await runScript('gray.png');
 
-    expect(actual).toHaveProperty('Vibrant', null);
+    const values = _.values(actual);
+    expect(values).toContain(null);
   });
 });
