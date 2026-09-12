@@ -29,7 +29,8 @@ done
 echo
 echo "Merging into main..."
 local previousCommit="$(git -C "$mainPath" rev-parse HEAD)"
-git -C "$mainPath" merge --ff-only "$currentBranch"
+git -C "$mainPath" merge --ff-only --quiet "$currentBranch"
+git-commit-diffstat "$previousCommit" --repo "$mainPath"
 
 # Update dependencies if needed
 echo

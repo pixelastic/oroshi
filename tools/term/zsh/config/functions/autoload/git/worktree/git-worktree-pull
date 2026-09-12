@@ -13,6 +13,7 @@ local previousCommit="$(git rev-parse HEAD)"
 echo
 echo "Rebasing on main..."
 git rebase main
+git-commit-diffstat "$previousCommit"
 
 # Update dependencies if needed
 echo

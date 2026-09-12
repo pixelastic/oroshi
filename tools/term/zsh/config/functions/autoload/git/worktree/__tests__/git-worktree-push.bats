@@ -290,6 +290,33 @@ EOF
   [[ ! -f "$BATS_TMP_DIR/prose-build-calls" ]]
 }
 
+@test "calls git-commit-diffstat with pre-merge HEAD and --repo after merge" {
+  git-dependencies-update() { :; }
+  git-commit-diffstat() { echo "$@" >> "$BATS_TMP_DIR/diffstat-calls"; }
+  bats_mock git-dependencies-update git-commit-diffstat
+  bats_disable_worktree_aware
+
+  local mainPath="$BATS_GIT_DIR"
+  local preMergeHead="$(git -C "$mainPath" rev-parse HEAD)"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/diffstat-calls" ]]
+  [[ "$(cat "$BATS_TMP_DIR/diffstat-calls")" == "$preMergeHead --repo $mainPath" ]]
+}
+
+@test "merge runs with --quiet flag" {
+  git-dependencies-update() { :; }
+  git-commit-diffstat() { :; }
+  bats_mock git-dependencies-update git-commit-diffstat
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  # Merge fast-forward summary (e.g. "Updating abc123..def456") should not appear
+  [[ "$output" != *"Fast-forward"* ]]
+}
+
 @test "skips submodule push when pointers are identical" {
   # Fresh repo with submodule + worktree (same pointer in both)
   bats_git_dir 'sub-repo'

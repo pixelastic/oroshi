@@ -27,6 +27,41 @@ setup() {
   [[ "$(cat "$BATS_TMP_DIR/dep-update-calls")" == "$preRebaseCommit --async" ]]
 }
 
+@test "calls git-commit-diffstat with pre-rebase HEAD after rebase" {
+  git-dependencies-update() { :; }
+  git-commit-diffstat() { echo "$@" >> "$BATS_TMP_DIR/diffstat-calls"; }
+  bats_mock git-dependencies-update git-commit-diffstat
+  bats_disable_worktree_aware
+
+  git -C "$BATS_GIT_DIR" commit --allow-empty --quiet -m "main work"
+  local preRebaseHead="$(git -C "${BATS_GIT_WORKTREES}my-repo--fix-bug" rev-parse HEAD)"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-pull"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/diffstat-calls" ]]
+  [[ "$(cat "$BATS_TMP_DIR/diffstat-calls")" == "$preRebaseHead" ]]
+}
+
+@test "does not call git-commit-diffstat when rebase fails" {
+  git-dependencies-update() { :; }
+  git-commit-diffstat() { echo "called" >> "$BATS_TMP_DIR/diffstat-calls"; }
+  bats_mock git-dependencies-update git-commit-diffstat
+  bats_disable_worktree_aware
+
+  # Create a conflict on both sides
+  echo "main content" > "$BATS_GIT_DIR/conflict.txt"
+  git -C "$BATS_GIT_DIR" add conflict.txt
+  git -C "$BATS_GIT_DIR" commit --quiet -m "main change"
+
+  echo "bug content" > "${BATS_GIT_WORKTREES}my-repo--fix-bug/conflict.txt"
+  git -C "${BATS_GIT_WORKTREES}my-repo--fix-bug" add conflict.txt
+  git -C "${BATS_GIT_WORKTREES}my-repo--fix-bug" commit --quiet -m "bug change"
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-pull"
+  [[ "$status" -ne 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/diffstat-calls" ]]
+}
+
 @test "does not call git-dependencies-update when rebase fails" {
   git-dependencies-update() { echo "called" >> "$BATS_TMP_DIR/dep-update-calls"; }
   bats_mock git-dependencies-update
