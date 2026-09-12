@@ -27,7 +27,7 @@ Collect both the slug and the target repo:
 
 - Follow `references/template.md`.
 - Copy **[VERBATIM]** sections word-for-word; fill in **[DYNAMIC]** sections from the conversation.
-- Write file to `/tmp/oroshi/claude/sidequests/<slug>.md`.
+- Write file to `~/local/tmp/claude/sidequests/<slug>.md`.
 
 ### Step 3 — Finalize
 
@@ -48,7 +48,7 @@ Run `sidequest-end <filepath> [--repo-dir <path>]`, then output: "Sidequest crea
 
 - [ ] Slug derived (at most 2 words, kebab-case)
 - [ ] Repo resolved via `sidequest-start [<name>]`; handled `ok`/`unknown` response
-- [ ] File at `/tmp/oroshi/claude/sidequests/<slug>.md`
+- [ ] File at `~/local/tmp/claude/sidequests/<slug>.md`
 - [ ] `## Agent Instructions` section is verbatim and first in the document
 - [ ] Artifacts referenced by path, not duplicated
 - [ ] Skills suggested for next session (if applicable)
