@@ -1,0 +1,37 @@
+# Add a todo item via topydo with named flags
+# Usage:
+# $ todo-add --domain Git --size small --slug git-prune "Prune remote refs"
+# $ todo-add --domain Git --size small --slug git-prune --blocked-by git-cleanup "Prune refs"
+setopt local_options err_return
+
+zparseopts -E -D \
+  -domain:=flagDomain \
+  -size:=flagSize \
+  -slug:=flagSlug \
+  -blocked-by:=flagBlockedBy
+
+local domain=${flagDomain[2]}
+local size=${flagSize[2]}
+local slug=${flagSlug[2]}
+local blockedBy=${flagBlockedBy[2]}
+local description="$1"
+
+# Validate size
+if [[ "$size" != "small" && "$size" != "medium" && "$size" != "large" ]]; then
+  echoerr "Invalid size: $size (must be small, medium, or large)"
+  return 1
+fi
+
+# Build tag string
+local tags="+${domain} size:${size} id:${slug}"
+
+# Add p: tags for each blocked-by slug
+if [[ "$blockedBy" != "" ]]; then
+  local -a blockers=(${(s/,/)blockedBy})
+  local blocker
+  for blocker in "${blockers[@]}"; do
+    tags+=" p:${blocker}"
+  done
+fi
+
+topydo add "${description} ${tags}"
