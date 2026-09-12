@@ -19,10 +19,11 @@ type BarRenderer func(change diff.FileChange) string
 
 // Node represents a file or directory in the tree.
 type Node struct {
-	Name     string
-	IsDir    bool
-	Change   *diff.FileChange
-	Children []*Node
+	Name           string
+	IsDir          bool
+	Change         *diff.FileChange
+	IsRenameSource bool
+	Children       []*Node
 }
 
 // Tree is the root of a file change tree.
@@ -37,43 +38,54 @@ func Build(changes []diff.FileChange) *Tree {
 
 	for i := range changes {
 		change := &changes[i]
-		parts := strings.Split(change.Path, "/")
 
-		if len(parts) == 1 {
-			tree.Roots = append(tree.Roots, &Node{
-				Name:   parts[0],
-				Change: change,
+		// For renames, insert source node at old path
+		if change.Status == diff.Renamed && change.OldPath != "" {
+			oldParts := strings.Split(change.OldPath, "/")
+			insertFile(tree, dirMap, change.OldPath, &Node{
+				Name:           oldParts[len(oldParts)-1],
+				Change:         change,
+				IsRenameSource: true,
 			})
-			continue
 		}
 
-		// Walk directory path, creating intermediate nodes
-		parent := (*Node)(nil)
-		for depth := 0; depth < len(parts)-1; depth++ {
-			key := strings.Join(parts[:depth+1], "/")
-			dirNode, exists := dirMap[key]
-			if !exists {
-				dirNode = &Node{Name: parts[depth], IsDir: true}
-				dirMap[key] = dirNode
-				if parent == nil {
-					tree.Roots = append(tree.Roots, dirNode)
-				} else {
-					parent.Children = append(parent.Children, dirNode)
-				}
-			}
-			parent = dirNode
-		}
-
-		// Add the file as a leaf
-		fileName := parts[len(parts)-1]
-		parent.Children = append(parent.Children, &Node{
-			Name:   fileName,
+		parts := strings.Split(change.Path, "/")
+		insertFile(tree, dirMap, change.Path, &Node{
+			Name:   parts[len(parts)-1],
 			Change: change,
 		})
 	}
 
 	sortNodes(tree.Roots)
 	return tree
+}
+
+func insertFile(tree *Tree, dirMap map[string]*Node, filePath string, node *Node) {
+	parts := strings.Split(filePath, "/")
+
+	if len(parts) == 1 {
+		tree.Roots = append(tree.Roots, node)
+		return
+	}
+
+	// Walk directory path, creating intermediate nodes
+	parent := (*Node)(nil)
+	for depth := 0; depth < len(parts)-1; depth++ {
+		key := strings.Join(parts[:depth+1], "/")
+		dirNode, exists := dirMap[key]
+		if !exists {
+			dirNode = &Node{Name: parts[depth], IsDir: true}
+			dirMap[key] = dirNode
+			if parent == nil {
+				tree.Roots = append(tree.Roots, dirNode)
+			} else {
+				parent.Children = append(parent.Children, dirNode)
+			}
+		}
+		parent = dirNode
+	}
+
+	parent.Children = append(parent.Children, node)
 }
 
 // sortNodes sorts nodes: directories first, then files, alphabetical within each group.
@@ -127,15 +139,87 @@ func renderNode(builder *strings.Builder, node *Node, prefix string, isLast bool
 		return
 	}
 
-	// File node
+	// File node — status-aware rendering
+	if node.Change != nil {
+		renderFileByStatus(builder, node, theme, barRenderer)
+	} else {
+		fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(node.Name))
+		builder.WriteString(fileStyle.Render(node.Name))
+	}
+	builder.WriteString("\n")
+}
+
+func renderFileByStatus(builder *strings.Builder, node *Node, theme ThemeResolver, barRenderer BarRenderer) {
+	switch {
+	case node.IsRenameSource:
+		renderRenameSource(builder, node, theme)
+	case node.Change.Status == diff.Deleted:
+		renderDeletedFile(builder, node, theme, barRenderer)
+	case node.Change.Status == diff.Added:
+		renderAddedFile(builder, node, theme, barRenderer)
+	case node.Change.Status == diff.Renamed:
+		renderRenameDestination(builder, node, theme, barRenderer)
+	default:
+		renderModifiedFile(builder, node, theme, barRenderer)
+	}
+}
+
+func renderRenameSource(builder *strings.Builder, node *Node, theme ThemeResolver) {
+	removedColor := theme.Lipgloss("git-removed")
+	nameStyle := lipgloss.NewStyle().Foreground(removedColor).Strikethrough(true)
+	builder.WriteString(nameStyle.Render(node.Name))
+	arrowStyle := lipgloss.NewStyle().Foreground(removedColor)
+	builder.WriteString(" " + arrowStyle.Render("→"))
+}
+
+func renderDeletedFile(builder *strings.Builder, node *Node, theme ThemeResolver, barRenderer BarRenderer) {
+	removedColor := theme.Lipgloss("git-removed")
+	nameStyle := lipgloss.NewStyle().Foreground(removedColor).Strikethrough(true)
+	builder.WriteString(nameStyle.Render(node.Name))
+
+	bar := barRenderer(*node.Change)
+	if bar != "" {
+		builder.WriteString(" " + bar)
+	}
+
+	symbolStyle := lipgloss.NewStyle().Foreground(removedColor)
+	builder.WriteString(" " + symbolStyle.Render("✖"))
+}
+
+func renderAddedFile(builder *strings.Builder, node *Node, theme ThemeResolver, barRenderer BarRenderer) {
 	fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(node.Name))
 	builder.WriteString(fileStyle.Render(node.Name))
 
-	if node.Change != nil {
-		bar := barRenderer(*node.Change)
-		if bar != "" {
-			builder.WriteString(" " + bar)
-		}
+	bar := barRenderer(*node.Change)
+	if bar != "" {
+		builder.WriteString(" " + bar)
 	}
-	builder.WriteString("\n")
+
+	addedColor := theme.Lipgloss("git-added")
+	symbolStyle := lipgloss.NewStyle().Foreground(addedColor)
+	builder.WriteString(" " + symbolStyle.Render("✚"))
+}
+
+func renderRenameDestination(builder *strings.Builder, node *Node, theme ThemeResolver, barRenderer BarRenderer) {
+	fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(node.Name))
+	builder.WriteString(fileStyle.Render(node.Name))
+
+	addedColor := theme.Lipgloss("git-added")
+	arrowStyle := lipgloss.NewStyle().Foreground(addedColor)
+	builder.WriteString(" " + arrowStyle.Render("←"))
+
+	bar := barRenderer(*node.Change)
+	if bar != "" {
+		builder.WriteString(" " + bar)
+	}
+}
+
+func renderModifiedFile(builder *strings.Builder, node *Node, theme ThemeResolver, barRenderer BarRenderer) {
+	fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(node.Name))
+	builder.WriteString(fileStyle.Render(node.Name))
+
+	bar := barRenderer(*node.Change)
+	if bar != "" {
+		builder.WriteString(" " + bar)
+	}
 }

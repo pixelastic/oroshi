@@ -8,6 +8,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/pixelastic/oroshi/scripts/src/git-commit-diffstat/diff"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMain(m *testing.M) {
@@ -50,10 +51,14 @@ func testTheme() *mockTheme {
 			"a.go":       lipgloss.Color("4"),
 			"b.go":       lipgloss.Color("4"),
 			"c.txt":      lipgloss.Color("7"),
+			"old.go":     lipgloss.Color("4"),
+			"new.go":     lipgloss.Color("4"),
 		},
 		namedColors: map[string]lipgloss.Color{
-			"directory": lipgloss.Color("6"),
-			"gray":      lipgloss.Color("8"),
+			"directory":   lipgloss.Color("6"),
+			"gray":        lipgloss.Color("8"),
+			"git-added":   lipgloss.Color("2"),
+			"git-removed": lipgloss.Color("1"),
 		},
 	}
 }
@@ -86,8 +91,63 @@ func stripAnsi(input string) string {
 	return string(result)
 }
 
+// contentBar returns a bar only when there are additions or deletions.
+func contentBar(change diff.FileChange) string {
+	if change.Additions == 0 && change.Deletions == 0 {
+		return ""
+	}
+	return "▃"
+}
+
+// findLine returns the first output line whose stripped text contains substring.
+func findLine(output, substring string) string {
+	for _, line := range strings.Split(strings.TrimRight(output, "\n"), "\n") {
+		if strings.Contains(stripAnsi(line), substring) {
+			return line
+		}
+	}
+	return ""
+}
+
+// findPlainLine returns the first stripped line containing substring.
+func findPlainLine(output, substring string) string {
+	plain := stripAnsi(output)
+	for _, line := range strings.Split(strings.TrimRight(plain, "\n"), "\n") {
+		if strings.Contains(line, substring) {
+			return line
+		}
+	}
+	return ""
+}
+
+// hasStrikethrough checks if ANSI output contains strikethrough styling (SGR 9).
+func hasStrikethrough(s string) bool {
+	return strings.Contains(s, "\x1b[9m") ||
+		strings.Contains(s, "\x1b[9;") ||
+		strings.Contains(s, ";9m") ||
+		strings.Contains(s, ";9;")
+}
+
 func change(path string) diff.FileChange {
 	return diff.FileChange{Path: path, Additions: 10, Deletions: 5, Status: diff.Modified}
+}
+
+func addedChange(path string) diff.FileChange {
+	return diff.FileChange{Path: path, Additions: 10, Status: diff.Added}
+}
+
+func deletedChange(path string) diff.FileChange {
+	return diff.FileChange{Path: path, Deletions: 10, Status: diff.Deleted}
+}
+
+func renamedChange(oldPath, newPath string, additions, deletions int) diff.FileChange {
+	return diff.FileChange{
+		Path:      newPath,
+		OldPath:   oldPath,
+		Status:    diff.Renamed,
+		Additions: additions,
+		Deletions: deletions,
+	}
 }
 
 // --- Tree building ---
@@ -235,4 +295,148 @@ func TestConnectorsAreGray(t *testing.T) {
 	lines := strings.Split(strings.TrimRight(output, "\n"), "\n")
 	// Connector should be styled with gray (color 8)
 	assert.Contains(t, lines[0], "\x1b[90m") // color 8 = bright black / gray
+}
+
+// --- Status display: Created files ---
+
+func TestCreatedFileNameUsesFiletypeColor(t *testing.T) {
+	changes := []diff.FileChange{addedChange("main.go")}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), emptyBar)
+	// Should use filetype color (4 = blue for .go), not red
+	assert.Contains(t, output, "\x1b[34m")
+}
+
+func TestCreatedFileHasBarAfterName(t *testing.T) {
+	changes := []diff.FileChange{addedChange("main.go")}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), noopBar)
+	plain := stripAnsi(output)
+	assert.Contains(t, plain, "main.go ▃")
+}
+
+func TestCreatedFileHasGreenStatusSymbolAfterBar(t *testing.T) {
+	changes := []diff.FileChange{addedChange("main.go")}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), noopBar)
+	plain := stripAnsi(output)
+	assert.Contains(t, plain, "▃ ✚")
+	// ✚ should be green (git-added = color 2)
+	line := findLine(output, "✚")
+	assert.Contains(t, line, "\x1b[32m")
+}
+
+// --- Status display: Deleted files ---
+
+func TestDeletedFileNameIsRedWithStrikethrough(t *testing.T) {
+	changes := []diff.FileChange{deletedChange("main.go")}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), emptyBar)
+	line := findLine(output, "main.go")
+	require.NotEmpty(t, line)
+	// Should have red color (git-removed = color 1)
+	assert.Contains(t, line, "\x1b[31m")
+	// Should have strikethrough (SGR 9)
+	assert.True(t, hasStrikethrough(line), "deleted file should have strikethrough")
+}
+
+func TestDeletedFileHasBarAfterName(t *testing.T) {
+	changes := []diff.FileChange{deletedChange("main.go")}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), noopBar)
+	plain := stripAnsi(output)
+	assert.Contains(t, plain, "main.go ▃")
+}
+
+func TestDeletedFileHasRedStatusSymbolAfterBar(t *testing.T) {
+	changes := []diff.FileChange{deletedChange("main.go")}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), noopBar)
+	plain := stripAnsi(output)
+	assert.Contains(t, plain, "▃ ✖")
+	// ✖ should be red (git-removed = color 1)
+	line := findLine(output, "✖")
+	assert.Contains(t, line, "\x1b[31m")
+}
+
+// --- Status display: Renamed files ---
+
+func TestRenameSourceAppearsAtOldPathLocation(t *testing.T) {
+	changes := []diff.FileChange{renamedChange("old/app.go", "new/app.go", 0, 0)}
+	tree := Build(changes)
+	dirNames := []string{}
+	for _, root := range tree.Roots {
+		dirNames = append(dirNames, root.Name)
+	}
+	assert.Contains(t, dirNames, "old")
+	assert.Contains(t, dirNames, "new")
+}
+
+func TestRenameSourceNameIsRedWithStrikethrough(t *testing.T) {
+	changes := []diff.FileChange{renamedChange("old.go", "new.go", 0, 0)}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), emptyBar)
+	line := findLine(output, "old.go")
+	require.NotEmpty(t, line)
+	assert.Contains(t, line, "\x1b[31m")
+	assert.True(t, hasStrikethrough(line), "rename source should have strikethrough")
+}
+
+func TestRenameSourceHasRedArrowAfterName(t *testing.T) {
+	changes := []diff.FileChange{renamedChange("old.go", "new.go", 0, 0)}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), emptyBar)
+	plain := findPlainLine(output, "old.go")
+	require.NotEmpty(t, plain)
+	assert.Contains(t, plain, "old.go →")
+}
+
+func TestRenameDestinationAppearsAtNewPathLocation(t *testing.T) {
+	changes := []diff.FileChange{renamedChange("old/app.go", "new/app.go", 0, 0)}
+	tree := Build(changes)
+	for _, root := range tree.Roots {
+		if root.Name == "new" {
+			require.Len(t, root.Children, 1)
+			assert.Equal(t, "app.go", root.Children[0].Name)
+			return
+		}
+	}
+	t.Fatal("new directory not found in tree")
+}
+
+func TestRenameDestinationNameUsesFiletypeColor(t *testing.T) {
+	changes := []diff.FileChange{renamedChange("old.go", "app.go", 0, 0)}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), emptyBar)
+	line := findLine(output, "app.go")
+	require.NotEmpty(t, line)
+	// color 4 = blue (.go filetype)
+	assert.Contains(t, line, "\x1b[34m")
+}
+
+func TestRenameDestinationHasGreenArrowAfterName(t *testing.T) {
+	changes := []diff.FileChange{renamedChange("old.go", "new.go", 0, 0)}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), emptyBar)
+	plain := findPlainLine(output, "new.go")
+	require.NotEmpty(t, plain)
+	assert.Contains(t, plain, "new.go ←")
+}
+
+func TestRenameDestinationHasBarIfContentChanged(t *testing.T) {
+	changes := []diff.FileChange{renamedChange("old.go", "new.go", 10, 5)}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), contentBar)
+	plain := findPlainLine(output, "new.go")
+	require.NotEmpty(t, plain)
+	assert.Contains(t, plain, "← ▃")
+}
+
+func TestRenameDestinationHasNoBarIfContentUnchanged(t *testing.T) {
+	changes := []diff.FileChange{renamedChange("old.go", "new.go", 0, 0)}
+	tree := Build(changes)
+	output := Render(tree, testTheme(), contentBar)
+	plain := findPlainLine(output, "new.go")
+	require.NotEmpty(t, plain)
+	assert.NotContains(t, plain, "▃")
 }
