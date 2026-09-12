@@ -1,0 +1,17 @@
+# Parse refactor wave argument and output JSON with currentWave and nextWave
+# Usage:
+# $ refactor-start              # defaults to reduce
+# $ refactor-start rewrite      # explicit wave
+setopt local_options err_return
+
+local currentWave="${1:-reduce}"
+
+local nextWave
+case "$currentWave" in
+  reduce)      nextWave="rewrite" ;;
+  rewrite)     nextWave="restructure" ;;
+  restructure) nextWave="null" ;;
+  *)           return 1 ;;
+esac
+
+jo currentWave="$currentWave" nextWave="$nextWave"
