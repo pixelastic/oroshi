@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Topydo: CLI todo list manager using the todo.txt format
+# https://github.com/topydo/topydo
+set -e
+pipx install topydo

@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Symlink topydo config and create data files
+set -e
+ln -fs "${0:h}/config/topydo.conf" ~/.topydo
+touch ~/.oroshi/todo.txt
+touch ~/.oroshi/done.txt
