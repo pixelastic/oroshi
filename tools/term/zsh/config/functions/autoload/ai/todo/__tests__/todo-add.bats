@@ -3,65 +3,58 @@ bats_load_library 'helper'
 setup() {
 	bats_tmp_dir
 
-	# Mock topydo to capture the exact command it receives
-	topydo() {
-		echo "$*" > "$BATS_TMP_DIR/topydo-args.txt"
-		echo "added: $*"
-	}
-	bats_mock topydo
+	# Local topydo config scoped to this test's temp dir
+	touch "$BATS_TMP_DIR/todo.txt" "$BATS_TMP_DIR/done.txt"
+	cat > "$BATS_TMP_DIR/.topydo" <<-CONF
+		[topydo]
+		filename = $BATS_TMP_DIR/todo.txt
+		archive_filename = $BATS_TMP_DIR/done.txt
+	CONF
 }
 
 # Basic add
 
 @test "adds item with correct project tag, size tag, and id tag" {
-	bats_run_zsh "todo-add --domain Git --size small --slug git-prune 'Prune remote refs'"
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size small --slug git-prune 'Prune remote refs'"
 	[[ "$status" -eq 0 ]]
 
-	local args="$(cat "$BATS_TMP_DIR/topydo-args.txt")"
-	[[ "$args" == *"+Git"* ]]
-	[[ "$args" == *"size:small"* ]]
-	[[ "$args" == *"id:git-prune"* ]]
+	local content="$(cat "$BATS_TMP_DIR/todo.txt")"
+	[[ "$content" == *"+Git"* ]]
+	[[ "$content" == *"size:small"* ]]
+	[[ "$content" == *"id:git-prune"* ]]
 }
 
-@test "delegates to topydo add" {
-	bats_run_zsh "todo-add --domain Git --size small --slug git-prune 'Prune remote refs'"
+@test "includes description text in todo.txt" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size small --slug git-prune 'Prune remote refs'"
 	[[ "$status" -eq 0 ]]
 
-	local args="$(cat "$BATS_TMP_DIR/topydo-args.txt")"
-	[[ "$args" == "add "* ]]
-}
-
-@test "includes description text in topydo command" {
-	bats_run_zsh "todo-add --domain Git --size small --slug git-prune 'Prune remote refs'"
-	[[ "$status" -eq 0 ]]
-
-	local args="$(cat "$BATS_TMP_DIR/topydo-args.txt")"
-	[[ "$args" == *"Prune remote refs"* ]]
+	local content="$(cat "$BATS_TMP_DIR/todo.txt")"
+	[[ "$content" == *"Prune remote refs"* ]]
 }
 
 # Blocked-by
 
 @test "adds p: tags for each blocked-by slug" {
-	bats_run_zsh "todo-add --domain Git --size small --slug git-prune --blocked-by git-cleanup 'Prune refs'"
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size small --slug git-prune --blocked-by git-cleanup 'Prune refs'"
 	[[ "$status" -eq 0 ]]
 
-	local args="$(cat "$BATS_TMP_DIR/topydo-args.txt")"
-	[[ "$args" == *"p:git-cleanup"* ]]
+	local content="$(cat "$BATS_TMP_DIR/todo.txt")"
+	[[ "$content" == *"p:git-cleanup"* ]]
 }
 
 @test "supports multiple comma-separated blockers" {
-	bats_run_zsh "todo-add --domain Git --size small --slug git-prune --blocked-by git-cleanup,git-fetch 'Prune refs'"
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size small --slug git-prune --blocked-by git-cleanup,git-fetch 'Prune refs'"
 	[[ "$status" -eq 0 ]]
 
-	local args="$(cat "$BATS_TMP_DIR/topydo-args.txt")"
-	[[ "$args" == *"p:git-cleanup"* ]]
-	[[ "$args" == *"p:git-fetch"* ]]
+	local content="$(cat "$BATS_TMP_DIR/todo.txt")"
+	[[ "$content" == *"p:git-cleanup"* ]]
+	[[ "$content" == *"p:git-fetch"* ]]
 }
 
 # Validation
 
 @test "errors on invalid size" {
-	bats_run_zsh "todo-add --domain Git --size huge --slug git-prune 'Prune refs'"
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size huge --slug git-prune 'Prune refs'"
 	[[ "$status" -ne 0 ]]
 	[[ "$output" == *"size"* ]]
 }
@@ -69,7 +62,7 @@ setup() {
 # Output
 
 @test "outputs the added item to stdout" {
-	bats_run_zsh "todo-add --domain Git --size small --slug git-prune 'Prune remote refs'"
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size small --slug git-prune 'Prune remote refs'"
 	[[ "$status" -eq 0 ]]
 	[[ "$output" != "" ]]
 }
