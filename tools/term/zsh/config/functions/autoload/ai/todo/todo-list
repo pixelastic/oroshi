@@ -1,0 +1,20 @@
+# List todo items with optional domain and size filters
+# Usage:
+# $ todo-list                          # All items
+# $ todo-list --domain Git             # Filter by domain
+# $ todo-list --size small             # Filter by size
+# $ todo-list --domain Git --size small # Both filters
+setopt local_options err_return
+
+zparseopts -E -D \
+  -domain:=flagDomain \
+  -size:=flagSize
+
+local domain=${flagDomain[2]}
+local size=${flagSize[2]}
+
+local filters=()
+[[ "$domain" != "" ]] && filters+=("domain:${domain}")
+[[ "$size" != "" ]] && filters+=("size:${size}")
+
+topydo ls "${filters[@]}"
