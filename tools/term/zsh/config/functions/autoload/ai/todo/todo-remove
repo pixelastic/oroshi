@@ -4,13 +4,8 @@
 setopt local_options err_return
 
 local slug="$1"
-local todoFile="${OROSHI_TODO_FILE:-$HOME/.oroshi/todo.txt}"
-
-# Slug must exist in the file
-if ! grep -q "id:${slug}" "$todoFile"; then
-  echoerr "Slug not found: $slug"
-  return 1
-fi
+local itemNum="$(todo-find "$slug")"
+[[ "$itemNum" == "" ]] && return 1
 
 # Delete the item; -f skips subtask prompt (topydo cleans up p: refs itself)
-topydo del -f "id:${slug}"
+topydo del -f "$itemNum"

@@ -1,0 +1,17 @@
+# Find a todo item number by slug
+# Usage:
+# $ todo-find git-cleanup   # Prints the topydo item number for id:git-cleanup
+setopt local_options err_return
+
+local slug="$1"
+
+# Resolve item number from slug (-x includes items with pending deps)
+local itemNum="$(topydo ls -x -F "%i" "id:${slug}")"
+
+# Slug must exist
+if [[ "$itemNum" == "" ]]; then
+  echoerr "Slug not found: $slug"
+  return 1
+fi
+
+echo "$itemNum"

@@ -14,10 +14,10 @@ setup() {
 
 	# Seed todo.txt with known content
 	cat > "$BATS_TMP_DIR/todo.txt" <<-'ITEMS'
-		Buy milk +Home size:small id:buy-milk
-		Prune remote refs +Git size:small id:git-prune p:git-cleanup
-		Clean up branches +Git size:medium id:git-cleanup
-		Review PR +Work size:large id:review-pr p:git-prune p:git-cleanup
+		Buy milk domain:Home size:small id:buy-milk
+		Prune remote refs domain:Git size:small id:git-prune p:git-cleanup
+		Clean up branches domain:Git size:medium id:git-cleanup
+		Review PR domain:Work size:large id:review-pr p:git-prune p:git-cleanup
 	ITEMS
 }
 

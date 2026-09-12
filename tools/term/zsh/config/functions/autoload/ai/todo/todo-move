@@ -1,0 +1,12 @@
+# Move a todo item from one domain to another
+# Usage:
+# $ todo-move git-cleanup Nvim   # Changes domain:Git to domain:Nvim on item with id:git-cleanup
+setopt local_options err_return
+
+local slug="$1"
+local newDomain="$2"
+local itemNum="$(todo-find "$slug")"
+[[ "$itemNum" == "" ]] && return 1
+
+# Replace domain tag via topydo
+topydo tag -f "$itemNum" domain "$newDomain"

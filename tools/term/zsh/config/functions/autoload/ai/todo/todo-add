@@ -23,7 +23,7 @@ if [[ "$size" != "small" && "$size" != "medium" && "$size" != "large" ]]; then
 fi
 
 # Build tag string
-local tags="+${domain} size:${size} id:${slug}"
+local tags="domain:${domain} size:${size} id:${slug}"
 
 # Add p: tags for each blocked-by slug
 if [[ "$blockedBy" != "" ]]; then

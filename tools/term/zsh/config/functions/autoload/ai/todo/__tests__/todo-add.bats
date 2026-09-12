@@ -19,7 +19,7 @@ setup() {
 	[[ "$status" -eq 0 ]]
 
 	local content="$(cat "$BATS_TMP_DIR/todo.txt")"
-	[[ "$content" == *"+Git"* ]]
+	[[ "$content" == *"domain:Git"* ]]
 	[[ "$content" == *"size:small"* ]]
 	[[ "$content" == *"id:git-prune"* ]]
 }
