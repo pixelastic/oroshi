@@ -13,19 +13,21 @@ function compute-schedule() {
   local today="$2"
   local stateJsonPath="$3"
 
+  local windowStart="$(__business_days_before_2 "$eventDate")"
   local dateMinus1="$(date --date "$eventDate - 1 day" +%Y-%m-%d)"
   local dateMinus7="$(date --date "$eventDate - 7 days" +%Y-%m-%d)"
 
-  # Determine window: early (today < D-1) or last (today >= D-1)
+  # Determine window: early (today < windowStart) or last (today >= windowStart)
+  # windowStart = 2 business days before the event (weekends excluded)
   local window="early"
-  [[ ! "$today" < "$dateMinus1" ]] && window="last"
+  [[ ! "$today" < "$windowStart" ]] && window="last"
 
   local result="[]"
 
   if [[ "$window" == "early" ]]; then
     result="$(__compute_early "$stateJsonPath" "$today" "$dateMinus7" "$eventDate")"
   else
-    result="$(__compute_last "$stateJsonPath" "$today" "$dateMinus1" "$eventDate")"
+    result="$(__compute_last "$stateJsonPath" "$dateMinus1" "$eventDate")"
   fi
 
   jo window="$window" messages="$result"
@@ -126,9 +128,8 @@ function __compute_last() {
   setopt local_options err_return
 
   local stateJsonPath="$1"
-  local today="$2"
-  local dateMinus1="$3"
-  local eventDate="$4"
+  local dateMinus1="$2"
+  local eventDate="$3"
 
   local result="[]"
 
@@ -146,11 +147,11 @@ function __compute_last() {
       }]')"
   fi
 
-  # last--office-paris--reminder (D-1): only if today == D-1 and pending
+  # last--office-paris--reminder (scheduled D-1)
   local reminderState="$(jq -r \
     '.messages["last--office-paris--reminder"].state' \
     "$stateJsonPath")"
-  if [[ "$today" == "$dateMinus1" && "$reminderState" == "pending" ]]; then
+  if [[ "$reminderState" != "posted" ]]; then
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${dateMinus1}T${scheduledAt}" \
@@ -163,14 +164,11 @@ function __compute_last() {
       }]')"
   fi
 
-  # last--office-paris--reminder-today (D-0): on D-0 if pending, also drafted on D-1
+  # last--office-paris--reminder-today (scheduled D-0)
   local todayState="$(jq -r \
     '.messages["last--office-paris--reminder-today"].state' \
     "$stateJsonPath")"
-  local isDayMinus1OrDay0=0
-  [[ "$today" == "$eventDate" || "$today" == "$dateMinus1" ]] && isDayMinus1OrDay0=1
-
-  if [[ "$todayState" == "pending" && $isDayMinus1OrDay0 -eq 1 ]]; then
+  if [[ "$todayState" != "posted" ]]; then
     local scheduledAt="$(__random_time 10 47 11 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${eventDate}T${scheduledAt}" \
@@ -183,11 +181,11 @@ function __compute_last() {
       }]')"
   fi
 
-  # last--team-devmarketing--reminder (D-0): same logic as reminder-today
+  # last--team-devmarketing--reminder (scheduled D-0)
   local devmarketingState="$(jq -r \
     '.messages["last--team-devmarketing--reminder"].state' \
     "$stateJsonPath")"
-  if [[ "$devmarketingState" == "pending" && $isDayMinus1OrDay0 -eq 1 ]]; then
+  if [[ "$devmarketingState" != "posted" ]]; then
     local scheduledAt="$(__random_time 10 47 11 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${eventDate}T${scheduledAt}" \
@@ -200,11 +198,11 @@ function __compute_last() {
       }]')"
   fi
 
-  # last--help-recruiting--reminder (D-1): thread reply, not schedulable
+  # last--help-recruiting--reminder (scheduled D-1)
   local helpRecruitingState="$(jq -r \
     '.messages["last--help-recruiting--reminder"].state' \
     "$stateJsonPath")"
-  if [[ "$helpRecruitingState" == "pending" && "$today" == "$dateMinus1" ]]; then
+  if [[ "$helpRecruitingState" != "posted" ]]; then
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${dateMinus1}T${scheduledAt}" \
@@ -218,6 +216,22 @@ function __compute_last() {
   fi
 
   echo "$result"
+}
+
+function __business_days_before_2() {
+  setopt local_options err_return
+
+  local eventDate="$1"
+  local dow="$(date --date "$eventDate" +%u)"
+
+  # Mon(1)/Tue(2): subtract 4 calendar days to skip the weekend
+  # Wed–Fri: subtract 2 calendar days
+  local offset=2
+  if [[ $dow -le 2 ]]; then
+    offset=4
+  fi
+
+  date --date "$eventDate - $offset days" +%Y-%m-%d
 }
 
 function __nudge_date() {

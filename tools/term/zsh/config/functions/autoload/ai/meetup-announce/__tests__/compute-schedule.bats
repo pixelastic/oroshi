@@ -3,6 +3,7 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   # Tuesday. D-7=Sep 15 (Tue), D-1=Sep 21 (Mon), D-0=Sep 22 (Tue)
+  # Window boundary: 2 business days before Tue = Fri Sep 18
   EVENT="2026-09-22"
   sourcePrefix="source '${OROSHI_ROOT}/tools/term/zsh/config/functions/autoload/ai/meetup-announce/__lib/compute-schedule.zsh'"
   STATE_FILE="$BATS_TMP_DIR/state.json"
@@ -52,6 +53,38 @@ ENDJSON
   [[ "$status" -eq 0 ]]
   local ids="$(echo "$output" | jq -r '.messages[].id')"
   [[ "$ids" == *"last--"* ]]
+}
+
+@test "2 business days before Tue event (Fri) is last window" {
+  jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-18 $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  local window="$(echo "$output" | jq -r '.window')"
+  [[ "$window" == "last" ]]
+}
+
+@test "3 business days before Tue event (Thu) is still early" {
+  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-17 $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  local window="$(echo "$output" | jq -r '.window')"
+  [[ "$window" == "early" ]]
+}
+
+@test "2 business days before Mon event (Thu) is last window" {
+  # Mon Sep 14: 2 business days before = Thu Sep 10
+  jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-14 2026-09-10 $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  local window="$(echo "$output" | jq -r '.window')"
+  [[ "$window" == "last" ]]
+}
+
+@test "Fri before Mon event (3 business days) is still early" {
+  # Mon Sep 14: 3 business days before = Wed Sep 9
+  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-14 2026-09-09 $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  local window="$(echo "$output" | jq -r '.window')"
+  [[ "$window" == "early" ]]
 }
 
 # -- Early window — first invocation --
@@ -175,34 +208,35 @@ ENDJSON
   [[ "$reminderScheduled" == 2026-09-21T* ]]
 }
 
-@test "last--help-recruiting--reminder scheduled for D-1 only" {
+@test "last--help-recruiting--reminder always scheduled for D-1" {
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  # D-1: included
+  # Available on D-1, scheduled for D-1
   bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-21 $STATE_FILE"
   [[ "$status" -eq 0 ]]
   echo "$output" | jq -e '.messages[] | select(.id == "last--help-recruiting--reminder")'
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "last--help-recruiting--reminder") | .scheduledFor')"
   [[ "$scheduled" == 2026-09-21T* ]]
 
-  # D-0: not included
+  # Also available on D-0, still scheduled for D-1
   bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-22 $STATE_FILE"
   [[ "$status" -eq 0 ]]
-  local absent="$(echo "$output" | jq '[.messages[] | select(.id == "last--help-recruiting--reminder")] | length')"
-  [[ "$absent" -eq 0 ]]
+  echo "$output" | jq -e '.messages[] | select(.id == "last--help-recruiting--reminder")'
+  local scheduledD0="$(echo "$output" | jq -r '.messages[] | select(.id == "last--help-recruiting--reminder") | .scheduledFor')"
+  [[ "$scheduledD0" == 2026-09-21T* ]]
 }
 
 # -- Last window — D-0 --
 
-@test "D-0 generates only today messages not reminder" {
+@test "D-0 generates all last messages" {
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
   bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-22 $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local count="$(echo "$output" | jq '.messages | length')"
-  [[ "$count" -eq 2 ]]
+  [[ "$count" -eq 4 ]]
+  echo "$output" | jq -e '.messages[] | select(.id == "last--office-paris--reminder")'
   echo "$output" | jq -e '.messages[] | select(.id == "last--office-paris--reminder-today")'
   echo "$output" | jq -e '.messages[] | select(.id == "last--team-devmarketing--reminder")'
-  local noReminder="$(echo "$output" | jq '[.messages[] | select(.id == "last--office-paris--reminder")] | length')"
-  [[ "$noReminder" -eq 0 ]]
+  echo "$output" | jq -e '.messages[] | select(.id == "last--help-recruiting--reminder")'
 }
 
 # -- Last window — catch-up --
