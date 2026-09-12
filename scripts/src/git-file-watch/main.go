@@ -121,11 +121,25 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cmd := m.rebuildDisplay()
 		return m, tea.Batch(waitForChange[SyntaxMapChangedMsg](m.syntaxMapWatchChannel), cmd)
 	case EditorFinishedMsg:
-		m.rebuildDisplay()
-		return m, nil
-	case CommitFinishedMsg:
+		// tea.ExecProcess blocks the event loop on an unbuffered p.msgs
+		// channel. Watcher goroutines that fire during exec consume their
+		// signal and queue a message; once exec returns, message delivery
+		// order is non-deterministic. Re-subscribe here so watchers are
+		// never left disconnected regardless of which message lands last.
 		cmd := m.rebuildDisplay()
-		return m, cmd
+		return m, tea.Batch(
+			waitForChange[DiffChangedMsg](m.watchChannel),
+			waitForChange[GitIndexChangedMsg](m.indexWatchChannel),
+			cmd,
+		)
+	case CommitFinishedMsg:
+		// Same re-subscription as EditorFinishedMsg — see comment above.
+		cmd := m.rebuildDisplay()
+		return m, tea.Batch(
+			waitForChange[DiffChangedMsg](m.watchChannel),
+			waitForChange[GitIndexChangedMsg](m.indexWatchChannel),
+			cmd,
+		)
 	case ReviewSentMsg:
 		m.screenFlash = false
 		if msg.err == nil {
