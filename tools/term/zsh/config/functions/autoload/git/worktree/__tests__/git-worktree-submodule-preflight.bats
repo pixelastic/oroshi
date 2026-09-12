@@ -70,7 +70,7 @@ _advance_ahead() {
   [[ "$status" -eq 1 ]]
   [[ "$output" == *"my-sub"* ]]
   [[ "$output" == *"commit"* ]]
-  [[ "$output" == *"main"* ]]
+  [[ "$output" != *"main"* ]]
   [[ "$output" == *"resolved-name"* ]]
 }
 
@@ -81,7 +81,7 @@ _advance_ahead() {
   [[ "$status" -eq 1 ]]
   [[ "$output" == *"my-sub"* ]]
   [[ "$output" == *"push"* ]]
-  [[ "$output" == *"main"* ]]
+  [[ "$output" != *"main"* ]]
   [[ "$output" == *"resolved-name"* ]]
 }
 

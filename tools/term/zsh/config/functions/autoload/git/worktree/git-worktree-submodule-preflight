@@ -20,16 +20,17 @@ colors-load-definitions
 icons-load-definitions
 projects-load-definitions
 
-# Resolve project name and display for error messages
+# Resolve project name and display as a badge for error messages
 local repoName="$(git-directory-name "$mainPath")"
 local projectDisplay=""
 if [[ "$PROJECTS[$repoName:foreground:ansi]" != "" ]]; then
-  projectDisplay="$(colorize "$PROJECTS[$repoName:icon] $repoName" "$PROJECTS[$repoName:foreground:ansi]")"
+  local _fg="$PROJECTS[$repoName:foreground:ansi]"
+  local _bg="$PROJECTS[$repoName:background:ansi]"
+  local _sep="$ICONS[badge-separator]"
+  projectDisplay="$(colorize " $PROJECTS[$repoName:icon]$repoName " "$_fg" "$_bg")$(colorize "$_sep" "$_bg")"
 else
   projectDisplay="$(colorize "$repoName" "$COLORS[directory]")"
 fi
-
-local colorizedMain="$(git-branch-colorize "main")"
 local colorizedError="$(colorize "✘" "$COLORS[error]")"
 
 local hasFailure=0
@@ -47,7 +48,7 @@ for rawLine in ${(f)submoduleList}; do
   local dirtyCount="$(git-directory-dirty-count "$mainPath/$submoduleName")"
   if [[ "$dirtyCount" != "0" ]]; then
     local prefix="$colorizedError $colorizedIcon $colorizedName"
-    local location="in $colorizedMain $projectDisplay repo"
+    local location="in $projectDisplay repo"
     echo "$prefix $location has uncommitted changes. Commit them first."
     hasFailure=1
     continue
@@ -61,7 +62,7 @@ for rawLine in ${(f)submoduleList}; do
   local distanceFields=(${(@ps/▮/)remoteDistance})
   if [[ $distanceFields[1] -gt 0 ]]; then
     local prefix="$colorizedError $colorizedIcon $colorizedName"
-    local location="in $colorizedMain $projectDisplay repo"
+    local location="in $projectDisplay repo"
     echo "$prefix $location has unpushed commits. Push them first."
     hasFailure=1
     continue
