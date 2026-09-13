@@ -9,12 +9,10 @@ Improve code within function boundaries: normalize patterns, simplify conditions
 ### 1. Symmetry normalization (Beck's "Normalize Symmetries")
 
 - Code that does similar things but looks different for no reason
-- One function uses `if/else`, its sibling uses early return for the same pattern
-- One place destructures, another uses dot access for the same object
+    - One function uses `if/else`, its sibling uses early return for the same pattern
+    - One place destructures, another uses dot access for the same object
 - Inconsistent error handling patterns within the same module (some throw, some return null, some use Result types)
 - Inconsistent iteration patterns (some use `for`, some use `.map`/`.forEach` for equivalent operations)
-
-Heuristics: look at sibling functions or adjacent blocks — do they follow the same structural pattern? If not, is there a reason?
 
 ### 2. Conditional simplification
 
@@ -24,8 +22,6 @@ Heuristics: look at sibling functions or adjacent blocks — do they follow the 
 - Negated conditions that could be inverted for readability (`if !notReady` → `if ready`)
 - Switch/if-else chains where several branches do very similar things
 
-Heuristics: count nesting depth — anything >3 levels is a candidate. Look for `if` blocks where the else is the happy path (invert). Look for `&&`/`||` chains longer than 3 conditions.
-
 ### 3. Cohesion & reading order
 
 - Related code scattered within a file (a helper defined far from its only caller)
@@ -34,13 +30,10 @@ Heuristics: count nesting depth — anything >3 levels is a candidate. Look for 
 - Declarations far from their first use (Beck's "Move Declaration and Initialization Together")
 - Missing blank lines between logical groups (Beck's "Chunk Statements")
 
-Heuristics: for each function, check where its callers and callees are — are they nearby? Do public functions appear at the top? Are there "sections" of the file that have a theme?
-
 ---
 
 ## What this wave does NOT do
 
-- Does not delete functions or remove code (that was wave 1: reduce)
 - Does not move code between files or extract new modules (that's wave 3: restructure)
 - Does not change function signatures or public APIs
 - Does not add features or change behavior
@@ -61,4 +54,7 @@ Heuristics: for each function, check where its callers and callees are — are t
 
 ## Ordering findings
 
-Rank by: conditional simplification first (guard clauses are the safest rewrite), then symmetry normalization (makes patterns visible), then cohesion reordering (moving code within a file is low risk but changes diffs).
+Rank by:
+- conditional simplification first (guard clauses are the safest rewrite)
+- then symmetry normalization (makes patterns visible)
+- then cohesion reordering (moving code within a file is low risk but changes diffs).
