@@ -12,6 +12,9 @@ if [[ "$recordId" == "" ]]; then
   return 1
 fi
 
+# Capture the calling tab ID before any async work changes focus
+local callingTabId="$(kitty-window-tab-id)"
+
 # Source internal lib functions
 local libDir="${functions_source[$0]:A:h}/__lib"
 source "$libDir/fetch-meetup.zsh"
@@ -34,7 +37,7 @@ local window="$(echo "$scheduleJson" | jq -r '.window')"
 local messagesJson="$(echo "$scheduleJson" | jq -c '.messages')"
 
 # Open a Kitty split cd'd to the draft directory
-kitty-window-create "meetup-announce" --location vsplit --cwd "$draftDir"
+kitty-window-create "meetup-announce" --tab "$callingTabId" --location vsplit --cwd "$draftDir"
 
 # Output combined JSON for the skill
 jo \

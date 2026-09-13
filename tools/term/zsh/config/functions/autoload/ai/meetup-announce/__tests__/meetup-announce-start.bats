@@ -24,9 +24,10 @@ setup() {
     echo '{"window":"early","messages":[{"id":"early--office-paris--initial","scheduledFor":"2026-09-12T10:17","channel":"#office-paris"}]}'
   }
 
-  kitty-window-create() { return 0; }
+  kitty-window-create() { printf '%s' "$*" > "$BATS_TMP_DIR/kitty-window-create-args"; }
+  kitty-window-tab-id() { echo "42"; }
 
-  bats_mock fetch-meetup resolve-draft-dir compute-schedule kitty-window-create
+  bats_mock fetch-meetup resolve-draft-dir compute-schedule kitty-window-create kitty-window-tab-id
 }
 
 # -- Happy path --
@@ -46,6 +47,16 @@ setup() {
   expect_json '.messages[0].id' 'early--office-paris--initial'
   expect_json '.messages[0].scheduledFor' '2026-09-12T10:17'
   expect_json '.messages[0].channel' '#office-paris'
+}
+
+# -- Kitty split --
+
+@test "passes calling tab ID to kitty-window-create" {
+  bats_run_zsh "meetup-announce-start recABC123"
+  [[ "$status" -eq 0 ]]
+  local args
+  args="$(cat "$BATS_TMP_DIR/kitty-window-create-args")"
+  [[ "$args" == *"--tab 42"* ]]
 }
 
 # -- Integration --
