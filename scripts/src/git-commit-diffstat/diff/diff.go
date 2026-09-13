@@ -45,6 +45,13 @@ type nameStatusEntry struct {
 	status  Status
 }
 
+// submoduleEntry holds a changed submodule's path and commit range.
+type submoduleEntry struct {
+	path    string
+	oldHash string
+	newHash string
+}
+
 // Query returns structured diff data between two refs in the given repo.
 func Query(from, to, repoPath string, runner CommandRunner) ([]FileChange, error) {
 	numstatOutput, err := runner("git", "-C", repoPath, "diff", "--numstat", from, to, "--")
@@ -59,8 +66,14 @@ func Query(from, to, repoPath string, runner CommandRunner) ([]FileChange, error
 
 	numstats := parseNumstat(numstatOutput)
 	nameStatuses := parseNameStatus(nameStatusOutput)
+	changes := merge(numstats, nameStatuses)
 
-	return merge(numstats, nameStatuses), nil
+	subs := findSubmodules(from, to, repoPath, runner)
+	if len(subs) == 0 {
+		return changes, nil
+	}
+
+	return expandSubmodules(changes, subs, repoPath, runner), nil
 }
 
 func parseNumstat(output string) []numstatEntry {
@@ -163,6 +176,70 @@ func parseNameStatusLine(line string) (nameStatusEntry, bool) {
 	}
 
 	return entry, true
+}
+
+// findSubmodules detects changed submodules via git diff-tree (mode 160000).
+func findSubmodules(from, to, repoPath string, runner CommandRunner) []submoduleEntry {
+	output, err := runner("git", "-C", repoPath, "diff-tree", "-r", from, to)
+	if err != nil {
+		return nil
+	}
+
+	var subs []submoduleEntry
+	for _, line := range strings.Split(output, "\n") {
+		if line == "" {
+			continue
+		}
+		// Format: :oldmode newmode oldhash newhash status\tpath
+		parts := strings.SplitN(line, "\t", 2)
+		if len(parts) < 2 {
+			continue
+		}
+		meta := strings.Fields(parts[0])
+		if len(meta) < 5 {
+			continue
+		}
+		if meta[0] != ":160000" && meta[1] != "160000" {
+			continue
+		}
+		subs = append(subs, submoduleEntry{
+			path:    parts[1],
+			oldHash: meta[2],
+			newHash: meta[3],
+		})
+	}
+	return subs
+}
+
+// expandSubmodules replaces submodule entries with their inner file changes.
+func expandSubmodules(changes []FileChange, subs []submoduleEntry, repoPath string, runner CommandRunner) []FileChange {
+	subByPath := make(map[string]submoduleEntry, len(subs))
+	for _, sub := range subs {
+		subByPath[sub.path] = sub
+	}
+
+	var result []FileChange
+	for _, change := range changes {
+		sub, isSub := subByPath[change.Path]
+		if !isSub {
+			result = append(result, change)
+			continue
+		}
+		subPath := repoPath + "/" + sub.path
+		inner, err := Query(sub.oldHash, sub.newHash, subPath, runner)
+		if err != nil || len(inner) == 0 {
+			result = append(result, change)
+			continue
+		}
+		for i := range inner {
+			inner[i].Path = sub.path + "/" + inner[i].Path
+			if inner[i].OldPath != "" {
+				inner[i].OldPath = sub.path + "/" + inner[i].OldPath
+			}
+		}
+		result = append(result, inner...)
+	}
+	return result
 }
 
 // merge combines numstat and name-status data, keyed by path.
