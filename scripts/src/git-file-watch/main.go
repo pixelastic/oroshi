@@ -133,6 +133,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			cmd,
 		)
 	case CommitFinishedMsg:
+		if msg.err != nil {
+			m.statusMessage = "Commit failed"
+		}
 		// Same re-subscription as EditorFinishedMsg — see comment above.
 		cmd := m.rebuildDisplay()
 		return m, tea.Batch(

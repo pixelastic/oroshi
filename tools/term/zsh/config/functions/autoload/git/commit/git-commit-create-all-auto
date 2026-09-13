@@ -44,4 +44,8 @@ message="$(git-commit-message "${messageArgs[@]}")"
 print -r -- "$message"
 
 # Commit staged files (not git-commit-create-all, files are already staged)
-git-commit-create "${repoArgs[@]}" "$message" "$@"
+# If commit fails (e.g. git hooks), unstage to restore diff view
+if ! git-commit-create "${repoArgs[@]}" "$message" "$@"; then
+  git -C "${repoPath:-.}" reset --quiet
+  return 1
+fi
