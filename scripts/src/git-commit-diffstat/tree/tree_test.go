@@ -233,7 +233,7 @@ func TestRootLevelFileUsesConnector(t *testing.T) {
 	output := Render(tree, theme, emptyBar)
 	lines := strings.Split(strings.TrimRight(output, "\n"), "\n")
 	stripped := stripAnsi(lines[0])
-	assert.True(t, strings.HasPrefix(stripped, "├── "))
+	assert.True(t, strings.HasPrefix(stripped, "├─ "))
 }
 
 func TestNestedFileHasCorrectIndentation(t *testing.T) {
@@ -246,7 +246,7 @@ func TestNestedFileHasCorrectIndentation(t *testing.T) {
 	output := Render(tree, theme, emptyBar)
 	plain := stripAnsi(output)
 	// The nested file should have │ prefix for the parent directory
-	assert.Contains(t, plain, "│   ")
+	assert.Contains(t, plain, "│ ")
 }
 
 func TestLastItemAtEachLevelUsesEndConnector(t *testing.T) {
@@ -256,7 +256,7 @@ func TestLastItemAtEachLevelUsesEndConnector(t *testing.T) {
 	output := Render(tree, theme, emptyBar)
 	lines := strings.Split(strings.TrimRight(output, "\n"), "\n")
 	lastLine := stripAnsi(lines[len(lines)-1])
-	assert.True(t, strings.HasPrefix(lastLine, "└── "))
+	assert.True(t, strings.HasPrefix(lastLine, "└─ "))
 }
 
 func TestDirectoryNamesUseDirectoryColor(t *testing.T) {

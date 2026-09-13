@@ -116,9 +116,9 @@ func Render(tree *Tree, theme ThemeResolver, barRenderer BarRenderer) string {
 func renderNode(builder *strings.Builder, node *Node, prefix string, isLast bool, theme ThemeResolver, barRenderer BarRenderer) {
 	grayStyle := lipgloss.NewStyle().Foreground(theme.Lipgloss("gray"))
 
-	connector := "├── "
+	connector := "├─ "
 	if isLast {
-		connector = "└── "
+		connector = "└─ "
 	}
 
 	builder.WriteString(grayStyle.Render(prefix + connector))
@@ -128,9 +128,9 @@ func renderNode(builder *strings.Builder, node *Node, prefix string, isLast bool
 		builder.WriteString(dirStyle.Render(node.Name))
 		builder.WriteString("\n")
 
-		childPrefix := prefix + "│   "
+		childPrefix := prefix + "│ "
 		if isLast {
-			childPrefix = prefix + "    "
+			childPrefix = prefix + "  "
 		}
 		for i, child := range node.Children {
 			childIsLast := i == len(node.Children)-1
