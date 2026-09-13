@@ -16,10 +16,10 @@ for filepath in "$@"; do
 
   # Run fly config validate
   local flyOutput=""
-  flyOutput="$(fly config validate --config "$filepath" 2>&1)" || {
+  if ! flyOutput="$(fly config validate --config "$filepath" 2>&1)"; then
     echoerr "Warning: fly config validate failed, skipping fly diagnostics"
     continue
-  }
+  fi
 
   # Parse fly config validate output into unified JSON
   local cleanOutput="$(printf '%s' "$flyOutput" | text-ansi-remove)"

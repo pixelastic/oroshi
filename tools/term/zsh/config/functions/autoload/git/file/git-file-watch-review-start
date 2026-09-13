@@ -7,6 +7,9 @@ local slug="$(context-slug)"
 local commentsFile="${OROSHI_TMP_FOLDER}/git-file-watch/${slug}.json"
 
 # No file or empty file
-[[ -s "$commentsFile" ]] || { echo "[]"; return 0; }
+if ! [[ -s "$commentsFile" ]]; then
+  echo "[]"
+  return 0
+fi
 
 jq -c '[.[] | {id, filepath, lineNumber, lineContent, review}]' "$commentsFile"
