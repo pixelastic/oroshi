@@ -226,37 +226,38 @@ func TestDirectoriesAppearBeforeFilesAtSameLevel(t *testing.T) {
 
 // --- Tree rendering ---
 
-func TestRootLevelFileUsesConnector(t *testing.T) {
+func TestRootLevelFileHasNoConnectorPrefix(t *testing.T) {
 	changes := []diff.FileChange{change("main.go"), change("README.md")}
 	tree := Build(changes)
 	theme := testTheme()
 	output := Render(tree, theme, emptyBar)
 	lines := strings.Split(strings.TrimRight(output, "\n"), "\n")
 	stripped := stripAnsi(lines[0])
-	assert.True(t, strings.HasPrefix(stripped, "├─ "))
+	assert.False(t, strings.HasPrefix(stripped, "├─"), "root items should not have connector")
+	assert.False(t, strings.HasPrefix(stripped, "└─"), "root items should not have connector")
 }
 
 func TestNestedFileHasCorrectIndentation(t *testing.T) {
 	changes := []diff.FileChange{
 		change("src/pkg/main.go"),
-		change("other.go"),
+		change("src/other.go"),
 	}
 	tree := Build(changes)
 	theme := testTheme()
 	output := Render(tree, theme, emptyBar)
 	plain := stripAnsi(output)
-	// The nested file should have │ prefix for the parent directory
+	// The nested file should have │ prefix for sibling directory
 	assert.Contains(t, plain, "│ ")
 }
 
-func TestLastItemAtEachLevelUsesEndConnector(t *testing.T) {
-	changes := []diff.FileChange{change("a.go"), change("b.go")}
+func TestLastItemAtNestedLevelUsesEndConnector(t *testing.T) {
+	changes := []diff.FileChange{change("src/a.go"), change("src/b.go")}
 	tree := Build(changes)
 	theme := testTheme()
 	output := Render(tree, theme, emptyBar)
 	lines := strings.Split(strings.TrimRight(output, "\n"), "\n")
 	lastLine := stripAnsi(lines[len(lines)-1])
-	assert.True(t, strings.HasPrefix(lastLine, "└─ "))
+	assert.Contains(t, lastLine, "└─ ")
 }
 
 func TestDirectoryNamesUseDirectoryColor(t *testing.T) {
@@ -288,13 +289,13 @@ func TestBarAppearsAfterFilenameWithSpaceSeparator(t *testing.T) {
 }
 
 func TestConnectorsAreGray(t *testing.T) {
-	changes := []diff.FileChange{change("main.go"), change("README.md")}
+	changes := []diff.FileChange{change("src/main.go"), change("src/README.md")}
 	tree := Build(changes)
 	theme := testTheme()
 	output := Render(tree, theme, emptyBar)
 	lines := strings.Split(strings.TrimRight(output, "\n"), "\n")
-	// Connector should be styled with gray (color 8)
-	assert.Contains(t, lines[0], "\x1b[90m") // color 8 = bright black / gray
+	// Second line is a nested file — connector should be styled with gray (color 8)
+	assert.Contains(t, lines[1], "\x1b[90m") // color 8 = bright black / gray
 }
 
 // --- Status display: Created files ---

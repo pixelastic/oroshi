@@ -106,11 +106,32 @@ func sortNodes(nodes []*Node) {
 // Render returns a styled string representing the tree.
 func Render(tree *Tree, theme ThemeResolver, barRenderer BarRenderer) string {
 	var builder strings.Builder
-	for i, node := range tree.Roots {
-		isLast := i == len(tree.Roots)-1
-		renderNode(&builder, node, "", isLast, theme, barRenderer)
+	for _, node := range tree.Roots {
+		renderRootNode(&builder, node, theme, barRenderer)
 	}
 	return builder.String()
+}
+
+func renderRootNode(builder *strings.Builder, node *Node, theme ThemeResolver, barRenderer BarRenderer) {
+	if node.IsDir {
+		dirStyle := lipgloss.NewStyle().Foreground(theme.Lipgloss("directory"))
+		builder.WriteString(dirStyle.Render(node.Name))
+		builder.WriteString("\n")
+		for i, child := range node.Children {
+			childIsLast := i == len(node.Children)-1
+			renderNode(builder, child, "", childIsLast, theme, barRenderer)
+		}
+		return
+	}
+
+	// Root-level file
+	if node.Change != nil {
+		renderFileByStatus(builder, node, theme, barRenderer)
+	} else {
+		fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(node.Name))
+		builder.WriteString(fileStyle.Render(node.Name))
+	}
+	builder.WriteString("\n")
 }
 
 func renderNode(builder *strings.Builder, node *Node, prefix string, isLast bool, theme ThemeResolver, barRenderer BarRenderer) {

@@ -8,7 +8,6 @@ import (
 
 	"github.com/pixelastic/oroshi/scripts/src/git-commit-diffstat/bar"
 	"github.com/pixelastic/oroshi/scripts/src/git-commit-diffstat/diff"
-	"github.com/pixelastic/oroshi/scripts/src/git-commit-diffstat/summary"
 	"github.com/pixelastic/oroshi/scripts/src/git-commit-diffstat/theme"
 	"github.com/pixelastic/oroshi/scripts/src/git-commit-diffstat/tree"
 )
@@ -55,26 +54,6 @@ func main() {
 
 	t := tree.Build(changes)
 	fmt.Print(tree.Render(t, thm, barRenderer))
-
-	var created, deleted int
-	for _, c := range changes {
-		switch c.Status {
-		case diff.Added:
-			created++
-		case diff.Deleted:
-			deleted++
-		}
-	}
-
-	fileIcon, _ := thm.Icon("filetype-file")
-	summaryLine := summary.Render(len(changes), created, deleted, summary.Theme{
-		FileIcon:     fileIcon,
-		CreatedColor: thm.Lipgloss("git-added"),
-		DeletedColor: thm.Lipgloss("git-removed"),
-	})
-	if summaryLine != "" {
-		fmt.Println(summaryLine)
-	}
 }
 
 func execRunner(name string, args ...string) (string, error) {
