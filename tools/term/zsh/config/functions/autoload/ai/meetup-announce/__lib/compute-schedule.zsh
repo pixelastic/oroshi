@@ -14,8 +14,6 @@ function compute-schedule() {
   local stateJsonPath="$3"
 
   local windowStart="$(__business_days_before_2 "$eventDate")"
-  local dateMinus1="$(date --date "$eventDate - 1 day" +%Y-%m-%d)"
-  local dateMinus7="$(date --date "$eventDate - 7 days" +%Y-%m-%d)"
 
   # Determine window: early (today < windowStart) or last (today >= windowStart)
   # windowStart = 2 business days before the event (weekends excluded)
@@ -25,9 +23,9 @@ function compute-schedule() {
   local result="[]"
 
   if [[ "$window" == "early" ]]; then
-    result="$(__compute_early "$stateJsonPath" "$today" "$dateMinus7" "$eventDate")"
+    result="$(__compute_early "$stateJsonPath" "$today" "$eventDate")"
   else
-    result="$(__compute_last "$stateJsonPath" "$dateMinus1" "$eventDate")"
+    result="$(__compute_last "$stateJsonPath" "$today" "$eventDate")"
   fi
 
   jo window="$window" messages="$result"
@@ -38,13 +36,9 @@ function __compute_early() {
 
   local stateJsonPath="$1"
   local today="$2"
-  local dateMinus7="$3"
-  local eventDate="$4"
+  local eventDate="$3"
 
-  local isDayMinus7Past=0
-  [[ "$today" > "$dateMinus7" ]] && isDayMinus7Past=1
-
-  local nudgedDayMinus7="$(__nudge_date "$dateMinus7")"
+  local scheduledDayMinus7="$(__schedule_date "$eventDate" 7 "$today")"
 
   # Ordered list of early messages
   local earlyMessages=(
@@ -83,8 +77,8 @@ function __compute_early() {
 
     # Reminder-specific checks
     if [[ "$id" == *"--reminder" ]]; then
-      # Skip if D-7 is past
-      [[ $isDayMinus7Past -eq 1 ]] && continue
+      # Skip if D-7 is past or falls on weekend (empty = filtered out)
+      [[ "$scheduledDayMinus7" == "" ]] && continue
 
       # Skip if initial was never posted and is not in this batch
       local initialId="${id%--reminder}--initial"
@@ -97,7 +91,7 @@ function __compute_early() {
       local scheduledAt="$(__random_time 13 47 14 28)"
       result="$(echo "$result" | jq \
         --arg id "$id" \
-        --arg scheduled "${nudgedDayMinus7}T${scheduledAt}" \
+        --arg scheduled "${scheduledDayMinus7}T${scheduledAt}" \
         --arg channel "#$channel" \
         --arg state "$state" \
       '. + [{
@@ -128,8 +122,11 @@ function __compute_last() {
   setopt local_options err_return
 
   local stateJsonPath="$1"
-  local dateMinus1="$2"
+  local today="$2"
   local eventDate="$3"
+
+  local scheduledDayMinus1="$(__schedule_date "$eventDate" 1 "$today")"
+  local scheduledDayOf="$(__schedule_date "$eventDate" 0 "$today")"
 
   local result="[]"
 
@@ -151,10 +148,10 @@ function __compute_last() {
   local reminderState="$(jq -r \
     '.messages["last--office-paris--reminder"].state' \
     "$stateJsonPath")"
-  if [[ "$reminderState" != "posted" ]]; then
+  if [[ "$scheduledDayMinus1" != "" && "$reminderState" != "posted" ]]; then
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
-      --arg scheduled "${dateMinus1}T${scheduledAt}" \
+      --arg scheduled "${scheduledDayMinus1}T${scheduledAt}" \
       --arg state "$reminderState" \
     '. + [{
         "id": "last--office-paris--reminder",
@@ -168,10 +165,10 @@ function __compute_last() {
   local todayState="$(jq -r \
     '.messages["last--office-paris--reminder-today"].state' \
     "$stateJsonPath")"
-  if [[ "$todayState" != "posted" ]]; then
+  if [[ "$scheduledDayOf" != "" && "$todayState" != "posted" ]]; then
     local scheduledAt="$(__random_time 10 47 11 28)"
     result="$(echo "$result" | jq \
-      --arg scheduled "${eventDate}T${scheduledAt}" \
+      --arg scheduled "${scheduledDayOf}T${scheduledAt}" \
       --arg state "$todayState" \
     '. + [{
         "id": "last--office-paris--reminder-today",
@@ -185,10 +182,10 @@ function __compute_last() {
   local devmarketingState="$(jq -r \
     '.messages["last--team-devmarketing--reminder"].state' \
     "$stateJsonPath")"
-  if [[ "$devmarketingState" != "posted" ]]; then
+  if [[ "$scheduledDayOf" != "" && "$devmarketingState" != "posted" ]]; then
     local scheduledAt="$(__random_time 10 47 11 28)"
     result="$(echo "$result" | jq \
-      --arg scheduled "${eventDate}T${scheduledAt}" \
+      --arg scheduled "${scheduledDayOf}T${scheduledAt}" \
       --arg state "$devmarketingState" \
     '. + [{
         "id": "last--team-devmarketing--reminder",
@@ -202,10 +199,10 @@ function __compute_last() {
   local helpRecruitingState="$(jq -r \
     '.messages["last--help-recruiting--reminder"].state' \
     "$stateJsonPath")"
-  if [[ "$helpRecruitingState" != "posted" ]]; then
+  if [[ "$scheduledDayMinus1" != "" && "$helpRecruitingState" != "posted" ]]; then
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
-      --arg scheduled "${dateMinus1}T${scheduledAt}" \
+      --arg scheduled "${scheduledDayMinus1}T${scheduledAt}" \
       --arg state "$helpRecruitingState" \
     '. + [{
         "id": "last--help-recruiting--reminder",
@@ -232,40 +229,6 @@ function __business_days_before_2() {
   fi
 
   date --date "$eventDate - $offset days" +%Y-%m-%d
-}
-
-function __nudge_date() {
-  setopt local_options err_return
-
-  local inputDate="$1"
-  local dayOfWeek="$(date --date "$inputDate" +%u)"  # 1=Mon, 7=Sun
-
-  # Tue(2), Wed(3), Thu(4) → no nudge
-  if [[ $dayOfWeek -ge 2 && $dayOfWeek -le 4 ]]; then
-    echo "$inputDate"
-    return 0
-  fi
-
-  # Mon(1) → Tue (+1)
-  if [[ $dayOfWeek -eq 1 ]]; then
-    date --date "$inputDate + 1 day" +%Y-%m-%d
-    return 0
-  fi
-
-  # Fri(5) → Thu (-1)
-  if [[ $dayOfWeek -eq 5 ]]; then
-    date --date "$inputDate - 1 day" +%Y-%m-%d
-    return 0
-  fi
-
-  # Sat(6) → next Tue (+3)
-  if [[ $dayOfWeek -eq 6 ]]; then
-    date --date "$inputDate + 3 days" +%Y-%m-%d
-    return 0
-  fi
-
-  # Sun(7) → next Tue (+2)
-  date --date "$inputDate + 2 days" +%Y-%m-%d
 }
 
 # Compute a workday-safe scheduled date

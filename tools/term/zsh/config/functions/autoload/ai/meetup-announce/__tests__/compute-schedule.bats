@@ -208,35 +208,30 @@ ENDJSON
   [[ "$reminderScheduled" == 2026-09-21T* ]]
 }
 
-@test "last--help-recruiting--reminder always scheduled for D-1" {
+@test "last--help-recruiting--reminder scheduled for D-1" {
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  # Available on D-1, scheduled for D-1
   bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-21 $STATE_FILE"
   [[ "$status" -eq 0 ]]
   echo "$output" | jq -e '.messages[] | select(.id == "last--help-recruiting--reminder")'
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "last--help-recruiting--reminder") | .scheduledFor')"
   [[ "$scheduled" == 2026-09-21T* ]]
-
-  # Also available on D-0, still scheduled for D-1
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-22 $STATE_FILE"
-  [[ "$status" -eq 0 ]]
-  echo "$output" | jq -e '.messages[] | select(.id == "last--help-recruiting--reminder")'
-  local scheduledD0="$(echo "$output" | jq -r '.messages[] | select(.id == "last--help-recruiting--reminder") | .scheduledFor')"
-  [[ "$scheduledD0" == 2026-09-21T* ]]
 }
 
 # -- Last window — D-0 --
 
-@test "D-0 generates all last messages" {
+@test "D-0 generates only D-0 messages, D-1 messages are past" {
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
   bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-22 $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local count="$(echo "$output" | jq '.messages | length')"
-  [[ "$count" -eq 4 ]]
-  echo "$output" | jq -e '.messages[] | select(.id == "last--office-paris--reminder")'
+  [[ "$count" -eq 2 ]]
   echo "$output" | jq -e '.messages[] | select(.id == "last--office-paris--reminder-today")'
   echo "$output" | jq -e '.messages[] | select(.id == "last--team-devmarketing--reminder")'
-  echo "$output" | jq -e '.messages[] | select(.id == "last--help-recruiting--reminder")'
+  # D-1 messages are past → dropped
+  local reminderCount="$(echo "$output" | jq '[.messages[] | select(.id == "last--office-paris--reminder")] | length')"
+  [[ "$reminderCount" -eq 0 ]]
+  local helpCount="$(echo "$output" | jq '[.messages[] | select(.id == "last--help-recruiting--reminder")] | length')"
+  [[ "$helpCount" -eq 0 ]]
 }
 
 # -- Last window — catch-up --
@@ -260,36 +255,36 @@ ENDJSON
 
 # -- Day-of-week nudging --
 
-@test "D-7 on Monday nudged to Tuesday" {
-  # Event=2026-09-14 (Mon), D-7=2026-09-07 (Mon) → Tue 2026-09-08
+@test "D-7 on Monday stays Monday" {
+  # Event=2026-09-14 (Mon), D-7=2026-09-07 (Mon) → Mon 2026-09-07
   bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-14 2026-09-01 $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
-  [[ "$scheduled" == 2026-09-08T* ]]
+  [[ "$scheduled" == 2026-09-07T* ]]
 }
 
-@test "D-7 on Friday nudged to Thursday" {
-  # Event=2026-09-18 (Fri), D-7=2026-09-11 (Fri) → Thu 2026-09-10
+@test "D-7 on Friday stays Friday" {
+  # Event=2026-09-18 (Fri), D-7=2026-09-11 (Fri) → Fri 2026-09-11
   bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-18 2026-09-01 $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
-  [[ "$scheduled" == 2026-09-10T* ]]
+  [[ "$scheduled" == 2026-09-11T* ]]
 }
 
-@test "D-7 on Saturday nudged to next Tuesday" {
-  # Event=2026-09-19 (Sat), D-7=2026-09-12 (Sat) → Tue 2026-09-15
+@test "D-7 on Saturday nudged to Friday" {
+  # Event=2026-09-19 (Sat), D-7=2026-09-12 (Sat) → Fri 2026-09-11
   bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-19 2026-09-01 $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
-  [[ "$scheduled" == 2026-09-15T* ]]
+  [[ "$scheduled" == 2026-09-11T* ]]
 }
 
-@test "D-7 on Sunday nudged to next Tuesday" {
-  # Event=2026-09-20 (Sun), D-7=2026-09-13 (Sun) → Tue 2026-09-15
+@test "D-7 on Sunday nudged to Friday" {
+  # Event=2026-09-20 (Sun), D-7=2026-09-13 (Sun) → Fri 2026-09-11
   bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-20 2026-09-01 $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
-  [[ "$scheduled" == 2026-09-15T* ]]
+  [[ "$scheduled" == 2026-09-11T* ]]
 }
 
 @test "D-7 on Tuesday/Wednesday/Thursday not nudged" {
@@ -402,4 +397,44 @@ ENDJSON
   [[ "$status" -eq 0 ]]
   local hasScheduled="$(echo "$output" | jq '[.messages[] | select(.id == "early--office-paris--initial") | select(.scheduledFor)] | length')"
   [[ "$hasScheduled" -eq 0 ]]
+}
+
+# -- Last window — D-1 weekend nudging --
+
+@test "last-window D-1 on Sunday nudged to Friday" {
+  # Event=2026-09-14 (Mon), D-1=Sep 13 (Sun) → Fri Sep 11
+  # Window boundary: 2 business days before Mon = Thu Sep 10
+  jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-14 2026-09-10 $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "last--office-paris--reminder") | .scheduledFor')"
+  [[ "$scheduled" == 2026-09-11T* ]]
+  local helpScheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "last--help-recruiting--reminder") | .scheduledFor')"
+  [[ "$helpScheduled" == 2026-09-11T* ]]
+}
+
+# -- Last window — past date filtering --
+
+@test "last-window D-1 message dropped when past" {
+  # Event=2026-09-22 (Tue), today=D-0=Sep 22 → D-1 (Sep 21) is past
+  jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-22 $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  local reminderCount="$(echo "$output" | jq '[.messages[] | select(.id == "last--office-paris--reminder")] | length')"
+  [[ "$reminderCount" -eq 0 ]]
+  local helpCount="$(echo "$output" | jq '[.messages[] | select(.id == "last--help-recruiting--reminder")] | length')"
+  [[ "$helpCount" -eq 0 ]]
+}
+
+@test "D-0 messages present when today is event day" {
+  # Event=2026-09-22 (Tue), today=Sep 22 → D-0 messages still valid
+  jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-22 $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  echo "$output" | jq -e '.messages[] | select(.id == "last--office-paris--reminder-today")'
+  local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "last--office-paris--reminder-today") | .scheduledFor')"
+  [[ "$scheduled" == 2026-09-22T* ]]
+  echo "$output" | jq -e '.messages[] | select(.id == "last--team-devmarketing--reminder")'
+  local devScheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "last--team-devmarketing--reminder") | .scheduledFor')"
+  [[ "$devScheduled" == 2026-09-22T* ]]
 }
