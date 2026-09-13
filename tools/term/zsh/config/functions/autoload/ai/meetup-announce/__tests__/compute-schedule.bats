@@ -325,6 +325,77 @@ ENDJSON
   [[ $totalMin -le 868 ]]  # 14:28
 }
 
+# -- __schedule_date: weekday passthrough --
+
+@test "__schedule_date: Monday passes through" {
+  # 2026-09-22 - 8 = 2026-09-14 (Mon)
+  bats_run_zsh "$sourcePrefix && __schedule_date 2026-09-22 8 2026-09-01"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "2026-09-14" ]]
+}
+
+@test "__schedule_date: Friday passes through" {
+  # 2026-09-22 - 4 = 2026-09-18 (Fri)
+  bats_run_zsh "$sourcePrefix && __schedule_date 2026-09-22 4 2026-09-01"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "2026-09-18" ]]
+}
+
+@test "__schedule_date: Wednesday passes through" {
+  # 2026-09-22 - 6 = 2026-09-16 (Wed)
+  bats_run_zsh "$sourcePrefix && __schedule_date 2026-09-22 6 2026-09-01"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "2026-09-16" ]]
+}
+
+# -- __schedule_date: weekend nudging --
+
+@test "__schedule_date: Saturday nudged to previous Friday" {
+  # 2026-09-22 - 3 = 2026-09-19 (Sat) → Fri 2026-09-18
+  bats_run_zsh "$sourcePrefix && __schedule_date 2026-09-22 3 2026-09-01"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "2026-09-18" ]]
+}
+
+@test "__schedule_date: Sunday nudged to previous Friday" {
+  # 2026-09-22 - 2 = 2026-09-20 (Sun) → Fri 2026-09-18
+  bats_run_zsh "$sourcePrefix && __schedule_date 2026-09-22 2 2026-09-01"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "2026-09-18" ]]
+}
+
+# -- __schedule_date: past date filtering --
+
+@test "__schedule_date: past date returns empty string" {
+  # 2026-09-22 - 6 = 2026-09-16 (Wed), today=2026-09-18 → past
+  bats_run_zsh "$sourcePrefix && __schedule_date 2026-09-22 6 2026-09-18"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+}
+
+@test "__schedule_date: today returns today" {
+  # 2026-09-22 - 6 = 2026-09-16 (Wed), today=2026-09-16 → not past
+  bats_run_zsh "$sourcePrefix && __schedule_date 2026-09-22 6 2026-09-16"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "2026-09-16" ]]
+}
+
+@test "__schedule_date: future date returns the date" {
+  # 2026-09-22 - 6 = 2026-09-16 (Wed), today=2026-09-14 → future
+  bats_run_zsh "$sourcePrefix && __schedule_date 2026-09-22 6 2026-09-14"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "2026-09-16" ]]
+}
+
+# -- __schedule_date: combined --
+
+@test "__schedule_date: weekend date whose previous Friday is past returns empty" {
+  # 2026-09-22 - 3 = 2026-09-19 (Sat) → Fri 2026-09-18, today=2026-09-20 → past
+  bats_run_zsh "$sourcePrefix && __schedule_date 2026-09-22 3 2026-09-20"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+}
+
 @test "initials have no scheduledFor in last window catch-up" {
   # All pending — early initial never posted, catch-up in last window
   bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-21 $STATE_FILE"

@@ -268,6 +268,31 @@ function __nudge_date() {
   date --date "$inputDate + 2 days" +%Y-%m-%d
 }
 
+# Compute a workday-safe scheduled date
+# Usage: __schedule_date <referenceDate> <daysOffset> [todayOverride]
+# Returns the date, or empty string if past
+function __schedule_date() {
+  setopt local_options err_return
+
+  local referenceDate="$1"
+  local daysOffset="$2"
+  local today="${3:-$(date +%Y-%m-%d)}"
+
+  local computed="$(date --date "$referenceDate - $daysOffset days" +%Y-%m-%d)"
+  local dayOfWeek="$(date --date "$computed" +%u)"
+
+  # Sat(6) → previous Friday (-1)
+  [[ $dayOfWeek -eq 6 ]] && computed="$(date --date "$computed - 1 day" +%Y-%m-%d)"
+
+  # Sun(7) → previous Friday (-2)
+  [[ $dayOfWeek -eq 7 ]] && computed="$(date --date "$computed - 2 days" +%Y-%m-%d)"
+
+  # Past dates return empty
+  [[ "$computed" < "$today" ]] && return 0
+
+  echo "$computed"
+}
+
 function __extract_channel() {
   setopt local_options err_return
 
