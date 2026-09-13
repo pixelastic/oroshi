@@ -56,18 +56,7 @@ Do **not** fix them — Two Hats principle: refactoring hat and bug-fixing hat a
 
 ---
 
-### Step 4 — Present findings
-
-**Goal:** Show the user what was found so they can validate before planning.
-
-**Exit criterion:** Ranked list displayed, user has seen it.
-
-Present findings to the user as a ranked list (highest impact first).
-Wait for user confirmation before proceeding to plan creation.
-
----
-
-### Step 5 — Plan
+### Step 4 — Plan
 
 **Goal:** Produce issue files and update state.json.
 
@@ -91,7 +80,7 @@ Write each refactoring issue using [references/refactoring-issue.template.md](re
 
 ---
 
-### Step 6 — Checkpoint
+### Step 5 — Checkpoint
 
 **Goal:** Add a HITL checkpoint issue at the end of this wave's issues.
 
@@ -117,7 +106,6 @@ Replace `<next-wave>` in the template with `nextWave` from Step 1.
 - [ ] Reference file for `currentWave` read
 - [ ] Code analyzed using `currentWave`'s categories
 - [ ] Bugs cataloged in GUIDANCE.md `## Bugs found` (not fixed)
-- [ ] Findings presented to user as ranked list
 - [ ] Test gate applied per finding (characterization test issue paired before refactoring issue)
 - [ ] Plan created (reduce) or issues appended (rewrite/restructure)
 - [ ] Every refactoring issue includes the refactoring constraint block
