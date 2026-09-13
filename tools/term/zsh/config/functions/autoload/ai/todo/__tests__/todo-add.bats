@@ -53,6 +53,15 @@ setup() {
 
 # Validation
 
+@test "errors on duplicate slug" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size small --slug git-prune 'First item'"
+	[[ "$status" -eq 0 ]]
+
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size small --slug git-prune 'Second item'"
+	[[ "$status" -ne 0 ]]
+	[[ "$output" == *"already exists"* ]]
+}
+
 @test "errors on invalid size" {
 	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size huge --slug git-prune 'Prune refs'"
 	[[ "$status" -ne 0 ]]

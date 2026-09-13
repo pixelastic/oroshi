@@ -22,6 +22,13 @@ if [[ "$size" != "small" && "$size" != "medium" && "$size" != "large" ]]; then
   return 1
 fi
 
+# Reject duplicate slugs
+local existing="$(topydo ls -x -F "%i" "id:${slug}" 2>/dev/null)"
+if [[ "$existing" != "" ]]; then
+  echoerr "Slug already exists: $slug"
+  return 1
+fi
+
 # Build tag string
 local tags="domain:${domain} size:${size} id:${slug}"
 
