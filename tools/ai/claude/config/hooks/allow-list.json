@@ -338,6 +338,7 @@
   "readlink",
   "read",
   "realpath",
+  "refactor-start",
   "review",
   "review-diff",
   "rg",

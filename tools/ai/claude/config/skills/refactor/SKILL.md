@@ -29,7 +29,8 @@ Each wave produces issues, not patches.
 
 **Exit criterion:** Wave determined, `currentWave` and `nextWave` known.
 
-Run `refactor-start $ARGUMENTS` and parse the JSON output. It returns `currentWave` and `nextWave`.
+Extract the wave from `$ARGUMENTS`: if it contains `reduce`, `rewrite`, or `restructure`, use that word. Otherwise default to `reduce`.
+Run `refactor-start <wave>` and parse the JSON output. It returns `currentWave` and `nextWave`.
 
 ---
 
