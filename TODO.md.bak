@@ -61,6 +61,9 @@ scannability
 - Show in Claude statusbar the number of subagents running
 - theme.go in git-branch-pretty, git-file-watch and git-commit-diffstat is
 similar and might need to be extracted in a shared helper
+- configure claude so when it tries to edit something in ~/oroshi instead of the
+  current worktree, we block it (we might need a whitelist of valid stuff to
+edit though)
 
 ---
 
