@@ -55,7 +55,14 @@
   "symbol":       "orange",
   "terminal":     "black",
   "text":         "gray-3",
-  "todo":         "red-4",
+  "todo": {
+    "blocked":     "red-4",
+    "description": "gray",
+    "domain":      "violet",
+    "large":       "orange",
+    "medium":      "yellow",
+    "small":       "gray"
+  },
   "ui":           "neutral",
   "unknown":      "cyan-3",
   "variable":     "violet-3",

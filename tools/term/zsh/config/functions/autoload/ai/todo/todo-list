@@ -1,20 +1,48 @@
-# List todo items with optional domain and size filters
+# List todo items as a colored, columnar display
 # Usage:
-# $ todo-list                          # All items
-# $ todo-list --domain Git             # Filter by domain
-# $ todo-list --size small             # Filter by size
-# $ todo-list --domain Git --size small # Both filters
+# $ todo-list            # All items, with domain column
+# $ todo-list Git        # Filter by domain, no domain column
 setopt local_options err_return
 
-zparseopts -E -D \
-  -domain:=flagDomain \
-  -size:=flagSize
+local domain="$1"
 
-local domain=${flagDomain[2]}
-local size=${flagSize[2]}
+local rawOutput="$(todo-list-raw "$domain")"
 
-local filters=()
-[[ "$domain" != "" ]] && filters+=("domain:${domain}")
-[[ "$size" != "" ]] && filters+=("size:${size}")
+# Nothing to display
+[[ "$rawOutput" == "" ]] && return 0
 
-topydo ls "${filters[@]}"
+colors-load-definitions
+
+local -A SIZE_ICONS=(1 "•" 2 "●" 3 "⬤")
+local -A SIZE_COLORS=(1 todo-small 2 todo-medium 3 todo-large)
+
+local output=""
+for rawLine in ${(f)rawOutput}; do
+  local fields=(${(@ps/▮/)rawLine})
+  local itemDomain=$fields[1]
+  local sizeRank=$fields[2]
+  local slug=$fields[3]
+  local description=$fields[4]
+  local blocked=$fields[5]
+
+  local icon="${SIZE_ICONS[$sizeRank]}"
+  local sizeColor="${SIZE_COLORS[$sizeRank]}"
+
+  # Blocked descriptions shown in red
+  local descColor=todo-description
+  [[ "$blocked" == "1" ]] && descColor=todo-blocked
+
+  local coloredIcon="$(colorize "$icon" "$sizeColor")"
+  local coloredSlug="$(colorize "$slug" "$sizeColor")"
+  local coloredDesc="$(colorize "$description" "$descColor")"
+
+  # Domain column only when no filter
+  if [[ "$domain" == "" ]]; then
+    local coloredDomain="$(colorize "$itemDomain" todo-domain)"
+    output+="${coloredDomain}▮${coloredIcon} ${coloredSlug}▮${coloredDesc}\n"
+  else
+    output+="${coloredIcon} ${coloredSlug}▮${coloredDesc}\n"
+  fi
+done
+
+echo -n "$output" | grep . | table

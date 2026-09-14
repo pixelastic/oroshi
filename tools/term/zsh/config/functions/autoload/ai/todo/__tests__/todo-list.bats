@@ -13,48 +13,52 @@ setup() {
 
 	# Seed todo.txt with known content
 	cat > "$BATS_TMP_DIR/todo.txt" <<-'ITEMS'
-		Buy milk domain:Home size:small id:buy-milk
-		Clean up branches domain:Git size:medium id:git-cleanup
-		Write docs domain:Git size:small id:git-docs
+		2025-01-15 Buy milk domain:Home size:small id:buy-milk
+		2025-01-10 Clean up branches domain:Git size:medium id:git-cleanup
+		2025-01-20 Write docs domain:Git size:small id:git-docs p:git-cleanup
 	ITEMS
 }
 
-# No filters
+# No filter — domain column visible
 
-@test "lists all items when no filters given" {
+@test "all slugs appear in output when no filter" {
 	bats_run_zsh "cd $BATS_TMP_DIR && todo-list"
 	[[ "$status" -eq 0 ]]
-	[[ "$output" == *"Buy milk"* ]]
-	[[ "$output" == *"Clean up branches"* ]]
-	[[ "$output" == *"Write docs"* ]]
+	local stripped="$(bats_strip_ansi "$output")"
+	[[ "$stripped" == *"buy-milk"* ]]
+	[[ "$stripped" == *"git-cleanup"* ]]
+	[[ "$stripped" == *"git-docs"* ]]
 }
 
-# Domain filter
-
-@test "lists only items matching the domain" {
-	bats_run_zsh "cd $BATS_TMP_DIR && todo-list --domain Git"
+@test "domain names appear in output when no filter" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-list"
 	[[ "$status" -eq 0 ]]
-	[[ "$output" == *"Clean up branches"* ]]
-	[[ "$output" == *"Write docs"* ]]
-	[[ "$output" != *"Buy milk"* ]]
+	local stripped="$(bats_strip_ansi "$output")"
+	[[ "$stripped" == *"Home"* ]]
+	[[ "$stripped" == *"Git"* ]]
 }
 
-# Size filter
+# With domain filter — no domain column
 
-@test "lists only items matching the size" {
-	bats_run_zsh "cd $BATS_TMP_DIR && todo-list --size small"
+@test "only matching slugs appear with domain filter" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-list Git"
 	[[ "$status" -eq 0 ]]
-	[[ "$output" == *"Buy milk"* ]]
-	[[ "$output" == *"Write docs"* ]]
-	[[ "$output" != *"Clean up branches"* ]]
+	local stripped="$(bats_strip_ansi "$output")"
+	[[ "$stripped" == *"git-cleanup"* ]]
+	[[ "$stripped" == *"git-docs"* ]]
 }
 
-# Combined filters
-
-@test "lists only items matching both domain and size" {
-	bats_run_zsh "cd $BATS_TMP_DIR && todo-list --domain Git --size small"
+@test "non-matching slugs absent with domain filter" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-list Git"
 	[[ "$status" -eq 0 ]]
-	[[ "$output" == *"Write docs"* ]]
-	[[ "$output" != *"Buy milk"* ]]
-	[[ "$output" != *"Clean up branches"* ]]
+	local stripped="$(bats_strip_ansi "$output")"
+	[[ "$stripped" != *"buy-milk"* ]]
+}
+
+# Empty result
+
+@test "outputs nothing when no items match" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-list NonExistent"
+	[[ "$status" -eq 0 ]]
+	[[ "$output" == "" ]]
 }

@@ -1403,9 +1403,29 @@
     "ansi": 203,
     "hex": "#d1d5db"
   },
-  "todo": {
+  "todo-blocked": {
     "ansi": 24,
     "hex": "#ef4444"
+  },
+  "todo-description": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "todo-domain": {
+    "ansi": 175,
+    "hex": "#7c3aed"
+  },
+  "todo-large": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "todo-medium": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "todo-small": {
+    "ansi": 205,
+    "hex": "#6b7280"
   },
   "ui": {
     "ansi": 225,
