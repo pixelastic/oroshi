@@ -35,6 +35,18 @@ setup() {
   [[ ${#stripped} -le 14 ]]
 }
 
+@test "adds ellipsis when piped ANSI-colored line overflows terminal width" {
+  terminal-width() { REPLY=14; }
+  bats_mock terminal-width
+  printf 'col▮\033[31mthis is a very long red message\033[0m' > "$BATS_TMP_DIR/input.txt"
+  bats_run_zsh "cat $BATS_TMP_DIR/input.txt | table"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"…"* ]]
+  local stripped
+  stripped="$(bats_strip_ansi "$output")"
+  [[ ${#stripped} -le 14 ]]
+}
+
 @test "preserves ANSI color codes in non-truncated output" {
   terminal-width() { REPLY=80; }
   bats_mock terminal-width
