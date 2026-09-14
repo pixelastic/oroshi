@@ -1,0 +1,48 @@
+# List todo items in machine-readable ▮-delimited format
+# Usage:
+# $ todo-list-raw             # All items
+# $ todo-list-raw Git         # Filter by domain
+# Output: domain▮sizeRank▮slug▮description▮blocked▮date
+setopt local_options err_return
+
+local domain="$1"
+
+# Build topydo filter args
+local filters=()
+[[ "$domain" != "" ]] && filters+=("domain:${domain}")
+
+# Fetch items: creation date, description, all tags (including hidden)
+local rawOutput=""
+rawOutput="$(topydo ls -x -F '%c▮%s▮%K' "${filters[@]}" 2>/dev/null)" || true
+
+[[ "$rawOutput" == "" ]] && return 0
+
+local -A SIZE_MAP=(small 1 medium 2 large 3)
+
+local lines=""
+for rawLine in ${(f)rawOutput}; do
+  local parts=(${(@ps/▮/)rawLine})
+  local date="${parts[1]}"
+  local description="${parts[2]}"
+  local tags="${parts[3]}"
+
+  # Extract structured fields from tags
+  local itemDomain=""
+  local size=""
+  local slug=""
+  local blocked=0
+
+  for tag in ${(s/ /)tags}; do
+    [[ "$tag" == domain:* ]] && itemDomain="${tag#domain:}"
+    [[ "$tag" == size:* ]] && size="${tag#size:}"
+    [[ "$tag" == id:* ]] && slug="${tag#id:}"
+    [[ "$tag" == p:* ]] && blocked=1
+  done
+
+  local sizeRank="${SIZE_MAP[$size]}"
+
+  lines+="${itemDomain}▮${sizeRank}▮${slug}▮${description}▮${blocked}▮${date}\n"
+done
+
+# Sort by domain, sizeRank, date, slug
+echo -n "$lines" | column-sort 1,2,6,3 | grep .
