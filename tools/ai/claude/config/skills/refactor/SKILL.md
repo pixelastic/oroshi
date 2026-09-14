@@ -56,14 +56,27 @@ Do **not** fix them — Two Hats principle: refactoring hat and bug-fixing hat a
 
 ---
 
-### Step 4 — Plan
+### Step 4 — Present & Align
+
+**Goal:** Reach shared understanding with the user on which findings to act on.
+
+**Exit criterion:** User approved the set of findings to turn into issues.
+
+1. Present findings as a table: file, line range, category (dead-code / naming), description, confidence (high/medium/low).
+2. Present cataloged bugs separately.
+3. Use `/grill-me` to discuss findings with the user — which to keep, drop, merge, or reframe.
+4. Only proceed to Step 5 once the user approves the final set of findings.
+
+---
+
+### Step 5 — Plan
 
 **Goal:** Produce issue files and update state.json.
 
 **Exit criterion:** Issues written to disk, state.json updated.
 
 **If `currentWave` is `reduce`:**
-create a new plan by invoking the `/plan` skill, passing findings as context for issue creation.
+create a new plan by invoking the `/plan` skill, passing approved findings as context for issue creation.
 
 **If `currentWave` is `rewrite` or `restructure`:**
 update the existing plan previously created by `/plan`.
@@ -80,7 +93,7 @@ Write each refactoring issue using [references/refactoring-issue.template.md](re
 
 ---
 
-### Step 5 — Checkpoint
+### Step 6 — Checkpoint
 
 **Goal:** Add a HITL checkpoint issue at the end of this wave's issues.
 
@@ -99,6 +112,7 @@ Replace `<next-wave>` in the template with `nextWave` from Step 1.
 |---|---|
 | "I'll fix this bug while refactoring" | Bugs are cataloged, never fixed during refactoring. Two Hats principle. |
 | "This code doesn't need tests, the change is trivial" | Every refactoring needs a test gate. Write characterization tests first. |
+| "Findings are clear, no need to check with user" | User hasn't seen or validated findings yet. Always present before planning. |
 
 ## Checklist
 
@@ -106,6 +120,7 @@ Replace `<next-wave>` in the template with `nextWave` from Step 1.
 - [ ] Reference file for `currentWave` read
 - [ ] Code analyzed using `currentWave`'s categories
 - [ ] Bugs cataloged in GUIDANCE.md `## Bugs found` (not fixed)
+- [ ] Findings presented to user, `/grill-me` used, user approved final set
 - [ ] Test gate applied per finding (characterization test issue paired before refactoring issue)
 - [ ] Plan created (reduce) or issues appended (rewrite/restructure)
 - [ ] Every refactoring issue includes the refactoring constraint block
