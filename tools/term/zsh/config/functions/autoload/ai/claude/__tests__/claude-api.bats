@@ -5,12 +5,18 @@ setup() {
   bats_mock_env "OROSHI_ANTHROPIC_API_KEY" "test-key-abc"
 }
 
-# Mock curl to return a valid Claude API response and log all args
+# Mock curl: write response body to --output file, print HTTP code to stdout
 _mock_curl() {
   cat <<'BASH'
   curl() {
+    local outputFile=""
+    local -a allArgs=("$@")
+    for ((i=1; i<=${#allArgs[@]}; i++)); do
+      [[ "${allArgs[$i]}" == "--output" ]] && outputFile="${allArgs[$((i+1))]}"
+    done
     echo "$@" > "$BATS_TMP_DIR/curl.log"
-    printf '{"content":[{"type":"text","text":"Hello from Claude"}]}▮200'
+    printf '{"content":[{"type":"text","text":"Hello from Claude"}]}' > "$outputFile"
+    printf '200'
   }
 BASH
 }
@@ -19,8 +25,14 @@ BASH
 _mock_curl_http_error() {
   cat <<'BASH'
   curl() {
+    local outputFile=""
+    local -a allArgs=("$@")
+    for ((i=1; i<=${#allArgs[@]}; i++)); do
+      [[ "${allArgs[$i]}" == "--output" ]] && outputFile="${allArgs[$((i+1))]}"
+    done
     echo "$@" > "$BATS_TMP_DIR/curl.log"
-    printf '{"type":"error","error":{"type":"authentication_error","message":"Invalid API key"}}▮401'
+    printf '{"type":"error","error":{"type":"authentication_error","message":"Invalid API key"}}' > "$outputFile"
+    printf '401'
   }
 BASH
 }
@@ -29,8 +41,14 @@ BASH
 _mock_curl_empty() {
   cat <<'BASH'
   curl() {
+    local outputFile=""
+    local -a allArgs=("$@")
+    for ((i=1; i<=${#allArgs[@]}; i++)); do
+      [[ "${allArgs[$i]}" == "--output" ]] && outputFile="${allArgs[$((i+1))]}"
+    done
     echo "$@" > "$BATS_TMP_DIR/curl.log"
-    printf '▮200'
+    printf '' > "$outputFile"
+    printf '200'
   }
 BASH
 }
@@ -163,6 +181,29 @@ BASH
   bats_run_zsh "claude-api 'hello'"
   local args=$(cat "$BATS_TMP_DIR/curl.log")
   [[ "$args" != *'"system"'* ]]
+}
+
+@test "handles response body containing the ▮ delimiter character" {
+  _mock_curl_with_delimiter() {
+    cat <<'BASH'
+    curl() {
+      local outputFile=""
+      local -a allArgs=("$@")
+      for ((i=1; i<=${#allArgs[@]}; i++)); do
+        [[ "${allArgs[$i]}" == "--output" ]] && outputFile="${allArgs[$((i+1))]}"
+      done
+      echo "$@" > "$BATS_TMP_DIR/curl.log"
+      printf '{"content":[{"type":"text","text":"use ▮ as delimiter"}]}' > "$outputFile"
+      printf '200'
+    }
+BASH
+  }
+  eval "$(_mock_curl_with_delimiter)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api 'hello'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "use ▮ as delimiter" ]]
 }
 
 @test "returns exit code 1 and prints to stderr on HTTP error" {

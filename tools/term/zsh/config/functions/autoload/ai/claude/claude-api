@@ -44,18 +44,20 @@ joArgs+=(messages="$(jo -a "$message")")
 
 local body=$(jo "${joArgs[@]}")
 
-local rawResponse=$(curl \
+# We write the output in a file, but echo the HTTP code so we can handle HTTP
+# errors
+local tmpResponse=$(mktemp)
+local httpCode=$(curl \
     --silent \
-    --write-out '▮%{http_code}' \
+    --output "$tmpResponse" \
+    --write-out '%{http_code}' \
     --header "x-api-key: $OROSHI_ANTHROPIC_API_KEY" \
     --header "anthropic-version: 2023-06-01" \
     --header "content-type: application/json" \
     --data "$body" \
   https://api.anthropic.com/v1/messages)
-
-local -a parts=("${(@s/▮/)rawResponse}")
-local response=${parts[1]}
-local httpCode=${parts[2]}
+local response="$(cat "$tmpResponse")"
+rm -f "$tmpResponse"
 
 # Guard: HTTP error
 if [[ "$httpCode" != 2* ]]; then

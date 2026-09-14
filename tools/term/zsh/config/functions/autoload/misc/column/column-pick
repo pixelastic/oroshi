@@ -1,0 +1,23 @@
+# Pick specific columns from ▮-delimited lines
+# Usage:
+# $ echo "a▮b▮c" | column-pick 2        # Pick column 2
+# $ echo "a▮b▮c" | column-pick 1,3      # Pick columns 1 and 3
+# $ echo "a▮b▮c" | column-pick 3,1      # Reorder: column 3 first
+setopt local_options err_return
+
+local input="$(cat -)"
+
+# Nothing to pick from
+[[ "$input" == "" ]] && return 0
+
+local indices=(${(s/,/)1})
+
+for line in ${(f)input}; do
+  local fields=(${(@ps/▮/)line})
+  local result=""
+  for index in "${indices[@]}"; do
+    [[ "$result" != "" ]] && result+="▮"
+    result+="${fields[$index]}"
+  done
+  echo "$result"
+done

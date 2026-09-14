@@ -1,0 +1,72 @@
+# Sort ▮-delimited lines by arbitrary column indices
+# Usage:
+# $ echo "b▮2\na▮1" | column-sort 1      # Sort by col 1 ascending
+# $ echo "b▮2\na▮1" | column-sort -1      # Sort by col 1 descending
+# $ echo "b▮2\na▮1" | column-sort 1,2     # Primary col 1, secondary col 2
+#
+# Algorithm: augmented-key sorting
+# GNU sort can't split on ▮, so we extract the sort-relevant columns into a
+# tab-separated prefix prepended to each line. sort operates on that prefix
+# (with per-key numeric/reverse modifiers), then cut strips it, leaving the
+# original lines in sorted order.
+setopt local_options err_return
+
+local input="$(cat -)"
+
+# Nothing to sort
+[[ "$input" == "" ]] && return 0
+
+local specifications=(${(s/,/)1})
+
+# Build one --key flag per spec with inline modifiers (n = numeric, r = reverse)
+local sortArguments=()
+local keyIndex=0
+
+for specification in "${specifications[@]}"; do
+  keyIndex=$(( keyIndex + 1 ))
+  local columnIndex=$specification
+  local modifiers=""
+
+  # Negative index means descending
+  if [[ $columnIndex -lt 0 ]]; then
+    modifiers+="r"
+    columnIndex=$(( -columnIndex ))
+  fi
+
+  # Find first non-empty value in this column to detect type
+  local firstValue=""
+  for line in ${(f)input}; do
+    local fields=(${(@ps/▮/)line})
+    local value="${fields[$columnIndex]}"
+    if [[ "$value" != "" ]]; then
+      firstValue="$value"
+      break
+    fi
+  done
+
+  # Numeric if first char is a digit
+  [[ "$firstValue" =~ ^[0-9] ]] && modifiers+="n"
+
+  sortArguments+=("--key=${keyIndex},${keyIndex}${modifiers}")
+done
+
+# Build augmented lines: sort-key columns prepended, tab-separated
+local augmented=""
+for line in ${(f)input}; do
+  local fields=(${(@ps/▮/)line})
+  local prefix=""
+  for specification in "${specifications[@]}"; do
+    local columnIndex=$specification
+    [[ $columnIndex -lt 0 ]] && columnIndex=$(( -columnIndex ))
+    prefix+="${fields[$columnIndex]}\t"
+  done
+  augmented+="${prefix}${line}\n"
+done
+
+# Sort by augmented prefix, then strip it
+local numberOfKeys=${#specifications[@]}
+echo "$augmented" \
+  | sort \
+  --field-separator=$'\t' \
+  "${sortArguments[@]}" \
+  | cut -f$(( numberOfKeys + 1 ))-
