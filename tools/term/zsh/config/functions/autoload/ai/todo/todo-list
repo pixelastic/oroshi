@@ -13,7 +13,7 @@ local rawOutput="$(todo-list-raw "$domain")"
 
 colors-load-definitions
 
-local -A SIZE_ICONS=(1 "•" 2 "●" 3 "⬤")
+local -A SIZE_ICONS=(1 "🅢" 2 "🅜" 3 "🅛")
 local -A SIZE_COLORS=(1 todo-small 2 todo-medium 3 todo-large)
 
 local output=""
@@ -21,7 +21,6 @@ for rawLine in ${(f)rawOutput}; do
   local fields=(${(@ps/▮/)rawLine})
   local itemDomain=$fields[1]
   local sizeRank=$fields[2]
-  local slug=$fields[3]
   local description=$fields[4]
   local blocked=$fields[5]
 
@@ -33,15 +32,14 @@ for rawLine in ${(f)rawOutput}; do
   [[ "$blocked" == "1" ]] && descColor=todo-blocked
 
   local coloredIcon="$(colorize "$icon" "$sizeColor")"
-  local coloredSlug="$(colorize "$slug" "$sizeColor")"
   local coloredDesc="$(colorize "$description" "$descColor")"
 
   # Domain column only when no filter
   if [[ "$domain" == "" ]]; then
     local coloredDomain="$(colorize "$itemDomain" todo-domain)"
-    output+="${coloredDomain}▮${coloredIcon} ${coloredSlug}▮${coloredDesc}\n"
+    output+="${coloredDomain}▮${coloredIcon} ${coloredDesc}\n"
   else
-    output+="${coloredIcon} ${coloredSlug}▮${coloredDesc}\n"
+    output+="${coloredIcon} ${coloredDesc}\n"
   fi
 done
 

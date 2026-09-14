@@ -21,13 +21,13 @@ setup() {
 
 # No filter — domain column visible
 
-@test "all slugs appear in output when no filter" {
+@test "all descriptions appear in output when no filter" {
 	bats_run_zsh "cd $BATS_TMP_DIR && todo-list"
 	[[ "$status" -eq 0 ]]
 	local stripped="$(bats_strip_ansi "$output")"
-	[[ "$stripped" == *"buy-milk"* ]]
-	[[ "$stripped" == *"git-cleanup"* ]]
-	[[ "$stripped" == *"git-docs"* ]]
+	[[ "$stripped" == *"Buy milk"* ]]
+	[[ "$stripped" == *"Clean up branches"* ]]
+	[[ "$stripped" == *"Write docs"* ]]
 }
 
 @test "domain names appear in output when no filter" {
@@ -40,19 +40,19 @@ setup() {
 
 # With domain filter — no domain column
 
-@test "only matching slugs appear with domain filter" {
+@test "only matching descriptions appear with domain filter" {
 	bats_run_zsh "cd $BATS_TMP_DIR && todo-list Git"
 	[[ "$status" -eq 0 ]]
 	local stripped="$(bats_strip_ansi "$output")"
-	[[ "$stripped" == *"git-cleanup"* ]]
-	[[ "$stripped" == *"git-docs"* ]]
+	[[ "$stripped" == *"Clean up branches"* ]]
+	[[ "$stripped" == *"Write docs"* ]]
 }
 
-@test "non-matching slugs absent with domain filter" {
+@test "non-matching descriptions absent with domain filter" {
 	bats_run_zsh "cd $BATS_TMP_DIR && todo-list Git"
 	[[ "$status" -eq 0 ]]
 	local stripped="$(bats_strip_ansi "$output")"
-	[[ "$stripped" != *"buy-milk"* ]]
+	[[ "$stripped" != *"Buy milk"* ]]
 }
 
 # Empty result
