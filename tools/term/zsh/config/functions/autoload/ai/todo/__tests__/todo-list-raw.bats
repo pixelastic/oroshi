@@ -92,6 +92,19 @@ setup() {
 	[[ "${lines[3]}" == *"buy-milk"* ]]
 }
 
+# Backslash in description
+
+@test "handles backslashes in descriptions without error" {
+	cat > "$BATS_TMP_DIR/todo.txt" <<-'ITEMS'
+		2025-01-15 Prefer `\cmd` over `command cmd` domain:Zsh size:small id:zsh-backslash
+	ITEMS
+
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-list-raw"
+	[[ "$status" -eq 0 ]]
+	[[ "$output" == *"zsh-backslash"* ]]
+	[[ "$output" == *'Prefer `\cmd` over `command cmd`'* ]]
+}
+
 # Empty result
 
 @test "outputs nothing when no items match" {

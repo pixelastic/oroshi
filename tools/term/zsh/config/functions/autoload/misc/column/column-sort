@@ -58,14 +58,14 @@ for line in ${(f)input}; do
   for specification in "${specifications[@]}"; do
     local columnIndex=$specification
     [[ $columnIndex -lt 0 ]] && columnIndex=$(( -columnIndex ))
-    prefix+="${fields[$columnIndex]}\t"
+    prefix+="${fields[$columnIndex]}"$'\t'
   done
-  augmented+="${prefix}${line}\n"
+  augmented+="${prefix}${line}"$'\n'
 done
 
 # Sort by augmented prefix, then strip it
 local numberOfKeys=${#specifications[@]}
-echo "$augmented" \
+print -rn -- "$augmented" \
   | sort \
   --field-separator=$'\t' \
   "${sortArguments[@]}" \

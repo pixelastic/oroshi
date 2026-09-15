@@ -37,9 +37,9 @@ for rawLine in ${(f)rawOutput}; do
   # Domain column only when no filter
   if [[ "$domain" == "" ]]; then
     local coloredDomain="$(colorize "$itemDomain" todo-domain)"
-    output+="${coloredDomain}▮${coloredIcon} ${coloredDesc}\n"
+    output+="${coloredDomain}▮${coloredIcon}  ${coloredDesc}\n"
   else
-    output+="${coloredIcon} ${coloredDesc}\n"
+    output+="${coloredIcon}  ${coloredDesc}\n"
   fi
 done
 

@@ -11,27 +11,42 @@ local domain="$1"
 local filters=()
 [[ "$domain" != "" ]] && filters+=("domain:${domain}")
 
-# Fetch items: creation date, description, all tags (including hidden)
+# Fetch date, tags, and line number from topydo
+# (skip %s for description — topydo's formatter breaks on backslashes in content)
 local rawOutput=""
-rawOutput="$(topydo ls -x -F '%c▮%s▮%K' "${filters[@]}" 2>/dev/null)" || true
+rawOutput="$(topydo ls -x -F '%c▮%K▮%n' "${filters[@]}" 2>/dev/null)" || true
 
 [[ "$rawOutput" == "" ]] && return 0
 
+# Resolve the todo.txt path from topydo config (.topydo in cwd, then ~/.topydo)
+local configFile=".topydo"
+[[ ! -f "$configFile" ]] && configFile="${HOME}/.topydo"
+local todoFile="$(sed -n 's/^filename *= *//p' "$configFile")"
+todoFile="${todoFile/#\~/$HOME}"
+
 local -A SIZE_MAP=(small 1 medium 2 large 3)
 
-local lines=""
+# Declare loop variables here — repeated `local` inside a for loop leaks to stdout
+local lines
+local date
+local tags
+local lineNum
+local fileLine
+local itemDomain
+local size
+local slug
+local sizeRank
+local description
+local blocked
+
 for rawLine in ${(f)rawOutput}; do
   local parts=(${(@ps/▮/)rawLine})
-  local date="${parts[1]}"
-  local description="${parts[2]}"
-  local tags="${parts[3]}"
+  date="${parts[1]}"
+  tags="${parts[2]}"
+  lineNum="${parts[3]}"
 
   # Extract structured fields from tags
-  local itemDomain=""
-  local size=""
-  local slug=""
-  local blocked=0
-
+  itemDomain="" size="" slug="" blocked=0
   for tag in ${(s/ /)tags}; do
     [[ "$tag" == domain:* ]] && itemDomain="${tag#domain:}"
     [[ "$tag" == size:* ]] && size="${tag#size:}"
@@ -39,10 +54,19 @@ for rawLine in ${(f)rawOutput}; do
     [[ "$tag" == p:* ]] && blocked=1
   done
 
-  local sizeRank="${SIZE_MAP[$size]}"
+  # Read description from the raw file (safe from backslash issues)
+  fileLine="$(sed -n "${lineNum}p" "$todoFile")"
+  # Strip date prefix, then remove all key:value tags (domain:, size:, id:, p:)
+  description="${fileLine#* }"
+  description="${description%% domain:*}"
+  description="${description%% size:*}"
+  description="${description%% id:*}"
+  description="${description%% p:*}"
 
-  lines+="${itemDomain}▮${sizeRank}▮${slug}▮${description}▮${blocked}▮${date}\n"
+  sizeRank="${SIZE_MAP[$size]}"
+
+  lines+="${itemDomain}▮${sizeRank}▮${slug}▮${description}▮${blocked}▮${date}"$'\n'
 done
 
 # Sort by domain, sizeRank, date, slug
-echo -n "$lines" | column-sort 1,2,6,3 | grep .
+print -rn -- "$lines" | column-sort 1,2,6,3 | grep .
