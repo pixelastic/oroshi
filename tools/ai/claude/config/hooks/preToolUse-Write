@@ -9,6 +9,7 @@ local -a allowlist=(
   "*/local/tmp/oroshi/claude/**"
   "*/local/tmp/oroshi/git-file-watch/**"
   "*/local/www/plans/**"
+  "$HOME/.oroshi/todo.txt"
 )
 
 local inputJson="$(cat)"

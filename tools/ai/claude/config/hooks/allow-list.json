@@ -274,6 +274,7 @@
   "nautilus",
   "netlify api createSiteBuild",
   "netlify api listSiteDeploys",
+  "netstat",
   "nm",
   "node --version",
   "node_modules/.bin/aberlaas test",
