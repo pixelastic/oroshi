@@ -6,6 +6,8 @@
 # Guard: skip if already defined (e.g. mocked in tests)
 whence compute-schedule >/dev/null && return 0
 
+source "${0:A:h}/config.zsh"
+
 function compute-schedule() {
   setopt local_options err_return
 
@@ -39,15 +41,6 @@ function __compute_early() {
   local eventDate="$3"
 
   local scheduledDayMinus7="$(__schedule_date "$eventDate" 7 "$today")"
-
-  # Ordered list of early messages
-  local earlyMessages=(
-    "early--office-paris--initial"
-    "early--office-paris--reminder"
-    "early--team-devmarketing--initial"
-    "early--help-recruiting--initial"
-    "early--topic-relevant--initial"
-  )
 
   # Track which initials are in this batch (pending or drafted)
   local -A initialInBatch

@@ -5,6 +5,8 @@
 # Guard: skip if already defined (e.g. mocked in tests)
 whence fetch-meetup >/dev/null && return 0
 
+source "${0:A:h}/config.zsh"
+
 function fetch-meetup() {
   setopt local_options err_return
 
@@ -27,7 +29,7 @@ function fetch-meetup() {
 
   AIRTABLE_TOKEN="$AIRTABLE_DEVREL_MEETUPS_TOKEN_READONLY" \
     airtable-record-read \
-    --base appOxzXtlKI4Q7qr4 \
+    --base "$AIRTABLE_BASE_ID" \
     --table Meetups \
     --record "$recordId" \
     --fields "$fieldList"

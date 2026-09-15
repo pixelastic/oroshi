@@ -5,6 +5,8 @@
 # Guard: skip if already defined (e.g. mocked in tests)
 whence resolve-draft-dir >/dev/null && return 0
 
+source "${0:A:h}/config.zsh"
+
 function resolve-draft-dir() {
   setopt local_options err_return
 
@@ -26,17 +28,7 @@ function resolve-draft-dir() {
   # New draft directory — create folder structure + state.json
   mkdir -p "$draftDir"
 
-  local messageIds=(
-    "early--office-paris--initial"
-    "early--office-paris--reminder"
-    "early--team-devmarketing--initial"
-    "early--help-recruiting--initial"
-    "early--topic-relevant--initial"
-    "last--office-paris--reminder"
-    "last--office-paris--reminder-today"
-    "last--team-devmarketing--reminder"
-    "last--help-recruiting--reminder"
-  )
+  local messageIds=("${earlyMessages[@]}" "${lastMessages[@]}")
 
   local messagesJson="{}"
   local id
