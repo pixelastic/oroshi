@@ -106,6 +106,17 @@ setup() {
   [[ "$output" = "" ]]
 }
 
+# Subdirectory
+@test "returns repo-root-relative paths when run from a subdirectory" {
+  mkdir -p "$BATS_GIT_DIR/subdir"
+  echo "root change" > "$BATS_GIT_DIR/tracked.txt"
+  echo "new" > "$BATS_GIT_DIR/subdir/nested.txt"
+  bats_run_zsh "cd $BATS_GIT_DIR/subdir && git-status-raw ."
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"tracked.txt▮ ▮M"* ]]
+  [[ "$output" == *"subdir/nested.txt▮ ▮A"* ]]
+}
+
 # Output format
 @test "columns are filepath▮X▮Y separated by ▮" {
   echo "new" > "$BATS_GIT_DIR/file.txt"

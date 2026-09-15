@@ -6,7 +6,7 @@
 # $ git-status-raw /path    # repo at given path
 setopt local_options err_return
 
-local targetPath="${1:-$(git-directory-root)}"
+local targetPath="$(git-directory-root "${1:-.}")"
 local rawOutput="$(git -C "${targetPath}" -c core.quotePath=false status --porcelain --short)"
 
 # Nothing to report if clean
