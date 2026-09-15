@@ -23,9 +23,10 @@ type FileIndex struct {
 
 // ViewContext bundles the indices that navigation functions need.
 type ViewContext struct {
-	Navigable []int
-	Visible   []int
-	Headers   []int
+	Navigable   []int
+	Visible     []int
+	Headers     []int
+	CommentRows map[int]bool
 }
 
 // NextFile jumps the cursor to the first navigable line of the next file.
@@ -169,7 +170,7 @@ func MoveDownVisible(state State, vc ViewContext) State {
 	}
 
 	state.Cursor = vc.Navigable[pos]
-	return clampViewportVisible(state, vc.Visible, vc.Headers)
+	return clampViewportVisible(state, vc)
 }
 
 // MoveUpVisible moves the cursor to the previous navigable row, scrolling the viewport using visible indices.
@@ -188,7 +189,7 @@ func MoveUpVisible(state State, vc ViewContext) State {
 	}
 
 	state.Cursor = vc.Navigable[pos]
-	return clampViewportVisible(state, vc.Visible, vc.Headers)
+	return clampViewportVisible(state, vc)
 }
 
 // GoToTop moves the cursor to the first navigable row and scrolls viewport to the top.
@@ -209,7 +210,7 @@ func GoToBottom(state State, vc ViewContext) State {
 		return state
 	}
 	state.Cursor = vc.Navigable[len(vc.Navigable)-1]
-	return clampViewportVisible(state, vc.Visible, vc.Headers)
+	return clampViewportVisible(state, vc)
 }
 
 // PageDown moves the cursor down by half a viewport height within visible rows.
@@ -230,7 +231,7 @@ func PageDown(state State, vc ViewContext) State {
 		navPos = len(vc.Navigable) - 1
 	}
 	state.Cursor = vc.Navigable[navPos]
-	return centerViewportOnCursor(state, vc.Visible, vc.Headers)
+	return centerViewportOnCursor(state, vc)
 }
 
 // PageUp moves the cursor up by half a viewport height within visible rows.
@@ -251,28 +252,28 @@ func PageUp(state State, vc ViewContext) State {
 		navPos = len(vc.Navigable) - 1
 	}
 	state.Cursor = vc.Navigable[navPos]
-	return centerViewportOnCursor(state, vc.Visible, vc.Headers)
+	return centerViewportOnCursor(state, vc)
 }
 
 // centerViewportOnCursor positions the viewport so the cursor is roughly centered.
-func centerViewportOnCursor(state State, visibleIndices []int, headers []int) State {
-	cursorPos := sort.SearchInts(visibleIndices, state.Cursor)
-	if cursorPos >= len(visibleIndices) || visibleIndices[cursorPos] != state.Cursor {
-		return clampViewportVisible(state, visibleIndices, headers)
+func centerViewportOnCursor(state State, vc ViewContext) State {
+	cursorPos := sort.SearchInts(vc.Visible, state.Cursor)
+	if cursorPos >= len(vc.Visible) || vc.Visible[cursorPos] != state.Cursor {
+		return clampViewportVisible(state, vc)
 	}
 
 	newStart := cursorPos - state.ViewportHeight/2
 	if newStart < 0 {
 		newStart = 0
 	}
-	maxStart := len(visibleIndices) - state.ViewportHeight
+	maxStart := len(vc.Visible) - state.ViewportHeight
 	if maxStart < 0 {
 		maxStart = 0
 	}
 	if newStart > maxStart {
 		newStart = maxStart
 	}
-	state.ViewportOffset = visibleIndices[newStart]
+	state.ViewportOffset = vc.Visible[newStart]
 	return state
 }
 
@@ -337,26 +338,23 @@ func shouldAutoFold(path string) bool {
 	return false
 }
 
-func clampViewportVisible(state State, visibleIndices []int, headers []int) State {
+func clampViewportVisible(state State, vc ViewContext) State {
 	if state.Cursor < state.ViewportOffset {
 		state.ViewportOffset = state.Cursor
 		return state
 	}
 
-	headerSet := makeHeaderSet(headers)
-	viewportStart := sort.SearchInts(visibleIndices, state.ViewportOffset)
-	cursorPos := sort.SearchInts(visibleIndices, state.Cursor)
-	if cursorPos >= len(visibleIndices) || visibleIndices[cursorPos] != state.Cursor {
+	headerSet := makeHeaderSet(vc.Headers)
+	viewportStart := sort.SearchInts(vc.Visible, state.ViewportOffset)
+	cursorPos := sort.SearchInts(vc.Visible, state.Cursor)
+	if cursorPos >= len(vc.Visible) || vc.Visible[cursorPos] != state.Cursor {
 		return state
 	}
 
-	// Count terminal lines (file headers take 2 lines each)
+	// Count terminal lines (headers and comment rows take an extra line each)
 	termLines := 0
 	for i := viewportStart; i <= cursorPos; i++ {
-		termLines++
-		if headerSet[visibleIndices[i]] {
-			termLines++
-		}
+		termLines += rowTermCost(vc.Visible[i], headerSet, vc.CommentRows)
 	}
 
 	if termLines > state.ViewportHeight {
@@ -364,10 +362,7 @@ func clampViewportVisible(state State, visibleIndices []int, headers []int) Stat
 		remaining := state.ViewportHeight
 		newStart := cursorPos
 		for newStart > 0 {
-			cost := 1
-			if headerSet[visibleIndices[newStart]] {
-				cost = 2
-			}
+			cost := rowTermCost(vc.Visible[newStart], headerSet, vc.CommentRows)
 			if remaining-cost < 0 {
 				break
 			}
@@ -377,9 +372,21 @@ func clampViewportVisible(state State, visibleIndices []int, headers []int) Stat
 			}
 			newStart--
 		}
-		state.ViewportOffset = visibleIndices[newStart]
+		state.ViewportOffset = vc.Visible[newStart]
 	}
 	return state
+}
+
+// rowTermCost returns the number of terminal lines a row occupies.
+func rowTermCost(rowIndex int, headerSet map[int]bool, commentRows map[int]bool) int {
+	cost := 1
+	if headerSet[rowIndex] {
+		cost++
+	}
+	if commentRows[rowIndex] {
+		cost++
+	}
+	return cost
 }
 
 func makeHeaderSet(headers []int) map[int]bool {

@@ -442,10 +442,22 @@ func (m model) cursorLineContext() (layout.LineRow, string, string, bool) {
 
 func (m *model) refreshIndices() {
 	visible := navigation.VisibleIndices(len(m.rows), m.fileIndex)
+	commentRows := make(map[int]bool)
+	for i, row := range m.rows {
+		lr, ok := row.(layout.LineRow)
+		if !ok {
+			continue
+		}
+		key := layout.LineKey(lr.FilePath, lr.LineNumber)
+		if m.commentIndex[key] != "" {
+			commentRows[i] = true
+		}
+	}
 	m.viewContext = navigation.ViewContext{
-		Navigable: navigableFromVisible(m.rows, visible, m.fileIndex.FoldState),
-		Visible:   visible,
-		Headers:   m.fileIndex.Headers,
+		Navigable:   navigableFromVisible(m.rows, visible, m.fileIndex.FoldState),
+		Visible:     visible,
+		Headers:     m.fileIndex.Headers,
+		CommentRows: commentRows,
 	}
 }
 

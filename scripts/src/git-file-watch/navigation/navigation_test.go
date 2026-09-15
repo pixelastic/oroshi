@@ -401,6 +401,26 @@ func TestMoveDownVisibleScrollsViewport(t *testing.T) {
 	assert.Equal(t, 3, result.ViewportOffset)
 }
 
+func TestMoveDownVisibleScrollsExtraForCommentRows(t *testing.T) {
+	// rows: header(0), line(1), line(2), line(3), line(4), line(5), line(6), line(7)
+	// ViewportHeight=7 terminal lines. Without comments that fits 7 rows (header=2 + 5 lines).
+	// line(2) has a comment → costs 2 terminal lines instead of 1.
+	// Total: header(2) + line(1) + commented-line(2) + 4×line(4) = 9 > 7.
+	// Cursor at line(6), moving to line(7). With comment awareness, viewport must scroll.
+	state := State{Cursor: 6, ViewportOffset: 0, ViewportHeight: 7, RowCount: 8}
+	vc := ViewContext{
+		Navigable:   []int{1, 2, 3, 4, 5, 6, 7},
+		Visible:     []int{0, 1, 2, 3, 4, 5, 6, 7},
+		Headers:     []int{0},
+		CommentRows: map[int]bool{2: true},
+	}
+
+	result := MoveDownVisible(state, vc)
+
+	assert.Equal(t, 7, result.Cursor)
+	assert.True(t, result.ViewportOffset > 0, "viewport should scroll to account for comment row extra line")
+}
+
 func TestMoveDownVisibleScrollsExtraForFileHeaders(t *testing.T) {
 	// rows: header(0), line(1), line(2), line(3), header(4), line(5), line(6), line(7)
 	// ViewportHeight=7 terminal lines. Without headers that fits 7 rows.
