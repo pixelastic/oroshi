@@ -1,92 +1,53 @@
-2026-09-13 js-writer should have one named export per file, except for __ domain:JavaScript size:small id:js-single-export
-2026-09-13 Keybinding to add status markers domain:Kitty size:medium id:kitty-status-markers
+2026-09-15 Add lint rule: one named export per file, allow barrel and helper files domain:JavaScript size:large id:js-single-export
+2026-09-14 Design a tab status marker system with colored symbols (blocked, waiting, done) domain:Kitty size:large id:kitty-tab-status
 2026-09-13 Grill-me LUA domain:Lua size:medium id:grill-lua
-2026-09-13 lua-lint, lua-fix, lua-test domain:Lua size:medium id:lua-toolchain
-2026-09-13 Display context-badge pretty in nvim Ctrl-Shift-Y domain:Lua size:medium id:lua-context-badge
-2026-09-13 aberlaas domain:Misc size:medium id:aberlaas
-2026-09-13 release still need high thinking to make it work domain:Misc size:medium id:aberlaas-release p:aberlaas
-2026-09-13 will allow release aberlaas, so toml-lint will work domain:Misc size:medium id:aberlaas-toml-lint p:aberlaas
-2026-09-13 rss2lunii domain:Misc size:medium id:rss2lunii
-2026-09-13 generating svg is buggy need a svg-fix domain:Misc size:medium id:rss2lunii-svg-fix p:rss2lunii
-2026-09-13 svg-toolchain domain:Misc size:medium id:svg-toolchain p:rss2lunii
-2026-09-13 I don't want svgo as svg-fix, it will be svg-min domain:Misc size:medium id:svg-min p:rss2lunii
-2026-09-13 I need a way to lint/format xml files domain:Misc size:medium id:xml-format p:rss2lunii
-2026-09-13 xml-toolchain domain:Misc size:medium id:xml-toolchain p:rss2lunii
-2026-09-13 git-file-watch domain:Git size:medium id:git-file-watch
-2026-09-13 side project, important so it unlocks upgrade of Claude domain:Misc size:medium id:upgrade-claude p:git-file-watch
-2026-09-13 which will unlock fix terminal corruption domain:Misc size:medium id:fix-terminal-corruption p:git-file-watch
-2026-09-13 which will unlock ralph auto nightshift domain:Misc size:medium id:ralph-nightshift p:git-file-watch
-2026-09-13 Add a lint rule to use `\{cmd}` instead of `command {cmd}` to bypass aliases domain:Zsh size:medium id:lint-command-bypass
-2026-09-13 Make some slack-* commands to read updated in a specific channel domain:Misc size:medium id:slack-channel-reader
-2026-09-13 /debug-script skill doesn't work well with nodejs scripts that require a dependency. Need to see if it can use package.json for the deps? domain:Skills size:medium id:debug-script-deps
-2026-09-13 Make a better slack-writer skill, based on facts about effective writing, with some grill-me first and concise domain:Misc size:medium id:better-slack-writer
-2026-09-13 Add CLI tools to add items in my calendar domain:Misc size:medium id:calendar-cli
-2026-09-13 Seem like we have both {language}-fix called by nvim and {language}-lint --fix domain:Misc size:medium id:fix-lint-gap
-2026-09-13 Prevent variables like `absArg` in code, prefer full words domain:Zsh size:medium id:lint-no-abbreviations
-2026-09-13 Find tests best practices, review my tests, see what goes wrong, update test domain:Misc size:medium id:test-best-practices
-2026-09-13 vwR should close Claude sessions running in worktree. Currently seem to return domain:Misc size:medium id:vwr-close-sessions
-2026-09-13 Ensure all linters use endLine/endColumn in their unified JSON output domain:Zsh size:medium id:linter-endline
-2026-09-13 xml toolchain didn't add the completions domain:Misc size:medium id:xml-completions
-2026-09-13 Seems like the topbar reload script runs incrementally one more time each time domain:Misc size:medium id:topbar-suspend-bug
-2026-09-13 Add a zsh lint rule that flags short form arguments, with an allowlist of domain:Zsh size:medium id:lint-short-flags
-2026-09-13 See if we add a `{lang}-min` to compress files in the toolchain (useful for domain:Misc size:medium id:lang-min
-2026-09-13 Seems like new files are not displayed by git-file-watch domain:Git size:medium id:git-file-watch-new
-2026-09-13 Sidequests shouldn't save their files in /tmp, it gets deleted on reboot and I domain:Misc size:medium id:sidequest-tmp
-2026-09-13 meetup-announce should use bulletpoints (in #team-devmarketing) for domain:Misc size:medium id:meetup-bulletpoints
-2026-09-13 Tell claude to run log analysis in subagents domain:Skills size:medium id:claude-subagent-logs
-2026-09-13 Show in Claude statusbar the number of subagents running domain:Skills size:medium id:claude-subagent-count
-2026-09-13 theme.go in git-branch-pretty, git-file-watch and git-commit-diffstat is domain:Git size:medium id:extract-theme-go
-2026-09-13 Ensure the right attention icon is displayed at the right time. Seems like I have the pause icon sometimes when Claude asks for something, while it should be a classical stop sign. domain:Kitty size:medium id:kitty-attention-icon
-2026-09-13 No way to see which project/worktree I'm in in Kitty tabs domain:Kitty size:medium id:kitty-tab-project
-2026-09-13 Claude is waiting for my input domain:Kitty size:medium id:kitty-icon-waiting
-2026-09-13 Claude is blocked by a permission to run something domain:Kitty size:medium id:kitty-icon-blocked
-2026-09-13 Claude has finished ralphing domain:Kitty size:medium id:kitty-icon-finished
-2026-09-13 Claude is currently ralphing domain:Kitty size:medium id:kitty-icon-ralphing
-2026-09-13 Would it be possible to send the mic2txt recording to the right Kitty panel if domain:Kitty size:medium id:mic2txt-kitty-panel
-2026-09-13 How to mark that a tab is blocked until a sidequest is resolved? domain:Kitty size:medium id:kitty-tab-blocked
-2026-09-13 Make a keybinding to automatically fix the text I have under my cursor domain:Kitty size:medium id:kitty-autofix-cursor
-2026-09-13 Refactor prose-build; the code is ugly domain:Misc size:medium id:refactor-prose-build
-2026-09-13 /plan creates a worktree, but doesn't move to it domain:Skills size:medium id:plan-cd-worktree
-2026-09-13 Make a better trash-restore, that uses fzf and preview to pick which file to restore domain:Kitty size:medium id:better-trash-restore
-2026-09-13 Kitty keybinding to "mark" a tab with a specific icon (like re-adding an attention, or marking it as "to come back once other tab is done") domain:Kitty size:medium id:kitty-tab-marker
-2026-09-13 evaluate if I need some allowed-tools/disallowed-tools in my skills domain:Skills size:medium id:skill-tool-access
-2026-09-13 Add a rule in zsh to prevent abbreviations like *Len, *Dir, abs*, proj* domain:Zsh size:medium id:zsh-no-abbrev
-2026-09-13 find a way to fill a brag doc (https://jvns.ca/blog/brag-documents/) regularly domain:Misc size:medium id:brag-doc
-2026-09-13 Add a script that can give me a daily recap of everything I accomplished on a domain:Misc size:medium id:daily-recap
-2026-09-13 Migrate rust dependencies (parakeet) at root level, just like package.json domain:Misc size:medium id:rust-root-deps
-2026-09-13 Run claude on all history, analyzing common review issues, improve skills accordingly domain:Skills size:medium id:skill-review-history
-2026-09-13 Ensure GUIDANCE uses the right test/lint commands, even outside of oroshi domain:Skills size:medium id:guidance-lint-commands
-2026-09-13 Ensure skill run `review-diff` from the path domain:Skills size:medium id:review-diff-path
-2026-09-13 Rule to enforce the try/catch pattern in tests domain:JavaScript size:medium id:js-try-catch-rule
-2026-09-13 Update aberlaas so it adds a CLAUDE.md to new projects, telling about the test/lint commands domain:JavaScript size:medium id:aberlaas-claude-md
-2026-09-13 Disallow `method().property`, prefer `const { property } = method()` domain:JavaScript size:medium id:js-destructure-result
-2026-09-13 Ensure ``*-load-definition` are after the arg parsing domain:Zsh size:medium id:zsh-load-definition-order
-2026-09-13 `[[ "$allDone" == "true" ]] && { print '{"status":"done"}'; return 0; }` is invalid domain:Zsh size:medium id:zsh-invalid-and-block
-2026-09-13 Refactor `compdef-glob-from-type.zsh` into its own __lib folder domain:Zsh size:medium id:refactor-compdef-glob
-2026-09-13 Always display a tab, even if only one, to easily see the file being edited domain:Nvim size:medium id:nvim-always-tab
-2026-09-13 Add lua-lint domain:Nvim size:medium id:add-lua-lint
-2026-09-13 Add lua-lint --fix and lua-fix domain:Nvim size:medium id:add-lua-fix
-2026-09-13 Add lua-test domain:Nvim size:medium id:add-lua-test
-2026-09-13 We need a lua test framework, specific to nvim domain:Nvim size:medium id:lua-test-framework
-2026-09-13 Plug the lint/test into lintstaged domain:Nvim size:medium id:plug-lintstaged
-2026-09-13 Plug the lint/test into vfl and vft domain:Nvim size:medium id:plug-vfl-vft
-2026-09-13 Plug the lint/test into nvim domain:Nvim size:medium id:plug-lua-nvim
-2026-09-13 Add custom lint rules in lua to follow my standards (like using own methods rather than internals) domain:Nvim size:medium id:lua-custom-rules
-2026-09-13 Need a lua-writer skill domain:Nvim size:medium id:lua-writer-skill
-2026-09-13 Ctrl-Maj-Y should display the context-badge domain:Nvim size:medium id:nvim-ctrl-shift-y
-2026-09-13 Shift-R in bats file generates an errors instead of adding a REVIEW: line domain:Nvim size:medium id:nvim-shift-r-bats
-2026-09-13 Refactor nvim keybindings, they are all sprawling one big file domain:Nvim size:medium id:nvim-refactor-keybindings
-2026-09-13 Evaluate if F.run is strong enough. It seems to only work with a callback, maybe I need a sync version domain:Nvim size:medium id:nvim-frun-sync
-2026-09-13 Add a F.removePrefix() that removes a given string from the beginning of another. Useful to get a relative path out of a known root domain:Nvim size:medium id:nvim-remove-prefix
-2026-09-13 Use icons.json instead of hardcoded icons domain:Nvim size:medium id:nvim-icons-json
-2026-09-13 Can't find anything with ctrl-g inside an ebook markdown domain:Nvim size:medium id:nvim-ctrl-g-ebook
-2026-09-13 zsh/fzf/nvim integration to open multiple files should use a temporary file with a script rather than inlining everything domain:Nvim size:medium id:nvim-fzf-tempfile
-2026-09-13 Refactor disk.lua, ensure a consistent pattern in the sinklist. Probably also need to extract fzf-related functions in their own file. domain:Nvim size:medium id:nvim-refactor-disk
-2026-09-13 Should reload a buffer when moving from one tab to another (only works when moving from one kitty window to another) domain:Nvim size:medium id:nvim-reload-tab-switch
-2026-09-13 Find which color is used to display the gutter when editing a file that has been deleted domain:Nvim size:medium id:nvim-deleted-gutter-color
-2026-09-13 Refine the markdown header colors; they are off since I refactored the palette domain:Nvim size:medium id:nvim-markdown-colors
-2026-09-13 Delete COMMIT_HINT.md after use, so it doesn't get stale domain:Nvim size:medium id:nvim-delete-commit-hint
-2026-09-13 Cleanup private/ scripts and autoloaded functions domain:Cleanup size:medium id:cleanup-private
-2026-09-13 Update gamemaster/armory to renew the design, and to incorporate items from more games. domain:Ideas size:medium id:gamemaster-redesign
-2026-09-13 Update blog.pixelastic.com. Find a blogging cadence, better UI domain:Ideas size:medium id:blog-refresh
-2026-09-13 Finish crsearch: search Critical Role video subtitles and jump to the exact moment something was said domain:Ideas size:medium id:finish-crsearch
+2026-09-15 Set up complete Lua toolchain: linter, fixer, test framework, integrations, writer skill domain:Lua size:large id:lua-toolchain
+2026-09-15 Upgrade Claude to latest version, evaluate if new color scheme is tolerable with git-file-watch domain:Misc size:large id:upgrade-claude
+2026-09-15 Remove terminal corruption workaround wrapper (no longer needed after upgrade) domain:Misc size:small id:fix-terminal-corruption p:upgrade-claude
+2026-09-15 Autonomous ralph: auto-chain ralph runs on a project's remaining issues overnight domain:Misc size:large id:ralph-nightshift p:upgrade-claude
+2026-09-14 Lint rule: prefer `\cmd` over `command cmd` for alias bypass domain:Zsh size:small id:zsh-lint-backslash
+2026-09-15 Evaluate Claude MCP Slack server for Slack interaction domain:Misc size:large id:slack-mcp
+2026-09-15 Build slack-* commands to read updates from a specific channel domain:Misc size:medium id:slack-reader p:slack-mcp
+2026-09-15 Fix /debug-script to support Node.js scripts with dependencies domain:Skills size:large id:debug-script-deps
+2026-09-15 Improve slack-writer skill with effective writing principles domain:Misc size:medium id:slack-writer p:slack-reader
+2026-09-15 Add CLI tools to add items to calendar domain:Misc size:large id:calendar-cli
+2026-09-15 Unify {lang}-fix and {lang}-lint --fix into a single pattern across all toolchains domain:Misc size:large id:fix-lint-gap
+2026-09-14 Lint rule: flag abbreviated variable names with allowlist domain:Zsh size:small id:zsh-lint-abbrev
+2026-09-15 Define test strategy: resolve London School vs integration testing, update test guidance domain:Misc size:large id:test-practices
+2026-09-14 Add endLine/endColumn to all existing linter JSON outputs domain:Zsh size:medium id:zsh-lint-endline
+2026-09-14 Lint rule: flag single-letter flags with allowlist domain:Zsh size:small id:zsh-lint-short-flags
+2026-09-15 Evaluate adding {lang}-min minification step to toolchains domain:Misc size:large id:lang-min
+2026-09-15 Update meetup-announce skill to use bullet points for scannability domain:Misc size:medium id:meetup-bulletpoints
+2026-09-15 Add skill rule: delegate log analysis and heavy search to subagents domain:Skills size:small id:claude-subagent-logs
+2026-09-15 Show running subagent count in Claude statusbar domain:Skills size:medium id:claude-subagent-count
+2026-09-15 Extract shared Go helpers across git-branch-pretty, git-file-watch, git-commit-diffstat domain:Git size:large id:go-shared-helpers
+2026-09-14 Route mic2txt transcription to the active Kitty panel domain:Kitty size:medium id:mic2txt-routing
+2026-09-14 Keybinding to send text under cursor to grammar/typo fixer domain:Misc size:medium id:autofix-cursor
+2026-09-15 Refactor prose-build codebase domain:Misc size:medium id:refactor-prose
+2026-09-14 Rewrite trash-restore with fzf picker and file preview domain:Misc size:large id:trash-restore
+2026-09-15 Set up automated brag doc to track accomplishments regularly domain:Misc size:large id:brag-doc
+2026-09-15 Add script to generate daily recap of accomplishments domain:Misc size:large id:daily-recap
+2026-09-15 Migrate Rust/Parakeet dependencies to root level like package.json domain:Misc size:medium id:rust-root-deps
+2026-09-15 Audit all worktrees' GUIDANCE.md for correct test/lint commands domain:Skills size:large id:guidance-commands
+2026-09-15 Add lint rule: enforce try/catch pattern in test files domain:JavaScript size:medium id:js-try-catch
+2026-09-15 Add CLAUDE.md with test/lint commands to aberlaas project scaffolding domain:JavaScript size:medium id:aberlaas-claude-md
+2026-09-15 Add lint rule: destructure method results instead of chaining .property, e.g. `const { x } = method()` domain:JavaScript size:large id:js-destructure
+2026-09-14 Audit and fix `*-load-definition` calls that precede arg parsing domain:Zsh size:large id:zsh-load-order
+2026-09-14 Fix lint rule for `[[ ]] && { ...; return }` silent failure domain:Zsh size:small id:zsh-and-block
+2026-09-14 Extract `compdef-glob-from-type.zsh` into its own `__lib/` domain:Zsh size:medium id:zsh-compdef-lib
+2026-09-15 Always show tab bar even with a single buffer domain:Nvim size:small id:nvim-always-tab
+2026-09-15 Display context-badge in nvim via Ctrl-Shift-Y domain:Nvim size:medium id:nvim-context-badge
+2026-09-15 Remove Shift-R review comment feature (replaced by git-file-watch) domain:Nvim size:small id:nvim-remove-shift-r
+2026-09-15 Split monolithic keybindings file into per-domain modules domain:Nvim size:large id:nvim-refactor-keys
+2026-09-15 Evaluate if F.run needs a synchronous variant domain:Nvim size:large id:nvim-frun-sync
+2026-09-15 Add F.removePrefix() utility to strip path prefix domain:Nvim size:medium id:nvim-remove-prefix
+2026-09-15 Read icons from icons.json instead of hardcoded values domain:Nvim size:medium id:nvim-icons-json
+2026-09-15 Refactor fzf multi-file open to use tempfile instead of inline script domain:Nvim size:small id:nvim-fzf-tempfile
+2026-09-15 Refactor disk.lua: consistent sinklist pattern, extract fzf functions domain:Nvim size:large id:nvim-refactor-disk
+2026-09-15 Auto-reload buffer when switching nvim tabs domain:Nvim size:small id:nvim-reload-tab
+2026-09-15 Fix gutter color for deleted files domain:Nvim size:medium id:nvim-gutter-color
+2026-09-15 Investigate if COMMIT_HINT.md auto-deletion after commit is needed or already done domain:Nvim size:medium id:nvim-commit-hint
+2026-09-15 Audit and clean up private/ scripts and autoloaded functions domain:Misc size:large id:cleanup-private
+2026-09-15 Redesign gamemaster/armory UI and add items from more games domain:Ideas size:large id:gamemaster-redesign
+2026-09-15 Revamp blog.pixelastic.com: new UI, find a blogging cadence domain:Ideas size:large id:blog-refresh
+2026-09-15 Finish crsearch: search Critical Role subtitles and jump to exact moments domain:Ideas size:large id:crsearch
