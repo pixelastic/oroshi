@@ -83,10 +83,27 @@ func (t *Theme) Icon(name string) (string, error) {
 	return icon, nil
 }
 
-// FiletypeColor returns the lipgloss color for a filename based on its extension.
-// Returns empty color for unknown extensions.
-func (t *Theme) FiletypeColor(filename string) lipgloss.Color {
-	ext := strings.TrimPrefix(filepath.Ext(filename), ".")
+// pathPatterns maps path substrings to filetype keys for extensionless files.
+var pathPatterns = []struct {
+	contains    string
+	filetypeKey string
+}{
+	{"tools/term/zsh/config/functions/autoload/", "zsh"},
+}
+
+// FiletypeColor returns the lipgloss color for a file path based on its extension,
+// or path pattern for extensionless files.
+// Returns empty color for unknown files.
+func (t *Theme) FiletypeColor(path string) lipgloss.Color {
+	ext := strings.TrimPrefix(filepath.Ext(path), ".")
+	if ext == "" {
+		for _, p := range pathPatterns {
+			if strings.Contains(path, p.contains) {
+				ext = p.filetypeKey
+				break
+			}
+		}
+	}
 	if ext == "" {
 		return lipgloss.Color("")
 	}

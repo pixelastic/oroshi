@@ -279,6 +279,26 @@ func TestFileNamesUseFiletypeColor(t *testing.T) {
 	assert.Contains(t, output, "\x1b[34m") // color 4 = blue
 }
 
+func TestFiletypeColorReceivesFullPathNotJustName(t *testing.T) {
+	changes := []diff.FileChange{change("tools/term/zsh/config/functions/autoload/todo-add")}
+	tree := Build(changes)
+	// Mock maps the full path to a color — if tree passes just "todo-add", no color is found
+	theme := &mockTheme{
+		filetypeColors: map[string]lipgloss.Color{
+			"tools/term/zsh/config/functions/autoload/todo-add": lipgloss.Color("5"),
+		},
+		namedColors: map[string]lipgloss.Color{
+			"directory": lipgloss.Color("6"),
+			"gray":      lipgloss.Color("8"),
+		},
+	}
+	output := Render(tree, theme, emptyBar)
+	line := findLine(output, "todo-add")
+	require.NotEmpty(t, line)
+	// color 5 = magenta
+	assert.Contains(t, line, "\x1b[35m")
+}
+
 func TestBarAppearsAfterFilenameWithSpaceSeparator(t *testing.T) {
 	changes := []diff.FileChange{change("main.go")}
 	tree := Build(changes)

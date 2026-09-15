@@ -78,6 +78,14 @@ func TestReturnsFallbackColorForUnknownExtension(t *testing.T) {
 	assert.Empty(t, string(color))
 }
 
+func TestResolvesFiletypeColorForAutoloadPathWithoutExtension(t *testing.T) {
+	root := setupTestFiles(t)
+	loaded, err := Load(root)
+	require.NoError(t, err)
+	color := loaded.FiletypeColor("tools/term/zsh/config/functions/autoload/todo-add")
+	assert.Equal(t, "#a78bfa", string(color))
+}
+
 // --- Icons ---
 
 func TestResolvesIcons(t *testing.T) {
@@ -125,7 +133,8 @@ func setupTestFiles(t *testing.T) string {
 
 	filetypesJSON := `{
 		"go": {"bold": true, "color": {"ansi": 35, "hex": "#38a169"}, "icon": {"glyph": "G"}, "pattern": "*.go"},
-		"js": {"bold": false, "color": {"ansi": 226, "hex": "#facc15"}, "icon": {"glyph": "J"}, "pattern": "*.js"}
+		"js": {"bold": false, "color": {"ansi": 226, "hex": "#facc15"}, "icon": {"glyph": "J"}, "pattern": "*.js"},
+		"zsh": {"bold": false, "color": {"ansi": 173, "hex": "#a78bfa"}, "icon": {"glyph": "S"}, "pattern": "*.zsh"}
 	}`
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "filetypes.json"), []byte(filetypesJSON), 0o644))
 

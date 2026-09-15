@@ -10,7 +10,7 @@ import (
 
 // ThemeResolver provides colors for rendering.
 type ThemeResolver interface {
-	FiletypeColor(filename string) lipgloss.Color
+	FiletypeColor(path string) lipgloss.Color
 	Lipgloss(name string) lipgloss.Color
 }
 
@@ -103,6 +103,15 @@ func sortNodes(nodes []*Node) {
 	}
 }
 
+// filePath returns the full path for a file node (for theme resolution),
+// falling back to the node name when no Change is available.
+func filePath(node *Node) string {
+	if node.Change != nil {
+		return node.Change.Path
+	}
+	return node.Name
+}
+
 // Render returns a styled string representing the tree.
 func Render(tree *Tree, theme ThemeResolver, barRenderer BarRenderer) string {
 	var builder strings.Builder
@@ -128,7 +137,7 @@ func renderRootNode(builder *strings.Builder, node *Node, theme ThemeResolver, b
 	if node.Change != nil {
 		renderFileByStatus(builder, node, theme, barRenderer)
 	} else {
-		fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(node.Name))
+		fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(filePath(node)))
 		builder.WriteString(fileStyle.Render(node.Name))
 	}
 	builder.WriteString("\n")
@@ -164,7 +173,7 @@ func renderNode(builder *strings.Builder, node *Node, prefix string, isLast bool
 	if node.Change != nil {
 		renderFileByStatus(builder, node, theme, barRenderer)
 	} else {
-		fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(node.Name))
+		fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(filePath(node)))
 		builder.WriteString(fileStyle.Render(node.Name))
 	}
 	builder.WriteString("\n")
@@ -208,7 +217,7 @@ func renderDeletedFile(builder *strings.Builder, node *Node, theme ThemeResolver
 }
 
 func renderAddedFile(builder *strings.Builder, node *Node, theme ThemeResolver, barRenderer BarRenderer) {
-	fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(node.Name))
+	fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(filePath(node)))
 	builder.WriteString(fileStyle.Render(node.Name))
 
 	bar := barRenderer(*node.Change)
@@ -222,7 +231,7 @@ func renderAddedFile(builder *strings.Builder, node *Node, theme ThemeResolver, 
 }
 
 func renderRenameDestination(builder *strings.Builder, node *Node, theme ThemeResolver, barRenderer BarRenderer) {
-	fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(node.Name))
+	fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(filePath(node)))
 	builder.WriteString(fileStyle.Render(node.Name))
 
 	addedColor := theme.Lipgloss("git-added")
@@ -236,7 +245,7 @@ func renderRenameDestination(builder *strings.Builder, node *Node, theme ThemeRe
 }
 
 func renderModifiedFile(builder *strings.Builder, node *Node, theme ThemeResolver, barRenderer BarRenderer) {
-	fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(node.Name))
+	fileStyle := lipgloss.NewStyle().Foreground(theme.FiletypeColor(filePath(node)))
 	builder.WriteString(fileStyle.Render(node.Name))
 
 	bar := barRenderer(*node.Change)
