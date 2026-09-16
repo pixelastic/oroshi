@@ -26,6 +26,7 @@ type Context struct {
 	FoldState       map[string]bool
 	LineNumberWidth int
 	ViewportWidth   int
+	WrapLines       bool
 	Cursor          int
 	ReviewSent      bool
 	ScreenFlash     bool
@@ -138,21 +139,38 @@ func CodeLine(ctx Context, row layout.LineRow, isCursor bool) string {
 		lineNumber = LineNumber(row, ctx.Theme, ctx.LineNumberWidth, isCursor, isFlash, hasComment, ctx.ReviewSent)
 	}
 	content := DimContent(ctx, row)
-	line := gutter + lineNumber + " " + content
+	bgHex := lineBackgroundHex(ctx, row, isCursor, isEditing)
 
+	// Wrap mode: split into multiple display lines
+	if ctx.WrapLines && ctx.ViewportWidth > 0 {
+		availableWidth := ctx.ViewportWidth - ctx.LineNumberWidth - 2
+		displayLines := WrapLine(content, availableWidth)
+
+		if len(displayLines) > 1 {
+			contPrefix := continuationPrefix(ctx.Theme, ctx.LineNumberWidth)
+			lines := make([]string, len(displayLines))
+			lines[0] = gutter + lineNumber + " " + displayLines[0]
+			for i, dl := range displayLines[1:] {
+				lines[i+1] = contPrefix + dl
+			}
+			for i, l := range lines {
+				if bgHex != "" {
+					lines[i] = ApplyLineBackground(l, bgHex, ctx.ViewportWidth)
+				}
+			}
+			b.WriteString(strings.Join(lines, "\n"))
+			b.WriteByte('\n')
+			return b.String()
+		}
+	}
+
+	// Single line (no wrap or fits within width)
+	line := gutter + lineNumber + " " + content
 	if ctx.ViewportWidth > 0 {
 		line = lipgloss.NewStyle().MaxWidth(ctx.ViewportWidth).Render(line)
 	}
-
-	if isEditing && ctx.ViewportWidth > 0 {
-		line = ApplyLineBackground(line, ctx.Theme.Hex("orange-0"), ctx.ViewportWidth)
-	} else if isCursor && ctx.ViewportWidth > 0 {
-		line = ApplyLineBackground(line, ctx.Theme.Hex("yellow-0"), ctx.ViewportWidth)
-	} else if row.Marker != nil && ctx.ViewportWidth > 0 {
-		bgColor := MarkerBgColorName(*row.Marker)
-		if bgColor != "" {
-			line = ApplyLineBackground(line, ctx.Theme.Hex(bgColor), ctx.ViewportWidth)
-		}
+	if bgHex != "" {
+		line = ApplyLineBackground(line, bgHex, ctx.ViewportWidth)
 	}
 
 	b.WriteString(line)
@@ -315,6 +333,41 @@ func dimColorForDistance(distance int) string {
 	default:
 		return "gray-6"
 	}
+}
+
+// lineBackgroundHex returns the background hex color for a code line, or "" for none.
+func lineBackgroundHex(ctx Context, row layout.LineRow, isCursor bool, isEditing bool) string {
+	if ctx.ViewportWidth <= 0 {
+		return ""
+	}
+	if isEditing {
+		return ctx.Theme.Hex("orange-0")
+	}
+	if isCursor {
+		return ctx.Theme.Hex("yellow-0")
+	}
+	if row.Marker == nil {
+		return ""
+	}
+	colorName := MarkerBgColorName(*row.Marker)
+	if colorName == "" {
+		return ""
+	}
+	return ctx.Theme.Hex(colorName)
+}
+
+// continuationPrefix builds the prefix for wrapped continuation lines:
+// blank gutter (1 char) + ↪ right-aligned in line number column (dimmed gray) + space.
+// Uses raw ANSI escapes so the color survives non-TTY environments.
+func continuationPrefix(th *theme.Theme, lineNumberWidth int) string {
+	pad := lineNumberWidth - 1
+	if pad < 0 {
+		pad = 0
+	}
+	r, g, b := color.ParseHexColor(th.Hex("gray"))
+	fgCode := fmt.Sprintf("\x1b[38;2;%d;%d;%dm", r, g, b)
+	arrow := fgCode + "↪" + "\x1b[0m"
+	return " " + strings.Repeat(" ", pad) + arrow + " "
 }
 
 func commentColorName(reviewSent bool) string {

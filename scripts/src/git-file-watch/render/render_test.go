@@ -9,6 +9,7 @@ import (
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/theme"
 	"github.com/stretchr/testify/assert"
@@ -336,6 +337,165 @@ func TestCodeLineCursorOverridesMarkerBg(t *testing.T) {
 	assert.Contains(t, cursorResult, "\x1b[48;2;26;26;15m", "cursor should use yellow-0 bg")
 }
 
+// --- CodeLine wrap ---
+
+func TestCodeLineWrapLongLineProducesMultipleDisplayLines(t *testing.T) {
+	th := loadTestTheme(t)
+	longContent := strings.Repeat("word ", 20) // 100 chars, exceeds available width
+	row := layout.LineRow{LineNumber: 1, FilePath: "main.go", Distance: 1}
+	ctx := Context{
+		Theme:           th,
+		ViewportWidth:   40,
+		LineNumberWidth: 3,
+		WrapLines:       true,
+		RawLines:        map[string][]string{"main.go": {longContent}},
+	}
+
+	result := CodeLine(ctx, row, false)
+
+	// Should contain multiple lines (more than just the trailing \n)
+	lines := strings.Split(strings.TrimSuffix(result, "\n"), "\n")
+	assert.Greater(t, len(lines), 1, "wrapped long line should produce multiple display lines")
+}
+
+func TestCodeLineWrapContinuationLinesHaveDimmedArrow(t *testing.T) {
+	th := loadTestTheme(t)
+	longContent := strings.Repeat("word ", 20)
+	row := layout.LineRow{LineNumber: 1, FilePath: "main.go", Distance: 1}
+	ctx := Context{
+		Theme:           th,
+		ViewportWidth:   40,
+		LineNumberWidth: 3,
+		WrapLines:       true,
+		RawLines:        map[string][]string{"main.go": {longContent}},
+	}
+
+	result := CodeLine(ctx, row, false)
+
+	lines := strings.Split(strings.TrimSuffix(result, "\n"), "\n")
+	require.Greater(t, len(lines), 1)
+	// Continuation lines should contain the arrow indicator
+	for _, line := range lines[1:] {
+		assert.Contains(t, line, "↪", "continuation line should have arrow indicator")
+	}
+}
+
+func TestCodeLineWrapShortLineProducesSingleDisplayLine(t *testing.T) {
+	th := loadTestTheme(t)
+	shortContent := "short"
+	row := layout.LineRow{LineNumber: 1, FilePath: "main.go", Distance: 1}
+	ctx := Context{
+		Theme:           th,
+		ViewportWidth:   40,
+		LineNumberWidth: 3,
+		WrapLines:       true,
+		RawLines:        map[string][]string{"main.go": {shortContent}},
+	}
+
+	result := CodeLine(ctx, row, false)
+
+	lines := strings.Split(strings.TrimSuffix(result, "\n"), "\n")
+	assert.Equal(t, 1, len(lines), "short line should produce single display line even with wrap on")
+}
+
+func TestCodeLineWrapCursorBgCoversAllDisplayRows(t *testing.T) {
+	th := loadTestTheme(t)
+	longContent := strings.Repeat("word ", 20)
+	row := layout.LineRow{LineNumber: 1, FilePath: "main.go", Distance: 1}
+	ctx := Context{
+		Theme:           th,
+		ViewportWidth:   40,
+		LineNumberWidth: 3,
+		WrapLines:       true,
+		RawLines:        map[string][]string{"main.go": {longContent}},
+	}
+
+	result := CodeLine(ctx, row, true)
+
+	lines := strings.Split(strings.TrimSuffix(result, "\n"), "\n")
+	require.Greater(t, len(lines), 1)
+	// yellow-0 is #1a1a0f → rgb(26,26,15)
+	bgEscape := "\x1b[48;2;26;26;15m"
+	for i, line := range lines {
+		assert.Contains(t, line, bgEscape, "display row %d should have cursor background", i)
+	}
+}
+
+func TestCodeLineWrapMarkerBgCoversAllDisplayRows(t *testing.T) {
+	th := loadTestTheme(t)
+	longContent := strings.Repeat("word ", 20)
+	marker := diff.MarkerAdded
+	row := layout.LineRow{LineNumber: 1, FilePath: "main.go", Marker: &marker, Distance: 0}
+	ctx := Context{
+		Theme:           th,
+		ViewportWidth:   40,
+		LineNumberWidth: 3,
+		WrapLines:       true,
+		Highlighted:     map[string][]highlight.StyledLine{"main.go": {{Content: longContent}}},
+	}
+
+	result := CodeLine(ctx, row, false)
+
+	lines := strings.Split(strings.TrimSuffix(result, "\n"), "\n")
+	require.Greater(t, len(lines), 1)
+	// green-0 is #0f1a0f → rgb(15,26,15)
+	bgEscape := "\x1b[48;2;15;26;15m"
+	for i, line := range lines {
+		assert.Contains(t, line, bgEscape, "display row %d should have marker background", i)
+	}
+}
+
+func TestCodeLineWrapContinuationPrefixWidthMatchesFirstLine(t *testing.T) {
+	th := loadTestTheme(t)
+	longContent := strings.Repeat("word ", 20)
+	marker := diff.MarkerAdded
+	row := layout.LineRow{LineNumber: 1, FilePath: "main.go", Marker: &marker, Distance: 0}
+	ctx := Context{
+		Theme:           th,
+		ViewportWidth:   40,
+		LineNumberWidth: 3,
+		WrapLines:       true,
+		Highlighted:     map[string][]highlight.StyledLine{"main.go": {{Content: longContent}}},
+	}
+
+	result := CodeLine(ctx, row, false)
+
+	lines := strings.Split(strings.TrimSuffix(result, "\n"), "\n")
+	require.Greater(t, len(lines), 1)
+	// With background applied, all lines are padded to viewport width
+	firstLineWidth := lipgloss.Width(lines[0])
+	for _, line := range lines[1:] {
+		contWidth := lipgloss.Width(line)
+		assert.Equal(t, firstLineWidth, contWidth,
+			"continuation line visible width should match first line (both padded to viewport)")
+	}
+}
+
+func TestCodeLineWrapArrowIsDimmedGray(t *testing.T) {
+	th := loadTestTheme(t)
+	longContent := strings.Repeat("word ", 20)
+	row := layout.LineRow{LineNumber: 1, FilePath: "main.go", Distance: 1}
+	ctx := Context{
+		Theme:           th,
+		ViewportWidth:   40,
+		LineNumberWidth: 3,
+		WrapLines:       true,
+		RawLines:        map[string][]string{"main.go": {longContent}},
+	}
+
+	result := CodeLine(ctx, row, false)
+
+	lines := strings.Split(strings.TrimSuffix(result, "\n"), "\n")
+	require.Greater(t, len(lines), 1)
+	// The arrow should be styled with gray color (ANSI escape before ↪)
+	contLine := lines[1]
+	arrowIdx := strings.Index(contLine, "↪")
+	require.NotEqual(t, -1, arrowIdx, "continuation line must contain arrow")
+	// There should be an ANSI escape before the arrow (styling it)
+	prefix := contLine[:arrowIdx]
+	assert.Contains(t, prefix, "\x1b[", "arrow should be preceded by ANSI styling")
+}
+
 // --- Helpers ---
 
 func loadTestTheme(t *testing.T) *theme.Theme {
@@ -358,6 +518,7 @@ func loadTestTheme(t *testing.T) *theme.Theme {
 		"orange-0":     {"ansi": 100, "hex": "#1a120f"},
 		"orange-8":     {"ansi": 108, "hex": "#7c2d12"},
 		"gray":         {"ansi": 245, "hex": "#6b7280"},
+		"gray-4":       {"ansi": 238, "hex": "#9ca3af"},
 		"gray-5":       {"ansi": 240, "hex": "#4b5563"},
 		"gray-7":       {"ansi": 236, "hex": "#374151"},
 		"gray-9":       {"ansi": 234, "hex": "#1f2937"},
