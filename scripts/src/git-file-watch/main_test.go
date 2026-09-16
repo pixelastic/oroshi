@@ -936,6 +936,142 @@ func TestRefreshIndicesSkipsNonLineRows(t *testing.T) {
 	assert.False(t, hasSeparator, "separator row should not be in WrapCosts")
 }
 
+// --- Keybinding: F9 (toggle line wrap) ---
+
+func TestF9TogglesWrapLinesFromFalseToTrue(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.wrapLines = false
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyF9})
+	resultModel := result.(model)
+
+	assert.True(t, resultModel.wrapLines)
+}
+
+func TestF9TogglesWrapLinesFromTrueToFalse(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.wrapLines = true
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyF9})
+	resultModel := result.(model)
+
+	assert.False(t, resultModel.wrapLines)
+}
+
+func TestF9RefreshesIndicesAfterToggle(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.wrapLines = false
+	m.viewportWidth = 20
+	m.lineNumberWidth = 4
+	m.rawLines = map[string][]string{
+		"file.go": {"this line is long enough to wrap at width twenty so we can verify wrap costs are populated"},
+	}
+
+	result, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyF9})
+	resultModel := result.(model)
+
+	assert.NotNil(t, resultModel.viewContext.WrapCosts, "WrapCosts should be populated after F9 enables wrap")
+}
+
+// --- WindowSizeMsg triggers refreshIndices ---
+
+func TestWindowSizeMsgRefreshesWrapCosts(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.wrapLines = true
+	m.viewportWidth = 80
+	m.lineNumberWidth = 4
+	m.rawLines = map[string][]string{
+		"file.go": {"this line is long enough to wrap at a narrow width"},
+	}
+
+	result, _ := m.Update(tea.WindowSizeMsg{Width: 20, Height: 40})
+	resultModel := result.(model)
+
+	assert.NotNil(t, resultModel.viewContext.WrapCosts, "WrapCosts should be recomputed after resize")
+}
+
+// --- Help text includes F9 ---
+
+func TestHelpScreenShowsF9ToggleLineWrap(t *testing.T) {
+	th := loadTestTheme(t)
+	m := testModel(th, []layout.Row{})
+	m.showHelp = true
+
+	output := m.View()
+
+	assert.Contains(t, output, "F9")
+	assert.Contains(t, output, "Toggle line wrap")
+}
+
+// --- WrapLines passed to render context ---
+
+func TestViewRendersWrappedLinesWhenWrapEnabled(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.wrapLines = true
+	m.viewportWidth = 30
+	m.lineNumberWidth = 2
+	m.rawLines = map[string][]string{
+		"file.go": {"this is a long line that should wrap when available width is narrow enough"},
+	}
+	m.highlighted = map[string][]highlight.StyledLine{
+		"file.go": {{Content: "this is a long line that should wrap when available width is narrow enough"}},
+	}
+	m.refreshIndices()
+
+	output := m.View()
+
+	// Continuation marker (↪) should appear in the output when wrapping is active
+	assert.Contains(t, output, "↪", "wrapped output should contain the ↪ continuation marker")
+}
+
+// --- Wrap state survives file reload ---
+
+func TestWrapLinesSurvivesDiffChangedMsg(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.wrapLines = true
+
+	result, _ := m.Update(DiffChangedMsg{})
+	resultModel := result.(model)
+
+	assert.True(t, resultModel.wrapLines, "wrapLines should survive DiffChangedMsg")
+}
+
 // --- Helpers ---
 
 func loadTestTheme(t *testing.T) *theme.Theme {

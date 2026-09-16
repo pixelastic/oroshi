@@ -156,6 +156,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.nav.ViewportHeight = msg.Height
 		m.viewportWidth = msg.Width
+		m.refreshIndices()
 		return m, nil
 	case tea.KeyMsg:
 		if m.showHelp {
@@ -269,6 +270,9 @@ func (m model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m.deleteComment()
 	case "?":
 		m.showHelp = true
+	case "f9":
+		m.wrapLines = !m.wrapLines
+		m.refreshIndices()
 	}
 	return m, nil
 }
@@ -532,6 +536,7 @@ func (m model) View() string {
 		FoldState:       m.fileIndex.FoldState,
 		LineNumberWidth: m.lineNumberWidth,
 		ViewportWidth:   m.viewportWidth,
+		WrapLines:       m.wrapLines,
 		Cursor:          m.nav.Cursor,
 		ReviewSent:      m.reviewSent,
 		ScreenFlash:     m.screenFlash,
@@ -607,6 +612,7 @@ func (m model) renderHelp() string {
 		{"i", "Open in Neovim"},
 		{"ctrl+y", "Copy file path"},
 		{"r", "Send review to Claude"},
+		{"F9", "Toggle line wrap"},
 		{"ctrl+s", "Auto-commit all"},
 		{"?", "Show this help"},
 		{"q", "Quit"},
