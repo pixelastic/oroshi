@@ -30,17 +30,17 @@ function resolve-draft-dir() {
 
   local messageIds=("${earlyMessages[@]}" "${lastMessages[@]}")
 
-  local messagesJson="{}"
-  local id
-  for id in "${messageIds[@]}"; do
-    messagesJson="$(echo "$messagesJson" | jq --arg id "$id" '. + {($id): {"state": "pending"}}')"
-  done
+  local idsJson="$(printf '%s\n' "${messageIds[@]}" | jq -R . | jq -s .)"
 
   jq -n \
     --arg meetupId "$recordId" \
     --arg meetupName "$meetupName" \
-    --argjson messages "$messagesJson" \
-    '{meetupId: $meetupId, meetupName: $meetupName, messages: $messages}' \
+    --argjson ids "$idsJson" \
+  '{
+      meetupId: $meetupId,
+      meetupName: $meetupName,
+      messages: ($ids | map({(.): {state: "pending"}}) | add)
+    }' \
     > "$stateFile"
 
   echo "$draftDir"
