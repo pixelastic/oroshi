@@ -1,0 +1,13 @@
+# Check if the kitty OS window is the Wayland-level focused application
+# Usage:
+# $ kitty-os-window-is-focused   # Exit 0 if focused, 1 otherwise
+setopt local_options err_return
+
+local lsOutput="$(kitty-remote ls)"
+# No output means kitty-remote failed (no kitty running, socket error)
+[[ "$lsOutput" == "" ]] && return 1
+
+local isFocused="$(print -r -- "$lsOutput" | jq --raw-output '.[0].is_focused')"
+
+[[ "$isFocused" == "true" ]] && return 0
+return 1
