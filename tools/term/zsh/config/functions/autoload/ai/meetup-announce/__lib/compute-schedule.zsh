@@ -120,8 +120,14 @@ function __compute_last() {
   local today="$2"
   local eventDate="$3"
 
-  local scheduledDayMinus1="$(__schedule_date "$eventDate" 1 "$today")"
-  local scheduledDayOf="$(__schedule_date "$eventDate" 0 "$today")"
+  # Scheduling metadata per message: "offset startH startM endH endM"
+  # D-1 → early-morning slot (9:47–10:28), D-0 → late-morning slot (10:47–11:28)
+  # Non-round bounds + randomization make scheduled posts look human-posted
+  local -A lastSchedule
+  lastSchedule[last--office-paris--reminder]="1 9 47 10 28"
+  lastSchedule[last--office-paris--reminder-today]="0 10 47 11 28"
+  lastSchedule[last--team-devmarketing--reminder]="0 10 47 11 28"
+  lastSchedule[last--help-recruiting--reminder]="1 9 47 10 28"
 
   local result="[]"
 
@@ -139,81 +145,36 @@ function __compute_last() {
       }]')"
   fi
 
-  # last--office-paris--reminder (scheduled D-1)
-  local reminderState="$(jq -r \
-    '.messages["last--office-paris--reminder"].state' \
-    "$stateJsonPath")"
-  if [[ "$scheduledDayMinus1" != "" && "$reminderState" != "posted" ]]; then
-    # Early-morning slot (9:47–10:28): non-round bounds + randomization make
-    # scheduled posts look human-posted rather than automated
-    local scheduledAt="$(__random_time 9 47 10 28)"
-    result="$(echo "$result" | jq \
-      --arg scheduled "${scheduledDayMinus1}T${scheduledAt}" \
-      --arg state "$reminderState" \
-    '. + [{
-        "id": "last--office-paris--reminder",
-        "scheduledFor": $scheduled,
-        "channel": "#office-paris",
-        "state": $state
-      }]')"
-  fi
+  local id
+  for id in "${lastMessages[@]}"; do
+    local meta=(${=lastSchedule[$id]})
+    local offset=$meta[1]
+    local scheduledDay="$(__schedule_date "$eventDate" "$offset" "$today")"
 
-  # last--office-paris--reminder-today (scheduled D-0)
-  local todayState="$(jq -r \
-    '.messages["last--office-paris--reminder-today"].state' \
-    "$stateJsonPath")"
-  if [[ "$scheduledDayOf" != "" && "$todayState" != "posted" ]]; then
-    # Late-morning slot (10:47–11:28): non-round bounds + randomization make
-    # scheduled posts look human-posted rather than automated
-    local scheduledAt="$(__random_time 10 47 11 28)"
-    result="$(echo "$result" | jq \
-      --arg scheduled "${scheduledDayOf}T${scheduledAt}" \
-      --arg state "$todayState" \
-    '. + [{
-        "id": "last--office-paris--reminder-today",
-        "scheduledFor": $scheduled,
-        "channel": "#office-paris",
-        "state": $state
-      }]')"
-  fi
+    local state="$(jq -r \
+      --arg id "$id" \
+      '.messages[$id].state' \
+      "$stateJsonPath")"
 
-  # last--team-devmarketing--reminder (scheduled D-0)
-  local devmarketingState="$(jq -r \
-    '.messages["last--team-devmarketing--reminder"].state' \
-    "$stateJsonPath")"
-  if [[ "$scheduledDayOf" != "" && "$devmarketingState" != "posted" ]]; then
-    # Late-morning slot (10:47–11:28): non-round bounds + randomization make
-    # scheduled posts look human-posted rather than automated
-    local scheduledAt="$(__random_time 10 47 11 28)"
-    result="$(echo "$result" | jq \
-      --arg scheduled "${scheduledDayOf}T${scheduledAt}" \
-      --arg state "$devmarketingState" \
-    '. + [{
-        "id": "last--team-devmarketing--reminder",
-        "scheduledFor": $scheduled,
-        "channel": "#team-devmarketing",
-        "state": $state
-      }]')"
-  fi
+    # Skip past schedule dates (empty = filtered out) and already-posted
+    [[ "$scheduledDay" == "" ]] && continue
+    [[ "$state" == "posted" ]] && continue
 
-  # last--help-recruiting--reminder (scheduled D-1)
-  local helpRecruitingState="$(jq -r \
-    '.messages["last--help-recruiting--reminder"].state' \
-    "$stateJsonPath")"
-  if [[ "$scheduledDayMinus1" != "" && "$helpRecruitingState" != "posted" ]]; then
-    # Early-morning slot (9:47–10:28): non-round bounds + randomization make
-    # scheduled posts look human-posted rather than automated
-    local scheduledAt="$(__random_time 9 47 10 28)"
+    local scheduledAt="$(__random_time $meta[2] $meta[3] $meta[4] $meta[5])"
+    local channel="$(__extract_channel "$id")"
+
     result="$(echo "$result" | jq \
-      --arg scheduled "${scheduledDayMinus1}T${scheduledAt}" \
-      --arg state "$helpRecruitingState" \
+      --arg id "$id" \
+      --arg scheduled "${scheduledDay}T${scheduledAt}" \
+      --arg channel "#$channel" \
+      --arg state "$state" \
     '. + [{
-        "id": "last--help-recruiting--reminder",
+        "id": $id,
         "scheduledFor": $scheduled,
-        "channel": "#help-recruiting",
+        "channel": $channel,
         "state": $state
       }]')"
-  fi
+  done
 
   echo "$result"
 }
