@@ -81,6 +81,8 @@ function __compute_early() {
         "$stateJsonPath")"
       [[ "$initialState" != "posted" && "${initialInBatch[$initialId]:-0}" != "1" ]] && continue
 
+      # After-lunch slot (13:47–14:28): non-round bounds + randomization make
+      # scheduled posts look human-posted rather than automated
       local scheduledAt="$(__random_time 13 47 14 28)"
       result="$(echo "$result" | jq \
         --arg id "$id" \
@@ -142,6 +144,8 @@ function __compute_last() {
     '.messages["last--office-paris--reminder"].state' \
     "$stateJsonPath")"
   if [[ "$scheduledDayMinus1" != "" && "$reminderState" != "posted" ]]; then
+    # Early-morning slot (9:47–10:28): non-round bounds + randomization make
+    # scheduled posts look human-posted rather than automated
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${scheduledDayMinus1}T${scheduledAt}" \
@@ -159,6 +163,8 @@ function __compute_last() {
     '.messages["last--office-paris--reminder-today"].state' \
     "$stateJsonPath")"
   if [[ "$scheduledDayOf" != "" && "$todayState" != "posted" ]]; then
+    # Late-morning slot (10:47–11:28): non-round bounds + randomization make
+    # scheduled posts look human-posted rather than automated
     local scheduledAt="$(__random_time 10 47 11 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${scheduledDayOf}T${scheduledAt}" \
@@ -176,6 +182,8 @@ function __compute_last() {
     '.messages["last--team-devmarketing--reminder"].state' \
     "$stateJsonPath")"
   if [[ "$scheduledDayOf" != "" && "$devmarketingState" != "posted" ]]; then
+    # Late-morning slot (10:47–11:28): non-round bounds + randomization make
+    # scheduled posts look human-posted rather than automated
     local scheduledAt="$(__random_time 10 47 11 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${scheduledDayOf}T${scheduledAt}" \
@@ -193,6 +201,8 @@ function __compute_last() {
     '.messages["last--help-recruiting--reminder"].state' \
     "$stateJsonPath")"
   if [[ "$scheduledDayMinus1" != "" && "$helpRecruitingState" != "posted" ]]; then
+    # Early-morning slot (9:47–10:28): non-round bounds + randomization make
+    # scheduled posts look human-posted rather than automated
     local scheduledAt="$(__random_time 9 47 10 28)"
     result="$(echo "$result" | jq \
       --arg scheduled "${scheduledDayMinus1}T${scheduledAt}" \
