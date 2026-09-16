@@ -26,7 +26,7 @@ function resolve-draft-dir() {
   fi
 
   # New draft directory — create folder structure + state.json
-  mkdir -p "$draftDir"
+  mkdir -p "$draftDir/assets"
 
   local messageIds=("${earlyMessages[@]}" "${lastMessages[@]}")
 
