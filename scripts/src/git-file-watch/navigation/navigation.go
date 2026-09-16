@@ -27,6 +27,7 @@ type ViewContext struct {
 	Visible     []int
 	Headers     []int
 	CommentRows map[int]bool
+	WrapCosts   map[int]int
 }
 
 // NextFile jumps the cursor to the first navigable line of the next file.
@@ -262,13 +263,31 @@ func centerViewportOnCursor(state State, vc ViewContext) State {
 		return clampViewportVisible(state, vc)
 	}
 
-	newStart := cursorPos - state.ViewportHeight/2
-	if newStart < 0 {
-		newStart = 0
+	headerSet := makeHeaderSet(vc.Headers)
+	halfHeight := state.ViewportHeight / 2
+
+	// Walk backward from cursor, counting terminal lines until half viewport filled
+	termLines := 0
+	newStart := cursorPos
+	for newStart > 0 {
+		cost := rowTermCost(vc.Visible[newStart-1], headerSet, vc.CommentRows, vc.WrapCosts)
+		if termLines+cost > halfHeight {
+			break
+		}
+		termLines += cost
+		newStart--
 	}
-	maxStart := len(vc.Visible) - state.ViewportHeight
-	if maxStart < 0 {
-		maxStart = 0
+
+	// Don't leave blank space at bottom: find latest start that fills viewport
+	maxStart := len(vc.Visible) - 1
+	termFromEnd := 0
+	for maxStart > 0 {
+		cost := rowTermCost(vc.Visible[maxStart], headerSet, vc.CommentRows, vc.WrapCosts)
+		if termFromEnd+cost >= state.ViewportHeight {
+			break
+		}
+		termFromEnd += cost
+		maxStart--
 	}
 	if newStart > maxStart {
 		newStart = maxStart
@@ -354,7 +373,7 @@ func clampViewportVisible(state State, vc ViewContext) State {
 	// Count terminal lines (headers and comment rows take an extra line each)
 	termLines := 0
 	for i := viewportStart; i <= cursorPos; i++ {
-		termLines += rowTermCost(vc.Visible[i], headerSet, vc.CommentRows)
+		termLines += rowTermCost(vc.Visible[i], headerSet, vc.CommentRows, vc.WrapCosts)
 	}
 
 	if termLines > state.ViewportHeight {
@@ -362,7 +381,7 @@ func clampViewportVisible(state State, vc ViewContext) State {
 		remaining := state.ViewportHeight
 		newStart := cursorPos
 		for newStart > 0 {
-			cost := rowTermCost(vc.Visible[newStart], headerSet, vc.CommentRows)
+			cost := rowTermCost(vc.Visible[newStart], headerSet, vc.CommentRows, vc.WrapCosts)
 			if remaining-cost < 0 {
 				break
 			}
@@ -378,8 +397,11 @@ func clampViewportVisible(state State, vc ViewContext) State {
 }
 
 // rowTermCost returns the number of terminal lines a row occupies.
-func rowTermCost(rowIndex int, headerSet map[int]bool, commentRows map[int]bool) int {
+func rowTermCost(rowIndex int, headerSet map[int]bool, commentRows map[int]bool, wrapCosts map[int]int) int {
 	cost := 1
+	if wc, ok := wrapCosts[rowIndex]; ok {
+		cost = wc
+	}
 	if headerSet[rowIndex] {
 		cost++
 	}

@@ -78,6 +78,7 @@ type model struct {
 	prevSnapshot         *flash.Snapshot
 	resolveHead          func(string) (string, error)
 	oroshiRoot           string
+	wrapLines            bool
 	showHelp             bool
 	reviewSent           bool
 	screenFlash          bool
@@ -443,6 +444,8 @@ func (m model) cursorLineContext() (layout.LineRow, string, string, bool) {
 func (m *model) refreshIndices() {
 	visible := navigation.VisibleIndices(len(m.rows), m.fileIndex)
 	commentRows := make(map[int]bool)
+	var wrapCosts map[int]int
+	availableWidth := m.viewportWidth - m.lineNumberWidth - 2
 	for i, row := range m.rows {
 		lr, ok := row.(layout.LineRow)
 		if !ok {
@@ -452,12 +455,26 @@ func (m *model) refreshIndices() {
 		if m.commentIndex[key] != "" {
 			commentRows[i] = true
 		}
+		if m.wrapLines && availableWidth > 0 {
+			rawContent := ""
+			if lines, exists := m.rawLines[lr.FilePath]; exists && lr.LineNumber > 0 && lr.LineNumber <= len(lines) {
+				rawContent = lines[lr.LineNumber-1]
+			}
+			count := render.WrapLineCount(rawContent, availableWidth)
+			if count > 1 {
+				if wrapCosts == nil {
+					wrapCosts = make(map[int]int)
+				}
+				wrapCosts[i] = count
+			}
+		}
 	}
 	m.viewContext = navigation.ViewContext{
 		Navigable:   navigableFromVisible(m.rows, visible, m.fileIndex.FoldState),
 		Visible:     visible,
 		Headers:     m.fileIndex.Headers,
 		CommentRows: commentRows,
+		WrapCosts:   wrapCosts,
 	}
 }
 

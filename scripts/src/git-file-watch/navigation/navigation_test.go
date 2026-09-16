@@ -833,3 +833,123 @@ func TestFoldNewFilesAutoFoldsNewBinaryFile(t *testing.T) {
 	assert.True(t, result["logo.png"])
 }
 
+// --- rowTermCost with WrapCosts ---
+
+func TestRowTermCostUsesWrapCostsValueWhenPresent(t *testing.T) {
+	vc := ViewContext{
+		Headers:   []int{0},
+		WrapCosts: map[int]int{3: 4},
+	}
+	// Row 3 has wrap cost 4, no header/comment bonus
+	state := State{Cursor: 3, ViewportOffset: 0, ViewportHeight: 20, RowCount: 10}
+	visible := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	vc.Navigable = []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	vc.Visible = visible
+
+	// Move cursor to row 8 which is well past a 5-line viewport
+	// If wrap cost is honored for row 3, the viewport must account for 4 terminal lines
+	state.Cursor = 8
+	state.ViewportOffset = 0
+	state.ViewportHeight = 5
+	result := clampViewportVisible(state, vc)
+	// With wrap cost=4 at row 3, rows 0-8 take more than 5 terminal lines,
+	// so viewport must scroll
+	assert.True(t, result.ViewportOffset > 0, "viewport should scroll to account for wrap cost")
+}
+
+func TestRowTermCostFallsBackToDefaultWhenWrapCostsNil(t *testing.T) {
+	vc := ViewContext{
+		Headers:     []int{0},
+		Navigable:   []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		Visible:     []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+		CommentRows: map[int]bool{},
+	}
+	// No WrapCosts — each non-header row costs 1
+	state := State{Cursor: 3, ViewportOffset: 0, ViewportHeight: 5, RowCount: 10}
+	result := clampViewportVisible(state, vc)
+	// Header(0)=2 + rows 1,2,3 = 3 → total 5, fits in viewport height 5
+	assert.Equal(t, 0, result.ViewportOffset, "viewport should not scroll when wrap costs are nil")
+}
+
+func TestRowTermCostAddsHeaderBonusOnTopOfWrapCost(t *testing.T) {
+	// Row 1 is a header with wrap cost 2 → total cost 2+1=3
+	// Without header bonus (wrap only=2): 1+2+1+1=5 fits viewport 5
+	// With header bonus: 1+3+1+1=6 > viewport 5 → must scroll
+	vc := ViewContext{
+		Headers:   []int{1},
+		WrapCosts: map[int]int{1: 2},
+		Navigable: []int{0, 2, 3},
+		Visible:   []int{0, 1, 2, 3},
+	}
+	state := State{Cursor: 3, ViewportOffset: 0, ViewportHeight: 5, RowCount: 4}
+	result := clampViewportVisible(state, vc)
+	assert.True(t, result.ViewportOffset > 0, "viewport should scroll when header wrap cost + bonus exceeds viewport")
+}
+
+func TestRowTermCostAddsCommentBonusOnTopOfWrapCost(t *testing.T) {
+	// Row 2 has wrap cost 3 and a comment (+1) → total 4
+	vc := ViewContext{
+		Headers:     []int{0},
+		WrapCosts:   map[int]int{2: 3},
+		CommentRows: map[int]bool{2: true},
+		Navigable:   []int{1, 2, 3},
+		Visible:     []int{0, 1, 2, 3},
+	}
+	// Viewport of 5: header(0)=2 + row(1)=1 + row(2)=4 → 7 > 5
+	state := State{Cursor: 2, ViewportOffset: 0, ViewportHeight: 5, RowCount: 4}
+	result := clampViewportVisible(state, vc)
+	assert.True(t, result.ViewportOffset > 0, "viewport should scroll when wrap cost + comment bonus exceeds viewport")
+}
+
+// --- clampViewportVisible with wrapped lines ---
+
+func TestClampViewportVisibleAdjustsWhenWrappedLinesExceedViewportHeight(t *testing.T) {
+	// Row 3 wraps to 5 display lines. Viewport height is 6.
+	// Rows 0(header=2), 1(1), 2(1), 3(5) = 9 terminal lines > 6
+	vc := ViewContext{
+		Headers:   []int{0},
+		WrapCosts: map[int]int{3: 5},
+		Navigable: []int{1, 2, 3, 4, 5},
+		Visible:   []int{0, 1, 2, 3, 4, 5},
+	}
+	state := State{Cursor: 3, ViewportOffset: 0, ViewportHeight: 6, RowCount: 6}
+	result := clampViewportVisible(state, vc)
+	assert.True(t, result.ViewportOffset > 0, "viewport should adjust when wrapped lines exceed viewport height")
+}
+
+func TestCenterViewportOnCursorAccountsForWrapCosts(t *testing.T) {
+	// Row 2 wraps to 5 display lines. PageDown lands cursor on row 6.
+	// centerViewportOnCursor should count terminal lines, not row indices,
+	// when computing the half-viewport offset.
+	vc := ViewContext{
+		Headers:   []int{},
+		WrapCosts: map[int]int{2: 5},
+		Navigable: []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+		Visible:   []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+	}
+	// Viewport height 10, cursor at 6. Without wrap: rows 1-10 centered.
+	// With wrap (row 2 costs 5): centering must account for those extra lines.
+	state := State{Cursor: 6, ViewportOffset: 0, ViewportHeight: 10, RowCount: 10}
+	result := centerViewportOnCursor(state, vc)
+	// Without wrap awareness, newStart = 6 - 5 = 1 (row index math).
+	// With wrap awareness, walking back from row 6: row5=1, row4=1, row3=1,
+	// row2=5 → total 8 > half=5, so newStart should be 3 (not 1).
+	assert.True(t, result.ViewportOffset >= 2,
+		"viewport offset %d should account for wrapped row cost", result.ViewportOffset)
+}
+
+func TestClampViewportVisibleCursorOnMultiRowWrappedLineStaysFullyVisible(t *testing.T) {
+	// Row 2 wraps to 4 display lines. Viewport height is 5.
+	// If cursor is on row 2, the viewport should show it fully.
+	vc := ViewContext{
+		Headers:   []int{},
+		WrapCosts: map[int]int{2: 4},
+		Navigable: []int{0, 1, 2, 3},
+		Visible:   []int{0, 1, 2, 3},
+	}
+	state := State{Cursor: 2, ViewportOffset: 0, ViewportHeight: 5, RowCount: 4}
+	result := clampViewportVisible(state, vc)
+	// Row 0(1) + Row 1(1) + Row 2(4) = 6 > 5, so viewport must scroll
+	assert.True(t, result.ViewportOffset > 0, "viewport should scroll to keep wrapped cursor line fully visible")
+}
+

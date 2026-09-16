@@ -875,6 +875,67 @@ func TestGitIndexChangedMsgRebuildCommentIndexAfterClearing(t *testing.T) {
 	assert.Equal(t, "fresh", resultModel.commentIndex["file.go:2"])
 }
 
+// --- refreshIndices with wrap enabled ---
+
+func TestRefreshIndicesPopulatesWrapCostsWhenWrapEnabled(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 1, Marker: &marker},
+		layout.LineRow{FilePath: "file.go", LineNumber: 2, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.wrapLines = true
+	m.viewportWidth = 80
+	m.lineNumberWidth = 4
+	m.rawLines = map[string][]string{
+		"file.go": {"line one that is short", "this is a very long line that should definitely wrap when the available width is narrow enough to cause wrapping"},
+	}
+	m.refreshIndices()
+
+	assert.NotNil(t, m.viewContext.WrapCosts, "WrapCosts should be populated when wrapLines is true")
+}
+
+func TestRefreshIndicesLeavesWrapCostsNilWhenWrapDisabled(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},
+		layout.LineRow{FilePath: "file.go", LineNumber: 1, Marker: &marker},
+	}
+	m := testModel(th, rows)
+	m.wrapLines = false
+	m.refreshIndices()
+
+	assert.Nil(t, m.viewContext.WrapCosts, "WrapCosts should be nil when wrapLines is false")
+}
+
+func TestRefreshIndicesSkipsNonLineRows(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "file.go"},              // 0: header
+		layout.LineRow{FilePath: "file.go", LineNumber: 1, Marker: &marker}, // 1: line
+		layout.SeparatorRow{},                              // 2: separator
+		layout.LineRow{FilePath: "file.go", LineNumber: 5, Marker: &marker}, // 3: line
+	}
+	m := testModel(th, rows)
+	m.wrapLines = true
+	m.viewportWidth = 80
+	m.lineNumberWidth = 4
+	m.rawLines = map[string][]string{
+		"file.go": {"", "short", "", "", "", "short"},
+	}
+	m.refreshIndices()
+
+	// Headers and separators should not appear in WrapCosts
+	_, hasHeader := m.viewContext.WrapCosts[0]
+	assert.False(t, hasHeader, "header row should not be in WrapCosts")
+	_, hasSeparator := m.viewContext.WrapCosts[2]
+	assert.False(t, hasSeparator, "separator row should not be in WrapCosts")
+}
+
 // --- Helpers ---
 
 func loadTestTheme(t *testing.T) *theme.Theme {
