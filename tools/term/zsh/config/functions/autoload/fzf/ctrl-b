@@ -21,7 +21,33 @@ function fzf-preview() {
 
   # Type: strip "name: " prefix
   local type="${typeOutput##*: }"
-  echo "$type"
+  colors-load-definitions
+
+  # For external commands, show colored path instead of type label
+  if [[ "$type" == "command" ]]; then
+    local cmdPath="$(whence -p "$name" 2>/dev/null)"
+    [[ "$cmdPath" == "" ]] && return 0
+
+    # Colored path: directory in green, filename in yellow
+    local dirPart="${cmdPath:h}"
+    local filePart="${cmdPath:t}"
+    colorize --reply " ${dirPart}/" directory
+    local coloredDir="$REPLY"
+    colorize --reply "$filePart" executable
+    echo "${coloredDir}${REPLY}"
+
+    # For non-oroshi commands, show --help
+    [[ "$cmdPath" == "$OROSHI_ROOT"/* ]] && return 0
+    [[ "$cmdPath" == "$OROSHI_WORKTREES_DIR"/oroshi--* ]] && return 0
+
+    echo ""
+    local helpOutput="$("$name" --help 2>&1 | sed 's/^/ /')"
+    colorize "$helpOutput" comment
+    return 0
+  fi
+
+  echo " $type"
+  echo ""
 
   # Which output
   which "$name" 2>/dev/null || true
@@ -30,6 +56,7 @@ function fzf-preview() {
 function fzf-options() {
   echo "--prompt=$(fzf-options-prompt-label fzf-commands Commands yellow amber-dark)"
   echo "--preview=bin-zsh ctrl-b --preview {}"
+  echo "--ansi"
 }
 
 function fzf-postprocess() {

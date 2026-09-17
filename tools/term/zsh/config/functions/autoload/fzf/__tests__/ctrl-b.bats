@@ -53,6 +53,24 @@ setup() {
   [[ "$output" == *"builtin"* ]]
 }
 
+@test "fzf-preview: shows colored path for external command" {
+  bats_run_zsh "ctrl-b --preview cat"
+  [[ "$status" -eq 0 ]]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"/usr/"* ]] || [[ "$stripped" == *"/bin/"* ]]
+  [[ "$stripped" == *"cat"* ]]
+}
+
+@test "fzf-preview: does not show --help for oroshi command" {
+  # bin-zsh is a real command under OROSHI_ROOT
+  bats_run_zsh "ctrl-b --preview bin-zsh"
+  [[ "$status" -eq 0 ]]
+  local stripped="$(bats_strip_ansi "$output")"
+  # Should show path but not --help output
+  [[ "$stripped" == *"bin-zsh"* ]]
+  [[ "$stripped" != *"Usage"* ]]
+}
+
 @test "fzf-preview: exits 0 for unknown command" {
   bats_run_zsh "ctrl-b --preview nonexistent-command-xyz-123"
   [[ "$status" -eq 0 ]]
