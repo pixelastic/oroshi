@@ -91,10 +91,14 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int, isCursor b
 }
 
 // BinaryLine renders a placeholder for binary file content.
-func BinaryLine(ctx Context) string {
+func BinaryLine(ctx Context, isCursor bool) string {
 	style := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss("gray-5")).Italic(true)
 	padding := strings.Repeat(" ", ctx.LineNumberWidth+2)
-	return padding + style.Render("Binary file") + "\n"
+	line := padding + style.Render("Binary file")
+	if isCursor && ctx.ViewportWidth > 0 {
+		line = applyCursorHighlight(line, ctx.Theme, ctx.ViewportWidth)
+	}
+	return line + "\n"
 }
 
 // CommentLine renders a comment annotation above a code line.

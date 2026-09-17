@@ -566,7 +566,7 @@ func (m model) View() string {
 		case layout.SeparatorRow:
 			builder.WriteByte('\n')
 		case layout.BinaryRow:
-			s := render.BinaryLine(ctx)
+			s := render.BinaryLine(ctx, i == m.nav.Cursor)
 			builder.WriteString(s)
 		case layout.LineRow:
 			s := render.CodeLine(ctx, r, i == m.nav.Cursor)
@@ -642,6 +642,8 @@ func navigableFromVisible(rows []layout.Row, visibleIndices []int, foldState map
 	for _, i := range visibleIndices {
 		switch r := rows[i].(type) {
 		case layout.LineRow:
+			nav = append(nav, i)
+		case layout.BinaryRow:
 			nav = append(nav, i)
 		case layout.FileHeaderRow:
 			if foldState[r.Path] {

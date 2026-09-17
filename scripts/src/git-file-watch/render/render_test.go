@@ -496,6 +496,39 @@ func TestCodeLineWrapArrowIsDimmedGray(t *testing.T) {
 	assert.Contains(t, prefix, "\x1b[", "arrow should be preceded by ANSI styling")
 }
 
+// --- BinaryLine ---
+
+func TestBinaryLineWithCursorIncludesHighlight(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80, LineNumberWidth: 3}
+
+	withCursor := BinaryLine(ctx, true)
+	withoutCursor := BinaryLine(ctx, false)
+
+	assert.NotEqual(t, withCursor, withoutCursor, "cursor and non-cursor BinaryLine should differ")
+}
+
+func TestBinaryLineWithCursorStartsWithBgEscape(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80, LineNumberWidth: 3}
+
+	result := BinaryLine(ctx, true)
+
+	// The line (without trailing newline) should contain a background escape
+	line := strings.TrimSuffix(result, "\n")
+	assert.Contains(t, line, "\x1b[48;2;", "cursor BinaryLine should have bg escape code")
+}
+
+func TestBinaryLineWithoutCursorHasNoBgEscape(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80, LineNumberWidth: 3}
+
+	result := BinaryLine(ctx, false)
+
+	line := strings.TrimSuffix(result, "\n")
+	assert.NotContains(t, line, "\x1b[48;2;", "non-cursor BinaryLine should have no bg escape")
+}
+
 // --- Helpers ---
 
 func loadTestTheme(t *testing.T) *theme.Theme {

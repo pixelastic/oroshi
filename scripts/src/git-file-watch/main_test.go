@@ -465,6 +465,75 @@ func TestUnfoldingMovesCursorToFirstLine(t *testing.T) {
 	assert.Equal(t, 1, result.nav.Cursor, "cursor should move to first line after unfolding")
 }
 
+// --- navigableFromVisible with binary files ---
+
+func TestUnfoldedBinaryRowIsNavigable(t *testing.T) {
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "image.png"}, // 0
+		layout.BinaryRow{},                      // 1
+	}
+	visible := []int{0, 1}
+	foldState := map[string]bool{}
+
+	nav := navigableFromVisible(rows, visible, foldState)
+
+	assert.Contains(t, nav, 1, "BinaryRow should be navigable when unfolded")
+}
+
+func TestFoldedBinaryFileHeaderIsNavigable(t *testing.T) {
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "image.png"}, // 0
+		layout.BinaryRow{},                      // 1
+	}
+	visible := []int{0} // folded: only header visible
+	foldState := map[string]bool{"image.png": true}
+
+	nav := navigableFromVisible(rows, visible, foldState)
+
+	assert.Contains(t, nav, 0, "folded binary header should be navigable")
+	assert.NotContains(t, nav, 1, "BinaryRow should not be in navigable when folded")
+}
+
+// --- Fold/unfold cycle with binary files ---
+
+func TestUnfoldBinaryFileCursorLandsOnBinaryRow(t *testing.T) {
+	th := loadTestTheme(t)
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "image.png"}, // 0
+		layout.BinaryRow{},                      // 1
+	}
+	m := testModel(th, rows)
+	m.fileIndex.FoldState["image.png"] = true
+	m.refreshIndices()
+	m.nav.Cursor = 0 // on folded header
+
+	m.pendingKey = "z"
+	r, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'a'}})
+	result := r.(model)
+
+	assert.Equal(t, 1, result.nav.Cursor, "cursor should land on BinaryRow after unfolding")
+}
+
+func TestFoldFromBinaryRowMovesToHeader(t *testing.T) {
+	th := loadTestTheme(t)
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "image.png"}, // 0
+		layout.BinaryRow{},                      // 1
+	}
+	m := testModel(th, rows)
+	// Binary is auto-folded — unfold first
+	delete(m.fileIndex.FoldState, "image.png")
+	m.refreshIndices()
+	m.nav.Cursor = 1 // on BinaryRow
+
+	m.pendingKey = "z"
+	r, _ := m.updateNormal(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'a'}})
+	result := r.(model)
+
+	assert.Equal(t, 0, result.nav.Cursor, "cursor should move to header after folding from BinaryRow")
+	assert.True(t, result.fileIndex.FoldState["image.png"], "file should be folded")
+}
+
 // --- Cursor lands on folded file header ---
 
 func TestCursorCanLandOnFoldedFileHeader(t *testing.T) {
