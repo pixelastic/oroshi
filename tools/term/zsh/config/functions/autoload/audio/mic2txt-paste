@@ -1,13 +1,35 @@
-# Paste last mic2txt transcription into focused input
+# Paste last mic2txt transcription into the appropriate target
 # Usage:
 # $ mic2txt-paste
 setopt local_options err_return
 
 local tmpFolder=/dev/shm/oroshi/mic2txt
 local transcriptionFile=${tmpFolder}/transcription.txt
+local targetFile=${tmpFolder}/TARGET_WINDOW_ID
 
 # No transcription available
 [[ ! -f $transcriptionFile ]] && return 0
 
 local content="$(<"$transcriptionFile")"
+
+# Kitty target was captured at recording start
+if [[ -f $targetFile ]]; then
+  local windowId="$(<"$targetFile")"
+  clipboard-write "$content"
+  kitty-window-paste "$windowId"
+
+  # Autosubmit via kitty send-text
+  if mic2txt-autosubmit-mode-is-enabled; then
+    kitty-window-send-text "$windowId" "\r"
+  fi
+  return 0
+fi
+
+# Non-kitty fallback: paste wherever the focus is
 focus-insert "$content"
+
+# Autosubmit via ydotool
+if mic2txt-autosubmit-mode-is-enabled; then
+  sleep 0.50
+  better-ydotool key 28:1 28:0
+fi

@@ -149,12 +149,3 @@ teardown() {
   [[ ! -f "$BATS_TMP_DIR/focus-called.txt" ]]
 }
 
-@test "autosubmit runs after mic2txt-paste" {
-  echo "12345" > "$TMP_FOLDER/PID"
-  better-ydotool() { echo "$@" > "$BATS_TMP_DIR/ydotool-called.txt"; }
-  bats_mock better-ydotool
-
-  bats_run_zsh "zmodload zsh/datetime; echo \$(( EPOCHREALTIME - 5 )) > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
-  [[ "$status" -eq 0 ]]
-  [[ -f "$BATS_TMP_DIR/ydotool-called.txt" ]]
-}

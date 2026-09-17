@@ -92,12 +92,6 @@ function stopRecording() {
   # Save transcription and paste it
   echo "$transcription" > "${tmpFolder}/transcription.txt"
   mic2txt-paste
-
-  # If autosubmit mode is enabled, automatically press Enter
-  if mic2txt-autosubmit-mode-is-enabled; then
-    sleep 0.50
-    better-ydotool key 28:1 28:0
-  fi
 }
 
 # If a recording is not already in progress, we start a new one
