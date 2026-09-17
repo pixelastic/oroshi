@@ -103,10 +103,18 @@ function fzf-preview() {
     [[ "$cmdPath" == "$OROSHI_ROOT"/* ]] && return 0
     [[ "$cmdPath" == "$OROSHI_WORKTREES_DIR"/oroshi--* ]] && return 0
 
-    echo ""
     local wrapWidth=$((${FZF_PREVIEW_COLUMNS:-60} - 2))
-    local helpOutput="$("$name" --help 2>&1 | fold -s -w "$wrapWidth" | sed 's/^/ /')"
-    colorize "$helpOutput" comment
+
+    # Try --help first, fallback to whatis if it fails or returns garbage
+    local helpOutput="$(DISPLAY="" timeout 2 "$name" --help 2>&1)"
+    if [[ "$helpOutput" == "" ]] || [[ "$helpOutput" == *"open display"* ]] || [[ "$helpOutput" == *"cannot open"* ]]; then
+      helpOutput="$(whatis "$name" 2>/dev/null)" || true
+    fi
+
+    [[ "$helpOutput" == "" ]] && return 0
+    echo ""
+    local wrappedHelp="$(print -- "$helpOutput" | fold -s -w "$wrapWidth" | sed 's/^/ /')"
+    colorize "$wrappedHelp" comment
     return 0
   fi
 
