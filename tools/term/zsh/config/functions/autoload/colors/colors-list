@@ -1,9 +1,9 @@
 # Display terminal colors grouped by section
 # Usage:
-# $ colors                # Show all sections
-# $ colors --ansi         # ANSI 0-15 only
-# $ colors --palette      # Palette families only
-# $ colors --alias        # Semantic aliases only
+# $ colors-list                # Show all sections
+# $ colors-list --ansi         # ANSI 0-15 only
+# $ colors-list --palette      # Palette families only
+# $ colors-list --alias        # Semantic aliases only
 setopt local_options err_return
 
 zparseopts -E -D - \

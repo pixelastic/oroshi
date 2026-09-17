@@ -174,8 +174,8 @@
 
   // Kitty
   "kitty": {
-    "mic2txt-recording":  "yellow-8",
-    "mic2txt-processing": "blue-8"
+    "mic2txt-recording":  "yellow-9",
+    "mic2txt-processing": "yellow-0"
   },
 
   // Modes
