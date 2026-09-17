@@ -33,6 +33,31 @@ setup() {
   [[ "$output" == *"Commands"* ]]
 }
 
+@test "fzf-options: includes preview command" {
+  bats_run_zsh "ctrl-b --options"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"--preview=bin-zsh ctrl-b --preview"* ]]
+}
+
+# fzf-preview
+
+@test "fzf-preview: shows type and which output for a function" {
+  bats_run_zsh "ctrl-b --preview ctrl-b"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"function"* ]]
+}
+
+@test "fzf-preview: shows type and which output for a builtin" {
+  bats_run_zsh "ctrl-b --preview cd"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"builtin"* ]]
+}
+
+@test "fzf-preview: exits 0 for unknown command" {
+  bats_run_zsh "ctrl-b --preview nonexistent-command-xyz-123"
+  [[ "$status" -eq 0 ]]
+}
+
 # fzf-postprocess
 
 @test "fzf-postprocess: outputs command name from stdin" {

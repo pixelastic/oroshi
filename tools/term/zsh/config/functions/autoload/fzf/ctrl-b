@@ -3,6 +3,7 @@
 # $ ctrl-b                    # Interactive command search
 # $ ctrl-b --source           # Print available commands (one per line)
 # $ ctrl-b --options          # Print FZF options (one per line)
+# $ ctrl-b --preview <name>    # Show type and location of a command
 # $ ctrl-b --postprocess      # Read raw selection from stdin, print command name
 setopt local_options err_return
 local __lib="${functions_source[$0]:A:h}/__lib"
@@ -13,8 +14,22 @@ function fzf-source() {
   print -l -- ${(k)commands} ${(k)aliases} ${(k)functions} | sort --unique
 }
 
+function fzf-preview() {
+  local name="$1"
+  local typeOutput="$(whence -w "$name" 2>/dev/null)"
+  [[ "$typeOutput" == "" ]] && return 0
+
+  # Type: strip "name: " prefix
+  local type="${typeOutput##*: }"
+  echo "$type"
+
+  # Which output
+  which "$name" 2>/dev/null || true
+}
+
 function fzf-options() {
   echo "--prompt=$(fzf-options-prompt-label fzf-commands Commands yellow amber-dark)"
+  echo "--preview=bin-zsh ctrl-b --preview {}"
 }
 
 function fzf-postprocess() {
