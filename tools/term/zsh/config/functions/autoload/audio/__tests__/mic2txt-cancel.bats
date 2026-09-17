@@ -96,3 +96,46 @@ setup_recording() {
   bats_run_zsh "mic2txt-cancel"
   [[ ! -f "$BATS_TMP_DIR/sound-called.txt" ]]
 }
+
+# --- Cancel with kitty target ---
+
+@test "resets highlight when TARGET_WINDOW_ID exists" {
+  setup_recording
+  echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
+  process-kill() { :; }
+  audio-play-oroshi() { :; }
+  kitty-window-highlight-reset() { echo "$1" > "$BATS_TMP_DIR/reset-window-id.txt"; }
+  bats_mock process-kill audio-play-oroshi kitty-window-highlight-reset
+
+  bats_run_zsh "mic2txt-cancel"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/reset-window-id.txt")" == "42" ]]
+}
+
+@test "removes TARGET_WINDOW_ID file on cancel" {
+  setup_recording
+  echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
+  process-kill() { :; }
+  audio-play-oroshi() { :; }
+  kitty-window-highlight-reset() { :; }
+  bats_mock process-kill audio-play-oroshi kitty-window-highlight-reset
+
+  bats_run_zsh "mic2txt-cancel"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$TMP_FOLDER/TARGET_WINDOW_ID" ]]
+}
+
+# --- Cancel without kitty target ---
+
+@test "does not call highlight-reset when no TARGET_WINDOW_ID" {
+  setup_recording
+  rm -f "$TMP_FOLDER/TARGET_WINDOW_ID"
+  process-kill() { :; }
+  audio-play-oroshi() { :; }
+  kitty-window-highlight-reset() { echo "called" > "$BATS_TMP_DIR/reset-called.txt"; }
+  bats_mock process-kill audio-play-oroshi kitty-window-highlight-reset
+
+  bats_run_zsh "mic2txt-cancel"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/reset-called.txt" ]]
+}

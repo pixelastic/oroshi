@@ -92,6 +92,13 @@ function stopRecording() {
   # Save transcription and paste it
   echo "$transcription" > "${tmpFolder}/transcription.txt"
   mic2txt-paste
+
+  # Reset kitty highlight if a target window was captured
+  local targetFile="${tmpFolder}/TARGET_WINDOW_ID"
+  if [[ -f $targetFile ]]; then
+    kitty-window-highlight-reset "$(cat "$targetFile")"
+    rm "$targetFile"
+  fi
 }
 
 # If a recording is not already in progress, we start a new one

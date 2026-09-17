@@ -12,11 +12,18 @@ local pidFile=${tmpFolder}/PID
 # Kill the rec process
 process-kill "$(cat "$pidFile")"
 
+# Reset kitty highlight if a target window was captured
+local targetFile="${tmpFolder}/TARGET_WINDOW_ID"
+if [[ -f $targetFile ]]; then
+  kitty-window-highlight-reset "$(cat "$targetFile")"
+fi
+
 # Clean up temp files
 rm --force \
   ${tmpFolder}/PID \
   ${tmpFolder}/START_TIME \
-  ${tmpFolder}/record.wav
+  ${tmpFolder}/record.wav \
+  ${tmpFolder}/TARGET_WINDOW_ID
 
 # Play cancel sound
 audio-play-oroshi mic2txt-cancel.mp3
