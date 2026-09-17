@@ -1,0 +1,18 @@
+# Set background color on a Kitty window
+# Usage:
+# $ kitty-window-highlight '#d69e2e'              # Current window
+# $ kitty-window-highlight --window 7 '#d69e2e'   # Specific window
+setopt local_options err_return
+
+zparseopts -E -D \
+  -window:=flagWindow
+
+local windowId=${flagWindow[2]}
+local color="$1"
+
+# Default to current window
+[[ "$windowId" == "" ]] && windowId="$(kitty-window-id)"
+
+kitty-remote set-colors \
+  --match "id:${windowId}" \
+  "background=${color}"

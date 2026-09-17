@@ -1,0 +1,14 @@
+# Reset background color on a Kitty window to default
+# Usage:
+# $ kitty-window-highlight-reset       # Current window
+# $ kitty-window-highlight-reset 7     # Specific window
+setopt local_options err_return
+
+local windowId="$1"
+
+# Default to current window
+[[ "$windowId" == "" ]] && windowId="$(kitty-window-id)"
+
+kitty-remote set-colors \
+  --match "id:${windowId}" \
+  --reset
