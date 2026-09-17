@@ -731,6 +731,14 @@
     "ansi": 35,
     "hex": "#38a169"
   },
+  "kitty-mic2txt-processing": {
+    "ansi": 58,
+    "hex": "#2a4365"
+  },
+  "kitty-mic2txt-recording": {
+    "ansi": 48,
+    "hex": "#744210"
+  },
   "language-bats": {
     "ansi": 55,
     "hex": "#3182ce"

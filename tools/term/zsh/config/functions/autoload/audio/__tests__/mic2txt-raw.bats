@@ -7,6 +7,10 @@ setup() {
   mkdir -p "$TMP_FOLDER"
   bats_mock_env MOCK_MIC2TXT_TMP_FOLDER "$TMP_FOLDER"
 
+  local colorsJson="$OROSHI_ROOT/tools/term/zsh/config/theming/dist/colors.json"
+  COLOR_RECORDING="$(jq -r '.["kitty-mic2txt-recording"].hex' "$colorsJson")"
+  COLOR_PROCESSING="$(jq -r '.["kitty-mic2txt-processing"].hex' "$colorsJson")"
+
   rec() { :; }
   process-kill() { :; }
   audio-play-oroshi() { :; }
@@ -60,7 +64,7 @@ setup() {
 
   bats_run_zsh "mic2txt-raw --wav2txt echo"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/highlight-args")" == "--window 42 #744210" ]]
+  [[ "$(cat "$BATS_TMP_DIR/highlight-args")" == "--window 42 $COLOR_RECORDING" ]]
 }
 
 @test "does not create TARGET_WINDOW_ID when kitty is not focused at start" {
@@ -148,17 +152,41 @@ setup() {
   [[ ! -f "$BATS_TMP_DIR/focus-called.txt" ]]
 }
 
-# --- Cleanup on stop with kitty target ---
+# --- Processing highlight on stop ---
 
-@test "stop: resets highlight when TARGET_WINDOW_ID exists" {
+@test "stop: switches highlight to processing color when TARGET_WINDOW_ID exists" {
   echo "12345" > "$TMP_FOLDER/PID"
   echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
-  kitty-window-highlight-reset() { echo "$1" > "$BATS_TMP_DIR/reset-window-id.txt"; }
+  kitty-window-highlight() { echo "$@" >> "$BATS_TMP_DIR/highlight-calls"; }
+  bats_mock kitty-window-highlight
+
+  bats_run_zsh "zmodload zsh/datetime; echo \$(( EPOCHREALTIME - 5 )) > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/highlight-calls")" == "--window 42 $COLOR_PROCESSING" ]]
+}
+
+@test "stop: does not switch highlight when no TARGET_WINDOW_ID" {
+  echo "12345" > "$TMP_FOLDER/PID"
+  rm -f "$TMP_FOLDER/TARGET_WINDOW_ID"
+  kitty-window-highlight() { echo "$@" >> "$BATS_TMP_DIR/highlight-calls"; }
+  bats_mock kitty-window-highlight
+
+  bats_run_zsh "zmodload zsh/datetime; echo \$(( EPOCHREALTIME - 5 )) > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/highlight-calls" ]]
+}
+
+# --- Cleanup on stop with kitty target ---
+
+@test "stop: does not call highlight-reset directly (delegated to mic2txt-paste)" {
+  echo "12345" > "$TMP_FOLDER/PID"
+  echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
+  kitty-window-highlight-reset() { echo "called" > "$BATS_TMP_DIR/reset-called.txt"; }
   bats_mock kitty-window-highlight-reset
 
   bats_run_zsh "zmodload zsh/datetime; echo \$(( EPOCHREALTIME - 5 )) > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/reset-window-id.txt")" == "42" ]]
+  [[ ! -f "$BATS_TMP_DIR/reset-called.txt" ]]
 }
 
 @test "stop: removes TARGET_WINDOW_ID file" {

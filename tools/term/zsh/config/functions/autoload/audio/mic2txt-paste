@@ -17,6 +17,7 @@ if [[ -f $targetFile ]]; then
   local windowId="$(<"$targetFile")"
   clipboard-write "$content"
   kitty-window-paste "$windowId"
+  kitty-window-highlight-reset "$windowId"
 
   # Autosubmit via kitty send-text
   if mic2txt-autosubmit-mode-is-enabled; then

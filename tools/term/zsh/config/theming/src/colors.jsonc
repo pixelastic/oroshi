@@ -172,6 +172,12 @@
     "version-uninstalled": "yellow"
   },
 
+  // Kitty
+  "kitty": {
+    "mic2txt-recording":  "yellow-8",
+    "mic2txt-processing": "blue-8"
+  },
+
   // Modes
   "modes": {
     "sound-enabled":          "green",

@@ -14,8 +14,9 @@ setup() {
   kitty-window-send-text() { printf '%s' "$*" > "$BATS_TMP_DIR/kitty-send-args.txt"; }
   mic2txt-autosubmit-mode-is-enabled() { return 1; }
   better-ydotool() { echo "$@" > "$BATS_TMP_DIR/ydotool-args.txt"; }
+  kitty-window-highlight-reset() { echo "$1" > "$BATS_TMP_DIR/highlight-reset-id.txt"; }
   sleep() { :; }
-  bats_mock focus-insert clipboard-write kitty-window-paste kitty-window-send-text mic2txt-autosubmit-mode-is-enabled better-ydotool sleep
+  bats_mock focus-insert clipboard-write kitty-window-paste kitty-window-send-text kitty-window-highlight-reset mic2txt-autosubmit-mode-is-enabled better-ydotool sleep
 }
 
 
@@ -46,6 +47,14 @@ setup() {
   [[ "$(cat "$BATS_TMP_DIR/kitty-paste-args.txt")" == "42" ]]
 }
 
+@test "resets kitty highlight after paste" {
+  echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
+
+  bats_run_zsh "mic2txt-paste"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/highlight-reset-id.txt")" == "42" ]]
+}
+
 @test "does not call focus-insert when kitty target exists" {
   echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
 
@@ -73,6 +82,13 @@ setup() {
   bats_run_zsh "mic2txt-paste"
   [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/inserted.txt")" == "hello world" ]]
+}
+
+@test "does not reset kitty highlight when no kitty target" {
+  rm -f "$TMP_FOLDER/TARGET_WINDOW_ID"
+
+  bats_run_zsh "mic2txt-paste"
+  [[ ! -f "$BATS_TMP_DIR/highlight-reset-id.txt" ]]
 }
 
 @test "does not call kitty-window-paste when no kitty target" {
