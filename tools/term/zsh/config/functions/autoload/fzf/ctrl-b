@@ -9,6 +9,7 @@ setopt local_options err_return
 local __lib="${functions_source[$0]:A:h}/__lib"
 source "$__lib/init.zsh"
 source "$__lib/fzf-options-prompt-label.zsh"
+source "$__lib/fzf-fs-preview.zsh"
 
 function fzf-source() {
   print -l -- ${(k)commands} ${(k)aliases} ${(k)functions} | sort --unique
@@ -44,6 +45,27 @@ function fzf-preview() {
     local helpOutput="$("$name" --help 2>&1 | sed 's/^/ /')"
     colorize "$helpOutput" comment
     return 0
+  fi
+
+  # For oroshi autoloaded functions, show file content preview
+  if [[ "$type" == "function" ]]; then
+    local funcSource="${functions_source[$name]}"
+
+    # For unloaded autoloaded functions, search fpath
+    if [[ "$funcSource" == "" ]]; then
+      local dir
+      for dir in $fpath; do
+        if [[ -f "$dir/$name" ]]; then
+          funcSource="$dir/$name"
+          break
+        fi
+      done
+    fi
+
+    if [[ "$funcSource" == "$OROSHI_ROOT"/* ]] || [[ "$funcSource" == "$OROSHI_WORKTREES_DIR"/oroshi--* ]]; then
+      fzf-preview-file-text "$funcSource"
+      return 0
+    fi
   fi
 
   echo " $type"
