@@ -9,10 +9,52 @@ setopt local_options err_return
 local __lib="${functions_source[$0]:A:h}/__lib"
 source "$__lib/init.zsh"
 source "$__lib/fzf-options-prompt-label.zsh"
-source "$__lib/fzf-fs-preview.zsh"
 
 function fzf-source() {
   print -l -- ${(k)commands} ${(k)aliases} ${(k)functions} | sort --unique
+}
+
+function fzf-preview-function-header() {
+  local name="$1"
+  local typeLabel="$2"
+  local cols="${FZF_PREVIEW_COLUMNS:-60}"
+  local namePart=" $name"
+  local padding=$((cols - ${#namePart} - ${#typeLabel}))
+  [[ $padding -lt 1 ]] && padding=1
+  colorize --reply "$namePart" executable
+  local coloredName="$REPLY"
+  colorize --reply "$typeLabel" comment
+  echo "${coloredName}${(l:$padding:)}${REPLY}"
+  echo ""
+}
+
+function fzf-preview-comment-block() {
+  local filePath="$1"
+  local fileContent="$(<"$filePath")"
+  local line
+  local started=0
+  local commentBlock=""
+  for line in "${(@f)fileContent}"; do
+    # Skip shebang
+    [[ "$line" == "#!"* ]] && continue
+    # Skip empty comment lines before content starts
+    if [[ $started == 0 ]] && [[ "$line" == "#" ]]; then
+      continue
+    fi
+    # Stop at first non-comment line
+    [[ "$line" != "#"* ]] && break
+    started=1
+    # Strip leading "# " or "#" prefix
+    line="${line#\#\# }"
+    line="${line#\# }"
+    line="${line#\#}"
+    commentBlock+=" ${line}\n"
+  done
+
+  # Word-wrap and colorize
+  local wrapWidth=$((${FZF_PREVIEW_COLUMNS:-60} - 2))
+  local wrappedBlock="$(print -- "$commentBlock" | fold -s -w "$wrapWidth")"
+  colorize "$wrappedBlock" comment
 }
 
 function fzf-preview() {
@@ -42,7 +84,8 @@ function fzf-preview() {
     [[ "$cmdPath" == "$OROSHI_WORKTREES_DIR"/oroshi--* ]] && return 0
 
     echo ""
-    local helpOutput="$("$name" --help 2>&1 | sed 's/^/ /')"
+    local wrapWidth=$((${FZF_PREVIEW_COLUMNS:-60} - 2))
+    local helpOutput="$("$name" --help 2>&1 | fold -s -w "$wrapWidth" | sed 's/^/ /')"
     colorize "$helpOutput" comment
     return 0
   fi
@@ -62,8 +105,21 @@ function fzf-preview() {
       done
     fi
 
+    # Oroshi autoloaded functions: header + file content
     if [[ "$funcSource" == "$OROSHI_ROOT"/* ]] || [[ "$funcSource" == "$OROSHI_WORKTREES_DIR"/oroshi--* ]]; then
-      fzf-preview-file-text "$funcSource"
+      fzf-preview-function-header "$name" "autoloaded function"
+      bat \
+        --paging=never \
+        --style=numbers \
+        --color=always \
+        "$funcSource"
+      return 0
+    fi
+
+    # ZSH system functions: header + comment block
+    if [[ "$funcSource" == /usr/share/zsh/* ]]; then
+      fzf-preview-function-header "$name" "zsh system function"
+      fzf-preview-comment-block "$funcSource"
       return 0
     fi
   fi
