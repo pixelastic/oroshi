@@ -64,7 +64,27 @@ function fzf-preview() {
 
   # Type: strip "name: " prefix
   local type="${typeOutput##*: }"
+
+  # Aliases aren't loaded in non-interactive shells; source them if needed
+  if [[ "$type" == "none" ]]; then
+    source "$OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh" 2>/dev/null
+    typeOutput="$(whence -w "$name" 2>/dev/null)" || true
+    type="${typeOutput##*: }"
+  fi
+
+  [[ "$type" == "none" ]] && return 0
   colors-load-definitions
+
+  # Aliases: header + expansion
+  if [[ "$type" == "alias" ]]; then
+    fzf-preview-function-header "$name" "alias"
+    local expansion="$(whence "$name" 2>/dev/null)"
+    colorize --reply " → " comment
+    local coloredArrow="$REPLY"
+    colorize --reply "$expansion" string
+    echo "${coloredArrow}${REPLY}"
+    return 0
+  fi
 
   # For external commands, show colored path instead of type label
   if [[ "$type" == "command" ]]; then
