@@ -34,6 +34,17 @@ function startRecording() {
 
   # Save the start time for min-duration guard
   echo $EPOCHREALTIME >$startTimeFile
+
+  # Not in a kitty window, we'll paste wherever the focus is, at the end
+  if ! kitty-os-window-is-focused; then
+    return 0
+  fi
+
+  # In a kitty window, we save where the focus is right now, so we can paste it
+  # there at the end
+  local windowId="$(kitty-window-id)"
+  echo "$windowId" >${tmpFolder}/TARGET_WINDOW_ID
+  kitty-window-highlight --window "$windowId" "#d69e2e"
 }
 
 # Stop the current recording

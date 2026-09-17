@@ -18,11 +18,14 @@ setup() {
   txt2slack() { echo "$1"; }
   better-ydotool() { :; }
   sleep() { :; }
-  bats_mock rec process-kill audio-play-oroshi mic2txt-language mic2txt-slack-mode-is-enabled mic2txt-autosubmit-mode-is-enabled mic2txt-cancel mic2txt-paste focus-insert txt2slack better-ydotool sleep
+  kitty-os-window-is-focused() { return 1; }
+  kitty-window-id() { echo "0"; }
+  kitty-window-highlight() { :; }
+  bats_mock rec process-kill audio-play-oroshi mic2txt-language mic2txt-slack-mode-is-enabled mic2txt-autosubmit-mode-is-enabled mic2txt-cancel mic2txt-paste focus-insert txt2slack better-ydotool sleep kitty-os-window-is-focused kitty-window-id kitty-window-highlight
 }
 
 teardown() {
-  rm -f "$TMP_FOLDER/PID" "$TMP_FOLDER/START_TIME" "$TMP_FOLDER/record.wav" "$TMP_FOLDER/transcription.txt"
+  rm -f "$TMP_FOLDER/PID" "$TMP_FOLDER/START_TIME" "$TMP_FOLDER/record.wav" "$TMP_FOLDER/transcription.txt" "$TMP_FOLDER/TARGET_WINDOW_ID"
 }
 
 # --- Starting a recording ---
@@ -33,6 +36,54 @@ teardown() {
   bats_run_zsh "mic2txt-raw --wav2txt echo"
   [[ "$status" -eq 0 ]]
   [[ -f "$TMP_FOLDER/START_TIME" ]]
+}
+
+# --- Capturing target window at start ---
+
+@test "saves kitty window ID when kitty is focused at start" {
+  rm -f "$TMP_FOLDER/PID"
+  kitty-os-window-is-focused() { return 0; }
+  kitty-window-id() { echo "42"; }
+  kitty-window-highlight() { echo "$@" > "$BATS_TMP_DIR/highlight-args"; }
+  bats_mock kitty-os-window-is-focused kitty-window-id kitty-window-highlight
+
+  bats_run_zsh "mic2txt-raw --wav2txt echo"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$TMP_FOLDER/TARGET_WINDOW_ID")" == "42" ]]
+}
+
+@test "highlights kitty window yellow when kitty is focused at start" {
+  rm -f "$TMP_FOLDER/PID"
+  kitty-os-window-is-focused() { return 0; }
+  kitty-window-id() { echo "42"; }
+  kitty-window-highlight() { echo "$@" > "$BATS_TMP_DIR/highlight-args"; }
+  bats_mock kitty-os-window-is-focused kitty-window-id kitty-window-highlight
+
+  bats_run_zsh "mic2txt-raw --wav2txt echo"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/highlight-args")" == "--window 42 #d69e2e" ]]
+}
+
+@test "does not create TARGET_WINDOW_ID when kitty is not focused at start" {
+  rm -f "$TMP_FOLDER/PID"
+  kitty-os-window-is-focused() { return 1; }
+  kitty-window-highlight() { echo "called" > "$BATS_TMP_DIR/highlight-called"; }
+  bats_mock kitty-os-window-is-focused kitty-window-highlight
+
+  bats_run_zsh "mic2txt-raw --wav2txt echo"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$TMP_FOLDER/TARGET_WINDOW_ID" ]]
+}
+
+@test "does not highlight when kitty is not focused at start" {
+  rm -f "$TMP_FOLDER/PID"
+  kitty-os-window-is-focused() { return 1; }
+  kitty-window-highlight() { echo "called" > "$BATS_TMP_DIR/highlight-called"; }
+  bats_mock kitty-os-window-is-focused kitty-window-highlight
+
+  bats_run_zsh "mic2txt-raw --wav2txt echo"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/highlight-called" ]]
 }
 
 # --- Stopping with elapsed < 2 seconds ---
