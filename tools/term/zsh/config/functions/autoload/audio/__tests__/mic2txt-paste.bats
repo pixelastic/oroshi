@@ -2,8 +2,9 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  TMP_FOLDER="/dev/shm/oroshi/mic2txt"
+  TMP_FOLDER="$BATS_TMP_DIR/mic2txt"
   mkdir -p "$TMP_FOLDER"
+  bats_mock_env MOCK_MIC2TXT_TMP_FOLDER "$TMP_FOLDER"
   echo "hello world" > "$TMP_FOLDER/transcription.txt"
 
   # Default mocks: no kitty target, autosubmit disabled
@@ -17,9 +18,6 @@ setup() {
   bats_mock focus-insert clipboard-write kitty-window-paste kitty-window-send-text mic2txt-autosubmit-mode-is-enabled better-ydotool sleep
 }
 
-teardown() {
-  rm -f "$TMP_FOLDER/transcription.txt" "$TMP_FOLDER/TARGET_WINDOW_ID"
-}
 
 # --- File missing ---
 

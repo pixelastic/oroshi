@@ -2,12 +2,12 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  TMP_FOLDER="/dev/shm/oroshi/mic2txt"
+  TMP_FOLDER="$BATS_TMP_DIR/mic2txt"
+  mkdir -p "$TMP_FOLDER"
+  bats_mock_env MOCK_MIC2TXT_TMP_FOLDER "$TMP_FOLDER"
 }
 
-teardown() {
-  rm -f "$TMP_FOLDER/PID" "$TMP_FOLDER/START_TIME" "$TMP_FOLDER/record.wav"
-}
+
 
 # Simulate a recording in progress
 setup_recording() {

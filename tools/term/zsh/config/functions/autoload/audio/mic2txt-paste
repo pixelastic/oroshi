@@ -3,7 +3,7 @@
 # $ mic2txt-paste
 setopt local_options err_return
 
-local tmpFolder=/dev/shm/oroshi/mic2txt
+local tmpFolder=${MOCK_MIC2TXT_TMP_FOLDER:-/dev/shm/oroshi/mic2txt}
 local transcriptionFile=${tmpFolder}/transcription.txt
 local targetFile=${tmpFolder}/TARGET_WINDOW_ID
 

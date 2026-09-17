@@ -15,7 +15,7 @@ local wav2TxtName=${flagWav2Txt[2]}
 # Default values {{{
 local functionDir="${functions_source[$0]:A:h}"
 local wav2TxtBinary="${functionDir}/__lib/${wav2TxtName}"
-local tmpFolder=/dev/shm/oroshi/mic2txt
+local tmpFolder=${MOCK_MIC2TXT_TMP_FOLDER:-/dev/shm/oroshi/mic2txt}
 local pidFile=${tmpFolder}/PID
 local startTimeFile=${tmpFolder}/START_TIME
 local recordFile=${tmpFolder}/record.wav

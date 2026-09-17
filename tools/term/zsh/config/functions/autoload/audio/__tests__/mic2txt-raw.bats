@@ -3,8 +3,9 @@ bats_load_library 'helper'
 # Global mocks: all modes enabled, language fr, all side effects neutralized
 setup() {
   bats_tmp_dir
-  TMP_FOLDER="/dev/shm/oroshi/mic2txt"
+  TMP_FOLDER="$BATS_TMP_DIR/mic2txt"
   mkdir -p "$TMP_FOLDER"
+  bats_mock_env MOCK_MIC2TXT_TMP_FOLDER "$TMP_FOLDER"
 
   rec() { :; }
   process-kill() { :; }
@@ -25,9 +26,6 @@ setup() {
   bats_mock rec process-kill audio-play-oroshi mic2txt-language mic2txt-slack-mode-is-enabled mic2txt-autosubmit-mode-is-enabled mic2txt-cancel mic2txt-paste focus-insert txt2slack better-ydotool sleep kitty-os-window-is-focused kitty-window-id kitty-window-highlight kitty-window-highlight-reset
 }
 
-teardown() {
-  rm -f "$TMP_FOLDER/PID" "$TMP_FOLDER/START_TIME" "$TMP_FOLDER/record.wav" "$TMP_FOLDER/transcription.txt" "$TMP_FOLDER/TARGET_WINDOW_ID"
-}
 
 # --- Starting a recording ---
 
