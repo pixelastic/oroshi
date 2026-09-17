@@ -10,6 +10,6 @@ local content="$(clipboard-read)"
 [[ "$content" == "" ]] && return 0
 
 kitty-remote send-text \
-  --bracket-paste \
+  --bracketed-paste enable \
   --match "id:${windowId}" \
   "$content"

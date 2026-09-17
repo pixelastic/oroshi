@@ -12,7 +12,7 @@ setup() {
   bats_run_zsh "kitty-window-paste 42"
 
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == "send-text --bracket-paste --match id:42 hello world" ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == "send-text --bracketed-paste enable --match id:42 hello world" ]]
 }
 
 @test "returns early without calling kitty-remote when clipboard is empty" {

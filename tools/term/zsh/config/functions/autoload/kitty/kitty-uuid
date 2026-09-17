@@ -1,0 +1,6 @@
+# Get the UUID of the running kitty instance
+# Usage:
+# $ kitty-uuid   # e.g. "1b24cc09-37aa-4036-936d-1a7a7d4139bb"
+setopt local_options err_return
+
+cat $OROSHI_TMP_FOLDER/kitty/active-uuid

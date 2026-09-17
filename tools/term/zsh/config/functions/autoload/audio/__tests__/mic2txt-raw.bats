@@ -60,7 +60,7 @@ setup() {
 
   bats_run_zsh "mic2txt-raw --wav2txt echo"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/highlight-args")" == "--window 42 #d69e2e" ]]
+  [[ "$(cat "$BATS_TMP_DIR/highlight-args")" == "--window 42 #744210" ]]
 }
 
 @test "does not create TARGET_WINDOW_ID when kitty is not focused at start" {

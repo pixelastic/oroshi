@@ -20,7 +20,8 @@ if [[ -f $targetFile ]]; then
 
   # Autosubmit via kitty send-text
   if mic2txt-autosubmit-mode-is-enabled; then
-    kitty-window-send-text "$windowId" "\r"
+    sleep 0.50
+    kitty-window-send-text "$windowId" '\r'
   fi
   return 0
 fi

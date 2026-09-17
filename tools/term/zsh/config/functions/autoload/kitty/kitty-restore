@@ -5,7 +5,7 @@ setopt local_options err_return
 
 local uuid="$(uuidgen)"
 
-local kittySocketFolder=/home/$USER/local/tmp/oroshi/kitty
+local kittySocketFolder=$OROSHI_TMP_FOLDER/kitty
 mkdir -p $kittySocketFolder
 local kittySocketPath=$kittySocketFolder/socket-$uuid
 
@@ -15,8 +15,12 @@ local sessionFile="$OROSHI_TMP_FOLDER/kitty/session.kitty-session"
 # Restore from last saved session if available
 [[ -f "$sessionFile" ]] && sessionArgs+=(--session "$sessionFile")
 
+# Persist the UUID so processes outside kitty (e.g. GNOME hotkeys) can find the
+# socket without the env var
+echo $uuid > $kittySocketFolder/active-uuid
+
 # Start kitty and make it listen to remote commands on this socket
 # This allows remote commands to be sent from outside of kitty itself
-OROSHI_KITTY_UUID=$uuid kitty \
+kitty \
   --listen-on unix:$kittySocketPath \
   "${sessionArgs[@]}"

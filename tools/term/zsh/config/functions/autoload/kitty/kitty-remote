@@ -4,7 +4,7 @@
 #        kitty-remote goto-layout stack
 setopt local_options err_return
 
-local kittySocketPath=$OROSHI_TMP_FOLDER/kitty/socket-$OROSHI_KITTY_UUID
+local kittySocketPath=$OROSHI_TMP_FOLDER/kitty/socket-$(kitty-uuid)
 local unixSocket="--to unix:${kittySocketPath}"
 
 kitty @ ${=unixSocket} "$@"

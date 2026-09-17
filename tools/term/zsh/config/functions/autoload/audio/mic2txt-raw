@@ -20,6 +20,7 @@ local pidFile=${tmpFolder}/PID
 local startTimeFile=${tmpFolder}/START_TIME
 local recordFile=${tmpFolder}/record.wav
 mkdir -p $tmpFolder
+colors-load-definitions
 # }}}
 
 # Start a recording
@@ -44,7 +45,7 @@ function startRecording() {
   # there at the end
   local windowId="$(kitty-window-id)"
   echo "$windowId" >${tmpFolder}/TARGET_WINDOW_ID
-  kitty-window-highlight --window "$windowId" "#d69e2e"
+  kitty-window-highlight --window "$windowId" "$COLORS[yellow-8:hex]"
 }
 
 # Stop the current recording
