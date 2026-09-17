@@ -1,0 +1,15 @@
+# Bracket-paste clipboard content into a Kitty window by ID
+# Usage:
+# $ kitty-window-paste <windowId>
+setopt local_options err_return
+
+local windowId="$1"
+local content="$(clipboard-read)"
+
+# Nothing to paste if clipboard is empty
+[[ "$content" == "" ]] && return 0
+
+kitty-remote send-text \
+  --bracket-paste \
+  --match "id:${windowId}" \
+  "$content"
