@@ -37,6 +37,9 @@ function oroshi-reload-fpath() {
       continue
     fi
 
+    # Skip files inside __ directories (tests, libs, etc.)
+    [[ $item == */__* ]] && continue
+
     # Skip files with an extension (docs, configs, etc.)
     [[ "${item:e}" != "" ]] && continue
 

@@ -16,6 +16,14 @@ setup() {
   [[ "${lines[-1]}" = "1" ]]
 }
 
+@test "file inside __ directory is not autoloaded" {
+  mkdir -p "$AUTOLOAD/audio/__lib/__src/wav2txt/target"
+  touch "$AUTOLOAD/audio/__lib/__src/wav2txt/target/build"
+  bats_run_zsh "oroshi-reload-fpath; echo \${#OROSHI_AUTOLOADED_FUNCTIONS}"
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[-1]}" = "0" ]]
+}
+
 @test "file with extension is not tracked" {
   touch "$AUTOLOAD/foo.zsh"
   bats_run_zsh "oroshi-reload-fpath; echo \${#OROSHI_AUTOLOADED_FUNCTIONS}"

@@ -105,7 +105,10 @@ function fzf-preview() {
     # No file found: show name + description if available
     fzf-preview-function-header "$name" ""
     local descOutput="$(binary-describe "$name")"
-    if [[ "$descOutput" != "" ]]; then
+    if [[ "$descOutput" == "" ]]; then
+      colorize " no description available" comment
+      echo ""
+    else
       local wrapWidth=$((${FZF_PREVIEW_COLUMNS:-60} - 2))
       local wrappedDesc="$(print -- "$descOutput" | fold -s -w "$wrapWidth" | sed 's/^/ /')"
       colorize "$wrappedDesc" comment
@@ -153,8 +156,12 @@ function fzf-preview() {
     echo ""
 
     local descOutput="$(binary-describe "$name")"
-    [[ "$descOutput" == "" ]] && return 0
     echo ""
+    if [[ "$descOutput" == "" ]]; then
+      colorize " no description available" comment
+      echo ""
+      return 0
+    fi
     local wrapWidth=$((${FZF_PREVIEW_COLUMNS:-60} - 2))
     local wrappedDesc="$(print -- "$descOutput" | fold -s -w "$wrapWidth" | sed 's/^/ /')"
     colorize "$wrappedDesc" comment
@@ -199,7 +206,10 @@ function fzf-preview() {
   if [[ "$type" == "builtin" ]]; then
     fzf-preview-function-header "$name" "shell builtin"
     local descOutput="$(binary-describe "$name")"
-    if [[ "$descOutput" != "" ]]; then
+    if [[ "$descOutput" == "" ]]; then
+      colorize " no description available" comment
+      echo ""
+    else
       local wrapWidth=$((${FZF_PREVIEW_COLUMNS:-60} - 2))
       local wrappedDesc="$(print -- "$descOutput" | fold -s -w "$wrapWidth" | sed 's/^/ /')"
       colorize "$wrappedDesc" comment
