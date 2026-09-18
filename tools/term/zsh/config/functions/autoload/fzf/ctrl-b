@@ -195,11 +195,20 @@ function fzf-preview() {
     fi
   fi
 
-  echo " $type"
-  echo ""
+  # Builtins: header + description
+  if [[ "$type" == "builtin" ]]; then
+    fzf-preview-function-header "$name" "shell builtin"
+    local descOutput="$(binary-describe "$name")"
+    if [[ "$descOutput" != "" ]]; then
+      local wrapWidth=$((${FZF_PREVIEW_COLUMNS:-60} - 2))
+      local wrappedDesc="$(print -- "$descOutput" | fold -s -w "$wrapWidth" | sed 's/^/ /')"
+      colorize "$wrappedDesc" comment
+    fi
+    return 0
+  fi
 
-  # Which output
-  which "$name" 2>/dev/null || true
+  # Fallback
+  fzf-preview-function-header "$name" "$type"
 }
 
 function fzf-options() {

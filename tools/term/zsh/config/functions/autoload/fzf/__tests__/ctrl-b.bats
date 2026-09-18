@@ -68,10 +68,13 @@ setup() {
   [[ "$output" == *"function"* ]]
 }
 
-@test "fzf-preview: shows type and which output for a builtin" {
-  bats_run_zsh "ctrl-b --preview cd"
+@test "fzf-preview: shows builtin with header and description" {
+  bats_run_zsh "ctrl-b --preview echo"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == *"builtin"* ]]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"echo"* ]]
+  [[ "$stripped" == *"shell builtin"* ]]
+  [[ "$stripped" == *"display a line of text"* ]]
 }
 
 @test "fzf-preview: shows colored path for external command" {
