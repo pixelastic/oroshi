@@ -24,6 +24,27 @@ setup() {
   done
 }
 
+@test "fzf-source: excludes underscore-prefixed entries" {
+  bats_run_zsh "ctrl-b --source"
+  local line
+  for line in "${lines[@]}"; do
+    [[ "$line" != _* ]]
+  done
+}
+
+@test "fzf-source: excludes TRAP entries" {
+  bats_run_zsh "ctrl-b --source"
+  [[ "$output" != *$'\n'"TRAP"* ]]
+}
+
+@test "fzf-source: excludes dash-prefixed entries" {
+  bats_run_zsh "ctrl-b --source"
+  local line
+  for line in "${lines[@]}"; do
+    [[ "$line" != -* ]]
+  done
+}
+
 # fzf-options
 
 @test "fzf-options: includes --prompt with Commands label" {
@@ -61,14 +82,58 @@ setup() {
   [[ "$stripped" == *"cat"* ]]
 }
 
-@test "fzf-preview: does not show --help for oroshi command" {
+@test "fzf-preview: shows oroshi command with header and file content" {
   # bin-zsh is a real command under OROSHI_ROOT
   bats_run_zsh "ctrl-b --preview bin-zsh"
   [[ "$status" -eq 0 ]]
   local stripped="$(bats_strip_ansi "$output")"
-  # Should show path but not --help output
   [[ "$stripped" == *"bin-zsh"* ]]
-  [[ "$stripped" != *"Usage"* ]]
+  [[ "$stripped" == *"oroshi command"* ]]
+  # bat adds line numbers to file content
+  [[ "$stripped" == *"#!/usr/bin/env zsh"* ]]
+}
+
+@test "fzf-preview: shows alias expansion for aliases" {
+  bats_run_zsh "ctrl-b --preview which-command"
+  [[ "$status" -eq 0 ]]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"alias"* ]]
+  [[ "$stripped" == *"→"* ]]
+}
+
+@test "fzf-preview: shows type label on separate line from name" {
+  bats_run_zsh "ctrl-b --preview colors-build"
+  [[ "$status" -eq 0 ]]
+  local stripped="$(bats_strip_ansi "$output")"
+  # First line is name, second line is type
+  local firstLine="${lines[0]}"
+  local strippedFirst="$(bats_strip_ansi "$firstLine")"
+  [[ "$strippedFirst" == *"colors-build"* ]]
+  [[ "$strippedFirst" != *"autoloaded function"* ]]
+}
+
+@test "fzf-preview: shows bat output for oroshi autoloaded function" {
+  bats_run_zsh "ctrl-b --preview colors-build"
+  [[ "$status" -eq 0 ]]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"autoloaded function"* ]]
+  # bat adds line numbers
+  [[ "$stripped" == *"1"* ]]
+}
+
+@test "fzf-preview: shows zsh system function label and comment" {
+  bats_run_zsh "ctrl-b --preview colors"
+  [[ "$status" -eq 0 ]]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"zsh system function"* ]]
+  [[ "$stripped" == *"ANSI"* ]]
+}
+
+@test "fzf-preview: shows description for external command via binary-describe" {
+  bats_run_zsh "ctrl-b --preview cat"
+  [[ "$status" -eq 0 ]]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"concatenate"* ]]
 }
 
 @test "fzf-preview: exits 0 for unknown command" {

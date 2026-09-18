@@ -11,20 +11,28 @@ source "$__lib/init.zsh"
 source "$__lib/fzf-options-prompt-label.zsh"
 
 function fzf-source() {
-  print -l -- ${(k)commands} ${(k)aliases} ${(k)functions} | sort --unique
+  # Filter out commands that point to directories
+  local -a cmds
+  local k
+  for k in ${(k)commands}; do
+    [[ ! -d "$commands[$k]" ]] && cmds+=("$k")
+  done
+
+  print -l -- \
+    "${cmds[@]}" ${(k)aliases} ${(k)galiases} ${(k)functions} \
+    | grep -Ev '^(_|TRAP|-)' \
+    | sort --unique
 }
 
 function fzf-preview-function-header() {
   local name="$1"
   local typeLabel="$2"
-  local cols="${FZF_PREVIEW_COLUMNS:-60}"
-  local namePart=" $name"
-  local padding=$((cols - ${#namePart} - ${#typeLabel}))
-  [[ $padding -lt 1 ]] && padding=1
-  colorize --reply "$namePart" executable
-  local coloredName="$REPLY"
-  colorize --reply "$typeLabel" comment
-  echo "${coloredName}${(l:$padding:)}${REPLY}"
+  colorize " $name" executable
+  echo ""
+  if [[ "$typeLabel" != "" ]]; then
+    colorize " $typeLabel" comment
+    echo ""
+  fi
   echo ""
 }
 
@@ -35,11 +43,13 @@ function fzf-preview-comment-block() {
   local started=0
   local commentBlock=""
   for line in "${(@f)fileContent}"; do
-    # Skip shebang
+    # Skip shebang and #autoload directives
     [[ "$line" == "#!"* ]] && continue
-    # Skip empty comment lines before content starts
-    if [[ $started == 0 ]] && [[ "$line" == "#" ]]; then
-      continue
+    [[ "$line" == "#autoload"* ]] && continue
+    # Skip empty lines and bare comment lines before content starts
+    if [[ $started == 0 ]]; then
+      [[ "$line" == "#" ]] && continue
+      [[ "$line" == "" ]] && continue
     fi
     # Stop at first non-comment line
     [[ "$line" != "#"* ]] && break
@@ -72,12 +82,42 @@ function fzf-preview() {
     type="${typeOutput##*: }"
   fi
 
-  [[ "$type" == "none" ]] && return 0
+  # Still unresolved: search fpath for the file
+  if [[ "$type" == "none" ]]; then
+    local funcSource=""
+    local dir
+    for dir in $fpath; do
+      if [[ -f "$dir/$name" ]]; then
+        funcSource="$dir/$name"
+        break
+      fi
+    done
+
+    colors-load-definitions
+
+    # ZSH system fpath functions
+    if [[ "$funcSource" == /usr/share/zsh/* ]]; then
+      fzf-preview-function-header "$name" "zsh system function"
+      fzf-preview-comment-block "$funcSource"
+      return 0
+    fi
+
+    # No file found: show name + description if available
+    fzf-preview-function-header "$name" ""
+    local descOutput="$(binary-describe "$name")"
+    if [[ "$descOutput" != "" ]]; then
+      local wrapWidth=$((${FZF_PREVIEW_COLUMNS:-60} - 2))
+      local wrappedDesc="$(print -- "$descOutput" | fold -s -w "$wrapWidth" | sed 's/^/ /')"
+      colorize "$wrappedDesc" comment
+    fi
+    return 0
+  fi
+
   colors-load-definitions
 
   # Aliases: header + expansion
-  if [[ "$type" == "alias" ]]; then
-    fzf-preview-function-header "$name" "alias"
+  if [[ "$type" == "alias" ]] || [[ "$type" == "global alias" ]]; then
+    fzf-preview-function-header "$name" "$type"
     local expansion="$(whence "$name" 2>/dev/null)"
     colorize --reply " → " comment
     local coloredArrow="$REPLY"
@@ -91,30 +131,33 @@ function fzf-preview() {
     local cmdPath="$(whence -p "$name" 2>/dev/null)"
     [[ "$cmdPath" == "" ]] && return 0
 
-    # Colored path: directory in green, filename in yellow
+    # Oroshi commands: header + file content
+    if [[ "$cmdPath" == "$OROSHI_ROOT"/* ]] || [[ "$cmdPath" == "$OROSHI_WORKTREES_DIR"/oroshi--* ]]; then
+      fzf-preview-function-header "$name" "oroshi command"
+      bat \
+        --paging=never \
+        --style=numbers \
+        --color=always \
+        "$cmdPath"
+      return 0
+    fi
+
+    # System commands: colored path + type label
     local dirPart="${cmdPath:h}"
     local filePart="${cmdPath:t}"
     colorize --reply " ${dirPart}/" directory
     local coloredDir="$REPLY"
     colorize --reply "$filePart" executable
     echo "${coloredDir}${REPLY}"
-
-    # For non-oroshi commands, show --help
-    [[ "$cmdPath" == "$OROSHI_ROOT"/* ]] && return 0
-    [[ "$cmdPath" == "$OROSHI_WORKTREES_DIR"/oroshi--* ]] && return 0
-
-    local wrapWidth=$((${FZF_PREVIEW_COLUMNS:-60} - 2))
-
-    # Try --help first, fallback to whatis if it fails or returns garbage
-    local helpOutput="$(DISPLAY="" timeout 2 "$name" --help 2>&1)"
-    if [[ "$helpOutput" == "" ]] || [[ "$helpOutput" == *"open display"* ]] || [[ "$helpOutput" == *"cannot open"* ]]; then
-      helpOutput="$(whatis "$name" 2>/dev/null)" || true
-    fi
-
-    [[ "$helpOutput" == "" ]] && return 0
+    colorize " system command" comment
     echo ""
-    local wrappedHelp="$(print -- "$helpOutput" | fold -s -w "$wrapWidth" | sed 's/^/ /')"
-    colorize "$wrappedHelp" comment
+
+    local descOutput="$(binary-describe "$name")"
+    [[ "$descOutput" == "" ]] && return 0
+    echo ""
+    local wrapWidth=$((${FZF_PREVIEW_COLUMNS:-60} - 2))
+    local wrappedDesc="$(print -- "$descOutput" | fold -s -w "$wrapWidth" | sed 's/^/ /')"
+    colorize "$wrappedDesc" comment
     return 0
   fi
 

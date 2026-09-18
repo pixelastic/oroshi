@@ -1,0 +1,38 @@
+# Describe a binary using available system metadata
+# Tries whatis, man NAME section, then apt package description
+# Usage:
+# $ binary-describe cat       # "concatenate files and print on the standard output"
+# $ binary-describe anim_diff # "Lossy compression of digital photographic images"
+setopt local_options err_return
+
+local name="$1"
+[[ "$name" == "" ]] && return 0
+
+# 1. whatis (instant lookup)
+local desc="$(whatis "$name" 2>/dev/null)"
+if [[ "$desc" != "" ]] && [[ "$desc" != *"nothing appropriate"* ]]; then
+  print -- "$desc"
+  return 0
+fi
+
+# 2. man NAME section
+local manOutput="$(man "$name" 2>/dev/null | col -bx)"
+if [[ "$manOutput" != "" ]]; then
+  local nameSection="$(print -- "$manOutput" | sed -n '/^NAME/,/^[A-Z]/p' | sed '1d;$d' | sed 's/^ *//')"
+  if [[ "$nameSection" != "" ]]; then
+    print -- "$nameSection"
+    return 0
+  fi
+fi
+
+# 3. dpkg package description
+local cmdPath="$(whence -p "$name" 2>/dev/null)"
+[[ "$cmdPath" == "" ]] && return 0
+local package="$(dpkg -S "$cmdPath" 2>/dev/null)"
+[[ "$package" == "" ]] && return 0
+local packageName="${package%%:*}"
+local aptDesc="$(apt-cache show "$packageName" 2>/dev/null | grep -m1 '^Description' | sed 's/^Description[^:]*: //')"
+if [[ "$aptDesc" != "" ]]; then
+  print -- "$aptDesc"
+  return 0
+fi
