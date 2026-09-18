@@ -1,6 +1,7 @@
 [
   "aberlaas",
   "adb",
+  "airtable-record-read",
   "alias",
   "apt list",
   "apt-cache search",

@@ -22,6 +22,7 @@ function fetch-meetup() {
     URL
     notes
     helpersFullName
+    speakersFullName
     guestRegisteredCount
     guestAttendingCountFinal
   )
