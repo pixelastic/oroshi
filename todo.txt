@@ -51,3 +51,5 @@
 2026-09-15 Redesign gamemaster/armory UI and add items from more games domain:Ideas size:large id:gamemaster-redesign
 2026-09-15 Revamp blog.pixelastic.com: new UI, find a blogging cadence domain:Ideas size:large id:blog-refresh
 2026-09-15 Finish crsearch: search Critical Role subtitles and jump to exact moments domain:Ideas size:large id:crsearch
+2026-09-17 Create gdoc-read helper to fetch raw Google Doc content, usable standalone and inside gdoc2md domain:Zsh size:medium id:gdoc-read
+2026-09-18 Add lets be honest as allowed in Vale speech profile (disable ai-tells.AffirmativeFormulas) domain:Misc size:small id:vale-speech-honest
