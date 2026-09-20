@@ -1,12 +1,25 @@
 # List entries from the Claude mobile Notion database
 # Usage:
-# $ phone-pickup-list
+# $ phone-pickup-list                          # All entries
+# $ phone-pickup-list --tag "blog post"        # Filter by tag
+# $ phone-pickup-list --is-processed 0         # Unprocessed only
+# $ phone-pickup-list --tag "blog post" --is-processed 0
 setopt local_options err_return
 
 # Guard: NOTION_PHONE_DB_ID must be set
-if [[ "$NOTION_PHONE_DB_ID" == "" ]]; then
-  return 1
-fi
+[[ "$NOTION_PHONE_DB_ID" == "" ]] && return 1
+
+zparseopts -E -D \
+  -tag:=flagTag \
+  -is-processed:=flagIsProcessed
+
+local tag=${flagTag[2]}
+local isProcessed=${flagIsProcessed[2]}
+
+local filterArgs=()
+[[ "$tag" != "" ]] && filterArgs+=(--filter "Tags~=$tag")
+[[ "$isProcessed" == "1" ]] && filterArgs+=(--filter "isProcessed=true")
+[[ "$isProcessed" == "0" ]] && filterArgs+=(--filter "isProcessed=false")
 
 local jqFilter='[
   .results[] | {
@@ -20,5 +33,6 @@ local jqFilter='[
 notion db query "$NOTION_PHONE_DB_ID" \
   --sort 'Date:desc' \
   --limit 50 \
-  -f json |
-  jq "$jqFilter"
+  "${filterArgs[@]}" \
+  -f json \
+  | jq "$jqFilter"

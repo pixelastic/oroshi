@@ -18,6 +18,73 @@ setup() {
   echo "$output" | jq -e '.[0].tags | type == "array"'
 }
 
+@test "passes tag filter to notion when --tag is provided" {
+  bats_mock_env "NOTION_PHONE_DB_ID" "test-db-id"
+  notion() {
+    echo "$@" > "$BATS_TMP_DIR/notion-args.txt"
+    echo '{"results":[]}'
+  }
+  bats_mock notion
+
+  bats_run_zsh "phone-pickup-list --tag 'blog post'"
+  [[ "$status" -eq 0 ]]
+  grep -q -- "--filter" "$BATS_TMP_DIR/notion-args.txt"
+  grep -q "Tags~=blog post" "$BATS_TMP_DIR/notion-args.txt"
+}
+
+@test "passes isProcessed=false filter when --is-processed 0" {
+  bats_mock_env "NOTION_PHONE_DB_ID" "test-db-id"
+  notion() {
+    echo "$@" > "$BATS_TMP_DIR/notion-args.txt"
+    echo '{"results":[]}'
+  }
+  bats_mock notion
+
+  bats_run_zsh "phone-pickup-list --is-processed 0"
+  [[ "$status" -eq 0 ]]
+  grep -q "isProcessed=false" "$BATS_TMP_DIR/notion-args.txt"
+}
+
+@test "passes isProcessed=true filter when --is-processed 1" {
+  bats_mock_env "NOTION_PHONE_DB_ID" "test-db-id"
+  notion() {
+    echo "$@" > "$BATS_TMP_DIR/notion-args.txt"
+    echo '{"results":[]}'
+  }
+  bats_mock notion
+
+  bats_run_zsh "phone-pickup-list --is-processed 1"
+  [[ "$status" -eq 0 ]]
+  grep -q "isProcessed=true" "$BATS_TMP_DIR/notion-args.txt"
+}
+
+@test "passes both filters when --tag and --is-processed are combined" {
+  bats_mock_env "NOTION_PHONE_DB_ID" "test-db-id"
+  notion() {
+    echo "$@" > "$BATS_TMP_DIR/notion-args.txt"
+    echo '{"results":[]}'
+  }
+  bats_mock notion
+
+  bats_run_zsh "phone-pickup-list --tag 'blog post' --is-processed 0"
+  [[ "$status" -eq 0 ]]
+  grep -q "Tags~=blog post" "$BATS_TMP_DIR/notion-args.txt"
+  grep -q "isProcessed=false" "$BATS_TMP_DIR/notion-args.txt"
+}
+
+@test "passes no filter when called without flags" {
+  bats_mock_env "NOTION_PHONE_DB_ID" "test-db-id"
+  notion() {
+    echo "$@" > "$BATS_TMP_DIR/notion-args.txt"
+    echo '{"results":[]}'
+  }
+  bats_mock notion
+
+  bats_run_zsh "phone-pickup-list"
+  [[ "$status" -eq 0 ]]
+  run ! grep -q -- "--filter" "$BATS_TMP_DIR/notion-args.txt"
+}
+
 @test "exits non-zero when NOTION_PHONE_DB_ID is unset" {
   bats_run_zsh "unset NOTION_PHONE_DB_ID && phone-pickup-list"
   [[ "$status" -ne 0 ]]
