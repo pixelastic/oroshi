@@ -1,0 +1,14 @@
+# Mark a Notion phone-pickup page as processed
+# Usage:
+# $ phone-pickup-done <page_id>
+setopt local_options err_return
+
+local pageId="$1"
+
+# Guard: page ID must be provided
+if [[ "$pageId" == "" ]]; then
+  echoerr "Usage: phone-pickup-done <page_id>"
+  return 1
+fi
+
+notion page set "$pageId" "isProcessed=true"
