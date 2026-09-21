@@ -23,19 +23,84 @@ class OroshiStatuses {
     this._cancellable = new Gio.Cancellable();
     this._button = null;
     this._icon = null;
+    this._originalRegisterMethod = null;
+    this._watcherPrototype = null;
 
+    this._patchWatcher();
     this._watchNameChanges();
     this._scanExistingNames();
   }
 
   /** Tear down all resources and remove the panel indicator */
   destroy() {
+    this._unpatchWatcher();
     this._cancellable.cancel();
     this._teardownSlack();
     for (const id of this._busSubscriptionIds) {
       this._bus.signal_unsubscribe(id);
     }
     this._busSubscriptionIds = [];
+  }
+
+  /**
+   * Monkey-patch ubuntu-appindicators' StatusNotifierWatcher to handle Slack's
+   * hybrid "busname/path" registration format. Slack sends a string like
+   * "org.freedesktop.StatusNotifierItem-1234-5678/StatusNotifierItem" which the
+   * original method cannot parse — this wrapper splits it into the path portion
+   * so the existing path-based logic handles it correctly.
+   */
+  _patchWatcher() {
+    const appIndicators = Main.extensionManager.lookup(
+      'ubuntu-appindicators@ubuntu.com',
+    );
+    if (!appIndicators) {
+      console.warn(
+        'OroshiStatuses: ubuntu-appindicators not found, skipping watcher patch',
+      );
+      return;
+    }
+
+    const modulePath = `${appIndicators.path}/statusNotifierWatcher.js`;
+    import(modulePath)
+      .then((mod) => {
+        const proto = mod.StatusNotifierWatcher.prototype;
+        this._originalRegisterMethod = proto.RegisterStatusNotifierItemAsync;
+        this._watcherPrototype = proto;
+
+        const original = this._originalRegisterMethod;
+        proto.RegisterStatusNotifierItemAsync = function (params, invocation) {
+          const [service] = params;
+          // Hybrid format: contains "/" but does not start with "/"
+          if (service.includes('/') && service.charAt(0) !== '/') {
+            const path = service.substring(service.indexOf('/'));
+            console.log(
+              `OroshiStatuses: rewrote hybrid registration "${service}" → "${path}"`,
+            );
+            return original.call(this, [path], invocation);
+          }
+          return original.call(this, params, invocation);
+        };
+
+        console.log(
+          'OroshiStatuses: patched StatusNotifierWatcher for hybrid registration',
+        );
+      })
+      .catch((e) => {
+        console.warn(
+          'OroshiStatuses: failed to patch StatusNotifierWatcher',
+          e,
+        );
+      });
+  }
+
+  /** Restore the original RegisterStatusNotifierItemAsync method */
+  _unpatchWatcher() {
+    if (!this._watcherPrototype || !this._originalRegisterMethod) return;
+    this._watcherPrototype.RegisterStatusNotifierItemAsync =
+      this._originalRegisterMethod;
+    this._watcherPrototype = null;
+    this._originalRegisterMethod = null;
+    console.log('OroshiStatuses: restored original StatusNotifierWatcher');
   }
 
   /**
