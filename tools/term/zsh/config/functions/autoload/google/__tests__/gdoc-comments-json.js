@@ -25,31 +25,35 @@ describe('extractDocId', () => {
 
 describe('gdocCommentsJson', () => {
   beforeEach(() => {
-    vi.spyOn(__, 'getAuth').mockReturnValue({ credentials: 'mock' });
+    vi.spyOn(__, 'googleAuth').mockReturnValue({ credentials: 'mock' });
     // Comments returned in reverse chronological order (API default)
     vi.spyOn(__, 'fetchComments').mockReturnValue([
       {
         resolved: false,
         content: 'Comment without anchor',
         createdTime: '2026-07-30T12:00:00Z',
+        author: { displayName: 'Alice', me: false },
       },
       {
         resolved: false,
         content: 'Consider adding a diagram',
         quotedFileContent: { value: 'system overview' },
         createdTime: '2026-07-30T11:00:00Z',
+        author: { displayName: 'Bob', me: true },
       },
       {
         resolved: true,
         content: 'Fixed the typo',
         quotedFileContent: { value: 'teh' },
         createdTime: '2026-07-30T10:30:00Z',
+        author: { displayName: 'Charlie', me: false },
       },
       {
         resolved: false,
         content: 'Needs more detail here',
         quotedFileContent: { value: 'The architecture is simple' },
         createdTime: '2026-07-30T10:00:00Z',
+        author: { displayName: 'Alice', me: false },
       },
     ]);
   });
@@ -66,6 +70,7 @@ describe('gdocCommentsJson', () => {
       expected: {
         anchor: 'The architecture is simple',
         comment: 'Needs more detail here',
+        author: { displayName: 'Alice', isMe: false },
       },
     },
     {
@@ -74,11 +79,12 @@ describe('gdocCommentsJson', () => {
       expected: {
         anchor: '',
         comment: 'Comment without anchor',
+        author: { displayName: 'Alice', isMe: false },
       },
     },
   ])('$title', async ({ index, expected }) => {
     const actual = await gdocCommentsJson('abc123');
-    expect(actual[index]).toEqual(expected);
+    expect(actual).toHaveProperty(index, expected);
   });
 
   it('sorts comments by createdTime ascending', async () => {
@@ -104,12 +110,30 @@ describe('gdocCommentsJson', () => {
 
   it.each([
     {
+      title: 'includes author displayName on each comment',
+      mapper: (entry) => entry.author.displayName,
+      expected: ['Alice', 'Bob', 'Alice'],
+    },
+    {
+      title: 'includes author isMe boolean on each comment',
+      mapper: (entry) => entry.author.isMe,
+      expected: [false, true, false],
+    },
+  ])('$title', async ({ mapper, expected }) => {
+    const actual = await gdocCommentsJson('abc123');
+    const values = actual.map(mapper);
+    expect(values).toEqual(expected);
+  });
+
+  it.each([
+    {
       title: 'returns empty array when all comments are resolved',
       comments: [
         {
           resolved: true,
           content: 'Done',
           quotedFileContent: { value: 'old text' },
+          author: { displayName: 'Alice', me: false },
         },
       ],
     },

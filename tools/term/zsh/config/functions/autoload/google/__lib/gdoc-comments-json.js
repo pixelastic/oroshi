@@ -8,11 +8,11 @@ export let __;
 /**
  * Fetch unresolved comments from a Google Doc as JSON
  * @param {string} urlOrId - Google Docs URL or document ID
- * @returns {object[]} Array of {anchor, comment} objects
+ * @returns {object[]} Array of {anchor, comment, author} objects
  */
 export async function gdocCommentsJson(urlOrId) {
   const docId = __.extractDocId(urlOrId);
-  const auth = await __.getAuth();
+  const auth = await __.googleAuth();
   const comments = await __.fetchComments(auth, docId);
 
   return _.chain(comments)
@@ -21,6 +21,10 @@ export async function gdocCommentsJson(urlOrId) {
     .map((entry) => ({
       anchor: _.get(entry, 'quotedFileContent.value', ''),
       comment: entry.content,
+      author: {
+        displayName: _.get(entry, 'author.displayName', ''),
+        isMe: _.get(entry, 'author.me', false),
+      },
     }))
     .value();
 }
@@ -40,14 +44,6 @@ __ = {
   },
 
   /**
-   * Get authenticated Google OAuth2 client
-   * @returns {object} OAuth2Client
-   */
-  getAuth() {
-    return googleAuth();
-  },
-
-  /**
    * Fetch comments from Drive API
    * @param {object} auth - Authenticated OAuth2 client
    * @param {string} docId - Document ID
@@ -62,7 +58,7 @@ __ = {
       const response = await drive.comments.list({
         fileId: docId,
         fields:
-          'nextPageToken,comments(content,resolved,quotedFileContent,createdTime)',
+          'nextPageToken,comments(content,resolved,quotedFileContent,createdTime,author(displayName,me))',
         pageToken,
       });
       allComments = [...allComments, ...(response.data.comments || [])];
@@ -71,6 +67,8 @@ __ = {
 
     return allComments;
   },
+
+  googleAuth,
 };
 
 // CLI entry
