@@ -64,4 +64,11 @@ describe('gdoc2md', () => {
       slug: 'my-document',
     });
   });
+
+  it('passes tab URL through to gdocRead', async () => {
+    await gdoc2md('https://docs.google.com/document/d/abc123/edit?tab=t.mytab');
+    expect(__.gdocRead).toHaveBeenCalledWith(
+      'https://docs.google.com/document/d/abc123/edit?tab=t.mytab',
+    );
+  });
 });
