@@ -11,7 +11,12 @@ zparseopts -E -D \
   -blocked-by:=flagBlockedBy
 
 local domain=${flagDomain[2]}
-local size=${flagSize[2]}
+local size=${flagSize[2]:l}
+case "$size" in
+  s) size="small" ;;
+  m) size="medium" ;;
+  l) size="large" ;;
+esac
 local slug=${flagSlug[2]}
 local blockedBy=${flagBlockedBy[2]}
 local description="$1"

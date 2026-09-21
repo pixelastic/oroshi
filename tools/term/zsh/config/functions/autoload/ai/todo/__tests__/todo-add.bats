@@ -68,6 +68,50 @@ setup() {
 	[[ "$output" == *"size"* ]]
 }
 
+# Size aliases
+
+@test "accepts 's' as alias for small" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size s --slug git-prune 'Prune refs'"
+	[[ "$status" -eq 0 ]]
+	local content="$(cat "$BATS_TMP_DIR/todo.txt")"
+	[[ "$content" == *"size:small"* ]]
+}
+
+@test "accepts 'S' as alias for small" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size S --slug git-prune 'Prune refs'"
+	[[ "$status" -eq 0 ]]
+	local content="$(cat "$BATS_TMP_DIR/todo.txt")"
+	[[ "$content" == *"size:small"* ]]
+}
+
+@test "accepts 'm' as alias for medium" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size m --slug git-prune 'Prune refs'"
+	[[ "$status" -eq 0 ]]
+	local content="$(cat "$BATS_TMP_DIR/todo.txt")"
+	[[ "$content" == *"size:medium"* ]]
+}
+
+@test "accepts 'M' as alias for medium" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size M --slug git-prune 'Prune refs'"
+	[[ "$status" -eq 0 ]]
+	local content="$(cat "$BATS_TMP_DIR/todo.txt")"
+	[[ "$content" == *"size:medium"* ]]
+}
+
+@test "accepts 'l' as alias for large" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size l --slug git-prune 'Prune refs'"
+	[[ "$status" -eq 0 ]]
+	local content="$(cat "$BATS_TMP_DIR/todo.txt")"
+	[[ "$content" == *"size:large"* ]]
+}
+
+@test "accepts 'L' as alias for large" {
+	bats_run_zsh "cd $BATS_TMP_DIR && todo-add --domain Git --size L --slug git-prune 'Prune refs'"
+	[[ "$status" -eq 0 ]]
+	local content="$(cat "$BATS_TMP_DIR/todo.txt")"
+	[[ "$content" == *"size:large"* ]]
+}
+
 # Output
 
 @test "outputs the added item to stdout" {
