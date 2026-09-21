@@ -5,6 +5,7 @@ setup() {
   # Tuesday. D-7=Sep 15 (Tue), D-1=Sep 21 (Mon), D-0=Sep 22 (Tue)
   # Window boundary: 2 business days before Tue = Fri Sep 18
   EVENT="2026-09-22"
+  START_TIME="19:00"
   sourcePrefix="source '${OROSHI_ROOT}/tools/term/zsh/config/functions/autoload/ai/meetup-announce/__lib/compute-schedule.zsh'"
   STATE_FILE="$BATS_TMP_DIR/state.json"
 
@@ -31,7 +32,7 @@ ENDJSON
 # -- Window detection --
 
 @test "D-10 is early window" {
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-12 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local ids="$(echo "$output" | jq -r '.messages[].id')"
   [[ "$ids" == *"early--"* ]]
@@ -41,7 +42,7 @@ ENDJSON
 @test "D-1 is last window" {
   # Mark early initial as posted to isolate last-window behavior
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-21 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-21 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local ids="$(echo "$output" | jq -r '.messages[].id')"
   [[ "$ids" == *"last--"* ]]
@@ -49,7 +50,7 @@ ENDJSON
 
 @test "D-0 is last window" {
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-22 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-22 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local ids="$(echo "$output" | jq -r '.messages[].id')"
   [[ "$ids" == *"last--"* ]]
@@ -57,14 +58,14 @@ ENDJSON
 
 @test "2 business days before Tue event (Fri) is last window" {
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-18 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-18 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local window="$(echo "$output" | jq -r '.window')"
   [[ "$window" == "last" ]]
 }
 
 @test "3 business days before Tue event (Thu) is still early" {
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-17 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-17 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local window="$(echo "$output" | jq -r '.window')"
   [[ "$window" == "early" ]]
@@ -73,7 +74,7 @@ ENDJSON
 @test "2 business days before Mon event (Thu) is last window" {
   # Mon Sep 14: 2 business days before = Thu Sep 10
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-14 2026-09-10 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '2026-09-14 ${START_TIME}' --today 2026-09-10 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local window="$(echo "$output" | jq -r '.window')"
   [[ "$window" == "last" ]]
@@ -81,7 +82,7 @@ ENDJSON
 
 @test "Fri before Mon event (3 business days) is still early" {
   # Mon Sep 14: 3 business days before = Wed Sep 9
-  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-14 2026-09-09 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '2026-09-14 ${START_TIME}' --today 2026-09-09 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local window="$(echo "$output" | jq -r '.window')"
   [[ "$window" == "early" ]]
@@ -90,7 +91,7 @@ ENDJSON
 # -- Early window — first invocation --
 
 @test "generates all 5 early messages when nothing has been posted" {
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-12 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local count="$(echo "$output" | jq '.messages | length')"
   [[ "$count" -eq 5 ]]
@@ -103,21 +104,21 @@ ENDJSON
 
 @test "early reminder scheduled for D-7" {
   # D-7 = 2026-09-15 (Tue) — no nudge needed
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-12 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
   [[ "$scheduled" == 2026-09-15T* ]]
 }
 
 @test "early initials do not have scheduledFor" {
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-12 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local count="$(echo "$output" | jq '[.messages[] | select(.id | endswith("--initial")) | select(.scheduledFor)] | length')"
   [[ "$count" -eq 0 ]]
 }
 
 @test "early messages include channel field" {
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-12 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local channelOfficeParis="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--initial") | .channel')"
   [[ "$channelOfficeParis" == "#office-paris" ]]
@@ -126,7 +127,7 @@ ENDJSON
 }
 
 @test "early messages include state field" {
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-12 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   # All pending in default setup — every message should have state "pending"
   local allPending="$(echo "$output" | jq '[.messages[].state] | all(. == "pending")')"
@@ -134,7 +135,7 @@ ENDJSON
 }
 
 @test "topic-relevant is last in order" {
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-12 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local lastId="$(echo "$output" | jq -r '.messages[-1].id')"
   [[ "$lastId" == "early--topic-relevant--initial" ]]
@@ -144,7 +145,7 @@ ENDJSON
 
 @test "generates initials but skips reminders when D-7 is past" {
   # today=2026-09-17 (D-5), D-7=Sep 15 is past
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-17 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-17 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local count="$(echo "$output" | jq '.messages | length')"
   [[ "$count" -eq 4 ]]
@@ -156,7 +157,7 @@ ENDJSON
 
 @test "skips messages already posted" {
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-12 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local ids="$(echo "$output" | jq -r '.messages[].id')"
   [[ "$ids" != *"early--office-paris--initial"* ]]
@@ -168,7 +169,7 @@ ENDJSON
 
 @test "includes drafted initial and its reminder in batch" {
   jq '.messages["early--office-paris--initial"].state = "drafted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-12 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local ids="$(echo "$output" | jq -r '.messages[].id')"
   [[ "$ids" == *"early--office-paris--initial"* ]]
@@ -177,7 +178,7 @@ ENDJSON
 
 @test "drafted message has state drafted in output" {
   jq '.messages["early--office-paris--initial"].state = "drafted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-12 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local state="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--initial") | .state')"
   [[ "$state" == "drafted" ]]
@@ -188,7 +189,7 @@ ENDJSON
 @test "D-1 generates last reminder and today messages" {
   # Mark early initial as posted to avoid catch-up
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-21 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-21 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local count="$(echo "$output" | jq '.messages | length')"
   [[ "$count" -eq 4 ]]
@@ -200,7 +201,7 @@ ENDJSON
 
 @test "last--office-paris--reminder-today scheduled for D-0" {
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-21 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-21 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local todayScheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "last--office-paris--reminder-today") | .scheduledFor')"
   [[ "$todayScheduled" == 2026-09-22T* ]]
@@ -210,7 +211,7 @@ ENDJSON
 
 @test "last--help-recruiting--reminder scheduled for D-1" {
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-21 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-21 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   echo "$output" | jq -e '.messages[] | select(.id == "last--help-recruiting--reminder")'
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "last--help-recruiting--reminder") | .scheduledFor')"
@@ -221,7 +222,7 @@ ENDJSON
 
 @test "D-0 generates only D-0 messages, D-1 messages are past" {
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-22 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-22 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local count="$(echo "$output" | jq '.messages | length')"
   [[ "$count" -eq 2 ]]
@@ -238,7 +239,7 @@ ENDJSON
 
 @test "includes early--office-paris--initial if never posted (pending)" {
   # All pending — early initial never posted
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-21 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-21 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   echo "$output" | jq -e '.messages[] | select(.id == "early--office-paris--initial")'
   local count="$(echo "$output" | jq '.messages | length')"
@@ -248,7 +249,7 @@ ENDJSON
 @test "includes early--office-paris--initial if drafted but never posted" {
   # Drafted but never posted — catch-up should still include it
   jq '.messages["early--office-paris--initial"].state = "drafted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-21 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-21 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   echo "$output" | jq -e '.messages[] | select(.id == "early--office-paris--initial")'
 }
@@ -257,7 +258,7 @@ ENDJSON
 
 @test "D-7 on Monday stays Monday" {
   # Event=2026-09-14 (Mon), D-7=2026-09-07 (Mon) → Mon 2026-09-07
-  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-14 2026-09-01 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '2026-09-14 ${START_TIME}' --today 2026-09-01 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
   [[ "$scheduled" == 2026-09-07T* ]]
@@ -265,7 +266,7 @@ ENDJSON
 
 @test "D-7 on Friday stays Friday" {
   # Event=2026-09-18 (Fri), D-7=2026-09-11 (Fri) → Fri 2026-09-11
-  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-18 2026-09-01 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '2026-09-18 ${START_TIME}' --today 2026-09-01 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
   [[ "$scheduled" == 2026-09-11T* ]]
@@ -273,7 +274,7 @@ ENDJSON
 
 @test "D-7 on Saturday nudged to Friday" {
   # Event=2026-09-19 (Sat), D-7=2026-09-12 (Sat) → Fri 2026-09-11
-  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-19 2026-09-01 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '2026-09-19 ${START_TIME}' --today 2026-09-01 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
   [[ "$scheduled" == 2026-09-11T* ]]
@@ -281,7 +282,7 @@ ENDJSON
 
 @test "D-7 on Sunday nudged to Friday" {
   # Event=2026-09-20 (Sun), D-7=2026-09-13 (Sun) → Fri 2026-09-11
-  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-20 2026-09-01 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '2026-09-20 ${START_TIME}' --today 2026-09-01 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
   [[ "$scheduled" == 2026-09-11T* ]]
@@ -289,19 +290,19 @@ ENDJSON
 
 @test "D-7 on Tuesday/Wednesday/Thursday not nudged" {
   # Tue: Event=2026-09-15, D-7=2026-09-08 (Tue)
-  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-15 2026-09-01 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '2026-09-15 ${START_TIME}' --today 2026-09-01 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local dateTuesday="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
   [[ "$dateTuesday" == 2026-09-08T* ]]
 
   # Wed: Event=2026-09-16, D-7=2026-09-09 (Wed)
-  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-16 2026-09-01 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '2026-09-16 ${START_TIME}' --today 2026-09-01 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local dateWednesday="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
   [[ "$dateWednesday" == 2026-09-09T* ]]
 
   # Thu: Event=2026-09-17, D-7=2026-09-10 (Thu)
-  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-17 2026-09-01 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '2026-09-17 ${START_TIME}' --today 2026-09-01 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local dateThursday="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor')"
   [[ "$dateThursday" == 2026-09-10T* ]]
@@ -310,7 +311,7 @@ ENDJSON
 # -- Time randomization --
 
 @test "early reminder time is between 13:47 and 14:28" {
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-12 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-12 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local time="$(echo "$output" | jq -r '.messages[] | select(.id == "early--office-paris--reminder") | .scheduledFor | split("T")[1]')"
   local hour="${time%%:*}"
@@ -393,7 +394,7 @@ ENDJSON
 
 @test "initials have no scheduledFor in last window catch-up" {
   # All pending — early initial never posted, catch-up in last window
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-21 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-21 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local hasScheduled="$(echo "$output" | jq '[.messages[] | select(.id == "early--office-paris--initial") | select(.scheduledFor)] | length')"
   [[ "$hasScheduled" -eq 0 ]]
@@ -405,7 +406,7 @@ ENDJSON
   # Event=2026-09-14 (Mon), D-1=Sep 13 (Sun) → Fri Sep 11
   # Window boundary: 2 business days before Mon = Thu Sep 10
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule 2026-09-14 2026-09-10 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '2026-09-14 ${START_TIME}' --today 2026-09-10 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "last--office-paris--reminder") | .scheduledFor')"
   [[ "$scheduled" == 2026-09-11T* ]]
@@ -418,7 +419,7 @@ ENDJSON
 @test "last-window D-1 message dropped when past" {
   # Event=2026-09-22 (Tue), today=D-0=Sep 22 → D-1 (Sep 21) is past
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-22 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-22 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   local reminderCount="$(echo "$output" | jq '[.messages[] | select(.id == "last--office-paris--reminder")] | length')"
   [[ "$reminderCount" -eq 0 ]]
@@ -426,10 +427,36 @@ ENDJSON
   [[ "$helpCount" -eq 0 ]]
 }
 
+@test "last--team-devmarketing--reminder scheduled 1-2h before startTime" {
+  jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
+  # startTime=19:00 → slot is 17:00–18:00
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} 19:00' --today 2026-09-21 --state $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  local time="$(echo "$output" | jq -r '.messages[] | select(.id == "last--team-devmarketing--reminder") | .scheduledFor | split("T")[1]')"
+  local hour="${time%%:*}"
+  local min="${time##*:}"
+  local totalMin=$(( 10#$hour * 60 + 10#$min ))
+  [[ $totalMin -ge 1020 ]]  # 17:00
+  [[ $totalMin -le 1080 ]]  # 18:00
+}
+
+@test "last--team-devmarketing--reminder adapts to different startTime" {
+  jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
+  # startTime=20:00 → slot is 18:00–19:00
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} 20:00' --today 2026-09-21 --state $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  local time="$(echo "$output" | jq -r '.messages[] | select(.id == "last--team-devmarketing--reminder") | .scheduledFor | split("T")[1]')"
+  local hour="${time%%:*}"
+  local min="${time##*:}"
+  local totalMin=$(( 10#$hour * 60 + 10#$min ))
+  [[ $totalMin -ge 1080 ]]  # 18:00
+  [[ $totalMin -le 1140 ]]  # 19:00
+}
+
 @test "D-0 messages present when today is event day" {
   # Event=2026-09-22 (Tue), today=Sep 22 → D-0 messages still valid
   jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
-  bats_run_zsh "$sourcePrefix && compute-schedule $EVENT 2026-09-22 $STATE_FILE"
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} ${START_TIME}' --today 2026-09-22 --state $STATE_FILE"
   [[ "$status" -eq 0 ]]
   echo "$output" | jq -e '.messages[] | select(.id == "last--office-paris--reminder-today")'
   local scheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "last--office-paris--reminder-today") | .scheduledFor')"

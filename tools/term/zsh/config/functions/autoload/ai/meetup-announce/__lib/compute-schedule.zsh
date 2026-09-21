@@ -1,6 +1,9 @@
 # Compute which messages to write this invocation
 # Usage:
-# $ compute-schedule <eventDate> <today> <stateJsonPath>
+# $ compute-schedule --event-date "2026-09-22 19:00" --state /path/state.json [--today 2026-09-21]
+# --event-date: "YYYY-MM-DD hh:mm" (date + start time)
+# --state: path to the state.json file
+# --today: override for today's date (defaults to $(date +%Y-%m-%d))
 # Outputs JSON object: {window, messages: [{id, scheduledFor, channel, state}]}
 
 # Guard: skip if already defined (e.g. mocked in tests)
@@ -11,9 +14,27 @@ source "${0:A:h}/config.zsh"
 function compute-schedule() {
   setopt local_options err_return
 
-  local eventDate="$1"
-  local today="$2"
-  local stateJsonPath="$3"
+  zparseopts -E -D \
+    -event-date:=flagEventDate \
+    -today:=flagToday \
+    -state:=flagState
+
+  local eventDateTime="${flagEventDate[2]}"
+  local stateJsonPath="${flagState[2]}"
+  local today="${flagToday[2]}"
+
+  if [[ "$eventDateTime" == "" ]]; then
+    echoerr "compute-schedule: --event-date required"
+    return 1
+  fi
+  if [[ "$stateJsonPath" == "" ]]; then
+    echoerr "compute-schedule: --state required"
+    return 1
+  fi
+  [[ "$today" == "" ]] && today="$(date +%Y-%m-%d)"
+
+  local eventDate="${eventDateTime%% *}"
+  local startTime="${eventDateTime##* }"
 
   local windowStart="$(__business_days_before_2 "$eventDate")"
 
@@ -27,7 +48,7 @@ function compute-schedule() {
   if [[ "$window" == "early" ]]; then
     result="$(__compute_early "$stateJsonPath" "$today" "$eventDate")"
   else
-    result="$(__compute_last "$stateJsonPath" "$today" "$eventDate")"
+    result="$(__compute_last "$stateJsonPath" "$today" "$eventDate" "$startTime")"
   fi
 
   jo window="$window" messages="$result"
@@ -119,6 +140,7 @@ function __compute_last() {
   local stateJsonPath="$1"
   local today="$2"
   local eventDate="$3"
+  local startTime="$4"
 
   # Scheduling metadata per message: "offset startH startM endH endM"
   # D-1 → early-morning slot (9:47–10:28), D-0 → late-morning slot (10:47–11:28)
@@ -126,8 +148,20 @@ function __compute_last() {
   local -A lastSchedule
   lastSchedule[last--office-paris--reminder]="1 9 47 10 28"
   lastSchedule[last--office-paris--reminder-today]="0 10 47 11 28"
-  lastSchedule[last--team-devmarketing--reminder]="0 10 47 11 28"
   lastSchedule[last--help-recruiting--reminder]="1 9 47 10 28"
+
+  # Devmarketing: distributed team, schedule 1–2h before startTime
+  # so the message can use relative time ("in ~Xh")
+  local startHour="${startTime%%:*}"
+  local startMin="${startTime##*:}"
+  local startTotal=$(( 10#$startHour * 60 + 10#$startMin ))
+  local slotStartTotal=$(( startTotal - 120 ))
+  local slotEndTotal=$(( startTotal - 60 ))
+  local slotStartH=$(( slotStartTotal / 60 ))
+  local slotStartM=$(( slotStartTotal % 60 ))
+  local slotEndH=$(( slotEndTotal / 60 ))
+  local slotEndM=$(( slotEndTotal % 60 ))
+  lastSchedule[last--team-devmarketing--reminder]="0 $slotStartH $slotStartM $slotEndH $slotEndM"
 
   local result="[]"
 

@@ -26,13 +26,15 @@ local meetupJson="$(fetch-meetup "$recordId")"
 [[ "$meetupJson" == "" ]] && return 1
 local meetupName="$(jq -r '.name' <<< "$meetupJson")"
 local eventDate="$(jq -r '.date' <<< "$meetupJson")"
+local startTime="$(jq -r '.startTime' <<< "$meetupJson")"
+local eventDateTime="${eventDate} ${startTime}"
 
 # Create or reuse draft directory
 local draftDir="$(resolve-draft-dir "$recordId" "$meetupName")"
 
 # Compute which messages to write
 local today="$(date +%Y-%m-%d)"
-local scheduleJson="$(compute-schedule "$eventDate" "$today" "$draftDir/state.json")"
+local scheduleJson="$(compute-schedule --event-date "$eventDateTime" --today "$today" --state "$draftDir/state.json")"
 local window="$(echo "$scheduleJson" | jq -r '.window')"
 local messagesJson="$(echo "$scheduleJson" | jq -c '.messages')"
 
