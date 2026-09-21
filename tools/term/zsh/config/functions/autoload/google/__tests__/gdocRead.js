@@ -2,18 +2,20 @@ import { __, gdocRead } from '../__lib/gdocRead.js';
 
 // Helper to build a Google Docs paragraph element
 /**
- *
- * @param content
- * @param style
+ * Build a Google Docs text run element
+ * @param {string} content - Text content
+ * @param {object} style - Text style overrides
+ * @returns {object} Text run element
  */
 function textRun(content, style = {}) {
   return { textRun: { content, textStyle: style } };
 }
 /**
- *
- * @param elements
- * @param styleType
- * @param bullet
+ * Build a Google Docs paragraph element
+ * @param {object[]} elements - Paragraph elements
+ * @param {string} styleType - Named style type
+ * @param {object|null} bullet - Bullet configuration
+ * @returns {object} Paragraph element
  */
 function paragraph(elements, styleType = 'NORMAL_TEXT', bullet = null) {
   const para = {
@@ -28,25 +30,38 @@ function paragraph(elements, styleType = 'NORMAL_TEXT', bullet = null) {
   return para;
 }
 
-describe('extractDocId', () => {
+describe('extractDocInfo', () => {
   it.each([
     {
-      title: 'full Google Docs URL',
+      title: 'URL with tab param returns both docId and tabId',
+      input:
+        'https://docs.google.com/document/d/abc123xyz/edit?tab=t.slgbeb7sryb1',
+      expected: { docId: 'abc123xyz', tabId: 't.slgbeb7sryb1' },
+    },
+    {
+      title: 'URL without tab param returns docId and null tabId',
       input: 'https://docs.google.com/document/d/abc123xyz/edit',
-      expected: 'abc123xyz',
+      expected: { docId: 'abc123xyz', tabId: null },
     },
     {
-      title: 'URL with hash fragment',
-      input: 'https://docs.google.com/document/d/abc123xyz/edit#heading=h.1',
-      expected: 'abc123xyz',
+      title: 'URL with tab param and other query params returns correct tabId',
+      input:
+        'https://docs.google.com/document/d/abc123xyz/edit?foo=bar&tab=t.abc123&baz=qux',
+      expected: { docId: 'abc123xyz', tabId: 't.abc123' },
     },
     {
-      title: 'bare document ID',
+      title: 'bare document ID returns docId and null tabId',
       input: 'abc123xyz',
-      expected: 'abc123xyz',
+      expected: { docId: 'abc123xyz', tabId: null },
+    },
+    {
+      title: 'URL with hash fragment and tab param returns correct tabId',
+      input:
+        'https://docs.google.com/document/d/abc123xyz/edit?tab=t.xyz789#heading=h.1',
+      expected: { docId: 'abc123xyz', tabId: 't.xyz789' },
     },
   ])('$title', ({ input, expected }) => {
-    const actual = __.extractDocId(input);
+    const actual = __.extractDocInfo(input);
     expect(actual).toEqual(expected);
   });
 });
@@ -219,8 +234,9 @@ describe('elementsToMarkdown', () => {
 
 describe('tableToMarkdown', () => {
   /**
-   *
-   * @param {...any} texts
+   * Build a table cell with text content
+   * @param {...string} texts - Cell text values
+   * @returns {object} Table cell element
    */
   function cell(...texts) {
     return {

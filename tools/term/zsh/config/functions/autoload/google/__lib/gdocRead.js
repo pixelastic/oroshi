@@ -11,7 +11,7 @@ export let __;
  * @returns {object} { markdown, images, title }
  */
 export async function gdocRead(urlOrId) {
-  const docId = __.extractDocId(urlOrId);
+  const { docId, tabId: _tabId } = __.extractDocInfo(urlOrId);
   const auth = await __.googleAuth();
   const doc = await __.fetchDoc(auth, docId);
   const title = doc.title || 'untitled';
@@ -21,16 +21,18 @@ export async function gdocRead(urlOrId) {
 
 __ = {
   /**
-   * Extract document ID from a Google Docs URL or bare ID
+   * Extract document ID and optional tab ID from a Google Docs URL or bare ID
    * @param {string} urlOrId - URL or document ID
-   * @returns {string} Document ID
+   * @returns {object} { docId, tabId }
    */
-  extractDocId(urlOrId) {
-    const match = urlOrId.match(/\/document\/d\/([^/]+)/);
-    if (match) {
-      return match[1];
-    }
-    return urlOrId;
+  extractDocInfo(urlOrId) {
+    const docMatch = urlOrId.match(/\/document\/d\/([^/?#]+)/);
+    const docId = docMatch ? docMatch[1] : urlOrId;
+
+    const tabMatch = urlOrId.match(/[?&]tab=([^&#]+)/);
+    const tabId = tabMatch ? tabMatch[1] : null;
+
+    return { docId, tabId };
   },
 
   /**
