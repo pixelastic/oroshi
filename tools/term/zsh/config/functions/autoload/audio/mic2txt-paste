@@ -15,6 +15,10 @@ local content="$(<"$transcriptionFile")"
 # Kitty target was captured at recording start
 if [[ -f $targetFile ]]; then
   local windowId="$(<"$targetFile")"
+
+  # We save the current clipboard
+  local currentClipboard="$(clipboard-read)"
+
   clipboard-write "$content"
   kitty-window-paste "$windowId"
   kitty-window-highlight-reset "$windowId"
@@ -24,6 +28,9 @@ if [[ -f $targetFile ]]; then
     sleep 0.50
     kitty-window-send-text "$windowId" '\r'
   fi
+
+  # We revert the previous clipboard
+  clipboard-write "$currentClipboard"
   return 0
 fi
 
