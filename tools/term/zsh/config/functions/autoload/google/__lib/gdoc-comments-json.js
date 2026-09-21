@@ -8,7 +8,7 @@ export let __;
 /**
  * Fetch unresolved comments from a Google Doc as JSON
  * @param {string} urlOrId - Google Docs URL or document ID
- * @returns {object[]} Array of {anchor, comment, author} objects
+ * @returns {object[]} Array of {anchor, comment, author, replies} objects
  */
 export async function gdocCommentsJson(urlOrId) {
   const docId = __.extractDocId(urlOrId);
@@ -25,6 +25,16 @@ export async function gdocCommentsJson(urlOrId) {
         displayName: _.get(entry, 'author.displayName', ''),
         isMe: _.get(entry, 'author.me', false),
       },
+      replies: _.chain(entry.replies || [])
+        .sortBy('createdTime')
+        .map((reply) => ({
+          content: reply.content,
+          author: {
+            displayName: _.get(reply, 'author.displayName', ''),
+            isMe: _.get(reply, 'author.me', false),
+          },
+        }))
+        .value(),
     }))
     .value();
 }
@@ -58,7 +68,7 @@ __ = {
       const response = await drive.comments.list({
         fileId: docId,
         fields:
-          'nextPageToken,comments(content,resolved,quotedFileContent,createdTime,author(displayName,me))',
+          'nextPageToken,comments(content,resolved,quotedFileContent,createdTime,author(displayName,me),replies(content,action,createdTime,author(displayName,me)))',
         pageToken,
       });
       allComments = [...allComments, ...(response.data.comments || [])];
