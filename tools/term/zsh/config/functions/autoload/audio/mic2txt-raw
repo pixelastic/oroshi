@@ -52,15 +52,27 @@ function startRecording() {
 
 # Stop the current recording
 function stopRecording() {
-  sleep 2
+  # Are we targetting a Kitty window?
+  local targetFile="${tmpFolder}/TARGET_WINDOW_ID"
+  local targetWindowId
+  if [[ -f $targetFile ]]; then
+    targetWindowId="$(<"$targetFile")"
+  fi
 
+  # Switch kitty highlight to stopped color
+  if [[ "$targetWindowId" != "" ]]; then
+    kitty-window-highlight \
+      --window "$targetWindowId" \
+      "$COLORS[kitty-mic2txt-stopped:hex]"
+  fi
+
+  # Wait a bit to grab the last bits of sound
+  sleep 2
   process-kill "$(cat $pidFile)"
   rm $pidFile
 
   # Switch kitty highlight to processing color
-  local targetFile="${tmpFolder}/TARGET_WINDOW_ID"
-  if [[ -f $targetFile ]]; then
-    local targetWindowId="$(<"$targetFile")"
+  if [[ "$targetWindowId" != "" ]]; then
     kitty-window-highlight \
       --window "$targetWindowId" \
       "$COLORS[kitty-mic2txt-processing:hex]"

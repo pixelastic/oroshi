@@ -9,6 +9,7 @@ setup() {
 
   local colorsJson="$OROSHI_ROOT/tools/term/zsh/config/theming/dist/colors.json"
   COLOR_RECORDING="$(jq -r '.["kitty-mic2txt-recording"].hex' "$colorsJson")"
+  COLOR_STOPPED="$(jq -r '.["kitty-mic2txt-stopped"].hex' "$colorsJson")"
   COLOR_PROCESSING="$(jq -r '.["kitty-mic2txt-processing"].hex' "$colorsJson")"
 
   rec() { :; }
@@ -154,7 +155,7 @@ setup() {
 
 # --- Processing highlight on stop ---
 
-@test "stop: switches highlight to processing color when TARGET_WINDOW_ID exists" {
+@test "stop: switches highlight to stopped color then processing color" {
   echo "12345" > "$TMP_FOLDER/PID"
   echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
   kitty-window-highlight() { echo "$@" >> "$BATS_TMP_DIR/highlight-calls"; }
@@ -162,7 +163,9 @@ setup() {
 
   bats_run_zsh "zmodload zsh/datetime; echo \$(( EPOCHREALTIME - 5 )) > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/highlight-calls")" == "--window 42 $COLOR_PROCESSING" ]]
+  local calls="$(cat "$BATS_TMP_DIR/highlight-calls")"
+  [[ "$(sed -n '1p' <<< "$calls")" == "--window 42 $COLOR_STOPPED" ]]
+  [[ "$(sed -n '2p' <<< "$calls")" == "--window 42 $COLOR_PROCESSING" ]]
 }
 
 @test "stop: does not switch highlight when no TARGET_WINDOW_ID" {
