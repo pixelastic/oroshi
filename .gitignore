@@ -25,6 +25,7 @@ Thumbs.db
 lerna-debug.log
 npm-debug.log
 yarn-error.log
+.todo.bak
 *~
 **/__pycache__/
 **/__pycache__/*

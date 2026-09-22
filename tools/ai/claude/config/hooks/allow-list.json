@@ -424,6 +424,7 @@
   "todo-add",
   "todo-list",
   "todo-list-raw",
+  "todo-remove",
   "tools/ai/claude/config/statusline",
   "tools/ai/claude/deploy",
   "topydo",
