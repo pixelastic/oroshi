@@ -26,6 +26,7 @@ class OroshiStatuses {
     this._originalRegisterMethod = null;
     this._watcherPrototype = null;
 
+    this._showPlaceholder();
     this._patchWatcher();
     this._watchNameChanges();
     this._scanExistingNames();
@@ -60,7 +61,7 @@ class OroshiStatuses {
       return;
     }
 
-    const modulePath = `${appIndicators.path}/statusNotifierWatcher.js`;
+    const modulePath = `file://${appIndicators.path}/statusNotifierWatcher.js`;
     import(modulePath)
       .then((mod) => {
         const proto = mod.StatusNotifierWatcher.prototype;
@@ -101,6 +102,20 @@ class OroshiStatuses {
     this._watcherPrototype = null;
     this._originalRegisterMethod = null;
     console.log('OroshiStatuses: restored original StatusNotifierWatcher');
+  }
+
+  /** Show a placeholder "?" icon so we can confirm the extension is loaded */
+  _showPlaceholder() {
+    this._icon = new St.Icon({
+      style_class: 'system-status-icon',
+      icon_size: 16,
+      style: 'icon-size: 16px;',
+    });
+    this._icon.icon_name = 'dialog-question-symbolic';
+    this._button = new PanelMenu.Button(0.0, INDICATOR_ID, false);
+    this._button.add_child(this._icon);
+    Main.panel.addToStatusArea(INDICATOR_ID, this._button);
+    console.log('OroshiStatuses: placeholder icon added');
   }
 
   /**
