@@ -835,14 +835,6 @@
     "ansi": 35,
     "hex": "#38a169"
   },
-  "modes-language-en": {
-    "ansi": 146,
-    "hex": "#b45309"
-  },
-  "modes-language-fr": {
-    "ansi": 205,
-    "hex": "#6b7280"
-  },
   "modes-model-groq": {
     "ansi": 105,
     "hex": "#ea580c"

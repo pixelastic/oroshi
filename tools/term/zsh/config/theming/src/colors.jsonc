@@ -185,8 +185,6 @@
     "sound-disabled":         "gray",
     "autosubmit-enabled":     "green",
     "autosubmit-disabled":    "gray",
-    "language-en":            "amber-6",
-    "language-fr":            "gray",
     "model-openai":           "amber-6",
     "model-groq":             "orange",
     "model-parakeet":         "gray"

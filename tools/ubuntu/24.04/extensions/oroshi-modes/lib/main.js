@@ -34,15 +34,6 @@ const INDICATORS = [
     },
   },
   {
-    name: 'language',
-    file: 'mic2txt-language',
-    defaultValue: 'fr',
-    values: {
-      en: { icon: 'language-en.svg', color: 'modes-language-en' },
-      fr: { icon: 'language-fr.svg', color: 'modes-language-fr' },
-    },
-  },
-  {
     name: 'model',
     file: 'mic2txt-model',
     defaultValue: 'openai',
@@ -139,7 +130,7 @@ class OroshiModes {
   }
 
   /**
-   * Create the 4 St.Icon widgets, each wrapped in an St.Bin, and add to the box
+   * Create the 3 St.Icon widgets, each wrapped in an St.Bin, and add to the box
    */
   _createIndicators() {
     for (const config of INDICATORS) {

@@ -99,12 +99,6 @@ function stopRecording() {
     done
   fi
 
-  # Translate to english
-  local language="$(mic2txt-language)"
-  if [[ $language != "fr" ]]; then
-    transcription="$(translate "$transcription" --language ${language})"
-  fi
-
   # Play a sound to indicate it's being pasted
   audio-play-oroshi mic2txt.mp3
 

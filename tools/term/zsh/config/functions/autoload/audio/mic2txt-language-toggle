@@ -1,4 +1,0 @@
-# Toggle the language used by mic2txt
-setopt local_options err_return
-
-mode-toggle mic2txt-language fr en

@@ -31,7 +31,6 @@ local shortcuts=(
 
   "sound-mode-toggle" "<Ctrl><Super>F8" "bin-zsh sound-mode-toggle"
   "mic2text-autosubmit-mode-toggle" "<Ctrl><Super>F9" "bin-zsh mic2txt-autosubmit-mode-toggle"
-  "mic2text-language-toggle" "<Ctrl><Super>F10" "bin-zsh mic2txt-language-toggle"
   "mic2text-model-toggle" "<Ctrl><Super>F12" "bin-zsh mic2txt-model-toggle"
 
   "RP Green" "<Alt><Super>F2" "bin-zsh spotify-playlist-play 38PlgpAWtas5mPEXmFDNtw"

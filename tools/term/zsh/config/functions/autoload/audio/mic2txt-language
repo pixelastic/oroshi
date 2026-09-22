@@ -1,4 +1,0 @@
-# Display the current language used for mic2txt
-setopt local_options err_return
-
-mode-read mic2txt-language fr
