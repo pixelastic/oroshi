@@ -143,18 +143,28 @@ function __compute_last() {
   local startTime="$4"
 
   # Scheduling metadata per message: "offset startH startM endH endM"
-  # D-1 → early-morning slot (9:47–10:28), D-0 → late-morning slot (10:47–11:28)
+  # D-1 → early-morning slot (9:47–10:28)
   # Non-round bounds + randomization make scheduled posts look human-posted
   local -A lastSchedule
   lastSchedule[last--office-paris--reminder]="1 9 47 10 28"
-  lastSchedule[last--office-paris--reminder-today]="0 10 47 11 28"
   lastSchedule[last--help-recruiting--reminder]="1 9 47 10 28"
 
-  # Devmarketing: distributed team, schedule 1–2h before startTime
-  # so the message can use relative time ("in ~Xh")
   local startHour="${startTime%%:*}"
   local startMin="${startTime##*:}"
   local startTotal=$(( 10#$startHour * 60 + 10#$startMin ))
+
+  # Reminder-today: ~1h30 before startTime (non-round 34-min window)
+  local todayStartTotal=$(( startTotal - 107 ))
+  local todayEndTotal=$(( startTotal - 73 ))
+  local todayStartH=$(( todayStartTotal / 60 ))
+  local todayStartM=$(( todayStartTotal % 60 ))
+  local todayEndH=$(( todayEndTotal / 60 ))
+  local todayEndM=$(( todayEndTotal % 60 ))
+  local todayKey="last--office-paris--reminder-today"
+  lastSchedule[$todayKey]="0 $todayStartH $todayStartM $todayEndH $todayEndM"
+
+  # Devmarketing: distributed team, schedule 1–2h before startTime
+  # so the message can use relative time ("in ~Xh")
   local slotStartTotal=$(( startTotal - 120 ))
   local slotEndTotal=$(( startTotal - 60 ))
   local slotStartH=$(( slotStartTotal / 60 ))

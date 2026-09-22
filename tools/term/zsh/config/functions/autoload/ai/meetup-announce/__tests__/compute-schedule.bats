@@ -465,3 +465,29 @@ ENDJSON
   local devScheduled="$(echo "$output" | jq -r '.messages[] | select(.id == "last--team-devmarketing--reminder") | .scheduledFor')"
   [[ "$devScheduled" == 2026-09-22T* ]]
 }
+
+@test "last--office-paris--reminder-today scheduled ~1h30 before startTime" {
+  jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
+  # startTime=19:00 → slot is 17:13–17:47
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} 19:00' --today 2026-09-21 --state $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  local time="$(echo "$output" | jq -r '.messages[] | select(.id == "last--office-paris--reminder-today") | .scheduledFor | split("T")[1]')"
+  local hour="${time%%:*}"
+  local min="${time##*:}"
+  local totalMin=$(( 10#$hour * 60 + 10#$min ))
+  [[ $totalMin -ge 1033 ]]  # 17:13
+  [[ $totalMin -le 1067 ]]  # 17:47
+}
+
+@test "last--office-paris--reminder-today adapts to different startTime" {
+  jq '.messages["early--office-paris--initial"].state = "posted"' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
+  # startTime=20:00 → slot is 18:13–18:47
+  bats_run_zsh "$sourcePrefix && compute-schedule --event-date '${EVENT} 20:00' --today 2026-09-21 --state $STATE_FILE"
+  [[ "$status" -eq 0 ]]
+  local time="$(echo "$output" | jq -r '.messages[] | select(.id == "last--office-paris--reminder-today") | .scheduledFor | split("T")[1]')"
+  local hour="${time%%:*}"
+  local min="${time##*:}"
+  local totalMin=$(( 10#$hour * 60 + 10#$min ))
+  [[ $totalMin -ge 1093 ]]  # 18:13
+  [[ $totalMin -le 1127 ]]  # 18:47
+}
