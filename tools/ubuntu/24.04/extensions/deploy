@@ -5,7 +5,7 @@ set -e
 
 local backgroundExtensions=(
   tiling-assistant@ubuntu.com          # Tiling Assistant (Super+Arrow tiling)
-  wsmatrix@martin.zurowietz.de         # Workspace Matrix (3x3 grid)
+  wsmatrix@martin.zurowietz.de         # Workspace Matrix (1x3 grid)
   advanced-alt-tab@G-dH.github.com     # AATWS (Advanced Alt-Tab Window Switcher)
 )
 

@@ -1,7 +1,7 @@
 # Switch to a specific workspace
 # Usage:
 # $ workspace-switch 1   # Switch to first workspace
-# $ workspace-switch 5   # Switch to center workspace
+# $ workspace-switch 2   # Switch to middle workspace
 setopt local_options err_return
 
 # workspaces are 0-indexed

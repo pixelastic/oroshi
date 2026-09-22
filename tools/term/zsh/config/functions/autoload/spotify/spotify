@@ -12,14 +12,14 @@ fi
 # In latest Ubuntu version, I'm loading spotify in its own workspace, fullscreen
 if [[ $(ubuntu-version) == "24.04" ]]; then
   # Go to bottom workspace
-  workspace-switch 8
+  workspace-switch 3
 
   # Start spotify and wait a bit
   nohup /snap/bin/spotify &>/dev/null &
   sleep 5
 
   # Move back to main workspace
-  workspace-switch 5
+  workspace-switch 2
   return 0
 fi
 

@@ -5,5 +5,5 @@ set -e
 # Reload the topbar
 ~/.oroshi/tools/ubuntu/24.04/topbar/deploy
 
-# Move to workspace 5 (main)
-wmctrl -s 4
+# Move to workspace 2 (middle)
+wmctrl -s 1
