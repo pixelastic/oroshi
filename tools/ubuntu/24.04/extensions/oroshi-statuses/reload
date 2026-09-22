@@ -6,7 +6,8 @@ set -e
 
 local UUID="oroshi-statuses@oroshi"
 local LIB_DIRECTORY="${0:A:h}/lib"
-local DIST_DIRECTORY="${LIB_DIRECTORY}/dist"
+local INSTALLED_PATH="$HOME/.local/share/gnome-shell/extensions/${UUID}"
+local DIST_DIRECTORY="${INSTALLED_PATH}/dist"
 
 mkdir -p "$DIST_DIRECTORY"
 

@@ -72,6 +72,16 @@ then
   "$mainPath/tools/ai/claude/deploy"
 fi
 
+# Reload GNOME extensions if any extension source files changed
+if git-file-has-changed \
+  tools/ubuntu/24.04/extensions/ \
+  --from "$previousCommit" \
+  --repo "$mainPath";
+then
+  echo "Reloading GNOME extensions..."
+  source "$mainPath/tools/ubuntu/24.04/extensions/oroshi-statuses/reload"
+fi
+
 # Rebuild prose (Vale packages) if any prose source files changed
 if git-file-has-changed \
   tools/prose/vale/src/ \

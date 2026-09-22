@@ -148,6 +148,12 @@ setup() {
 EOF
   chmod +x "$BATS_GIT_DIR/tools/ai/claude/deploy"
 
+  # Mock extension reload script (also triggered when git-file-has-changed returns 0)
+  mkdir -p "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses"
+  cat > "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses/reload" <<'EOF'
+#!/usr/bin/env zsh
+EOF
+
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
   [[ "$status" -eq 0 ]]
   [[ -f "$BATS_TMP_DIR/colors-calls" ]]
@@ -195,6 +201,12 @@ EOF
 echo "deploy called" >> "$BATS_TMP_DIR/deploy-calls"
 EOF
   chmod +x "$BATS_GIT_DIR/tools/ai/claude/deploy"
+
+  # Mock extension reload script (also triggered when git-file-has-changed returns 0)
+  mkdir -p "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses"
+  cat > "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses/reload" <<'EOF'
+#!/usr/bin/env zsh
+EOF
 
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
   [[ "$status" -eq 0 ]]
@@ -257,6 +269,12 @@ EOF
 EOF
   chmod +x "$BATS_GIT_DIR/tools/ai/claude/deploy"
 
+  # Mock extension reload script (also triggered when git-file-has-changed returns 0)
+  mkdir -p "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses"
+  cat > "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses/reload" <<'EOF'
+#!/usr/bin/env zsh
+EOF
+
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
   [[ "$status" -eq 0 ]]
   [[ -f "$BATS_TMP_DIR/prose-build-calls" ]]
@@ -315,6 +333,76 @@ EOF
   [[ "$status" -eq 0 ]]
   # Merge fast-forward summary (e.g. "Updating abc123..def456") should not appear
   [[ "$output" != *"Fast-forward"* ]]
+}
+
+@test "reloads GNOME extensions when extension source files changed in oroshi worktree" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 0; }
+  git-file-has-changed() { return 0; }
+  colors-reload() { :; }
+  prose-build() { :; }
+  gnome-extensions() { :; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed colors-reload prose-build gnome-extensions
+  bats_disable_worktree_aware
+
+  # Mock deploy script (also triggered when git-file-has-changed returns 0)
+  mkdir -p "$BATS_GIT_DIR/tools/ai/claude"
+  cat > "$BATS_GIT_DIR/tools/ai/claude/deploy" <<EOF
+#!/usr/bin/env zsh
+EOF
+  chmod +x "$BATS_GIT_DIR/tools/ai/claude/deploy"
+
+  # Mock reload script
+  mkdir -p "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses"
+  cat > "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses/reload" <<EOF
+#!/usr/bin/env zsh
+echo "reload called" >> "$BATS_TMP_DIR/reload-calls"
+EOF
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/reload-calls" ]]
+  [[ "$output" == *"Reloading GNOME extensions..."* ]]
+}
+
+@test "does not reload GNOME extensions when no extension files changed" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 0; }
+  git-file-has-changed() { return 1; }
+  gnome-extensions() { :; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi git-file-has-changed gnome-extensions
+  bats_disable_worktree_aware
+
+  # Mock reload script
+  mkdir -p "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses"
+  cat > "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses/reload" <<EOF
+#!/usr/bin/env zsh
+echo "reload called" >> "$BATS_TMP_DIR/reload-calls"
+EOF
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/reload-calls" ]]
+  [[ "$output" != *"Reloading GNOME extensions..."* ]]
+}
+
+@test "does not reload GNOME extensions for a non-oroshi repo" {
+  git-dependencies-update() { :; }
+  git-worktree-is-oroshi() { return 1; }
+  gnome-extensions() { :; }
+  bats_mock git-dependencies-update git-worktree-is-oroshi gnome-extensions
+  bats_disable_worktree_aware
+
+  # Mock reload script
+  mkdir -p "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses"
+  cat > "$BATS_GIT_DIR/tools/ubuntu/24.04/extensions/oroshi-statuses/reload" <<EOF
+#!/usr/bin/env zsh
+echo "reload called" >> "$BATS_TMP_DIR/reload-calls"
+EOF
+
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/reload-calls" ]]
 }
 
 @test "skips submodule push when pointers are identical" {
