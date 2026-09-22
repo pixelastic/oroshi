@@ -1,5 +1,0 @@
-# Toggle a global "Slack Mode"
-# If enabled, mic2txt messages will be formatted as Slack messages
-setopt local_options err_return
-
-mode-toggle mic2txt-slack disabled enabled

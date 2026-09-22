@@ -16,19 +16,17 @@ setup() {
   process-kill() { :; }
   audio-play-oroshi() { :; }
   mic2txt-language() { echo "fr"; }
-  mic2txt-slack-mode-is-enabled() { return 0; }
   mic2txt-autosubmit-mode-is-enabled() { return 0; }
   mic2txt-cancel() { :; }
   mic2txt-paste() { :; }
   focus-insert() { :; }
-  txt2slack() { echo "$1"; }
   better-ydotool() { :; }
   sleep() { :; }
   kitty-os-window-is-focused() { return 1; }
   kitty-window-id() { echo "0"; }
   kitty-window-highlight() { :; }
   kitty-window-highlight-reset() { :; }
-  bats_mock rec process-kill audio-play-oroshi mic2txt-language mic2txt-slack-mode-is-enabled mic2txt-autosubmit-mode-is-enabled mic2txt-cancel mic2txt-paste focus-insert txt2slack better-ydotool sleep kitty-os-window-is-focused kitty-window-id kitty-window-highlight kitty-window-highlight-reset
+  bats_mock rec process-kill audio-play-oroshi mic2txt-language mic2txt-autosubmit-mode-is-enabled mic2txt-cancel mic2txt-paste focus-insert better-ydotool sleep kitty-os-window-is-focused kitty-window-id kitty-window-highlight kitty-window-highlight-reset
 }
 
 
@@ -214,5 +212,17 @@ setup() {
   bats_run_zsh "zmodload zsh/datetime; echo \$(( EPOCHREALTIME - 5 )) > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
   [[ "$status" -eq 0 ]]
   [[ ! -f "$BATS_TMP_DIR/reset-called.txt" ]]
+}
+
+# --- Slack mode removed ---
+
+@test "transcription completes without calling txt2slack" {
+  echo "12345" > "$TMP_FOLDER/PID"
+  txt2slack() { echo "called" > "$BATS_TMP_DIR/txt2slack-called.txt"; }
+  bats_mock txt2slack
+
+  bats_run_zsh "zmodload zsh/datetime; echo \$(( EPOCHREALTIME - 5 )) > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/txt2slack-called.txt" ]]
 }
 

@@ -43,15 +43,6 @@ const INDICATORS = [
     },
   },
   {
-    name: 'slack',
-    file: 'mic2txt-slack',
-    defaultValue: 'disabled',
-    values: {
-      enabled: { icon: 'slack-enabled.svg', color: 'modes-slack-enabled' },
-      disabled: { icon: 'slack-disabled.svg', color: 'modes-slack-disabled' },
-    },
-  },
-  {
     name: 'model',
     file: 'mic2txt-model',
     defaultValue: 'openai',
@@ -66,7 +57,7 @@ const INDICATORS = [
 class OroshiModes {
   constructor(extension) {
     this._extensionPath = extension.path;
-    this._iconsDir = `${extension.path}/icons`;
+    this._iconsDirectory = `${extension.path}/icons`;
     this._colors = {};
     this._entries = [];
     this._monitors = [];
@@ -138,7 +129,7 @@ class OroshiModes {
    * @returns {Gio.BytesIcon} Icon with baked-in color
    */
   _makeGicon(filename, hex) {
-    const file = Gio.File.new_for_path(`${this._iconsDir}/${filename}`);
+    const file = Gio.File.new_for_path(`${this._iconsDirectory}/${filename}`);
     const [, contents] = file.load_contents(null);
     let svg = new TextDecoder().decode(contents);
     svg = svg.replaceAll('currentColor', hex);
@@ -148,7 +139,7 @@ class OroshiModes {
   }
 
   /**
-   * Create the 5 St.Icon widgets, each wrapped in an St.Bin, and add to the box
+   * Create the 4 St.Icon widgets, each wrapped in an St.Bin, and add to the box
    */
   _createIndicators() {
     for (const config of INDICATORS) {
@@ -199,14 +190,14 @@ class OroshiModes {
    */
   _setupMonitors() {
     // Ensure the modes directory exists so we can monitor it
-    const modesDir = Gio.File.new_for_path(MODES_DIR);
+    const modesDirectory = Gio.File.new_for_path(MODES_DIR);
     try {
-      modesDir.make_directory_with_parents(null);
+      modesDirectory.make_directory_with_parents(null);
     } catch (_e) {
       // Already exists
     }
 
-    const modesMonitor = modesDir.monitor_directory(
+    const modesMonitor = modesDirectory.monitor_directory(
       Gio.FileMonitorFlags.NONE,
       null,
     );

@@ -1,4 +1,0 @@
-# Check if "Slack Mode" is enabled
-setopt local_options err_return
-
-mode-is-enabled mic2txt-slack

@@ -187,8 +187,6 @@
     "autosubmit-disabled":    "gray",
     "language-en":            "amber-6",
     "language-fr":            "gray",
-    "slack-enabled":          "amber-6",
-    "slack-disabled":         "gray",
     "model-openai":           "amber-6",
     "model-groq":             "orange",
     "model-parakeet":         "gray"

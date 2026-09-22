@@ -6,14 +6,13 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/modes"
 }
 
-@test "shows all five modes" {
+@test "shows all four modes" {
   bats_run_zsh "mode-status"
   [[ "$status" -eq 0 ]]
   local stripped="$(bats_strip_ansi "$output")"
   [[ "$stripped" == *"sound"* ]]
   [[ "$stripped" == *"mic2txt-autosubmit"* ]]
   [[ "$stripped" == *"mic2txt-language"* ]]
-  [[ "$stripped" == *"mic2txt-slack"* ]]
   [[ "$stripped" == *"mic2txt-model"* ]]
 }
 
@@ -23,7 +22,6 @@ setup() {
   [[ "$stripped" == *"sound"*"disabled"* ]]
   [[ "$stripped" == *"mic2txt-autosubmit"*"disabled"* ]]
   [[ "$stripped" == *"mic2txt-language"*"fr"* ]]
-  [[ "$stripped" == *"mic2txt-slack"*"disabled"* ]]
   [[ "$stripped" == *"mic2txt-model"*"openai"* ]]
 }
 
@@ -43,6 +41,13 @@ setup() {
   [[ "$stripped" == *"mic2txt-model"*"groq"* ]]
 }
 
+@test "dashboard output does not contain slack" {
+  bats_run_zsh "mode-status"
+  [[ "$status" -eq 0 ]]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" != *"slack"* ]]
+}
+
 @test "displays modes in top bar order" {
   bats_run_zsh "mode-status"
   local stripped="$(bats_strip_ansi "$output")"
@@ -51,11 +56,9 @@ setup() {
   local line1="$(echo "$stripped" | grep -n "sound" | head -1 | cut -d: -f1)"
   local line2="$(echo "$stripped" | grep -n "mic2txt-autosubmit" | head -1 | cut -d: -f1)"
   local line3="$(echo "$stripped" | grep -n "mic2txt-language" | head -1 | cut -d: -f1)"
-  local line4="$(echo "$stripped" | grep -n "mic2txt-slack" | head -1 | cut -d: -f1)"
-  local line5="$(echo "$stripped" | grep -n "mic2txt-model" | head -1 | cut -d: -f1)"
+  local line4="$(echo "$stripped" | grep -n "mic2txt-model" | head -1 | cut -d: -f1)"
 
   [[ $line1 -lt $line2 ]]
   [[ $line2 -lt $line3 ]]
   [[ $line3 -lt $line4 ]]
-  [[ $line4 -lt $line5 ]]
 }

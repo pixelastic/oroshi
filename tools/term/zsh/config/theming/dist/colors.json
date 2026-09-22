@@ -855,14 +855,6 @@
     "ansi": 205,
     "hex": "#6b7280"
   },
-  "modes-slack-disabled": {
-    "ansi": 205,
-    "hex": "#6b7280"
-  },
-  "modes-slack-enabled": {
-    "ansi": 146,
-    "hex": "#b45309"
-  },
   "modes-sound-disabled": {
     "ansi": 205,
     "hex": "#6b7280"
