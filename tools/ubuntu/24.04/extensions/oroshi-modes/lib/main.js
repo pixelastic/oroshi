@@ -46,9 +46,11 @@ const INDICATORS = [
 ];
 
 class OroshiModes {
-  constructor(extension) {
-    this._extensionPath = extension.path;
-    this._iconsDirectory = `${extension.path}/icons`;
+  constructor() {
+    this._libPath = Gio.File.new_for_uri(import.meta.url)
+      .get_parent()
+      .get_path();
+    this._iconsDirectory = `${this._libPath}/icons`;
     this._colors = {};
     this._entries = [];
     this._monitors = [];
@@ -233,9 +235,8 @@ class OroshiModes {
 
 /**
  * Bootstrap the OroshiModes panel indicators
- * @param {object} extension - The OroshiModesExtension instance
  * @returns {OroshiModes} Controller with a destroy() method
  */
-export function setup(extension) {
-  return new OroshiModes(extension);
+export function setup() {
+  return new OroshiModes();
 }

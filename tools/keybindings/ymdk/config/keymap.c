@@ -88,8 +88,6 @@ typedef struct {
 #define ALT_TAB LALT(KC_TAB)  /* Switch window */
 #define CONFIG_SOUND_MODE C(G(KC_F8))
 #define CONFIG_AUTOSEND C(G(KC_F9))
-#define CONFIG_TRANSLATE C(G(KC_F10))
-#define CONFIG_SLACK C(G(KC_F11))
 #define CONFIG_MODEL C(G(KC_F12))
 
 #define VOLUME_UP KC_VOLU
@@ -120,7 +118,7 @@ typedef struct {
 
 #define LAYER_CONFIG_KEYS \
     MODE_NORMAL, CONFIG_SOUND_MODE, CONFIG_AUTOSEND, \
-    CONFIG_TRANSLATE,  CONFIG_SLACK,    CONFIG_MODEL, \
+    EMPTY_KEY, EMPTY_KEY, CONFIG_MODEL, \
     MODE_SPOTIFY, MODE_RP, EMPTY_KEY
 
 #define LAYER_SPOTIFY_KEYS \
@@ -163,8 +161,6 @@ Color get_color_for_key(uint16_t keycode, uint8_t layer) {
     if (keycode == CONFIG_AUTOSEND) return PURPLE;
     if (keycode == MODE_SPOTIFY) return WHITE;
 
-    if (keycode == CONFIG_TRANSLATE) return MAGENTA;
-    if (keycode == CONFIG_SLACK) return MAGENTA;
     if (keycode == CONFIG_MODEL) return MAGENTA;
 
     // Spotify
