@@ -5,7 +5,6 @@
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75"
   },
   "permissions": {
-    "deny": ["AskUserQuestion"],
     "allow": [
       "BashOutput",
       "Fetch",
@@ -21,9 +20,10 @@
       "WebSearch",
       "mcp__context7"
     ],
+    "deny": ["AskUserQuestion"],
     "defaultMode": "acceptEdits"
   },
-  "model": "opus[1m]",
+  "model": "sonnet[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -72,9 +72,10 @@
     "command": "/home/tim/.oroshi/tools/ai/claude/config/statusline"
   },
   "effortLevel": "high",
+  "voiceEnabled": true,
   "autoMemoryEnabled": false,
   "skipAutoPermissionPrompt": true,
   "theme": "dark",
   "preferredNotifChannel": "notifications_disabled",
-  "voiceEnabled": true
+  "syncClaudeAiSkills": false
 }
