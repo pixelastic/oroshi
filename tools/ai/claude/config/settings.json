@@ -23,7 +23,7 @@
     "deny": ["AskUserQuestion"],
     "defaultMode": "acceptEdits"
   },
-  "model": "sonnet[1m]",
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -71,11 +71,12 @@
     "type": "command",
     "command": "/home/tim/.oroshi/tools/ai/claude/config/statusline"
   },
-  "effortLevel": "high",
-  "voiceEnabled": true,
   "autoMemoryEnabled": false,
-  "skipAutoPermissionPrompt": true,
-  "theme": "dark",
+  "effortLevel": "high",
   "preferredNotifChannel": "notifications_disabled",
-  "syncClaudeAiSkills": false
+  "skipAutoPermissionPrompt": true,
+  "syncClaudeAiSkills": false,
+  "theme": "dark",
+  "tui": "default",
+  "voiceEnabled": false
 }

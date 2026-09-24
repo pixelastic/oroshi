@@ -732,12 +732,12 @@
     "hex": "#38a169"
   },
   "kitty-mic2txt-processing": {
-    "ansi": 49,
-    "hex": "#422006"
-  },
-  "kitty-mic2txt-recording": {
     "ansi": 47,
     "hex": "#975a16"
+  },
+  "kitty-mic2txt-recording": {
+    "ansi": 49,
+    "hex": "#422006"
   },
   "kitty-mic2txt-stopped": {
     "ansi": 48,
