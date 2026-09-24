@@ -35,14 +35,20 @@ if [[ "$prompt" == "" ]] && [[ ! -t 0 ]]; then
   prompt="$(cat)"
 fi
 
-local message=$(jo role=user content="$prompt")
-
-# Build arguments
-local joArgs=(model="$model" max_tokens="$maxTokens")
-[[ "$systemPrompt" != "" ]] && joArgs+=(system="$systemPrompt")
-joArgs+=(messages="$(jo -a "$message")")
-
-local body=$(jo "${joArgs[@]}")
+# Build body through files, as large prompts (like big diffs) would exceed the
+# max argument length if passed as CLI args
+local tmpPrompt=$(mktemp)
+local tmpBody=$(mktemp)
+printf '%s' "$prompt" > "$tmpPrompt"
+jq -n \
+  --arg model "$model" \
+  --argjson maxTokens "$maxTokens" \
+  --arg system "$systemPrompt" \
+  --rawfile prompt "$tmpPrompt" \
+'{model: $model, max_tokens: $maxTokens, messages: [{role: "user", content: $prompt}]}
+  + (if $system != "" then {system: $system} else {} end)' \
+  > "$tmpBody"
+rm -f "$tmpPrompt"
 
 # We write the output in a file, but echo the HTTP code so we can handle HTTP
 # errors
@@ -54,10 +60,10 @@ local httpCode=$(curl \
     --header "x-api-key: $OROSHI_ANTHROPIC_API_KEY" \
     --header "anthropic-version: 2023-06-01" \
     --header "content-type: application/json" \
-    --data "$body" \
+    --data-binary "@$tmpBody" \
   https://api.anthropic.com/v1/messages)
 local response="$(cat "$tmpResponse")"
-rm -f "$tmpResponse"
+rm -f "$tmpResponse" "$tmpBody"
 
 # Guard: HTTP error
 if [[ "$httpCode" != 2* ]]; then

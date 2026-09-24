@@ -9,12 +9,13 @@ setup() {
 _mock_curl() {
   cat <<'BASH'
   curl() {
-    local outputFile=""
+    local outputFile="" bodyFile=""
     local -a allArgs=("$@")
     for ((i=1; i<=${#allArgs[@]}; i++)); do
       [[ "${allArgs[$i]}" == "--output" ]] && outputFile="${allArgs[$((i+1))]}"
+      [[ "${allArgs[$i]}" == "--data-binary" ]] && bodyFile="${allArgs[$((i+1))]#@}"
     done
-    echo "$@" > "$BATS_TMP_DIR/curl.log"
+    { echo "$@"; cat "$bodyFile"; } > "$BATS_TMP_DIR/curl.log"
     printf '{"content":[{"type":"text","text":"Hello from Claude"}]}' > "$outputFile"
     printf '200'
   }
@@ -25,12 +26,13 @@ BASH
 _mock_curl_http_error() {
   cat <<'BASH'
   curl() {
-    local outputFile=""
+    local outputFile="" bodyFile=""
     local -a allArgs=("$@")
     for ((i=1; i<=${#allArgs[@]}; i++)); do
       [[ "${allArgs[$i]}" == "--output" ]] && outputFile="${allArgs[$((i+1))]}"
+      [[ "${allArgs[$i]}" == "--data-binary" ]] && bodyFile="${allArgs[$((i+1))]#@}"
     done
-    echo "$@" > "$BATS_TMP_DIR/curl.log"
+    { echo "$@"; cat "$bodyFile"; } > "$BATS_TMP_DIR/curl.log"
     printf '{"type":"error","error":{"type":"authentication_error","message":"Invalid API key"}}' > "$outputFile"
     printf '401'
   }
@@ -41,12 +43,13 @@ BASH
 _mock_curl_empty() {
   cat <<'BASH'
   curl() {
-    local outputFile=""
+    local outputFile="" bodyFile=""
     local -a allArgs=("$@")
     for ((i=1; i<=${#allArgs[@]}; i++)); do
       [[ "${allArgs[$i]}" == "--output" ]] && outputFile="${allArgs[$((i+1))]}"
+      [[ "${allArgs[$i]}" == "--data-binary" ]] && bodyFile="${allArgs[$((i+1))]#@}"
     done
-    echo "$@" > "$BATS_TMP_DIR/curl.log"
+    { echo "$@"; cat "$bodyFile"; } > "$BATS_TMP_DIR/curl.log"
     printf '' > "$outputFile"
     printf '200'
   }
@@ -152,6 +155,18 @@ BASH
   [[ "$args" == *"hello from stdin"* ]]
 }
 
+@test "handles stdin content larger than max argument length" {
+  eval "$(_mock_curl)"
+  bats_mock curl
+
+  head -c 300000 /dev/zero | tr '\0' 'a' > "$BATS_TMP_DIR/big.txt"
+  bats_run_zsh "claude-api" < "$BATS_TMP_DIR/big.txt"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "Hello from Claude" ]]
+  local args=$(cat "$BATS_TMP_DIR/curl.log")
+  [[ "$args" == *"aaaaaaaaaa"* ]]
+}
+
 @test "prefers positional argument over stdin when both are available" {
   eval "$(_mock_curl)"
   bats_mock curl
@@ -187,12 +202,13 @@ BASH
   _mock_curl_with_delimiter() {
     cat <<'BASH'
     curl() {
-      local outputFile=""
+      local outputFile="" bodyFile=""
       local -a allArgs=("$@")
       for ((i=1; i<=${#allArgs[@]}; i++)); do
         [[ "${allArgs[$i]}" == "--output" ]] && outputFile="${allArgs[$((i+1))]}"
+      [[ "${allArgs[$i]}" == "--data-binary" ]] && bodyFile="${allArgs[$((i+1))]#@}"
       done
-      echo "$@" > "$BATS_TMP_DIR/curl.log"
+      { echo "$@"; cat "$bodyFile"; } > "$BATS_TMP_DIR/curl.log"
       printf '{"content":[{"type":"text","text":"use ▮ as delimiter"}]}' > "$outputFile"
       printf '200'
     }
