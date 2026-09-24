@@ -18,8 +18,7 @@ setup() {
   git-directory-root() { echo "$GIT_REPO"; }
   claude() { echo "change $$" >>"$GIT_REPO/output.txt"; }
   git-commit-message() { echo "test commit"; }
-  claude-terminal-fix() { true; }
-  bats_mock git-directory-root claude git-commit-message claude-terminal-fix
+  bats_mock git-directory-root claude git-commit-message
 
   bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 3"
   [[ "$status" -eq 0 ]]
@@ -39,8 +38,7 @@ setup() {
     ralph-state "$PRD_DIR" set prd_done true
   }
   git-commit-message() { echo "test commit"; }
-  claude-terminal-fix() { true; }
-  bats_mock git-directory-root claude git-commit-message claude-terminal-fix
+  bats_mock git-directory-root claude git-commit-message
 
   bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 10"
   [[ "$status" -eq 0 ]]
@@ -56,8 +54,7 @@ setup() {
   git-directory-root() { echo "$GIT_REPO"; }
   claude() { return 130; }
   git-commit-message() { echo "test commit"; }
-  claude-terminal-fix() { true; }
-  bats_mock git-directory-root claude git-commit-message claude-terminal-fix
+  bats_mock git-directory-root claude git-commit-message
 
   bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 5"
   [[ "$status" -eq 0 ]]
@@ -76,8 +73,7 @@ setup() {
     echo "change $$" >>"$GIT_REPO/output.txt"
   }
   git-commit-message() { echo "test commit"; }
-  claude-terminal-fix() { true; }
-  bats_mock git-directory-root claude git-commit-message claude-terminal-fix
+  bats_mock git-directory-root claude git-commit-message
 
   bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 2"
   [[ "$status" -eq 0 ]]

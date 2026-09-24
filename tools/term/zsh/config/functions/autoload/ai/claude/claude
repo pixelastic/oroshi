@@ -13,7 +13,3 @@ $OROSHI_ROOT/node_modules/.bin/claude "$@" || true
 
 # Remove any leftover notification marker
 kitty-tab-notification-remove
-
-# Claude v2.1.84 seem to leave the terminal in corrupted state.
-# Source: https://github.com/anthropics/claude-code/issues/38761
-[[ "$CLAUDE_DO_NOT_FIX_TERMINAL_ISSUE_38761" == "" ]] && claude-terminal-fix

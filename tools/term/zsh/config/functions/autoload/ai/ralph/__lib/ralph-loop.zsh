@@ -55,10 +55,6 @@ function ralph-loop() {
     local claudeExitCode=0
     wait $claudePid 2>/dev/null || claudeExitCode=$?
 
-    # Sentinel kills the wrapper (not real claude), so we need to manually clean
-    # the terminal
-    claude-terminal-fix
-
     # Kill watcher, wait for cleanup
     kill $watcherPid 2>/dev/null || true
     wait $watcherPid 2>/dev/null || true
@@ -80,5 +76,4 @@ function ralph-loop() {
 
   ralph-clear "$dir"
   print "ralph: done ($maxLoops iterations)"
-  claude-terminal-fix
 }
