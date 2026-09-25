@@ -146,6 +146,15 @@ setup() {
   [[ ! -f "$BATS_TMP_DIR/zsh_fix_called" ]]
 }
 
+@test "lints autoload function given by bare filename from its directory" {
+  local dir="$BATS_TMP_DIR/functions/autoload/demo"
+  mkdir -p "$dir"
+  printf '# clean autoload function\nsetopt local_options err_return\n' >"$dir/demo-func"
+  bats_run_zsh "cd $dir && zsh-lint demo-func"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == '[]' ]]
+}
+
 @test "merges notZsh with sub-linter violations for mixed input" {
   is-zsh() {
     [[ "$1" == *.zsh ]] && return 0

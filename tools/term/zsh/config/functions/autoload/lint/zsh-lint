@@ -4,7 +4,6 @@
 # $ zsh-lint file.zsh other-file.zsh                # Outputs errors of both file
 # $ zsh-lint --fix file.zsh                         # Auto-format via zsh-fix, then lint
 # $ zsh-lint --version                              # Display version of shellcheck
-# $ zsh-lint -s zsh-lint -x -f gcc - < /path/to/file # As used by ALE
 #
 # This is a wrapper around shellcheck. Shellcheck does not support zsh by
 # default, but many of the warning triggered on bash also apply on zsh, so we
@@ -25,7 +24,9 @@ local isFix="${#flagFix}"
 # Keep only valid zsh files
 local -a valid=()
 local -a invalid=()
-for item in "$@"; do
+for rawItem in "$@"; do
+  # Absolute path, so path-based checks (like autoload detection) see the full path
+  local item="${rawItem:a}"
   # Skip directories
   [[ -d $item ]] && continue
   # Keep track of non-zsh files

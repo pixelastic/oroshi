@@ -6,8 +6,15 @@ setup() {
   # Default: running inside Claude main session
   is-claude() { return 0; }
   is-claude-subagent() { return 1; }
-  kill() { echo "$@" > "$BATS_TMP_DIR/kill-args.txt"; }
-  bats_mock is-claude is-claude-subagent kill
+  # kill and zsh-queue-write both append to calls.txt to assert call order
+  kill() {
+    echo "$@" > "$BATS_TMP_DIR/kill-args.txt"
+    echo "kill $*" >> "$BATS_TMP_DIR/calls.txt"
+  }
+  zsh-queue-write() { echo "zsh-queue-write $*" >> "$BATS_TMP_DIR/calls.txt"; }
+  # Default: claude is the immediate parent
+  process-tree-raw() { echo "300▮claude"; }
+  bats_mock is-claude is-claude-subagent kill zsh-queue-write process-tree-raw
 }
 
 # --- Guard: not in Claude ---
@@ -78,4 +85,56 @@ setup() {
   [[ "$status" -eq 1 ]]
   [[ "$output" == *"claude process not found"* ]]
   [[ ! -f "$BATS_TMP_DIR/kill-args.txt" ]]
+}
+
+# --- With --next ---
+
+@test "queues the given command before sending SIGTERM to claude" {
+  bats_run_zsh "claude-stop --next 'echo done'"
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" == "zsh-queue-write echo done
+kill -TERM 300" ]]
+}
+
+@test "still sends SIGTERM when zsh-queue-write is a no-op" {
+  zsh-queue-write() { touch "$BATS_TMP_DIR/queue-called.txt"; }
+  bats_mock zsh-queue-write
+
+  bats_run_zsh "claude-stop --next 'echo done'"
+
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/queue-called.txt" ]]
+  [[ "$(cat "$BATS_TMP_DIR/kill-args.txt")" == "-TERM 300" ]]
+}
+
+# --- Without --next ---
+
+@test "does not call zsh-queue-write without --next" {
+  bats_run_zsh "claude-stop"
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" == "kill -TERM 300" ]]
+}
+
+# --- Guards with --next ---
+
+@test "does not queue anything when not in Claude" {
+  is-claude() { return 1; }
+  bats_mock is-claude
+
+  bats_run_zsh "claude-stop --next 'echo done'"
+
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/calls.txt" ]]
+}
+
+@test "does not queue anything when in a subagent" {
+  is-claude-subagent() { return 0; }
+  bats_mock is-claude-subagent
+
+  bats_run_zsh "claude-stop --next 'echo done'"
+
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/calls.txt" ]]
 }

@@ -1,8 +1,14 @@
 # Terminate the calling Claude Code main session
 # Walks up the process tree to find the first "claude" ancestor and SIGTERMs it
 # Usage:
-# $ claude-stop
+# $ claude-stop                     # Stop Claude
+# $ claude-stop --next "echo done"  # Stop Claude, then run "echo done" in the shell
 setopt local_options err_return
+
+zparseopts -E -D \
+  -next:=flagNext
+
+local nextCommand=${flagNext[2]}
 
 # Not in Claude — nothing to stop
 is-claude || return 0
@@ -19,4 +25,5 @@ if [[ "$claudeLine" == "" ]]; then
 fi
 
 local -a parts=(${(@ps/▮/)claudeLine})
+[[ "$nextCommand" != "" ]] && zsh-queue-write "$nextCommand"
 kill -TERM "$parts[1]"
