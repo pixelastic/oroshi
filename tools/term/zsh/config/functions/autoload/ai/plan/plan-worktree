@@ -1,0 +1,18 @@
+# Return absolute path to the Worktree matching a plan directory
+# Plan directory and Worktree Directory Name share the same <repo>--<branch-slug>
+# Usage:
+# $ plan-worktree ~/local/www/plans/oroshi--feat_x   # ~/local/www/worktrees/oroshi--feat_x
+# $ plan-worktree ~/local/www/plans/oroshi--feat_x/  # trailing slash is ignored
+setopt local_options err_return
+
+local planDirectory="${1%/}"
+
+# Nothing to derive without a plan directory
+[[ "$planDirectory" == "" ]] && return 1
+
+local worktreePath="$OROSHI_WORKTREES_DIR/${planDirectory:t}"
+
+# Worktree must exist on disk
+[[ ! -d "$worktreePath" ]] && return 1
+
+print "$worktreePath"
