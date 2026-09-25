@@ -46,7 +46,7 @@ fi
 
 # Auto-format before linting when --fix is passed
 if [[ $isFix == "1" && ${#valid[@]} -gt 0 ]]; then
-  zsh-fix --in-place "${valid[@]}"
+  zsh-fix "${valid[@]}"
 fi
 
 # Generate notZsh violations for non-zsh files

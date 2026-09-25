@@ -130,7 +130,7 @@ setup() {
   bats_run_zsh "zsh-lint --fix $file1 $file2"
   [[ "$status" -eq 0 ]]
   local arguments="$(cat "$BATS_TMP_DIR/zsh_fix_args")"
-  [[ "$arguments" == *"--in-place"* ]]
+  [[ "$arguments" != *"--in-place"* ]]
   [[ "$arguments" == *"one.zsh"* ]]
   [[ "$arguments" == *"two.zsh"* ]]
 }

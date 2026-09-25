@@ -16,7 +16,7 @@ M.configureFormatter = function(conform)
     command = "bin-zsh",
     stdin = false,
     args = function(_, ctx)
-      return { "xml-fix", "$FILENAME", "--original-path", ctx.filename }
+      return { "xml-fix", "$FILENAME", "--original-path", F.bufferName(ctx.buf) }
     end,
   }
 end

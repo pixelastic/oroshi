@@ -93,11 +93,15 @@ a temporary file in the same directory as the original (e.g.
 `.conform.4827193.file.js`), passes its path to the formatter, and reads the
 modified file back.
 
-Command: `bin-zsh {lang}-fix $FILENAME --original-path $ORIGINAL_PATH`.
+```lua
+args = function(_, ctx)
+  return { "{lang}-fix", "$FILENAME", "--original-path", F.bufferName(ctx.buf) }
+end,
+```
 
 - [`bin-zsh`](utilities.md#bin-zsh): because `{lang}-fix` is a ZSH autoloaded function
 - `$FILENAME`: the temp file created by conform.nvim, modified in-place
-- `--original-path`: the real file path, so the script can resolve configuration
+- `F.bufferName(ctx.buf)`: the real file path, so the script can resolve configuration
   and rules that depend on the file's name or location
 
 ### `onInit()` *(optional)*

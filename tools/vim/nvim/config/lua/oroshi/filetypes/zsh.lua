@@ -20,8 +20,10 @@ end
 M.configureFormatter = function(conform)
   conform.formatters.oroshi_zsh_fix = {
     command = "bin-zsh",
-    args = { "zsh-fix" },
-    stdin = true,
+    stdin = false,
+    args = function(_, ctx)
+      return { "zsh-fix", "$FILENAME", "--original-path", F.bufferName(ctx.buf) }
+    end,
     exit_codes = { 0, 1 }, -- Fail silently on zsh-specific syntax
   }
 end

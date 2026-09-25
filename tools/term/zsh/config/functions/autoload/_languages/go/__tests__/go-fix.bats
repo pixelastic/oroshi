@@ -88,6 +88,30 @@ setup() {
   [[ "$calls" != *"goimports -w $file"* ]]
 }
 
+@test "--stdout removes temp copy when goimports fails" {
+  local file="$BATS_TMP_DIR/main.go"
+  printf 'package main\n' > "$file"
+  mktemp() { echo "$BATS_TMP_DIR/temporary-copy"; }
+  goimports() { return 1; }
+  bats_mock mktemp goimports
+
+  bats_run_zsh "go-fix --stdout $file"
+  [[ "$status" -eq 1 ]]
+  [[ ! -f "$BATS_TMP_DIR/temporary-copy" ]]
+}
+
+@test "--stdout removes temp copy when gofumpt fails" {
+  local file="$BATS_TMP_DIR/main.go"
+  printf 'package main\n' > "$file"
+  mktemp() { echo "$BATS_TMP_DIR/temporary-copy"; }
+  gofumpt() { return 1; }
+  bats_mock mktemp gofumpt
+
+  bats_run_zsh "go-fix --stdout $file"
+  [[ "$status" -eq 1 ]]
+  [[ ! -f "$BATS_TMP_DIR/temporary-copy" ]]
+}
+
 @test "--stdout errors with multiple files" {
   local file1="$BATS_TMP_DIR/a.go"
   local file2="$BATS_TMP_DIR/b.go"

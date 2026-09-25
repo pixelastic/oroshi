@@ -22,24 +22,29 @@ local originalPath="${flagOriginalPath[2]}"
 local expanded="$(file-expand --filter is-go "$@")"
 local -a files=("${(@f)expanded}")
 
-# Stdout mode: swap the file for a temp copy
-local tmpFile=""
-if [[ $isStdout -eq 1 ]]; then
-  tmpFile="$(mktemp)"
-  cp "${files[1]}" "$tmpFile"
-  files=("$tmpFile")
-fi
-
 # Build goimports args — pass -srcdir when original-path is set
 local -a goimportsArgs=(-w)
 [[ "$originalPath" != "" ]] && goimportsArgs+=(-srcdir "${originalPath:h}")
-goimportsArgs+=("${files[@]}")
 
-goimports "${goimportsArgs[@]}"
-gofumpt -w "${files[@]}"
-
-# Stdout mode: output and cleanup
-if [[ "$tmpFile" != "" ]]; then
-  cat "$tmpFile"
-  rm -f "$tmpFile"
+# In-place mode: fix the files directly
+if [[ $isStdout -eq 0 ]]; then
+  goimports "${goimportsArgs[@]}" "${files[@]}"
+  gofumpt -w "${files[@]}"
+  return 0
 fi
+
+# Stdout mode: fix a temp copy, output it, remove it
+local temporaryFile="$(mktemp)"
+cp "${files[1]}" "$temporaryFile"
+# goimports failed: remove the temp copy before failing
+if ! goimports "${goimportsArgs[@]}" "$temporaryFile"; then
+  rm -f "$temporaryFile"
+  return 1
+fi
+# gofumpt failed: remove the temp copy before failing
+if ! gofumpt -w "$temporaryFile"; then
+  rm -f "$temporaryFile"
+  return 1
+fi
+cat "$temporaryFile"
+rm -f "$temporaryFile"

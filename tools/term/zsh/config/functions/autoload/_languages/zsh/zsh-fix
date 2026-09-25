@@ -1,53 +1,53 @@
-# Fix a ZSH file
+# Fix ZSH files by applying beautysh formatting
 # Usage:
-# $ zsh-fix ./path/to/file.zsh                       # Output fixed code to stdout
-# $ zsh-fix --in-place ./path/to/file.zsh            # Overwrite the file in place
-# $ zsh-fix --in-place file1.zsh file2.zsh file3.zsh # Batch in-place formatting
-# $ echo "code" | zsh-fix                            # ZSH code from stdin, fixed to stdout
+# $ zsh-fix ./path/to/file.zsh                                 # Fix file in place
+# $ zsh-fix file1.zsh file2.zsh                                # Fix multiple files in place
+# $ zsh-fix ./functions/                                       # Expand directory, fix all ZSH files
+# $ zsh-fix --stdout ./path/to/file.zsh                        # Output fixed code to stdout
+# $ zsh-fix --original-path /real/my-func .conform.123.my-func # Detect ZSH from real path
 setopt local_options err_return
 
 zparseopts -E -D \
-  -in-place=flagInPlace
-local isInPlace="${#flagInPlace}"
+  -stdout=flagStdout \
+  -original-path:=flagOriginalPath
+local isStdout=${#flagStdout}
+local originalPath="${flagOriginalPath[2]}"
 
-# Detect stdin: only when no file argument remains after flag parsing
-local hasStdin=0
-[[ $# -eq 0 && ! -t 0 ]] && hasStdin=1
+# --stdout and --original-path only work with a single file
+local isSingleFileMode=0
+[[ $isStdout -eq 1 || "$originalPath" != "" ]] && isSingleFileMode=1
+[[ $isSingleFileMode -eq 1 && ( $# -ne 1 || -d "$1" ) ]] && return 1
 
-# Multiple files without --in-place is not supported
-if [[ $# -gt 1 && $isInPlace != "1" ]]; then
-  echo "zsh-fix: multiple files require --in-place"
-  return 1
+# Expand directories, keep only ZSH files
+local expanded="$(file-expand --filter is-zsh "$@")"
+# Temp copies (e.g. .conform.123.my-func) can hide the language: trust the real path
+if [[ "$originalPath" != "" ]] && is-zsh "$originalPath"; then
+  expanded="${1:a}"
 fi
 
-# In-place mode: pass all files to a single beautysh call
-if [[ $isInPlace == "1" ]]; then
-  local inputPaths=()
-  for file in "$@"; do
-    inputPaths+=("${file:a}")
-  done
+# No ZSH files to fix
+[[ "$expanded" == "" ]] && return 0
+local -a files=("${(@f)expanded}")
+
+# In-place mode: format the files directly
+if [[ $isStdout -eq 0 ]]; then
   beautysh \
     --indent-size 2 \
     --force-function-style fnpar \
-    "${inputPaths[@]}"
+    "${files[@]}"
   return 0
 fi
 
-# Stdout modes (file or stdin): use a work file
-local workfileDir="${OROSHI_TMP_FOLDER}/zsh-fix"
-local workfilePath="${workfileDir}/zsh-fix-$RANDOM.zsh"
-mkdir -p "$workfileDir"
-
-if [[ $hasStdin == "1" ]]; then
-  cat >"$workfilePath"
-else
-  cp "${1:a}" "$workfilePath"
-fi
-
-beautysh \
+# Stdout mode: format a temp copy, output it, remove it
+local temporaryFile="$(mktemp)"
+cp "${files[1]}" "$temporaryFile"
+# beautysh failed: remove the temp copy before failing
+if ! beautysh \
   --indent-size 2 \
   --force-function-style fnpar \
-  "$workfilePath"
-
-cat "$workfilePath"
-rm -f "$workfilePath"
+  "$temporaryFile"; then
+  rm -f "$temporaryFile"
+  return 1
+fi
+cat "$temporaryFile"
+rm -f "$temporaryFile"
