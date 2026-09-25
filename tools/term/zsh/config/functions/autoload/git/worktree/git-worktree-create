@@ -41,3 +41,7 @@ git-worktree-is-oroshi || return 0
 
 # Build prose (Vale packages)
 prose-build
+
+# Patch Claude Code syntax colors (chpwd already moved OROSHI_ROOT here)
+"$OROSHI_ROOT/tools/ai/claude/config/syntax/generate-syntax" \
+  || echo "✘ Could not patch Claude Code syntax colors"
