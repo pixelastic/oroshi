@@ -35,7 +35,7 @@ for rawLine in ${(f)rawFiles}; do
     [[ "$goTestPath" != "" ]] && goPaths+=("$fullPath")
   fi
 
-  local batsPath="$(bats-test-path "$fullPath")"
+  local batsPath="$(zsh-test-path "$fullPath")"
   [[ "$batsPath" != "" ]] && batsPaths+=("$batsPath")
 done
 

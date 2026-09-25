@@ -26,4 +26,4 @@ if is-python "$filePath"; then
 fi
 
 # Fallback: shell scripts, ZSH autoloads, unknown types
-bats-test-path "$filePath"
+zsh-test-path "$filePath"

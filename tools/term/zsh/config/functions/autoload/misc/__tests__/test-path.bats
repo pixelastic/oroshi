@@ -6,8 +6,8 @@ setup() {
   is-python() { return 1; }
   js-test-path() { return 1; }
   python-test-path() { return 1; }
-  bats-test-path() { return 1; }
-  bats_mock is-js is-python js-test-path python-test-path bats-test-path
+  zsh-test-path() { return 1; }
+  bats_mock is-js is-python js-test-path python-test-path zsh-test-path
 }
 
 @test "JS file: dispatches to js-test-path" {
@@ -30,9 +30,9 @@ setup() {
   [[ "$output" = "/some/__tests__/test_module.py" ]]
 }
 
-@test "ZSH file: falls back to bats-test-path" {
-  bats-test-path() { echo "/some/__tests__/my-func.bats"; }
-  bats_mock bats-test-path
+@test "ZSH file: falls back to zsh-test-path" {
+  zsh-test-path() { echo "/some/__tests__/my-func.bats"; }
+  bats_mock zsh-test-path
 
   bats_run_zsh "test-path /some/my-func"
   [[ "$status" -eq 0 ]]
@@ -45,7 +45,7 @@ setup() {
   [[ "$output" = "" ]]
 }
 
-@test "unrecognized file type: falls to bats-test-path, returns 1 if no test" {
+@test "unrecognized file type: falls to zsh-test-path, returns 1 if no test" {
   bats_run_zsh "test-path /some/readme.md"
   [[ "$status" -eq 1 ]]
   [[ "$output" = "" ]]

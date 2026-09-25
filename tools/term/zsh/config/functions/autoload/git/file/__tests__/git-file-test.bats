@@ -34,9 +34,9 @@ setup() {
   bats_git commit --quiet -m "add script.zsh"
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
-  bats-test-path() { return 0; }
+  zsh-test-path() { return 0; }
   bats() { return 0; }
-  bats_mock bats-test-path bats
+  bats_mock zsh-test-path bats
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -48,9 +48,9 @@ setup() {
   bats_git commit --quiet -m "add script.zsh"
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
-  bats-test-path() { echo "path"; }
+  zsh-test-path() { echo "path"; }
   bats() { return 1; }
-  bats_mock bats-test-path bats
+  bats_mock zsh-test-path bats
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 1 ]]
@@ -62,8 +62,8 @@ setup() {
   bats_git commit --quiet -m "add script.zsh"
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
-  bats-test-path() { printf ''; }
-  bats_mock bats-test-path
+  zsh-test-path() { printf ''; }
+  bats_mock zsh-test-path
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -78,9 +78,9 @@ setup() {
   bats_git commit --quiet -m "add script.js"
   echo 'changed' >> "$BATS_GIT_DIR/script.js"
 
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   yarn() { return 0; }
-  bats_mock bats-test-path yarn
+  bats_mock zsh-test-path yarn
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -92,9 +92,9 @@ setup() {
   bats_git commit --quiet -m "add script.js"
   echo 'changed' >> "$BATS_GIT_DIR/script.js"
 
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   yarn() { return 1; }
-  bats_mock bats-test-path yarn
+  bats_mock zsh-test-path yarn
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 1 ]]
@@ -107,8 +107,8 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/script.js"
 
   is-js() { return 1; }
-  bats-test-path() { printf ''; }
-  bats_mock is-js bats-test-path
+  zsh-test-path() { printf ''; }
+  bats_mock is-js zsh-test-path
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -123,10 +123,10 @@ setup() {
   bats_git commit --quiet -m "add module.py"
   echo 'changed' >> "$BATS_GIT_DIR/module.py"
 
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   python-test-path() { echo "$BATS_GIT_DIR/__tests__/test_module.py"; }
   python-test() { return 0; }
-  bats_mock bats-test-path python-test-path python-test
+  bats_mock zsh-test-path python-test-path python-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -138,9 +138,9 @@ setup() {
   bats_git commit --quiet -m "add module.py"
   echo 'changed' >> "$BATS_GIT_DIR/module.py"
 
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   python-test-path() { printf ''; }
-  bats_mock bats-test-path python-test-path
+  bats_mock zsh-test-path python-test-path
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -153,10 +153,10 @@ setup() {
   bats_git commit --quiet -m "add module.py"
   echo 'changed' >> "$BATS_GIT_DIR/module.py"
 
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   python-test-path() { echo "$BATS_GIT_DIR/__tests__/test_module.py"; }
   python-test() { return 1; }
-  bats_mock bats-test-path python-test-path python-test
+  bats_mock zsh-test-path python-test-path python-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 1 ]]
@@ -168,9 +168,9 @@ setup() {
   bats_git commit --quiet -m "add script.zsh"
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   python-test() { return 1; }
-  bats_mock bats-test-path python-test
+  bats_mock zsh-test-path python-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -186,10 +186,10 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/script.js"
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
-  bats-test-path() { echo "path"; }
+  zsh-test-path() { echo "path"; }
   yarn() { return 0; }
   bats() { return 0; }
-  bats_mock bats-test-path yarn bats
+  bats_mock zsh-test-path yarn bats
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -204,9 +204,9 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
   is-claude() { return 0; }
-  bats-test-path() { echo "path"; }
+  zsh-test-path() { echo "path"; }
   rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
-  bats_mock is-claude bats-test-path rtk
+  bats_mock is-claude zsh-test-path rtk
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -220,9 +220,9 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/script.js"
 
   is-claude() { return 0; }
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
-  bats_mock is-claude bats-test-path rtk
+  bats_mock is-claude zsh-test-path rtk
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -236,10 +236,10 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/module.py"
 
   is-claude() { return 0; }
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   python-test-path() { echo "$BATS_GIT_DIR/__tests__/test_module.py"; }
   rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
-  bats_mock is-claude bats-test-path python-test-path rtk
+  bats_mock is-claude zsh-test-path python-test-path rtk
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -254,10 +254,10 @@ setup() {
   bats_git commit --quiet -m "add main.go"
   echo 'changed' >> "$BATS_GIT_DIR/main.go"
 
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   go-test-path() { echo "$BATS_GIT_DIR/main_test.go"; }
   go-test() { return 0; }
-  bats_mock bats-test-path go-test-path go-test
+  bats_mock zsh-test-path go-test-path go-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -269,9 +269,9 @@ setup() {
   bats_git commit --quiet -m "add main.go"
   echo 'changed' >> "$BATS_GIT_DIR/main.go"
 
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   go-test-path() { return 1; }
-  bats_mock bats-test-path go-test-path
+  bats_mock zsh-test-path go-test-path
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -284,10 +284,10 @@ setup() {
   bats_git commit --quiet -m "add main.go"
   echo 'changed' >> "$BATS_GIT_DIR/main.go"
 
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   go-test-path() { echo "$BATS_GIT_DIR/main_test.go"; }
   go-test() { return 1; }
-  bats_mock bats-test-path go-test-path go-test
+  bats_mock zsh-test-path go-test-path go-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 1 ]]
@@ -300,8 +300,8 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/main.go"
 
   is-go() { return 1; }
-  bats-test-path() { printf ''; }
-  bats_mock is-go bats-test-path
+  zsh-test-path() { printf ''; }
+  bats_mock is-go zsh-test-path
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -315,10 +315,10 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/main.go"
 
   is-claude() { return 0; }
-  bats-test-path() { printf ''; }
+  zsh-test-path() { printf ''; }
   go-test-path() { echo "$BATS_GIT_DIR/main_test.go"; }
   rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
-  bats_mock is-claude bats-test-path go-test-path rtk
+  bats_mock is-claude zsh-test-path go-test-path rtk
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]

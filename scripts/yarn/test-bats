@@ -10,7 +10,7 @@ set -e
 
 local testPaths=()
 for filePath in "$@"; do
-  local testPath="$(bats-test-path "$filePath")"
+  local testPath="$(zsh-test-path "$filePath")"
   [[ "$testPath" != "" ]] && testPaths+=("$testPath")
 done
 

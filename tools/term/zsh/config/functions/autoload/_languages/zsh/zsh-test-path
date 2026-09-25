@@ -1,0 +1,25 @@
+# Resolve a ZSH file to its corresponding BATS test file (absolute path)
+# Usage:
+# $ zsh-test-path ./misc/slugify                  # Returns /abs/misc/__tests__/slugify.bats if it exists
+# $ zsh-test-path ./rules/my-rule.zsh             # Returns /abs/rules/__tests__/my-rule.bats if it exists
+# $ zsh-test-path ./misc/__tests__/slugify.bats   # Returns /abs/misc/__tests__/slugify.bats directly
+setopt local_options err_return
+
+# No argument provided
+[[ "$1" == "" ]] && return 1
+
+local inputPath="${1:a}"
+
+# Already a test file
+if [[ "$inputPath" == *.bats ]]; then
+  [[ ! -f "$inputPath" ]] && return 1
+  echo "$inputPath"
+  return 0
+fi
+
+local testPath="${inputPath:h}/__tests__/${inputPath:t:r}.bats"
+
+# No test file found
+[[ ! -f "$testPath" ]] && return 1
+
+echo "$testPath"
