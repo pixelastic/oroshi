@@ -18,7 +18,8 @@ setup() {
 @test "returns GitHub remote name when project-name fails but git-github-project-name succeeds" {
   project-name() { return 1; }
   git-github-project-name() { echo "github-repo"; }
-  bats_mock project-name git-github-project-name
+  git-worktree-main() { echo "/home/user/repos/my-repo"; }
+  bats_mock project-name git-github-project-name git-worktree-main
 
   bats_run_zsh "git-directory-name /some/path"
   [[ "$status" -eq 0 ]]
@@ -70,11 +71,72 @@ setup() {
 @test "does not strip dots from git-github-project-name result" {
   project-name() { return 1; }
   git-github-project-name() { echo ".dotted-github"; }
-  bats_mock project-name git-github-project-name
+  git-worktree-main() { echo "/home/user/repos/my-repo"; }
+  bats_mock project-name git-github-project-name git-worktree-main
 
   bats_run_zsh "git-directory-name /some/path"
   [[ "$status" -eq 0 ]]
   [[ "$output" = ".dotted-github" ]]
+}
+
+# --- Container projects ---
+
+@test "skips registered project that contains the repo" {
+  project-name() { echo "home"; }
+  project-path() { echo "/home/user"; }
+  git-worktree-main() { echo "/home/user/repos/fzf"; }
+  git-github-project-name() { echo "fzf"; }
+  bats_mock project-name project-path git-worktree-main git-github-project-name
+
+  bats_run_zsh "git-directory-name /home/user/repos/fzf"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "fzf" ]]
+}
+
+@test "skips catch-all project at filesystem root" {
+  project-name() { echo "root"; }
+  project-path() { echo "/"; }
+  git-worktree-main() { echo "/tmp/my-repo"; }
+  git-github-project-name() { return 1; }
+  bats_mock project-name project-path git-worktree-main git-github-project-name
+
+  bats_run_zsh "git-directory-name /tmp/my-repo"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-repo" ]]
+}
+
+@test "keeps registered project located at the repo root" {
+  project-name() { echo "my-project"; }
+  project-path() { echo "/home/user/repos/my-repo"; }
+  git-worktree-main() { echo "/home/user/repos/my-repo"; }
+  bats_mock project-name project-path git-worktree-main
+
+  bats_run_zsh "git-directory-name /home/user/repos/my-repo"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
+}
+
+@test "skips registered project located inside the repo" {
+  project-name() { echo "my-package"; }
+  project-path() { echo "/home/user/repos/monorepo/packages/my-package"; }
+  git-worktree-main() { echo "/home/user/repos/monorepo"; }
+  git-github-project-name() { return 1; }
+  bats_mock project-name project-path git-worktree-main git-github-project-name
+
+  bats_run_zsh "git-directory-name /home/user/repos/monorepo/packages/my-package"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "monorepo" ]]
+}
+
+@test "keeps container project outside any git repo" {
+  project-name() { echo "home"; }
+  project-path() { echo "/home/user"; }
+  git-worktree-main() { return 1; }
+  bats_mock project-name project-path git-worktree-main
+
+  bats_run_zsh "git-directory-name /home/user/documents"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "home" ]]
 }
 
 # --- Interface ---

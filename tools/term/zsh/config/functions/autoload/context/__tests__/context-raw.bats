@@ -41,8 +41,8 @@ setup() {
   git-directory-is-worktree() { return 0; }
   git-directory-root() { echo "/worktrees/parent--branch"; }
   git-branch-current() { echo "feature-branch"; }
-  project-name() { echo "parent"; }
-  bats_mock git git-directory-is-worktree git-directory-root git-branch-current project-name
+  git-directory-name() { echo "parent"; }
+  bats_mock git git-directory-is-worktree git-directory-root git-branch-current git-directory-name
   bats_run_zsh "cd $BATS_TMP_DIR && context-raw /some/submodule/path"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "parent▮feature-branch▮/worktrees/parent--branch" ]]

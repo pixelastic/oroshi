@@ -5,16 +5,14 @@ setup() {
   export MOCK_OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
   mkdir -p "$MOCK_OROSHI_WORKTREES_DIR"
 
-  # Isolate from the project registry, whose catch-all "root" project (path /)
-  # would otherwise name every repo "root"
-  project-name() { :; }
-  bats_mock project-name
+  # Mocked OROSHI_WORKTREES_DIR breaks worktree detection, which would fall
+  # back to the main checkout's functions instead of this worktree's
+  bats_disable_worktree_aware
 }
 
 # mock_generate_syntax <exitCode>
 # Points OROSHI_ROOT at a temp dir holding a fake generate-syntax script that
 # logs its call, then exits with <exitCode>
-# Requires bats_disable_worktree_aware, so chpwd keeps the mocked OROSHI_ROOT
 mock_generate_syntax() {
   local syntaxDirectory="$BATS_TMP_DIR/oroshi/tools/ai/claude/config/syntax"
   bats_mock_env OROSHI_ROOT "$BATS_TMP_DIR/oroshi"
@@ -91,7 +89,6 @@ mock_generate_syntax() {
 @test "calls git-dependencies-update without origin commit" {
   git-dependencies-update() { echo "called:$*" >> "$BATS_TMP_DIR/dep-update-calls"; }
   bats_mock git-dependencies-update
-  bats_disable_worktree_aware
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/deps"
   [[ "$status" -eq 0 ]]
   [[ -f "$BATS_TMP_DIR/dep-update-calls" ]]
@@ -104,7 +101,6 @@ mock_generate_syntax() {
   git-worktree-is-oroshi() { return 0; }
   prose-build() { echo "called" >> "$BATS_TMP_DIR/prose-build-calls"; }
   bats_mock git-dependencies-update git-worktree-is-oroshi prose-build
-  bats_disable_worktree_aware
   mock_generate_syntax 0
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/prose"
@@ -117,7 +113,6 @@ mock_generate_syntax() {
   git-worktree-is-oroshi() { return 1; }
   prose-build() { echo "called" >> "$BATS_TMP_DIR/prose-build-calls"; }
   bats_mock git-dependencies-update git-worktree-is-oroshi prose-build
-  bats_disable_worktree_aware
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/not-oroshi"
   [[ "$status" -eq 0 ]]
@@ -129,7 +124,6 @@ mock_generate_syntax() {
   git-worktree-is-oroshi() { return 0; }
   prose-build() { :; }
   bats_mock git-dependencies-update git-worktree-is-oroshi prose-build
-  bats_disable_worktree_aware
   mock_generate_syntax 0
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/syntax"
@@ -142,7 +136,6 @@ mock_generate_syntax() {
   git-worktree-is-oroshi() { return 1; }
   prose-build() { :; }
   bats_mock git-dependencies-update git-worktree-is-oroshi prose-build
-  bats_disable_worktree_aware
   mock_generate_syntax 0
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/not-oroshi"
@@ -155,7 +148,6 @@ mock_generate_syntax() {
   git-worktree-is-oroshi() { return 0; }
   prose-build() { :; }
   bats_mock git-dependencies-update git-worktree-is-oroshi prose-build
-  bats_disable_worktree_aware
   mock_generate_syntax 1
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/syntax-fail"

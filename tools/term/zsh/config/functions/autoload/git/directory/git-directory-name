@@ -6,22 +6,36 @@
 setopt local_options err_return extendedglob
 
 local targetPath="${1:-$PWD}"
+local repoRoot="$(git-worktree-main "$targetPath")"
+local projectName="$(project-name "$targetPath")"
 
-# Registered project name
-local name="$(project-name "$targetPath")"
-if [[ "$name" != "" ]]; then
-  echo "$name"
+# Directory isn't a git repo, so the name is the project key
+# Note: if no project key, then it returns an empty string, and it's ok
+if [[ "$repoRoot" == "" ]]; then
+  echo "$projectName"
   return 0
 fi
 
+# If it's a known project, and its path matches the git repo root, then return
+# the project name
+if [[ "$projectName" != "" ]]; then
+  local projectPath="$(project-path "$projectName")"
+  if [[ "${projectPath}" == "${repoRoot}" ]]; then
+    echo "$projectName"
+    return 0
+  fi
+  # If the project path is not the same as the git repo root, it's probably
+  # because we are in a catch-all project, like / or ~, so we move to the next
+  # fallback
+fi
+
 # GitHub remote name
-name="$(git-github-project-name "$targetPath")" || true
-if [[ "$name" != "" ]]; then
-  echo "$name"
+local githubName="$(git-github-project-name "$targetPath")"
+if [[ "$githubName" != "" ]]; then
+  echo "$githubName"
   return 0
 fi
 
 # Directory basename with leading dots stripped (main repo, not worktree)
-local root="$(git-worktree-main "$targetPath")"
-local basename="${root:t}"
+local basename="${repoRoot:t}"
 echo "${basename##.#}"
