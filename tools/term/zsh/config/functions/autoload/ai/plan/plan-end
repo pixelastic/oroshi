@@ -1,4 +1,5 @@
 # Commit plan files to the plan's own git repo, then stop claude
+# Inside the plan's Worktree, queues `claude '/ralph <planDir>'` to run next
 # Usage:
 # $ plan-end <planDir>
 setopt local_options err_return
@@ -18,8 +19,13 @@ git-file-add --repo "$planDirectory"
 local commitMessage="$(git-commit-message "$planDirectory")"
 git-commit-create --repo "$planDirectory" "$commitMessage"
 
-# Notify user that plan is done
-kitty-notify --sound notification.mp3
+local worktreePath="$(plan-worktree "$planDirectory")"
+local contextRoot="$(context-root)"
 
-# Stop claude
+# Planning inside the Worktree: hand off to ralph in the same window
+if [[ "$worktreePath" != "" && "$contextRoot" == "$worktreePath" ]]; then
+  claude-stop --next "claude ${(qq):-/ralph $planDirectory}"
+  return 0
+fi
+
 claude-stop
