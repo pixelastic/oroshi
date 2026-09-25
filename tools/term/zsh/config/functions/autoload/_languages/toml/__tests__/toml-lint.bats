@@ -53,6 +53,19 @@ setup() {
   [[ "$output" == *"toml/comma"* ]]
 }
 
+@test "stylish output outside a git repo: paths relative to current directory" {
+  local file="$BATS_TMP_DIR/bad.toml"
+  echo 'key = "value"' > "$file"
+
+  printf '%s' '[{"filePath":"'"$file"'","messages":[{"ruleId":"toml/comma","severity":2,"message":"Trailing comma","line":1,"column":8}],"errorCount":1,"warningCount":0}]' > "$BATS_TMP_DIR/eslint_json_output"
+
+  bats_run_zsh "cd $BATS_TMP_DIR && toml-lint bad.toml"
+  [[ "$status" -eq 1 ]]
+  [[ "${#lines[@]}" -eq 2 ]]
+  [[ "${lines[0]}" == "bad.toml" ]]
+  [[ "${lines[1]}" == "  1:8  error  Trailing comma  toml/comma" ]]
+}
+
 @test "multiple files: violations grouped by file" {
   local file1="$BATS_TMP_DIR/a.toml"
   local file2="$BATS_TMP_DIR/b.toml"

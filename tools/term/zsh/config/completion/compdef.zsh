@@ -320,6 +320,9 @@ compdef "_files -g '*.vue'" \
 # ZSH {{{
 compdef _bats-test \
   bats-test
+compdef "_files -g '*.zsh'" \
+  zsh-fix \
+  zsh-lint
 # }}}
 
 unfunction compdef-glob-from-group

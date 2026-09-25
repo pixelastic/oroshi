@@ -69,5 +69,6 @@ if [[ $isJson == 1 ]]; then
 fi
 
 # Stylish mode (default): pipe to json2stylish
-local projectRoot="$(git-directory-root 2>/dev/null || pwd)"
+# Paths relative to git root (or $PWD outside a repo)
+local projectRoot="$(git-directory-root)"
 printf '%s' "$result" | json2stylish --root "$projectRoot/"

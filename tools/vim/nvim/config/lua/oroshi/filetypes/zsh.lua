@@ -31,7 +31,7 @@ end
 M.configureLinter = function(lint)
   lint.linters["zsh-lint"] = {
     cmd = "bin-zsh",
-    args = { "zsh-lint" },
+    args = { "zsh-lint", "--json" },
     stdin = false,
     ignore_exitcode = true,
     parser = M.lintParser,

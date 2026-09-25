@@ -100,7 +100,7 @@ setup() {
   is-zsh() { return 0; }
   zsh-lint() {
     printf '[{"file":"%s","line":2,"column":1,"code":"noGroupedLocals","message":"group locals"}]' \
-      "$2"
+      "${@: -1}"
   }
   bats_mock is-zsh zsh-lint
 
@@ -125,7 +125,7 @@ setup() {
   [[ "$output" = "✔ All files are clean" ]]
 }
 
-@test "calls zsh-lint with --fix flag when dirty zsh files are found" {
+@test "calls zsh-lint with --fix and --json flags when dirty zsh files are found" {
   echo 'content' > "$BATS_GIT_DIR/script.zsh"
   bats_git add script.zsh
   bats_git commit --quiet -m "add script.zsh"
@@ -141,6 +141,7 @@ setup() {
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
   grep -q -- '--fix' "$BATS_TMP_DIR/.zsh-lint-args"
+  grep -q -- '--json' "$BATS_TMP_DIR/.zsh-lint-args"
 }
 
 # ─── JS ───────────────────────────────────────────────────────────────────────

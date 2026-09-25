@@ -55,6 +55,21 @@ setup() {
   [[ "$output" == *"Premature end of data in tag root line 1"* ]]
 }
 
+@test "stylish output outside a git repo: paths relative to current directory" {
+  local file="$BATS_TMP_DIR/bad.xml"
+  printf '<root>\n' > "$file"
+
+  printf '%s\n' "$file:2: parser error : Premature end of data in tag root line 1" \
+    "" "^" > "$BATS_TMP_DIR/xmllint_stderr"
+  printf '3' > "$BATS_TMP_DIR/xmllint_exit"
+
+  bats_run_zsh "cd $BATS_TMP_DIR && xml-lint bad.xml"
+  [[ "$status" -eq 1 ]]
+  [[ "${#lines[@]}" -eq 2 ]]
+  [[ "${lines[0]}" == "bad.xml" ]]
+  [[ "${lines[1]}" == "  2:0  error  Premature end of data in tag root line 1  parser-error" ]]
+}
+
 @test "--json with malformed XML: unified JSON with all fields, exits 1" {
   local file="$BATS_TMP_DIR/bad.xml"
   printf '<root>\n' > "$file"

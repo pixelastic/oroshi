@@ -1,0 +1,42 @@
+# Fuzzy pick a ZSH file (.zsh files and autoload functions)
+# Usage:
+# $ fzf-zsh-files                  # Interactive search
+# $ fzf-zsh-files --source         # Print ZSH files
+# $ fzf-zsh-files --options        # Print FZF options (one per line)
+# $ fzf-zsh-files --postprocess    # Read selection from stdin, print filepath
+setopt local_options err_return
+source "${functions_source[$0]:A:h}/__lib/init.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-colorize-path.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-options-files.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-fs-preview.zsh"
+
+SEARCH_PATH="$(git-directory-root)"
+# Extension-less files anywhere under functions/autoload/
+AUTOLOAD_PATTERN='/functions/autoload/(.*/)?[^/.]+$'
+
+function fzf-source() {
+  local items="$({
+    fd \
+      --type file \
+      --extension zsh \
+      --base-directory "$SEARCH_PATH"
+    fd \
+      --type file \
+      --full-path \
+      --base-directory "$SEARCH_PATH" \
+      "$AUTOLOAD_PATTERN"
+  } | sort-filepaths)"
+  [[ "$items" == "" ]] && return 0
+
+  local item
+  for item in ${(f)items}; do
+    fzf-colorize-path "$item" "${SEARCH_PATH}/${item}"
+    echo "${SEARCH_PATH}/${item}▮${REPLY}"
+  done
+}
+
+function fzf-options() {
+  fzf-options-files "bin-zsh fzf-zsh-files" "$SEARCH_PATH"
+}
+
+fzf-dispatch

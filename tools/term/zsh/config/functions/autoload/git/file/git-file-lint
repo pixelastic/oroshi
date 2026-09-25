@@ -114,7 +114,7 @@ function displayLintText() {
 }
 
 if [[ "$results[zsh-files]" != "" ]]; then
-  displayLintJson --header "ZSH" "$(zsh-lint --fix ${=results[zsh-files]})"
+  displayLintJson --header "ZSH" "$(zsh-lint --fix --json ${=results[zsh-files]})"
 fi
 
 if [[ "$results[bats-files]" != "" ]]; then
