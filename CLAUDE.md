@@ -1,6 +1,6 @@
 ## Commands
 
-- **Testing zsh:** Run `bats <filepath>`
+- **Testing zsh:** Run `zsh-test <filepath>`
 - **Testing js:** Run `yarn run test <filepath>`
 - **Testing python:** Run `python-test <filepath>`
 - **Testing go:** Run `go-test <filepath>`

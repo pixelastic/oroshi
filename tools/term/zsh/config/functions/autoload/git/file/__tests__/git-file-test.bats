@@ -2,6 +2,8 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  # Keep mocks active when cd-ing into the temp repo
+  bats_disable_worktree_aware
   # Default to non-Claude context
   is-claude() { return 1; }
   bats_mock is-claude
@@ -26,44 +28,89 @@ setup() {
   [[ "$output" = "" ]]
 }
 
-# ─── BATS ─────────────────────────────────────────────────────────────────────
+# ─── ZSH ──────────────────────────────────────────────────────────────────────
 
-@test "exits 0 when dirty file has a test and bats passes" {
+@test "exits 0 when dirty ZSH file has a test and zsh-test passes" {
   echo 'content' > "$BATS_GIT_DIR/script.zsh"
   bats_git add script.zsh
   bats_git commit --quiet -m "add script.zsh"
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
-  zsh-test-path() { return 0; }
-  bats() { return 0; }
-  bats_mock zsh-test-path bats
+  zsh-test-path() { echo "$BATS_GIT_DIR/__tests__/script.bats"; }
+  zsh-test() { return 0; }
+  bats_mock zsh-test-path zsh-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
 }
 
-@test "exits non-zero when bats tests fail" {
+@test "exits non-zero when zsh-test fails" {
   echo 'content' > "$BATS_GIT_DIR/script.zsh"
   bats_git add script.zsh
   bats_git commit --quiet -m "add script.zsh"
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
-  zsh-test-path() { echo "path"; }
-  bats() { return 1; }
-  bats_mock zsh-test-path bats
+  zsh-test-path() { echo "$BATS_GIT_DIR/__tests__/script.bats"; }
+  zsh-test() { return 1; }
+  bats_mock zsh-test-path zsh-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 1 ]]
 }
 
-@test "exits 0 when no dirty file has an associated test" {
+@test "passes dirty ZSH source files to zsh-test" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  bats_git add script.zsh
+  bats_git commit --quiet -m "add script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
+
+  zsh-test-path() { echo "$BATS_GIT_DIR/__tests__/script.bats"; }
+  zsh-test() { echo "$@" > "$BATS_TMP_DIR/zsh-test-calls.txt"; }
+  bats_mock zsh-test-path zsh-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/zsh-test-calls.txt")" = "$BATS_GIT_DIR/script.zsh" ]]
+}
+
+@test "passes dirty bats files to zsh-test" {
+  mkdir -p "$BATS_GIT_DIR/__tests__"
+  echo '@test "ok" { true; }' > "$BATS_GIT_DIR/__tests__/script.bats"
+  bats_git add __tests__/script.bats
+  bats_git commit --quiet -m "add script.bats"
+  echo '# changed' >> "$BATS_GIT_DIR/__tests__/script.bats"
+
+  zsh-test() { echo "$@" > "$BATS_TMP_DIR/zsh-test-calls.txt"; }
+  bats_mock zsh-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/zsh-test-calls.txt")" = "$BATS_GIT_DIR/__tests__/script.bats" ]]
+}
+
+@test "does not call zsh-test for non-ZSH files" {
+  echo 'content' > "$BATS_GIT_DIR/README.md"
+  bats_git add README.md
+  bats_git commit --quiet -m "add README.md"
+  echo 'changed' >> "$BATS_GIT_DIR/README.md"
+
+  zsh-test-path() { echo "$BATS_GIT_DIR/__tests__/README.bats"; }
+  zsh-test() { return 1; }
+  bats_mock zsh-test-path zsh-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+}
+
+@test "exits 0 when no dirty ZSH file has an associated test" {
   echo 'content' > "$BATS_GIT_DIR/script.zsh"
   bats_git add script.zsh
   bats_git commit --quiet -m "add script.zsh"
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
   zsh-test-path() { printf ''; }
-  bats_mock zsh-test-path
+  zsh-test() { return 1; }
+  bats_mock zsh-test-path zsh-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
@@ -178,7 +225,7 @@ setup() {
 
 # ─── COMBINED ─────────────────────────────────────────────────────────────────
 
-@test "runs both yarn and bats when both types are dirty" {
+@test "runs both yarn and zsh-test when both types are dirty" {
   echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
   echo 'content' > "$BATS_GIT_DIR/script.zsh"
   bats_git add script.js script.zsh
@@ -187,17 +234,18 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
   zsh-test-path() { echo "path"; }
-  yarn() { return 0; }
-  bats() { return 0; }
-  bats_mock zsh-test-path yarn bats
+  yarn() { echo "yarn" >> "$BATS_TMP_DIR/calls.txt"; }
+  zsh-test() { echo "zsh-test" >> "$BATS_TMP_DIR/calls.txt"; }
+  bats_mock zsh-test-path yarn zsh-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" = $'yarn\nzsh-test' ]]
 }
 
 # ─── CLAUDE CONTEXT ──────────────────────────────────────────────────────────
 
-@test "prefixes bats with rtk bin-zsh when is-claude" {
+@test "prefixes zsh-test with rtk bin-zsh when is-claude" {
   echo 'content' > "$BATS_GIT_DIR/script.zsh"
   bats_git add script.zsh
   bats_git commit --quiet -m "add script.zsh"
@@ -210,7 +258,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/rtk-calls.txt")" == bin-zsh\ bats* ]]
+  [[ "$(cat "$BATS_TMP_DIR/rtk-calls.txt")" == bin-zsh\ zsh-test* ]]
 }
 
 @test "prefixes yarn run test with rtk bin-zsh when is-claude" {

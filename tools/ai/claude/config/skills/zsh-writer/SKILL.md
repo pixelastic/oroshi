@@ -29,7 +29,7 @@ Write ZSH code that is consistent with my conventions.
 
 Write a failing test for the bug or missing feature you want to implement.
 
-- Run `bats <test_filepath>` to run the tests
+- Run `zsh-test <test_filepath>` to run the tests
 - See [Testing](./references/testing.md) for full examples and best practices
 
 ```bash
@@ -63,7 +63,7 @@ setup() {
 Write the simplest code that makes the test pass.
 No patterns yet — just correct behavior.
 
-- Run `bats <test_filepath>` to run the tests
+- Run `zsh-test <test_filepath>` to run the tests
 
 ### Step 4 — Refactor
 
@@ -127,7 +127,7 @@ done
 table $output
 ```
 
-- Run `bats <test_filepath>` to confirm tests still pass
+- Run `zsh-test <test_filepath>` to confirm tests still pass
 
 ### Step 5 — Lint the file
 

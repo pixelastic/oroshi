@@ -1,0 +1,21 @@
+# Run BATS tests for the given ZSH files, BATS files or directories
+# Usage:
+# $ zsh-test ./misc/slugify                  # Run misc/__tests__/slugify.bats
+# $ zsh-test ./misc/__tests__/slugify.bats   # Run the test file directly
+# $ zsh-test file1.zsh file2.zsh             # Multiple files (deduplicated)
+# $ zsh-test ./misc/                         # Expand directory, run all its tests
+setopt local_options err_return
+
+# No arguments provided
+[[ $# -eq 0 ]] && return 1
+
+# Expand directories, map ZSH sources and BATS files to their test files
+local -aU testFiles=(
+  ${(f)"$(file-expand --filter is-zsh --map zsh-test-path "$@")"}
+  ${(f)"$(file-expand --filter is-bats --map zsh-test-path "$@")"}
+)
+
+# No test files found
+[[ ${#testFiles[@]} -eq 0 ]] && return 0
+
+bats "${testFiles[@]}"

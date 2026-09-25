@@ -323,6 +323,8 @@ compdef _bats-test \
 compdef "_files -g '*.zsh'" \
   zsh-fix \
   zsh-lint
+compdef "_files -g '*.(zsh|bats)'" \
+  zsh-test
 # }}}
 
 unfunction compdef-glob-from-group

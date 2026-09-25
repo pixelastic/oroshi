@@ -27,6 +27,7 @@ function oroshi-ctrl-p-widget() {
     toml-fix fzf-toml-files
     zsh-lint fzf-zsh-files
     zsh-fix fzf-zsh-files
+    zsh-test fzf-zsh-tests
   )
 
   # Dispatch to context-aware picker based on last word in buffer

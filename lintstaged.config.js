@@ -1,12 +1,12 @@
 export default {
   // ZSH scripts
-  'scripts/bin/**/*': ['yarn run test:bats', 'yarn run lint:zsh'],
+  'scripts/bin/**/*': ['yarn precommit:test zsh', 'yarn precommit:lint zsh'],
   'tools/ai/claude/config/hooks/**/*': [
-    'yarn run test:bats',
-    'yarn run lint:zsh',
+    'yarn precommit:test zsh',
+    'yarn precommit:lint zsh',
   ],
-  'tools/term/zsh/config/**/*': ['yarn run test:bats'],
-  'tools/**/*': ['yarn run lint:zsh'],
+  'tools/term/zsh/config/**/*': ['yarn precommit:test zsh'],
+  'tools/**/*': ['yarn precommit:lint zsh'],
 
   // Bats test files
   '{**/*.bats,tools/term/bats/config/*}': ['yarn run lint:bats'],
@@ -31,7 +31,7 @@ export default {
 
   // JS Scripts
   '**/*.js': ['yarn run lint:fix --js', 'yarn run test --fail-fast --related'],
-  'scripts/yarn/**/*': ['yarn run lint:zsh'],
+  'scripts/yarn/**/*': ['yarn precommit:lint zsh'],
 
   // Vale profiles rebuild
   'tools/prose/vale/src/*.ini': 'yarn run prose-build',
