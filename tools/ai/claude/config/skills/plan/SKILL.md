@@ -37,12 +37,15 @@ Read [03-issues.md](./references/03-issues.md) and follow all sub-steps.
 
 ## Step 4 — End the planning session
 
-**Goal:** End the planning session and hand off to user.
+**Goal:** End the planning session and hand off to ralph.
 
-**Exit criterion:** user told to run ralph, `plan-end` called,
+**Exit criterion:** `plan-end <planDir>` called.
 
-1. Tell the user to run `ralph` to begin implementation.
-2. Run `plan-end <planDir>` — it stages all plan files, commits and exits claude.
+Run `plan-end <planDir>`. It:
+- commits all plan files
+- launches `/ralph <planDir>` in a fresh Claude session: same window if
+  already in the Worktree, otherwise a new Kitty tab
+- stops Claude
 
 Do NOT manually commit or ask for commit permission — `plan-end` handles staging
 and committing. Just run it.
@@ -65,4 +68,3 @@ and committing. Just run it.
 - [ ] Step 2 checklist complete (see [02-prd.md](./references/02-prd.md))
 - [ ] Step 3 checklist complete (see [03-issues.md](./references/03-issues.md))
 - [ ] `plan-end <planDir>` called
-- [ ] User told to run `/ralph <planDir>`
