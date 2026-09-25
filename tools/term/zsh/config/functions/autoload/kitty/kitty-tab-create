@@ -17,8 +17,9 @@ local cmd=${flagCmd[2]}
 
 # Prefix custom commands with bin-zsh so autoloaded functions are available
 # (kitty-remote launch spawns a process, not a zsh shell)
+# Split into shell words so quoted args stay whole: z splits, Q unquotes
 local launchCmd=(zsh)
-[[ "$cmd" != "" ]] && launchCmd=(bin-zsh ${=cmd})
+[[ "$cmd" != "" ]] && launchCmd=(bin-zsh ${(Q)${(z)cmd}})
 
 if [[ "$tabName" == "" ]]; then
   echo "Usage: kitty-tab-create <tab-name> [--focus] [--cwd <path>] [--cmd <command>]"

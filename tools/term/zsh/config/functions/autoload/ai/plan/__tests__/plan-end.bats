@@ -10,9 +10,9 @@ setup() {
 	mkdir -p "$MOCK_OROSHI_PLANS_DIR" "$MOCK_OROSHI_WORKTREES_DIR"
 }
 
-# Plan dir (optional name) as a git repo with an initial commit and a dirty file
+# Plan dir as a git repo with an initial commit and a dirty file
 _mock_plan_repo() {
-	local planDirectory="$MOCK_OROSHI_PLANS_DIR/${1:-repo--my-feature}"
+	local planDirectory="$MOCK_OROSHI_PLANS_DIR/repo--my-feature"
 	git init --initial-branch=main --quiet "$planDirectory"
 	git -C "$planDirectory" config user.email "bats@oroshi"
 	git -C "$planDirectory" config user.name "Bats"
@@ -24,9 +24,9 @@ _mock_plan_repo() {
 	echo "$planDirectory"
 }
 
-# Worktree (optional name) matching the plan dir, set as the current Context Root
+# Worktree matching the plan dir, set as the current Context Root
 _mock_in_worktree() {
-	local worktreeDirectory="$MOCK_OROSHI_WORKTREES_DIR/${1:-repo--my-feature}"
+	local worktreeDirectory="$MOCK_OROSHI_WORKTREES_DIR/repo--my-feature"
 	mkdir -p "$worktreeDirectory"
 	echo "$worktreeDirectory" > "$BATS_TMP_DIR/context-root.txt"
 }
@@ -89,30 +89,14 @@ _mock_side_effects() {
 
 # In-worktree case
 
-@test "in worktree: calls claude-stop with --next and the ralph command for the plan directory" {
+@test "in worktree: calls claude-stop with --next ralph" {
 	local planDirectory="$(_mock_plan_repo)"
 	_mock_in_worktree
 	_mock_side_effects
 
 	bats_run_zsh "plan-end $planDirectory"
 	[[ "$status" -eq 0 ]]
-	[[ "$(cat "$BATS_TMP_DIR/calls.txt")" == "claude-stop --next claude '/ralph $planDirectory'" ]]
-}
-
-@test "in worktree: queued ralph command survives quotes and spaces in the plan directory" {
-	local planName="repo--it's my-feat"
-	local planDirectory="$(_mock_plan_repo "$planName")"
-	_mock_in_worktree "$planName"
-	_mock_side_effects
-	claude-stop() { printf "%s\n" "$2" > "$BATS_TMP_DIR/next.txt"; }
-	bats_mock claude-stop
-
-	bats_run_zsh "plan-end ${planDirectory@Q}"
-	[[ "$status" -eq 0 ]]
-
-	# Re-parse the queued command: argument must round-trip untouched
-	bats_run_zsh "local -a words=(\${(z)\"\$(<$BATS_TMP_DIR/next.txt)\"}); print -r -- \${(Q)words[2]}"
-	[[ "$output" == "/ralph $planDirectory" ]]
+	[[ "$(cat "$BATS_TMP_DIR/calls.txt")" == "claude-stop --next ralph" ]]
 }
 
 @test "in worktree: does not create a Kitty tab" {
@@ -126,26 +110,87 @@ _mock_side_effects() {
 	[[ "$output" == "0" ]]
 }
 
-# Outside worktree case
+# Git Repo Main case
 
-@test "outside worktree: calls plain claude-stop" {
-	local planDirectory="$(_mock_plan_repo)"
-	_mock_side_effects
-
-	bats_run_zsh "plan-end $planDirectory"
-	[[ "$status" -eq 0 ]]
-	[[ "$(cat "$BATS_TMP_DIR/calls.txt")" == "claude-stop " ]]
+# Worktree on branch feat/my-feature, while the Context Root is the Git Repo Main
+_mock_in_main() {
+	local worktreeDirectory="$MOCK_OROSHI_WORKTREES_DIR/repo--my-feature"
+	git init --initial-branch=feat/my-feature --quiet "$worktreeDirectory"
+	git -C "$worktreeDirectory" -c user.email="bats@oroshi" -c user.name="Bats" \
+		commit --allow-empty --quiet --message="init"
+	echo "$BATS_TMP_DIR/main" > "$BATS_TMP_DIR/context-root.txt"
+	echo "$worktreeDirectory"
 }
 
-@test "outside worktree: calls plain claude-stop when Worktree exists elsewhere" {
+# Record each kitty-tab-create / claude-stop argument on its own line
+_mock_record_args() {
+	kitty-tab-create() {
+		echo "kitty-tab-create" >> "$BATS_TMP_DIR/calls.txt"
+		printf "%s\n" "$@" > "$BATS_TMP_DIR/tab-args.txt"
+	}
+	claude-stop() {
+		echo "claude-stop" >> "$BATS_TMP_DIR/calls.txt"
+		printf "%s\n" "$@" > "$BATS_TMP_DIR/stop-args.txt"
+	}
+	bats_mock kitty-tab-create claude-stop
+}
+
+@test "in main: creates a Kitty tab titled with the Branch Slug, focused, with cwd set to the Worktree" {
 	local planDirectory="$(_mock_plan_repo)"
-	mkdir -p "$MOCK_OROSHI_WORKTREES_DIR/repo--my-feature"
-	echo "$BATS_TMP_DIR/elsewhere" > "$BATS_TMP_DIR/context-root.txt"
+	local worktreeDirectory="$(_mock_in_main)"
 	_mock_side_effects
+	_mock_record_args
 
 	bats_run_zsh "plan-end $planDirectory"
 	[[ "$status" -eq 0 ]]
-	[[ "$(cat "$BATS_TMP_DIR/calls.txt")" == "claude-stop " ]]
+
+	local -a tabArgs
+	mapfile -t tabArgs < "$BATS_TMP_DIR/tab-args.txt"
+	[[ "${tabArgs[0]}" == "feat_my-feature" ]]
+	[[ " ${tabArgs[*]} " == *" --focus "* ]]
+	[[ " ${tabArgs[*]} " == *" --cwd $worktreeDirectory "* ]]
+}
+
+@test "in main: the new tab's command runs ralph in an interactive zsh that stays open" {
+	local planDirectory="$(_mock_plan_repo)"
+	_mock_in_main > /dev/null
+	_mock_side_effects
+	_mock_record_args
+
+	bats_run_zsh "plan-end $planDirectory"
+	[[ "$status" -eq 0 ]]
+
+	# --cmd value follows the --cmd flag
+	local tabCommand="$(grep --after-context=1 "^--cmd$" "$BATS_TMP_DIR/tab-args.txt" | tail -n 1)"
+	[[ "$tabCommand" == "zsh -ic 'ralph; exec zsh'" ]]
+}
+
+@test "in main: calls claude-stop with --next and a message naming the tab" {
+	local planDirectory="$(_mock_plan_repo)"
+	_mock_in_main > /dev/null
+	_mock_side_effects
+	_mock_record_args
+
+	bats_run_zsh "plan-end $planDirectory"
+	[[ "$status" -eq 0 ]]
+
+	[[ "$(head -n 1 "$BATS_TMP_DIR/stop-args.txt")" == "--next" ]]
+	tail -n +2 "$BATS_TMP_DIR/stop-args.txt" > "$BATS_TMP_DIR/next.txt"
+
+	# Queued command prints the message, apostrophe included
+	bats_run_zsh "eval \"\$(<$BATS_TMP_DIR/next.txt)\""
+	[[ "$output" == "Plan lancé dans l'onglet feat_my-feature" ]]
+}
+
+@test "in main: creates the tab before stopping claude" {
+	local planDirectory="$(_mock_plan_repo)"
+	_mock_in_main > /dev/null
+	_mock_side_effects
+	_mock_record_args
+
+	bats_run_zsh "plan-end $planDirectory"
+	[[ "$status" -eq 0 ]]
+	[[ "$(cat "$BATS_TMP_DIR/calls.txt")" == $'kitty-tab-create\nclaude-stop' ]]
 }
 
 # Notification

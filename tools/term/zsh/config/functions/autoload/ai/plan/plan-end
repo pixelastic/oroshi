@@ -1,5 +1,6 @@
 # Commit plan files to the plan's own git repo, then stop claude
-# Inside the plan's Worktree, queues `claude '/ralph <planDir>'` to run next
+# Inside the plan's Worktree, queues `ralph` to run next
+# From the Git Repo Main, opens the Worktree in a new Kitty tab running ralph
 # Usage:
 # $ plan-end <planDir>
 setopt local_options err_return
@@ -23,9 +24,18 @@ local worktreePath="$(plan-worktree "$planDirectory")"
 local contextRoot="$(context-root)"
 
 # Planning inside the Worktree: hand off to ralph in the same window
-if [[ "$worktreePath" != "" && "$contextRoot" == "$worktreePath" ]]; then
-  claude-stop --next "claude ${(qq):-/ralph $planDirectory}"
+if [[ "$contextRoot" == "$worktreePath" ]]; then
+  claude-stop --next "ralph"
   return 0
 fi
 
-claude-stop
+# Planning from the Git Repo Main: hand off to ralph in a new Worktree tab
+# Interactive zsh inherits .zshrc env vars; exec zsh keeps the tab alive after
+local tabTitle="$(git-branch-slug --repo "$worktreePath")"
+kitty-tab-create \
+  "$tabTitle" \
+  --focus \
+  --cwd "$worktreePath" \
+  --cmd "zsh -ic 'ralph; exec zsh'"
+
+claude-stop --next "print ${(qq):-Plan lancé dans l'onglet $tabTitle}"
