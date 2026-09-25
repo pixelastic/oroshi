@@ -1,5 +1,6 @@
 # Hook orchestration
 autoload -Uz add-zsh-hook
+autoload -Uz add-zle-hook-widget
 
 # Definitions {{{
 source ${0:A:h}/aliases.zsh
@@ -9,6 +10,7 @@ source ${0:A:h}/git-env.zsh
 source ${0:A:h}/prompt-populate.zsh
 source ${0:A:h}/slow.zsh
 source ${0:A:h}/chpwd.zsh
+source ${0:A:h}/zsh-queue.zsh
 # }}}
 
 # precmd {{{
@@ -28,4 +30,8 @@ add-zsh-hook preexec oroshi-aliases-preexec # must be last
 
 # chpwd {{{
 add-zsh-hook chpwd oroshi-chpwd
+# }}}
+
+# line-init {{{
+add-zle-hook-widget line-init oroshi-zsh-queue-line-init
 # }}}

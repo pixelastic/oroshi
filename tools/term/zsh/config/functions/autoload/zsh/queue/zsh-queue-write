@@ -1,0 +1,20 @@
+# Queue one command for the current Kitty window's zsh to run at its next prompt
+# Last write wins: any previously queued command is replaced
+# Usage:
+# $ zsh-queue-write "echo hello"   # Run "echo hello" at the next prompt
+setopt local_options err_return
+
+local queuedCommand="$1"
+
+# Nothing to queue
+if [[ "$queuedCommand" == "" ]]; then
+  echoerr "Usage: zsh-queue-write <command>"
+  return 1
+fi
+
+# Not in a Kitty window, no prompt to run it in
+[[ "$KITTY_WINDOW_ID" == "" ]] && return 0
+
+local queueFile="${OROSHI_TMP_FOLDER}/zsh-queue/${KITTY_WINDOW_ID}"
+mkdir -p "${queueFile:h}"
+print -r -- "$queuedCommand" >"$queueFile"

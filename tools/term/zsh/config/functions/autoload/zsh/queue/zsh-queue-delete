@@ -1,0 +1,11 @@
+# Remove the command queued for the current Kitty window
+# Usage:
+# $ zsh-queue-delete   # Succeeds even if nothing is queued
+setopt local_options err_return
+
+# Not in a Kitty window, nothing can be queued
+[[ "$KITTY_WINDOW_ID" == "" ]] && return 0
+
+local queueFile="${OROSHI_TMP_FOLDER}/zsh-queue/${KITTY_WINDOW_ID}"
+
+rm --force "$queueFile"

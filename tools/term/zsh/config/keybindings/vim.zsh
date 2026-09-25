@@ -26,7 +26,7 @@ bindkey -M viins "" vi-cmd-mode
 bindkey -M vicmd "i" vi-insert
 
 # Vim cursor {{{
-function zle-line-finish {
+function zle-line-finish() {
   _cursor-ins
 }
 zle -N zle-line-finish
@@ -38,8 +38,13 @@ function zle-keymap-select() {
   fi
 }
 zle -N zle-keymap-select
-zle-line-init() {
+# Registered through add-zle-hook-widget so other line-init widgets can coexist
+autoload -Uz add-zle-hook-widget
+# Debian's /etc/zsh/zshrc defines a zle-line-init that enables keypad mode
+# (smkx), changing Home/End keycodes. Drop it so it's not adopted as a hook.
+[[ "$widgets[zle-line-init]" == "user:zle-line-init" ]] && zle -D zle-line-init
+function oroshi-vim-line-init() {
   zle vi-insert
   _cursor-ins
 }
-zle -N zle-line-init
+add-zle-hook-widget line-init oroshi-vim-line-init
