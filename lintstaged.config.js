@@ -43,4 +43,8 @@ export default {
     'yarn run colors-build-and-stage',
   'tools/vim/nvim/config/lua/oroshi/colorscheme/syntax.lua':
     'yarn run colors-build-and-stage',
+
+  // Claude Code syntax colors patch (binary is not committed, nothing to stage)
+  'tools/ai/claude/config/syntax/**/*':
+    './tools/ai/claude/config/syntax/generate-syntax',
 };

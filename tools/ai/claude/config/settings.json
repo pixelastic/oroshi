@@ -76,7 +76,7 @@
   "preferredNotifChannel": "notifications_disabled",
   "skipAutoPermissionPrompt": true,
   "syncClaudeAiSkills": false,
-  "theme": "dark",
+  "theme": "custom:oroshi",
   "tui": "default",
   "voiceEnabled": false
 }

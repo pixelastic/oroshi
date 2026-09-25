@@ -407,6 +407,7 @@
   "strings",
   "studio-pack-generator",
   "stylelint",
+  "stylua",
   "svg2png",
   "svg-lint",
   "systemctl",

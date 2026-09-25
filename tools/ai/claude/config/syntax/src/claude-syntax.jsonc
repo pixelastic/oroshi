@@ -1,0 +1,52 @@
+// Colors patched into the Claude Code binary, as color names from colors.jsonc
+{
+  // Diff line number and +/- marker, same as the git-file-watch gutter
+  "diff": {
+    "added": "green-7",
+    "removed": "red-8"
+  },
+
+  // highlight.js scope used by Claude Code
+  // Scopes not listed here keep their original Claude color
+  "scopes": {
+    "keyword": "keyword",
+    // const, let, function, class, etc
+    "_storage": "keyword",
+    // console, Math, parseInt, etc
+    "built_in": "variable",
+    "type": "variable-type",
+    // true, false, null
+    "literal": "boolean",
+    "number": "number",
+    "string": "string",
+    "regexp": "string",
+    // ${} in template strings
+    "subst": "variable",
+    "symbol": "constant",
+    "class": "variable-type",
+    "function": "function",
+    "title": "function",
+    "title.function": "function",
+    "title.class": "variable-type",
+    "title.class.inherited": "variable-type",
+    "params": "variable",
+    "comment": "comment",
+    // @param, @returns, etc
+    "doctag": "comment",
+    // shebang, 'use strict', #include, decorators
+    "meta": "orange",
+    "tag": "variable-type",
+    "name": "variable-type",
+    // JSON/YAML keys
+    "attr": "key",
+    "attribute": "key",
+    "variable": "variable",
+    // this, self
+    "variable.language": "variable",
+    "property": "key",
+    "operator": "punctuation",
+    "punctuation": "punctuation",
+    // Markdown headings
+    "section": "purple-3"
+  }
+}

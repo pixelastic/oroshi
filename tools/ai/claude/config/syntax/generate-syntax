@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+# Patch the Claude Code binary so its syntax highlighting (diffs and code
+# blocks) uses our colors (./src/claude-syntax.jsonc) instead of the
+# hardcoded Monokai ones.
+# Must be re-run after each Claude Code update.
+# Usage:
+# $ tools/ai/claude/config/syntax/generate-syntax
+set -e
+
+local currentDir=${0:a:h}
+local binaryPath="${OROSHI_ROOT}/node_modules/.bin/claude"
+local colorsPath="${OROSHI_ROOT}/tools/term/zsh/config/theming/dist/colors.json"
+
+# Nothing to patch if claude is not installed
+if [[ ! -e "$binaryPath" ]]; then
+  echo "✘ No Claude Code binary at $binaryPath"
+  exit 1
+fi
+
+# Patch the real file, not the yarn symlink
+node \
+  "$currentDir/src/main.js" \
+  --binary "${binaryPath:A}" \
+  --colors "$colorsPath"

@@ -2,10 +2,21 @@ local M = {}
 
 M.onInit = function()
   -- Regenerate configs that uses ENV variables on save
-  local function executeCommand(command)
-    return function()
+  -- Accepts a list of commands, run one after the other as F.run is async
+  local function executeCommands(commands)
+    if type(commands) == "string" then
+      commands = { commands }
+    end
+
+    -- Run each command until one fails or they all succeed
+    local function runInSequence(index)
+      local command = commands[index]
       F.run(command, {
         onSuccess = function()
+          if index < #commands then
+            runInSequence(index + 1)
+            return
+          end
           F.info("File regenerated")
           vim.cmd("checktime")
         end,
@@ -15,28 +26,42 @@ M.onInit = function()
         end,
       })
     end
+
+    return function()
+      runInSequence(1)
+    end
   end
 
   -- JSONC source files
-  F.onWrite("*theming/src/colors.jsonc", executeCommand("colors-reload"))
-  F.onWrite("*theming/src/icons.jsonc", executeCommand("colors-reload"))
-  F.onWrite("*theming/src/filetypes.jsonc", executeCommand("colors-reload"))
-  F.onWrite("*theming/src/projects.jsonc", executeCommand("colors-reload"))
+  F.onWrite("*theming/src/colors.jsonc", executeCommands("colors-reload"))
+  F.onWrite("*theming/src/icons.jsonc", executeCommands("colors-reload"))
+  F.onWrite("*theming/src/filetypes.jsonc", executeCommands("colors-reload"))
+  F.onWrite("*theming/src/projects.jsonc", executeCommands("colors-reload"))
 
   -- Build scripts
-  F.onWrite("*autoload/colors/colors-build", executeCommand("colors-reload"))
-  F.onWrite("*autoload/icons/icons-build", executeCommand("colors-reload"))
-  F.onWrite("*autoload/filetypes/filetypes-build", executeCommand("colors-reload"))
-  F.onWrite("*autoload/project/projects-build", executeCommand("colors-reload"))
+  F.onWrite("*autoload/colors/colors-build", executeCommands("colors-reload"))
+  F.onWrite("*autoload/icons/icons-build", executeCommands("colors-reload"))
+  F.onWrite("*autoload/filetypes/filetypes-build", executeCommands("colors-reload"))
+  F.onWrite("*autoload/project/projects-build", executeCommands("colors-reload"))
 
-  F.onWrite("*tools/prose/vale/src/*.ini", executeCommand("prose-build")) -- Vale
+  -- Vale
+  F.onWrite("*tools/prose/vale/src/*.ini", executeCommands("prose-build")) -- Vale
 
-  F.onWrite("*tools/cli/bat/config/src/oroshi.xml", executeCommand("$OROSHI_ROOT/tools/cli/bat/config/generate-theme")) -- Bat
-  F.onWrite("*tools/cli/rg/config/src/rgrc.conf", executeCommand("$OROSHI_ROOT/tools/cli/rg/config/generate-config")) -- Rg
-  F.onWrite("*tools/git/git/config/src/gitconfig", executeCommand("$OROSHI_ROOT/tools/git/git/config/generate-config")) -- Git
-  F.onWrite("*tools/git/hunk/config/src/config.toml", executeCommand("$OROSHI_ROOT/tools/git/hunk/config/generate-config")) -- Hunk
-  F.onWrite("*tools/term/kitty/config/colors.conf", executeCommand("colors-reload")) -- Kitty
-  F.onWrite("*colorscheme/syntax.lua", executeCommand("$OROSHI_ROOT/tools/vim/nvim/config/generate-syntax")) -- Syntax
+  -- Bat
+  F.onWrite("*tools/cli/bat/config/src/oroshi.xml", executeCommands("$OROSHI_ROOT/tools/cli/bat/config/generate-theme"))
+  -- Rg
+  F.onWrite("*tools/cli/rg/config/src/rgrc.conf", executeCommands("$OROSHI_ROOT/tools/cli/rg/config/generate-config"))
+  -- Git
+  F.onWrite("*tools/git/git/config/src/gitconfig", executeCommands("$OROSHI_ROOT/tools/git/git/config/generate-config"))
+  -- Kitty
+  F.onWrite("*tools/term/kitty/config/colors.conf", executeCommands("colors-reload"))
+  -- Neovim
+  F.onWrite("*colorscheme/syntax.lua", executeCommands("$OROSHI_ROOT/tools/vim/nvim/config/generate-syntax"))
+  -- Claude
+  F.onWrite(
+    "*tools/ai/claude/config/syntax/*",
+    executeCommands("$OROSHI_ROOT/tools/ai/claude/config/syntax/generate-syntax")
+  )
 end
 
 return M

@@ -1,37 +1,40 @@
-I wanted to be able to change the colors used by Claude Code colorscheme
-(Monokai), but those are hardcoded and can't be tweaked.
+# Claude Code colors
 
-So I thought I could just load the `dark-ansi` theme and override the ANSI code
-(specific ANSI sequences allow you to do that) to my favored RGB colors.
+Claude Code colors come from two places: the UI theme (`/theme`), and the syntax
+highlighting (internal)
 
-I spent hours reverse-engineering the various ANSI code used for strings,
-keywords, etc and then realized a major limitation of the `dark-ansi` theme: the
-diff don't have colored background, which I find really helful.
+## UI theme
 
-So, all of that was for nothing, and I reverted to the default `dark` theme,
-with its ugly Monokai theme and I hope I'll get used to it eventually.
+We have `theme` defined to `custom:oroshi`, itself extending `dark`. The
+definition is `./src/oroshi.json` which gets translated to `./dist/oroshi.json`
+through `./generate-theme`.
 
-As to not lose my research, below are the various sequences to run to swap the
-ANSI default colors to my own before running Claude:
+## Syntax highlighting
 
-```zsh
-# Overwrite ANSI colors for the ansi-dark theme
-# Used by the syntax highlighter when using Write or Edit
-printf "\e]4;8;rgb:68/68/68\e\\"  # Comments
-printf "\e]4;10;rgb:31/82/ce\e\\" # Strings
-printf "\e]4;11;rgb:d6/9e/2e\e\\" # Functions
-printf "\e]4;12;rgb:31/82/ce\e\\" # Numbers
-printf "\e]4;13;rgb:38/a1/69\e\\" # Keywords
-printf "\e]4;14;rgb:f8/71/71\e\\" # Types
+Claude has no settings to change syntax highlighting; it's hardcoded in its
+binary. But we have `../syntax/generate-syntax` that patches the binary in
+place. It's fragile, can break on any update, but so far it's working.
 
-# Used when just displaying code in the interface
-printf "\e]4;1;rgb:31/82/ce\e\\" # Strings
-printf "\e]4;4;rgb:38/a1/69\e\\" # Keywords
-printf "\e]4;6;rgb:f8/71/71\e\\" # Types
+`../syntax/src/claude-syntax.jsonc` maps each highlight.js scope used by
+Claude Code, and the diff line number and marker colors, to a color name from
+`colors.jsonc`, like the bat theme does. So changing a color name (e.g.
+`keyword`) updates Claude along with the other tools.
 
-~/.oroshi/node_modules/.bin/claude "$@"
+### How the patch works
 
-# Reverts all colors
-printf "\e]104\e\\"
+The binary is a Bun standalone executable, embedding the source and the
+precompiled bytecode of each module.
 
-```
+1. Each table is replaced in place by one of the exact same length (padded with
+   spaces), so no offset in the binary moves
+2. The bytecode of the patched modules is removed, so Bun compiles them from
+   the patched source instead of running the original bytecode
+3. The result is written to a temporary file then renamed over the binary: it
+   can't be written while Claude is running, and yarn hardlinks it to its
+   global cache
+
+It is re-run by `colors-reload`, when saving the patch source in Neovim, and
+when committing it. It must be run manually after each Claude
+Code update, as `yarn install` restores the original binary. It fails if the
+patched code can't be found, which likely means a Claude Code update changed
+it.
