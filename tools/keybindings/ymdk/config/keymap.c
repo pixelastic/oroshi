@@ -83,7 +83,8 @@ typedef struct {
 #define TAB_PREV      LALT(KC_H)
 #define MESSAGE_PREVIOUS LALT(KC_K) /* Go to previous message */
 #define CHAT_BOTTOM KC_END /* Go to end of conversation */
-#define CHOICE_NEXT KC_DOWN /* Next choice in list */
+#define ARROW_DOWN KC_DOWN /* Next choice in list */
+#define ARROW_RIGHT KC_RIGHT /* Move cursor right */
 #define OK KC_ENT /* Validate choice*/
 #define ALT_TAB LALT(KC_TAB)  /* Switch window */
 #define CONFIG_SOUND_MODE C(G(KC_F8))
@@ -113,8 +114,8 @@ typedef struct {
 // VISUAL GRID {{{
 #define LAYER_NORMAL_KEYS \
     MODE_CONFIG, TAB_PREV, TAB_NEXT, \
-    MESSAGE_PREVIOUS, SPEECH_TO_TEXT, CHOICE_NEXT, \
-    CHAT_BOTTOM,   ALT_TAB,     OK
+    MESSAGE_PREVIOUS, SPEECH_TO_TEXT, ARROW_RIGHT, \
+    CHAT_BOTTOM, ARROW_DOWN, OK
 
 #define LAYER_CONFIG_KEYS \
     MODE_NORMAL, CONFIG_SOUND_MODE, CONFIG_AUTOSEND, \
@@ -146,11 +147,12 @@ Color get_color_for_key(uint16_t keycode, uint8_t layer) {
     if (keycode == TAB_PREV) return BLUE;
     if (keycode == TAB_NEXT) return BLUE;
 
-    if (keycode == MESSAGE_PREVIOUS) return BLUE;
+    if (keycode == MESSAGE_PREVIOUS) return ORANGE;
     if (keycode == SPEECH_TO_TEXT) return YELLOW;
-    if (keycode == CHOICE_NEXT) return MINT;
+    if (keycode == ARROW_RIGHT) return MINT;
 
-    if (keycode == CHAT_BOTTOM) return BLUE;
+    if (keycode == CHAT_BOTTOM) return ORANGE;
+    if (keycode == ARROW_DOWN) return MINT;
     if (keycode == ALT_TAB) return ORANGE;
     if (keycode == OK) return GREEN;
 
