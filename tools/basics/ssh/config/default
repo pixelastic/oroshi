@@ -12,4 +12,5 @@ Host            *
   Compression     yes
   # Re-use opened connection to a given server
   ControlMaster   auto
+  ControlPersist  30s
   ControlPath     ~/.ssh/master-%r@%h:%p

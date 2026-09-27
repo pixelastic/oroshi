@@ -57,3 +57,4 @@
 2026-09-25 Reduce height of Claude Code slash-command skills list (now dozens shown vs ~5 before, takes too much screen space) domain:Claude size:small id:slash-menu
 2026-09-25 Claude statusline: replace running agents list with colored dots showing each agent's status domain:Claude size:medium id:statusline-agents
 2026-09-27 Refactor hooks/preToolUse-Bash (~75 lines mixing concerns: solkan check, RTK rewrite, approval/reject counts, subagent detection) into separate functions or files domain:Claude size:medium id:pretooluse-refactor
+2026-09-27 Worktree merge output: color extensionless executable files with the executable color (currently white) domain:Git size:small id:worktree-exec-color
