@@ -7,6 +7,7 @@
 #
 # Env overrides for testing:
 #   CLAUDE_HOOKS_LOG_DIR  — defaults to /tmp/oroshi/claude/hooks
+#   CLAUDE_SESSIONS_DIR   — defaults to /tmp/oroshi/claude/sessions
 #
 # TEST CASES - This hook must handle:
 # - echo hello                           -> accept (allowlisted)
@@ -25,10 +26,14 @@ local logDir="${CLAUDE_HOOKS_LOG_DIR:-/tmp/oroshi/claude/hooks}"
 
 source "${hookDir}/preToolUse-Bash-solkan.zsh"
 source "${hookDir}/preToolUse-Bash-helper.zsh"
+source "${hookDir}/Bash-approval.zsh"
 
 # Parse input
 local inputJson="$(cat)"
 local inputCommand="$(json-get '.tool_input.command' <<<"$inputJson")"
+
+# Session id: scopes approval state (see Bash-approval.zsh)
+export CLAUDE_SESSION_ID="$(json-get '.session_id' <<<"$inputJson")"
 
 # Save input for debugging
 mkdir -p "$logDir"
@@ -58,5 +63,14 @@ local agentId="$(json-get '.agent_id' <<<"$inputJson")"
 
 # Commands rejected by solkan: display all of them
 local -a rejectedCommands=(${(@f)$(json-get '.allow.rejected' <<<"$solkanJson")})
+
+# Remember what the user is asked to approve, for postToolUse-Bash to count
+local toolUseId="$(json-get '.tool_use_id' <<<"$inputJson")"
+local -a pendingArgs=()
+for rejectedCommand in $rejectedCommands; do
+  pendingArgs+=(--command "$rejectedCommand")
+done
+approvalPendingAdd --tool-use-id "$toolUseId" "${pendingArgs[@]}"
+
 local rejectedList="${(j:, :)rejectedCommands}"
 askWithReason "$rejectedList" "$updatedInputCommand"

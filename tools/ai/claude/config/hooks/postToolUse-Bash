@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+# zsh-lint disable-file=missingSetE
+# Hook must always exit 0 and print nothing
+#
+# Count Bash approvals: a post event means the command ran, so the user said Yes
+# to every command recorded as approval pending for that tool use id
+# Registered for both PostToolUse (success) and PostToolUseFailure (non-zero exit)
+# Receives the rewritten command: never re-run Solkan here, correlate via tool_use_id
+#
+# Env overrides for testing:
+#   CLAUDE_SESSIONS_DIR — defaults to /tmp/oroshi/claude/sessions
+
+local hookDir="${0:A:h}"
+
+source "${hookDir}/Bash-approval.zsh"
+
+# Parse input
+local inputJson="$(cat)"
+local toolUseId="$(json-get '.tool_use_id' <<<"$inputJson")"
+
+# Session id: scopes approval state (see Bash-approval.zsh)
+export CLAUDE_SESSION_ID="$(json-get '.session_id' <<<"$inputJson")"
+
+# Each pending command of this tool use was approved by the user
+local -a approvedCommands=(${(@f)$(approvalPendingGet --tool-use-id "$toolUseId")})
+
+# Nothing pending (auto-approved or unknown tool use): leave state untouched
+[[ "${#approvedCommands}" -eq 0 ]] && exit 0
+
+for approvedCommand in $approvedCommands; do
+  approvalCountIncrement --command "$approvedCommand" >/dev/null
+done
+
+# User answered: this tool use is no longer pending
+approvalPendingRemove --tool-use-id "$toolUseId"
+
+exit 0

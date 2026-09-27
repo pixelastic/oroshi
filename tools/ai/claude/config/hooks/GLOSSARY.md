@@ -1,6 +1,6 @@
 # Claude Code Hooks
 
-Vocabulary for the `preToolUse-Bash` hook pipeline, which gates shell command execution through two sequential decision layers before producing a Claude Code response.
+Vocabulary for the Bash hook pipeline: `preToolUse-Bash` gates shell command execution through two sequential decision layers before producing a Claude Code response; `postToolUse-Bash` counts the approvals the user gave.
 
 ## Language
 
@@ -40,6 +40,18 @@ _Avoid_: auto-allow, silent-approve, bypass
 The hook output when Solkan **reject**s one or more commands. All rejected binary names are displayed, every time. The user sees a 2-option dialog (Allow / Deny). Maps to `permissionDecision: "ask"`.
 _Avoid_: ask user, escalate, warn-ask
 
+**approval pending**:
+The rejected commands of an **ask with reason** dialog, waiting for the user's answer. Removed once the user approves; entries for prompts the user denies are never cleaned.
+_Avoid_: asked commands, pending list, queue
+
+**approval count**:
+How many times, in the current session, the user approved a given rejected command. Stored in the session state under `.postToolUse.Bash.approvalCount`, keyed by the rejected command as Solkan reports it (binary name or path, e.g. `wget`, `/usr/bin/grep`).
+_Avoid_: accept count, allow count, approval score
+
+**tool use id**:
+The `tool_use_id` field of the hook input JSON. Identical in the pre and post events of the same Bash call — the only reliable way to correlate them, since post events receive the rewritten command.
+_Avoid_: call id, request id
+
 **subagent injection**:
 The mechanism by which the preToolUse-Bash hook detects that a command runs inside a subagent (`agent_id` present in hook input JSON) and prefixes the command with `export CLAUDE_IS_SUBAGENT=1;`. This is NOT a native Claude Code feature — it is a hook-level workaround because upstream closed requests for native subagent env vars (issues #35447, #36981, #46696).
 _Avoid_: subagent detection, agent env var, subagent flag
@@ -53,6 +65,9 @@ _Avoid_: subagent detection, agent env var, subagent flag
 - Each **allow** produces exactly one **auto-approve**; each **reject** produces exactly one **ask with reason** (a maybe — the human decides).
 - A **rewrite** produces zero or one `updatedInput` JSON field; an **ignore** produces none.
 - The human is the only actor who can say a final "no" — through the **ask with reason** dialog.
+- Each **ask with reason** writes one **approval pending** entry (`preToolUse-Bash`), keyed by its **tool use id** so the post event can find it; each **allow** writes none.
+- A post event (`PostToolUse` or `PostToolUseFailure`) for a **tool use id** means the user said Yes: `postToolUse-Bash` increments the **approval count** of every command in its **approval pending** entry, then removes that entry. When the user says No, no post event fires, so no count changes.
+- Session state lives in `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json`, owned by `Bash-approval.zsh`. Without a session id, nothing is recorded.
 
 ### The 4 cases
 

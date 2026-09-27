@@ -4,7 +4,7 @@ setup() {
   bats_tmp_dir
   SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash"
   export CLAUDE_HOOKS_LOG_DIR="$BATS_TMP_DIR"
-  # Sandbox session dir so "writes no session state" can assert nothing lands there
+  # Sandbox session dir so approval state stays isolated per test
   export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR"
 }
 
@@ -214,16 +214,32 @@ setup() {
   expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
 }
 
-@test "reject writes no session state" {
+@test "reject records an approval pending entry with the tool use id and all rejected commands" {
   preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
+    print '{"allow":{"isAllowed":false,"allowed":["echo"],"rejected":["wget","curl"]}}'
     return 1
   }
   rtk-command-rewrite() { print -r -- "$1"; }
   bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"echo ok; wget evil.com && curl bad.com"}}'
   [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+
+  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'; approvalPendingGet --tool-use-id toolu_01"
+  [[ "$output" = $'wget\ncurl' ]]
+}
+
+@test "allow records no approval pending entry" {
+  preToolUse-Bash-solkan() {
+    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
+  }
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
+
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
   [[ ! -e "$BATS_TMP_DIR/test/state.json" ]]
 }
 
