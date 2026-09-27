@@ -155,17 +155,19 @@ Print:
 ```
 Issue XX/YY
 
-**Problem solved:** {short description}
+**Problem solved:** {the problem this issue addressed}
 
-**What changed:** {high-level architecture: new domains, new/changed function signatures, API changes, new connections between components}
+**What changed:** {new files, new or changed signatures, new links between components}
 
-**Files changed:** {per-file bullet list of what was done}
-
-**How to test:** (optional) {only if no automated tests}
-
-**Discoveries:** {any non-trivial findings}
+**Worth checking:** {see below}
 ```
 
+**Worth checking:** the user does not read `GUIDANCE.md` or `review-log.md`.
+Surface their notable content.
+Also surface items that need the user's attention.
+Include only items that the diff does not show.
+When in doubt, include.
+Write `None.` if there is nothing.
 
 **Stop here. Do not commit. Do not start the next issue. Wait for the user.**
 
@@ -228,6 +230,9 @@ FIX:
 - [ ] GUIDANCE.md discoveries appended (or skipped if none)
 - [ ] review-log.md updated if **skipped** bucket is non-empty
 - [ ] COMMIT_HINT.md describes outcomes, not issue numbers or plan status
+HANDOFF:
+- [ ] Report has only **Problem solved**, **What changed** and **Worth checking**
+- [ ] **Worth checking** surfaces notable `GUIDANCE.md` and `review-log.md` content, or says `None.`
 - [ ] **Stopped — waiting for user to commit**
 USER REVIEW:
 - [ ] Each user-requested change followed by refactor → lint → test
