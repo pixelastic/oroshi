@@ -7,7 +7,6 @@
 #
 # Env overrides for testing:
 #   CLAUDE_HOOKS_LOG_DIR  — defaults to /tmp/oroshi/claude/hooks
-#   CLAUDE_SESSIONS_DIR   — defaults to /tmp/oroshi/claude/sessions
 #
 # TEST CASES - This hook must handle:
 # - echo hello                           -> accept (allowlisted)
@@ -23,7 +22,6 @@
 
 local hookDir="${0:A:h}"
 local logDir="${CLAUDE_HOOKS_LOG_DIR:-/tmp/oroshi/claude/hooks}"
-local sessionsDir="${CLAUDE_SESSIONS_DIR:-/tmp/oroshi/claude/sessions}"
 
 source "${hookDir}/preToolUse-Bash-solkan.zsh"
 source "${hookDir}/preToolUse-Bash-helper.zsh"
@@ -31,7 +29,6 @@ source "${hookDir}/preToolUse-Bash-helper.zsh"
 # Parse input
 local inputJson="$(cat)"
 local inputCommand="$(json-get '.tool_input.command' <<<"$inputJson")"
-local sessionId="$(json-get '.session_id' <<<"$inputJson")"
 
 # Save input for debugging
 mkdir -p "$logDir"
@@ -56,28 +53,10 @@ local updatedInputCommand="$(rtk-command-rewrite "$effectiveCommand")"
 local agentId="$(json-get '.agent_id' <<<"$inputJson")"
 [[ "$agentId" != "" ]] && updatedInputCommand="export CLAUDE_IS_SUBAGENT=1; $updatedInputCommand"
 
-if [[ "$isAllowed" == "1" ]]; then
-  autoApprove "$updatedInputCommand"
-fi
+# Allowed by solkan: approve without asking
+[[ "$isAllowed" == "1" ]] && autoApprove "$updatedInputCommand"
 
-# Commands rejected by solkan
+# Commands rejected by solkan: display all of them
 local -a rejectedCommands=(${(@f)$(json-get '.allow.rejected' <<<"$solkanJson")})
-local stateFile="${sessionsDir}/${sessionId}/state.json"
-
-# Commands already asked in this session
-local -a askedCommands=()
-[[ -f "$stateFile" ]] && askedCommands=(${(@f)$(json-get --input "$stateFile" '.preToolUse.Bash.askedCommands')})
-
-# newRejected = rejected commands not yet asked
-local -a newRejected=(${rejectedCommands:|askedCommands})
-
-[[ "$sessionId" != "" ]] && markAsAsked "$stateFile" "${rejectedCommands[@]}"
-
-# All rejected already seen? Suggest auto accept
-if [[ "${#newRejected}" -eq 0 ]]; then
-  askWithAutoAccept "$updatedInputCommand"
-fi
-
-# Some commands are new? Display which ones
-local newRejectedList="${(j:, :)newRejected}"
-askWithReason "$newRejectedList" "$updatedInputCommand"
+local rejectedList="${(j:, :)rejectedCommands}"
+askWithReason "$rejectedList" "$updatedInputCommand"

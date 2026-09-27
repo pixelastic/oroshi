@@ -37,12 +37,8 @@ The hook output when Solkan **allow**s a command.
 _Avoid_: auto-allow, silent-approve, bypass
 
 **ask with reason**:
-The hook output when Solkan **reject**s one or more commands and at least one has never been seen in the current session. Only the new binary names are displayed. The user sees a 2-option dialog (Allow / Deny). Maps to `permissionDecision: "ask"`.
-_Avoid_: ask user — first time, first-ask, new-ask, warn-ask
-
-**ask with auto-accept**:
-The hook output when Solkan **reject**s one or more commands and all have already been seen in the current session. The user sees a 3-option dialog: Allow / Allow for session / Deny. No reason is shown — the user has already been informed. Maps to `permissionDecision: "defer"`.
-_Avoid_: ask user, escalate, defer, session-ask
+The hook output when Solkan **reject**s one or more commands. All rejected binary names are displayed, every time. The user sees a 2-option dialog (Allow / Deny). Maps to `permissionDecision: "ask"`.
+_Avoid_: ask user, escalate, warn-ask
 
 **subagent injection**:
 The mechanism by which the preToolUse-Bash hook detects that a command runs inside a subagent (`agent_id` present in hook input JSON) and prefixes the command with `export CLAUDE_IS_SUBAGENT=1;`. This is NOT a native Claude Code feature — it is a hook-level workaround because upstream closed requests for native subagent env vars (issues #35447, #36981, #46696).
@@ -54,9 +50,9 @@ _Avoid_: subagent detection, agent env var, subagent flag
 - **Solkan** runs first; **RTK** runs second, regardless of **Solkan**'s decision.
 - Rewrite determined via `rtk-command-rewrite <cmd>`: prints the rewritten command (or the original unchanged). Always exits 0.
 - Each command receives exactly one **Solkan** decision and exactly one **RTK** decision.
-- Each **allow** produces exactly one **auto-approve**; each **reject** produces either **ask with reason** or **ask with auto-accept** depending on session state (a maybe — the human decides).
+- Each **allow** produces exactly one **auto-approve**; each **reject** produces exactly one **ask with reason** (a maybe — the human decides).
 - A **rewrite** produces zero or one `updatedInput` JSON field; an **ignore** produces none.
-- The human is the only actor who can say a final "no" — in both the **ask with reason** and **ask with auto-accept** paths.
+- The human is the only actor who can say a final "no" — through the **ask with reason** dialog.
 
 ### The 4 cases
 
@@ -64,8 +60,8 @@ _Avoid_: subagent detection, agent env var, subagent flag
 |--------|-----|-------------|
 | allow | rewrite | auto-approve + updatedInput |
 | allow | ignore | auto-approve (no updatedInput) |
-| reject | rewrite | ask with reason / ask with auto-accept + updatedInput |
-| reject | ignore | ask with reason / ask with auto-accept (no updatedInput) |
+| reject | rewrite | ask with reason + updatedInput |
+| reject | ignore | ask with reason (no updatedInput) |
 
 ## Design decisions
 
@@ -75,19 +71,7 @@ The hook does global command rewriting via RTK (prepends `rtk bin-zsh` to the en
 
 Solkan parses the full shell AST (via unbash) to extract every simple command and rewrite them individually (`rm` replaces to `rm-for-claude` for example).
 
-### Why `ask with reason` and `ask with auto-accept` are mutually exclusive
-
-The natural design would be a single reject path with a 3-option dialog (Allow / Allow for session / Deny) that always displays the rejected binary name — reason and auto-accept together, every time.
-
-This is not possible. Claude Code only displays the binary name(s) when `permissionDecision` is `"ask"`. When `permissionDecision` is `"defer"`, the reason field is silently ignored and the binary name is not shown. The two `permissionDecision` values also map to different dialog types: `"ask"` produces a 2-option dialog (Allow / Deny); `"defer"` produces a 3-option dialog (Allow / Allow for session / Deny).
-
-As a result, each reject must choose one or the other:
-- **ask with reason** (`permissionDecision: "ask"`) — surfaces the binary name so the user knows what is blocked, at the cost of losing the "Allow for session" option.
-- **ask with auto-accept** (`permissionDecision: "defer"`) — offers "Allow for session", at the cost of not displaying the binary name (the user was already informed on the first ask).
-
-The split is a workaround for this Claude Code limitation, not an intentional UX design.
-
 ## Flagged ambiguities
 
 - **allow** (Solkan decision) vs **auto-approve** (hook output): distinct layers — Solkan classifies the command; the hook translates that into a Claude Code response.
-- **reject** (Solkan decision) vs **ask with reason** / **ask with auto-accept** (hook output): same distinction — **reject** does not mean "block", it means "escalate to the user"; session state determines which dialog appears.
+- **reject** (Solkan decision) vs **ask with reason** (hook output): same distinction — **reject** does not mean "block", it means "escalate to the user".
