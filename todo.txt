@@ -54,3 +54,6 @@
 2026-09-17 Create gdoc-read helper to fetch raw Google Doc content, usable standalone and inside gdoc2md domain:Zsh size:medium id:gdoc-read
 2026-09-18 Add lets be honest as allowed in Vale speech profile (disable ai-tells.AffirmativeFormulas) domain:Misc size:small id:vale-speech-honest
 2026-09-21 Add gslide-comment-add script to post comments anchored to slides/elements. BLOCKED: Slides API insertComment is Developer Preview only (requires paid Google Workspace). Wait for GA release. Drive Comments v3 cannot anchor on Slides. domain:Google size:medium id:gslide-comment
+2026-09-25 Reduce height of Claude Code slash-command skills list (now dozens shown vs ~5 before, takes too much screen space) domain:Claude size:small id:slash-menu
+2026-09-25 Claude statusline: replace running agents list with colored dots showing each agent's status domain:Claude size:medium id:statusline-agents
+2026-09-27 Refactor hooks/preToolUse-Bash (~75 lines mixing concerns: solkan check, RTK rewrite, approval/reject counts, subagent detection) into separate functions or files domain:Claude size:medium id:pretooluse-refactor
