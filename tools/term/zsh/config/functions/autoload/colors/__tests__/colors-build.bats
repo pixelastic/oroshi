@@ -16,7 +16,8 @@ setup() {
   # color105 → orange-5  (range 100-109=orange, shade 5) — aliased by git-branch
   # color50  → blue-0    (range 50-59=blue, shade 0) — for dark alias test
   # color55  → blue-5    (range 50-59=blue, shade 5)
-  # color200 → gray-0    (range 200-209=gray, shade 0)
+  # color200 → gray-0    (range 200-209=gray, shade 0) — aliased by black
+  # color201 → gray-1    (range 200-209=gray, shade 1) — aliased by white
   # color205 → gray-5    (range 200-209=gray, shade 5)
   cat >"$BATS_TMP_DIR/tools/term/kitty/config/colors.conf" <<'CONF'
 color47   #975a16
@@ -25,6 +26,7 @@ color105  #ea580c
 color50   #0e1529
 color55   #3182ce
 color200  #111318
+color201  #ffffff
 color205  #4b5563
 CONF
 
@@ -90,6 +92,37 @@ JSONC
   [[ "${lines[0]}" = "50" ]]
 }
 
+# --- Black and white ---
+
+@test "black and white: COLORS[black] equals gray-0, COLORS[white] equals gray-1" {
+  bats_run_zsh "colors-build"
+  bats_run_zsh "source '${THEMING_DIR}/dist/colors.zsh' && echo \${COLORS[black]} \${COLORS[black:hex]}"
+  [[ "${lines[0]}" = "200 #111318" ]]
+  bats_run_zsh "source '${THEMING_DIR}/dist/colors.zsh' && echo \${COLORS[white]} \${COLORS[white:hex]}"
+  [[ "${lines[0]}" = "201 #ffffff" ]]
+}
+
+@test "black and white: aliases to black and white always resolve" {
+  cat >"$THEMING_DIR/src/colors.jsonc" <<'JSONC'
+{
+  "claude": {
+    "text": "white"
+  },
+  "selected-foreground": "white",
+  "terminal": "black",
+  "vim": {
+    "search-foreground": "black",
+    "visual-foreground": "white"
+  }
+}
+JSONC
+  bats_run_zsh "colors-build"
+  run jq -r '[."claude-text", ."selected-foreground", ."vim-visual-foreground"] | map(.hex) | unique | join(" ")' "$THEMING_DIR/dist/colors.json"
+  [[ "$output" = "#ffffff" ]]
+  run jq -r '[."terminal", ."vim-search-foreground"] | map(.hex) | unique | join(" ")' "$THEMING_DIR/dist/colors.json"
+  [[ "$output" = "#111318" ]]
+}
+
 # --- Aliases ---
 
 @test "aliases: COLORS[git-branch] resolves to orange ansi and hex" {
@@ -153,6 +186,8 @@ JSONC
   cat >"$BATS_TMP_DIR/tools/term/kitty/config/colors.conf" <<'CONF'
 color30   #f0fff4
 color35   #38a169
+color200  #111318
+color201  #ffffff
 CONF
   cat >"$THEMING_DIR/src/colors.jsonc" <<'JSONC'
 {

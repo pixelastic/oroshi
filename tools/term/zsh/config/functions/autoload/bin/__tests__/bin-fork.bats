@@ -10,7 +10,7 @@ setup() {
 }
 
 @test "returns 1 and prints error when no lockfile argument is provided" {
-  bats_run_zsh "fork 'echo hello'"
+  bats_run_zsh "bin-fork 'echo hello'"
   [[ "$status" -eq 1 ]]
   [[ "$output" == *"lockfile"* ]]
 }
@@ -20,7 +20,7 @@ setup() {
   local side_effect="$BATS_TMP_DIR/side-effect"
   touch "$lockfile"
 
-  bats_run_zsh "fork 'touch $side_effect' $lockfile"
+  bats_run_zsh "bin-fork 'touch $side_effect' $lockfile"
   [[ "$status" -eq 0 ]]
   [[ ! -f "$side_effect" ]]
 }
@@ -29,7 +29,7 @@ setup() {
   local lockfile="$BATS_TMP_DIR/lock"
   local side_effect="$BATS_TMP_DIR/side-effect"
 
-  bats_run_zsh "fork 'touch $side_effect' $lockfile"
+  bats_run_zsh "bin-fork 'touch $side_effect' $lockfile"
   [[ "$status" -eq 0 ]]
 
   # Poll for the side-effect file created by the background command
@@ -45,7 +45,7 @@ setup() {
   local lockfile="$BATS_TMP_DIR/lock"
   local side_effect="$BATS_TMP_DIR/side-effect"
 
-  bats_run_zsh "fork 'touch $side_effect' $lockfile"
+  bats_run_zsh "bin-fork 'touch $side_effect' $lockfile"
   [[ "$status" -eq 0 ]]
 
   # Wait for background command to complete
@@ -57,7 +57,7 @@ setup() {
   [[ -f "$side_effect" ]]
 
   # No output — MONITOR job notifications only appear with a controlling terminal,
-  # which bats can't provide; no_monitor in fork guards against it in real usage
+  # which bats can't provide; no_monitor in bin-fork guards against it in real usage
   [[ "$output" == "" ]]
 }
 
@@ -66,7 +66,7 @@ setup() {
   # Command that writes proof the lockfile existed, then sleeps briefly
   local cmd="[[ -f $lockfile ]] && touch $BATS_TMP_DIR/lockfile-seen"
 
-  bats_run_zsh "fork '$cmd' $lockfile"
+  bats_run_zsh "bin-fork '$cmd' $lockfile"
   [[ "$status" -eq 0 ]]
 
   # Poll for completion

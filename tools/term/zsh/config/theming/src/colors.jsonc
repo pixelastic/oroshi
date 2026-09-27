@@ -3,7 +3,6 @@
 
   // Semantic UI colors.
   "ai":           "amber-6",
-  "black":        "gray-0",
   "boolean":      "amber-4",
   "comment":      "gray",
   "constant":     "orange",
@@ -69,7 +68,6 @@
   "variable-definition": "violet-2",
   "variable-type": "red-3",
   "warning":      "yellow",
-  "white":        "gray-1",
 
   // Claude AI
   "claude": {

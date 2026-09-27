@@ -13,9 +13,9 @@ setup() {
   }
   git-dependencies-in-progress-lockfile() { echo "/tmp/lockfile"; }
   git-file-has-changed() { return 0; }
-  fork() { :; }
+  bin-fork() { :; }
   glob() { echo "$BATS_TMP_DIR/fake-repo/Gemfile"; }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork glob
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork glob
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/Gemfile"
@@ -32,9 +32,9 @@ setup() {
     echo "/tmp/lockfile"
   }
   git-file-has-changed() { return 0; }
-  fork() { :; }
+  bin-fork() { :; }
   glob() { echo "$BATS_TMP_DIR/fake-repo/Gemfile"; }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork glob
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork glob
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/Gemfile"
@@ -51,9 +51,9 @@ setup() {
     echo "$@" > "$BATS_TMP_DIR/changed-args.txt"
     return 0
   }
-  fork() { :; }
+  bin-fork() { :; }
   glob() { echo "$BATS_TMP_DIR/fake-repo/Gemfile"; }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork glob
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork glob
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/Gemfile"
@@ -82,11 +82,11 @@ setup() {
 @test "no commit + beacon exists + --async → forks" {
   git-directory-root() { echo "$BATS_TMP_DIR/fake-repo"; }
   git-dependencies-in-progress-lockfile() { echo "/tmp/lockfile"; }
-  fork() {
+  bin-fork() {
     echo "forked" > "$BATS_TMP_DIR/fork-called.txt"
   }
   glob() { echo "$BATS_TMP_DIR/fake-repo/Gemfile"; }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile fork glob
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile bin-fork glob
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/Gemfile"
@@ -99,11 +99,11 @@ setup() {
 @test "no commit + beacon missing → returns early" {
   git-directory-root() { echo "$BATS_TMP_DIR/fake-repo"; }
   git-dependencies-in-progress-lockfile() { echo "/tmp/lockfile"; }
-  fork() {
+  bin-fork() {
     echo "forked" > "$BATS_TMP_DIR/fork-called.txt"
   }
   glob() { echo ""; }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile fork glob
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile bin-fork glob
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
 
@@ -118,11 +118,11 @@ setup() {
   git-directory-root() { echo "$BATS_TMP_DIR/fake-repo"; }
   git-dependencies-in-progress-lockfile() { echo "/custom/lockfile/path"; }
   git-file-has-changed() { return 0; }
-  fork() {
+  bin-fork() {
     echo "$2" > "$BATS_TMP_DIR/fork-lockfile.txt"
   }
   glob() { echo "$BATS_TMP_DIR/fake-repo/Gemfile"; }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork glob
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork glob
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/Gemfile"
@@ -138,11 +138,11 @@ setup() {
   git-directory-root() { echo "$BATS_TMP_DIR/target-repo"; }
   git-dependencies-in-progress-lockfile() { echo "/tmp/lockfile"; }
   git-file-has-changed() { return 0; }
-  fork() {
+  bin-fork() {
     echo "$1" > "$BATS_TMP_DIR/fork-cmd.txt"
   }
   glob() { echo "$BATS_TMP_DIR/target-repo/Gemfile"; }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork glob
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork glob
 
   mkdir -p "$BATS_TMP_DIR/target-repo"
   touch "$BATS_TMP_DIR/target-repo/Gemfile"
@@ -156,11 +156,11 @@ setup() {
   git-directory-root() { echo "$BATS_TMP_DIR/fake-repo"; }
   git-dependencies-in-progress-lockfile() { echo "/tmp/lockfile"; }
   git-file-has-changed() { return 0; }
-  fork() {
+  bin-fork() {
     echo "$1" > "$BATS_TMP_DIR/fork-cmd.txt"
   }
   glob() { echo "$BATS_TMP_DIR/fake-repo/Gemfile"; }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork glob
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork glob
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/Gemfile"

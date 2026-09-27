@@ -47,4 +47,8 @@ export default {
   // Claude Code syntax colors patch (binary is not committed, nothing to stage)
   'tools/ai/claude/config/syntax/**/*':
     './tools/ai/claude/config/syntax/generate-syntax',
+
+  // Claude Code UI theme (output is outside the repo, nothing to stage)
+  'tools/ai/claude/config/themes/src/**/*':
+    './tools/ai/claude/config/themes/generate-theme',
 };

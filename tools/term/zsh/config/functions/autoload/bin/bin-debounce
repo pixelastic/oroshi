@@ -1,0 +1,37 @@
+# Succeed only if no other call with the same key ran in the last --wait seconds
+# Usage:
+# $ bin-debounce my-key || return 0          # Skip if called less than 2s ago
+# $ bin-debounce my-key --wait 3 || exit 0   # Custom window, in seconds
+# Returns:
+#   0 — the caller should run
+#   1 — another call ran recently, the caller should skip
+#   2 — missing key
+setopt local_options err_return
+zmodload zsh/datetime
+zmodload -F zsh/stat b:zstat
+
+zparseopts -E -D -- -wait:=flagWait
+
+local key="$1"
+local wait="${flagWait[2]:-2}"
+
+# Key is mandatory
+if [[ "$key" == "" ]]; then
+  echoerr "✘ You must pass a key"
+  return 2
+fi
+
+local lockDir="${OROSHI_TMP_FOLDER}/bin-debounce/${key}"
+mkdir -p "${lockDir:h}"
+
+# No lock yet: mkdir is atomic, so only one of several concurrent calls can
+# create it
+mkdir "$lockDir" 2>/dev/null && return 0
+
+# Lock is recent, another call already ran
+local lockTime="$(zstat +mtime "$lockDir")"
+(( EPOCHSECONDS - lockTime < wait )) && return 1
+
+# Lock is stale, replace it
+rmdir "$lockDir" 2>/dev/null
+mkdir "$lockDir" 2>/dev/null

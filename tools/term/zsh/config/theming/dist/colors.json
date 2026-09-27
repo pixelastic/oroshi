@@ -147,6 +147,10 @@
     "ansi": 149,
     "hex": "#451a03"
   },
+  "claude-text": {
+    "ansi": 201,
+    "hex": "#ffffff"
+  },
   "comment": {
     "ansi": 205,
     "hex": "#6b7280"
@@ -1167,6 +1171,10 @@
     "ansi": 208,
     "hex": "#1f2937"
   },
+  "selected-foreground": {
+    "ansi": 201,
+    "hex": "#ffffff"
+  },
   "size-unit": {
     "ansi": 204,
     "hex": "#9ca3af"
@@ -1474,6 +1482,10 @@
   "vim-visual-cursor": {
     "ansi": 55,
     "hex": "#3182ce"
+  },
+  "vim-visual-foreground": {
+    "ansi": 201,
+    "hex": "#ffffff"
   },
   "violet": {
     "ansi": 175,

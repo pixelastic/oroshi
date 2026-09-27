@@ -64,6 +64,13 @@ for familyStart family in "${(@kv)familyRanges}"; do
 done
 # }}}
 
+# Black and white aliases {{{
+colorsByName[black]="${colorsByName[gray-0]}"
+colorsByNameHexa[black]="${colorsByNameHexa[gray-0]}"
+colorsByName[white]="${colorsByName[gray-1]}"
+colorsByNameHexa[white]="${colorsByNameHexa[gray-1]}"
+# }}}
+
 # Load semantic aliases from colors.jsonc, recursively flattening nested objects {{{
 local -A aliasColors
 local flatAliases="$(jq -r '

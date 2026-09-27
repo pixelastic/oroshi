@@ -41,7 +41,7 @@ fi
 # Either update deps right now, or in the background
 if [[ "$flagAsync" != "" ]]; then
   # Update dependencies and write a lockfile while doing it
-  fork "$updateCommand" "$lockfilePath"
+  bin-fork "$updateCommand" "$lockfilePath"
   return
 fi
 

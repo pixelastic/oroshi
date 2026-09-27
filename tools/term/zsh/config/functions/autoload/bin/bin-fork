@@ -1,6 +1,6 @@
 # Run a command in the background, and write a lockfile while it executes
 # Usage:
-# $ fork "yarn install" /tmp/yarn-install-in-progress
+# $ bin-fork "yarn install" /tmp/yarn-install-in-progress
 setopt local_options err_return no_monitor
 
 local commandToRun="$1"

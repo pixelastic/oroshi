@@ -13,8 +13,8 @@ setup() {
   }
   git-dependencies-in-progress-lockfile() { echo "/tmp/lockfile"; }
   git-file-has-changed() { return 0; }
-  fork() { :; }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork
+  bin-fork() { :; }
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/yarn.lock"
@@ -31,8 +31,8 @@ setup() {
     echo "/tmp/lockfile"
   }
   git-file-has-changed() { return 0; }
-  fork() { :; }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork
+  bin-fork() { :; }
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/yarn.lock"
@@ -49,8 +49,8 @@ setup() {
     echo "$@" > "$BATS_TMP_DIR/changed-args.txt"
     return 0
   }
-  fork() { :; }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork
+  bin-fork() { :; }
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/yarn.lock"
@@ -79,10 +79,10 @@ setup() {
 @test "no commit + beacon exists + --async → forks" {
   git-directory-root() { echo "$BATS_TMP_DIR/fake-repo"; }
   git-dependencies-in-progress-lockfile() { echo "/tmp/lockfile"; }
-  fork() {
+  bin-fork() {
     echo "forked" > "$BATS_TMP_DIR/fork-called.txt"
   }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile fork
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile bin-fork
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/yarn.lock"
@@ -95,10 +95,10 @@ setup() {
 @test "no commit + beacon missing → returns early" {
   git-directory-root() { echo "$BATS_TMP_DIR/fake-repo"; }
   git-dependencies-in-progress-lockfile() { echo "/tmp/lockfile"; }
-  fork() {
+  bin-fork() {
     echo "forked" > "$BATS_TMP_DIR/fork-called.txt"
   }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile fork
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile bin-fork
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
 
@@ -113,10 +113,10 @@ setup() {
   git-directory-root() { echo "$BATS_TMP_DIR/fake-repo"; }
   git-dependencies-in-progress-lockfile() { echo "/custom/lockfile/path"; }
   git-file-has-changed() { return 0; }
-  fork() {
+  bin-fork() {
     echo "$2" > "$BATS_TMP_DIR/fork-lockfile.txt"
   }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/yarn.lock"
@@ -132,10 +132,10 @@ setup() {
   git-directory-root() { echo "$BATS_TMP_DIR/target-repo"; }
   git-dependencies-in-progress-lockfile() { echo "/tmp/lockfile"; }
   git-file-has-changed() { return 0; }
-  fork() {
+  bin-fork() {
     echo "$1" > "$BATS_TMP_DIR/fork-cmd.txt"
   }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork
 
   mkdir -p "$BATS_TMP_DIR/target-repo"
   touch "$BATS_TMP_DIR/target-repo/yarn.lock"
@@ -149,10 +149,10 @@ setup() {
   git-directory-root() { echo "$BATS_TMP_DIR/fake-repo"; }
   git-dependencies-in-progress-lockfile() { echo "/tmp/lockfile"; }
   git-file-has-changed() { return 0; }
-  fork() {
+  bin-fork() {
     echo "$1" > "$BATS_TMP_DIR/fork-cmd.txt"
   }
-  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed fork
+  bats_mock git-directory-root git-dependencies-in-progress-lockfile git-file-has-changed bin-fork
 
   mkdir -p "$BATS_TMP_DIR/fake-repo"
   touch "$BATS_TMP_DIR/fake-repo/yarn.lock"

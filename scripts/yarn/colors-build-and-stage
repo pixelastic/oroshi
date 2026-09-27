@@ -4,6 +4,10 @@
 # $ yarn run colors-build-and-stage  # Called by lint-staged
 set -e
 
+# Several lint-staged globs call this script in parallel. To prevent race
+# conditions, we debounce it.
+bin-debounce colors-build-and-stage || exit 0
+
 colors-reload
 
 git add \
