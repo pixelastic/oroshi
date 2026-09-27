@@ -105,6 +105,59 @@ setup() {
   [[ "$output" = "1" ]]
 }
 
+# sessionAllowListAdd / sessionAllowListFile
+
+@test "sessionAllowListAdd creates the file with the command" {
+  bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command /usr/bin/grep"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+
+  local allowListFile="$BATS_TMP_DIR/test/allow-list.json"
+  [[ "$(jq --compact-output '.' "$allowListFile")" = '["/usr/bin/grep"]' ]]
+}
+
+@test "sessionAllowListAdd appends a new command" {
+  bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command wget"
+  bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command telnet"
+
+  local allowListFile="$BATS_TMP_DIR/test/allow-list.json"
+  [[ "$(jq --compact-output '.' "$allowListFile")" = '["telnet","wget"]' ]]
+}
+
+@test "sessionAllowListAdd does not duplicate an existing command" {
+  bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command wget"
+  bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command wget"
+  [[ "$status" -eq 0 ]]
+
+  local allowListFile="$BATS_TMP_DIR/test/allow-list.json"
+  [[ "$(jq --compact-output '.' "$allowListFile")" = '["wget"]' ]]
+}
+
+@test "sessionAllowListAdd with an empty command creates nothing" {
+  bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command ''"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_TMP_DIR/test/allow-list.json" ]]
+}
+
+@test "sessionAllowListAdd leaves the session state untouched" {
+  bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command wget"
+  [[ ! -e "$BATS_TMP_DIR/test/state.json" ]]
+}
+
+@test "sessionAllowListFile prints the absolute session allow-list path" {
+  bats_run_zsh "${sourcePrefix}; sessionAllowListFile"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$BATS_TMP_DIR/test/allow-list.json" ]]
+}
+
+@test "sessionAllowListFile resolves a relative sessions dir to an absolute path" {
+  export CLAUDE_SESSIONS_DIR="relative/sessions"
+
+  bats_run_zsh "cd '$BATS_TMP_DIR'; ${sourcePrefix}; sessionAllowListFile"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$BATS_TMP_DIR/relative/sessions/test/allow-list.json" ]]
+}
+
 # Empty arguments
 
 @test "empty tool use id is neither stored nor matched" {
@@ -146,6 +199,14 @@ setup() {
   [[ "$output" = "" ]]
 
   bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command wget"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+
+  bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command wget"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+
+  bats_run_zsh "${sourcePrefix}; sessionAllowListFile"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 

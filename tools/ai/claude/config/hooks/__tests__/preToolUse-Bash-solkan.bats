@@ -90,6 +90,44 @@ setup() {
   [[ "$status" -eq 0 ]]
 }
 
+# Session allow-list
+
+@test "passes the session allow-list to solkan when the file exists" {
+  export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR/sessions"
+  export CLAUDE_SESSION_ID="test"
+  mkdir -p "$BATS_TMP_DIR/sessions/test"
+  echo '["telnet"]' > "$BATS_TMP_DIR/sessions/test/allow-list.json"
+
+  solkan() { print -r -- "$*"; }
+  bats_mock solkan
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'telnet bad.com'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"--allow-list-file $BATS_TMP_DIR/sessions/test/allow-list.json"* ]]
+}
+
+@test "does not pass the session allow-list to solkan when the file is absent" {
+  export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR/sessions"
+  export CLAUDE_SESSION_ID="test"
+
+  solkan() { print -r -- "$*"; }
+  bats_mock solkan
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'telnet bad.com'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"$BATS_TMP_DIR/sessions"* ]]
+}
+
+@test "allows a command that is only in the session allow-list" {
+  export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR/sessions"
+  export CLAUDE_SESSION_ID="test"
+  mkdir -p "$BATS_TMP_DIR/sessions/test"
+  echo '["telnet"]' > "$BATS_TMP_DIR/sessions/test/allow-list.json"
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'telnet bad.com'"
+  [[ "$status" -eq 0 ]]
+}
+
 # Local rewrite-list
 
 @test "rewrites a command from the local rewrite-list" {

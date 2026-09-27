@@ -21,6 +21,32 @@ setup() {
   [[ "$output" = "1" ]]
 }
 
+@test "a command reaching 3 approvals is added to the session allow-list" {
+  bats_run_zsh "${approvalPrefix}; approvalCountIncrement --command wget; approvalCountIncrement --command wget"
+  bats_run_zsh "${approvalPrefix}; approvalPendingAdd --tool-use-id toolu_01 --command wget --command telnet"
+
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com && telnet bad.com"}}'
+  [[ "$status" -eq 0 ]]
+
+  local allowListFile="$BATS_TMP_DIR/test/allow-list.json"
+  [[ "$(jq --compact-output '.' "$allowListFile")" = '["wget"]' ]]
+}
+
+@test "a command at 1 or 2 approvals is not added to the session allow-list" {
+  bats_run_zsh "${approvalPrefix}; approvalPendingAdd --tool-use-id toolu_01 --command wget"
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_TMP_DIR/test/allow-list.json" ]]
+
+  bats_run_zsh "${approvalPrefix}; approvalPendingAdd --tool-use-id toolu_02 --command wget"
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_02","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_TMP_DIR/test/allow-list.json" ]]
+
+  bats_run_zsh "${approvalPrefix}; approvalCountGet --command wget"
+  [[ "$output" = "2" ]]
+}
+
 @test "post event removes the approval pending entry of its tool use id" {
   bats_run_zsh "${approvalPrefix}; approvalPendingAdd --tool-use-id toolu_01 --command wget"
   bats_run_zsh "${approvalPrefix}; approvalPendingAdd --tool-use-id toolu_02 --command curl"

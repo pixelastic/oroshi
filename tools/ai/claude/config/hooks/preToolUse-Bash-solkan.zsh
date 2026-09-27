@@ -1,6 +1,7 @@
 # Defines preToolUse-Bash-solkan() for use by preToolUse-Bash
 # Sourced by the hook; hookDir must be set in the calling scope
 # Not standalone — no shebang, not chmod +x
+# Sources Bash-approval.zsh for the session allow-list path
 #
 # Usage (called by the hook):
 # $ preToolUse-Bash-solkan "git status"     # exit 0 (allowed)
@@ -9,10 +10,13 @@
 # Guard: skip if already defined (e.g. mocked in tests)
 whence preToolUse-Bash-solkan > /dev/null && return 0
 
+source "${hookDir}/Bash-approval.zsh"
+
 function preToolUse-Bash-solkan() {
   local repoRoot="$(git-directory-root)"
   local localAllowList="${repoRoot}/.claude/allow-list.json"
   local localRewriteList="${repoRoot}/.claude/rewrite-list.json"
+  local sessionAllowList="$(sessionAllowListFile)"
 
   local solkanArgs=(
     --allow-list-file "${hookDir}/allow-list.json"
@@ -21,6 +25,9 @@ function preToolUse-Bash-solkan() {
 
   # Extra allow-list from repo-local config
   [[ -f "$localAllowList" ]] && solkanArgs+=(--allow-list-file "$localAllowList")
+
+  # Extra allow-list from commands approved often enough this session (absolute path: Solkan resolves relative ones wrongly)
+  [[ -f "$sessionAllowList" ]] && solkanArgs+=(--allow-list-file "$sessionAllowList")
 
   # Extra rewrite-list from repo-local config
   [[ -f "$localRewriteList" ]] && solkanArgs+=(--rewrite-list-file "$localRewriteList")

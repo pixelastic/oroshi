@@ -1,0 +1,34 @@
+# Append a string to a JSON array file in-place, creating the file if absent
+# Usage:
+# $ json-array-add --input file.json 'value'           # append, even if already present
+# $ json-array-add --input file.json --unique 'value'  # append, then dedupe and sort the whole array
+setopt local_options err_return
+
+zparseopts -E -D \
+  -input:=flagInput \
+  -unique=flagUnique
+
+local inputFile="${flagInput[2]}"
+local isUnique=${#flagUnique}
+local jsonValue="$1"
+
+# --input is required
+[[ "$inputFile" == "" ]] && return 1
+
+# Value is required
+[[ "$jsonValue" == "" ]] && return 1
+
+# Read existing file into memory, or start with empty array if absent
+local baseJson="[]"
+[[ -f "$inputFile" ]] && baseJson="$(cat -- "$inputFile")"
+
+local jqFilter=". + [\$value]"
+[[ $isUnique == "1" ]] && jqFilter=". + [\$value] | unique"
+
+local newJson="$(jq --arg value "$jsonValue" "$jqFilter" <<<"$baseJson")"
+
+# jq failed (e.g. not an array): keep existing file untouched
+[[ "$newJson" == "" ]] && return 1
+
+mkdir -p "${inputFile:h}"
+print -r -- "$newJson" >"$inputFile"

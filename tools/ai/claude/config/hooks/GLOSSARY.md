@@ -37,7 +37,7 @@ The hook output when Solkan **allow**s a command.
 _Avoid_: auto-allow, silent-approve, bypass
 
 **ask with reason**:
-The hook output when Solkan **reject**s one or more commands. All rejected binary names are displayed, every time, each followed by a moon showing its **approval count**: no symbol on the 1st prompt, `🌓` on the 2nd, `🌕` on the 3rd (e.g. `❌ /usr/bin/grep 🌕, wget ❌`). Approving a `🌕` command is meant to make it session-allowed, once the session allow-list exists. The user sees a 2-option dialog (Allow / Deny). Maps to `permissionDecision: "ask"`.
+The hook output when Solkan **reject**s one or more commands. All rejected binary names are displayed, every time, each followed by a moon showing its **approval count**: no symbol on the 1st prompt, `🌓` on the 2nd, `🌕` on the 3rd (e.g. `❌ /usr/bin/grep 🌕, wget ❌`). Approving a `🌕` command adds it to the **session allow-list**. The user sees a 2-option dialog (Allow / Deny). Maps to `permissionDecision: "ask"`.
 _Avoid_: ask user, escalate, warn-ask
 
 **approval pending**:
@@ -47,6 +47,10 @@ _Avoid_: asked commands, pending list, queue
 **approval count**:
 How many times, in the current session, the user approved a given rejected command. Stored in the session state under `.postToolUse.Bash.approvalCount`, keyed by the rejected command as Solkan reports it (binary name or path, e.g. `wget`, `/usr/bin/grep`).
 _Avoid_: accept count, allow count, approval score
+
+**session allow-list**:
+A regular Solkan allow-list (JSON array of strings, same format as `allow-list.json`) scoped to the current session, at `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/allow-list.json`. A command enters it on its 3rd approval, keyed as Solkan reports it. Passed to Solkan as an extra `--allow-list-file` (absolute path) when it exists; a command in it is an **allow** like any other.
+_Avoid_: session whitelist, temporary allow, trusted commands
 
 **tool use id**:
 The `tool_use_id` field of the hook input JSON. Identical in the pre and post events of the same Bash call — the only reliable way to correlate them, since post events receive the rewritten command.
@@ -67,7 +71,8 @@ _Avoid_: subagent detection, agent env var, subagent flag
 - The human is the only actor who can say a final "no" — through the **ask with reason** dialog.
 - Each **ask with reason** writes one **approval pending** entry (`preToolUse-Bash`), keyed by its **tool use id** so the post event can find it; each **allow** writes none.
 - A post event (`PostToolUse` or `PostToolUseFailure`) for a **tool use id** means the user said Yes: `postToolUse-Bash` increments the **approval count** of every command in its **approval pending** entry, then removes that entry. When the user says No, no post event fires, so no count changes.
-- Session state lives in `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json`, owned by `Bash-approval.zsh`. Without a session id, nothing is recorded.
+- A command whose **approval count** reaches 3 joins the **session allow-list**: from then on, Solkan **allow**s it and it no longer appears in **ask with reason**.
+- Session state lives in `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json`, the **session allow-list** next to it; both owned by `Bash-approval.zsh`. Without a session id, nothing is recorded.
 
 ### The 4 cases
 

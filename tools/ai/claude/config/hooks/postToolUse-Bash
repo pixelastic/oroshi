@@ -14,6 +14,9 @@ local hookDir="${0:A:h}"
 
 source "${hookDir}/Bash-approval.zsh"
 
+# Approvals after which a command joins the session allow-list
+SESSION_ALLOW_LIST_THRESHOLD=3
+
 # Parse input
 local inputJson="$(cat)"
 local toolUseId="$(json-get '.tool_use_id' <<<"$inputJson")"
@@ -28,7 +31,10 @@ local -a approvedCommands=(${(@f)$(approvalPendingGet --tool-use-id "$toolUseId"
 [[ "${#approvedCommands}" -eq 0 ]] && exit 0
 
 for approvedCommand in $approvedCommands; do
-  approvalCountIncrement --command "$approvedCommand" >/dev/null
+  local approvalCount="$(approvalCountIncrement --command "$approvedCommand")"
+
+  # Approved often enough: stop asking for the rest of the session
+  [[ "$approvalCount" -ge "$SESSION_ALLOW_LIST_THRESHOLD" ]] && sessionAllowListAdd --command "$approvedCommand"
 done
 
 # User answered: this tool use is no longer pending

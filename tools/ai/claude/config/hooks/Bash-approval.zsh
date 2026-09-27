@@ -1,10 +1,12 @@
-# Session state for Bash approvals, shared by preToolUse-Bash and postToolUse-Bash
+# Session state for Bash approvals, shared by preToolUse-Bash, preToolUse-Bash-solkan.zsh and postToolUse-Bash
 # - approval pending: commands awaiting the user's answer, keyed by tool use id
 # - approval count: how many times the user approved each command
+# - session allow-list: commands Solkan allows for the rest of the session
 # Sourced by the hooks
 #
 # State lives in $CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json
-# Every function is a no-op when CLAUDE_SESSION_ID is empty
+# Session allow-list lives in $CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/allow-list.json
+# Every public function is a no-op when CLAUDE_SESSION_ID is empty
 
 # Record the rejected commands the user is asked to approve for a tool use
 # Usage:
@@ -121,10 +123,43 @@ function approvalCountIncrement() {
   print -r -- "$newCount"
 }
 
+# Add a command to the session allow-list, so Solkan allows it for the rest of the session
+# Usage:
+# $ sessionAllowListAdd --command wget
+function sessionAllowListAdd() {
+  # No session: nothing to allow
+  [[ "$CLAUDE_SESSION_ID" == "" ]] && return 0
+
+  zparseopts -E -D \
+    -command:=flagCommand
+
+  local command="${flagCommand[2]}"
+
+  # No command: nothing to allow
+  [[ "$command" == "" ]] && return 0
+
+  json-array-add --input "$(sessionAllowListFile)" --unique "$command"
+}
+
+# Print the absolute path of the session allow-list (same format as the global allow-list.json)
+# Usage:
+# $ sessionAllowListFile  # /tmp/oroshi/claude/sessions/{sessionId}/allow-list.json
+function sessionAllowListFile() {
+  # No session: no session allow-list
+  [[ "$CLAUDE_SESSION_ID" == "" ]] && return 0
+
+  print -r -- "$(approvalSessionDir)/allow-list.json"
+}
+
+# Absolute path of the current session directory
+function approvalSessionDir() {
+  local sessionsDir="${CLAUDE_SESSIONS_DIR:-/tmp/oroshi/claude/sessions}"
+  print -r -- "${sessionsDir:A}/${CLAUDE_SESSION_ID}"
+}
+
 # Path of the current session state file
 function approvalStateFile() {
-  local sessionsDir="${CLAUDE_SESSIONS_DIR:-/tmp/oroshi/claude/sessions}"
-  print -r -- "${sessionsDir}/${CLAUDE_SESSION_ID}/state.json"
+  print -r -- "$(approvalSessionDir)/state.json"
 }
 
 # Print the session state JSON, or an empty object when absent
