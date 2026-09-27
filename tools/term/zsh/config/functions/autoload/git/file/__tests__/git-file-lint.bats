@@ -9,7 +9,7 @@ setup() {
 @test "exits 0 when working tree is clean" {
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 @test "exits 0 when all dirty files are deleted" {
@@ -20,7 +20,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 # ─── BATS ─────────────────────────────────────────────────────────────────────
@@ -37,7 +37,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 @test "shows BATS header, errors and relative paths when is-bats true and bats-lint has errors" {
@@ -71,7 +71,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 # ─── ZSH ──────────────────────────────────────────────────────────────────────
@@ -88,7 +88,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 @test "shows ZSH header, errors and relative paths when is-zsh true and zsh-lint has errors" {
@@ -122,7 +122,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 @test "calls zsh-lint with --fix flag when dirty zsh files are found" {
@@ -157,7 +157,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 @test "shows JS header and errors when is-js true and lint:fix has output" {
@@ -190,7 +190,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 # ─── PYTHON ───────────────────────────────────────────────────────────────────
@@ -207,7 +207,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 @test "shows Python header and errors when is-python true and python-lint has output" {
@@ -240,7 +240,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 @test "calls python-lint with --fix flag when dirty python files are found" {
@@ -275,7 +275,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 @test "shows Go header and stylish output when is-go true and go-lint has errors" {
@@ -307,7 +307,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 @test "calls go-lint with --fix flag when dirty go files are found" {
@@ -342,7 +342,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 @test "shows SVG header and errors when is-svg true and svg-lint has output" {
@@ -375,7 +375,7 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }
 
 @test "calls svg-lint with --fix flag when dirty svg files are found" {
@@ -422,6 +422,7 @@ setup() {
   [[ "$status" -eq 1 ]]
   [[ "$output" =~ "── ZSH ──" ]]
   [[ "$output" =~ "── BATS ──" ]]
+  [[ ! "$output" =~ "All files are clean" ]]
 }
 
 @test "exits 0 when both zsh and bats have no errors" {
@@ -440,5 +441,5 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$output" = "✔ All files are clean" ]]
 }

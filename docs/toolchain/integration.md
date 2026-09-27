@@ -16,6 +16,7 @@ call.
 # Groups them by language, runs {lang}-lint --fix on each group.
 # Exits non-zero if any violations remain after fixing.
 # Deleted files are skipped automatically.
+# Prints "✔ All files are clean" when no violations remain.
 # Usage:
 # $ git-file-lint                        # lint all dirty files in the working tree
 ```
@@ -30,7 +31,7 @@ time and blocks the commit on failure, `git-file-lint` is on-demand.
 Groups modified and added files in the working tree by language using
 [`is-{lang}`](scripts.md#is-lang), then runs [`{lang}-lint
 --fix`](scripts.md#lang-lint) on each group. Reports violations grouped by
-language.
+language, or `✔ All files are clean` if none.
 
 **Dependencies:**
 

@@ -1,13 +1,19 @@
 # Lint all dirty ZSH, BATS, JS, Python, Go, JSON, SVG and XML files in the working tree, grouped by type
+# Prints "✔ All files are clean" when no violations remain.
 # Usage:
 # $ git-file-lint
 setopt local_options err_return
+
+SUCCESS_MESSAGE="✔ All files are clean"
 
 local gitRoot="$(git-directory-root)"
 local rawFiles="$(git-file-list-dirty-raw)"
 
 # Nothing to lint if working tree is clean
-[[ "$rawFiles" == "" ]] && return 0
+if [[ "$rawFiles" == "" ]]; then
+  echo "$SUCCESS_MESSAGE"
+  return 0
+fi
 
 local -A results=(
   bats-files ""
@@ -145,4 +151,5 @@ fi
 
 # Exit non-zero if any group had violations
 [[ $hasViolations == "1" ]] && return 1
+echo "$SUCCESS_MESSAGE"
 return 0
