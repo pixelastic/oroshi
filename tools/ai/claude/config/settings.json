@@ -24,6 +24,7 @@
     "defaultMode": "acceptEdits"
   },
   "model": "opus[1m]",
+  "outputStyle": "terse",
   "hooks": {
     "PreToolUse": [
       {

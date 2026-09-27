@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Deploy claude config (settings, skills, themes) to ~/.claude
+# Deploy claude config (settings, skills, output styles, themes) to ~/.claude
 # Usage:
 # $ tools/ai/claude/deploy
 set -e
@@ -32,6 +32,18 @@ for skillDirectory in $SKILL_DIRECTORIES; do
     fi
     ln -s "${oroshiPath}" "${claudePath}"
   done
+done
+# }}}
+
+# Output styles {{{
+mkdir -p ~/.claude/output-styles
+for oroshiPath in $CONFIG_DIR/output-styles/*.md; do
+  styleName="${oroshiPath:t}"
+  ln \
+    --symbolic \
+    --force \
+    "${oroshiPath}" \
+    ~/.claude/output-styles/${styleName}
 done
 # }}}
 
