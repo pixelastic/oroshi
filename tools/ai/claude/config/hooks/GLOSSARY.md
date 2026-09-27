@@ -37,7 +37,7 @@ The hook output when Solkan **allow**s a command.
 _Avoid_: auto-allow, silent-approve, bypass
 
 **ask with reason**:
-The hook output when Solkan **reject**s one or more commands. All rejected binary names are displayed, every time. The user sees a 2-option dialog (Allow / Deny). Maps to `permissionDecision: "ask"`.
+The hook output when Solkan **reject**s one or more commands. All rejected binary names are displayed, every time, each followed by a moon showing its **approval count**: no symbol on the 1st prompt, `🌓` on the 2nd, `🌕` on the 3rd (e.g. `❌ /usr/bin/grep 🌕, wget ❌`). Approving a `🌕` command is meant to make it session-allowed, once the session allow-list exists. The user sees a 2-option dialog (Allow / Deny). Maps to `permissionDecision: "ask"`.
 _Avoid_: ask user, escalate, warn-ask
 
 **approval pending**:

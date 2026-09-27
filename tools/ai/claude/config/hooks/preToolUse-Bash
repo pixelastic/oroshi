@@ -64,13 +64,18 @@ local agentId="$(json-get '.agent_id' <<<"$inputJson")"
 # Commands rejected by solkan: display all of them
 local -a rejectedCommands=(${(@f)$(json-get '.allow.rejected' <<<"$solkanJson")})
 
+# Approval progress of each rejected command, read before recording this prompt
+local -a pendingArgs=()
+local -a reasonArgs=()
+local rejectedCommand
+for rejectedCommand in $rejectedCommands; do
+  local approvalCount="$(approvalCountGet --command "$rejectedCommand")"
+  pendingArgs+=(--command "$rejectedCommand")
+  reasonArgs+=(--command "$rejectedCommand" --count "$approvalCount")
+done
+
 # Remember what the user is asked to approve, for postToolUse-Bash to count
 local toolUseId="$(json-get '.tool_use_id' <<<"$inputJson")"
-local -a pendingArgs=()
-for rejectedCommand in $rejectedCommands; do
-  pendingArgs+=(--command "$rejectedCommand")
-done
 approvalPendingAdd --tool-use-id "$toolUseId" "${pendingArgs[@]}"
 
-local rejectedList="${(j:, :)rejectedCommands}"
-askWithReason "$rejectedList" "$updatedInputCommand"
+askWithReason "$(askReasonFormat "${reasonArgs[@]}")" "$updatedInputCommand"
