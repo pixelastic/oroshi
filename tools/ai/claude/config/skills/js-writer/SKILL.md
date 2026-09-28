@@ -169,4 +169,5 @@ Write code that passes automated lint.
 - [ ] ES6 modules — named exports, `.js` extension on local imports
 - [ ] JSDoc on all functions (exported and private in `__`)
 - [ ] Existing comments preserved
+- [ ] Comments written in short, simple sentences
 - [ ] `yarn run lint:fix` run after changes

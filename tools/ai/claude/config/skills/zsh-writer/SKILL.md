@@ -152,6 +152,7 @@ Fix **every** violation, including pre-existing ones.
 - [ ] Quick documentation and usage at top of script
 - [ ] Return early — no avoidable nesting
 - [ ] Comments for each guard clause
+- [ ] Comments written in short, simple sentences
 - [ ] All function vars `local`; script constants UPPER_CASE
 - [ ] External commands use long-form args, one per line
 - [ ] Use existing helpers over porcelain (e.g. `git-branch-list-raw` not `git branch`)

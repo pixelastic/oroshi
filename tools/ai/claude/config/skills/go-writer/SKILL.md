@@ -96,6 +96,7 @@ Run `go-test <filepath>` to confirm tests still pass.
 - [ ] `require` for guards (nil, error), `assert` for everything else
 - [ ] Tests pass after step 3
 - [ ] Return early — no avoidable nesting
+- [ ] Comments written in short, simple sentences
 - [ ] Errors wrapped with `fmt.Errorf("context: %w", err)`
 - [ ] Tests still pass after refactor
 - [ ] `go-lint --fix <file>` run, all violations fixed

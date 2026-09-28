@@ -101,5 +101,6 @@ Run `python-test <filepath>` to confirm tests still pass.
 - [ ] Test file named `test_<module>.py` in `__tests__/` sibling directory
 - [ ] Tests pass after step 4
 - [ ] Return early — no avoidable nesting (step 5)
+- [ ] Comments written in short, simple sentences
 - [ ] Tests still pass after refactor
 - [ ] `python-lint --fix <file>` run, all violations fixed
