@@ -1,0 +1,42 @@
+# Add the mandatory Midjourney parameters and remove the forbidden ones, on one line
+# Usage:
+# $ midjourney-fix "a cat --q 2"  # a cat --ar 16:9 --v 8.2
+# $ midjourney-fix <<<"a cat"     # Read the prompt from stdin
+setopt local_options err_return extended_glob
+
+# Removed in V8, or out of scope of the /midjourney-writer skill
+local FORBIDDEN=(q quality oref ow cref cw draft niji turbo p profile sref sw sv edit iw video motion loop end bs)
+
+local prompt="$1"
+[[ "$prompt" == "" ]] && prompt="$(cat)"
+
+# Nothing to fix
+[[ "$prompt" == "" ]] && return 1
+
+# Remove multi-prompt weights: ::, ::2, ::-0.5
+prompt="${prompt//::(-|)[0-9.]#/ }"
+
+# Split into the text, then one segment per parameter
+local segments=("${(@s: --:)${(j: :)${=prompt}}}")
+local text="${segments[1]}"
+
+local parameters=()
+local hasRatio=0
+for segment in "${(@)segments[2,-1]}"; do
+  local name="${segment%% *}"
+
+  # Forbidden parameters are dropped with their value
+  (( ${FORBIDDEN[(Ie)$name]} )) && continue
+
+  # Version
+  [[ "$name" == "v" || "$name" == "version" ]] && continue
+  # Ratio
+  [[ "$name" == "ar" || "$name" == "aspect" ]] && hasRatio=1
+  parameters+=("--$segment")
+done
+
+(( ! hasRatio )) && parameters+=("--ar 16:9")
+parameters+=("--v 8.2")
+
+local parts=(${text:+"$text"} $parameters)
+print -r -- "${(j: :)parts}"

@@ -39,4 +39,4 @@ Cover an area only when it matters to the description. Fewer details give more v
 - Keep it short.
   - Bad: `a logo with the company name Boing`
   - Good: `a pastel watercolor landscape with "imagine" written in the clouds`
-- If text matters, add `--raw` or lower `--stylize` (see `parameters.md`).
+- If text matters, add `--raw` or lower `--s` (see `parameters.md`).

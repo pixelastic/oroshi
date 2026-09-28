@@ -1,0 +1,13 @@
+# Fix a Midjourney prompt, copy it to the clipboard and print it
+# Usage:
+# $ midjourney-writer-end "a cat"  # Copies and prints "a cat --ar 16:9 --v 8.2"
+# $ midjourney-writer-end <<<"a cat"
+setopt local_options err_return
+
+local prompt="$(midjourney-fix "$@")"
+
+# Nothing to copy
+[[ "$prompt" == "" ]] && return 1
+
+clipboard-write "$prompt"
+print -r -- "$prompt"

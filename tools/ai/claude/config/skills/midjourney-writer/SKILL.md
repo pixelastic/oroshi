@@ -22,21 +22,23 @@ Do not ask clarifying questions. Do not run any network call or check.
 
 Follow `references/prompting.md` for the text and `references/parameters.md` for the parameters.
 
-### Step 2 — Copy and display
+### Step 2 — Fix, copy and display
 
-**Goal:** Put the prompt in the clipboard and show it.
+**Goal:** Fix the prompt, put it in the clipboard and show it.
 
-**Exit criterion:** `clipboard-write` called, prompt displayed.
+**Exit criterion:** `midjourney-writer-end` called, fixed prompt displayed.
 
-Copy the prompt with a quoted heredoc (prompts contain double quotes):
+Run `midjourney-writer-end` with a quoted heredoc (prompts may contain double
+quotes). It fixes the prompt, copies it to clipboard and prints it:
 
 ```zsh
-clipboard-write <<'EOF'
+midjourney-writer-end <<'EOF'
 <prompt>
 EOF
 ```
 
-Display the prompt in a code block. Output nothing else: no explanation, no choices made, no alternatives.
+Display the fixed prompt (the command output, not your draft) in a code block.
+Output nothing else: no explanation, no choices made, no alternatives.
 
 ### Step 3 — Iterate
 
@@ -56,9 +58,10 @@ Always return the full revised prompt, never a diff.
 | "I'll offer two variants" | Exactly one prompt per answer. |
 | "The description is not in English, so the prompt keeps its language" | The prompt is always English. See `references/prompting.md`. |
 | "The change is small, I'll only show the modified part" | Always the full prompt, copied again. |
+| "My draft already follows the parameter rules, I'll copy it myself" | Always run `midjourney-writer-end`. It enforces rules the references no longer list. |
 
 ## Checklist
 
-- [ ] Exactly one English prompt, ending with parameters
-- [ ] `clipboard-write` called with the final prompt
+- [ ] Exactly one English prompt
+- [ ] Prompt passed to `midjourney-writer-end`
 - [ ] Answer contains only the prompt
