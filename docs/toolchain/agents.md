@@ -1,9 +1,10 @@
 # AI Integration
 
-AI agents (Claude Code and similar) use the toolchain through two mechanisms:
-skill files that encode language-specific workflows, and project-level CLAUDE.md
-entries that expose test and lint commands to any agent. Together they ensure
-agents follow the same TDD workflow and toolchain conventions as human
+AI agents (Claude Code and similar) use the toolchain through three mechanisms:
+skill files that encode language-specific workflows, project-level CLAUDE.md
+entries that expose test and lint commands to any agent, and an allow-list that
+lets Claude Code run those commands without a permission prompt. Together they
+ensure agents follow the same TDD workflow and toolchain conventions as human
 developers.
 
 See [scripts.md](scripts.md) for the per-language ZSH functions these
@@ -59,6 +60,33 @@ changes.
 
 ---
 
+## Claude allow-list
+
+```
+# Commands Claude Code can run without a permission prompt.
+# Location: tools/ai/claude/config/hooks/allow-list.json
+# Lets agents lint, fix and test files without interrupting the user.
+```
+
+Agents call the toolchain scripts on every change, directly or through
+[`git-file-lint`](integration.md#git-file-lint) and
+[`git-file-test`](integration.md#git-file-test). A script
+missing from the allow-list triggers a permission prompt on each call.
+
+Each language registers `{lang}-lint` and `{lang}-fix`.
+[Programming languages](README.md#language-categories) also register
+`{lang}-test`.
+
+**Dependencies:**
+
+- References [`{lang}-lint`](scripts.md#lang-lint),
+  [`{lang}-fix`](scripts.md#lang-fix) and
+  [`{lang}-test`](scripts.md#lang-test) by name
+- Lets the [`{lang}-writer` skill](#lang-writer-skill) and the
+  [CLAUDE.md entries](#claudemd-entries) run without prompts
+
+---
+
 ## Adding a language
 
 See [Language categories](README.md#language-categories) for which steps apply.
@@ -69,9 +97,12 @@ All languages:
    appropriate workflow for the language category
 2. Add a `Linting` entry to the `## Commands` section of the root CLAUDE.md
 3. (Optional) Add a `Testing` entry to the `## Commands` section of the root CLAUDE.md
+4. Register `{lang}-lint` and `{lang}-fix` in
+   `tools/ai/claude/config/hooks/allow-list.json`
 
 Programming languages only:
 
 5. Add reference documents under `references/` for style, testing, and library
    conventions
 6. Add a `Testing` entry to the `## Commands` section of the root CLAUDE.md
+7. Register `{lang}-test` in `tools/ai/claude/config/hooks/allow-list.json`
