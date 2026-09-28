@@ -9,7 +9,7 @@
 
 ```zsh
 # Return early if sound is disabled
-sound-mode-is-enabled || exit 0
+! sound-mode-is-enabled && return 0
 
 # Return early if var is empty
 [[ "$worktreePath" == "" ]] && return 1

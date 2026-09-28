@@ -71,8 +71,12 @@ No patterns yet — just correct behavior.
 
 **Exit criterion:** Tests still pass after refactor.
 
+Apply patterns from [Style](./references/style.md):
+
 | Pattern | Rule |
 |---|---|
+| Return early | No avoidable nesting |
+| Naming | Name carries a contract: `is-*`, `*-exists`, `*-list-raw`, `*-list` |
 | [Headers](./references/header.md) | Top of the file: what the script does, how to call it and error protection |
 | [Args parsing](./references/args-parsing.md) | Use `zparseopts` to parse --named arguments |
 | [Variables](./references/variables.md) | `local myVar="$(myCommand)"` on one line |
