@@ -22,3 +22,18 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" = "hello" ]]
 }
+
+@test "ssh accepts many connections opened at the same time" {
+  # Parallel test files each open their own connections (no ControlMaster)
+  local pids=()
+  for i in {1..30}; do
+    ssh mock "true" &
+    pids+=($!)
+  done
+
+  local failures=0
+  for pid in "${pids[@]}"; do
+    wait "$pid" || failures=$((failures + 1))
+  done
+  [[ "$failures" -eq 0 ]]
+}
