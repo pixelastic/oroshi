@@ -20,6 +20,9 @@ docker build \
   --tag "$containerName" \
   "$mockDir"
 
+# Create the sandbox folder (otherwise Docker creates it, as root...)
+mkdir --parents /tmp/sandbox
+
 docker run \
   --detach \
   --name "$containerName" \

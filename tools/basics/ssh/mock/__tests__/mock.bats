@@ -9,6 +9,10 @@ setup() {
   bats_tmp_dir
 }
 
+@test "the mounted /tmp/sandbox folder belongs to the current user" {
+  [[ "$(stat --format %U /tmp/sandbox)" = "$(id --user --name)" ]]
+}
+
 @test "scp transfers a file from local to the expected path on the mock host" {
   echo "hello from local" > "$BATS_TMP_DIR/input.txt"
   run scp "$BATS_TMP_DIR/input.txt" "mock:$BATS_TMP_DIR/output.txt"
