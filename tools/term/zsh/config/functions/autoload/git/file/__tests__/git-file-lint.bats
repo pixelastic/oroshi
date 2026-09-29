@@ -32,7 +32,7 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/test.bats"
 
   is-bats() { return 0; }
-  bats-lint() { printf '[]'; }
+  bats-lint() { printf ''; }
   bats_mock is-bats bats-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
@@ -40,7 +40,7 @@ setup() {
   [[ "$output" = "✔ All files are clean" ]]
 }
 
-@test "shows BATS header, errors and relative paths when is-bats true and bats-lint has errors" {
+@test "shows BATS header and stylish output when is-bats true and bats-lint has errors" {
   echo 'content' > "$BATS_GIT_DIR/test.bats"
   bats_git add test.bats
   bats_git commit --quiet -m "add test.bats"
@@ -48,16 +48,33 @@ setup() {
 
   is-bats() { return 0; }
   bats-lint() {
-    printf '[{"file":"%s","line":1,"column":1,"code":"noRunZsh","message":"use bats_run_zsh"}]' \
-      "$1"
+    printf 'test.bats\n  1:1  error  use bats_run_zsh  noRunZsh\n'
+    return 1
   }
   bats_mock is-bats bats-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 1 ]]
   [[ "$output" =~ "── BATS ──" ]]
-  [[ "$output" =~ test.bats:1:1:\ noRunZsh: ]]
-  [[ ! "$output" =~ $BATS_GIT_DIR ]]
+  [[ "$output" == *"1:1  error  use bats_run_zsh  noRunZsh"* ]]
+}
+
+@test "calls bats-lint without --json flag when dirty bats files are found" {
+  echo 'content' > "$BATS_GIT_DIR/test.bats"
+  bats_git add test.bats
+  bats_git commit --quiet -m "add test.bats"
+  echo 'changed' >> "$BATS_GIT_DIR/test.bats"
+
+  is-bats() { return 0; }
+  bats-lint() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/.bats-lint-args"
+    printf ''
+  }
+  bats_mock is-bats bats-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  [[ "$(< "$BATS_TMP_DIR/.bats-lint-args")" != *"--json"* ]]
 }
 
 @test "exits 0 when is-bats is false for all dirty files" {
@@ -83,7 +100,7 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
   is-zsh() { return 0; }
-  zsh-lint() { printf '[]'; }
+  zsh-lint() { printf ''; }
   bats_mock is-zsh zsh-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
@@ -91,7 +108,7 @@ setup() {
   [[ "$output" = "✔ All files are clean" ]]
 }
 
-@test "shows ZSH header, errors and relative paths when is-zsh true and zsh-lint has errors" {
+@test "shows ZSH header and stylish output when is-zsh true and zsh-lint has errors" {
   echo 'content' > "$BATS_GIT_DIR/script.zsh"
   bats_git add script.zsh
   bats_git commit --quiet -m "add script.zsh"
@@ -99,16 +116,15 @@ setup() {
 
   is-zsh() { return 0; }
   zsh-lint() {
-    printf '[{"file":"%s","line":2,"column":1,"code":"noGroupedLocals","message":"group locals"}]' \
-      "${@: -1}"
+    printf 'script.zsh\n  2:1  error  group locals  noGroupedLocals\n'
+    return 1
   }
   bats_mock is-zsh zsh-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 1 ]]
   [[ "$output" =~ "── ZSH ──" ]]
-  [[ "$output" =~ script.zsh:2:1:\ noGroupedLocals: ]]
-  [[ ! "$output" =~ $BATS_GIT_DIR ]]
+  [[ "$output" == *"2:1  error  group locals  noGroupedLocals"* ]]
 }
 
 @test "exits 0 when is-zsh is false for all dirty files" {
@@ -125,7 +141,7 @@ setup() {
   [[ "$output" = "✔ All files are clean" ]]
 }
 
-@test "calls zsh-lint with --fix and --json flags when dirty zsh files are found" {
+@test "calls zsh-lint with --fix and without --json flag when dirty zsh files are found" {
   echo 'content' > "$BATS_GIT_DIR/script.zsh"
   bats_git add script.zsh
   bats_git commit --quiet -m "add script.zsh"
@@ -134,14 +150,14 @@ setup() {
   is-zsh() { return 0; }
   zsh-lint() {
     printf '%s\n' "$@" > "$BATS_TMP_DIR/.zsh-lint-args"
-    printf '[]'
+    printf ''
   }
   bats_mock is-zsh zsh-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
   grep -q -- '--fix' "$BATS_TMP_DIR/.zsh-lint-args"
-  grep -q -- '--json' "$BATS_TMP_DIR/.zsh-lint-args"
+  [[ "$(< "$BATS_TMP_DIR/.zsh-lint-args")" != *"--json"* ]]
 }
 
 # ─── JS ───────────────────────────────────────────────────────────────────────
@@ -288,6 +304,7 @@ setup() {
   is-go() { return 0; }
   go-lint() {
     printf 'main.go\n  3:1  warn  var x is unused  unused\n'
+    return 1
   }
   bats_mock is-go go-lint
 
@@ -397,6 +414,91 @@ setup() {
   grep -q -- '--fix' "$BATS_TMP_DIR/.svg-lint-args"
 }
 
+# ─── LINTER FAILURE ───────────────────────────────────────────────────────────
+
+@test "exits 0 when a linter prints output but exits 0" {
+  echo '{}' > "$BATS_GIT_DIR/data.json"
+  bats_git add data.json
+  bats_git commit --quiet -m "add data.json"
+  echo 'changed' >> "$BATS_GIT_DIR/data.json"
+
+  is-json() { return 0; }
+  json-lint() { printf 'Fixed 1 file\n'; }
+  bats_mock is-json json-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "✔ All files are clean" ]]
+}
+
+@test "shows JSON header and failure when json-lint exits 1 with empty output" {
+  echo '{}' > "$BATS_GIT_DIR/data.json"
+  bats_git add data.json
+  bats_git commit --quiet -m "add data.json"
+  echo 'changed' >> "$BATS_GIT_DIR/data.json"
+
+  is-json() { return 0; }
+  json-lint() { return 1; }
+  bats_mock is-json json-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" =~ "── JSON ──" ]]
+  [[ "$output" == *"linter failed (exit 1)"* ]]
+  [[ ! "$output" =~ "All files are clean" ]]
+}
+
+@test "shows the real exit code when a text linter fails with empty output" {
+  echo '{}' > "$BATS_GIT_DIR/data.json"
+  bats_git add data.json
+  bats_git commit --quiet -m "add data.json"
+  echo 'changed' >> "$BATS_GIT_DIR/data.json"
+
+  is-json() { return 0; }
+  json-lint() { return 2; }
+  bats_mock is-json json-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"linter failed (exit 2)"* ]]
+}
+
+@test "shows ZSH header and failure when zsh-lint exits 1 with empty output" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  bats_git add script.zsh
+  bats_git commit --quiet -m "add script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
+
+  is-zsh() { return 0; }
+  zsh-lint() { return 1; }
+  bats_mock is-zsh zsh-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" =~ "── ZSH ──" ]]
+  [[ "$output" == *"linter failed (exit 1)"* ]]
+}
+
+@test "shows only violations when a text linter exits 1 with violations" {
+  echo '{}' > "$BATS_GIT_DIR/data.json"
+  bats_git add data.json
+  bats_git commit --quiet -m "add data.json"
+  echo 'changed' >> "$BATS_GIT_DIR/data.json"
+
+  is-json() { return 0; }
+  json-lint() {
+    printf 'data.json:1:1: invalid JSON\n'
+    return 1
+  }
+  bats_mock is-json json-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" =~ "── JSON ──" ]]
+  [[ "$output" == *"data.json:1:1: invalid JSON"* ]]
+  [[ ! "$output" =~ "linter failed" ]]
+}
+
 # ─── ALL ──────────────────────────────────────────────────────────────────────
 
 @test "shows both headers when both zsh and bats have errors" {
@@ -410,12 +512,12 @@ setup() {
   is-zsh() { [[ "$1" == *.zsh ]]; }
   is-bats() { [[ "$1" == *.bats ]]; }
   zsh-lint() {
-    printf '[{"file":"%s","line":1,"column":1,"code":"noGroupedLocals","message":"group locals"}]' \
-      "$1"
+    printf 'script.zsh\n  1:1  error  group locals  noGroupedLocals\n'
+    return 1
   }
   bats-lint() {
-    printf '[{"file":"%s","line":1,"column":1,"code":"noRunZsh","message":"use bats_run_zsh"}]' \
-      "$1"
+    printf 'test.bats\n  1:1  error  use bats_run_zsh  noRunZsh\n'
+    return 1
   }
   bats_mock is-zsh is-bats zsh-lint bats-lint
 
@@ -436,8 +538,8 @@ setup() {
 
   is-zsh() { [[ "$1" == *.zsh ]]; }
   is-bats() { [[ "$1" == *.bats ]]; }
-  zsh-lint() { printf '[]'; }
-  bats-lint() { printf '[]'; }
+  zsh-lint() { printf ''; }
+  bats-lint() { printf ''; }
   bats_mock is-zsh is-bats zsh-lint bats-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"

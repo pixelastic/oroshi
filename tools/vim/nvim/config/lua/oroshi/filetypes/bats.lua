@@ -23,7 +23,7 @@ end
 M.configureLinter = function(lint)
   lint.linters["bats-lint"] = {
     cmd = "bin-zsh",
-    args = { "bats-lint" },
+    args = { "bats-lint", "--json" },
     stdin = false,
     ignore_exitcode = true,
     parser = M.lintParser,

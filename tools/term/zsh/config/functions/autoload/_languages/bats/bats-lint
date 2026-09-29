@@ -1,13 +1,20 @@
-# Orchestrator: merges bats-lint-shellcheck and bats-lint-custom into one JSON array
+# Lint one or more BATS files
+# Orchestrator: merges bats-lint-shellcheck and bats-lint-custom
+# Default output is stylish format (violations grouped by file)
 # Usage:
-# $ bats-lint file.bats
-# $ bats-lint file.bats other.bats
+# $ bats-lint file.bats              # Stylish output (default)
+# $ bats-lint --json file.bats       # Unified JSON output
+# $ bats-lint file.bats other.bats   # Multiple files
 setopt local_options err_return
 
 local scriptDir="${functions_source[$0]:A:h}"
 
 source "$scriptDir/__lib/bats-lint-shellcheck.zsh"
 source "$scriptDir/__lib/bats-lint-custom.zsh"
+
+zparseopts -E -D \
+  -json=flagJson
+local isJson=${#flagJson}
 
 # Keep only valid bats files
 local -a valid=()
@@ -26,7 +33,7 @@ done
 
 # No files
 if [[ ${#valid[@]} -eq 0 && ${#invalid[@]} -eq 0 ]]; then
-  printf '[]\n'
+  [[ $isJson == 1 ]] && printf '[]\n'
   return 0
 fi
 
@@ -52,8 +59,16 @@ if [[ ${#valid[@]} -gt 0 ]]; then
     <(bats-lint-custom "${valid[@]}"))"
 fi
 
-# Merge and output
+# Merge sub-linters output into one JSON array
 local merged="$(jq -cs 'add // []' <(printf '%s' "$invalid_json") <(printf '%s' "$valid_json"))"
-printf '%s\n' "$merged"
-[[ "$(printf '%s' "$merged" | jq 'length')" -gt 0 ]] && return 1
-return 0
+
+# JSON mode: output raw JSON
+if [[ $isJson == 1 ]]; then
+  printf '%s\n' "$merged"
+  [[ "$merged" != "[]" ]] && return 1
+  return 0
+fi
+
+# Stylish mode (default), paths relative to git root (or $PWD outside a repo)
+local projectRoot="$(git-directory-root)"
+printf '%s' "$merged" | json2stylish --root "$projectRoot/"
