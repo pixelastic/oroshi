@@ -24,16 +24,16 @@
 local hookDir="${0:A:h}"
 local logDir="${CLAUDE_HOOKS_LOG_DIR:-/tmp/oroshi/claude/hooks}"
 
-source "${hookDir}/preToolUse-Bash-solkan.zsh"
-source "${hookDir}/preToolUse-Bash-helper.zsh"
-source "${hookDir}/Bash-approval.zsh"
-
 # Parse input
 local inputJson="$(cat)"
 local inputCommand="$(json-get '.tool_input.command' <<<"$inputJson")"
 
-# Session id: scopes approval state (see Bash-approval.zsh)
+# Session id: scopes approval state, must be set before sourcing Bash-approval.zsh
 export CLAUDE_SESSION_ID="$(json-get '.session_id' <<<"$inputJson")"
+
+source "${hookDir}/preToolUse-Bash-solkan.zsh"
+source "${hookDir}/preToolUse-Bash-helper.zsh"
+source "${hookDir}/Bash-approval.zsh"
 
 # Save input for debugging
 mkdir -p "$logDir"

@@ -2,11 +2,14 @@
 # - approval pending: commands awaiting the user's answer, keyed by tool use id
 # - approval count: how many times the user approved each command
 # - session allow-list: commands Solkan allows for the rest of the session
-# Sourced by the hooks
+# Sourced by the hooks, after they export CLAUDE_SESSION_ID
 #
-# State lives in $CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json
-# Session allow-list lives in $CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/allow-list.json
+# State lives in $(claude-session-dir)/state.json
+# Session allow-list lives in $(claude-session-dir)/allow-list.json
 # Every public function is a no-op when CLAUDE_SESSION_ID is empty
+# shellcheck disable=SC2153
+
+CLAUDE_SESSION_DIR="$(claude-session-dir)"
 
 # Record the rejected commands the user is asked to approve for a tool use
 # Usage:
@@ -148,23 +151,12 @@ function sessionAllowListFile() {
   # No session: no session allow-list
   [[ "$CLAUDE_SESSION_ID" == "" ]] && return 0
 
-  print -r -- "$(approvalSessionDir)/allow-list.json"
-}
-
-# Absolute path of the current session directory
-function approvalSessionDir() {
-  local sessionsDir="${CLAUDE_SESSIONS_DIR:-/tmp/oroshi/claude/sessions}"
-  print -r -- "${sessionsDir:A}/${CLAUDE_SESSION_ID}"
-}
-
-# Path of the current session state file
-function approvalStateFile() {
-  print -r -- "$(approvalSessionDir)/state.json"
+  print -r -- "${CLAUDE_SESSION_DIR}/allow-list.json"
 }
 
 # Print the session state JSON, or an empty object when absent
 function approvalStateRead() {
-  local stateFile="$(approvalStateFile)"
+  local stateFile="${CLAUDE_SESSION_DIR}/state.json"
 
   # No state yet: start from scratch
   if [[ ! -f "$stateFile" ]]; then
@@ -177,7 +169,7 @@ function approvalStateRead() {
 
 # Replace the session state JSON with stdin
 function approvalStateWrite() {
-  local stateFile="$(approvalStateFile)"
+  local stateFile="${CLAUDE_SESSION_DIR}/state.json"
   local newJson="$(cat -)"
 
   # jq failed upstream: keep existing state untouched

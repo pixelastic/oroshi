@@ -1,0 +1,17 @@
+# Print the absolute path of a Claude session directory
+# Sessions live in $CLAUDE_SESSIONS_DIR (defaults to /tmp/oroshi/claude/sessions)
+# The session id defaults to $CLAUDE_SESSION_ID
+# Does not create the directory
+# Usage:
+# $ claude-session-dir abc-123  # /tmp/oroshi/claude/sessions/abc-123
+# $ claude-session-dir          # /tmp/oroshi/claude/sessions/$CLAUDE_SESSION_ID (nothing if unset)
+setopt local_options err_return
+
+local sessionId="${1:-$CLAUDE_SESSION_ID}"
+
+# No session: no session directory
+[[ "$sessionId" == "" ]] && return 0
+
+local sessionsDir="${CLAUDE_SESSIONS_DIR:-/tmp/oroshi/claude/sessions}"
+
+print -r -- "${sessionsDir:A}/${sessionId}"

@@ -12,8 +12,6 @@
 
 local hookDir="${0:A:h}"
 
-source "${hookDir}/Bash-approval.zsh"
-
 # Approvals after which a command joins the session allow-list
 SESSION_ALLOW_LIST_THRESHOLD=3
 
@@ -21,8 +19,10 @@ SESSION_ALLOW_LIST_THRESHOLD=3
 local inputJson="$(cat)"
 local toolUseId="$(json-get '.tool_use_id' <<<"$inputJson")"
 
-# Session id: scopes approval state (see Bash-approval.zsh)
+# Session id: scopes approval state, must be set before sourcing Bash-approval.zsh
 export CLAUDE_SESSION_ID="$(json-get '.session_id' <<<"$inputJson")"
+
+source "${hookDir}/Bash-approval.zsh"
 
 # Each pending command of this tool use was approved by the user
 local -a approvedCommands=(${(@f)$(approvalPendingGet --tool-use-id "$toolUseId")})
