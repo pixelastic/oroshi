@@ -102,6 +102,67 @@ SCRIPT
   [[ "$output" == "" ]]
 }
 
+@test "runs the global prettier with the oroshi config when the project has a local binary but no config" {
+  local projectDir="$BATS_TMP_DIR/project"
+  local file="$projectDir/test.json"
+  mkdir -p "$projectDir/node_modules/.bin"
+  printf '{"a":1}\n' > "$file"
+
+  # Local prettier leaves a marker file if it runs
+  cat > "$projectDir/node_modules/.bin/prettier" <<SCRIPT
+#!/bin/bash
+touch "$BATS_TMP_DIR/local_prettier_called"
+exit 0
+SCRIPT
+  chmod +x "$projectDir/node_modules/.bin/prettier"
+
+  mock_prettier <<SCRIPT
+#!/bin/bash
+printf '%s\n' "\$*" > "$BATS_TMP_DIR/prettier_args"
+exit 0
+SCRIPT
+  # Override mock_prettier's yarn-root so the file belongs to the project
+  yarn-root() { echo "$PROJECT_DIR"; }
+  bats_mock yarn-root
+  bats_mock_env PROJECT_DIR "$projectDir"
+
+  bats_run_zsh "source $LIB_DIR/prettier-fix.zsh && prettier-fix --parser json $file"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/local_prettier_called" ]]
+  local args="$(cat "$BATS_TMP_DIR/prettier_args")"
+  [[ "$args" == *"--config $OROSHI_ROOT/prettier.config.js"* ]]
+}
+
+@test "prints prettier stderr when prettier fails" {
+  local file="$BATS_TMP_DIR/test.xml"
+  printf '<a/>\n' > "$file"
+
+  mock_prettier <<'SCRIPT'
+#!/bin/bash
+echo "Cannot find package '@prettier/plugin-xml'" >&2
+exit 2
+SCRIPT
+
+  bats_run_zsh "source $LIB_DIR/prettier-fix.zsh && prettier-fix --parser xml $file"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"Cannot find package '@prettier/plugin-xml'"* ]]
+}
+
+@test "prints nothing on stdout when prettier succeeds" {
+  local file="$BATS_TMP_DIR/test.json"
+  printf '{"a":1}\n' > "$file"
+
+  mock_prettier <<'SCRIPT'
+#!/bin/bash
+echo "test.json 12ms"
+exit 0
+SCRIPT
+
+  bats_run_zsh "source $LIB_DIR/prettier-fix.zsh && prettier-fix --parser json $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+}
+
 @test "errors when --parser not provided" {
   local file="$BATS_TMP_DIR/test.json"
   printf '{"a":1}\n' > "$file"

@@ -2,6 +2,8 @@
 # Usage:
 # $ prettier-fix --parser json file.json                              # Fix in-place
 # $ prettier-fix --parser json file.json --original-path /real/path   # Config from real path
+source "${0:A:h}/prettier-helpers.zsh"
+
 function prettier-fix() {
   setopt local_options err_return
 
@@ -30,18 +32,8 @@ function prettier-fix() {
 
   local projectRoot="$(yarn-root $configDir --force)"
 
-  # Resolve prettier binary
-  local prettierBin="prettier"
-  if [[ $projectRoot != "" && -f "$projectRoot/node_modules/.bin/prettier" ]]; then
-    prettierBin="$projectRoot/node_modules/.bin/prettier"
-  fi
-
-  # Resolve prettier config file
-  local configFile=$OROSHI_ROOT/prettier.config.js
-  if [[ $projectRoot != "" ]]; then
-    [[ -f "$projectRoot/prettier.config.js" ]] && configFile="$projectRoot/prettier.config.js"
-    [[ -f "$projectRoot/.prettierrc.js" ]] && configFile="$projectRoot/.prettierrc.js"
-  fi
+  local prettierBin="$(__prettier-binary "$projectRoot")"
+  local configFile="$(__prettier-config "$projectRoot")"
 
   local prettierArgs=(
     --config "$configFile"
@@ -50,5 +42,6 @@ function prettier-fix() {
     --write
   )
 
-  $prettierBin ${prettierArgs[@]} "$@" >/dev/null 2>&1
+  # Hide the list of formatted files, but keep errors visible
+  $prettierBin ${prettierArgs[@]} "$@" >/dev/null
 }
