@@ -34,7 +34,19 @@ subagent_run() {
   [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"a2","status":"running"}]' ]]
 }
 
-@test "writes an empty subagents list when no task is running" {
+@test "writes pending tasks with status pending" {
+  subagent_run "b1:local_bash:pending"
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"b1","status":"pending"}]' ]]
+}
+
+@test "writes pending and running tasks in their input order" {
+  subagent_run "a1:local_agent:running" "b1:local_bash:pending" "a2:local_agent:completed" "a3:local_agent:running"
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"a1","status":"running"},{"id":"b1","status":"pending"},{"id":"a3","status":"running"}]' ]]
+}
+
+@test "writes an empty subagents list when no task is pending or running" {
   subagent_run "a1:local_agent:completed" "a2:local_agent:killed"
   [[ "$status" -eq 0 ]]
   [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[]' ]]

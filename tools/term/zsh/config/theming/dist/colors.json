@@ -147,7 +147,11 @@
     "ansi": 149,
     "hex": "#451a03"
   },
-  "claude-subagentRunning": {
+  "claude-subagent-pending": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "claude-subagent-running": {
     "ansi": 35,
     "hex": "#38a169"
   },

@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Save the running Claude Code sub-agents into the session statusline.json
+# Save the pending and running Claude Code sub-agents into the session statusline.json
 # Claude Code pipes the subagentStatusLine JSON on stdin at each refresh tick.
 # The script prints nothing, so Claude Code keeps its native sub-agent rows.
 # Usage:
@@ -13,9 +13,9 @@ local sessionDir="$(claude-session-dir "$sessionId")"
 # No session id: no session directory to write into
 [[ "$sessionDir" == "" ]] && exit 0
 
-# Keep only running tasks, whatever their type
+# Keep only pending and running tasks, whatever their type
 local subagents="$(jq --compact-output \
-  '[.tasks // [] | .[] | select(.status == "running") | {id, status}]' \
+  '[.tasks // [] | .[] | select(.status == "pending" or .status == "running") | {id, status}]' \
   <<<"$stdinData")"
 
 # Start from the existing state to keep its other keys

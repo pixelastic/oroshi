@@ -9,9 +9,26 @@ setup() {
   colors-load-definitions() {
     typeset -gA COLORS
     COLORS[text]=15
-    COLORS[claude-subagentRunning]=2
+    COLORS[claude-subagent-running]=2
+    COLORS[claude-subagent-pending]=3
   }
   bats_mock colors-load-definitions
+}
+
+@test "colors pending dots with the claude-subagent-pending color" {
+  echo '{"subagents":[{"id":"b1","status":"pending"}]}' >"$SESSION_DIR/statusline.json"
+
+  bats_run_zsh "claude-subagent-badge abc-123"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == $'\e[38;5;3m●\e[0m' ]]
+}
+
+@test "renders mixed pending and running dots in state file order" {
+  echo '{"subagents":[{"id":"a1","status":"running"},{"id":"b1","status":"pending"},{"id":"a2","status":"running"}]}' >"$SESSION_DIR/statusline.json"
+
+  bats_run_zsh "claude-subagent-badge abc-123"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == $'\e[38;5;2m●\e[0m\e[38;5;3m●\e[0m\e[38;5;2m●\e[0m' ]]
 }
 
 @test "prints one dot per running sub-agent" {
@@ -22,7 +39,7 @@ setup() {
   [[ "$(bats_strip_ansi "$output")" == "●●" ]]
 }
 
-@test "colors running dots with the claude-subagentRunning color" {
+@test "colors running dots with the claude-subagent-running color" {
   echo '{"subagents":[{"id":"a1","status":"running"}]}' >"$SESSION_DIR/statusline.json"
 
   bats_run_zsh "claude-subagent-badge abc-123"

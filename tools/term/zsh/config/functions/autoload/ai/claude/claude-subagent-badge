@@ -17,10 +17,17 @@ local stateFile="${sessionDir}/statusline.json"
 [[ ! -f "$stateFile" ]] && return 0
 ! json-is-valid --input "$stateFile" && return 0
 
-local subagentCount="$(jq '.subagents // [] | length' "$stateFile")"
+local subagentStatuses="$(jq --raw-output '.subagents // [] | .[].status' "$stateFile")"
 
 # No sub-agents: no dots
-[[ "$subagentCount" == "0" ]] && return 0
+[[ "$subagentStatuses" == "" ]] && return 0
 
-local dots="${(pl:$subagentCount::●:)}"
-colorize "$dots" claude-subagentRunning
+# Print one dot per sub-agent.
+# Color each dot by the status of its sub-agent.
+# A pending sub-agent uses claude-subagent-pending. A running one uses claude-subagent-running.
+local dots=""
+for subagentStatus in ${(f)subagentStatuses}; do
+  colorize --reply "●" "claude-subagent-${subagentStatus}"
+  dots+="$REPLY"
+done
+print -n "$dots"
