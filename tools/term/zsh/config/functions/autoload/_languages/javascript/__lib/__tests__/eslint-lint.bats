@@ -137,3 +137,85 @@ SCRIPT
   bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint $file"
   [[ "$status" -eq 1 ]]
 }
+
+# Binary and config pairing
+
+mock_global_eslint() {
+  # Global eslint_d records its name and arguments
+  mock_eslint <<SCRIPT
+#!/bin/bash
+printf 'global %s\n' "\$*" > "$BATS_TMP_DIR/eslint_call"
+exit 0
+SCRIPT
+}
+
+mock_eslint_in_project() {
+  local projectDirectory="$1"
+  mkdir -p "$projectDirectory"
+  mock_global_eslint
+
+  # Override mock_eslint's yarn-root so the file belongs to the project
+  yarn-root() { echo "$PROJECT_DIR"; }
+  bats_mock yarn-root
+  bats_mock_env PROJECT_DIR "$projectDirectory"
+}
+
+add_local_eslint() {
+  local projectDirectory="$1"
+  mkdir -p "$projectDirectory/node_modules/.bin"
+
+  # Local eslint_d records its name and arguments
+  cat > "$projectDirectory/node_modules/.bin/eslint_d" <<SCRIPT
+#!/bin/bash
+printf 'local %s\n' "\$*" > "$BATS_TMP_DIR/eslint_call"
+exit 0
+SCRIPT
+  chmod +x "$projectDirectory/node_modules/.bin/eslint_d"
+}
+
+@test "runs the global eslint_d with the oroshi config when the project has a local eslint_d but no config" {
+  local projectDirectory="$BATS_TMP_DIR/project"
+  local file="$projectDirectory/app.js"
+  mock_eslint_in_project "$projectDirectory"
+  add_local_eslint "$projectDirectory"
+  printf 'const x = 1;\n' > "$file"
+
+  bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$(< "$BATS_TMP_DIR/eslint_call")" == "global --config $OROSHI_ROOT/eslint.config.js "* ]]
+}
+
+@test "runs the local eslint_d with the project config when the project has both" {
+  local projectDirectory="$BATS_TMP_DIR/project"
+  local file="$projectDirectory/app.js"
+  mock_eslint_in_project "$projectDirectory"
+  add_local_eslint "$projectDirectory"
+  touch "$projectDirectory/eslint.config.js"
+  printf 'const x = 1;\n' > "$file"
+
+  bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$(< "$BATS_TMP_DIR/eslint_call")" == "local --config $projectDirectory/eslint.config.js "* ]]
+}
+
+@test "runs the global eslint_d with the project config when the project has a config but no local eslint_d" {
+  local projectDirectory="$BATS_TMP_DIR/project"
+  local file="$projectDirectory/app.js"
+  mock_eslint_in_project "$projectDirectory"
+  touch "$projectDirectory/eslint.config.js"
+  printf 'const x = 1;\n' > "$file"
+
+  bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$(< "$BATS_TMP_DIR/eslint_call")" == "global --config $projectDirectory/eslint.config.js "* ]]
+}
+
+@test "runs the global eslint_d with the oroshi config when there is no project" {
+  local file="$BATS_TMP_DIR/app.js"
+  printf 'const x = 1;\n' > "$file"
+  mock_global_eslint
+
+  bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$(< "$BATS_TMP_DIR/eslint_call")" == "global --config $OROSHI_ROOT/eslint.config.js "* ]]
+}

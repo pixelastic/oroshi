@@ -1,20 +1,6 @@
 # Shared helpers for eslint-lint and eslint-fix
 # Resolves the eslint binary, config file, and working directory
 
-# Return the eslint_d binary path: project-local if available, global otherwise
-function __eslint-binary() {
-  local projectRoot="$1"
-
-  # Project has its own eslint_d
-  if [[ $projectRoot != "" && -f "$projectRoot/node_modules/.bin/eslint_d" ]]; then
-    print "$projectRoot/node_modules/.bin/eslint_d"
-    return 0
-  fi
-
-  # Fall back to global eslint_d
-  print "eslint_d"
-}
-
 # Return the eslint config file path: project-local if available, oroshi fallback otherwise
 function __eslint-config() {
   local projectRoot="$1"
@@ -37,6 +23,22 @@ function __eslint-config() {
 
   # Project exists but has no eslint config
   print "$OROSHI_ROOT/eslint.config.js"
+}
+
+# Return the eslint_d binary path: project-local only with a project-local config, global otherwise
+function __eslint-binary() {
+  local projectRoot="$1"
+  local configFile="$(__eslint-config "$projectRoot")"
+  local localBinary="$projectRoot/node_modules/.bin/eslint_d"
+
+  # Project has its own config and its own eslint_d
+  if [[ $projectRoot != "" && $configFile == "$projectRoot/"* && -f $localBinary ]]; then
+    print "$localBinary"
+    return 0
+  fi
+
+  # Fall back to global eslint_d
+  print "eslint_d"
 }
 
 # Return the working directory for eslint
