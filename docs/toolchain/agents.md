@@ -103,6 +103,7 @@ All languages:
 Programming languages only:
 
 5. Add reference documents under `references/` for style, testing, and library
-   conventions
+   conventions, and symlink the shared ones from `code-writer/references/`
+   (see [Shared references](skill-programming.md#shared-references))
 6. Add a `Testing` entry to the `## Commands` section of the root CLAUDE.md
 7. Register `{lang}-test` in `tools/ai/claude/config/hooks/allow-list.json`

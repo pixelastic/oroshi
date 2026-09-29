@@ -11,6 +11,7 @@ Template for the `{lang}-writer` skill when the language is a
   references/         # Supplementary docs referenced by SKILL.md
     style.md          # Style rules not enforced by the linter
     testing.md        # Test framework conventions and patterns
+    comments.md       # Symlink to ../../code-writer/references/comments.md
     ...               # Additional files as needed by the language
 ```
 
@@ -18,10 +19,24 @@ The `references/` directory contains material too detailed for the main skill
 file. SKILL.md references these files by relative path so the agent loads them
 on demand rather than all at once.
 
-Two files are expected:
+Three files are expected:
 
 - **`style.md`** — style rules too fuzzy for deterministic linter enforcement
 - **`testing.md`** — test framework conventions, patterns, and runner usage
+- **`comments.md`** — how to write comments, shared by all languages
+
+## Shared references
+
+Rules that apply to every language live once in `code-writer/references/`.
+Each `{lang}-writer` links to them with a relative symlink, so SKILL.md keeps a
+plain `./references/<file>.md` path:
+
+```sh
+ln -s ../../code-writer/references/comments.md {lang}-writer/references/comments.md
+```
+
+The language skill adds only what differs, in its own `style.md`. For comments,
+it names the comment marker and the function doc format (JSDoc, docstrings…).
 
 Additional files are free-form and vary by language (e.g. preferred libraries,
 argument parsing conventions, language-specific idioms).

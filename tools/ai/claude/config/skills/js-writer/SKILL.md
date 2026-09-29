@@ -101,6 +101,7 @@ No patterns yet — just correct behavior.
 |---|---|
 | [Modules](./references/modules.md) | ES6 `import`/`export`; named exports; `.js` extension; `__` for private methods |
 | [Style](./references/style.md) | `async/await`; camelCase; minimal `try/catch`; lodash chains for 2+ ops; JSDoc on all fns |
+| [Comments](./references/comments.md) | How to write inline comments and JSDoc blocks |
 | [firost](./references/firost.md) | File I/O and system operations |
 | [golgoth](./references/golgoth.md) | Data transformation, dates, async utilities |
 | [aberlaas](./references/aberlaas.md) | Lint, test, release, etc |
@@ -169,5 +170,5 @@ Write code that passes automated lint.
 - [ ] ES6 modules — named exports, `.js` extension on local imports
 - [ ] JSDoc on all functions (exported and private in `__`)
 - [ ] Existing comments preserved
-- [ ] Comments written in short, simple sentences
+- [ ] Comments follow [Comments](./references/comments.md)
 - [ ] `yarn run lint:fix` run after changes

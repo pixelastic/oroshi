@@ -5,7 +5,7 @@
 - Remove duplication by extracting helpers
 - Improve readability with clear names. Avoid abbreviations (`absolutePath` not `absPath`)
 - Return early to avoid `if/else` nesting (see [Conditions](./conditions.md))
-- Write comments in short, simple sentences
+- Write comments that say only what the code shows, and link facts with because, so, but
 
 ## Return early
 
@@ -46,10 +46,7 @@ return 1
 
 ## Comments
 
-- Write simple sentences with a verb. Write one idea per sentence.
-- Do not chain ideas with commas or "so". Give each idea its own sentence.
-- Call each thing by its name, not by a vague reference.
-- Describe the steps in the order the code runs them.
+Follow [Comments](./comments.md). Write comments with `#`. Function docs are a comment block above the function.
 
 ## Naming scripts
 

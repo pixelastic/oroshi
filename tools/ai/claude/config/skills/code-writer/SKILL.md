@@ -51,6 +51,8 @@ Comments are appreciated when they:
 Comments are useless if:
 - They duplicate what the code already says through variable and function names
 
+See [Comments](./references/comments.md) for how to write them.
+
 **IMPORTANT:** If the user added a comment, don't remove it. User choice
 supersedes those rules.
 

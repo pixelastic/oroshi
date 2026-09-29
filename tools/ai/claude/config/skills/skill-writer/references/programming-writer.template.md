@@ -96,6 +96,7 @@ Apply patterns from [Style](./references/style.md):
 - [ ] Tests pass after step 3
 - [ ] Tests still pass after refactor
 - [ ] `{lint-cmd}` run, all violations fixed
+- [ ] Comments follow [Comments](./references/comments.md)
 - [ ] [language-specific items]
 ```
 
@@ -106,3 +107,7 @@ Each programming-language skill must include:
 - `references/style.md` — language-specific style rules; must include all rules
   from `code-writer/references/style.md`
 - `references/testing.md` — test framework conventions, examples, best practices
+- `references/comments.md` — a relative symlink to the shared comment rules:
+  `ln -s ../../code-writer/references/comments.md references/comments.md`.
+  Add a `## Comments` section to `style.md` that points to it and names the
+  comment marker and the function doc format of the language.

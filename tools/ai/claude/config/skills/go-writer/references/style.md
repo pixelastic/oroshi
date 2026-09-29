@@ -9,7 +9,7 @@
 - Return errors early, wrap with `%w` for context, no bare `panic`
 - Extract short functions — one responsibility each
 - Prefer standalone functions over methods when there is no state to carry
-- Write comments in short, simple sentences
+- Write comments that say only what the code shows, and link facts with because, so, but
 
 ## Return early
 
@@ -45,10 +45,7 @@ func process(value *int) (int, error) {
 
 ## Comments
 
-- Write simple sentences with a verb. Write one idea per sentence.
-- Do not chain ideas with commas or "so". Give each idea its own sentence.
-- Call each thing by its name, not by a vague reference.
-- Describe the steps in the order the code runs them.
+Follow [Comments](./comments.md). Write comments with `//`. Function docs are Go doc comments.
 
 ## Error handling
 
