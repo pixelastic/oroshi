@@ -20,7 +20,8 @@ setup() {
   }
   plan-directory() { echo ""; }
   plan-badge() { echo ""; }
-  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge
+  claude-subagent-badge() { echo ""; }
+  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge claude-subagent-badge
 }
 
 statusline_json() {
@@ -142,4 +143,23 @@ statusline_run() {
   statusline_run "/some/dir"
   [[ "$status" -eq 0 ]]
   [[ "$(bats_strip_ansi "$output")" != *"PLAN_BADGE"* ]]
+}
+
+@test "sub-agent badge: rendered as the last segment, after the plan badge" {
+  plan-directory() { echo "/some/plan/dir"; }
+  plan-badge() { echo "PLAN_BADGE"; }
+  claude-subagent-badge() { [[ "$1" == "abc-123" ]] && echo "DOTS"; }
+  bats_mock plan-directory plan-badge claude-subagent-badge
+  statusline_run "/some/dir" 0 0 "abc-123"
+  [[ "$status" -eq 0 ]]
+  [[ "$(bats_strip_ansi "$output")" == *"PLAN_BADGE DOTS " ]]
+}
+
+@test "sub-agent badge: no extra segment when the badge is empty" {
+  plan-directory() { echo "/some/plan/dir"; }
+  plan-badge() { echo "PLAN_BADGE"; }
+  bats_mock plan-directory plan-badge
+  statusline_run "/some/dir" 0 0 "abc-123"
+  [[ "$status" -eq 0 ]]
+  [[ "$(bats_strip_ansi "$output")" == *"PLAN_BADGE " ]]
 }

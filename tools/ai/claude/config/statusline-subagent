@@ -1,0 +1,35 @@
+#!/usr/bin/env zsh
+# Save the running Claude Code sub-agents into the session statusline.json
+# Claude Code pipes the subagentStatusLine JSON on stdin at each refresh tick.
+# The script prints nothing, so Claude Code keeps its native sub-agent rows.
+# Usage:
+# $ statusline-subagent < subagent-status.json
+set -e
+
+local stdinData="$(cat)"
+local sessionId="$(jq --raw-output '.session_id // ""' <<<"$stdinData")"
+local sessionDir="$(claude-session-dir "$sessionId")"
+
+# No session id: no session directory to write into
+[[ "$sessionDir" == "" ]] && exit 0
+
+# Keep only running tasks, whatever their type
+local subagents="$(jq --compact-output \
+  '[.tasks // [] | .[] | select(.status == "running") | {id, status}]' \
+  <<<"$stdinData")"
+
+# Start from the existing state to keep its other keys
+# A missing or invalid state file starts from an empty object
+local stateFile="${sessionDir}/statusline.json"
+local currentState="{}"
+json-is-valid --input "$stateFile" 2>/dev/null && currentState="$(cat -- "$stateFile")"
+
+# Write to a temporary file, then rename it
+# The statusline then never reads a half-written file
+mkdir -p "$sessionDir"
+local temporaryFile="$(mktemp "${stateFile}.XXXXXX")"
+jq --compact-output \
+  --argjson subagents "$subagents" \
+  '.subagents = $subagents' \
+  <<<"$currentState" >"$temporaryFile"
+mv "$temporaryFile" "$stateFile"

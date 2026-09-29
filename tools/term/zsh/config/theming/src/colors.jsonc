@@ -81,6 +81,7 @@
     "sessionId":      "amber-9",
     "mcp":            "cyan-7",
     "commandMode":    "teal-6",
+    "subagentRunning": "green",
     "text":           "white"
   },
 

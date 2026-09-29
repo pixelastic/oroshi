@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
-# Render the Claude Code statusline with context, cost, model and plan badges
+# Render the Claude Code statusline with context, cost, model, plan and sub-agent badges
+# Usage:
+# $ statusline < status.json  # Render from the Claude Code statusLine JSON
+# $ statusline --dry-run      # Render with fake session data
 set -e
 
 # Load icon and color definitions
@@ -77,5 +80,9 @@ done
 # Ralph plan progress
 local planBadge="$(plan-badge "$(plan-directory "$currentDir")")"
 [[ "$planBadge" != "" ]] && statusline+=("$planBadge ")
+
+# Sub-agent dots
+local subagentBadge="$(claude-subagent-badge "$sessionId")"
+[[ "$subagentBadge" != "" ]] && statusline+=("$subagentBadge ")
 
 print "${(j::)statusline}"

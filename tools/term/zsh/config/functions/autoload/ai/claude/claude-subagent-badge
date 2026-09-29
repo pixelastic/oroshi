@@ -1,0 +1,26 @@
+# Render one colorized dot per sub-agent of a Claude session
+# Reads the sub-agents from statusline.json in the session directory
+# Empty output when the file is missing, invalid, or has no sub-agents
+# Usage:
+# $ claude-subagent-badge abc-123  # dots for session abc-123
+# $ claude-subagent-badge          # dots for session $CLAUDE_SESSION_ID
+setopt local_options err_return
+
+local sessionDir="$(claude-session-dir "$1")"
+
+# No session: no sub-agents to show
+[[ "$sessionDir" == "" ]] && return 0
+
+local stateFile="${sessionDir}/statusline.json"
+
+# Missing or invalid state file: no sub-agents to show
+[[ ! -f "$stateFile" ]] && return 0
+! json-is-valid --input "$stateFile" && return 0
+
+local subagentCount="$(jq '.subagents // [] | length' "$stateFile")"
+
+# No sub-agents: no dots
+[[ "$subagentCount" == "0" ]] && return 0
+
+local dots="${(pl:$subagentCount::●:)}"
+colorize "$dots" claude-subagentRunning

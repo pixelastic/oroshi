@@ -94,6 +94,10 @@
     "type": "command",
     "command": "/home/tim/.oroshi/tools/ai/claude/config/statusline"
   },
+  "subagentStatusLine": {
+    "type": "command",
+    "command": "/home/tim/.oroshi/tools/ai/claude/config/statusline-subagent"
+  },
   "autoMemoryEnabled": false,
   "effortLevel": "high",
   "preferredNotifChannel": "notifications_disabled",

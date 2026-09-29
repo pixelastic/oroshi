@@ -147,6 +147,10 @@
     "ansi": 149,
     "hex": "#451a03"
   },
+  "claude-subagentRunning": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
   "claude-text": {
     "ansi": 201,
     "hex": "#ffffff"
