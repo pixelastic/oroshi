@@ -157,10 +157,13 @@ Issue XX/YY
 
 **Problem solved:** {the problem this issue addressed}
 
-**What changed:** {new files, new or changed signatures, new links between components}
+**What changed:** {production code only: new files, new or changed signatures, new links between components}
 
 **Worth checking:** {see below}
 ```
+
+Do not mention test files, scaffold tests, or test and lint results.
+Tests and lint always pass at this step.
 
 **Worth checking:** the user does not read `GUIDANCE.md` or `review-log.md`.
 Surface their notable content.
@@ -232,6 +235,7 @@ FIX:
 - [ ] COMMIT_HINT.md describes outcomes, not issue numbers or plan status
 HANDOFF:
 - [ ] Report has only **Problem solved**, **What changed** and **Worth checking**
+- [ ] Report omits test files, scaffold tests, and test and lint results
 - [ ] **Worth checking** surfaces notable `GUIDANCE.md` and `review-log.md` content, or says `None.`
 - [ ] **Stopped — waiting for user to commit**
 USER REVIEW:
