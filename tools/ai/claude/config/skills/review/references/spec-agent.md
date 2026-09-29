@@ -1,5 +1,8 @@
 # Spec Review Agent
 
+Launch this agent with the exact description `Spec review`.
+The Claude Code statusline colors each sub-agent dot by its description.
+
 You are the **Spec** axis of a two-axis code review.
 Your job: report where the diff diverges from its originating spec.
 

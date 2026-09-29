@@ -17,39 +17,51 @@ subagent_json() {
   jo session_id=abc-123 columns=120 tasks="$(jo -a "${tasks[@]}")"
 }
 
+# Run statusline-subagent on the input.json fixture
+subagent_exec() {
+  bats_run_zsh "${OROSHI_ROOT}/tools/ai/claude/config/statusline-subagent" <"${BATS_TMP_DIR}/input.json"
+}
+
 subagent_run() {
   subagent_json "$@" >"${BATS_TMP_DIR}/input.json"
-  bats_run_zsh "${OROSHI_ROOT}/tools/ai/claude/config/statusline-subagent" <"${BATS_TMP_DIR}/input.json"
+  subagent_exec
 }
 
 @test "writes one entry per running task with its id and status" {
   subagent_run "a1:local_agent:running" "a2:local_agent:running"
   [[ "$status" -eq 0 ]]
-  [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"a1","status":"running"},{"id":"a2","status":"running"}]' ]]
+  [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"a1","status":"running","description":""},{"id":"a2","status":"running","description":""}]' ]]
 }
 
 @test "ignores completed, killed, and failed tasks" {
   subagent_run "a1:local_agent:completed" "a2:local_agent:running" "a3:local_agent:killed" "a4:local_agent:failed"
   [[ "$status" -eq 0 ]]
-  [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"a2","status":"running"}]' ]]
+  [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"a2","status":"running","description":""}]' ]]
 }
 
 @test "writes pending tasks with status pending" {
   subagent_run "b1:local_bash:pending"
   [[ "$status" -eq 0 ]]
-  [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"b1","status":"pending"}]' ]]
+  [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"b1","status":"pending","description":""}]' ]]
 }
 
 @test "writes pending and running tasks in their input order" {
   subagent_run "a1:local_agent:running" "b1:local_bash:pending" "a2:local_agent:completed" "a3:local_agent:running"
   [[ "$status" -eq 0 ]]
-  [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"a1","status":"running"},{"id":"b1","status":"pending"},{"id":"a3","status":"running"}]' ]]
+  [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"a1","status":"running","description":""},{"id":"b1","status":"pending","description":""},{"id":"a3","status":"running","description":""}]' ]]
 }
 
 @test "writes an empty subagents list when no task is pending or running" {
   subagent_run "a1:local_agent:completed" "a2:local_agent:killed"
   [[ "$status" -eq 0 ]]
   [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[]' ]]
+}
+
+@test "saves the description of each task" {
+  jo session_id=abc-123 tasks="$(jo -a "$(jo id=a1 type=local_agent status=running description="Code review")")" >"${BATS_TMP_DIR}/input.json"
+  subagent_exec
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --compact-output '.subagents' "$STATE_FILE")" == '[{"id":"a1","status":"running","description":"Code review"}]' ]]
 }
 
 @test "keeps running tasks of any type" {
@@ -75,8 +87,39 @@ subagent_run() {
   [[ "$(jq --compact-output '[.subagents[].id]' "$STATE_FILE")" == '["a1"]' ]]
 }
 
-@test "prints nothing on stdout" {
-  subagent_run "a1:local_agent:running"
+@test "prints one hiding line per task with its id and an empty content" {
+  subagent_run "a1:local_agent:running" "b1:local_bash:pending"
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 2 ]]
+  [[ "${lines[0]}" == '{"id":"a1","content":""}' ]]
+  [[ "${lines[1]}" == '{"id":"b1","content":""}' ]]
+}
+
+@test "prints hiding lines for tasks of every status" {
+  subagent_run "a1:local_agent:completed" "a2:local_agent:killed" "a3:local_agent:failed" "w1:local_workflow:paused"
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --slurp --compact-output '[.[].id]' <<<"$output")" == '["a1","a2","a3","w1"]' ]]
+}
+
+@test "prints valid JSON on each line" {
+  subagent_run "a1:local_agent:running" "a2:local_agent:completed"
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 2 ]]
+  for line in "${lines[@]}"; do
+    jq --exit-status '.content == ""' <<<"$line"
+  done
+}
+
+@test "prints nothing when the tasks list is empty" {
+  echo '{"session_id":"abc-123","columns":120,"tasks":[]}' >"${BATS_TMP_DIR}/input.json"
+  subagent_exec
   [[ "$status" -eq 0 ]]
   [[ "$output" == "" ]]
+}
+
+@test "prints hiding lines even without a session id" {
+  jo columns=120 tasks="$(jo -a "$(jo id=a1 type=local_agent status=running)")" >"${BATS_TMP_DIR}/input.json"
+  subagent_exec
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == '{"id":"a1","content":""}' ]]
 }

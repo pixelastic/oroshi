@@ -54,6 +54,7 @@
   // Claude
   "claude": "●",
   "claude-mcp-context7": "c7",
+  "claude-subagent": "󱪂\u2002",
 
   // Tools / Languages
   "bats":   "󰭟",
@@ -74,7 +75,7 @@
     "changes":           "±",
     "commit":            "ﰖ",
     "file-dirty":        "",
-    "issue":             "",
+    "issue":             "\u2002",
     "pr":                "",
     "rebase":            "",
     "remote-current":    "",

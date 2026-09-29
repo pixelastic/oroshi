@@ -148,12 +148,20 @@
     "hex": "#451a03"
   },
   "claude-subagent-pending": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "claude-subagent-review-code": {
     "ansi": 45,
     "hex": "#d69e2e"
   },
+  "claude-subagent-review-spec": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
   "claude-subagent-running": {
-    "ansi": 35,
-    "hex": "#38a169"
+    "ansi": 146,
+    "hex": "#b45309"
   },
   "claude-text": {
     "ansi": 201,

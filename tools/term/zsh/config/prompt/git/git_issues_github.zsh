@@ -10,7 +10,7 @@ function oroshi-prompt-populate:git_issues_github() {
 
   # No GITHUB_TOKEN
   if [[ $GITHUB_TOKEN_READONLY == "" ]]; then
-    OROSHI_PROMPT_PARTS[git_issues_github]="%F{$COLORS[error]}$ICONS[git-issue] %f"
+    OROSHI_PROMPT_PARTS[git_issues_github]="%F{$COLORS[error]}$ICONS[git-issue]%f"
     return
   fi
 
@@ -28,6 +28,6 @@ function oroshi-prompt-populate:git_issues_github() {
 
   local issueCount="$(<$issuesCacheFile)"
   if [[ $issueCount != "0" ]]; then
-    OROSHI_PROMPT_PARTS[git_issues_github]="%F{$COLORS[git-issue]}$ICONS[git-issue] ${issueCount}%f"
+    OROSHI_PROMPT_PARTS[git_issues_github]="%F{$COLORS[git-issue]}$ICONS[git-issue]${issueCount}%f"
   fi
 }

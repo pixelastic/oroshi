@@ -1,12 +1,18 @@
 #!/usr/bin/env zsh
-# Save the pending and running Claude Code sub-agents into the session statusline.json
+# Hide the native Claude Code sub-agent rows, and save the pending and running ones into the session statusline.json
 # Claude Code pipes the subagentStatusLine JSON on stdin at each refresh tick.
-# The script prints nothing, so Claude Code keeps its native sub-agent rows.
+# The script prints one {"id","content":""} line per task.
+# An empty content hides the native sub-agent row.
+# No native row ever shows.
 # Usage:
 # $ statusline-subagent < subagent-status.json
 set -e
 
 local stdinData="$(cat)"
+
+# Hide every native row, whatever its status
+jq --compact-output '.tasks // [] | .[] | {id, content: ""}' <<<"$stdinData"
+
 local sessionId="$(jq --raw-output '.session_id // ""' <<<"$stdinData")"
 local sessionDir="$(claude-session-dir "$sessionId")"
 
@@ -14,9 +20,14 @@ local sessionDir="$(claude-session-dir "$sessionId")"
 [[ "$sessionDir" == "" ]] && exit 0
 
 # Keep only pending and running tasks, whatever their type
-local subagents="$(jq --compact-output \
-  '[.tasks // [] | .[] | select(.status == "pending" or .status == "running") | {id, status}]' \
-  <<<"$stdinData")"
+# Save their description. The badge uses it to spot the review sub-agents.
+local subagents="$(jq --compact-output '
+  [
+    .tasks // [] | .[]
+    | select(.status == "pending" or .status == "running")
+    | {id, status, description: (.description // "")}
+  ]
+' <<<"$stdinData")"
 
 # Start from the existing state to keep its other keys
 # A missing or invalid state file starts from an empty object

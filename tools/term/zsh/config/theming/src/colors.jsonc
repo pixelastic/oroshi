@@ -81,8 +81,10 @@
     "sessionId":      "amber-9",
     "mcp":            "cyan-7",
     "commandMode":    "teal-6",
-    "subagent-pending": "yellow",
-    "subagent-running": "green",
+    "subagent-pending": "gray",
+    "subagent-running": "amber-6",
+    "subagent-review-code": "yellow",
+    "subagent-review-spec": "blue",
     "text":           "white"
   },
 

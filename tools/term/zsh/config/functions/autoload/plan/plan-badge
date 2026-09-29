@@ -28,4 +28,4 @@ local total="$fields[2]"
 local color="git-issue"
 [[ "$done" == "$total" ]] && color="success"
 
-colorize "$ICONS[git-issue] ${done}/${total}" $color ${zshFlag[@]}
+colorize "$ICONS[git-issue]${done}/${total}" $color ${zshFlag[@]}
