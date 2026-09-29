@@ -27,7 +27,7 @@ local subagentStatuses="$(jq --raw-output '.subagents // [] | .[].status' "$stat
 # A pending sub-agent uses claude-subagent-pending. A running one uses claude-subagent-running.
 local dots=""
 for subagentStatus in ${(f)subagentStatuses}; do
-  colorize --reply "●" "claude-subagent-${subagentStatus}"
+  colorize --reply "󱪂 " "claude-subagent-${subagentStatus}"
   dots+="$REPLY"
 done
 print -n "$dots"

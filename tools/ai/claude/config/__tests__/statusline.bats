@@ -54,6 +54,20 @@ statusline_run() {
   bats_run_zsh "${OROSHI_ROOT}/tools/ai/claude/config/statusline" <"${BATS_TMP_DIR}/input.json"
 }
 
+# Mock the mcp server names read from ~/.claude.json
+# Usage: mock_mcp_servers "context7"  # one server
+#        mock_mcp_servers ""          # no server
+mock_mcp_servers() {
+  bats_mock_env "MOCK_MCP_SERVERS" "$1"
+  jq() {
+    local lastArg="${*[-1]}"
+    [[ "$lastArg" != *".claude.json" ]] && { command jq "$@"; return; }
+    [[ "$MOCK_MCP_SERVERS" != "" ]] && echo "$MOCK_MCP_SERVERS"
+    return 0
+  }
+  bats_mock jq
+}
+
 @test "renders badge, tokens, cost, and model" {
   statusline_run "/some/dir" 51000 0.05 "abc-123"
   [[ "$status" -eq 0 ]]
@@ -97,34 +111,19 @@ statusline_run() {
 }
 
 @test "renders mcp server icon when icon exists" {
-  jq() {
-    local lastArg="${*[-1]}"
-    [[ "$lastArg" == *".claude.json" ]] && { echo "context7"; return 0; }
-    command jq "$@"
-  }
-  bats_mock jq
+  mock_mcp_servers "context7"
   statusline_run
   [[ "$(bats_strip_ansi "$output")" == *"⬡"* ]]
 }
 
 @test "renders mcp server name as fallback when no icon" {
-  jq() {
-    local lastArg="${*[-1]}"
-    [[ "$lastArg" == *".claude.json" ]] && { echo "myserver"; return 0; }
-    command jq "$@"
-  }
-  bats_mock jq
+  mock_mcp_servers "myserver"
   statusline_run
   [[ "$(bats_strip_ansi "$output")" == *"myserver"* ]]
 }
 
 @test "renders nothing when mcpServers is empty" {
-  jq() {
-    local lastArg="${*[-1]}"
-    [[ "$lastArg" == *".claude.json" ]] && return 0
-    command jq "$@"
-  }
-  bats_mock jq
+  mock_mcp_servers ""
   statusline_run
   [[ "$status" -eq 0 ]]
   [[ "$(bats_strip_ansi "$output")" != *"⬡"* ]]
@@ -145,21 +144,18 @@ statusline_run() {
   [[ "$(bats_strip_ansi "$output")" != *"PLAN_BADGE"* ]]
 }
 
-@test "sub-agent badge: rendered as the last segment, after the plan badge" {
-  plan-directory() { echo "/some/plan/dir"; }
-  plan-badge() { echo "PLAN_BADGE"; }
+@test "sub-agent badge: rendered between the model and the mcp servers" {
+  mock_mcp_servers "context7"
   claude-subagent-badge() { [[ "$1" == "abc-123" ]] && echo "DOTS"; }
-  bats_mock plan-directory plan-badge claude-subagent-badge
+  bats_mock claude-subagent-badge
   statusline_run "/some/dir" 0 0 "abc-123"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == *"PLAN_BADGE DOTS " ]]
+  [[ "$(bats_strip_ansi "$output")" == *"test DOTS ⬡ " ]]
 }
 
 @test "sub-agent badge: no extra segment when the badge is empty" {
-  plan-directory() { echo "/some/plan/dir"; }
-  plan-badge() { echo "PLAN_BADGE"; }
-  bats_mock plan-directory plan-badge
+  mock_mcp_servers "context7"
   statusline_run "/some/dir" 0 0 "abc-123"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == *"PLAN_BADGE " ]]
+  [[ "$(bats_strip_ansi "$output")" == *"test ⬡ " ]]
 }

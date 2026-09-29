@@ -20,7 +20,7 @@ setup() {
 
   bats_run_zsh "claude-subagent-badge abc-123"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == $'\e[38;5;3m●\e[0m' ]]
+  [[ "$output" == $'\e[38;5;3m󱪂 \e[0m' ]]
 }
 
 @test "renders mixed pending and running dots in state file order" {
@@ -28,7 +28,7 @@ setup() {
 
   bats_run_zsh "claude-subagent-badge abc-123"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == $'\e[38;5;2m●\e[0m\e[38;5;3m●\e[0m\e[38;5;2m●\e[0m' ]]
+  [[ "$output" == $'\e[38;5;2m󱪂 \e[0m\e[38;5;3m󱪂 \e[0m\e[38;5;2m󱪂 \e[0m' ]]
 }
 
 @test "prints one dot per running sub-agent" {
@@ -36,7 +36,7 @@ setup() {
 
   bats_run_zsh "claude-subagent-badge abc-123"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == "●●" ]]
+  [[ "$(bats_strip_ansi "$output")" == "󱪂 󱪂 " ]]
 }
 
 @test "colors running dots with the claude-subagent-running color" {
