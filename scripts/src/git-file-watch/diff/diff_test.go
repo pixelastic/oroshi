@@ -305,3 +305,29 @@ Binary files a/logo.png and b/logo.png differ
 	assert.False(t, result[0].Binary)
 	assert.True(t, result[1].Binary)
 }
+
+func TestParsesInvalidUTF8ContentAsBinary(t *testing.T) {
+	raw := "diff --git a/save.srm b/save.srm\n" +
+		"new file mode 100644\n" +
+		"--- /dev/null\n" +
+		"+++ b/save.srm\n" +
+		"@@ -0,0 +1,1 @@\n" +
+		"+\xff\xff\xff\xff\n"
+	result := Parse(raw)
+	require.Len(t, result, 1)
+	assert.Equal(t, "save.srm", result[0].Path)
+	assert.True(t, result[0].Binary)
+	assert.Empty(t, result[0].Hunks)
+}
+
+func TestKeepsValidUTF8ContentAsText(t *testing.T) {
+	raw := "diff --git a/notes.txt b/notes.txt\n" +
+		"--- a/notes.txt\n" +
+		"+++ b/notes.txt\n" +
+		"@@ -0,0 +1,1 @@\n" +
+		"+café ☕\n"
+	result := Parse(raw)
+	require.Len(t, result, 1)
+	assert.False(t, result[0].Binary)
+	assert.Len(t, result[0].Hunks, 1)
+}

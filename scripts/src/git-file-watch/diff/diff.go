@@ -4,6 +4,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 )
 
 // LineKind represents the type of a line within a hunk.
@@ -126,7 +127,27 @@ func Parse(raw string) []FileDiff {
 		result = append(result, *current)
 	}
 
+	for i := range result {
+		markBinaryIfInvalidUTF8(&result[i])
+	}
+
 	return result
+}
+
+// markBinaryIfInvalidUTF8 flags files whose content is not valid UTF-8 as binary.
+// Git only detects binary files by null bytes, so files filled with 0xFF
+// (like emulator saves) otherwise render as garbage text.
+func markBinaryIfInvalidUTF8(fileDiff *FileDiff) {
+	for _, hunk := range fileDiff.Hunks {
+		for _, line := range hunk.Lines {
+			if utf8.ValidString(line.Content) {
+				continue
+			}
+			fileDiff.Binary = true
+			fileDiff.Hunks = nil
+			return
+		}
+	}
 }
 
 // Classify analyzes hunks and assigns markers to new-side line numbers.

@@ -17,6 +17,7 @@
   "bats-load-library",
   "bats_load_library",
   "bats_load_library_path",
+  "bats_run",
   "bats_run_zsh",
   "bat",
   "beautysh",
