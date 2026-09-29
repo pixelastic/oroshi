@@ -133,6 +133,20 @@ SCRIPT
   [[ "$args" == *"--config $OROSHI_ROOT/prettier.config.js"* ]]
 }
 
+@test "formats a file with the real global prettier from outside oroshi when the project has no config" {
+  local file="$BATS_TMP_DIR/ugly.json"
+  printf '{"a":1}\n' > "$file"
+
+  # Only the project root is mocked: prettier itself is the real global one
+  yarn-root() { echo ""; }
+  bats_mock yarn-root
+  bats_disable_worktree_aware
+
+  bats_run_zsh "cd $BATS_TMP_DIR && source $LIB_DIR/prettier-fix.zsh && prettier-fix --parser json $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$file")" == '{ "a": 1 }' ]]
+}
+
 @test "prints prettier stderr when prettier fails" {
   local file="$BATS_TMP_DIR/test.xml"
   printf '<a/>\n' > "$file"
