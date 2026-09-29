@@ -6,6 +6,9 @@
 # $ echo "<code />" | prettier-fix --filepath ./realpath.html  # Code from stdin, with real location on disk
 setopt local_options err_return
 
+local scriptDirectory="${functions_source[$0]:A:h}"
+source "$scriptDirectory/__lib/prettier-helpers.zsh"
+
 # ============================================================================
 # Parse command-line arguments
 # ============================================================================
@@ -57,24 +60,13 @@ local realFilepath="$inputFilepath"
 # ============================================================================
 # Resolve project root
 # ============================================================================
-local projectRoot=$(yarn-root ${realFilepath:h} --force)
+local projectRoot="$(yarn-root ${realFilepath:h} --force)"
 
 # ============================================================================
-# Resolve prettier binary
+# Resolve prettier binary and config file
 # ============================================================================
-local prettierBin="prettier"
-if [[ $projectRoot != "" && -f "$projectRoot/node_modules/.bin/prettier" ]]; then
-  prettierBin="$projectRoot/node_modules/.bin/prettier"
-fi
-
-# ============================================================================
-# Resolve prettier config file
-# ============================================================================
-local configFile=$OROSHI_ROOT/prettier.config.js
-if [[ $projectRoot != "" ]]; then
-  [[ -f "$projectRoot/prettier.config.js" ]] && configFile="$projectRoot/prettier.config.js"
-  [[ -f "$projectRoot/.prettierrc.js" ]] && configFile="$projectRoot/.prettierrc.js"
-fi
+local prettierBin="$(__prettier-binary "$projectRoot")"
+local configFile="$(__prettier-config "$projectRoot")"
 prettierArgs+=(--config "$configFile")
 
 # ============================================================================
