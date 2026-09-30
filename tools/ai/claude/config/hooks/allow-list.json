@@ -229,6 +229,7 @@
   "img-convert",
   "img-dimensions",
   "img-extract",
+  "img-is-png",
   "img-min",
   "img-resize",
   "img-svg-create",
