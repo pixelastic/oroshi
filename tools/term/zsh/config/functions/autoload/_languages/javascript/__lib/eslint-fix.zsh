@@ -33,7 +33,7 @@ function eslint-fix() {
   local workingDirectory="$(__eslint-working-directory "$projectRoot" "${files[@]}")"
 
   # Point eslint_d to the right node_modules/eslint
-  local -x ESLINT_D_ROOT="${projectRoot:-$OROSHI_ROOT}"
+  local -x ESLINT_D_ROOT="$(__eslint-root "$projectRoot")"
 
   local eslintArgs=(--config "$configFile" --fix)
 
