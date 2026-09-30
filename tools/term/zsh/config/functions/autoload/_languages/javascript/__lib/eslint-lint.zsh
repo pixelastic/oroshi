@@ -16,7 +16,6 @@ function eslint-lint() {
   local firstFile="${1:a}"
   local projectRoot="$(yarn-root ${firstFile:h} --force)"
 
-  local eslintBin="$(__eslint-binary "$projectRoot")"
   local configFile="$(__eslint-config "$projectRoot")"
   local workingDirectory="$(__eslint-working-directory "$projectRoot" "$@")"
 
@@ -26,7 +25,7 @@ function eslint-lint() {
   local eslintArgs=(--config "$configFile")
   [[ $isJson == 1 ]] && eslintArgs+=(--format json)
 
-  local rawOutput="$(cd "$workingDirectory" && $eslintBin ${eslintArgs[@]} "$@")"
+  local rawOutput="$(cd "$workingDirectory" && eslint_d ${eslintArgs[@]} "$@")"
 
   # JSON mode: transform eslint output to unified schema
   if [[ $isJson == 1 ]]; then

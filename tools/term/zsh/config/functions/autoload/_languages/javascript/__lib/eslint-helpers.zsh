@@ -1,5 +1,5 @@
 # Shared helpers for eslint-lint and eslint-fix
-# Resolves the eslint binary, config file, install root, and working directory
+# Resolves the eslint config file, install root, and working directory
 
 # Return the eslint config file path: project-local if available, oroshi fallback otherwise
 function __eslint-config() {
@@ -25,40 +25,63 @@ function __eslint-config() {
   print "$OROSHI_ROOT/eslint.config.js"
 }
 
-# Succeed when the resolved config lives inside the project rather than in oroshi
-function __eslint-config-is-project-owned() {
-  local projectRoot="$1"
-  local configFile="$(__eslint-config "$projectRoot")"
+# Succeed when the package.json declares eslint as a direct dependency
+function __package-declares-eslint() {
+  local packageJson="$1"
 
-  [[ $projectRoot != "" && $configFile == "$projectRoot/"* ]]
+  # No manifest to read
+  [[ ! -r $packageJson ]] && return 1
+
+  jq -e '.dependencies.eslint // .devDependencies.eslint // .peerDependencies.eslint' \
+    "$packageJson" > /dev/null 2>&1
 }
 
-# Return the eslint_d binary path: project-local only with a project-local config, global otherwise
-function __eslint-binary() {
+# Return the first yarn workspace whose package.json declares eslint, empty if none
+function __eslint-workspace-root() {
   local projectRoot="$1"
-  local localBinary="$projectRoot/node_modules/.bin/eslint_d"
+  local gitRoot="$(git-directory-root "$projectRoot")"
+  local rawWorkspaces="$(yarn-workspace-list-raw "$projectRoot" 2>/dev/null)"
 
-  # Project has its own config and its own eslint_d
-  if __eslint-config-is-project-owned "$projectRoot" && [[ -f $localBinary ]]; then
-    print "$localBinary"
-    return 0
-  fi
+  # Not a monorepo, or no workspaces to inspect
+  [[ $rawWorkspaces == "" ]] && return 0
 
-  # Fall back to global eslint_d
-  print "eslint_d"
+  for rawLine in ${(f)rawWorkspaces}; do
+    local fields=(${(@ps/▮/)rawLine})
+    local relativePath=$fields[2]
+    local workspaceDirectory="$gitRoot/$relativePath"
+
+    # First workspace that declares eslint wins
+    if __package-declares-eslint "$workspaceDirectory/package.json"; then
+      print "$workspaceDirectory"
+      return 0
+    fi
+  done
 }
 
-# Return the root holding the eslint install: the config's owner, so binary and config always match
+# Return the directory whose node_modules holds eslint, so eslint_d resolves the project's real install
 function __eslint-root() {
   local projectRoot="$1"
 
-  # The project owns the config, so it owns the matching eslint
-  if __eslint-config-is-project-owned "$projectRoot"; then
+  # No project — oroshi's global root holds the bundled eslint
+  if [[ $projectRoot == "" ]]; then
+    print "$OROSHI_ROOT"
+    return 0
+  fi
+
+  # The project root resolves eslint directly
+  if [[ -d "$projectRoot/node_modules/eslint" ]]; then
     print "$projectRoot"
     return 0
   fi
 
-  # Oroshi's config needs oroshi's eslint
+  # Rare case, but eslint may not be defined at the root, but in a workspace
+  local workspaceRoot="$(__eslint-workspace-root "$projectRoot")"
+  if [[ $workspaceRoot != "" ]]; then
+    print "$workspaceRoot"
+    return 0
+  fi
+
+  # No workspace declares eslint — use the bundled fallback
   print "$OROSHI_ROOT"
 }
 

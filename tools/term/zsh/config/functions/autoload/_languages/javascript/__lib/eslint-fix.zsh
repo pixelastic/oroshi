@@ -25,7 +25,6 @@ function eslint-fix() {
 
   local projectRoot="$(yarn-root $configDir --force)"
 
-  local eslintBin="$(__eslint-binary "$projectRoot")"
   local configFile="$(__eslint-config "$projectRoot")"
 
   # If --original-path is passed, we use it as the workingDirectory base
@@ -37,5 +36,5 @@ function eslint-fix() {
 
   local eslintArgs=(--config "$configFile" --fix)
 
-  cd "$workingDirectory" && $eslintBin ${eslintArgs[@]} "$@" 2>/dev/null
+  cd "$workingDirectory" && eslint_d ${eslintArgs[@]} "$@" 2>/dev/null
 }
