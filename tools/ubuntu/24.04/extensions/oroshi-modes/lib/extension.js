@@ -6,10 +6,12 @@ import Gio from 'gi://Gio';
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 export default class OroshiModesExtension extends Extension {
+  /** Load the dynamic main module on extension enable */
   enable() {
-    this._load();
+    this._load().catch((e) => console.error('OroshiModes: failed to load', e));
   }
 
+  /** Tear down the main module on extension disable */
   disable() {
     this._main?.destroy();
     this._main = null;

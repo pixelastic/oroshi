@@ -3,5 +3,6 @@
   "name": "Oroshi Statuses",
   "description": "Custom status icons for the GNOME top bar",
   "shell-version": ["46"],
+  "session-modes": ["user", "unlock-dialog"],
   "url": ""
 }
