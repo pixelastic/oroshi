@@ -177,6 +177,38 @@ SCRIPT
   [[ "$output" == "" ]]
 }
 
+@test "--global uses the oroshi config even when the project has a local config and binary" {
+  local projectDir="$BATS_TMP_DIR/project"
+  local file="$projectDir/test.xml"
+  mkdir -p "$projectDir/node_modules/.bin"
+  printf '<a/>\n' > "$file"
+
+  # Local config and binary are present but must be ignored under --global
+  printf '' > "$projectDir/prettier.config.js"
+  cat > "$projectDir/node_modules/.bin/prettier" <<SCRIPT
+#!/bin/bash
+touch "$BATS_TMP_DIR/local_prettier_called"
+exit 0
+SCRIPT
+  chmod +x "$projectDir/node_modules/.bin/prettier"
+
+  mock_prettier <<SCRIPT
+#!/bin/bash
+printf '%s\n' "\$*" > "$BATS_TMP_DIR/prettier_args"
+exit 0
+SCRIPT
+  # The file belongs to the project: without --global it would pick the local pair
+  yarn-root() { echo "$PROJECT_DIR"; }
+  bats_mock yarn-root
+  bats_mock_env PROJECT_DIR "$projectDir"
+
+  bats_run_zsh "source $LIB_DIR/prettier-fix.zsh && prettier-fix --global --parser xml $file"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/local_prettier_called" ]]
+  local args="$(cat "$BATS_TMP_DIR/prettier_args")"
+  [[ "$args" == *"--config $OROSHI_ROOT/prettier.config.js"* ]]
+}
+
 @test "errors when --parser not provided" {
   local file="$BATS_TMP_DIR/test.json"
   printf '{"a":1}\n' > "$file"

@@ -47,7 +47,8 @@ local -a originalPathArgs=()
 [[ $hasOriginalPath -eq 1 ]] && originalPathArgs=(--original-path "$originalPath")
 
 # Fix chain: single-pass prettier
-prettier-fix --parser xml "${originalPathArgs[@]}" "${files[@]}"
+# XML always uses the global oroshi install — only oroshi ships @prettier/plugin-xml
+prettier-fix --global --parser xml "${originalPathArgs[@]}" "${files[@]}"
 
 # Stdout mode: output and cleanup
 if [[ "$temporaryFile" != "" ]]; then

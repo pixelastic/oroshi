@@ -40,6 +40,19 @@ setup() {
   [[ "$call" == *"--parser xml"* ]]
 }
 
+@test "forwards --global to prettier-fix" {
+  local file="$BATS_TMP_DIR/test.xml"
+  echo '<root/>' > "$file"
+
+  prettier-fix() { printf '%s\n' "$*" > "$BATS_TMP_DIR/fix_args"; }
+  bats_mock prettier-fix
+
+  bats_run_zsh "xml-fix $file"
+  [[ "$status" -eq 0 ]]
+  local fixArgs="$(cat "$BATS_TMP_DIR/fix_args")"
+  [[ "$fixArgs" == *"--global"* ]]
+}
+
 @test "--stdout prints fixed code to stdout without modifying original" {
   local file="$BATS_TMP_DIR/test.xml"
   echo '<root/>' > "$file"

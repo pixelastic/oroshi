@@ -2,6 +2,7 @@
 # Usage:
 # $ prettier-fix --parser json file.json                              # Fix in-place
 # $ prettier-fix --parser json file.json --original-path /real/path   # Config from real path
+# $ prettier-fix --global --parser xml file.xml                       # Force the oroshi install + config
 source "${0:A:h}/prettier-helpers.zsh"
 
 function prettier-fix() {
@@ -9,10 +10,12 @@ function prettier-fix() {
 
   zparseopts -E -D \
     -parser:=flagParser \
-    -original-path:=flagOriginalPath
+    -original-path:=flagOriginalPath \
+    -global=flagGlobal
 
   local parser=${flagParser[2]}
   local originalPath=${flagOriginalPath[2]}
+  local isGlobal=${#flagGlobal}
 
   # --parser is required
   if [[ $parser == "" ]]; then
@@ -26,11 +29,14 @@ function prettier-fix() {
     return 1
   fi
 
-  # Resolve config from original path or first file
-  local configDir="${1:a:h}"
-  [[ $originalPath != "" ]] && configDir="${originalPath:h}"
-
-  local projectRoot="$(yarn-root $configDir --force)"
+  # --global forces the oroshi install + config, ignoring any project-local resolution
+  local projectRoot=""
+  if [[ $isGlobal -eq 0 ]]; then
+    # Resolve config from original path or first file
+    local configDir="${1:a:h}"
+    [[ $originalPath != "" ]] && configDir="${originalPath:h}"
+    projectRoot="$(yarn-root $configDir --force)"
+  fi
 
   local prettierBin="$(__prettier-binary "$projectRoot")"
   local configFile="$(__prettier-config "$projectRoot")"
