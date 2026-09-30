@@ -1,4 +1,5 @@
 {
+  "syncClaudeAiSkills": false,
   "env": {
     "DISABLE_AUTOUPDATER": "1",
     "DISABLE_INSTALLATION_CHECKS": "1",
@@ -23,8 +24,7 @@
     "deny": ["AskUserQuestion"],
     "defaultMode": "acceptEdits"
   },
-  "model": "opus[1m]",
-  "outputStyle": "terse",
+  "model": "claude-opus-4-8",
   "hooks": {
     "PreToolUse": [
       {
@@ -98,12 +98,12 @@
     "type": "command",
     "command": "/home/tim/.oroshi/tools/ai/claude/config/statusline-subagent"
   },
-  "autoMemoryEnabled": false,
+  "outputStyle": "terse",
   "effortLevel": "high",
+  "tui": "default",
+  "autoMemoryEnabled": false,
+  "theme": "custom:oroshi",
   "preferredNotifChannel": "notifications_disabled",
   "skipAutoPermissionPrompt": true,
-  "syncClaudeAiSkills": false,
-  "theme": "custom:oroshi",
-  "tui": "default",
   "voiceEnabled": false
 }

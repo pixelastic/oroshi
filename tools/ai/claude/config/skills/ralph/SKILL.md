@@ -153,7 +153,7 @@ Load [commit-hint.md](references/commit-hint.md) for the format and rules.
 
 Print:
 ```
-Issue XX/YY
+Issue {currentIssueNumber}/{totalIssueCount}
 
 **Problem solved:** {the problem this issue addressed}
 
