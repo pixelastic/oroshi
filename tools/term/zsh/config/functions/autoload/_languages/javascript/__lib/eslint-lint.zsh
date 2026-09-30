@@ -26,7 +26,7 @@ function eslint-lint() {
   local eslintArgs=(--config "$configFile")
   [[ $isJson == 1 ]] && eslintArgs+=(--format json)
 
-  local rawOutput="$(cd "$workingDirectory" && $eslintBin ${eslintArgs[@]} "$@" 2>/dev/null)"
+  local rawOutput="$(cd "$workingDirectory" && $eslintBin ${eslintArgs[@]} "$@")"
 
   # JSON mode: transform eslint output to unified schema
   if [[ $isJson == 1 ]]; then

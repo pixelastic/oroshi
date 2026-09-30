@@ -215,6 +215,20 @@ SCRIPT
   [[ "$(< "$BATS_TMP_DIR/eslint_root")" == "$projectDirectory" ]]
 }
 
+@test "surfaces config errors from stderr when eslint_d fails" {
+  local file="$BATS_TMP_DIR/app.js"
+  printf 'const x = 1;\n' > "$file"
+
+  mock_eslint <<'SCRIPT'
+#!/bin/bash
+printf 'Config file not found: eslint.config.js\n' >&2
+exit 1
+SCRIPT
+
+  bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint $file"
+  [[ "$output" == *"Config file not found"* ]]
+}
+
 @test "runs the global eslint_d with the oroshi config when there is no project" {
   local file="$BATS_TMP_DIR/app.js"
   printf 'const x = 1;\n' > "$file"
