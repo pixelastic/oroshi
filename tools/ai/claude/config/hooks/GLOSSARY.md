@@ -1,6 +1,6 @@
 # Claude Code Hooks
 
-Vocabulary for the Bash hook pipeline: `preToolUse-Bash` gates shell command execution through two sequential decision layers before producing a Claude Code response; `postToolUse-Bash` counts the approvals the user gave.
+Vocabulary for the Claude Code hooks. The Bash pipeline: `preToolUse-Bash` gates shell command execution through two sequential decision layers before producing a Claude Code response; `postToolUse-Bash` counts the approvals the user gave. The Stop / SubagentStop hooks decide whether to notify when Claude Code finishes a turn.
 
 ## Language
 
@@ -60,6 +60,10 @@ _Avoid_: call id, request id
 The mechanism by which the preToolUse-Bash hook detects that a command runs inside a subagent (`agent_id` present in hook input JSON) and prefixes the command with `export CLAUDE_IS_SUBAGENT=1;`. This is NOT a native Claude Code feature — it is a hook-level workaround because upstream closed requests for native subagent env vars (issues #35447, #36981, #46696).
 _Avoid_: subagent detection, agent env var, subagent flag
 
+**pending subagent**:
+An entry of the Stop / SubagentStop hook stdin `background_tasks` array with `type == "subagent"`, still listed when Stop fires. Its presence makes the Stop hook skip the notification. The `background_tasks` field is undocumented upstream; observed in Claude Code 2.1.280.
+_Avoid_: running subagent, active agent, live subagent
+
 ## Relationships
 
 - **Solkan** has two phases: **rewrite list** (substitute command names in AST) then allowlist (**allow** or **reject**). The allowlist decision is binary — never partial.
@@ -73,6 +77,7 @@ _Avoid_: subagent detection, agent env var, subagent flag
 - A post event (`PostToolUse` or `PostToolUseFailure`) for a **tool use id** means the user said Yes: `postToolUse-Bash` increments the **approval count** of every command in its **approval pending** entry, then removes that entry. When the user says No, no post event fires, so no count changes.
 - A command whose **approval count** reaches 3 joins the **session allow-list**: from then on, Solkan **allow**s it and it no longer appears in **ask with reason**.
 - Session state lives in `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json`, the **session allow-list** next to it; both owned by `Bash-approval.zsh`. Without a session id, nothing is recorded.
+- A Stop with at least one **pending subagent** never notifies; any other `background_tasks` entry never blocks it.
 
 ### The 4 cases
 
