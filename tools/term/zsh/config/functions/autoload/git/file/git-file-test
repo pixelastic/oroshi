@@ -2,8 +2,6 @@
 # Usage:
 # $ git-file-test
 setopt local_options err_return
-local prefix=()
-is-claude && prefix=(rtk bin-zsh)
 local gitRoot="$(git-directory-root)"
 local rawFiles="$(git-file-list-dirty-raw)"
 
@@ -43,21 +41,21 @@ done
 
 # Run Vitest for dirty JS source files (exits 0 silently if no related tests exist)
 if [[ ${#jsPaths[@]} -gt 0 ]]; then
-  "${prefix[@]}" yarn run test --fail-fast --related "${jsPaths[@]}"
+  yarn run test --fail-fast --related "${jsPaths[@]}"
 fi
 
 # Run pytest for dirty Python source files (exits 0 silently if no related tests exist)
 if [[ ${#pythonPaths[@]} -gt 0 ]]; then
-  "${prefix[@]}" python-test "${pythonPaths[@]}"
+  python-test "${pythonPaths[@]}"
 fi
 
 # Run go test for dirty Go source files that have associated tests
 if [[ ${#goPaths[@]} -gt 0 ]]; then
-  "${prefix[@]}" go-test "${goPaths[@]}"
+  go-test "${goPaths[@]}"
 fi
 
 # No ZSH tests found for any dirty file
 [[ ${#zshPaths[@]} -eq 0 ]] && return 0
 
 # Run bats for dirty ZSH and BATS files that have associated tests
-"${prefix[@]}" zsh-test "${zshPaths[@]}"
+zsh-test "${zshPaths[@]}"

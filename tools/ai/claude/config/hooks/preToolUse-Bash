@@ -2,7 +2,7 @@
 # zsh-lint disable-file=missingSetE
 # Hook must always exit 0 — non-zero exits bypass permission logic
 #
-# Orchestrate Bash hook: run solkan (allow/ask) then rtk (rewrite) sequentially
+# Orchestrate Bash hook: run solkan (allow/ask) and apply its rewrite
 # Reads hook JSON from stdin, writes hookSpecificOutput JSON to stdout
 #
 # Env overrides for testing:
@@ -47,12 +47,9 @@ if solkanJson="$(preToolUse-Bash-solkan "$inputCommand")"; then
 fi
 
 # Solkan rewrite: use rewritten command if provided
-local effectiveCommand="$inputCommand"
+local updatedInputCommand="$inputCommand"
 local rewrittenCommand="$(json-get '.rewrite' <<<"$solkanJson")"
-[[ "$rewrittenCommand" != "" ]] && effectiveCommand="$rewrittenCommand"
-
-# RTK: Rewritten command
-local updatedInputCommand="$(rtk-command-rewrite "$effectiveCommand")"
+[[ "$rewrittenCommand" != "" ]] && updatedInputCommand="$rewrittenCommand"
 
 # Subagent detection: prefix with env export when agent_id is present
 local agentId="$(json-get '.agent_id' <<<"$inputJson")"

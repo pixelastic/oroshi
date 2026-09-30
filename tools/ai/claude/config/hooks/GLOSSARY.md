@@ -1,16 +1,12 @@
 # Claude Code Hooks
 
-Vocabulary for the Claude Code hooks. The Bash pipeline: `preToolUse-Bash` gates shell command execution through two sequential decision layers before producing a Claude Code response; `postToolUse-Bash` counts the approvals the user gave. The Stop / SubagentStop hooks decide whether to notify when Claude Code finishes a turn.
+Vocabulary for the Claude Code hooks. The Bash pipeline: `preToolUse-Bash` gates shell command execution through Solkan before producing a Claude Code response; `postToolUse-Bash` counts the approvals the user gave. The Stop / SubagentStop hooks decide whether to notify when Claude Code finishes a turn.
 
 ## Language
 
 **Solkan**:
 The command validation layer. Two responsibilities: (1) **rewrite** commands per the **rewrite list**, (2) classify each command as **allow** or **reject** per the allowlist. Rewrite always runs first — the allowlist sees the rewritten command.
 _Avoid_: allowlist checker, permission layer, gatekeeper
-
-**RTK**:
-The command-optimization layer that determines whether a command should be **rewrite**n into its `rtk` equivalent.
-_Avoid_: optimizer, command transformer, wrapper
 
 **allow**:
 A command cleared by **Solkan** as safe — it can execute without user input.
@@ -21,16 +17,12 @@ A command not cleared by **Solkan** — it must go through the user's permission
 _Avoid_: deny, block, blacklist
 
 **rewrite**:
-**RTK** has an equivalent for the command and transforms it into its `rtk` form before execution.
+**Solkan** replaces a command name with its configured equivalent (per the **rewrite list**) before the allowlist sees it.
 _Avoid_: transform, replace, substitute
 
 **rewrite list**:
 A JSON map of command names to replacements (e.g. `{"rm": "rm-for-claude"}`), consumed by **Solkan** via `--rewrite-list-file`. Solkan walks the shell AST and replaces matching command names — no matter how deeply nested in pipes, conditionals, or loops — before running allowlist validation.
 _Avoid_: replace list, substitution map, rename map
-
-**ignore**:
-**RTK** has no equivalent for the command — it is left unchanged.
-_Avoid_: skip, pass, leave unchanged
 
 **auto-approve**:
 The hook output when Solkan **allow**s a command.
@@ -67,34 +59,15 @@ _Avoid_: running subagent, active agent, live subagent
 ## Relationships
 
 - **Solkan** has two phases: **rewrite list** (substitute command names in AST) then allowlist (**allow** or **reject**). The allowlist decision is binary — never partial.
-- **Solkan** runs first; **RTK** runs second, regardless of **Solkan**'s decision.
-- Rewrite determined via `rtk-command-rewrite <cmd>`: prints the rewritten command (or the original unchanged). Always exits 0.
-- Each command receives exactly one **Solkan** decision and exactly one **RTK** decision.
+- Each command receives exactly one **Solkan** decision.
 - Each **allow** produces exactly one **auto-approve**; each **reject** produces exactly one **ask with reason** (a maybe — the human decides).
-- A **rewrite** produces zero or one `updatedInput` JSON field; an **ignore** produces none.
+- A **rewrite** produces one `updatedInput` JSON field; a command left unchanged produces none.
 - The human is the only actor who can say a final "no" — through the **ask with reason** dialog.
 - Each **ask with reason** writes one **approval pending** entry (`preToolUse-Bash`), keyed by its **tool use id** so the post event can find it; each **allow** writes none.
 - A post event (`PostToolUse` or `PostToolUseFailure`) for a **tool use id** means the user said Yes: `postToolUse-Bash` increments the **approval count** of every command in its **approval pending** entry, then removes that entry. When the user says No, no post event fires, so no count changes.
 - A command whose **approval count** reaches 3 joins the **session allow-list**: from then on, Solkan **allow**s it and it no longer appears in **ask with reason**.
 - Session state lives in `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json`, the **session allow-list** next to it; both owned by `Bash-approval.zsh`. Without a session id, nothing is recorded.
 - A Stop with at least one **pending subagent** never notifies; any other `background_tasks` entry never blocks it.
-
-### The 4 cases
-
-| Solkan | RTK | Hook output |
-|--------|-----|-------------|
-| allow | rewrite | auto-approve + updatedInput |
-| allow | ignore | auto-approve (no updatedInput) |
-| reject | rewrite | ask with reason + updatedInput |
-| reject | ignore | ask with reason (no updatedInput) |
-
-## Design decisions
-
-### Why rewrite both in the hook and in Solkan
-
-The hook does global command rewriting via RTK (prepends `rtk bin-zsh` to the entire command).
-
-Solkan parses the full shell AST (via unbash) to extract every simple command and rewrite them individually (`rm` replaces to `rm-for-claude` for example).
 
 ## Flagged ambiguities
 

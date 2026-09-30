@@ -4,9 +4,6 @@ setup() {
   bats_git_dir 'my-repo'
   # Keep mocks active when cd-ing into the temp repo
   bats_disable_worktree_aware
-  # Default to non-Claude context
-  is-claude() { return 1; }
-  bats_mock is-claude
 }
 
 # ─── RETURN EARLY ─────────────────────────────────────────────────────────────
@@ -245,53 +242,21 @@ setup() {
 
 # ─── CLAUDE CONTEXT ──────────────────────────────────────────────────────────
 
-@test "prefixes zsh-test with rtk bin-zsh when is-claude" {
+@test "calls zsh-test directly with no rtk prefix even when CLAUDECODE is set" {
   echo 'content' > "$BATS_GIT_DIR/script.zsh"
   bats_git add script.zsh
   bats_git commit --quiet -m "add script.zsh"
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
-  is-claude() { return 0; }
   zsh-test-path() { echo "path"; }
-  rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
-  bats_mock is-claude zsh-test-path rtk
+  zsh-test() { echo "$@" > "$BATS_TMP_DIR/zsh-test-calls.txt"; }
+  rtk() { touch "$BATS_TMP_DIR/rtk-called"; }
+  bats_mock zsh-test-path zsh-test rtk
 
-  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  bats_run_zsh "cd $BATS_GIT_DIR && CLAUDECODE=1 git-file-test"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/rtk-calls.txt")" == bin-zsh\ zsh-test* ]]
-}
-
-@test "prefixes yarn run test with rtk bin-zsh when is-claude" {
-  echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
-  bats_git add script.js
-  bats_git commit --quiet -m "add script.js"
-  echo 'changed' >> "$BATS_GIT_DIR/script.js"
-
-  is-claude() { return 0; }
-  zsh-test-path() { printf ''; }
-  rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
-  bats_mock is-claude zsh-test-path rtk
-
-  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/rtk-calls.txt")" == bin-zsh\ yarn\ run\ test* ]]
-}
-
-@test "prefixes python-test with rtk bin-zsh when is-claude" {
-  echo 'x = 1' > "$BATS_GIT_DIR/module.py"
-  bats_git add module.py
-  bats_git commit --quiet -m "add module.py"
-  echo 'changed' >> "$BATS_GIT_DIR/module.py"
-
-  is-claude() { return 0; }
-  zsh-test-path() { printf ''; }
-  python-test-path() { echo "$BATS_GIT_DIR/__tests__/test_module.py"; }
-  rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
-  bats_mock is-claude zsh-test-path python-test-path rtk
-
-  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/rtk-calls.txt")" == bin-zsh\ python-test* ]]
+  [[ "$(cat "$BATS_TMP_DIR/zsh-test-calls.txt")" = "$BATS_GIT_DIR/script.zsh" ]]
+  [[ ! -e "$BATS_TMP_DIR/rtk-called" ]]
 }
 
 # ─── GO ──────────────────────────────────────────────────────────────────────
@@ -356,19 +321,3 @@ setup() {
   [[ "$output" = "" ]]
 }
 
-@test "prefixes go-test with rtk bin-zsh when is-claude" {
-  echo 'package main' > "$BATS_GIT_DIR/main.go"
-  bats_git add main.go
-  bats_git commit --quiet -m "add main.go"
-  echo 'changed' >> "$BATS_GIT_DIR/main.go"
-
-  is-claude() { return 0; }
-  zsh-test-path() { printf ''; }
-  go-test-path() { echo "$BATS_GIT_DIR/main_test.go"; }
-  rtk() { echo "$@" > "$BATS_TMP_DIR/rtk-calls.txt"; }
-  bats_mock is-claude zsh-test-path go-test-path rtk
-
-  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/rtk-calls.txt")" == bin-zsh\ go-test* ]]
-}

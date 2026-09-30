@@ -12,7 +12,7 @@ setup() {
   bats_run_zsh "${approvalPrefix}; approvalPendingAdd --tool-use-id toolu_01 --command wget --command curl"
   bats_run_zsh "${approvalPrefix}; approvalCountIncrement --command wget"
 
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"rtk wget evil.com && curl bad.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [[ "$status" -eq 0 ]]
 
   bats_run_zsh "${approvalPrefix}; approvalCountGet --command wget"

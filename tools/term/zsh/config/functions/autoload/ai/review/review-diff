@@ -10,14 +10,14 @@ setopt local_options err_return
 
 # Display diff between two points
 function display_diff_range() {
-  rtk proxy git log "$1..$2"
-  rtk proxy git diff --stat -p "$1..$2"
+  git log "$1..$2"
+  git diff --stat -p "$1..$2"
 }
 
 # Display working-tree diff (staged + unstaged + untracked)
 function display_dirty_diff() {
   local statusRaw="$(git status --porcelain)"
-  local trackedDiff="$(rtk proxy git diff --stat -p HEAD)"
+  local trackedDiff="$(git diff --stat -p HEAD)"
 
   # Clean tree: nothing to show
   if [[ "$trackedDiff" == "" ]] && [[ "$statusRaw" == "" ]]; then
@@ -35,8 +35,7 @@ function display_dirty_diff() {
     local rawFile="${rawLine:3}"
 
     # diff filepaths are displayed as relative to the repoRoot
-    rtk proxy \
-      git \
+    git \
       -C "$repoRoot" \
       diff \
       --no-index \
@@ -70,8 +69,8 @@ fi
 
 # Not a branch: SHA review
 if ! git-branch-exists "$ref"; then
-  rtk proxy git log --max-count=1 "$ref"
-  rtk proxy git diff --stat -p "$ref^" "$ref"
+  git log --max-count=1 "$ref"
+  git diff --stat -p "$ref^" "$ref"
   return 0
 fi
 

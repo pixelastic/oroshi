@@ -66,4 +66,3 @@ The skill enforces a TDD-driven sequence:
 
 - Invokes [`{lang}-lint --fix`](scripts.md#lang-lint) for linting
 - Invokes [`{lang}-test`](scripts.md#lang-test) for running tests
-- Used alongside [RTK filtering](integration.md#rtk--test-output-filtering-for-agents) to keep test output concise

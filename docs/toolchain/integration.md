@@ -68,38 +68,6 @@ Iterates all modified and added files, resolves each to a test file via
 
 ---
 
-## RTK — Test output filtering for agents
-
-[RTK](utilities.md#rtk) filters test runner output down to only failures and
-relevant error messages. Two configuration layers adapt it to the toolchain:
-
-### `filters.toml`
-
-```toml
-# Per-language filtering rules.
-# Location: tools/ai/rtk/config/filters.toml
-# Each filter defines:
-# - match_command: regex to match the test command
-# - strip_ansi: strip ANSI escape codes before filtering (usually true)
-# - strip_lines_matching: array of regexes for lines to remove (passing tests, headers, etc.)
-# - on_empty: message when all output is stripped (i.e. all tests passed)
-```
-
-### `rtk-command-rewrite`
-
-```zsh
-# Takes a ready-to-execute command and returns it prefixed with rtk if a
-# matching filter exists. ZSH autoloaded commands are also prefixed with
-# bin-zsh so rtk can invoke them.
-# Idempotent: already-prefixed commands pass through unchanged.
-# Unrecognized commands pass through unchanged.
-# Called by a Claude Code hook before every command execution.
-# Usage:
-# $ rtk-command-rewrite "python-test tests/"                  # → rtk bin-zsh python-test tests/
-```
-
----
-
 ## `lintstaged.config.js`
 
 ```js
@@ -204,10 +172,6 @@ Programming languages only:
 
 6. **`git-file-test`** — add an `is-{lang}` check, use `{lang}-test-path` for
    resolution, call `{lang}-test`
-7. **`filters.toml`** — add a filter block with `match_command` regex and
-   `strip_lines_matching` patterns for the language's test runner output
-8. **`rtk-command-rewrite`** — add a command match so the test command gets
-   routed through RTK
-9. **`compdef.zsh`** — register `{lang}-test` with the language's file glob
-10. **`ctrl-p.zsh`** — map `{lang}-test` to the `fzf-{lang}-tests` picker
-    (filtered to test files only) in `specialPickers`
+7. **`compdef.zsh`** — register `{lang}-test` with the language's file glob
+8. **`ctrl-p.zsh`** — map `{lang}-test` to the `fzf-{lang}-tests` picker
+   (filtered to test files only) in `specialPickers`

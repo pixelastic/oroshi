@@ -2,6 +2,8 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  # Resolve review-diff from this worktree, not the deployed checkout
+  bats_disable_worktree_aware
   echo "initial content" > "$BATS_GIT_DIR/tracked.txt"
   bats_git add tracked.txt
   bats_git commit --quiet --message "add tracked"
@@ -75,6 +77,24 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" == *"feat: add sha-file.txt"* ]]
   [[ "$output" == *"diff --git"* ]]
+}
+
+@test "range: shows log and diff without calling rtk" {
+  cd "$BATS_GIT_DIR"
+  local shaA="$(git rev-parse HEAD)"
+  git checkout -b feature-branch
+  echo "feature content" > feature.txt
+  git add feature.txt
+  git commit --message "feat: commit C"
+
+  rtk() { touch "$BATS_TMP_DIR/rtk-called"; }
+  bats_mock rtk
+
+  bats_run_zsh "cd $BATS_GIT_DIR && review-diff ${shaA}..feature-branch"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"feat: commit C"* ]]
+  [[ "$output" == *"diff --git"* ]]
+  [[ ! -e "$BATS_TMP_DIR/rtk-called" ]]
 }
 
 @test "1-arg dotdot range: stdout contains range commits and diff --git line; out-of-range commits absent" {
