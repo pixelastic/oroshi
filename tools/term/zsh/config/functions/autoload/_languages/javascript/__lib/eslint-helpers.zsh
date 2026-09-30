@@ -1,5 +1,5 @@
 # Shared helpers for eslint-lint and eslint-fix
-# Resolves the eslint binary, config file, and working directory
+# Resolves the eslint binary, config file, install root, and working directory
 
 # Return the eslint config file path: project-local if available, oroshi fallback otherwise
 function __eslint-config() {
@@ -25,20 +25,41 @@ function __eslint-config() {
   print "$OROSHI_ROOT/eslint.config.js"
 }
 
+# Succeed when the resolved config lives inside the project rather than in oroshi
+function __eslint-config-is-project-owned() {
+  local projectRoot="$1"
+  local configFile="$(__eslint-config "$projectRoot")"
+
+  [[ $projectRoot != "" && $configFile == "$projectRoot/"* ]]
+}
+
 # Return the eslint_d binary path: project-local only with a project-local config, global otherwise
 function __eslint-binary() {
   local projectRoot="$1"
-  local configFile="$(__eslint-config "$projectRoot")"
   local localBinary="$projectRoot/node_modules/.bin/eslint_d"
 
   # Project has its own config and its own eslint_d
-  if [[ $projectRoot != "" && $configFile == "$projectRoot/"* && -f $localBinary ]]; then
+  if __eslint-config-is-project-owned "$projectRoot" && [[ -f $localBinary ]]; then
     print "$localBinary"
     return 0
   fi
 
   # Fall back to global eslint_d
   print "eslint_d"
+}
+
+# Return the root holding the eslint install: the config's owner, so binary and config always match
+function __eslint-root() {
+  local projectRoot="$1"
+
+  # The project owns the config, so it owns the matching eslint
+  if __eslint-config-is-project-owned "$projectRoot"; then
+    print "$projectRoot"
+    return 0
+  fi
+
+  # Oroshi's config needs oroshi's eslint
+  print "$OROSHI_ROOT"
 }
 
 # Return the working directory for eslint

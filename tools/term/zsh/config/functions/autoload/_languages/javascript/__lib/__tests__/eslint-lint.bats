@@ -141,10 +141,11 @@ SCRIPT
 # Binary and config pairing
 
 mock_global_eslint() {
-  # Global eslint_d records its name and arguments
+  # Global eslint_d records its name, root and arguments
   mock_eslint <<SCRIPT
 #!/bin/bash
 printf 'global %s\n' "\$*" > "$BATS_TMP_DIR/eslint_call"
+printf '%s\n' "\$ESLINT_D_ROOT" > "$BATS_TMP_DIR/eslint_root"
 exit 0
 SCRIPT
 }
@@ -164,10 +165,11 @@ add_local_eslint() {
   local projectDirectory="$1"
   mkdir -p "$projectDirectory/node_modules/.bin"
 
-  # Local eslint_d records its name and arguments
+  # Local eslint_d records its name, root and arguments
   cat > "$projectDirectory/node_modules/.bin/eslint_d" <<SCRIPT
 #!/bin/bash
 printf 'local %s\n' "\$*" > "$BATS_TMP_DIR/eslint_call"
+printf '%s\n' "\$ESLINT_D_ROOT" > "$BATS_TMP_DIR/eslint_root"
 exit 0
 SCRIPT
   chmod +x "$projectDirectory/node_modules/.bin/eslint_d"
@@ -183,6 +185,7 @@ SCRIPT
   bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint $file"
   [[ "$status" -eq 0 ]]
   [[ "$(< "$BATS_TMP_DIR/eslint_call")" == "global --config $OROSHI_ROOT/eslint.config.js "* ]]
+  [[ "$(< "$BATS_TMP_DIR/eslint_root")" == "$OROSHI_ROOT" ]]
 }
 
 @test "runs the local eslint_d with the project config when the project has both" {
@@ -196,6 +199,7 @@ SCRIPT
   bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint $file"
   [[ "$status" -eq 0 ]]
   [[ "$(< "$BATS_TMP_DIR/eslint_call")" == "local --config $projectDirectory/eslint.config.js "* ]]
+  [[ "$(< "$BATS_TMP_DIR/eslint_root")" == "$projectDirectory" ]]
 }
 
 @test "runs the global eslint_d with the project config when the project has a config but no local eslint_d" {
@@ -208,6 +212,7 @@ SCRIPT
   bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint $file"
   [[ "$status" -eq 0 ]]
   [[ "$(< "$BATS_TMP_DIR/eslint_call")" == "global --config $projectDirectory/eslint.config.js "* ]]
+  [[ "$(< "$BATS_TMP_DIR/eslint_root")" == "$projectDirectory" ]]
 }
 
 @test "runs the global eslint_d with the oroshi config when there is no project" {
@@ -218,4 +223,5 @@ SCRIPT
   bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint $file"
   [[ "$status" -eq 0 ]]
   [[ "$(< "$BATS_TMP_DIR/eslint_call")" == "global --config $OROSHI_ROOT/eslint.config.js "* ]]
+  [[ "$(< "$BATS_TMP_DIR/eslint_root")" == "$OROSHI_ROOT" ]]
 }
