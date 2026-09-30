@@ -72,13 +72,47 @@ make_transcript() {
   [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound no" ]]
 }
 
-@test "skips entirely for subagent completions" {
+@test "does not notify when a subagent background task is running" {
   export OROSHI_CLAUDE_STOP_SOUND="auto"
 
-  run_stop '{"transcript_path":"/home/user/.claude/sessions/abc/subagents/xyz.jsonl"}'
+  run_stop '{"background_tasks":[{"type":"subagent","status":"running"}]}'
+
+  [[ ! -f "$BATS_TMP_DIR/kitty-notify-args" ]]
+}
+
+@test "exits 0 when a subagent background task is running" {
+  export OROSHI_CLAUDE_STOP_SOUND="auto"
+
+  run_stop '{"background_tasks":[{"type":"subagent","status":"running"}]}'
 
   [[ "$status" -eq 0 ]]
-  [[ ! -f "$BATS_TMP_DIR/kitty-notify-args" ]]
+}
+
+@test "notifies when only a shell background task is running" {
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+
+  run_stop '{"background_tasks":[{"type":"shell","status":"running"}]}'
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound no" ]]
+}
+
+@test "notifies when background_tasks is empty" {
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+
+  run_stop '{"background_tasks":[]}'
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound no" ]]
+}
+
+@test "notifies when background_tasks is absent" {
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+
+  run_stop '{"transcript_path":"/some/path.jsonl"}'
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound no" ]]
 }
 
 @test "auto: handles escaped newlines in last_assistant_message" {

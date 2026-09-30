@@ -7,8 +7,10 @@ set -e
 local stdinData="$(cat)"
 local transcriptPath="$(printf '%s\n' "$stdinData" | jq -r '.transcript_path // empty')"
 
-# Skip entirely for subagent completions
-[[ "$transcriptPath" == */subagents/* ]] && exit 0
+# Stay silent while a background subagent is still running
+local hasRunningSubagent="$(printf '%s\n' "$stdinData" \
+  | jq -r 'any(.background_tasks[]?; .type == "subagent")')"
+[[ "$hasRunningSubagent" == "true" ]] && exit 0
 
 # Notify without sound when disabled or empty
 if [[ "${OROSHI_CLAUDE_STOP_SOUND}" == "no" || "${OROSHI_CLAUDE_STOP_SOUND}" == "" ]]; then
