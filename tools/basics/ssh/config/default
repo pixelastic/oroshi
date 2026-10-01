@@ -4,13 +4,13 @@ Host            mock
   Port            2222
   User            mock
   IdentityFile    ~/.ssh/id_mock
-  ControlMaster   no
 
 # Default settings
 Host            *
   # Compress ssh traffic
   Compression     yes
-  # Re-use opened connection to a given server
+  # Re-use the same multiplexed connection.
   ControlMaster   auto
-  ControlPersist  30s
   ControlPath     ~/.ssh/master-%r@%h:%p
+  # SSH Handshake is persisted for 30s
+  ControlPersist  30s

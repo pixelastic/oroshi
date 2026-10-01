@@ -5,34 +5,12 @@
 # screensharing, which the other seem to have trouble with.
 set -e
 
-local DOWNLOAD_URL="https://zoom.us/client/6.4.6.1370/zoom_amd64.deb"
+local DOWNLOAD_URL="https://zoom.us/client/7.2.1.5760/zoom_amd64.deb"
 
 # Download .deb
 cd ~/local/tmp
 wget $DOWNLOAD_URL -O zoom.deb
 
-# Install dependencies
+# Install .deb; apt resolves the dependencies the package declares
 sudo apt update
-sudo apt-get install \
-  ibus \
-  libfontconfig1 \
-  libgl1-mesa-glx \
-  libglib2.0-0 \
-  libgstreamer-plugins-base0.10-0 \
-  libpulse0 \
-  libsm6 \
-  libsqlite3-0 \
-  libxcb-image0 \
-  libxcb-keysyms1 \
-  libxcb-randr0 \
-  libxcb-shape0 \
-  libxcb-shm0 \
-  libxcb-xfixes0 \
-  libxcb-xtest0 \
-  libxcomposite1 \
-  libxi6 \
-  libxrender1 \
-  libxslt1.1
-
-# Install .deb
 sudo apt install ./zoom.deb

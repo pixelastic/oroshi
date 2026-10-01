@@ -28,7 +28,8 @@ setup() {
 }
 
 @test "ssh accepts many connections opened at the same time" {
-  # Parallel test files each open their own connections (no ControlMaster)
+  # Many concurrent sessions: multiplexed over the ControlMaster connection,
+  # bounded by the container's MaxSessions
   local pids=()
   for i in {1..30}; do
     ssh mock "true" &

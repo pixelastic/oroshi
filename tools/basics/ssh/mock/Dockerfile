@@ -19,14 +19,12 @@ COPY keys/id_mock.pub /home/mock/.ssh/authorized_keys
 RUN chown mock:mock /home/mock/.ssh/authorized_keys && \
     chmod 600 /home/mock/.ssh/authorized_keys
 
-# Stable host key (committed) and sshd config
-# Allow 100 parallel connections, hopefully enough for CI/CD tests that run in parallel
+# Stable host key
 COPY keys/host_mock /etc/ssh/ssh_host_ed25519_key
 COPY keys/host_mock.pub /etc/ssh/ssh_host_ed25519_key.pub
-RUN chmod 600 /etc/ssh/ssh_host_ed25519_key && \
-    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config && \
-    echo 'HostKey /etc/ssh/ssh_host_ed25519_key' >> /etc/ssh/sshd_config && \
-    echo 'MaxStartups 100:30:200' >> /etc/ssh/sshd_config
+RUN chmod 600 /etc/ssh/ssh_host_ed25519_key
+# SSHD config
+COPY sshd_config.d/mock.conf /etc/ssh/sshd_config.d/mock.conf
 
 EXPOSE 22
 
