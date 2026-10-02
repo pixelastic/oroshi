@@ -1,10 +1,16 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
 
+// Written after the diff table to flag a patched binary. It sits in the
+// padding, so the patched output keeps the exact input length.
+export const PATCH_MARKER = '/*oroshi-patched*/';
+
 // Diff/file preview table (Monokai Extended), immediately followed by the
-// light (GitHub) table whose first entry is keyword:rgb(167,29,93)
-const DIFF_TABLE_REGEXP =
-  /new Map\((?:\[\["keyword",|Object\.entries\(\{keyword:)[^;]*?\)\s*(?=,[\w$]+=new Map\(\[\["keyword",([\w$]+)\(167,29,93\)\])/;
+// light (GitHub) table whose first entry is keyword:rgb(167,29,93).
+// A marker left by a previous patch may sit between the two.
+const DIFF_TABLE_REGEXP = new RegExp(
+  String.raw`new Map\((?:\[\["keyword",|Object\.entries\(\{keyword:)[^;]*?\)\s*(?:${_.escapeRegExp(PATCH_MARKER)}\s*)?(?=,[\w$]+=new Map\(\[\["keyword",([\w$]+)\(167,29,93\)\])`,
+);
 const DIFF_ENTRY_REGEXP =
   /(?:\["([^"]+)",|"([^"]+)":|([\w$]+):)([\w$]+\(\d+,\d+,\d+\))/g;
 
@@ -101,7 +107,7 @@ __ = {
       },
     );
 
-    return `new Map(Object.entries({${__.serializeEntries(entries)}}))`;
+    return `new Map(Object.entries({${__.serializeEntries(entries)}}))${PATCH_MARKER}`;
   },
 
   /**

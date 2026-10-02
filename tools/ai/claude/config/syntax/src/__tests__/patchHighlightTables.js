@@ -1,8 +1,9 @@
-import { patchHighlightTables } from '../patchHighlightTables.js';
+import { _ } from 'golgoth';
+import { PATCH_MARKER, patchHighlightTables } from '../patchHighlightTables.js';
 
 describe('patchHighlightTables', () => {
   const diffTable =
-    'var j=new Map([["keyword",l(249,38,114)],["_storage",l(102,217,239)],["title.function",l(166,226,46)],["comment",l(117,113,94)],["meta",l(117,113,94)],["variable",l(255,255,255)],["operator",l(249,38,114)]])';
+    'var j=new Map([["keyword",l(249,38,114)],["_storage",l(102,217,239)],["title.function",l(166,226,46)],["comment",l(117,113,94)],["meta",l(117,113,94)],["variable",l(255,255,255)],["number",l(174,129,255)],["attr",l(166,226,46)],["built_in",l(102,217,239)],["operator",l(249,38,114)]])';
   const lightTable = ',G=new Map([["keyword",l(167,29,93)]]);';
   const codeTable =
     'var a=new Map(Object.entries({keyword:de.blue,string:de.red,subst:de.reset,"title.function":de.yellow,meta:de.grey,"meta-keyword":de.reset,"meta.keyword":de.reset,bullet:de.reset,code:de.reset,quote:de.reset,emphasis:de.italic}));function u(e){let t=e.replace(/^hljs-/,"");}';
@@ -16,6 +17,54 @@ describe('patchHighlightTables', () => {
     string: '#3182ce',
   };
 
+  describe('marker', () => {
+    it('is exported with its expected value', () => {
+      expect(PATCH_MARKER).toEqual('/*oroshi-patched*/');
+    });
+
+    it('is written once after the diff table', () => {
+      const actual = patchHighlightTables(input, scopeColors).text;
+      expect(actual.split(PATCH_MARKER)).toHaveLength(2);
+      expect(actual).toContain(`}))${PATCH_MARKER}`);
+    });
+
+    it('patches an already patched text', () => {
+      const firstPass = patchHighlightTables(input, scopeColors).text;
+      const actual = patchHighlightTables(firstPass, scopeColors);
+      expect(actual).toHaveProperty('text', firstPass);
+    });
+
+    it('applies new colors when patching an already patched text', () => {
+      const firstPass = patchHighlightTables(input, scopeColors).text;
+      const actual = patchHighlightTables(firstPass, {
+        ...scopeColors,
+        keyword: '#ff0000',
+      }).text;
+      expect(actual).toContain('keyword:l(255,0,0)');
+    });
+
+    it('appears once after a repatch', () => {
+      const firstPass = patchHighlightTables(input, scopeColors).text;
+      const actual = patchHighlightTables(firstPass, scopeColors).text;
+      expect(actual.split(PATCH_MARKER)).toHaveLength(2);
+    });
+
+    it('throws when the padding cannot hold it', () => {
+      const firstPass = patchHighlightTables(input, scopeColors).text;
+      const withoutRoom = firstPass.replace(
+        new RegExp(`${_.escapeRegExp(PATCH_MARKER)} *`),
+        '',
+      );
+      let actual = null;
+      try {
+        patchHighlightTables(withoutRoom, scopeColors);
+      } catch (error) {
+        actual = error;
+      }
+      expect(actual).toHaveProperty('code', 'CLAUDE_SYNTAX_PATCH_TOO_LONG');
+    });
+  });
+
   it('keeps the exact same length', () => {
     const actual = patchHighlightTables(input, scopeColors);
     expect(actual.text).toHaveLength(input.length);
@@ -24,7 +73,7 @@ describe('patchHighlightTables', () => {
   it('patches the diff table, keeping unresolved scopes', () => {
     const actual = patchHighlightTables(input, scopeColors);
     const expected =
-      'var j=new Map(Object.entries({keyword:l(56,161,105),_storage:l(102,217,239),"title.function":l(214,158,46),comment:l(117,113,94),meta:l(117,113,94),variable:l(255,255,255),operator:l(249,38,114)}))';
+      'var j=new Map(Object.entries({keyword:l(56,161,105),_storage:l(102,217,239),"title.function":l(214,158,46),comment:l(117,113,94),meta:l(117,113,94),variable:l(255,255,255),number:l(174,129,255),attr:l(166,226,46),built_in:l(102,217,239),operator:l(249,38,114)}))';
     expect(actual.text).toContain(expected);
     expect(actual.text).toContain(lightTable);
   });
