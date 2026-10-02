@@ -1,18 +1,40 @@
-# Save the current kitty session to disk with a green flash confirmation
+# Save the current kitty session to disk, silently and atomically
 # Usage:
-# $ kitty-session-save
+# $ kitty-session-save            # Silent save, no confirmation
+# $ kitty-session-save --flash    # Save with a green flash confirmation
 setopt local_options err_return
 
-# Flash all windows green
-kitty-remote set-colors \
-  --all \
-  background='#1a3a1a'
+zparseopts -E -D \
+  -flash=flagFlash
 
-# Save the session
+local isFlash=${#flagFlash}
+
+# Nothing to save if no live Kitty answers remote control
+kitty-is-running || return 0
+
+local dumpDir="$OROSHI_FOLDER_STATE/kitty"
+local dumpPath="$dumpDir/session.kitty-session"
+mkdir -p "$dumpDir"
+local tmpPath="$(mktemp "$dumpDir/session.kitty-session.XXXXXX")"
+
+# Flash all windows green with --flash
+if [[ $isFlash == 1 ]]; then
+  colors-load-definitions
+  kitty-remote set-colors \
+    --all \
+    background="$COLORS[green-0:hex]"
+fi
+
+# Atomic save
 kitty-remote action save_as_session \
-  --save-only "$OROSHI_FOLDER_STATE/kitty/session.kitty-session"
+  --save-only "$tmpPath"
+mv "$tmpPath" "$dumpPath"
 
 # Reset colors
-kitty-remote set-colors \
-  --all \
-  --reset
+if [[ $isFlash == 1 ]]; then
+  kitty-remote set-colors \
+    --all \
+    --reset
+fi
+
+return 0
