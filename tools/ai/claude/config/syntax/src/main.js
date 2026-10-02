@@ -3,12 +3,10 @@
 import { chmod, readFile, stat, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
-import { _ } from 'golgoth';
 import { move, read, readJson } from 'firost';
 import { parse as parseJsonc } from 'jsonc-parser';
 import { patchHighlightTables } from './patchHighlightTables.js';
 import { resolveColors } from './resolveColors.js';
-import { stripModuleBytecode } from './stripModuleBytecode.js';
 
 /**
  * Patch the Claude Code binary so its syntax highlighting uses our colors
@@ -24,13 +22,12 @@ export async function main({ binaryPath, colorsPath }) {
   const decorationColors = resolveColors(config.diff, colors);
 
   const binary = await readFile(binaryPath);
-  const { text, offsets } = patchHighlightTables(
+  const { text } = patchHighlightTables(
     binary.toString('latin1'),
     scopeColors,
     decorationColors,
   );
   const patchedBinary = Buffer.from(text, 'latin1');
-  const moduleNames = stripModuleBytecode(patchedBinary, offsets);
 
   // Write to a new file then rename: the binary can't be written while
   // running (ETXTBSY), and yarn hardlinks it to its global cache
@@ -39,10 +36,6 @@ export async function main({ binaryPath, colorsPath }) {
   await writeFile(temporaryPath, patchedBinary);
   await chmod(temporaryPath, mode);
   await move(temporaryPath, binaryPath);
-
-  console.log(
-    `Patched ${_.chain(moduleNames).uniq().join(', ').value()} in ${binaryPath}`,
-  );
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
