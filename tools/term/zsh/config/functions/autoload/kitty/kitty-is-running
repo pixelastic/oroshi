@@ -1,0 +1,6 @@
+# Check if a live Kitty instance answers remote control
+# Usage:
+# $ kitty-is-running   # Exit 0 if a Kitty instance responds, 1 otherwise
+setopt local_options err_return
+
+kitty-remote ls >/dev/null 2>&1
