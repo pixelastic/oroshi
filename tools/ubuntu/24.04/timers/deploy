@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+# Deploy systemd user timers declaratively
+# Symlinks every config/*.{timer,service} into ~/.config/systemd/user, reloads
+# the user daemon, then enables and starts each timer.
+# Usage:
+# $ ./deploy
+set -e
+
+CONFIG_DIRECTORY="${0:h}/config"
+DESTINATION_DIRECTORY=~/.config/systemd/user
+
+local timers=($CONFIG_DIRECTORY/*.timer(N))
+local files=($timers $CONFIG_DIRECTORY/*.service(N))
+
+# Nothing to deploy if no files
+[[ ${#files} -eq 0 ]] && return 0
+
+mkdir -p $DESTINATION_DIRECTORY
+
+# Symlink each file so live edits in ~/.config flow back to oroshi
+for file in $files; do
+  ln --force --symbolic $file $DESTINATION_DIRECTORY/${file:t}
+done
+
+# Reload the user daemon so it picks up the new files
+systemctl --user daemon-reload
+
+# Enable and start each timer; services are pulled in by their timer
+for timer in $timers; do
+  systemctl --user enable --now ${timer:t}
+done
