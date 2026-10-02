@@ -1,0 +1,21 @@
+# Exit 0 if a Claude binary carries the oroshi syntax-highlight patch marker, 1 if not.
+# Usage:
+# $ claude-is-color-patched                # Check $OROSHI_ROOT/node_modules/.bin/claude
+# $ claude-is-color-patched /path/to/bin   # Check a given binary
+# Silent — no output, exit code only.
+setopt local_options err_return
+
+# Must equal PATCH_MARKER in tools/ai/claude/config/syntax/src/patchHighlightTables.js
+local PATCH_MARKER='/*oroshi-patched*/'
+
+local binaryPath="${1:-$OROSHI_ROOT/node_modules/.bin/claude}"
+
+# A missing file cannot carry the marker
+[[ ! -f "$binaryPath" ]] && return 1
+
+# Fixed-string, binary-safe search
+grep \
+  --fixed-strings \
+  --quiet \
+  --text \
+  -- "$PATCH_MARKER" "$binaryPath"
