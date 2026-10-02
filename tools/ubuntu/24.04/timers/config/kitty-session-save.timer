@@ -1,0 +1,9 @@
+[Unit]
+Description=Save the Kitty session layout every two minutes
+
+[Timer]
+OnStartupSec=2min
+OnUnitActiveSec=2min
+
+[Install]
+WantedBy=timers.target

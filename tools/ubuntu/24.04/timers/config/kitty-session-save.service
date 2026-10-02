@@ -1,0 +1,6 @@
+[Unit]
+Description=Save the Kitty layout, for later restore
+
+[Service]
+Type=oneshot
+ExecStart=%h/.oroshi/scripts/bin/bin-zsh kitty-session-save
