@@ -7,11 +7,32 @@
 # - uBlock Origin
 # - Vimium
 # - Open in Google Chrome Browser (https://addons.mozilla.org/en-US/firefox/addon/open-in-chrome-browser/)
+set -e
 
+local KEYRING_DIR="/etc/apt/keyrings"
+local KEYRING_FILE="$KEYRING_DIR/packages.mozilla.org.asc"
+
+# In case firefox has one day been installed through snap, we remove it
+sudo snap remove firefox || true
+
+# Trust the Mozilla signing key
+sudo install --directory --mode=0755 $KEYRING_DIR
+sudo wget --output-document=$KEYRING_FILE https://packages.mozilla.org/apt/repo-signing-key.gpg
+
+# Configure apt to use the Mozilla repository
+echo "deb [signed-by=$KEYRING_FILE] https://packages.mozilla.org/apt mozilla main" \
+  | sudo tee /etc/apt/sources.list.d/mozilla.list > /dev/null
+
+# Prefer the Mozilla package over the Ubuntu one
+printf "Package: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000\n" \
+  | sudo tee /etc/apt/preferences.d/mozilla > /dev/null
+
+sudo apt update
+sudo apt install firefox
 
 echo "Please install Vimium, and then copy the following mappings to its config:"
-vimiumMappings=${0:h}/config/vimium-mappings.vim
-echo "Source: $vimiumMappings\n\n"
+local vimiumMappings=${0:h}/config/vimium-mappings.vim
+printf "Source: %s\n\n\n" $vimiumMappings
 echo "---"
 cat $vimiumMappings
 echo "---"
