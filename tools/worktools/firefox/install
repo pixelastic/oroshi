@@ -30,7 +30,9 @@ printf "Package: *\nPin: origin packages.mozilla.org\nPin-Priority: 1000\n" \
   | sudo tee /etc/apt/preferences.d/mozilla > /dev/null
 
 sudo apt update
-sudo apt install firefox
+# Ubuntu's transitional package has an epoch (1:1snap…), so Mozilla's build
+# counts as a downgrade
+sudo apt install --allow-downgrades firefox
 
 echo "Please install Vimium, and then copy the following mappings to its config:"
 local vimiumMappings=${0:h}/config/vimium-mappings.vim
