@@ -4,7 +4,7 @@ setup() {
   bats_tmp_dir
   printf ': 1680000001:0;ls\n: 1680000002:0;echo hello\n: 1680000003:0;git status\n' > "$BATS_TMP_DIR/histfile"
   bats_mock_env "HISTFILE" "$BATS_TMP_DIR/histfile"
-  bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR/oroshi-tmp"
+  bats_mock_env "OROSHI_FOLDER_STATE" "$BATS_TMP_DIR/oroshi-tmp"
   bats_mock_env "CLAUDECODE" ""
   # Pre-create a fresh output cache + matching meta so --source serves from cache (fresh)
   mkdir -p "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r"

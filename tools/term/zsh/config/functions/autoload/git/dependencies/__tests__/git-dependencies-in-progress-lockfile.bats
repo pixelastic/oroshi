@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  bats_mock_env OROSHI_TMP_FOLDER "$BATS_TMP_DIR"
+  bats_mock_env OROSHI_FOLDER_STATE "$BATS_TMP_DIR"
 }
 
 @test "fails when language argument is missing" {
@@ -10,7 +10,7 @@ setup() {
   [[ "$status" -ne 0 ]]
 }
 
-@test "returns path under OROSHI_TMP_FOLDER/git-dependencies-update/" {
+@test "returns path under OROSHI_FOLDER_STATE/git-dependencies-update/" {
   context-slug() { echo "my-repo"; }
   bats_mock context-slug
 

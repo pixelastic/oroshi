@@ -3,7 +3,7 @@ import { google } from 'googleapis';
 
 export let __;
 
-const tokenPath = `${process.env.OROSHI_TMP_FOLDER}/google/tokens.json`;
+const tokenPath = `${process.env.OROSHI_FOLDER_STATE}/google/tokens.json`;
 
 /**
  * Returns an authenticated Google OAuth2 client

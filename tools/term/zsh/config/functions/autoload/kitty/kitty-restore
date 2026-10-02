@@ -5,12 +5,12 @@ setopt local_options err_return
 
 local uuid="$(uuidgen)"
 
-local kittySocketFolder=$OROSHI_TMP_FOLDER/kitty
+local kittySocketFolder=$OROSHI_FOLDER_CACHE/kitty
 mkdir -p $kittySocketFolder
 local kittySocketPath=$kittySocketFolder/socket-$uuid
 
 local sessionArgs=()
-local sessionFile="$OROSHI_TMP_FOLDER/kitty/session.kitty-session"
+local sessionFile="$OROSHI_FOLDER_STATE/kitty/session.kitty-session"
 
 # Restore from last saved session if available
 [[ -f "$sessionFile" ]] && sessionArgs+=(--session "$sessionFile")

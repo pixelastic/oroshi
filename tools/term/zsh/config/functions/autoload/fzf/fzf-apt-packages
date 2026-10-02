@@ -70,8 +70,8 @@ function fzf-preview() {
 }
 
 function fzf-cache-file() {
-  local path="${OROSHI_TMP_FOLDER}/fzf/packages-apt"
-  [[ $isInstalled == "1" ]] && path="${OROSHI_TMP_FOLDER}/fzf/packages-apt-installed"
+  local path="${OROSHI_FOLDER_STATE}/fzf/packages-apt"
+  [[ $isInstalled == "1" ]] && path="${OROSHI_FOLDER_STATE}/fzf/packages-apt-installed"
   echo "$path"
 }
 

@@ -7,7 +7,7 @@ setup() {
   printf 'foo▮foo 1.2.3\n'   >  "$BATS_TMP_DIR/fzf/packages-apt"
   printf 'bar▮bar 3.0.0\n' >> "$BATS_TMP_DIR/fzf/packages-apt"
   printf 'foo▮foo 1.2.3\n'   >  "$BATS_TMP_DIR/fzf/packages-apt-installed"
-  bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR"
+  bats_mock_env "OROSHI_FOLDER_STATE" "$BATS_TMP_DIR"
 }
 
 # fzf-source

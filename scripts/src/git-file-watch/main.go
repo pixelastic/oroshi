@@ -840,9 +840,9 @@ func buildDisplay(repoRoot string, highlighter *highlight.Highlighter) ([]layout
 }
 
 func resolveCommentsPath() (string, error) {
-	tmpFolder := os.Getenv("OROSHI_TMP_FOLDER")
+	tmpFolder := os.Getenv("OROSHI_FOLDER_STATE")
 	if tmpFolder == "" {
-		return "", fmt.Errorf("OROSHI_TMP_FOLDER not set")
+		return "", fmt.Errorf("OROSHI_FOLDER_STATE not set")
 	}
 
 	cmd := exec.Command("bin-zsh", "context-slug")

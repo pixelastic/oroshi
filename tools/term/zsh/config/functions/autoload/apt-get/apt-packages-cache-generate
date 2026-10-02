@@ -52,8 +52,8 @@ for packageName in ${(f)allPackages}; do
 done
 
 # Write both caches to disk
-local cacheDestination=${OROSHI_TMP_FOLDER}/fzf/packages-apt
-local cacheInstalledDestination=${OROSHI_TMP_FOLDER}/fzf/packages-apt-installed
+local cacheDestination=${OROSHI_FOLDER_STATE}/fzf/packages-apt
+local cacheInstalledDestination=${OROSHI_FOLDER_STATE}/fzf/packages-apt-installed
 
 mkdir -p ${cacheDestination:a:h}
 echo "${(F)output}" > $cacheDestination

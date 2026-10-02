@@ -4,10 +4,11 @@ setup() {
   bats_tmp_dir
   printf ': 1680000001:0;ls\n: 1680000002:0;echo hello\n' > "$BATS_TMP_DIR/histfile"
   bats_mock_env "HISTFILE" "$BATS_TMP_DIR/histfile"
-  bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR/oroshi-tmp"
-  mkdir -p "$BATS_TMP_DIR/oroshi-tmp/fzf"
-  printf 'ls▮ls\necho hello▮echo hello\n' > "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r.cache"
-  wc -l < "$BATS_TMP_DIR/histfile" > "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r.meta"
+  bats_mock_env "OROSHI_FOLDER_STATE" "$BATS_TMP_DIR/oroshi-tmp"
+  # Pre-create a fresh cache + matching line count so ctrl-r serves from cache
+  mkdir -p "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r"
+  printf 'ls▮ls\necho hello▮echo hello\n' > "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/cache"
+  wc -l < "$BATS_TMP_DIR/histfile" > "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/last-history-line-count"
 }
 
 # --no-dispatch
@@ -19,7 +20,7 @@ setup() {
 
 @test "--no-dispatch does not invoke fzf" {
   fzf() {
-    touch "$OROSHI_TMP_FOLDER/fzf-was-invoked"
+    touch "$OROSHI_FOLDER_STATE/fzf-was-invoked"
     cat
   }
   bats_mock fzf
@@ -37,11 +38,14 @@ setup() {
 }
 
 @test "dispatch: no flags dispatches to fzf-main" {
-  fzf() { cat; }
+  fzf() {
+    touch "$OROSHI_FOLDER_STATE/fzf-was-invoked"
+    cat
+  }
   bats_mock fzf
   bats_run_zsh "ctrl-r"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == *"ls"* ]]
+  [[ -f "$BATS_TMP_DIR/oroshi-tmp/fzf-was-invoked" ]]
 }
 
 # fzf-postprocess (init.zsh default)

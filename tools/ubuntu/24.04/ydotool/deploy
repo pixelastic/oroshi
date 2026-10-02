@@ -10,7 +10,7 @@ sudo ln \
   /etc/systemd/system
 
 # Create the socket directory
-mkdir -p "$OROSHI_TMP_FOLDER/ydotool"
+mkdir -p "$OROSHI_FOLDER_STATE/ydotool"
 
 # Enable and run the service
 sudo systemctl daemon-reload

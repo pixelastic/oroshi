@@ -4,7 +4,7 @@
 # $ notion-icon-auto --force {pageUrl}   # Set the icon as the preview, even if already has one
 setopt local_options err_return
 zparseopts -E -D \
-	-force=flagForce
+  -force=flagForce
 
 local isForce=${#flagForce}
 
@@ -14,19 +14,19 @@ local pageId="$(notion-page-id $1)"
 # If already has an icon, we skip (unless --force)
 local pageIcon="$(notion-icon $pageId)"
 if [[ $pageIcon != "" && $isForce == "0" ]]; then
-	echo "Already has an icon, skipping. Use --force to overwrite"
-	return 0
+  echo "Already has an icon, skipping. Use --force to overwrite"
+  return 0
 fi
 
 # Find the preview image
 local previewUrl="$(notion-preview $pageUrl)"
 if [[ $previewUrl == "" ]]; then
-	echo "No preview found"
-	return
+  echo "No preview found"
+  return
 fi
 
 # Download the preview image
-local previewFilepath=${OROSHI_TMP_FOLDER}/notion/${pageId}.png
+local previewFilepath=${OROSHI_FOLDER_STATE}/notion/${pageId}.png
 wget --quiet "$previewUrl" -O "$previewFilepath"
 
 # Resize it so it takes less space
@@ -39,8 +39,8 @@ mv $previewFilepath $hashedPreviewFilepath
 
 # Upload it to my server
 rsync -az \
-	$hashedPreviewFilepath \
-	pixelastic:./local/www/assets.pixelastic.com/notion
+  $hashedPreviewFilepath \
+  pixelastic:./local/www/assets.pixelastic.com/notion
 local iconUrl="https://assets.pixelastic.com/notion/${hashedPreviewFilepath:t}"
 
 # Update the icon of the page

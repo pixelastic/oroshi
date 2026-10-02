@@ -90,7 +90,7 @@ function fzf-preview-thumbnail() {
   local filepath="$1"
   local extractor="$2"
 
-  local previewCacheFolder="${OROSHI_TMP_FOLDER}/fzf/previews"
+  local previewCacheFolder="${OROSHI_FOLDER_STATE}/fzf/previews"
   local previewCacheHash="$(file-hash "$fullPath")"
   local previewCachePath="${previewCacheFolder}/${previewCacheHash}.png"
 

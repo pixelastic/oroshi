@@ -14,7 +14,7 @@ function oroshi-prompt-populate:git_pullrequests() {
   fi
 
   local projectName="$(git-github-project)"
-  local cacheFolderPath="${OROSHI_TMP_FOLDER}/github/${projectName}"
+  local cacheFolderPath="${OROSHI_FOLDER_STATE}/github/${projectName}"
   mkdir -p $cacheFolderPath
 
   local pullrequestsCacheFile="${cacheFolderPath}/pullrequests"

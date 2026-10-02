@@ -21,7 +21,7 @@ if [[ "$key" == "" ]]; then
   return 2
 fi
 
-local lockDir="${OROSHI_TMP_FOLDER}/bin-debounce/${key}"
+local lockDir="${OROSHI_FOLDER_STATE}/bin-debounce/${key}"
 mkdir -p "${lockDir:h}"
 
 # No lock yet: mkdir is atomic, so only one of several concurrent calls can

@@ -19,7 +19,7 @@ function oroshi-reload-path() {
 
   # Node
   if [[ -f ~/.nvm/alias/default ]]; then
-    local nodeBinariesPath=$OROSHI_TMP_FOLDER/node/bin
+    local nodeBinariesPath=$OROSHI_FOLDER_STATE/node/bin
   fi
 
   # Python

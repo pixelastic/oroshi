@@ -2,14 +2,14 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  export OROSHI_TMP_FOLDER="$BATS_TMP_DIR/tmp"
-  mkdir -p "$OROSHI_TMP_FOLDER/git-file-watch"
+  export OROSHI_FOLDER_STATE="$BATS_TMP_DIR/tmp"
+  mkdir -p "$OROSHI_FOLDER_STATE/git-file-watch"
 
   context-slug() { echo "my-project--main"; }
   bats_mock context-slug
-  bats_mock_env OROSHI_TMP_FOLDER "$OROSHI_TMP_FOLDER"
+  bats_mock_env OROSHI_FOLDER_STATE "$OROSHI_FOLDER_STATE"
 
-  COMMENTS_FILE="$OROSHI_TMP_FOLDER/git-file-watch/my-project--main.json"
+  COMMENTS_FILE="$OROSHI_FOLDER_STATE/git-file-watch/my-project--main.json"
 }
 
 # ─── SINGLE ID ──────────────────────────────────────────────────────────────

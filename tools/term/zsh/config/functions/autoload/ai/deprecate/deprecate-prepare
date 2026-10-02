@@ -3,7 +3,7 @@
 # $ deprecate-prepare <project-name>
 setopt local_options err_return
 
-DEPRECATE_TMP="$OROSHI_TMP_FOLDER/deprecate"
+DEPRECATE_TMP="$OROSHI_FOLDER_STATE/deprecate"
 
 # Project name is required
 local projectName="$1"

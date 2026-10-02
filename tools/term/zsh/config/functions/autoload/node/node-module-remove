@@ -4,7 +4,7 @@
 setopt local_options err_return
 local moduleName=$1
 local nodeVersion="$(node --version)"
-local installDirectory="${OROSHI_TMP_FOLDER}/node/${nodeVersion}"
+local installDirectory="${OROSHI_FOLDER_STATE}/node/${nodeVersion}"
 
 cd $installDirectory || return
 yarn remove $moduleName

@@ -10,7 +10,7 @@ kitty-remote set-colors \
 
 # Save the session
 kitty-remote action save_as_session \
-  --save-only "$OROSHI_TMP_FOLDER/kitty/session.kitty-session"
+  --save-only "$OROSHI_FOLDER_STATE/kitty/session.kitty-session"
 
 # Reset colors
 kitty-remote set-colors \

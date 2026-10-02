@@ -4,7 +4,7 @@
 setopt local_options err_return
 
 # Write the Redraw Beacon
-local beaconDir="$OROSHI_TMP_FOLDER/kitty/beacons"
+local beaconDir="$OROSHI_FOLDER_CACHE/kitty/beacons"
 mkdir -p "${beaconDir}"
 touch "${beaconDir}/redraw"
 

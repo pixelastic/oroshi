@@ -83,6 +83,7 @@ Apply patterns from [Style](./references/style.md):
 | [Splitting](./references/splitting.md) | Use `▮` as separator and `${(@ps/▮/)line}` to split |
 | [Conditions](./references/conditions.md) | `[[ simpleCondition ]] && state=value`. No nested if/else, return early |
 | [Calling Commands](./references/calling-commands.md) | Use existing helpers (`git-branch-current`), not raw calls. Use `--long-form`, not `-l`. |
+| [Folders](./references/folders.md) | Write runtime files under `$OROSHI_FOLDER_STATE` (persistent) or `$OROSHI_FOLDER_CACHE` (discardable). |
 
 ```zsh
 # Show changed files with syntax-aware coloring

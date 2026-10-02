@@ -3,6 +3,6 @@
 # $ node-module-list    # List of all packages
 setopt local_options err_return
 local nodeVersion="$(node --version)"
-local installDirectory="${OROSHI_TMP_FOLDER}/node/${nodeVersion}"
+local installDirectory="${OROSHI_FOLDER_STATE}/node/${nodeVersion}"
 
 yarn-dependency-list-raw $installDirectory

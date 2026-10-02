@@ -5,8 +5,13 @@
 # Disable the automated loading of compinit in /etc/zsh/zshrc
 skip_global_compinit=1
 
-# Root of where we store runtime config
-export OROSHI_TMP_FOLDER="$HOME/local/tmp/oroshi"
+# Persistent runtime state: survives a reboot. Use for anything that must
+# outlive the session (session dumps, caches we want to keep, etc).
+export OROSHI_FOLDER_STATE="$HOME/local/tmp/oroshi"
+
+# Discardable runtime cache: lives under /tmp, lost on reboot or the system's
+# 30-day age cleanup. Use for throw-away runtime files (sockets, beacons, etc).
+export OROSHI_FOLDER_CACHE="/tmp/oroshi"
 
 # Also make the HOSTNAME globally available. Some tools (like Kitty) can use ENV
 # variables in their config, but can't call binaries, so having the HOSTNAME

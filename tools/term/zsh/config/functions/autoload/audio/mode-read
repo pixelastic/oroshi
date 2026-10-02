@@ -7,4 +7,4 @@ setopt local_options err_return
 local modeName=$1
 local defaultValue=$2
 
-cat $OROSHI_TMP_FOLDER/modes/$modeName 2>/dev/null || echo $defaultValue
+cat $OROSHI_FOLDER_STATE/modes/$modeName 2>/dev/null || echo $defaultValue

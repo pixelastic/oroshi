@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  bats_mock_env OROSHI_TMP_FOLDER "$BATS_TMP_DIR"
+  bats_mock_env OROSHI_FOLDER_STATE "$BATS_TMP_DIR"
   sourcePrefix="source '${OROSHI_ROOT}/tools/term/zsh/config/functions/autoload/ai/meetup-announce/__lib/resolve-draft-dir.zsh'"
   DRAFT_ROOT="$BATS_TMP_DIR/claude/meetup-announce"
 }

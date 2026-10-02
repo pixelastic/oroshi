@@ -2,7 +2,8 @@ bats_load_library 'helper'
 
 setup() {
 	bats_tmp_dir
-	bats_mock_env OROSHI_TMP_FOLDER "$BATS_TMP_DIR"
+	bats_mock_env OROSHI_FOLDER_STATE "$BATS_TMP_DIR"
+	bats_mock_env OROSHI_FOLDER_CACHE "$BATS_TMP_DIR"
 
 	# Mock kitty to log all args
 	kitty() { echo "$*" > "$BATS_TMP_DIR/kitty-args"; }

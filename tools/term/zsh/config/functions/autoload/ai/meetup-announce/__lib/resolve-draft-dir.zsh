@@ -13,7 +13,7 @@ function resolve-draft-dir() {
   local recordId="$1"
   local meetupName="$2"
 
-  local draftRoot="$OROSHI_TMP_FOLDER/claude/meetup-announce"
+  local draftRoot="$OROSHI_FOLDER_STATE/claude/meetup-announce"
   local draftDir="$draftRoot/$recordId"
   local stateFile="$draftDir/state.json"
 

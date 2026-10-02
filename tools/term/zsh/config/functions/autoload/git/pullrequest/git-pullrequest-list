@@ -10,6 +10,6 @@ gh pr list
 
 # Update shared cache of PR count
 local projectName="$(git-github-project)"
-local cacheDirectory="${OROSHI_TMP_FOLDER}/github/${projectName}"
+local cacheDirectory="${OROSHI_FOLDER_STATE}/github/${projectName}"
 mkdir -p "$cacheDirectory"
 git-pullrequest-count > "${cacheDirectory}/pullrequests"

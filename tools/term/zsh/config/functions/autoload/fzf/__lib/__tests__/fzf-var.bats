@@ -3,7 +3,7 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   sourcePrefix="source '${BATS_TEST_DIRNAME}/../fzf-var.zsh'"
-  bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR/tmp"
+  bats_mock_env "OROSHI_FOLDER_STATE" "$BATS_TMP_DIR/tmp"
   bats_mock_env "KITTY_WINDOW_ID" "42"
 }
 

@@ -31,11 +31,11 @@ A file defining the Tab Bar's appearance or behaviour (icons/colors/projects JSO
 _Avoid_: config file, state file
 
 **Redraw Beacon**:
-A file whose presence on disk signals that a Redraw is needed; written by `kitty-redraw`, detected by the Tab Bar Python at the next render cycle, then immediately deleted. Lives at `$OROSHI_TMP_FOLDER/kitty/beacons/redraw`.
+A file whose presence on disk signals that a Redraw is needed; written by `kitty-redraw`, detected by the Tab Bar Python at the next render cycle, then immediately deleted. Lives at `$OROSHI_FOLDER_CACHE/kitty/beacons/redraw`.
 _Avoid_: beacon, refresh file, trigger file, flag file
 
 **Reload Beacon**:
-A file whose presence on disk signals that a Reload is needed; written by `kitty-reload`, detected by the Tab Bar Python at the next render cycle, then immediately deleted. Lives at `$OROSHI_TMP_FOLDER/kitty/beacons/reload`.
+A file whose presence on disk signals that a Reload is needed; written by `kitty-reload`, detected by the Tab Bar Python at the next render cycle, then immediately deleted. Lives at `$OROSHI_FOLDER_CACHE/kitty/beacons/reload`.
 _Avoid_: beacon, refresh file, trigger file, flag file
 
 **Tab ID**:
@@ -63,7 +63,7 @@ _Avoid_: fullscreen icon, fullscreen badge, stack indicator
 _Avoid_: activity marker, mode marker, skill marker
 
 **Notification Tab List**:
-A plain-text State File listing the Tab IDs that currently carry a Notification Marker, one `tabId` per line; read by the Tab Bar Python once per render cycle (at the start of each Redraw). Lives at `$OROSHI_TMP_FOLDER/kitty/notification`.
+A plain-text State File listing the Tab IDs that currently carry a Notification Marker, one `tabId` per line; read by the Tab Bar Python once per render cycle (at the start of each Redraw). Lives at `$OROSHI_FOLDER_CACHE/kitty/notification`.
 _Avoid_: attention file, attention list, notification file
 
 ## Relationships

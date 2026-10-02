@@ -6,7 +6,7 @@ setup() {
 
   PROJECT_DIR="$BATS_TMP_DIR/project"
   CLONE_BASE="$BATS_TMP_DIR/tmp/deprecate"
-  bats_mock_env OROSHI_TMP_FOLDER "$BATS_TMP_DIR/tmp"
+  bats_mock_env OROSHI_FOLDER_STATE "$BATS_TMP_DIR/tmp"
 
   # Default mocks: project in projects.jsonc, on disk, pixelastic owner, no npm
   project-exists() { return 0; }

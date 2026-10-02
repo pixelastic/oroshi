@@ -6,7 +6,7 @@ setopt local_options err_return
 # Not in a Kitty window, nothing can be queued
 [[ "$KITTY_WINDOW_ID" == "" ]] && return 1
 
-local queueFile="${OROSHI_TMP_FOLDER}/zsh-queue/${KITTY_WINDOW_ID}"
+local queueFile="${OROSHI_FOLDER_STATE}/zsh-queue/${KITTY_WINDOW_ID}"
 
 # Nothing queued
 [[ ! -f "$queueFile" ]] && return 1

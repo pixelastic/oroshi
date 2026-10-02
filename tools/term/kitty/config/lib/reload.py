@@ -2,7 +2,7 @@ import importlib
 import sys
 from lib import files
 
-RELOAD_BEACON = "/home/tim/local/tmp/oroshi/kitty/beacons/reload"
+RELOAD_BEACON = "/tmp/oroshi/kitty/beacons/reload"
 MODULE_REL_PATH = "tools/term/kitty/config/lib"
 
 

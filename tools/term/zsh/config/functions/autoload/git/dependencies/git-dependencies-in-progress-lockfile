@@ -20,7 +20,7 @@ local language="$1"
 local slug="$(context-slug "$repoPath")"
 
 # Ensure parent directory exists
-local parentDir="${OROSHI_TMP_FOLDER}/git-dependencies-update"
+local parentDir="${OROSHI_FOLDER_STATE}/git-dependencies-update"
 mkdir -p "$parentDir"
 
 local result="${parentDir}/${slug}--${language}.lock"

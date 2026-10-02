@@ -9,7 +9,7 @@ local modeName=$1
 shift
 local values=("$@")
 
-local storeDirectory=$OROSHI_TMP_FOLDER/modes
+local storeDirectory=$OROSHI_FOLDER_STATE/modes
 local storeFile="${storeDirectory}/${modeName}"
 mkdir -p $storeDirectory
 

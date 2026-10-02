@@ -4,7 +4,7 @@ setup() {
   bats_tmp_dir
   bats_disable_worktree_aware
   sourcePrefix="source '${BATS_TEST_DIRNAME}/../fzf-fs-preview.zsh'"
-  bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR/tmp"
+  bats_mock_env "OROSHI_FOLDER_STATE" "$BATS_TMP_DIR/tmp"
 
   filetypes-load-definitions() {
     typeset -gA FILETYPES

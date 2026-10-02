@@ -15,7 +15,7 @@ function oroshi-prompt-populate:git_issues_github() {
   fi
 
   local projectName="$(git-github-project)"
-  local cacheFolderPath="${OROSHI_TMP_FOLDER}/github/${projectName}"
+  local cacheFolderPath="${OROSHI_FOLDER_STATE}/github/${projectName}"
   mkdir -p $cacheFolderPath
 
   local issuesCacheFile="${cacheFolderPath}/issues"

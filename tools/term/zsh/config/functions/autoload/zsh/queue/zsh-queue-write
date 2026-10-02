@@ -15,6 +15,6 @@ fi
 # Not in a Kitty window, no prompt to run it in
 [[ "$KITTY_WINDOW_ID" == "" ]] && return 0
 
-local queueFile="${OROSHI_TMP_FOLDER}/zsh-queue/${KITTY_WINDOW_ID}"
+local queueFile="${OROSHI_FOLDER_STATE}/zsh-queue/${KITTY_WINDOW_ID}"
 mkdir -p "${queueFile:h}"
 print -r -- "$queuedCommand" >"$queueFile"

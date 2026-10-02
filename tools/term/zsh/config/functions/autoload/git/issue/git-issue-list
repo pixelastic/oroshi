@@ -10,6 +10,6 @@ gh issue list
 
 # Update shared cache of issue count
 local projectName="$(git-github-project)"
-local cacheDirectory="${OROSHI_TMP_FOLDER}/github/${projectName}"
+local cacheDirectory="${OROSHI_FOLDER_STATE}/github/${projectName}"
 mkdir -p "$cacheDirectory"
 git-issue-count > "${cacheDirectory}/issues"

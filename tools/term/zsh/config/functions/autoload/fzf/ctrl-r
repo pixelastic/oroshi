@@ -17,7 +17,7 @@ zparseopts -D -E \
 local isRegenerateCache=${#flagRegenerateCache}
 
 LAZY_THRESHOLD=100
-CTRLR_DIR="$OROSHI_TMP_FOLDER/fzf/ctrl-r"
+CTRLR_DIR="$OROSHI_FOLDER_STATE/fzf/ctrl-r"
 mkdir -p "$CTRLR_DIR"
 
 # Compare number of lines in the ~/.history VS number of lines last time we

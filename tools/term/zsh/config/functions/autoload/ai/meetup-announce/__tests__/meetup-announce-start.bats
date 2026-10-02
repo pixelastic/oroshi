@@ -10,7 +10,7 @@ setup() {
   echo '{"meetupId":"recABC123","meetupName":"Paris Meetup","messages":{}}' > "$DRAFT_DIR/state.json"
 
   # Export vars needed by mock functions in the zsh subprocess
-  bats_mock_env OROSHI_TMP_FOLDER "$BATS_TMP_DIR"
+  bats_mock_env OROSHI_FOLDER_STATE "$BATS_TMP_DIR"
   bats_mock_env DRAFT_DIR "$DRAFT_DIR"
 
   # Mock all __lib/ collaborators

@@ -13,7 +13,7 @@ local isInPlace=${#flagInPlace}
 local overridePath=${flagFilepath[2]}
 
 # Work file and temp file
-local workfileDir="${OROSHI_TMP_FOLDER}/python-fix"
+local workfileDir="${OROSHI_FOLDER_STATE}/python-fix"
 local workfilePath="${workfileDir}/python-fix-$RANDOM.py"
 local tmpPath="${workfilePath}.tmp"
 mkdir -p "$workfileDir"

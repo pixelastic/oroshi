@@ -33,7 +33,7 @@ else
   local baseModuleName="$fullModuleName"
 fi
 local nodeVersion="$(node --version)"
-local installDirectory="${OROSHI_TMP_FOLDER}/node/${nodeVersion}"
+local installDirectory="${OROSHI_FOLDER_STATE}/node/${nodeVersion}"
 local nvmDirectory="${HOME}/.nvm/versions/node/${nodeVersion}"
 
 mkdir -p $installDirectory

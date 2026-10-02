@@ -50,6 +50,18 @@ mock_command() {
   [[ "${lines[1]}" = "fpath:$BATS_TMP_DIR" ]]
 }
 
+@test "OROSHI_FOLDER_STATE resolves to the persistent path" {
+  run_bare_zsh "$sourcePrefix; echo \$OROSHI_FOLDER_STATE"
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[-1]}" = "$HOME/local/tmp/oroshi" ]]
+}
+
+@test "OROSHI_FOLDER_CACHE resolves to the discardable path" {
+  run_bare_zsh "$sourcePrefix; echo \$OROSHI_FOLDER_CACHE"
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[-1]}" = "/tmp/oroshi" ]]
+}
+
 @test "allow overriding anything through MOCK_OVERRIDE" {
   mock_env "MOCK_OVERRIDE" "$BATS_TMP_DIR/mock-override.zsh"
   echo "function override() { echo 'overriden'; }" > "$BATS_TMP_DIR/mock-override.zsh"

@@ -2,18 +2,18 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  export OROSHI_TMP_FOLDER="$BATS_TMP_DIR/tmp"
-  mkdir -p "$OROSHI_TMP_FOLDER/git-file-watch"
+  export OROSHI_FOLDER_STATE="$BATS_TMP_DIR/tmp"
+  mkdir -p "$OROSHI_FOLDER_STATE/git-file-watch"
 
   context-slug() { echo "my-project--main"; }
   bats_mock context-slug
-  bats_mock_env OROSHI_TMP_FOLDER "$OROSHI_TMP_FOLDER"
+  bats_mock_env OROSHI_FOLDER_STATE "$OROSHI_FOLDER_STATE"
 }
 
 # ─── NORMAL CASE ─────────────────────────────────────────────────────────────
 
 @test "outputs simplified JSON with 2 entries from 2 comments" {
-  local commentsFile="$OROSHI_TMP_FOLDER/git-file-watch/my-project--main.json"
+  local commentsFile="$OROSHI_FOLDER_STATE/git-file-watch/my-project--main.json"
   cat > "$commentsFile" <<'JSON'
 [
   {"id":"abc12345","filepath":"/src/a.go","lineNumber":5,"lineContent":"hello","review":"fix this","commitHash":"deadbeef"},
@@ -27,7 +27,7 @@ JSON
 }
 
 @test "output contains id, filepath, lineNumber, lineContent, review" {
-  local commentsFile="$OROSHI_TMP_FOLDER/git-file-watch/my-project--main.json"
+  local commentsFile="$OROSHI_FOLDER_STATE/git-file-watch/my-project--main.json"
   cat > "$commentsFile" <<'JSON'
 [
   {"id":"abc12345","filepath":"/src/a.go","lineNumber":5,"lineContent":"hello","review":"fix this","commitHash":"deadbeef"}
@@ -44,7 +44,7 @@ JSON
 }
 
 @test "output does not contain commitHash" {
-  local commentsFile="$OROSHI_TMP_FOLDER/git-file-watch/my-project--main.json"
+  local commentsFile="$OROSHI_FOLDER_STATE/git-file-watch/my-project--main.json"
   cat > "$commentsFile" <<'JSON'
 [
   {"id":"abc12345","filepath":"/src/a.go","lineNumber":5,"lineContent":"hello","review":"fix this","commitHash":"deadbeef"}
@@ -65,7 +65,7 @@ JSON
 }
 
 @test "empty comments file outputs []" {
-  local commentsFile="$OROSHI_TMP_FOLDER/git-file-watch/my-project--main.json"
+  local commentsFile="$OROSHI_FOLDER_STATE/git-file-watch/my-project--main.json"
   echo -n "" > "$commentsFile"
 
   bats_run_zsh "git-file-watch-review-start"
@@ -74,7 +74,7 @@ JSON
 }
 
 @test "file containing [] outputs []" {
-  local commentsFile="$OROSHI_TMP_FOLDER/git-file-watch/my-project--main.json"
+  local commentsFile="$OROSHI_FOLDER_STATE/git-file-watch/my-project--main.json"
   echo '[]' > "$commentsFile"
 
   bats_run_zsh "git-file-watch-review-start"
