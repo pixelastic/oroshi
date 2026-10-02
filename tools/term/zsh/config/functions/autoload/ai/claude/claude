@@ -1,4 +1,4 @@
-# Wrapper around claude
+# Wrapper around claude, patching its syntax colors first when needed
 # Usage:
 # $ claude
 setopt local_options err_return
@@ -6,6 +6,14 @@ setopt local_options err_return
 # Default stop sound to auto if not already set
 if [[ "$OROSHI_CLAUDE_STOP_SOUND" == "" ]]; then
   export OROSHI_CLAUDE_STOP_SOUND="auto"
+fi
+
+# Patch the syntax colors when the binary lacks the marker
+if ! claude-is-color-patched; then
+  echo "Patching Claude Code syntax…"
+  local generateSyntax="$OROSHI_ROOT/tools/ai/claude/config/syntax/generate-syntax"
+  # A failed patch must not block the launch
+  $generateSyntax || echo "✘ Could not patch Claude Code syntax colors"
 fi
 
 # Binary may exit non-zero; continue to cleanup
