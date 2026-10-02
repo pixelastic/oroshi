@@ -1,9 +1,11 @@
 #!/usr/bin/env zsh
 # Firefox: Web browser
 
-# Note: Firefox is installed by default on Ubuntu, but extensions are not
-# I couldn't find a way to automatically install extensions from the CLI, so
-# here is a more-or-less up-to-date list:
+# Note: Ubuntu ships Firefox as a snap, but its sandbox blocks the zoommtg://
+# handoff to the native Zoom app, so prefer the native .deb.
+# Extensions are not installed by this script: I couldn't find a way to
+# automatically install extensions from the CLI, so here is a more-or-less
+# up-to-date list:
 # - uBlock Origin
 # - Vimium
 # - Open in Google Chrome Browser (https://addons.mozilla.org/en-US/firefox/addon/open-in-chrome-browser/)
