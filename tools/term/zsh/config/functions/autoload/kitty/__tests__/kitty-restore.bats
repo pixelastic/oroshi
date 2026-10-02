@@ -50,3 +50,39 @@ setup() {
 	local args="$(cat "$BATS_TMP_DIR/kitty-args")"
 	[[ "$args" == *"--listen-on"* ]]
 }
+
+@test "listens on a socket under the CACHE folder" {
+	bats_run_zsh "kitty-restore"
+
+	[[ "$status" -eq 0 ]]
+	local args="$(cat "$BATS_TMP_DIR/kitty-args")"
+	[[ "$args" == *"unix:$BATS_TMP_DIR/kitty/socket-test-uuid"* ]]
+}
+
+@test "writes active-uuid under the CACHE folder" {
+	bats_run_zsh "kitty-restore"
+
+	[[ "$status" -eq 0 ]]
+	[[ "$(cat "$BATS_TMP_DIR/kitty/active-uuid")" == "test-uuid" ]]
+}
+
+@test "removes pre-existing sockets before launch" {
+	mkdir -p "$BATS_TMP_DIR/kitty"
+	touch "$BATS_TMP_DIR/kitty/socket-old" "$BATS_TMP_DIR/kitty/socket-older"
+
+	bats_run_zsh "kitty-restore"
+
+	[[ "$status" -eq 0 ]]
+	[[ ! -e "$BATS_TMP_DIR/kitty/socket-old" ]]
+	[[ ! -e "$BATS_TMP_DIR/kitty/socket-older" ]]
+}
+
+@test "leaves non-socket files in the folder untouched" {
+	mkdir -p "$BATS_TMP_DIR/kitty"
+	touch "$BATS_TMP_DIR/kitty/active-uuid"
+
+	bats_run_zsh "kitty-restore"
+
+	[[ "$status" -eq 0 ]]
+	[[ -e "$BATS_TMP_DIR/kitty/active-uuid" ]]
+}

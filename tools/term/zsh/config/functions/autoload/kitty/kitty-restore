@@ -9,6 +9,10 @@ local kittySocketFolder=$OROSHI_FOLDER_CACHE/kitty
 mkdir -p $kittySocketFolder
 local kittySocketPath=$kittySocketFolder/socket-$uuid
 
+# Only one kitty instance runs at a time, so any pre-existing socket is stale.
+# Drop them all before the new one is created.
+rm --force $kittySocketFolder/socket-*(N)
+
 local sessionArgs=()
 local sessionFile="$OROSHI_FOLDER_STATE/kitty/session.kitty-session"
 
