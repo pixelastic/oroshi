@@ -24,7 +24,7 @@
     "deny": ["AskUserQuestion"],
     "defaultMode": "acceptEdits"
   },
-  "model": "claude-opus-4-8",
+  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
