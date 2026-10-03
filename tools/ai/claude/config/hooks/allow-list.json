@@ -42,6 +42,7 @@
   "cmp",
   "colorize",
   "colors-build",
+  "colors-load-definitions",
   "colors-reload",
   "color-distance",
   "column",
@@ -187,6 +188,10 @@
   "git-worktree-start",
   "git-worktree-submodule-pointer-differs",
   "git-worktree-submodule-preflight",
+  "gmail-attachment",
+  "gmail-inbox-raw",
+  "gmail-read",
+  "gmail-search",
   "gnome-extensions disable",
   "gnome-extensions enable",
   "gnome-extensions info",
@@ -294,10 +299,7 @@
   "meetup-announce-start",
   "midjourney-fix",
   "midjourney-prompt",
-<<<<<<< HEAD
   "midjourney-writer-end",
-=======
->>>>>>> 1c6985528 (refactor(midjourney-writer): merge midjourney-writer-end into midjourney-prompt)
   "mkdir",
   "mktemp",
   "mv",
