@@ -31,6 +31,10 @@ const INDICATORS = [
         icon: 'autosubmit-disabled.svg',
         color: 'modes-autosubmit-disabled',
       },
+      clipboard: {
+        icon: 'autosubmit-clipboard.svg',
+        color: 'modes-autosubmit-clipboard',
+      },
     },
   },
   {

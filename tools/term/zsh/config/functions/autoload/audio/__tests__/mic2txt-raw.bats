@@ -16,6 +16,7 @@ setup() {
   process-kill() { :; }
   audio-play-oroshi() { :; }
   mic2txt-autosubmit-mode-is-enabled() { return 0; }
+  mic2txt-autosubmit-mode-is-clipboard() { return 1; }
   mic2txt-cancel() { :; }
   mic2txt-paste() { :; }
   focus-insert() { :; }
@@ -25,7 +26,7 @@ setup() {
   kitty-window-id() { echo "0"; }
   kitty-window-highlight() { :; }
   kitty-window-highlight-reset() { :; }
-  bats_mock rec process-kill audio-play-oroshi mic2txt-autosubmit-mode-is-enabled mic2txt-cancel mic2txt-paste focus-insert better-ydotool sleep kitty-os-window-is-focused kitty-window-id kitty-window-highlight kitty-window-highlight-reset
+  bats_mock rec process-kill audio-play-oroshi mic2txt-autosubmit-mode-is-enabled mic2txt-autosubmit-mode-is-clipboard mic2txt-cancel mic2txt-paste focus-insert better-ydotool sleep kitty-os-window-is-focused kitty-window-id kitty-window-highlight kitty-window-highlight-reset
 }
 
 
@@ -85,6 +86,31 @@ setup() {
   bats_run_zsh "mic2txt-raw --wav2txt echo"
   [[ "$status" -eq 0 ]]
   [[ ! -f "$BATS_TMP_DIR/highlight-called" ]]
+}
+
+@test "does not highlight when kitty is focused at start in clipboard state" {
+  rm -f "$TMP_FOLDER/PID"
+  kitty-os-window-is-focused() { return 0; }
+  kitty-window-id() { echo "42"; }
+  mic2txt-autosubmit-mode-is-clipboard() { return 0; }
+  kitty-window-highlight() { echo "called" > "$BATS_TMP_DIR/highlight-called"; }
+  bats_mock kitty-os-window-is-focused kitty-window-id mic2txt-autosubmit-mode-is-clipboard kitty-window-highlight
+
+  bats_run_zsh "mic2txt-raw --wav2txt echo"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/highlight-called" ]]
+}
+
+@test "does not create TARGET_WINDOW_ID when kitty is focused at start in clipboard state" {
+  rm -f "$TMP_FOLDER/PID"
+  kitty-os-window-is-focused() { return 0; }
+  kitty-window-id() { echo "42"; }
+  mic2txt-autosubmit-mode-is-clipboard() { return 0; }
+  bats_mock kitty-os-window-is-focused kitty-window-id mic2txt-autosubmit-mode-is-clipboard
+
+  bats_run_zsh "mic2txt-raw --wav2txt echo"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$TMP_FOLDER/TARGET_WINDOW_ID" ]]
 }
 
 # --- Stopping with elapsed < 2 seconds ---

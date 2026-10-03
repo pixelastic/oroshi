@@ -12,15 +12,6 @@ setup() {
   [[ "$(cat "$STORE_FILE")" == "enabled" ]]
 }
 
-@test "writes disabled when file contains enabled" {
-  mkdir -p "$BATS_TMP_DIR/modes"
-  echo "enabled" > "$STORE_FILE"
-
-  bats_run_zsh "mic2txt-autosubmit-mode-toggle"
-  [[ "$status" -eq 0 ]]
-  [[ "$(cat "$STORE_FILE")" == "disabled" ]]
-}
-
 @test "writes enabled when file contains disabled" {
   mkdir -p "$BATS_TMP_DIR/modes"
   echo "disabled" > "$STORE_FILE"
@@ -28,4 +19,22 @@ setup() {
   bats_run_zsh "mic2txt-autosubmit-mode-toggle"
   [[ "$status" -eq 0 ]]
   [[ "$(cat "$STORE_FILE")" == "enabled" ]]
+}
+
+@test "writes clipboard when file contains enabled" {
+  mkdir -p "$BATS_TMP_DIR/modes"
+  echo "enabled" > "$STORE_FILE"
+
+  bats_run_zsh "mic2txt-autosubmit-mode-toggle"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$STORE_FILE")" == "clipboard" ]]
+}
+
+@test "writes disabled when file contains clipboard" {
+  mkdir -p "$BATS_TMP_DIR/modes"
+  echo "clipboard" > "$STORE_FILE"
+
+  bats_run_zsh "mic2txt-autosubmit-mode-toggle"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$STORE_FILE")" == "disabled" ]]
 }

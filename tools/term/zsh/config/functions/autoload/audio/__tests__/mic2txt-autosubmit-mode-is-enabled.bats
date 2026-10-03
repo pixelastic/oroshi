@@ -26,3 +26,11 @@ setup() {
   bats_run_zsh "mic2txt-autosubmit-mode-is-enabled"
   [[ "$status" -ne 0 ]]
 }
+
+@test "returns 1 when modes/mic2txt-autosubmit contains clipboard" {
+  mkdir -p "$BATS_TMP_DIR/modes"
+  echo "clipboard" > "$STORE_FILE"
+
+  bats_run_zsh "mic2txt-autosubmit-mode-is-enabled"
+  [[ "$status" -ne 0 ]]
+}

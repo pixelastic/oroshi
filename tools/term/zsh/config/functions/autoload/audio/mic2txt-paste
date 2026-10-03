@@ -12,6 +12,13 @@ local targetFile=${tmpFolder}/TARGET_WINDOW_ID
 
 local content="$(<"$transcriptionFile")"
 
+# Clipboard mode: keep the text in the clipboard, paste nothing
+if mic2txt-autosubmit-mode-is-clipboard; then
+  clipboard-write "$content"
+  [[ -f $targetFile ]] && kitty-window-highlight-reset "$(<"$targetFile")"
+  return 0
+fi
+
 # Kitty target was captured at recording start
 if [[ -f $targetFile ]]; then
   local windowId="$(<"$targetFile")"

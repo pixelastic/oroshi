@@ -1,5 +1,5 @@
 # Check if autosubmit mode is enabled
-# Returns 0 if enabled, 1 if disabled
+# Returns 0 if enabled, 1 otherwise (disabled or clipboard)
 setopt local_options err_return
 
 mode-is-enabled mic2txt-autosubmit

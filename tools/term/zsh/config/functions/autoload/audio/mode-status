@@ -15,10 +15,11 @@ local -a booleanModes=(sound mic2txt-autosubmit)
 for modeName in $modeNames; do
   local value="$(mode-read $modeName $modeDefaults[$modeName])"
 
-  # Boolean modes get color-coded
+  # Toggle modes get color-coded
   if (( $booleanModes[(Ie)$modeName] )); then
     local color="error"
     [[ "$value" == "enabled" ]] && color="success"
+    [[ "$value" == "clipboard" ]] && color="modes-autosubmit-clipboard"
     colorize --reply "$value" "$color"
     output+="${modeName}▮${REPLY}\n"
   else

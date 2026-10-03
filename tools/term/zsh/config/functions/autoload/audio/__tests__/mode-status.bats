@@ -65,3 +65,26 @@ setup() {
   [[ $line1 -lt $line2 ]]
   [[ $line2 -lt $line3 ]]
 }
+
+@test "displays clipboard as the autosubmit value" {
+  echo "clipboard" > "$BATS_TMP_DIR/modes/mic2txt-autosubmit"
+
+  bats_run_zsh "mode-status"
+  [[ "$status" -eq 0 ]]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"mic2txt-autosubmit"*"clipboard"* ]]
+}
+
+@test "colors clipboard differently from disabled" {
+  echo "clipboard" > "$BATS_TMP_DIR/modes/mic2txt-autosubmit"
+  bats_run_zsh "mode-status | grep mic2txt-autosubmit"
+  local clipboardLine="$output"
+
+  echo "disabled" > "$BATS_TMP_DIR/modes/mic2txt-autosubmit"
+  bats_run_zsh "mode-status | grep mic2txt-autosubmit"
+  local disabledLine="$output"
+
+  local clipboardColor="${clipboardLine%%clipboard*}"
+  local disabledColor="${disabledLine%%disabled*}"
+  [[ "$clipboardColor" != "$disabledColor" ]]
+}

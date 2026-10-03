@@ -41,6 +41,11 @@ function startRecording() {
     return 0
   fi
 
+  # Clipboard mode pastes nothing, so no window is targeted or highlighted
+  if mic2txt-autosubmit-mode-is-clipboard; then
+    return 0
+  fi
+
   # In a kitty window, we save where the focus is right now, so we can paste it
   # there at the end
   local windowId="$(kitty-window-id)"

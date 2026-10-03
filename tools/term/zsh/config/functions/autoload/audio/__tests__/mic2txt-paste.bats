@@ -14,10 +14,11 @@ setup() {
   kitty-window-paste() { echo "$@" > "$BATS_TMP_DIR/kitty-paste-args.txt"; }
   kitty-window-send-text() { printf '%s' "$*" > "$BATS_TMP_DIR/kitty-send-args.txt"; }
   mic2txt-autosubmit-mode-is-enabled() { return 1; }
+  mic2txt-autosubmit-mode-is-clipboard() { return 1; }
   better-ydotool() { echo "$@" > "$BATS_TMP_DIR/ydotool-args.txt"; }
   kitty-window-highlight-reset() { echo "$1" > "$BATS_TMP_DIR/highlight-reset-id.txt"; }
   sleep() { :; }
-  bats_mock focus-insert clipboard-read clipboard-write kitty-window-paste kitty-window-send-text kitty-window-highlight-reset mic2txt-autosubmit-mode-is-enabled better-ydotool sleep
+  bats_mock focus-insert clipboard-read clipboard-write kitty-window-paste kitty-window-send-text kitty-window-highlight-reset mic2txt-autosubmit-mode-is-enabled mic2txt-autosubmit-mode-is-clipboard better-ydotool sleep
 }
 
 
@@ -150,4 +151,76 @@ setup() {
   bats_run_zsh "mic2txt-paste"
   [[ "$status" -eq 0 ]]
   [[ "$(tail -1 "$BATS_TMP_DIR/clipboard-log.txt")" == "old clipboard" ]]
+}
+
+# --- Clipboard state ---
+
+@test "writes transcription to clipboard in clipboard state" {
+  echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
+  mic2txt-autosubmit-mode-is-clipboard() { return 0; }
+  clipboard-write() { echo "$1" >> "$BATS_TMP_DIR/clipboard-log.txt"; }
+  bats_mock mic2txt-autosubmit-mode-is-clipboard clipboard-write
+
+  bats_run_zsh "mic2txt-paste"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/clipboard-log.txt")" == "hello world" ]]
+}
+
+@test "does not paste into kitty target in clipboard state" {
+  echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
+  mic2txt-autosubmit-mode-is-clipboard() { return 0; }
+  bats_mock mic2txt-autosubmit-mode-is-clipboard
+
+  bats_run_zsh "mic2txt-paste"
+  [[ ! -f "$BATS_TMP_DIR/kitty-paste-args.txt" ]]
+}
+
+@test "does not call focus-insert in clipboard state without kitty target" {
+  rm -f "$TMP_FOLDER/TARGET_WINDOW_ID"
+  mic2txt-autosubmit-mode-is-clipboard() { return 0; }
+  bats_mock mic2txt-autosubmit-mode-is-clipboard
+
+  bats_run_zsh "mic2txt-paste"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/inserted.txt" ]]
+  [[ "$(cat "$BATS_TMP_DIR/clipboard.txt")" == "hello world" ]]
+}
+
+@test "does not send Enter in clipboard state" {
+  echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
+  mic2txt-autosubmit-mode-is-clipboard() { return 0; }
+  mic2txt-autosubmit-mode-is-enabled() { return 0; }
+  bats_mock mic2txt-autosubmit-mode-is-clipboard mic2txt-autosubmit-mode-is-enabled
+
+  bats_run_zsh "mic2txt-paste"
+  [[ ! -f "$BATS_TMP_DIR/kitty-send-args.txt" ]]
+  [[ ! -f "$BATS_TMP_DIR/ydotool-args.txt" ]]
+}
+
+@test "does not restore previous clipboard in clipboard state" {
+  echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
+  mic2txt-autosubmit-mode-is-clipboard() { return 0; }
+  clipboard-write() { echo "$1" >> "$BATS_TMP_DIR/clipboard-log.txt"; }
+  bats_mock mic2txt-autosubmit-mode-is-clipboard clipboard-write
+
+  bats_run_zsh "mic2txt-paste"
+  [[ "$(tail -1 "$BATS_TMP_DIR/clipboard-log.txt")" == "hello world" ]]
+}
+
+@test "resets kitty highlight in clipboard state when target exists" {
+  echo "42" > "$TMP_FOLDER/TARGET_WINDOW_ID"
+  mic2txt-autosubmit-mode-is-clipboard() { return 0; }
+  bats_mock mic2txt-autosubmit-mode-is-clipboard
+
+  bats_run_zsh "mic2txt-paste"
+  [[ "$(cat "$BATS_TMP_DIR/highlight-reset-id.txt")" == "42" ]]
+}
+
+@test "does not reset kitty highlight in clipboard state without target" {
+  rm -f "$TMP_FOLDER/TARGET_WINDOW_ID"
+  mic2txt-autosubmit-mode-is-clipboard() { return 0; }
+  bats_mock mic2txt-autosubmit-mode-is-clipboard
+
+  bats_run_zsh "mic2txt-paste"
+  [[ ! -f "$BATS_TMP_DIR/highlight-reset-id.txt" ]]
 }

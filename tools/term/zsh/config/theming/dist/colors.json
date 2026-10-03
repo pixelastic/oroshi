@@ -847,6 +847,10 @@
     "ansi": 102,
     "hex": "#fdba74"
   },
+  "modes-autosubmit-clipboard": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
   "modes-autosubmit-disabled": {
     "ansi": 205,
     "hex": "#6b7280"
