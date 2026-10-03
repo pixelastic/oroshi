@@ -20,7 +20,10 @@ for input in "$@"; do
 
   # -nostdin: do not swallow the loop's stdin
   # -y: overwrite an existing mp3 without prompting
+  # -hide_banner, -loglevel error: print nothing unless conversion fails
   ffmpeg \
+    -hide_banner \
+    -loglevel error \
     -nostdin \
     -y \
     -i "$input" \
