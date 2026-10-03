@@ -56,6 +56,40 @@ _mock_curl_empty() {
 BASH
 }
 
+# Mock curl to return a thinking block followed by a text block
+_mock_curl_thinking_then_text() {
+  cat <<'BASH'
+  curl() {
+    local outputFile="" bodyFile=""
+    local -a allArgs=("$@")
+    for ((i=1; i<=${#allArgs[@]}; i++)); do
+      [[ "${allArgs[$i]}" == "--output" ]] && outputFile="${allArgs[$((i+1))]}"
+      [[ "${allArgs[$i]}" == "--data-binary" ]] && bodyFile="${allArgs[$((i+1))]#@}"
+    done
+    { echo "$@"; cat "$bodyFile"; } > "$BATS_TMP_DIR/curl.log"
+    printf '{"content":[{"type":"thinking","thinking":"Let me think"},{"type":"text","text":"Hello after thinking"}]}' > "$outputFile"
+    printf '200'
+  }
+BASH
+}
+
+# Mock curl to return a thinking block only, with no text block
+_mock_curl_thinking_only() {
+  cat <<'BASH'
+  curl() {
+    local outputFile="" bodyFile=""
+    local -a allArgs=("$@")
+    for ((i=1; i<=${#allArgs[@]}; i++)); do
+      [[ "${allArgs[$i]}" == "--output" ]] && outputFile="${allArgs[$((i+1))]}"
+      [[ "${allArgs[$i]}" == "--data-binary" ]] && bodyFile="${allArgs[$((i+1))]#@}"
+    done
+    { echo "$@"; cat "$bodyFile"; } > "$BATS_TMP_DIR/curl.log"
+    printf '{"content":[{"type":"thinking","thinking":"Let me think"}]}' > "$outputFile"
+    printf '200'
+  }
+BASH
+}
+
 @test "outputs response text to stdout" {
   eval "$(_mock_curl)"
   bats_mock curl
@@ -63,6 +97,39 @@ BASH
   bats_run_zsh "claude-api 'What is 2+2?'"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "Hello from Claude" ]]
+}
+
+@test "prints the text block when the response starts with a thinking block" {
+  eval "$(_mock_curl_thinking_then_text)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api 'hello'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "Hello after thinking" ]]
+}
+
+@test "returns exit code 1 when the response has no text block" {
+  eval "$(_mock_curl_thinking_only)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api 'hello'"
+  [[ "$status" -eq 1 ]]
+}
+
+@test "prints a 'No text block' error on stderr when the response has no text block" {
+  eval "$(_mock_curl_thinking_only)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api 'hello'"
+  [[ "$output" == *"No text block in Anthropic API response"* ]]
+}
+
+@test "does not print null when the response has no text block" {
+  eval "$(_mock_curl_thinking_only)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api 'hello'"
+  [[ "$output" != *"null"* ]]
 }
 
 @test "sends prompt as user message content" {

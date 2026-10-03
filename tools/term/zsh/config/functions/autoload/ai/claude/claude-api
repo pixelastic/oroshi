@@ -77,4 +77,11 @@ if [[ "$response" == "" ]]; then
   return 1
 fi
 
-printf '%s\n' "$response" | jq -r '.content[0].text'
+# Print the first text block (skip "thinking" blocks).
+if ! printf '%s\n' "$response" | jq \
+  --exit-status \
+  --raw-output \
+  'first(.content[] | select(.type == "text") | .text)'; then
+  echoerr "No text block in Anthropic API response"
+  return 1
+fi
