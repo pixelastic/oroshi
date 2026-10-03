@@ -1,0 +1,6 @@
+# Turn a transcription into a Midjourney prompt
+# Usage:
+# $ echo "un chat roux sur un toit" | mic2txt-postprocess-midjourney
+setopt local_options err_return
+
+midjourney-prompt

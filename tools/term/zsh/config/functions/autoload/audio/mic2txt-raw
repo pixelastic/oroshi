@@ -14,17 +14,21 @@ local wav2TxtName=${flagWav2Txt[2]}
 
 # Default values {{{
 local functionDir="${functions_source[$0]:A:h}"
-local wav2TxtBinary="${functionDir}/__lib/${wav2TxtName}"
+local wav2TxtBinary="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/audio/__lib/${wav2TxtName}"
 local tmpFolder=${MOCK_MIC2TXT_TMP_FOLDER:-/dev/shm/oroshi/mic2txt}
 local pidFile=${tmpFolder}/PID
 local startTimeFile=${tmpFolder}/START_TIME
 local recordFile=${tmpFolder}/record.wav
 mkdir -p $tmpFolder
+local postprocess="$(mic2txt-postprocess-mode)"
 colors-load-definitions
 # }}}
 
 # Start a recording
 function startRecording() {
+  # Postprocess modes have their own start sound
+  [[ "$postprocess" != "none" ]] && audio-play-oroshi "mic2txt-${postprocess}-start.mp3"
+
   rec \
     --rate 16000 \
     --channels 1 \
@@ -53,6 +57,17 @@ function startRecording() {
   kitty-window-highlight \
     --window "$windowId" \
     "$COLORS[kitty-mic2txt-recording:hex]"
+}
+
+# Replace the saved transcription with its postprocessed version
+# Fails when the postprocess returns nothing
+function applyPostprocess() {
+  audio-play-oroshi "mic2txt-${postprocess}-transcribed.mp3"
+
+  local processed="$("mic2txt-postprocess-${postprocess}" <<<"$1")"
+  [[ "$processed" == "" ]] && return 1
+
+  echo "$processed" > "${tmpFolder}/transcription.txt"
 }
 
 # Stop the current recording
@@ -84,7 +99,9 @@ function stopRecording() {
   fi
 
   # We transcribe to text
-  audio-play-oroshi mic2txt-before.mp3
+  local sentSound="mic2txt-before.mp3"
+  [[ "$postprocess" != "none" ]] && sentSound="mic2txt-${postprocess}-sent.mp3"
+  audio-play-oroshi "$sentSound"
   local transcription="$(${wav2TxtBinary} $recordFile)"
 
   # Apply autocorrect rules (case-insensitive, whole-word substitution)
@@ -104,11 +121,23 @@ function stopRecording() {
     done
   fi
 
-  # Play a sound to indicate it's being pasted
-  audio-play-oroshi mic2txt.mp3
-
-  # Save transcription and paste it
+  # Save the raw transcription so it stays if the postprocess fails
   echo "$transcription" > "${tmpFolder}/transcription.txt"
+
+  local endSound="mic2txt.mp3"
+  [[ "$postprocess" != "none" ]] && endSound="mic2txt-${postprocess}-end.mp3"
+
+  # Postprocess failed: keep the raw transcription, paste nothing
+  if [[ "$postprocess" != "none" ]] && ! applyPostprocess "$transcription"; then
+    audio-play-oroshi mic2txt-cancel.mp3
+    [[ "$targetWindowId" != "" ]] && kitty-window-highlight-reset "$targetWindowId"
+    rm --force "$targetFile"
+    return 0
+  fi
+
+  # Play a sound to indicate it's being pasted
+  audio-play-oroshi "$endSound"
+
   mic2txt-paste
 
   # Clean up target window file

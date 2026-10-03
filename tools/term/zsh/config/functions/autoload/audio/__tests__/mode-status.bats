@@ -21,6 +21,7 @@ setup() {
   [[ "$stripped" == *"sound"*"disabled"* ]]
   [[ "$stripped" == *"mic2txt-autosubmit"*"disabled"* ]]
   [[ "$stripped" == *"mic2txt-model"*"openai"* ]]
+  [[ "$stripped" == *"mic2txt-postprocess"*"none"* ]]
 }
 
 @test "reflects enabled boolean mode" {
@@ -61,9 +62,11 @@ setup() {
   local line1="$(echo "$stripped" | grep -n "sound" | head -1 | cut -d: -f1)"
   local line2="$(echo "$stripped" | grep -n "mic2txt-autosubmit" | head -1 | cut -d: -f1)"
   local line3="$(echo "$stripped" | grep -n "mic2txt-model" | head -1 | cut -d: -f1)"
+  local line4="$(echo "$stripped" | grep -n "mic2txt-postprocess" | head -1 | cut -d: -f1)"
 
   [[ $line1 -lt $line2 ]]
   [[ $line2 -lt $line3 ]]
+  [[ $line3 -lt $line4 ]]
 }
 
 @test "displays clipboard as the autosubmit value" {
@@ -87,4 +90,12 @@ setup() {
   local clipboardColor="${clipboardLine%%clipboard*}"
   local disabledColor="${disabledLine%%disabled*}"
   [[ "$clipboardColor" != "$disabledColor" ]]
+}
+
+@test "reflects custom postprocess value" {
+  echo "midjourney" > "$BATS_TMP_DIR/modes/mic2txt-postprocess"
+
+  bats_run_zsh "mode-status"
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"mic2txt-postprocess"*"midjourney"* ]]
 }

@@ -1,0 +1,4 @@
+# Display the current postprocess applied to mic2txt transcriptions
+setopt local_options err_return
+
+mode-read mic2txt-postprocess none

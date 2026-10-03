@@ -1,0 +1,4 @@
+# Toggle the postprocess applied to mic2txt transcriptions
+setopt local_options err_return
+
+mode-toggle mic2txt-postprocess none midjourney
