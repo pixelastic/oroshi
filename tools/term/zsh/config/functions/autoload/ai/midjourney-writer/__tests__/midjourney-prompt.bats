@@ -52,16 +52,16 @@ setup() {
   [[ "$log" == *"Output only the prompt"* ]]
 }
 
-@test "forwards --model to claude-api" {
-  bats_run_zsh "midjourney-prompt --model opus 'un chat roux'"
-  [[ "$status" -eq 0 ]]
-  [[ "$(grep --after-context=1 --line-regexp -- '--model' "$BATS_TMP_DIR/claude-api.log" | tail -1)" == "opus" ]]
-}
-
-@test "uses haiku when no --model is given" {
+@test "always uses haiku" {
   bats_run_zsh "midjourney-prompt 'un chat roux'"
   [[ "$status" -eq 0 ]]
-  [[ "$(grep --after-context=1 --line-regexp -- '--model' "$BATS_TMP_DIR/claude-api.log" | tail -1)" == "haiku" ]]
+  [[ "$(grep --after-context=1 --line-regexp -- '--model' "$BATS_TMP_DIR/claude-api.log" | sed -n 2p)" == "haiku" ]]
+}
+
+@test "does not let --model change the model" {
+  bats_run_zsh "midjourney-prompt --model opus 'un chat roux'"
+  [[ "$status" -eq 0 ]]
+  [[ "$(grep --after-context=1 --line-regexp -- '--model' "$BATS_TMP_DIR/claude-api.log" | sed -n 2p)" == "haiku" ]]
 }
 
 @test "returns 1 when claude-api fails" {

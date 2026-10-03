@@ -2,15 +2,12 @@
 # Usage:
 # $ midjourney-prompt "un chat roux sur un toit"         # Description as argument
 # $ echo "un chat roux sur un toit" | midjourney-prompt  # Description from stdin
-# $ midjourney-prompt --model sonnet "un chat roux"      # Choose the claude-api model
 setopt local_options err_return
 
 local REFERENCES_FOLDER="$OROSHI_ROOT/tools/ai/claude/config/skills/midjourney-writer/references"
 
-zparseopts -E -D \
-  -model:=flagModel
-
-local model=${flagModel[2]:-haiku}
+# Haiku gives good enough results and is slightly faster
+local model=haiku
 local description="$1"
 
 # Read from stdin when no positional argument and stdin is piped
