@@ -1,0 +1,22 @@
+# Read one mail as Markdown: headers, then body
+# Usage:
+# $ gmail-read <id>          # pro account
+# $ gmail-read --perso <id>  # perso account
+setopt local_options err_return
+
+zparseopts -E -D \
+  -perso=flagPerso
+
+local isPerso=${#flagPerso}
+local account="pro"
+[[ $isPerso == 1 ]] && account="perso"
+
+local id=$1
+# An id is required
+if [[ "$id" == "" ]]; then
+  echoerr "Usage: gmail-read [--perso] <id>"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/gmail-read.js" "$account" "$id"
