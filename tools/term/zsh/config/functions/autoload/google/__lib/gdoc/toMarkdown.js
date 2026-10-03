@@ -2,7 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { _, pMap } from 'golgoth';
-import { gdocRead } from './gdocRead.js';
+import { gdocRead } from './read.js';
 
 export let __;
 

@@ -1,4 +1,4 @@
-import { gmailFormatMarkdown } from '../gmailFormatMarkdown.js';
+import { gmailFormatMarkdown } from '../formatMarkdown.js';
 
 describe('gmailFormatMarkdown', () => {
   const message = {

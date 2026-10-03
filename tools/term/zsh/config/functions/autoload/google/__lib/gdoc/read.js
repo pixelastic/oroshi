@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import { _ } from 'golgoth';
 import { google } from 'googleapis';
-import { googleAuth } from './googleAuth.js';
+import { googleAuth } from '../google/auth.js';
 
 export let __;
 

@@ -1,4 +1,4 @@
-import { __, gmailMessages } from '../gmailMessages.js';
+import { __, gmailMessages } from '../messages.js';
 
 describe('gmailMessages', () => {
   describe('list', () => {

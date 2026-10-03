@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url';
-import { gmailFormatMarkdown } from './gmailFormatMarkdown.js';
-import { gmailMessages } from './gmailMessages.js';
-import { googleAuth } from './googleAuth.js';
+import { googleAuth } from '../google/auth.js';
+import { gmailFormatMarkdown } from './formatMarkdown.js';
+import { gmailMessages } from './messages.js';
 
 /**
  * Read one mail as Markdown

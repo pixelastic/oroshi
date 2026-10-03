@@ -4,4 +4,4 @@
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h}/__lib"
-node "${libDir}/gdoc-comments-json.js" "$@"
+node "${libDir}/gdoc/commentsJson.js" "$@"

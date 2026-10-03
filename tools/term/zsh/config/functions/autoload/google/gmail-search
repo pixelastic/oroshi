@@ -1,0 +1,25 @@
+# Search mails with a native Gmail query, output JSON: id, from, subject, date, snippet
+# Usage:
+# $ gmail-search 'in:inbox newer_than:3m'  # pro account, whole account by default
+# $ gmail-search --perso 'from:bob'        # perso account
+# $ gmail-search --limit 5 'is:unread'     # custom limit (default: 50)
+setopt local_options err_return
+
+zparseopts -E -D \
+  -perso=flagPerso \
+  -limit:=flagLimit
+
+local isPerso=${#flagPerso}
+local account="pro"
+[[ $isPerso == 1 ]] && account="perso"
+local limit=${flagLimit[2]}
+
+local query=$1
+# A query is required
+if [[ "$query" == "" ]]; then
+  echoerr "Usage: gmail-search [--perso] [--limit N] <query>"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/gmail/search.js" "$account" "$query" "$limit"

@@ -1,5 +1,5 @@
 import stringWidth from 'string-width';
-import { __, gmailFormat } from '../gmailFormat.js';
+import { __, gmailFormat } from '../format.js';
 
 describe('gmailFormat', () => {
   const message = {

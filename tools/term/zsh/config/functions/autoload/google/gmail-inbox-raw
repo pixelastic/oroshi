@@ -1,6 +1,6 @@
 # List inbox mails, one per line: id▮subject▮first line of content
 # Usage:
-# $ gmail-inbox-raw            # 20 latest, pro account
+# $ gmail-inbox-raw            # latest mails (default limit: 100), pro account
 # $ gmail-inbox-raw --perso    # perso account
 # $ gmail-inbox-raw --limit 5  # custom limit
 setopt local_options err_return
@@ -12,7 +12,7 @@ zparseopts -E -D \
 local isPerso=${#flagPerso}
 local account="pro"
 [[ $isPerso == 1 ]] && account="perso"
-local limit=${flagLimit[2]:-20}
+local limit=${flagLimit[2]}
 
 local libDir="${functions_source[$0]:A:h}/__lib"
-node "${libDir}/gmail-inbox-raw.js" "$account" "$limit"
+node "${libDir}/gmail/inboxRaw.js" "$account" "$limit"

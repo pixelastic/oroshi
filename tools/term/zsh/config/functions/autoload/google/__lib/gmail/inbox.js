@@ -1,9 +1,9 @@
 import { fileURLToPath } from 'node:url';
-import { gmailFormat } from './gmailFormat.js';
-import { gmailMessages } from './gmailMessages.js';
-import { googleAuth } from './googleAuth.js';
+import { googleAuth } from '../google/auth.js';
+import { gmailFormat } from './format.js';
+import { gmailLimits } from './limits.js';
+import { gmailMessages } from './messages.js';
 
-const DEFAULT_LIMIT = 20;
 const DEFAULT_WIDTH = 80;
 
 /**
@@ -16,7 +16,7 @@ const DEFAULT_WIDTH = 80;
  */
 export async function gmailInbox(
   account,
-  { limit = DEFAULT_LIMIT, width = DEFAULT_WIDTH } = {},
+  { limit = gmailLimits.inbox, width = DEFAULT_WIDTH } = {},
 ) {
   const auth = await googleAuth(account);
   const messages = await gmailMessages.list(auth, {
@@ -31,7 +31,7 @@ const currentFile = fileURLToPath(import.meta.url);
 if (process.argv[1] === currentFile) {
   const [account, limit, width] = process.argv.slice(2);
   const table = await gmailInbox(account, {
-    limit: Number(limit) || DEFAULT_LIMIT,
+    limit: Number(limit) || gmailLimits.inbox,
     width: Number(width) || DEFAULT_WIDTH,
   });
   process.stdout.write(`${table}\n`);
