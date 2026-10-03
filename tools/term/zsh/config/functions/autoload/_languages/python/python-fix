@@ -1,78 +1,63 @@
-# Fix a Python file
+# Fix Python files by formatting them and applying ruff autofixes
 # Usage:
-# $ python-fix ./path/to/file.py                       # Output fixed code to stdout
-# $ python-fix --in-place ./path/to/file.py            # Overwrite the file in place
-# $ echo "code" | python-fix                           # Bad code from stdin, good code to stdout
-# $ echo "code" | python-fix --filepath ./realpath.py  # Specify file location for config resolution
+# $ python-fix ./path/to/file.py                          # Fix file in place
+# $ python-fix file1.py file2.py                          # Fix multiple files in place
+# $ python-fix ./pkg/                                     # Expand directory, fix all Python files
+# $ python-fix --stdout ./path/to/file.py                 # Output fixed code to stdout
+# $ python-fix --original-path /real/path.py /tmp/file.py # Resolve config from real path
+# $ python-fix --original-path /real/path.py --stdout /tmp/file.py # Same, output to stdout
 setopt local_options err_return
 
 zparseopts -E -D \
-  -in-place=flagInPlace \
-  -filepath:=flagFilepath
-local isInPlace=${#flagInPlace}
-local overridePath=${flagFilepath[2]}
+  -stdout=flagStdout \
+  -original-path:=flagOriginalPath
+local isStdout=${#flagStdout}
+local originalPath="${flagOriginalPath[2]}"
 
-# Work file and temp file
-local workfileDir="${OROSHI_FOLDER_STATE}/python-fix"
-local workfilePath="${workfileDir}/python-fix-$RANDOM.py"
-local tmpPath="${workfilePath}.tmp"
-mkdir -p "$workfileDir"
-
-# Check for stdin
-local hasStdin=0
-[[ ! -t 0 ]] && hasStdin=1
-local inputPath=""
-
-# If a file is passed as an argument:
-# - inputPath is that file
-# - we copy it as workfilePath
-if [[ $hasStdin -eq 0 ]]; then
-  inputPath="${1:a}"
-  cp "$inputPath" "$workfilePath"
+# --stdout and --original-path only work with a single file
+if [[ ($isStdout -eq 1 || "$originalPath" != "") && ($# -ne 1 || -d "$1") ]]; then
+  echoerr "Error: --stdout and --original-path require a single file argument"
+  return 1
 fi
 
-# If input is passed as stdin:
-# - inputPath is the workfilePath
-# - we output stdin into workfilePath
-if [[ $hasStdin -eq 1 ]]; then
-  inputPath="$workfilePath"
-  cat >"$workfilePath"
+# Expand directories, resolve file list
+local expanded="$(file-expand --filter is-python "$@")"
+
+# Nothing to fix
+[[ "$expanded" == "" ]] && return 0
+local -a files=("${(@f)expanded}")
+
+# In-place mode: ruff resolves the config from each file
+# Autofixes run first, so the formatter normalizes what they leave behind
+if [[ $isStdout -eq 0 && "$originalPath" == "" ]]; then
+  # Remaining violations are reported by python-lint, not here
+  ruff check \
+    --fix \
+    --exit-zero \
+    --quiet \
+    "${files[@]}" >/dev/null || return 1
+  ruff format "${files[@]}" >/dev/null || return 1
+  return 0
 fi
 
-# Default overridePath value
-[[ $overridePath == "" ]] && overridePath="$inputPath"
-# Create the tmp file
-cp "$workfilePath" "$tmpPath"
+# Single file mode: pipe the code through ruff so the config is resolved
+# from the original path
+local file="${files[1]}"
+[[ "$originalPath" == "" ]] && originalPath="${file:a}"
+local fixed
+local formatted
+fixed="$(ruff check \
+  --fix \
+  --exit-zero \
+  --quiet \
+  --stdin-filename "$originalPath" \
+  <"$file")" || return 1
+formatted="$(printf '%s\n' "$fixed" | ruff format --stdin-filename "$originalPath")" || return 1
 
-# Notes:
-# ruff default to updating files in place, but as we need to output to stdout by
-# default, we need to operate on copies of files and output their updated
-# content.
-# Piping content to ruff works, but we need to use --stdin-filename for it to
-# resolve any relative filepaths.
-# Finally, we need to output the changes to a new file as reading and writing to
-# the same file doesn't work.
-
-# Fix linting errors
-# ruff check \
-  #   --stdin-filename "$overridePath" \
-  #   --fix \
-  #   <"$workfilePath" \
-  #   >"$tmpPath" 2>/dev/null
-# mv -f "$tmpPath" "$workfilePath"
-
-# Reformat
-ruff format \
-  --stdin-filename "$overridePath" \
-  <"$workfilePath" \
-  >"$tmpPath" 2>/dev/null
-mv -f "$tmpPath" "$workfilePath"
-
-# Update in place or output to stdout
-if [[ $isInPlace == 1 ]]; then
-  cp -f "$workfilePath" "$inputPath"
-else
-  cat "$workfilePath"
+# Stdout mode: print the fixed code, leave the file untouched
+if [[ $isStdout -eq 1 ]]; then
+  printf '%s\n' "$formatted"
+  return 0
 fi
 
-rm -f "$workfilePath"
+printf '%s\n' "$formatted" >"$file"
