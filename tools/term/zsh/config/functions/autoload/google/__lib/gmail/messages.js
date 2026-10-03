@@ -34,31 +34,37 @@ export const gmailMessages = {
       ...__.normalize(message),
       to: header(message, 'To'),
       body: extractBody(message.payload),
-      attachments: extractAttachments(message.payload),
+      attachments: _.map(extractAttachments(message.payload), (item) =>
+        _.omit(item, 'attachmentId'),
+      ),
     };
   },
 
   /**
-   * Download one attachment of a message. Gmail does not return the filename
-   * with the content, so it is read from the message payload
+   * Download one attachment of a message. Gmail changes attachment ids at
+   * each read, so the attachment is found by its stable part id and the fresh
+   * attachment id of the same read is used to download it
    * @param {object} auth - Authenticated OAuth2 client
    * @param {object} options - Attachment location
    * @param {string} options.messageId - Message id
-   * @param {string} options.attachmentId - Attachment id, as listed by get
+   * @param {string} options.partId - Part id, as listed by get
    * @returns {Promise<object>} { filename, data } where data is a Buffer
    */
-  async getAttachment(auth, { messageId, attachmentId }) {
+  async getAttachment(auth, { messageId, partId }) {
     const message = await __.fetchFull(auth, messageId);
     const attachment = _.find(
       extractAttachments(message.payload),
-      (item) => item.attachmentId === attachmentId,
+      (item) => item.partId === partId,
     );
     if (!attachment) {
       throw new Error(
-        `Attachment not found in message ${messageId}: ${attachmentId}`,
+        `Attachment not found in message ${messageId}: part ${partId}`,
       );
     }
-    const content = await __.fetchAttachment(auth, { messageId, attachmentId });
+    const content = await __.fetchAttachment(auth, {
+      messageId,
+      attachmentId: attachment.attachmentId,
+    });
     return {
       filename: attachment.filename,
       data: Buffer.from(content, 'base64url'),
@@ -190,7 +196,7 @@ function extractBody(payload) {
 /**
  * List the attachments of a message payload, walking nested multiparts
  * @param {object} part - Gmail message part
- * @returns {object[]} Array of { attachmentId, filename, mimeType, size }
+ * @returns {object[]} Array of { partId, attachmentId, filename, mimeType, size }
  */
 function extractAttachments(part) {
   if (!part) {
@@ -202,6 +208,7 @@ function extractAttachments(part) {
   }
   return [
     {
+      partId: part.partId,
       attachmentId: part.body.attachmentId,
       filename: part.filename,
       mimeType: part.mimeType,

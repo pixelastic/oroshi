@@ -199,6 +199,7 @@ describe('gmailMessages', () => {
     const pdf = {
       mimeType: 'application/pdf',
       filename: 'report.pdf',
+      partId: '1.2',
       body: { attachmentId: 'att-1', size: 42 },
     };
     const mockMessage = (parts) => {
@@ -214,14 +215,14 @@ describe('gmailMessages', () => {
       });
     };
 
-    it('lists attachments, including nested ones', async () => {
+    it('lists attachments by part id, including nested ones', async () => {
       mockMessage([pdf]);
 
       const actual = await gmailMessages.get(auth, 'a1');
 
       expect(actual).toHaveProperty('attachments', [
         {
-          attachmentId: 'att-1',
+          partId: '1.2',
           filename: 'report.pdf',
           mimeType: 'application/pdf',
           size: 42,
@@ -237,31 +238,32 @@ describe('gmailMessages', () => {
 
       const actual = await gmailMessages.getAttachment(auth, {
         messageId: 'a1',
-        attachmentId: 'att-1',
+        partId: '1.2',
       });
 
       expect(actual).toHaveProperty('filename', 'report.pdf');
       expect(actual.data.toString()).toEqual('hello');
+      // Gmail attachment ids change at each read: use the one of the fresh read
       expect(__.fetchAttachment).toHaveBeenCalledWith(auth, {
         messageId: 'a1',
         attachmentId: 'att-1',
       });
     });
 
-    it('throws when the attachment id is unknown', async () => {
+    it('throws when the part id is unknown', async () => {
       mockMessage([pdf]);
 
       let actual = null;
       try {
         await gmailMessages.getAttachment(auth, {
           messageId: 'a1',
-          attachmentId: 'nope',
+          partId: '9.9',
         });
       } catch (error) {
         actual = error;
       }
 
-      expect(actual).toHaveProperty('message', expect.stringContaining('nope'));
+      expect(actual).toHaveProperty('message', expect.stringContaining('9.9'));
     });
   });
 });

@@ -29,7 +29,7 @@ describe('gmailAttachment', () => {
   ])('$title', async ({ out, expected }) => {
     const actual = await gmailAttachment('pro', {
       messageId: 'a1',
-      attachmentId: 'att-1',
+      partId: '1.2',
       out: out(tmp),
     });
 
@@ -44,7 +44,7 @@ describe('gmailAttachment', () => {
     try {
       actual = await gmailAttachment('pro', {
         messageId: 'a1',
-        attachmentId: 'att-1',
+        partId: '1.2',
       });
     } finally {
       process.chdir(cwd);
@@ -65,7 +65,7 @@ describe('gmailAttachment', () => {
 
     const actual = await gmailAttachment('pro', {
       messageId: 'a1',
-      attachmentId: 'att-1',
+      partId: '1.2',
       out: tmp,
     });
 

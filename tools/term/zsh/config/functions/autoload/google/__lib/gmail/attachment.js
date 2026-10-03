@@ -11,19 +11,16 @@ export let __;
  * @param {string} account - "pro" or "perso"
  * @param {object} options - Download options
  * @param {string} options.messageId - Message id
- * @param {string} options.attachmentId - Attachment id, as listed by gmail-read
+ * @param {string} options.partId - Part id, as listed by gmail-read
  * @param {string} [options.out] - Existing directory (keeps the remote filename)
  * or file path. Defaults to the current directory
  * @returns {Promise<string>} Path of the saved file
  */
-export async function gmailAttachment(
-  account,
-  { messageId, attachmentId, out },
-) {
+export async function gmailAttachment(account, { messageId, partId, out }) {
   const auth = await __.googleAuth(account);
   const { filename, data } = await gmailMessages.getAttachment(auth, {
     messageId,
-    attachmentId,
+    partId,
   });
   const filepath = await __.resolveOutput(out, filename);
   await mkdir(path.dirname(filepath), { recursive: true });
@@ -59,10 +56,10 @@ __ = {
 // CLI entry
 const currentFile = fileURLToPath(import.meta.url);
 if (process.argv[1] === currentFile) {
-  const [account, messageId, attachmentId, out] = process.argv.slice(2);
+  const [account, messageId, partId, out] = process.argv.slice(2);
   const filepath = await gmailAttachment(account, {
     messageId,
-    attachmentId,
+    partId,
     out,
   });
   process.stdout.write(`${filepath}\n`);
