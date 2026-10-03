@@ -1,6 +1,7 @@
 # Boolean: is the given file a Python file?
 # Usage:
 # $ is-python /path/to/script.py   # exit 0 (.py extension)
+# $ is-python /path/to/bin-script  # exit 0 if shebang is #!/usr/bin/env python3 or python
 # $ is-python /path/to/other.js    # exit 1
 setopt local_options err_return
 
@@ -11,5 +12,14 @@ local filepath="$1"
 
 # .py extension → Python file
 [[ "$filepath" == *.py ]] && return 0
+
+# Has a non-py extension
+local ext="${filepath:e}"
+[[ "$ext" != "" ]] && return 1
+
+# No extension: check for python shebang on line 1
+local firstLine="$(head --lines=1 "$filepath")"
+[[ "$firstLine" == "#!/usr/bin/env python3" ]] && return 0
+[[ "$firstLine" == "#!/usr/bin/env python" ]] && return 0
 
 return 1

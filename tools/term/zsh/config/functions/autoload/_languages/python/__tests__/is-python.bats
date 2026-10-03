@@ -45,3 +45,38 @@ setup() {
   bats_run_zsh "is-python $link"
   [[ "$status" -eq 0 ]]
 }
+
+@test "exits 1 for a .js file with a python shebang" {
+  local file="$BATS_TMP_DIR/foo.js"
+  printf '#!/usr/bin/env python3\nprint("hi")\n' > "$file"
+  bats_run_zsh "is-python $file"
+  [[ "$status" -eq 1 ]]
+}
+
+@test "exits 0 for an extensionless file with python3 shebang" {
+  local file="$BATS_TMP_DIR/my-script"
+  printf '#!/usr/bin/env python3\nprint("hi")\n' > "$file"
+  bats_run_zsh "is-python $file"
+  [[ "$status" -eq 0 ]]
+}
+
+@test "exits 0 for an extensionless file with python shebang" {
+  local file="$BATS_TMP_DIR/my-script"
+  printf '#!/usr/bin/env python\nprint("hi")\n' > "$file"
+  bats_run_zsh "is-python $file"
+  [[ "$status" -eq 0 ]]
+}
+
+@test "exits 1 for an extensionless file with zsh shebang" {
+  local file="$BATS_TMP_DIR/my-script"
+  printf '#!/usr/bin/env zsh\necho hello\n' > "$file"
+  bats_run_zsh "is-python $file"
+  [[ "$status" -eq 1 ]]
+}
+
+@test "exits 1 for an empty extensionless file" {
+  local file="$BATS_TMP_DIR/my-script"
+  : > "$file"
+  bats_run_zsh "is-python $file"
+  [[ "$status" -eq 1 ]]
+}
