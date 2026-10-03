@@ -1,0 +1,31 @@
+# Convert OGG files to MP3, next to the source (source is kept)
+# Usage:
+# $ ogg2mp3 file.ogg             # Creates file.mp3
+# $ ogg2mp3 a.ogg b.ogg          # Creates a.mp3 and b.mp3
+setopt local_options err_return
+
+# Nothing to convert without input
+if [[ $# -eq 0 ]]; then
+  echoerr "Usage: ogg2mp3 <file.ogg>..."
+  return 1
+fi
+
+local input
+for input in "$@"; do
+  # Fail early on a missing input file
+  if [[ ! -f "$input" ]]; then
+    echoerr "ogg2mp3: file not found: $input"
+    return 1
+  fi
+
+  # -nostdin: do not swallow the loop's stdin
+  # -y: overwrite an existing mp3 without prompting
+  ffmpeg \
+    -nostdin \
+    -y \
+    -i "$input" \
+    -vn \
+    -codec:a libmp3lame \
+    -qscale:a 0 \
+    "${input:a:r}.mp3"
+done
