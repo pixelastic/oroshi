@@ -1,0 +1,36 @@
+# Turn a description (any language) into one English Midjourney V8.2 prompt
+# Usage:
+# $ midjourney-prompt "un chat roux sur un toit"         # Description as argument
+# $ echo "un chat roux sur un toit" | midjourney-prompt  # Description from stdin
+# $ midjourney-prompt --model sonnet "un chat roux"      # Choose the claude-api model
+setopt local_options err_return
+
+local REFERENCES_FOLDER="$OROSHI_ROOT/tools/ai/claude/config/skills/midjourney-writer/references"
+
+zparseopts -E -D \
+  -model:=flagModel
+
+local model=${flagModel[2]:-haiku}
+local description="$1"
+
+# Read from stdin when no positional argument and stdin is piped
+if [[ "$description" == "" ]] && [[ ! -t 0 ]]; then
+  description="$(cat)"
+fi
+
+local systemPrompt="$(cat "$REFERENCES_FOLDER/prompting.md" "$REFERENCES_FOLDER/parameters.md")
+
+Turn the user's description into one Midjourney prompt, following the rules above.
+Output only the prompt. No explanation, no code fence."
+
+local generated="$(claude-api \
+  --model "$model" \
+  --system "$systemPrompt" \
+  "$description")"
+
+local prompt="$(midjourney-fix <<<"$generated")"
+
+# Guard: claude-api failed or returned nothing, so there is nothing to print
+[[ "$prompt" == "" ]] && return 1
+
+print -r -- "$prompt"
