@@ -294,7 +294,10 @@
   "meetup-announce-start",
   "midjourney-fix",
   "midjourney-prompt",
+<<<<<<< HEAD
   "midjourney-writer-end",
+=======
+>>>>>>> 1c6985528 (refactor(midjourney-writer): merge midjourney-writer-end into midjourney-prompt)
   "mkdir",
   "mktemp",
   "mv",

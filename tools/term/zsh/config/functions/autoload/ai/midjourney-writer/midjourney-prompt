@@ -2,9 +2,13 @@
 # Usage:
 # $ midjourney-prompt "un chat roux sur un toit"         # Description as argument
 # $ echo "un chat roux sur un toit" | midjourney-prompt  # Description from stdin
+# $ midjourney-prompt --clipboard "un chat roux"         # Also copy the prompt to the clipboard
 setopt local_options err_return
 
 local REFERENCES_FOLDER="$OROSHI_ROOT/tools/ai/claude/config/skills/midjourney-writer/references"
+
+zparseopts -E -D \
+  -clipboard=flagClipboard
 
 # Haiku gives good enough results and is slightly faster
 local model=haiku
@@ -30,4 +34,6 @@ local prompt="$(midjourney-fix <<<"$generated")"
 # Guard: claude-api failed or returned nothing, so there is nothing to print
 [[ "$prompt" == "" ]] && return 1
 
+local isClipboard=${#flagClipboard}
+[[ $isClipboard == 1 ]] && clipboard-write "$prompt"
 print -r -- "$prompt"

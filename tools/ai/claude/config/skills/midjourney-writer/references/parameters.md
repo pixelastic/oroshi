@@ -13,7 +13,7 @@ Written on 2026-09-28, from the official Midjourney docs:
 | [Weird](https://docs.midjourney.com/hc/en-us/articles/32390120435085-Weird) | 2026-07-27 |
 | [Image Size & Resolution](https://docs.midjourney.com/hc/en-us/articles/33329374594957-Image-Size-Resolution) | 2026-07-27 |
 
-`midjourney-writer-end` adds `--ar 16:9` when no ratio is set, forces `--v 8.2`, and removes forbidden parameters and `::` weights.
+`midjourney-fix` adds `--ar 16:9` when no ratio is set, forces `--v 8.2`, and removes forbidden parameters and `::` weights.
 
 ## Formatting
 

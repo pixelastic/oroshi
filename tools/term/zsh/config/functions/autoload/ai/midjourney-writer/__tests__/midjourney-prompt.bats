@@ -87,3 +87,28 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ ! -f "$BATS_TMP_DIR/clipboard.log" ]]
 }
+
+@test "copies the fixed prompt to the clipboard with --clipboard" {
+  bats_run_zsh "midjourney-prompt --clipboard 'un chat roux'"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/clipboard.log")" == "fixed: a red cat on a roof" ]]
+}
+
+@test "still prints the fixed prompt with --clipboard" {
+  bats_run_zsh "midjourney-prompt --clipboard 'un chat roux'"
+  [[ "$output" == "fixed: a red cat on a roof" ]]
+}
+
+@test "reads the description from stdin with --clipboard" {
+  bats_run_zsh "midjourney-prompt --clipboard" <<<'un chat roux sur un toit'
+  grep --quiet --fixed-strings --line-regexp 'un chat roux sur un toit' "$BATS_TMP_DIR/claude-api.log"
+}
+
+@test "does not call clipboard-write with --clipboard when claude-api fails" {
+  claude-api() { return 1; }
+  bats_mock claude-api
+
+  bats_run_zsh "midjourney-prompt --clipboard 'un chat roux'"
+  [[ "$status" -eq 1 ]]
+  [[ ! -f "$BATS_TMP_DIR/clipboard.log" ]]
+}
