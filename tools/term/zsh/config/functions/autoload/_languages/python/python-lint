@@ -1,55 +1,66 @@
-# Lint one or more Python files
+# Lint one or more Python files or directories via ruff
+# Default output is stylish format (violations grouped by file)
 # Usage:
-# $ python-lint  ./path/to/file.py         # For CLI
-# $ python-lint --json ./path/to/file.py   # For Vim
-# $ python-lint --fix ./path/to/file.py    # Auto-fix then report remaining
-# $ python-lint file1.py file2.py          # Lint multiple files
+# $ python-lint ./path/to/file.py          # Stylish output (default)
+# $ python-lint --json ./path/to/file.py   # Unified JSON output
+# $ python-lint ./path/to/dir/             # Expand directory to Python files
+# $ python-lint file1.py file2.py          # Multiple files
 setopt local_options err_return
 
 zparseopts -E -D \
-  -json=flagJson \
-  -fix=flagFix
+  -fix=flagFix \
+  -json=flagJson
 local isJson=${#flagJson}
-local isFix=${#flagFix}
 
-# Input files
-local inputFiles=("$@")
-if [[ ${#inputFiles} -eq 0 ]]; then
+# No inputs provided
+if [[ $# -eq 0 ]]; then
   echoerr "Error: No files provided"
   return 1
 fi
 
-# Validate all files exist before processing
-for inputFile in "${inputFiles[@]}"; do
-  local absoluteFilepath="${inputFile:a}"
-  if [[ ! -f "$absoluteFilepath" ]]; then
-    echoerr "Error: File '$absoluteFilepath' not found"
-    return 1
-  fi
-done
+# Expand directories and filter to Python files
+local expanded="$(file-expand --filter is-python "$@")"
+if [[ "$expanded" == "" ]]; then
+  [[ $isJson == 1 ]] && printf '[]\n'
+  return 0
+fi
+local -a inputs=("${(@f)expanded}")
 
-local exitCode=0
+# Resolve inputs to absolute paths
+inputs=("${(@)inputs:a}")
 
-# --fix: auto-format, auto-fix lint violations, then report remaining
-if [[ $isFix == "1" ]]; then
-  for inputFile in "${inputFiles[@]}"; do
-    local absoluteFilepath="${inputFile:a}"
-    ruff format --quiet "$absoluteFilepath"
-    ruff check --fix --quiet "$absoluteFilepath"
-    ruff check --quiet "$absoluteFilepath" || exitCode=1
-  done
-  return $exitCode
+# ruff exits 0 when clean, 1 on violations and 2 on internal errors
+local jsonOutput
+local ruffStatus=0
+jsonOutput="$(ruff check \
+  --output-format json \
+  --quiet \
+  "${inputs[@]}")" || ruffStatus=$?
+if [[ $ruffStatus -gt 1 ]]; then
+  echoerr "Error: ruff failed with exit code $ruffStatus"
+  return 1
 fi
 
-# Optional args
-local formatAsJson=""
-[[ $isJson -gt 0 ]] && formatAsJson="--output-format json"
+# Reshape from ruff format to the unified lint format
+# ruff has no severity, so level is always error
+local result="$(printf '%s' "$jsonOutput" | jq '[.[] | {
+  file: .filename,
+  code: .code,
+  level: "error",
+  line: .location.row,
+  endLine: .end_location.row,
+  column: .location.column,
+  endColumn: .end_location.column,
+  message: .message
+}]')"
 
-for inputFile in "${inputFiles[@]}"; do
-  local absoluteFilepath="${inputFile:a}"
-  ruff check \
-    ${=formatAsJson} \
-    "$absoluteFilepath" || exitCode=1
-done
+# JSON mode: output the unified JSON array
+if [[ $isJson == 1 ]]; then
+  printf '%s\n' "$result"
+  [[ "$result" != "[]" ]] && return 1
+  return 0
+fi
 
-return $exitCode
+# Stylish mode (default): paths relative to git root (or $PWD outside a repo)
+local projectRoot="$(git-directory-root)"
+printf '%s' "$result" | json2stylish --root "$projectRoot/"
