@@ -1,10 +1,4 @@
-import { consoleWarn } from 'firost';
 import { __, googleAuth } from '../__lib/googleAuth.js';
-
-vi.mock('firost', () => ({
-  consoleWarn: vi.fn(),
-  run: vi.fn(),
-}));
 
 describe('googleAuth', () => {
   let mockClient;
@@ -20,7 +14,8 @@ describe('googleAuth', () => {
       refresh_token: 'test-refresh-token',
       expiry_date: 1234567890,
     });
-    vi.spyOn(__, 'runGoogleLogin').mockResolvedValue();
+    vi.spyOn(__, 'runGoogleLogin').mockReturnValue();
+    vi.spyOn(__, 'consoleWarn').mockReturnValue();
   });
 
   it('returns an authenticated OAuth2 client', async () => {
@@ -44,24 +39,89 @@ describe('googleAuth', () => {
     });
     await googleAuth();
     expect(__.runGoogleLogin).toHaveBeenCalled();
-    expect(consoleWarn).toHaveBeenCalledWith(
+    expect(__.consoleWarn).toHaveBeenCalledWith(
       expect.stringContaining('google-login'),
     );
   });
 
   it('re-authenticates on invalid_grant error', async () => {
-    mockClient.getAccessToken.mockRejectedValueOnce(new Error('invalid_grant'));
+    mockClient.getAccessToken.mockImplementationOnce(() => {
+      throw new Error('invalid_grant');
+    });
     await googleAuth();
     expect(__.runGoogleLogin).toHaveBeenCalled();
-    expect(consoleWarn).toHaveBeenCalledWith(
+    expect(__.consoleWarn).toHaveBeenCalledWith(
       expect.stringContaining('expired'),
     );
   });
 
   it('throws on unexpected getAccessToken errors', async () => {
-    mockClient.getAccessToken.mockRejectedValueOnce(
-      new Error('network failure'),
-    );
+    mockClient.getAccessToken.mockImplementationOnce(() => {
+      throw new Error('network failure');
+    });
     await expect(googleAuth()).rejects.toThrow('network failure');
+  });
+
+  describe('account selection', () => {
+    beforeEach(() => {
+      vi.stubEnv('OROSHI_FOLDER_STATE', '/state');
+    });
+    afterEach(() => {
+      vi.unstubAllEnvs();
+    });
+
+    it.each([
+      {
+        title: 'reads tokens.json for the pro account',
+        args: ['pro'],
+        expected: '/state/google/tokens.json',
+      },
+      {
+        title: 'reads tokens-perso.json for the perso account',
+        args: ['perso'],
+        expected: '/state/google/tokens-perso.json',
+      },
+      {
+        title: 'defaults to pro when no account is given',
+        args: [],
+        expected: '/state/google/tokens.json',
+      },
+    ])('$title', async ({ args, expected }) => {
+      const actual = __.tokenPath(...args);
+      expect(actual).toEqual(expected);
+    });
+
+    it('passes the account to readTokens', async () => {
+      vi.spyOn(__, 'readTokens').mockReturnValue({ refresh_token: 'x' });
+      await googleAuth('perso');
+      expect(__.readTokens).toHaveBeenCalledWith('perso');
+    });
+
+    it('defaults to the pro account', async () => {
+      vi.spyOn(__, 'readTokens').mockReturnValue({ refresh_token: 'x' });
+      await googleAuth();
+      expect(__.readTokens).toHaveBeenCalledWith('pro');
+    });
+
+    it.each([
+      {
+        title: 'logs in pro without flag',
+        account: 'pro',
+        expected: ['google-login'],
+      },
+      {
+        title: 'logs in perso with --perso',
+        account: 'perso',
+        expected: ['google-login', '--perso'],
+      },
+      {
+        title: 'logs in pro by default',
+        account: undefined,
+        expected: ['google-login'],
+      },
+    ])('$title', ({ account, expected }) => {
+      const actual = __.loginCommand(account);
+      expect(actual).toEqual(expected);
+    });
   });
 });

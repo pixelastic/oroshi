@@ -11,10 +11,13 @@ import { google } from 'googleapis';
 const clientId = process.env.OROSHI_GOOGLE_CLIENT_ID;
 const clientSecret = process.env.OROSHI_GOOGLE_CLIENT_SECRET;
 const redirectUri = 'http://localhost:48912/oauth2callback';
-const tokenPath = `${process.env.OROSHI_FOLDER_STATE}/google/tokens.json`;
+const isPerso = process.argv.includes('--perso');
+const tokenFile = isPerso ? 'tokens-perso.json' : 'tokens.json';
+const tokenPath = `${process.env.OROSHI_FOLDER_STATE}/google/${tokenFile}`;
 const scopes = [
   'https://www.googleapis.com/auth/documents',
   'https://www.googleapis.com/auth/drive',
+  'https://www.googleapis.com/auth/gmail.readonly',
 ];
 
 if (!clientId || !clientSecret) {
@@ -33,7 +36,7 @@ const oauth2Client = new google.auth.OAuth2(
 const authorizeUrl = oauth2Client.generateAuthUrl({
   access_type: 'offline',
   scope: scopes,
-  prompt: 'consent',
+  prompt: 'consent select_account',
 });
 
 const server = http.createServer(async (request, response) => {

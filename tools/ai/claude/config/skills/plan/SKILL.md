@@ -41,9 +41,12 @@ Read [03-issues.md](./references/03-issues.md) and follow all sub-steps.
 
 **Exit criterion:** `plan-end <planDir>` called.
 
-Run `plan-end <planDir>`. It:
-- commits all plan files
-- launches `/ralph <planDir>` in a fresh Claude session: same window if
+Make sure all PRD, issues and other plan files are saved.
+
+Then run `plan-end` alone, from the current directory, in its own Bash call.
+It will:
+- Commit all plan files
+- Launches `/ralph <planDir>` in a fresh Claude session: same window if
   already in the Worktree, otherwise a new Kitty tab
 - stops Claude
 
