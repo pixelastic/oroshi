@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Symlink the global ruff config to where ruff reads it on its own
+set -e
+mkdir -p ~/.config/ruff
+
+ln -fs "${0:A:h}/config/ruff.toml" ~/.config/ruff/ruff.toml
