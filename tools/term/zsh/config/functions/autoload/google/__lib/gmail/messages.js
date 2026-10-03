@@ -26,7 +26,7 @@ export const gmailMessages = {
    * Get one full message, with its decoded body
    * @param {object} auth - Authenticated OAuth2 client
    * @param {string} id - Message id
-   * @returns {object} Normalized message { id, from, to, subject, date, snippet, body }
+   * @returns {object} Normalized message { id, from, to, subject, date, snippet, body, attachments }
    */
   async get(auth, id) {
     const message = await __.fetchFull(auth, id);
@@ -34,6 +34,34 @@ export const gmailMessages = {
       ...__.normalize(message),
       to: header(message, 'To'),
       body: extractBody(message.payload),
+      attachments: extractAttachments(message.payload),
+    };
+  },
+
+  /**
+   * Download one attachment of a message. Gmail does not return the filename
+   * with the content, so it is read from the message payload
+   * @param {object} auth - Authenticated OAuth2 client
+   * @param {object} options - Attachment location
+   * @param {string} options.messageId - Message id
+   * @param {string} options.attachmentId - Attachment id, as listed by get
+   * @returns {Promise<object>} { filename, data } where data is a Buffer
+   */
+  async getAttachment(auth, { messageId, attachmentId }) {
+    const message = await __.fetchFull(auth, messageId);
+    const attachment = _.find(
+      extractAttachments(message.payload),
+      (item) => item.attachmentId === attachmentId,
+    );
+    if (!attachment) {
+      throw new Error(
+        `Attachment not found in message ${messageId}: ${attachmentId}`,
+      );
+    }
+    const content = await __.fetchAttachment(auth, { messageId, attachmentId });
+    return {
+      filename: attachment.filename,
+      data: Buffer.from(content, 'base64url'),
     };
   },
 };
@@ -92,6 +120,24 @@ __ = {
   },
 
   /**
+   * Fetch the base64url content of one attachment
+   * @param {object} auth - Authenticated OAuth2 client
+   * @param {object} options - Attachment location
+   * @param {string} options.messageId - Message id
+   * @param {string} options.attachmentId - Attachment id
+   * @returns {Promise<string>} base64url content
+   */
+  async fetchAttachment(auth, { messageId, attachmentId }) {
+    const gmail = google.gmail({ version: 'v1', auth });
+    const response = await gmail.users.messages.attachments.get({
+      userId: 'me',
+      messageId,
+      id: attachmentId,
+    });
+    return response.data.data;
+  },
+
+  /**
    * Convert a Gmail message resource to a flat message
    * @param {object} message - Gmail message resource
    * @returns {object} { id, from, subject, date, snippet }
@@ -139,6 +185,30 @@ function extractBody(payload) {
     });
   }
   return '';
+}
+
+/**
+ * List the attachments of a message payload, walking nested multiparts
+ * @param {object} part - Gmail message part
+ * @returns {object[]} Array of { attachmentId, filename, mimeType, size }
+ */
+function extractAttachments(part) {
+  if (!part) {
+    return [];
+  }
+  const children = _.flatMap(part.parts, extractAttachments);
+  if (!part.filename || !part.body?.attachmentId) {
+    return children;
+  }
+  return [
+    {
+      attachmentId: part.body.attachmentId,
+      filename: part.filename,
+      mimeType: part.mimeType,
+      size: part.body.size,
+    },
+    ...children,
+  ];
 }
 
 /**

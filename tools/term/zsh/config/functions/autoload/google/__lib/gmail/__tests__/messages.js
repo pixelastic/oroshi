@@ -111,6 +111,7 @@ describe('gmailMessages', () => {
         date: 'Mon, 1 Jan 2026 10:00:00 +0000',
         snippet: 'snip',
         body: 'Hi',
+        attachments: [],
       });
       expect(__.fetchFull).toHaveBeenCalledWith(auth, 'a1');
     });
@@ -190,6 +191,77 @@ describe('gmailMessages', () => {
       const actual = await gmailMessages.get(auth, 'a1');
 
       expect(actual).toHaveProperty('body', '');
+    });
+  });
+
+  describe('attachments', () => {
+    const auth = { fake: 'auth' };
+    const pdf = {
+      mimeType: 'application/pdf',
+      filename: 'report.pdf',
+      body: { attachmentId: 'att-1', size: 42 },
+    };
+    const mockMessage = (parts) => {
+      vi.spyOn(__, 'fetchFull').mockReturnValue({
+        id: 'a1',
+        payload: {
+          mimeType: 'multipart/mixed',
+          parts: [
+            { mimeType: 'multipart/alternative', parts },
+            { mimeType: 'text/plain', filename: '', body: { size: 3 } },
+          ],
+        },
+      });
+    };
+
+    it('lists attachments, including nested ones', async () => {
+      mockMessage([pdf]);
+
+      const actual = await gmailMessages.get(auth, 'a1');
+
+      expect(actual).toHaveProperty('attachments', [
+        {
+          attachmentId: 'att-1',
+          filename: 'report.pdf',
+          mimeType: 'application/pdf',
+          size: 42,
+        },
+      ]);
+    });
+
+    it('downloads an attachment with its remote filename', async () => {
+      mockMessage([pdf]);
+      vi.spyOn(__, 'fetchAttachment').mockReturnValue(
+        Buffer.from('hello').toString('base64url'),
+      );
+
+      const actual = await gmailMessages.getAttachment(auth, {
+        messageId: 'a1',
+        attachmentId: 'att-1',
+      });
+
+      expect(actual).toHaveProperty('filename', 'report.pdf');
+      expect(actual.data.toString()).toEqual('hello');
+      expect(__.fetchAttachment).toHaveBeenCalledWith(auth, {
+        messageId: 'a1',
+        attachmentId: 'att-1',
+      });
+    });
+
+    it('throws when the attachment id is unknown', async () => {
+      mockMessage([pdf]);
+
+      let actual = null;
+      try {
+        await gmailMessages.getAttachment(auth, {
+          messageId: 'a1',
+          attachmentId: 'nope',
+        });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('message', expect.stringContaining('nope'));
     });
   });
 });

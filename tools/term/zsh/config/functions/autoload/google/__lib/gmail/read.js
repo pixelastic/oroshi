@@ -1,24 +1,22 @@
 import { fileURLToPath } from 'node:url';
 import { googleAuth } from '../google/auth.js';
-import { gmailFormatMarkdown } from './formatMarkdown.js';
 import { gmailMessages } from './messages.js';
 
 /**
- * Read one mail as Markdown
+ * Read one mail
  * @param {string} account - "pro" or "perso"
  * @param {string} id - Message id
- * @returns {Promise<string>} Markdown
+ * @returns {Promise<object>} { id, from, to, subject, date, snippet, body, attachments }
  */
 export async function gmailRead(account, id) {
   const auth = await googleAuth(account);
-  const message = await gmailMessages.get(auth, id);
-  return gmailFormatMarkdown(message);
+  return await gmailMessages.get(auth, id);
 }
 
 // CLI entry
 const currentFile = fileURLToPath(import.meta.url);
 if (process.argv[1] === currentFile) {
   const [account, id] = process.argv.slice(2);
-  const markdown = await gmailRead(account, id);
-  process.stdout.write(`${markdown}\n`);
+  const message = await gmailRead(account, id);
+  process.stdout.write(`${JSON.stringify(message, null, 2)}\n`);
 }

@@ -1,4 +1,5 @@
-# Read one mail as Markdown: headers, then body
+# Read one mail, output JSON: id, from, to, subject, date, snippet, body, attachments
+# Each attachment has attachmentId, filename, mimeType, size: pass attachmentId to gmail-attachment
 # Usage:
 # $ gmail-read <id>          # pro account
 # $ gmail-read --perso <id>  # perso account
