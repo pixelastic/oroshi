@@ -201,6 +201,10 @@ compdef _pyenv-lazyload lazyloadPyenv
 compdef _pip-packages \
   pip-update
 # }}}
+# 🔊 Audio {{{
+compdef "_files -g '*.ogg'" \
+  ogg2mp3
+# }}}
 # ▶️ Videos {{{
 compdef _video-streams-audio \
   video-stream-audio-switch \
