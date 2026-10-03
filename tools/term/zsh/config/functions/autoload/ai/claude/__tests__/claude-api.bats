@@ -141,13 +141,13 @@ BASH
   [[ "$args" == *"Tell me a joke"* ]]
 }
 
-@test "uses default model claude-sonnet-4-6 when no --model flag" {
+@test "uses default model claude-sonnet-5-5 when no --model flag" {
   eval "$(_mock_curl)"
   bats_mock curl
 
   bats_run_zsh "claude-api 'hello'"
   local args=$(cat "$BATS_TMP_DIR/curl.log")
-  [[ "$args" == *"claude-sonnet-4-6"* ]]
+  [[ "$args" == *"claude-sonnet-5-5"* ]]
 }
 
 @test "uses default max_tokens 4096 when no --max-tokens flag" {
@@ -159,13 +159,22 @@ BASH
   [[ "$args" == *"4096"* ]]
 }
 
-@test "resolves model alias opus to full ID" {
+@test "resolves model alias opus to claude-opus-5-5" {
   eval "$(_mock_curl)"
   bats_mock curl
 
   bats_run_zsh "claude-api --model opus 'hello'"
   local args=$(cat "$BATS_TMP_DIR/curl.log")
-  [[ "$args" == *"claude-opus-4-6"* ]]
+  [[ "$args" == *"claude-opus-5-5"* ]]
+}
+
+@test "resolves model alias sonnet to claude-sonnet-5-5" {
+  eval "$(_mock_curl)"
+  bats_mock curl
+
+  bats_run_zsh "claude-api --model sonnet 'hello'"
+  local args=$(cat "$BATS_TMP_DIR/curl.log")
+  [[ "$args" == *"claude-sonnet-5-5"* ]]
 }
 
 @test "resolves model alias haiku to full ID" {
