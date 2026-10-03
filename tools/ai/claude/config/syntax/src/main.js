@@ -7,6 +7,7 @@ import { move, read, readJson } from 'firost';
 import { parse as parseJsonc } from 'jsonc-parser';
 import { patchHighlightTables } from './patchHighlightTables.js';
 import { resolveColors } from './resolveColors.js';
+import { stripModuleBytecode } from './stripModuleBytecode.js';
 
 /**
  * Patch the Claude Code binary so its syntax highlighting uses our colors
@@ -22,12 +23,14 @@ export async function main({ binaryPath, colorsPath }) {
   const decorationColors = resolveColors(config.diff, colors);
 
   const binary = await readFile(binaryPath);
-  const { text } = patchHighlightTables(
+  const { text, offsets } = patchHighlightTables(
     binary.toString('latin1'),
     scopeColors,
     decorationColors,
   );
   const patchedBinary = Buffer.from(text, 'latin1');
+  // Bun runs the precompiled bytecode over the source, so it must be removed
+  stripModuleBytecode(patchedBinary, offsets);
 
   // Write to a new file then rename: the binary can't be written while
   // running (ETXTBSY), and yarn hardlinks it to its global cache

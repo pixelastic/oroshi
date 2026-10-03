@@ -1,4 +1,4 @@
-import { __, gdocRead } from '../__lib/gdocRead.js';
+import { __, gdocRead } from '../gdocRead.js';
 
 // Helper to build a Google Docs paragraph element
 /**

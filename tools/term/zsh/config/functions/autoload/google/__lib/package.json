@@ -1,0 +1,15 @@
+{
+  "name": "@oroshi/google",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dependencies of the google-* and gmail-* ZSH helpers",
+  "license": "MIT",
+  "dependencies": {
+    "cli-truncate": "5.2.0",
+    "firost": "5.11.0",
+    "golgoth": "3.1.0",
+    "googleapis": "173.0.0",
+    "string-width": "8.3.0"
+  }
+}

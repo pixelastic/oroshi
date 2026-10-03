@@ -1,4 +1,4 @@
-import { gmailFormatRaw } from '../__lib/gmailFormatRaw.js';
+import { gmailFormatRaw } from '../gmailFormatRaw.js';
 
 describe('gmailFormatRaw', () => {
   it.each([

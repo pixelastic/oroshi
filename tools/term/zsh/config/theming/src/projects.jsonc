@@ -616,5 +616,11 @@
   },
   "zsh": {
     "icon": " "
+  },
+  "zsh-autoload": {
+    "background": "yellow-6",
+    "foreground": "yellow-0",
+    "icon": " ",
+    "path": "~/.oroshi/tools/term/zsh/config/functions/autoload"
   }
 }

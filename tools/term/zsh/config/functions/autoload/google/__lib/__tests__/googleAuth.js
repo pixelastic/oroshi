@@ -1,4 +1,4 @@
-import { __, googleAuth } from '../__lib/googleAuth.js';
+import { __, googleAuth } from '../googleAuth.js';
 
 describe('googleAuth', () => {
   let mockClient;

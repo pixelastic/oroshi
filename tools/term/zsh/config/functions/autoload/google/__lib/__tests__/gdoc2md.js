@@ -1,4 +1,4 @@
-import { __, gdoc2md } from '../__lib/gdoc2md.js';
+import { __, gdoc2md } from '../gdoc2md.js';
 
 describe('slugify', () => {
   it.each([

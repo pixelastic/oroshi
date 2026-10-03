@@ -110,6 +110,13 @@
     "app-suspended": "gray"
   },
 
+  // Gmail
+  "gmail": {
+    "author":  "gray-4",
+    "date":    "sky-6",
+    "subject": "gray-3"
+  },
+
   // Git
   "git": {
     "added":           "green",

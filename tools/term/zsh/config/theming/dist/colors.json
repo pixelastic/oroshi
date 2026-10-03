@@ -563,6 +563,18 @@
     "ansi": 33,
     "hex": "#68d391"
   },
+  "gmail-author": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  },
+  "gmail-date": {
+    "ansi": 166,
+    "hex": "#0369a1"
+  },
+  "gmail-subject": {
+    "ansi": 203,
+    "hex": "#d1d5db"
+  },
   "gray": {
     "ansi": 205,
     "hex": "#6b7280"

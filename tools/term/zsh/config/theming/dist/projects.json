@@ -2013,5 +2013,25 @@
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
+  },
+  "zsh-autoload": {
+    "background": {
+      "ansi": 46,
+      "hex": "#b7791f",
+      "name": "yellow-6"
+    },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
+    "foreground": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-0"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/.oroshi/tools/term/zsh/config/functions/autoload"
   }
 }
