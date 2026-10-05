@@ -196,12 +196,25 @@ and `{lang}-lint` relate to each other.
 # $ js-test src/module.js                                   # source file → resolved via {lang}-test-path
 # $ js-test src/                                            # all tests in directory
 # $ js-test src/foo.js src/bar.js src/__tests__/baz.js      # mix of sources, tests, directories
+# $ js-test --fail-fast src/                                # stop at the first failing test
 ```
+
+**Notes:**
+
+**--fail-fast:**
+
+Opt-in, off by default. Stops the run at the first failing test.
+
+The script must stop at the first failing test, across all files it runs.
+When the underlying runner has a built-in option for this, the script should use it.
+
+Only the pre-commit test script (`precommit-test`) passes this flag.
 
 **Dependencies:**
 
 - Uses [`{lang}-test-path`](#lang-test-path) to locate the test file when given a source file
 - Used by [`git-file-test`](integration.md#git-file-test) to test changed files
+- Used by `precommit-test` with `--fail-fast`
 
 ---
 

@@ -13,7 +13,6 @@ Use my preferred libraries — the references explain when and why:
 
 - **[firost](./references/firost.md)** — file I/O, paths, process, HTTP, console, and system utilities
 - **[golgoth](./references/golgoth.md)** — common dependencies: `_` (lodash), `pMap`, `dayjs`, `yoctocolors`, `pProps`, and more
-- **[aberlaas](./references/aberlaas.md)** — lint, test, and release; start new projects with it
 
 ## Core Workflow
 
@@ -104,7 +103,6 @@ No patterns yet — just correct behavior.
 | [Comments](./references/comments.md) | How to write inline comments and JSDoc blocks |
 | [firost](./references/firost.md) | File I/O and system operations |
 | [golgoth](./references/golgoth.md) | Data transformation, dates, async utilities |
-| [aberlaas](./references/aberlaas.md) | Lint, test, release, etc |
 
 ```javascript
 import { formatEntry } from './formatEntry.js';
