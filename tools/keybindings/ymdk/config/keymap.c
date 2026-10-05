@@ -90,6 +90,7 @@ typedef struct {
 #define CONFIG_SOUND_MODE C(G(KC_F8))
 #define CONFIG_AUTOSEND C(G(KC_F9))
 #define CONFIG_MODEL C(G(KC_F12))
+#define CONFIG_POSTPROCESS C(G(KC_F10))
 
 #define VOLUME_UP KC_VOLU
 #define VOLUME_DOWN KC_VOLD
@@ -119,7 +120,7 @@ typedef struct {
 
 #define LAYER_CONFIG_KEYS \
     MODE_NORMAL, CONFIG_SOUND_MODE, CONFIG_AUTOSEND, \
-    EMPTY_KEY, EMPTY_KEY, CONFIG_MODEL, \
+    CONFIG_MODEL, CONFIG_POSTPROCESS, EMPTY_KEY, \
     MODE_SPOTIFY, MODE_RP, EMPTY_KEY
 
 #define LAYER_SPOTIFY_KEYS \
@@ -164,6 +165,7 @@ Color get_color_for_key(uint16_t keycode, uint8_t layer) {
     if (keycode == MODE_SPOTIFY) return WHITE;
 
     if (keycode == CONFIG_MODEL) return MAGENTA;
+    if (keycode == CONFIG_POSTPROCESS) return MAGENTA;
 
     // Spotify
     if (keycode == SPOTIFY_PLAY_PAUSE) return MINT;
