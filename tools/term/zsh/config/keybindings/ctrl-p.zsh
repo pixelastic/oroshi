@@ -19,6 +19,9 @@ function oroshi-ctrl-p-widget() {
     go-lint fzf-go-files
     go-fix fzf-go-files
     go-test fzf-go-tests
+    python-lint fzf-python-files
+    python-fix fzf-python-files
+    python-test fzf-python-tests
     json-lint fzf-json-files
     json-fix fzf-json-files
     svg-lint fzf-svg-files

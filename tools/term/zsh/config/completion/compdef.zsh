@@ -199,6 +199,10 @@ compdef _node-modules \
 compdef _pyenv-lazyload lazyloadPyenv
 compdef _pip-packages \
   pip-update
+compdef "_files -g '*.py'" \
+  python-fix \
+  python-lint \
+  python-test
 # }}}
 # 🔊 Audio {{{
 compdef "_files -g '*.ogg'" \
