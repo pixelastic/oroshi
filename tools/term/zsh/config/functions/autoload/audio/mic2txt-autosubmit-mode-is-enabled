@@ -1,5 +1,5 @@
 # Check if autosubmit mode is enabled
-# Returns 0 if enabled, 1 otherwise (disabled or clipboard)
+# Returns 0 if enabled (the default), 1 otherwise (disabled or clipboard)
 setopt local_options err_return
 
-mode-is-enabled mic2txt-autosubmit
+[[ "$(mode-read mic2txt-autosubmit enabled)" == "enabled" ]]

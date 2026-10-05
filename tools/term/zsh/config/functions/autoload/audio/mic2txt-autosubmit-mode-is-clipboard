@@ -2,4 +2,4 @@
 # Returns 0 if clipboard, 1 otherwise
 setopt local_options err_return
 
-[[ "$(mode-read mic2txt-autosubmit disabled)" == "clipboard" ]]
+[[ "$(mode-read mic2txt-autosubmit enabled)" == "clipboard" ]]

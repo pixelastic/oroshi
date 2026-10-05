@@ -887,10 +887,6 @@
     "ansi": 65,
     "hex": "#805ad5"
   },
-  "modes-postprocess-none": {
-    "ansi": 205,
-    "hex": "#6b7280"
-  },
   "modes-sound-disabled": {
     "ansi": 205,
     "hex": "#6b7280"

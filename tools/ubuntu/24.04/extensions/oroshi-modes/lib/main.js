@@ -21,7 +21,7 @@ const INDICATORS = [
   {
     name: 'autosubmit',
     file: 'mic2txt-autosubmit',
-    defaultValue: 'disabled',
+    defaultValue: 'enabled',
     values: {
       enabled: {
         icon: 'autosubmit-enabled.svg',
@@ -52,10 +52,7 @@ const INDICATORS = [
     file: 'mic2txt-postprocess',
     defaultValue: 'none',
     values: {
-      none: {
-        icon: 'postprocess-none.svg',
-        color: 'modes-postprocess-none',
-      },
+      none: { hidden: true },
       midjourney: {
         icon: 'postprocess-midjourney.svg',
         color: 'modes-postprocess-midjourney',
@@ -151,23 +148,36 @@ class OroshiModes {
   }
 
   /**
+   * Show or hide an indicator and, when shown, set its icon and color
+   * @param {object} entry - Entry from this._entries
+   * @param {object} mapping - { icon, color } or { hidden } mapping
+   */
+  _applyMapping(entry, mapping) {
+    entry.bin.visible = !mapping.hidden;
+    if (mapping.hidden) return;
+
+    const hex = this._colors[mapping.color] || '#ffffff';
+    entry.icon.gicon = this._makeGicon(mapping.icon, hex);
+  }
+
+  /**
    * Create one St.Icon widget per indicator, each wrapped in an St.Bin, and add to the box
    */
   _createIndicators() {
     for (const config of INDICATORS) {
       const value = this._readMode(config);
       const mapping = this._resolveMapping(config, value);
-      const hex = this._colors[mapping.color] || '#ffffff';
-
       const icon = new St.Icon({
-        gicon: this._makeGicon(mapping.icon, hex),
         icon_size: 20,
         style_class: 'system-status-icon oroshi-mode-icon',
       });
 
       const bin = new St.Bin({ child: icon });
       this._box.add_child(bin);
-      this._entries.push({ config, icon, value });
+
+      const entry = { config, icon, bin, value };
+      this._applyMapping(entry, mapping);
+      this._entries.push(entry);
     }
   }
 
@@ -179,10 +189,8 @@ class OroshiModes {
     const value = this._readMode(entry.config);
     if (value === entry.value) return;
 
-    const mapping = this._resolveMapping(entry.config, value);
-    const hex = this._colors[mapping.color] || '#ffffff';
-    entry.icon.gicon = this._makeGicon(mapping.icon, hex);
     entry.value = value;
+    this._applyMapping(entry, this._resolveMapping(entry.config, value));
   }
 
   /**
@@ -191,9 +199,10 @@ class OroshiModes {
   _refreshColors() {
     this._loadColors();
     for (const entry of this._entries) {
-      const mapping = this._resolveMapping(entry.config, entry.value);
-      const hex = this._colors[mapping.color] || '#ffffff';
-      entry.icon.gicon = this._makeGicon(mapping.icon, hex);
+      this._applyMapping(
+        entry,
+        this._resolveMapping(entry.config, entry.value),
+      );
     }
   }
 

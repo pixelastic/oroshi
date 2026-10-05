@@ -84,6 +84,17 @@ func Parse(raw string) []FileDiff {
 			continue
 		}
 
+		// Symlinks diff as text (the link target), but their content is not worth
+		// showing, like any other binary file
+		if isSymlinkHeader(line) {
+			current.Binary = true
+			continue
+		}
+
+		if current.Binary {
+			continue
+		}
+
 		matches := hunkHeaderRegexp.FindStringSubmatch(line)
 		if matches != nil {
 			if currentHunk != nil {
@@ -286,4 +297,16 @@ func atoiDefault(s string, defaultValue int) int {
 		return defaultValue
 	}
 	return atoi(s)
+}
+
+// isSymlinkHeader reports whether a diff header line declares a symlink (git
+// mode 120000), for new, deleted, modified or mode-changed files.
+func isSymlinkHeader(line string) bool {
+	if strings.HasPrefix(line, "index ") {
+		return strings.HasSuffix(line, " 120000")
+	}
+	return line == "new file mode 120000" ||
+		line == "deleted file mode 120000" ||
+		line == "old mode 120000" ||
+		line == "new mode 120000"
 }

@@ -7,11 +7,13 @@
 # $ echo "long content" | claude-api --system "Summarize this"  # Read from stdin
 setopt local_options err_return
 
-# Guard: API key must be set
-if [[ "$OROSHI_ANTHROPIC_API_KEY" == "" ]]; then
-  echoerr "OROSHI_ANTHROPIC_API_KEY is not set"
+# Load the API key, in case we're called from outside of an interactive shell
+local anthropicConfig="$OROSHI_ROOT/private/config/term/zsh/local/${HOSTNAME}/anthropic.zsh"
+if [[ ! -f $anthropicConfig ]]; then
+  echoerr "Anthropic config not found: $anthropicConfig"
   return 1
 fi
+source $anthropicConfig
 
 local -A modelAliases=(
   sonnet  claude-sonnet-5-5

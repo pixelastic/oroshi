@@ -22,9 +22,9 @@ setup() {
   [[ "$status" -ne 0 ]]
 }
 
-@test "returns 1 when modes/mic2txt-autosubmit does not exist" {
+@test "returns 0 when modes/mic2txt-autosubmit does not exist" {
   bats_run_zsh "mic2txt-autosubmit-mode-is-enabled"
-  [[ "$status" -ne 0 ]]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "returns 1 when modes/mic2txt-autosubmit contains clipboard" {

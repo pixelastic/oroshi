@@ -1,7 +1,7 @@
-# Cycle the global "Autosubmit Mode": disabled -> enabled -> clipboard
-# disabled: mic2txt inputs text in focus
+# Cycle the global "Autosubmit Mode": enabled -> disabled -> clipboard
 # enabled: mic2txt inputs text in focus and presses enter
+# disabled: mic2txt inputs text in focus
 # clipboard: mic2txt only copies text to clipboard
 setopt local_options err_return
 
-mode-toggle mic2txt-autosubmit disabled enabled clipboard
+mode-toggle mic2txt-autosubmit enabled disabled clipboard

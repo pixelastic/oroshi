@@ -9,7 +9,7 @@ local output=""
 
 # Ordered list matching the top bar indicator sequence
 local -a modeNames=(sound mic2txt-autosubmit mic2txt-model mic2txt-postprocess)
-local -A modeDefaults=(sound disabled mic2txt-autosubmit disabled mic2txt-model openai mic2txt-postprocess none)
+local -A modeDefaults=(sound disabled mic2txt-autosubmit enabled mic2txt-model openai mic2txt-postprocess none)
 local -a booleanModes=(sound mic2txt-autosubmit)
 
 for modeName in $modeNames; do

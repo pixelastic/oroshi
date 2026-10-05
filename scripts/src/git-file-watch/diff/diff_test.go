@@ -331,3 +331,35 @@ func TestKeepsValidUTF8ContentAsText(t *testing.T) {
 	assert.False(t, result[0].Binary)
 	assert.Len(t, result[0].Hunks, 1)
 }
+
+func TestParsesModifiedSymlinkAsBinary(t *testing.T) {
+	raw := "diff --git a/start.mp3 b/start.mp3\n" +
+		"index fb3d230..ceeab3e 120000\n" +
+		"--- a/start.mp3\n" +
+		"+++ b/start.mp3\n" +
+		"@@ -1 +1 @@\n" +
+		"-./warcraft/start.mp3\n" +
+		"\\ No newline at end of file\n" +
+		"+./warcraft/end.mp3\n" +
+		"\\ No newline at end of file\n"
+	result := Parse(raw)
+	require.Len(t, result, 1)
+	assert.Equal(t, "start.mp3", result[0].Path)
+	assert.True(t, result[0].Binary)
+	assert.Empty(t, result[0].Hunks)
+}
+
+func TestParsesNewSymlinkAsBinary(t *testing.T) {
+	raw := "diff --git a/start.mp3 b/start.mp3\n" +
+		"new file mode 120000\n" +
+		"index 0000000..ceeab3e\n" +
+		"--- /dev/null\n" +
+		"+++ b/start.mp3\n" +
+		"@@ -0,0 +1 @@\n" +
+		"+./warcraft/end.mp3\n" +
+		"\\ No newline at end of file\n"
+	result := Parse(raw)
+	require.Len(t, result, 1)
+	assert.True(t, result[0].Binary)
+	assert.Empty(t, result[0].Hunks)
+}

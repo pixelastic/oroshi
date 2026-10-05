@@ -2,7 +2,12 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  bats_mock_env "OROSHI_ANTHROPIC_API_KEY" "test-key-abc"
+  # Fake OROSHI_ROOT with a fake config, so tests never load the real API key
+  bats_mock_env OROSHI_ROOT "$BATS_TMP_DIR/oroshi"
+  bats_mock_env HOSTNAME "test-host"
+  ANTHROPIC_CONFIG="$BATS_TMP_DIR/oroshi/private/config/term/zsh/local/test-host/anthropic.zsh"
+  mkdir -p "$(dirname "$ANTHROPIC_CONFIG")"
+  echo "export OROSHI_ANTHROPIC_API_KEY=test-key-abc" >"$ANTHROPIC_CONFIG"
 }
 
 # Mock curl: write response body to --output file, print HTTP code to stdout
@@ -204,12 +209,12 @@ BASH
   [[ "$args" == *"claude-sonnet-4-6"* ]]
 }
 
-@test "returns exit code 1 when OROSHI_ANTHROPIC_API_KEY is empty" {
-  bats_mock_env "OROSHI_ANTHROPIC_API_KEY" ""
+@test "returns exit code 1 when the anthropic config file is missing" {
+  rm "$ANTHROPIC_CONFIG"
 
   bats_run_zsh "claude-api 'hello'"
   [[ "$status" -eq 1 ]]
-  [[ "$output" == *"OROSHI_ANTHROPIC_API_KEY"* ]]
+  [[ "$output" == *"Anthropic config not found"* ]]
 }
 
 @test "sends OROSHI_ANTHROPIC_API_KEY in x-api-key header" {

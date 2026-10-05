@@ -198,7 +198,6 @@
     "model-openai":           "amber-6",
     "model-groq":             "orange",
     "model-parakeet":         "gray",
-    "postprocess-none":       "gray",
     "postprocess-midjourney": "purple"
   },
 

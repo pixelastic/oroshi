@@ -19,7 +19,7 @@ setup() {
   bats_run_zsh "mode-status"
   local stripped="$(bats_strip_ansi "$output")"
   [[ "$stripped" == *"sound"*"disabled"* ]]
-  [[ "$stripped" == *"mic2txt-autosubmit"*"disabled"* ]]
+  [[ "$stripped" == *"mic2txt-autosubmit"*"enabled"* ]]
   [[ "$stripped" == *"mic2txt-model"*"openai"* ]]
   [[ "$stripped" == *"mic2txt-postprocess"*"none"* ]]
 }
