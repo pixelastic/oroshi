@@ -1,0 +1,43 @@
+# Search Confluence pages by text, output JSON: id, title, space, url, excerpt
+# Usage:
+# $ confluence-search 'mobility pass'           # Pages matching the text
+# $ confluence-search --limit 5 'mobility pass' # Custom limit (default: 25)
+setopt local_options err_return
+
+zparseopts -E -D \
+  -limit:=flagLimit
+
+local limit=${flagLimit[2]:-25}
+
+local query=$1
+# A query is required
+if [[ "$query" == "" ]]; then
+  echoerr "Usage: confluence-search [--limit N] <query>"
+  return 1
+fi
+
+# Quotes and backslashes must not break out of the CQL string
+local escapedQuery=${query//\\/\\\\}
+escapedQuery=${escapedQuery//\"/\\\"}
+
+local cql="type = page AND text ~ \"${escapedQuery}\""
+local encodedCql="$(jq \
+  --null-input \
+  --raw-output \
+  --arg cql "$cql" \
+  '$cql | @uri')"
+
+local response="$(confluence-api "wiki/rest/api/search?cql=${encodedCql}&limit=${limit}")"
+
+# The API helper already printed the error
+[[ "$response" == "" ]] && return 1
+
+print -r -- "$response" | jq \
+  --arg domain "$OROSHI_CONFLUENCE_DOMAIN" \
+'[.results[] | {
+    id: .content.id,
+    title: .content.title,
+    space: .resultGlobalContainer.title,
+    url: "https://\($domain)/wiki\(.url)",
+    excerpt: (.excerpt | gsub("@@@(end)?hl@@@"; ""))
+  }]'

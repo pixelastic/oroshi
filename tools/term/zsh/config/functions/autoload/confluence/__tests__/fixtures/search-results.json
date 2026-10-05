@@ -1,0 +1,31 @@
+{
+  "results": [
+    {
+      "content": {
+        "id": "111",
+        "type": "page",
+        "title": "Mobility Pass Program"
+      },
+      "title": "Mobility Pass Program",
+      "excerpt": "Apply for the @@@hl@@@mobility@@@endhl@@@ @@@hl@@@pass@@@endhl@@@ today",
+      "url": "/spaces/PAP/pages/111/Mobility+Pass+Program",
+      "resultGlobalContainer": {
+        "title": "People and Places",
+        "displayUrl": "/spaces/PAP"
+      }
+    },
+    {
+      "content": { "id": "222", "type": "page", "title": "Pass FAQ" },
+      "title": "Pass FAQ",
+      "excerpt": "Frequently asked questions",
+      "url": "/spaces/PAP/pages/222/Pass+FAQ",
+      "resultGlobalContainer": {
+        "title": "People and Places",
+        "displayUrl": "/spaces/PAP"
+      }
+    }
+  ],
+  "start": 0,
+  "limit": 25,
+  "size": 2
+}
