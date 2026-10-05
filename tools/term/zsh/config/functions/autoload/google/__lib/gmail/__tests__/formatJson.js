@@ -3,10 +3,11 @@ import { gmailFormatJson } from '../formatJson.js';
 describe('gmailFormatJson', () => {
   it.each([
     {
-      title: 'outputs id, from, subject, date and snippet',
+      title: 'outputs id, threadId, from, subject, date and snippet',
       input: [
         {
           id: 'a1',
+          threadId: 't1',
           from: 'Alice <alice@example.com>',
           subject: 'Hello',
           date: 'Mon, 1 Jan 2026 10:00:00 +0000',
@@ -16,6 +17,7 @@ describe('gmailFormatJson', () => {
       expected: [
         {
           id: 'a1',
+          threadId: 't1',
           from: 'Alice <alice@example.com>',
           subject: 'Hello',
           date: 'Mon, 1 Jan 2026 10:00:00 +0000',
@@ -28,6 +30,7 @@ describe('gmailFormatJson', () => {
       input: [
         {
           id: 'b2',
+          threadId: 't2',
           from: 'bob@example.com',
           subject: 'Re: "Quotes" and\nnewlines',
           date: 'Tue, 2 Jan 2026 10:00:00 +0000',
@@ -37,6 +40,7 @@ describe('gmailFormatJson', () => {
       expected: [
         {
           id: 'b2',
+          threadId: 't2',
           from: 'bob@example.com',
           subject: 'Re: "Quotes" and\nnewlines',
           date: 'Tue, 2 Jan 2026 10:00:00 +0000',
@@ -49,6 +53,7 @@ describe('gmailFormatJson', () => {
       input: [
         {
           id: 'a1',
+          threadId: 't1',
           from: 'f',
           subject: 's',
           date: 'd',
@@ -58,7 +63,14 @@ describe('gmailFormatJson', () => {
         },
       ],
       expected: [
-        { id: 'a1', from: 'f', subject: 's', date: 'd', snippet: 'x' },
+        {
+          id: 'a1',
+          threadId: 't1',
+          from: 'f',
+          subject: 's',
+          date: 'd',
+          snippet: 'x',
+        },
       ],
     },
     {

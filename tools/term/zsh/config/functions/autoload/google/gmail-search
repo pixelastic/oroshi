@@ -1,4 +1,5 @@
-# Search mails with a native Gmail query, output JSON: id, from, subject, date, snippet
+# Search mails with a native Gmail query, output JSON: id, threadId, from, subject, date, snippet
+# Results stay per message. Pass threadId to gmail-read to read the whole thread
 # Usage:
 # $ gmail-search 'in:inbox newer_than:3m'  # pro account, whole account by default
 # $ gmail-search --perso 'from:bob'        # perso account

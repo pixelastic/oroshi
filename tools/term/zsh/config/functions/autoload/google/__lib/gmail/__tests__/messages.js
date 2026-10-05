@@ -8,6 +8,7 @@ describe('gmailMessages', () => {
       vi.spyOn(__, 'fetchIds').mockReturnValue([{ id: 'a1' }, { id: 'b2' }]);
       vi.spyOn(__, 'fetchMessage').mockImplementation((_auth, id) => ({
         id,
+        threadId: `thread-${id}`,
         snippet: `snippet ${id}`,
         payload: {
           headers: [
@@ -41,6 +42,7 @@ describe('gmailMessages', () => {
       expect(actual).toEqual([
         {
           id: 'a1',
+          threadId: 'thread-a1',
           from: 'from-a1@example.com',
           subject: 'subject a1',
           date: 'Mon, 1 Jan 2026 10:00:00 +0000',
@@ -48,6 +50,7 @@ describe('gmailMessages', () => {
         },
         {
           id: 'b2',
+          threadId: 'thread-b2',
           from: 'from-b2@example.com',
           subject: 'subject b2',
           date: 'Mon, 1 Jan 2026 10:00:00 +0000',

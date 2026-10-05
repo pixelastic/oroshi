@@ -14,7 +14,7 @@ export const gmailMessages = {
    * @param {object} options - Search options
    * @param {string} options.query - Gmail search query
    * @param {number} options.limit - Maximum number of messages
-   * @returns {object[]} Normalized messages { id, from, subject, date, snippet }
+   * @returns {object[]} Normalized messages { id, threadId, from, subject, date, snippet }
    */
   async list(auth, { query, limit }) {
     const ids = await __.fetchIds(auth, { query, limit });
@@ -155,11 +155,12 @@ __ = {
   /**
    * Convert a Gmail message resource to a flat message
    * @param {object} message - Gmail message resource
-   * @returns {object} { id, from, subject, date, snippet }
+   * @returns {object} { id, threadId, from, subject, date, snippet }
    */
   normalize(message) {
     return {
       id: message.id,
+      threadId: message.threadId,
       from: header(message, 'From'),
       subject: header(message, 'Subject'),
       date: header(message, 'Date'),
