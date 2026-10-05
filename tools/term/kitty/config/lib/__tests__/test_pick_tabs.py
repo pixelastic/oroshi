@@ -1,7 +1,7 @@
-import pytest
 from unittest.mock import MagicMock
 
 import lib.pick_tabs as pick_tabs
+import pytest
 from lib.state import tabState
 
 # Width 53 per tab (len 52 + separator 1).

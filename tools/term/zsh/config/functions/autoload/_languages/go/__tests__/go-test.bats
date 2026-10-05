@@ -87,3 +87,13 @@ setup() {
   [[ "$(cat "$BATS_TMP_DIR/calls.txt")" == *"test ./pkg/parser/..."* ]]
   [[ "$(cat "$BATS_TMP_DIR/calls.txt")" == *"test ./pkg/lexer/..."* ]]
 }
+
+@test "exits 0 with no arguments, without calling go" {
+  go() { echo "go $*" >> "$BATS_TMP_DIR/calls.txt"; }
+  bats_mock go
+
+  bats_run_zsh "go-test"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+  [[ ! -f "$BATS_TMP_DIR/calls.txt" ]]
+}

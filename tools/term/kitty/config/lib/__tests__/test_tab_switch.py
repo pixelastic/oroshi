@@ -1,5 +1,5 @@
-import pytest
 import lib.tab_switch as tab_switch
+import pytest
 from lib.state import tabState
 
 

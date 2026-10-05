@@ -1,7 +1,8 @@
 import os
+
+import lib.redraw as redraw
 import pytest
 from lib import files
-import lib.redraw as redraw
 from lib.state import tabState
 
 

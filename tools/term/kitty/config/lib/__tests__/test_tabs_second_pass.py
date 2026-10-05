@@ -1,7 +1,8 @@
-import pytest
 from unittest.mock import MagicMock
-from lib.tabs_second_pass import draw_tab_item, second_pass
+
+import pytest
 from lib.state import tabState
+from lib.tabs_second_pass import draw_tab_item, second_pass
 
 
 @pytest.fixture(autouse=True)

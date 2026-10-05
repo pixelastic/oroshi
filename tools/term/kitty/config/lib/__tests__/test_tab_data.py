@@ -1,7 +1,7 @@
-import pytest
 from unittest.mock import MagicMock
 
 import lib.tab_data as tab_data
+import pytest
 from lib.state import tabState
 
 

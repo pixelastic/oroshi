@@ -1,18 +1,21 @@
-# Run pytest on one or more files or directories
+# Run pytest on the test files of the given files or directories
 # Usage:
 # $ python-test ./path/to/test_file.py              # Run a single test file
-# $ python-test ./path/to/test_a.py ./test_b.py     # Run multiple test files
+# $ python-test ./path/to/module.py                 # Source file → resolved via python-test-path
 # $ python-test ./path/to/tests/                    # Run all tests in a directory
+# $ python-test module.py __tests__/test_module.py  # Mixed inputs (deduplicated)
 setopt local_options err_return
 
-local targets=()
-for arg in "$@"; do
-  local target="${arg:a}"
-  # Skip non .py files
-  [[ "$target" != *.py && ! -d "$target" ]] && continue
-  # Skip missing files
-  [[ ! -e "$target" ]] && continue
-  targets+=("$target")
-done
+# Expand directories, filter to Python files, map to test files
+local expanded="$(file-expand --filter is-python --map python-test-path "$@")"
 
-pytest --spec --no-header "${targets[@]}"
+# No testable files found
+[[ "$expanded" == "" ]] && return 0
+
+# Deduplicate: a source file and its test file resolve to the same test
+local -aU testFiles=("${(@f)expanded}")
+
+pytest \
+  --spec \
+  --no-header \
+  "${testFiles[@]}" 2>&1

@@ -1,6 +1,5 @@
-import pytest
-
 import lib.projects as projects
+import pytest
 
 
 @pytest.fixture(autouse=True)

@@ -15,9 +15,10 @@ setup() {
 
 # ─── RETURN EARLY ─────────────────────────────────────────────────────────────
 
-@test "exits 1 with no arguments" {
+@test "exits 0 with no arguments, without calling bats" {
   bats_run_zsh "zsh-test"
-  [[ "$status" -eq 1 ]]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
   [[ ! -f "$BATS_TMP_DIR/calls.txt" ]]
 }
 

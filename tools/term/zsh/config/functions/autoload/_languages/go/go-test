@@ -6,8 +6,8 @@
 # $ go-test file.go ./pkg/                       # Mixed inputs
 setopt local_options err_return
 
-# No arguments provided
-[[ $# -eq 0 ]] && return 1
+# No arguments: nothing to test
+[[ $# -eq 0 ]] && return 0
 
 # Expand directories, filter to Go files, map to test files
 local expanded="$(file-expand --filter is-go --map go-test-path "$@")"

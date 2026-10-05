@@ -6,8 +6,8 @@
 # $ zsh-test ./misc/                         # Expand directory, run all its tests
 setopt local_options err_return
 
-# No arguments provided
-[[ $# -eq 0 ]] && return 1
+# No arguments: nothing to test
+[[ $# -eq 0 ]] && return 0
 
 # Expand directories, map ZSH sources and BATS files to their test files
 local -aU testFiles=(

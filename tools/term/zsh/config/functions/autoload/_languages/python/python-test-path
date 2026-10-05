@@ -1,26 +1,22 @@
-# Given a path to a Python source file, return the path to its pytest test file
+# Given a path to a Python source file, return the absolute path to its pytest test file
 # Usage:
-# $ python-test-path ./path/to/module.py
+# $ python-test-path ./path/to/module.py                 # → /abs/path/to/__tests__/test_module.py
+# $ python-test-path ./path/to/__tests__/test_module.py  # Test file, returned as-is (absolute)
 setopt local_options err_return
 
-local filePath="$1"
-
 # No argument provided
-[[ "$filePath" == "" ]] && return 1
+[[ "$1" == "" ]] && return 1
 
-local parentDir="${filePath:h:t}"
-local fileName="${filePath:t}"
-local baseName="${filePath:t:r}"
-local dir="${filePath:h}"
+local filePath="${1:a}"
 
 # If the file is already a pytest test file, return it directly
-if [[ "$parentDir" == "__tests__" && "$fileName" == test_*.py ]]; then
+if [[ "${filePath:h:t}" == "__tests__" && "${filePath:t}" == test_*.py ]]; then
   [[ ! -f "$filePath" ]] && return 1
   echo "$filePath"
-  return
+  return 0
 fi
 
-local testFile="$dir/__tests__/test_${baseName}.py"
+local testFile="${filePath:h}/__tests__/test_${filePath:t:r}.py"
 
 # No matching test file
 [[ ! -f "$testFile" ]] && return 1

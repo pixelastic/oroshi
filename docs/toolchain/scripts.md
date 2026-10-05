@@ -185,7 +185,8 @@ and `{lang}-lint` relate to each other.
 
 ```zsh
 # Tester. Runs the language's test runner.
-# Exits non-zero on failure, 0 on success or when no tests are found.
+# Exits 1 on failure
+# Exits 0 on success, when no tests are found or with no argument.
 # All output goes to stdout.
 # Accepts files and directories (see Argument handling above).
 # After filtering, resolves all files to test files via {lang}-test-path
