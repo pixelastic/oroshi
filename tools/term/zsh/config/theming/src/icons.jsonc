@@ -134,6 +134,7 @@
   "plan":              " ",
   "video-stream-audio": " ",
   "table-separator":    "▮",
+  "table-separator-secondary": "▯",
 
   // Colors
   "colors": {
