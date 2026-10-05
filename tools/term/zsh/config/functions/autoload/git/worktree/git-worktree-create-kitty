@@ -1,0 +1,23 @@
+# Create a Worktree for a branch in a new focused Kitty tab
+# The calling shell never changes directory
+# Usage:
+# $ git-worktree-create-kitty fix/bug   # → Kitty tab running git-worktree-create fix/bug
+setopt local_options err_return
+
+local branch="$1"
+
+# Stop if not in a git repository
+git-directory-is-repository || return 1
+
+# Branch name is required
+[[ "$branch" == "" ]] && return 1
+
+local tabTitle="$(git-branch-slug "$branch")"
+
+# Run zsh interactively so it loads .zshrc; otherwise the tab lacks env vars and autoloaded functions
+# Finish with exec zsh so the tab stays open once git-worktree-create ends; otherwise Kitty closes it
+local tabCommand="git-worktree-create ${(q)branch}; exec zsh"
+kitty-tab-create \
+  "$tabTitle" \
+  --focus \
+  --cmd "zsh -ic ${(qq)tabCommand}"

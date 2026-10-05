@@ -1,5 +1,6 @@
 # [w]orktree
 alias vwc='git-worktree-create'
+alias vwck='git-worktree-create-kitty'
 alias vwl='git-worktree-list'
 alias vwpl='git-worktree-pull'
 alias vwps='git-worktree-push'
