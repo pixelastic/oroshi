@@ -3,6 +3,7 @@
 # Usage:
 # $ python-lint ./path/to/file.py          # Stylish output (default)
 # $ python-lint --json ./path/to/file.py   # Unified JSON output
+# $ python-lint --fix ./path/to/file.py    # python-fix, then report what remains
 # $ python-lint ./path/to/dir/             # Expand directory to Python files
 # $ python-lint file1.py file2.py          # Multiple files
 setopt local_options err_return
@@ -10,6 +11,7 @@ setopt local_options err_return
 zparseopts -E -D \
   -fix=flagFix \
   -json=flagJson
+local isFix=${#flagFix}
 local isJson=${#flagJson}
 
 # No inputs provided
@@ -28,6 +30,11 @@ local -a inputs=("${(@f)expanded}")
 
 # Resolve inputs to absolute paths
 inputs=("${(@)inputs:a}")
+
+# Fix mode: python-fix first, linting is skipped when it fails
+if [[ $isFix == 1 ]]; then
+  python-fix "${inputs[@]}" || return 1
+fi
 
 # ruff exits 0 when clean, 1 on violations and 2 on internal errors
 local jsonOutput

@@ -201,3 +201,110 @@ setup() {
   [[ "$status" -eq 1 ]]
   [[ "$output" == *"No files provided"* ]]
 }
+
+# --- Fix mode (--fix) ---
+
+@test "--fix: formats the file and prints nothing when no violation remains" {
+  local file="$BATS_TMP_DIR/messy.py"
+  printf 'import os\nx=1\n' > "$file"
+
+  bats_run_zsh "python-lint --fix $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+  [[ "$(cat "$file")" == "x = 1" ]]
+}
+
+@test "--fix: fixes what ruff can fix, then reports what remains in stylish format" {
+  local file="$BATS_TMP_DIR/remaining.py"
+  printf 'import os\ny=undefined_name\n' > "$file"
+
+  bats_run_zsh "python-lint --fix $file"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"$file"* ]]
+  [[ "$output" == *"1:5  error  "* ]]
+  [[ "$output" == *"F821"* ]]
+  [[ "$output" != *"F401"* ]]
+  [[ "$(cat "$file")" == "y = undefined_name" ]]
+}
+
+@test "--fix --json: reports remaining violations as unified JSON" {
+  local file="$BATS_TMP_DIR/remaining.py"
+  printf 'import os\ny=undefined_name\n' > "$file"
+
+  bats_run_zsh "python-lint --fix --json $file"
+  [[ "$status" -eq 1 ]]
+  [[ "$(printf '%s' "$output" | jq 'length')" == "1" ]]
+  [[ "$(printf '%s' "$output" | jq -r '.[0].code')" == "F821" ]]
+  [[ "$(printf '%s' "$output" | jq -r '.[0].file')" == "$file" ]]
+}
+
+@test "--fix --json: outputs [] and exits 0 when no violation remains" {
+  local file="$BATS_TMP_DIR/messy.py"
+  printf 'import os\nx=1\n' > "$file"
+
+  bats_run_zsh "python-lint --fix --json $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "[]" ]]
+}
+
+@test "--fix: same result as python-fix then python-lint" {
+  local fixFile="$BATS_TMP_DIR/fix.py"
+  local lintFile="$BATS_TMP_DIR/lint.py"
+  printf 'import os\ny=undefined_name\n' > "$fixFile"
+  cp "$fixFile" "$lintFile"
+
+  bats_run_zsh "python-fix $fixFile && python-lint --json $fixFile"
+  local expected="${output//$fixFile/FILE}"
+  bats_run_zsh "python-lint --fix --json $lintFile"
+  [[ "${output//$lintFile/FILE}" == "$expected" ]]
+  [[ "$(cat "$lintFile")" == "$(cat "$fixFile")" ]]
+}
+
+@test "--fix: does not lint and exits 1 when the fix step fails" {
+  local file="$BATS_TMP_DIR/dirty.py"
+  printf 'import os\n' > "$file"
+
+  python-fix() { return 1; }
+  ruff() { touch "$BATS_TMP_DIR/ruff_called"; }
+  bats_mock python-fix ruff
+
+  bats_run_zsh "python-lint --fix $file"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == "" ]]
+  [[ ! -e "$BATS_TMP_DIR/ruff_called" ]]
+}
+
+@test "--fix: syntax error makes the fix step fail, exits 1" {
+  local file="$BATS_TMP_DIR/broken.py"
+  printf 'def (:\n' > "$file"
+
+  bats_run_zsh "python-lint --fix --json $file"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" != "["* ]]
+}
+
+@test "--fix: works on several files and directories" {
+  mkdir -p "$BATS_TMP_DIR/pkg"
+  printf 'import os\nx=1\n' > "$BATS_TMP_DIR/pkg/a.py"
+  printf 'import sys\ny=undefined_name\n' > "$BATS_TMP_DIR/b.py"
+
+  bats_run_zsh "python-lint --fix --json $BATS_TMP_DIR/pkg $BATS_TMP_DIR/b.py"
+  [[ "$status" -eq 1 ]]
+  [[ "$(printf '%s' "$output" | jq 'length')" == "1" ]]
+  [[ "$(printf '%s' "$output" | jq -r '.[0].file')" == "$BATS_TMP_DIR/b.py" ]]
+  [[ "$(cat "$BATS_TMP_DIR/pkg/a.py")" == "x = 1" ]]
+  [[ "$(cat "$BATS_TMP_DIR/b.py")" == "y = undefined_name" ]]
+}
+
+@test "--fix: no Python file after filtering, python-fix is not run" {
+  local txt="$BATS_TMP_DIR/notes.txt"
+  printf 'hello\n' > "$txt"
+
+  python-fix() { touch "$BATS_TMP_DIR/fix_called"; }
+  bats_mock python-fix
+
+  bats_run_zsh "python-lint --fix $txt"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+  [[ ! -e "$BATS_TMP_DIR/fix_called" ]]
+}
