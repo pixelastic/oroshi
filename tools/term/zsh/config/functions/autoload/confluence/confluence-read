@@ -2,7 +2,7 @@
 # Usage:
 # $ confluence-read 123456                                                   # Page 123456, as Markdown
 # $ confluence-read https://example.atlassian.net/wiki/spaces/X/pages/123456 # Same, from a page url
-setopt local_options err_return
+setopt local_options err_return extended_glob
 
 local input=$1
 
@@ -37,5 +37,8 @@ for comment in $noisyComments; do
   markdown=${markdown//"<!-- $comment -->"$'\n\n'/}
   markdown=${markdown//"<!-- $comment -->"/}
 done
+
+# Inline comment markers carry a variable id, so they need a pattern
+markdown=${markdown//'<!-- comment-ref: '[0-9a-f-]##' -->'/}
 
 print -r -- "$markdown"

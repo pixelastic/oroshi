@@ -159,3 +159,12 @@ stub_curl() {
   bats_run_zsh "confluence-read 789012"
   [[ "$output" != *$'\n\n\n'* ]]
 }
+
+@test "removes inline comment reference markers" {
+  stub_curl "page-with-inline-comment.json"
+
+  bats_run_zsh "confluence-read 345678"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"comment-ref"* ]]
+  [[ "$output" == *"Run the agent now"* ]]
+}
