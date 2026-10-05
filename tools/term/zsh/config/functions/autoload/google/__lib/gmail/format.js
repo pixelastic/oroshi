@@ -3,6 +3,7 @@ import { _, dayjs } from 'golgoth';
 import { readJson } from 'firost';
 import cliTruncate from 'cli-truncate';
 import stringWidth from 'string-width';
+import { gmailSenderName } from './senderName.js';
 
 export let __;
 
@@ -38,7 +39,11 @@ export async function gmailFormat(messages, { width }) {
       _.trimEnd(
         [
           cell(formatDate(message.date), DATE_WIDTH, colors[DATE_COLOR]),
-          cell(senderName(message.from), SENDER_WIDTH, colors[SENDER_COLOR]),
+          cell(
+            gmailSenderName(message.from),
+            SENDER_WIDTH,
+            colors[SENDER_COLOR],
+          ),
           cell(message.subject, subjectWidth, colors[SUBJECT_COLOR]),
         ].join(SEPARATOR),
       ),
@@ -86,20 +91,6 @@ function cell(text, size, color) {
     return `${truncated}${padding}`;
   }
   return `\u001B[38;5;${color.ansi}m${truncated}\u001B[0m${padding}`;
-}
-
-/**
- * Keep the display name of a sender, or the raw value if there is none
- * @param {string} from - From header, like `Name <name@example.com>`
- * @returns {string} Display name
- */
-function senderName(from) {
-  const name = _.chain(from)
-    .replace(/<[^>]*>/, '')
-    .trim()
-    .trim('"')
-    .value();
-  return name || from;
 }
 
 /**

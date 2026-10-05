@@ -50,6 +50,18 @@ export const gmailMessages = {
   },
 
   /**
+   * Convert a metadata-only Gmail message resource to a flat message
+   * @param {object} message - Gmail message resource, fetched with the metadata format
+   * @returns {object} Normalized message { id, threadId, from, subject, date, snippet, unread }
+   */
+  parseMetadata(message) {
+    return {
+      ...__.normalize(message),
+      unread: _.includes(message.labelIds, 'UNREAD'),
+    };
+  },
+
+  /**
    * Download one attachment of a message. Gmail changes attachment ids at
    * each read, so the attachment is found by its stable part id and the fresh
    * attachment id of the same read is used to download it

@@ -1,23 +1,23 @@
 import { fileURLToPath } from 'node:url';
-import { _ } from 'golgoth';
+import { pMap } from 'golgoth';
 import { googleAuth } from '../google/auth.js';
 import { gmailFormatRaw } from './formatRaw.js';
 import { gmailLimits } from './limits.js';
-import { gmailMessages } from './messages.js';
+import { gmailThreads } from './threads.js';
 
 /**
- * List inbox mails as raw lines, one per mail
+ * List inbox threads as raw lines, one per thread
  * @param {string} account - "pro" or "perso"
- * @param {number} limit - Maximum number of mails
- * @returns {string[]} Raw lines
+ * @param {number} limit - Maximum number of threads
+ * @returns {Promise<string[]>} Raw lines, unread threads first
  */
 export async function gmailInboxRaw(account, limit = gmailLimits.inbox) {
   const auth = await googleAuth(account);
-  const messages = await gmailMessages.list(auth, {
+  const threads = await gmailThreads.list(auth, {
     query: 'in:inbox',
     limit,
   });
-  return _.map(messages, gmailFormatRaw);
+  return pMap(threads, gmailFormatRaw);
 }
 
 // CLI entry

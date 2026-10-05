@@ -1,3 +1,4 @@
+import { _ } from 'golgoth';
 import { __, gmailThreads } from '../threads.js';
 
 describe('gmailThreads', () => {
@@ -101,6 +102,133 @@ describe('gmailThreads', () => {
       vi.spyOn(__, 'fetchThread').mockReturnValue({ id: 't1' });
 
       const actual = await gmailThreads.get(auth, 't1');
+
+      expect(actual).toEqual([]);
+    });
+  });
+
+  describe('list', () => {
+    const auth = { fake: 'auth' };
+    const message = (id, { from, internalDate, labelIds = [], ...rest }) => ({
+      id,
+      internalDate: String(internalDate),
+      labelIds,
+      snippet: `snippet ${id}`,
+      payload: {
+        headers: [
+          { name: 'From', value: from },
+          { name: 'Subject', value: rest.subject || `subject ${id}` },
+          { name: 'Date', value: rest.date || `date ${id}` },
+        ],
+      },
+    });
+    const threads = {
+      t1: {
+        id: 't1',
+        messages: [
+          message('a1', {
+            from: 'Alice <alice@example.com>',
+            internalDate: 1000,
+          }),
+          message('a2', {
+            from: 'Bob <bob@example.com>',
+            internalDate: 2000,
+            labelIds: ['UNREAD'],
+          }),
+          message('a3', {
+            from: '"Alice" <alice@example.com>',
+            internalDate: 3000,
+          }),
+        ],
+      },
+      t2: {
+        id: 't2',
+        messages: [
+          message('b1', { from: 'Carol <carol@example.com>', internalDate: 1 }),
+        ],
+      },
+      t3: {
+        id: 't3',
+        messages: [
+          message('c1', {
+            from: 'Dan <dan@example.com>',
+            internalDate: 1,
+            labelIds: ['UNREAD'],
+          }),
+        ],
+      },
+    };
+
+    beforeEach(() => {
+      vi.spyOn(__, 'fetchThreadIds').mockReturnValue([
+        { id: 't1' },
+        { id: 't2' },
+        { id: 't3' },
+      ]);
+      vi.spyOn(__, 'fetchThreadMetadata').mockImplementation(
+        (_auth, id) => threads[id],
+      );
+    });
+
+    it('passes the query and the limit to the thread search', async () => {
+      await gmailThreads.list(auth, { query: 'in:inbox', limit: 5 });
+
+      expect(__.fetchThreadIds).toHaveBeenCalledWith(auth, {
+        query: 'in:inbox',
+        limit: 5,
+      });
+    });
+
+    it('flags a thread with an unread message as unread', async () => {
+      const actual = await gmailThreads.list(auth, { query: 'q', limit: 10 });
+
+      expect(_.map(actual, 'unread')).toEqual([true, true, false]);
+    });
+
+    it('counts the messages of the thread', async () => {
+      const actual = await gmailThreads.list(auth, { query: 'q', limit: 10 });
+
+      expect(_.find(actual, { threadId: 't1' }).count).toEqual(3);
+    });
+
+    it('takes date, subject and snippet from the latest message', async () => {
+      const actual = await gmailThreads.list(auth, { query: 'q', limit: 10 });
+
+      expect(_.find(actual, { threadId: 't1' })).toMatchObject({
+        date: 'date a3',
+        subject: 'subject a3',
+        snippet: 'snippet a3',
+      });
+    });
+
+    it('deduplicates authors by display name, unread authors first', async () => {
+      const actual = await gmailThreads.list(auth, { query: 'q', limit: 10 });
+
+      expect(_.find(actual, { threadId: 't1' }).authors).toEqual([
+        'Bob',
+        'Alice',
+      ]);
+    });
+
+    it('puts unread threads first, each group keeping its order', async () => {
+      const actual = await gmailThreads.list(auth, { query: 'q', limit: 10 });
+
+      expect(_.map(actual, 'threadId')).toEqual(['t1', 't3', 't2']);
+    });
+
+    it('gives back a thread without messages as an empty summary', async () => {
+      vi.spyOn(__, 'fetchThreadIds').mockReturnValue([{ id: 't9' }]);
+      vi.spyOn(__, 'fetchThreadMetadata').mockReturnValue({ id: 't9' });
+
+      const actual = await gmailThreads.list(auth, { query: 'q', limit: 10 });
+
+      expect(actual).toEqual([]);
+    });
+
+    it('returns no thread when the search finds none', async () => {
+      vi.spyOn(__, 'fetchThreadIds').mockReturnValue([]);
+
+      const actual = await gmailThreads.list(auth, { query: 'q', limit: 10 });
 
       expect(actual).toEqual([]);
     });

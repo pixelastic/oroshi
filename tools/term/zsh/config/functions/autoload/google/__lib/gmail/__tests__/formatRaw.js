@@ -1,34 +1,86 @@
 import { gmailFormatRaw } from '../formatRaw.js';
+import { __ as separators } from '../separators.js';
 
 describe('gmailFormatRaw', () => {
+  const thread = {
+    threadId: 't1',
+    unread: true,
+    date: 'Fri, 03 Oct 2026 21:26:59 +0200',
+    count: 3,
+    authors: ['Bob', 'Alice Martin'],
+    subject: 'Quarterly report',
+    snippet: 'Please find the report attached',
+  };
+
+  beforeEach(() => {
+    vi.spyOn(separators, 'readIcons').mockReturnValue({
+      'table-separator': '▮',
+      'table-separator-secondary': '▯',
+    });
+  });
+
+  it('outputs seven fields in order', async () => {
+    const actual = await gmailFormatRaw(thread);
+
+    expect(actual).toEqual(
+      't1▮1▮2026-10-03T19:26:59.000Z▮3▮Bob▯Alice Martin▮Quarterly report▮Please find the report attached',
+    );
+  });
+
   it.each([
     {
-      title: 'joins id, subject and first content line with ▮',
-      message: { id: 'a1', subject: 'Hello', snippet: 'First line' },
-      expected: 'a1▮Hello▮First line',
+      title: 'writes a read thread as 0',
+      change: { unread: false },
+      field: 1,
+      expected: '0',
     },
     {
-      title: 'strips newlines from the subject',
-      message: { id: 'a1', subject: 'Hel\nlo\r\nworld', snippet: 'x' },
-      expected: 'a1▮Hel lo world▮x',
+      title: 'leaves the date empty when it is invalid',
+      change: { date: 'not a date' },
+      field: 2,
+      expected: '',
     },
     {
-      title: 'keeps only the first line of the content',
-      message: { id: 'a1', subject: 'S', snippet: 'one\ntwo\nthree' },
-      expected: 'a1▮S▮one',
+      title: 'replaces newlines in the subject with a space',
+      change: { subject: 'Hel\nlo\r\nworld' },
+      field: 5,
+      expected: 'Hel lo world',
     },
     {
-      title: 'strips carriage returns from the content line',
-      message: { id: 'a1', subject: 'S', snippet: 'one\r\ntwo' },
-      expected: 'a1▮S▮one',
+      title: 'replaces newlines in the snippet with a space',
+      change: { snippet: 'one\ntwo' },
+      field: 6,
+      expected: 'one two',
     },
     {
-      title: 'handles empty subject and snippet',
-      message: { id: 'a1', subject: '', snippet: '' },
-      expected: 'a1▮▮',
+      title: 'strips both separators from the subject',
+      change: { subject: 'a▮b▯c' },
+      field: 5,
+      expected: 'abc',
     },
-  ])('$title', ({ message, expected }) => {
-    const actual = gmailFormatRaw(message);
-    expect(actual).toEqual(expected);
+    {
+      title: 'strips both separators from an author name',
+      change: { authors: ['Al▮ice', 'B▯ob'] },
+      field: 4,
+      expected: 'Alice▯Bob',
+    },
+    {
+      title: 'strips separators from the thread id',
+      change: { threadId: 't▮1' },
+      field: 0,
+      expected: 't1',
+    },
+    {
+      title: 'handles an empty subject and snippet',
+      change: { subject: '', snippet: '' },
+      field: 5,
+      expected: '',
+    },
+  ])('$title', async ({ change, field, expected }) => {
+    const line = await gmailFormatRaw({ ...thread, ...change });
+    const actual = line.split('▮');
+
+    expect(actual).toHaveLength(7);
+    expect(actual).toHaveProperty(field, expected);
   });
 });
