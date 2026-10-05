@@ -1,12 +1,19 @@
-# Read a Confluence page by its id, output Markdown
+# Read a Confluence page by its url or id, output Markdown
 # Usage:
-# $ confluence-read 123456   # Page 123456, as Markdown
+# $ confluence-read 123456                                                   # Page 123456, as Markdown
+# $ confluence-read https://example.atlassian.net/wiki/spaces/X/pages/123456 # Same, from a page url
 setopt local_options err_return
 
-local id=$1
-# An id is required
+local input=$1
+
+# A bare id passes through, a page url yields the digits after /pages/
+local id=""
+[[ "$input" =~ '^[0-9]+$' ]] && id=$input
+[[ "$input" =~ '/pages/([0-9]+)(/|\?|#|$)' ]] && id=$match[1]
+
+# Neither an id nor a page url
 if [[ "$id" == "" ]]; then
-  echoerr "Usage: confluence-read <id>"
+  echoerr "Usage: confluence-read <url|id>"
   return 1
 fi
 
