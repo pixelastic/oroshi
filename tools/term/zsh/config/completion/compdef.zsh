@@ -78,8 +78,7 @@ compdef _git-branches-local \
   git-branch-rebase \
   git-branch-remove \
   git-branch-rename \
-  git-branch-switch \
-  git-worktree-create
+  git-branch-switch
 compdef _git-branches-remote \
   git-branch-pull \
   git-branch-remove-remote
