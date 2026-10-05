@@ -53,7 +53,7 @@ lib/
 
 Write a failing test for the bug or missing feature you want to implement.
 
-- Use `yarn run test <filepath>` to run the tests
+- Use `js-test <filepath>` to run the tests
 - Use `it.each` when testing similar behavior with different inputs
 - Use `try`/`catch` and `let actual` to test errors
 - See [Testing](./references/testing.md) for full examples
@@ -89,7 +89,7 @@ it.each([
 Write the simplest code that makes the test pass.
 No patterns yet — just correct behavior.
 
-- Use `yarn run test <filepath>` to run the tests
+- Use `js-test <filepath>` to run the tests
 
 ### Step 4 — Refactor
 
@@ -146,7 +146,7 @@ __ = {
 
 Write code that passes automated lint.
 
-- Use `yarn run lint:fix` to automatically fix common issues and see remaining ones
+- Use `js-lint --fix <filepath>` to automatically fix common issues and see remaining ones
 - Fix **every** violation, including pre-existing ones.
 
 ---
@@ -171,4 +171,4 @@ Write code that passes automated lint.
 - [ ] JSDoc on all functions (exported and private in `__`)
 - [ ] Existing comments preserved
 - [ ] Comments follow [Comments](./references/comments.md)
-- [ ] `yarn run lint:fix` run after changes
+- [ ] `js-lint --fix <filepath>` run after changes
