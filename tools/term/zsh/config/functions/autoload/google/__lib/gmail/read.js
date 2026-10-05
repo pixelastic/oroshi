@@ -1,22 +1,22 @@
 import { fileURLToPath } from 'node:url';
 import { googleAuth } from '../google/auth.js';
-import { gmailMessages } from './messages.js';
+import { gmailThreads } from './threads.js';
 
 /**
- * Read one mail
+ * Read every mail of a thread
  * @param {string} account - "pro" or "perso"
- * @param {string} id - Message id
- * @returns {Promise<object>} { id, from, to, subject, date, snippet, body, attachments }
+ * @param {string} threadId - Thread id
+ * @returns {Promise<object[]>} Messages { id, from, to, subject, date, snippet, body, attachments }, oldest first
  */
-export async function gmailRead(account, id) {
+export async function gmailRead(account, threadId) {
   const auth = await googleAuth(account);
-  return await gmailMessages.get(auth, id);
+  return await gmailThreads.get(auth, threadId);
 }
 
 // CLI entry
 const currentFile = fileURLToPath(import.meta.url);
 if (process.argv[1] === currentFile) {
-  const [account, id] = process.argv.slice(2);
-  const message = await gmailRead(account, id);
-  process.stdout.write(`${JSON.stringify(message, null, 2)}\n`);
+  const [account, threadId] = process.argv.slice(2);
+  const messages = await gmailRead(account, threadId);
+  process.stdout.write(`${JSON.stringify(messages, null, 2)}\n`);
 }

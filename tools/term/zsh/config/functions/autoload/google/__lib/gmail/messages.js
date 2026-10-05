@@ -30,6 +30,15 @@ export const gmailMessages = {
    */
   async get(auth, id) {
     const message = await __.fetchFull(auth, id);
+    return gmailMessages.parseFull(message);
+  },
+
+  /**
+   * Convert a full Gmail message resource to a message with its decoded body
+   * @param {object} message - Gmail message resource, fetched with the full format
+   * @returns {object} Normalized message { id, from, to, subject, date, snippet, body, attachments }
+   */
+  parseFull(message) {
     return {
       ...__.normalize(message),
       to: header(message, 'To'),

@@ -1,8 +1,9 @@
-# Read one mail, output JSON: id, from, to, subject, date, snippet, body, attachments
-# Each attachment has partId, filename, mimeType, size: pass partId to gmail-attachment
+# Read every mail of a thread, output a JSON array, oldest first
+# Each item has id, from, to, subject, date, snippet, body, attachments
+# Each attachment has partId, filename, mimeType, size: pass the mail id and partId to gmail-attachment
 # Usage:
-# $ gmail-read <id>          # pro account
-# $ gmail-read --perso <id>  # perso account
+# $ gmail-read <threadId>          # pro account
+# $ gmail-read --perso <threadId>  # perso account
 setopt local_options err_return
 
 zparseopts -E -D \
@@ -12,12 +13,12 @@ local isPerso=${#flagPerso}
 local account="pro"
 [[ $isPerso == 1 ]] && account="perso"
 
-local id=$1
-# An id is required
-if [[ "$id" == "" ]]; then
-  echoerr "Usage: gmail-read [--perso] <id>"
+local threadId=$1
+# A thread id is required
+if [[ "$threadId" == "" ]]; then
+  echoerr "Usage: gmail-read [--perso] <threadId>"
   return 1
 fi
 
 local libDir="${functions_source[$0]:A:h}/__lib"
-node "${libDir}/gmail/read.js" "$account" "$id"
+node "${libDir}/gmail/read.js" "$account" "$threadId"
