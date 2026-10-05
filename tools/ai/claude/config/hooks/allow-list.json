@@ -180,6 +180,7 @@
   "git-github-repo-exists",
   "git-github-repo-is-archived",
   "git-worktree-create",
+  "git-worktree-create-kitty",
   "git-worktree-delete",
   "git-worktree-is-oroshi",
   "git-worktree-list",
