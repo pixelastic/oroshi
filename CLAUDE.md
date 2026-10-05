@@ -1,20 +1,23 @@
 ## Commands
 
-- **Testing zsh:** Run `zsh-test <filepath>`
+- **Testing go:** Run `go-test <filepath>`
 - **Testing js:** Run `yarn run test <filepath>`
 - **Testing python:** Run `python-test <filepath>`
-- **Testing go:** Run `go-test <filepath>`
+- **Testing zsh:** Run `zsh-test <filepath>`
 - Tests files live in `__tests__` directories
 
-- **Linting zsh:** Run `zsh-lint <filepath>`
 - **Linting bats:** Run `bats-lint <filepath>`
+- **Linting go:** Run `go-lint <filepath>`
+- **Linting json:** Run `json-lint <filepath>`
 - **Linting js:** Run `yarn run lint:fix <filepath>`
 - **Linting python:** Run `python-lint <filepath>`
-- **Linting json:** Run `json-lint <filepath>`
-- **Linting xml:** Run `xml-lint <filepath>`
 - **Linting svg:** Run `svg-lint <filepath>`
 - **Linting toml:** Run `toml-lint <filepath>`
-- **Linting go:** Run `go-lint <filepath>`
+- **Linting xml:** Run `xml-lint <filepath>`
+- **Linting zsh:** Run `zsh-lint <filepath>`
+
+- **Mails**: Use `gmail-inbox-raw`, `gmail-read` and `gmail-search`
+- **Confluence**: Use `confluence-read` and `confluence-search`
 
 ## Code
 
