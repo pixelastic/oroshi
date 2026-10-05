@@ -21,10 +21,10 @@ fi
 
 # Find first eligible issue: not done, all blockers done, sorted by id
 local issueJson="$(jq '
-  [.[] | select(.done == true) | .id] as $done |
-  [.[] | select(.done == false) | select(.blocked_by | all(. as $b | $done | index($b) != null))] |
-  sort_by(.id) |
-  .[0]
+  [.[] | select(.done == true) | .id] as $done
+  | [.[] | select(.done == false) | select(.blocked_by | all(. as $b | $done | index($b) != null))]
+  | sort_by(.id)
+  | .[0]
 ' "$dir/state.json" 2>/dev/null)"
 
 # No eligible issue → deadlocked
@@ -37,9 +37,13 @@ local absDir="${dir:A}"
 jq -n \
   --argjson issue "$issueJson" \
   --arg dir "$absDir" \
+  --argjson doneCount "${fields[1]}" \
+  --argjson totalCount "${fields[2]}" \
 '{
     status: "ready",
     id: $issue.id,
+    currentIssueCount: ($doneCount + 1),
+    totalIssueCount: $totalCount,
     issue: ($dir+"/"+$issue.issue),
     state: ($dir+"/state.json"),
     guidance: ($dir+"/GUIDANCE.md"),

@@ -100,3 +100,68 @@ setup() {
   [[ "$status" -eq 0 ]]
   expect_json '.id' '01'
 }
+
+@test "outputs currentIssueCount 1 when no issue is done" {
+  printf '[
+    {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]},
+    {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]}
+  ]' >"$PLAN_DIR/state.json"
+  bats_run_zsh "ralph-start $PLAN_DIR"
+  [[ "$status" -eq 0 ]]
+  expect_json '.currentIssueCount' '1'
+}
+
+@test "outputs currentIssueCount as done count plus one when some issues are done" {
+  printf '[
+    {"id":"01","issue":"issues/01-foo.md","done":true, "blocked_by":[]},
+    {"id":"02","issue":"issues/02-bar.md","done":true, "blocked_by":[]},
+    {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]}
+  ]' >"$PLAN_DIR/state.json"
+  bats_run_zsh "ralph-start $PLAN_DIR"
+  [[ "$status" -eq 0 ]]
+  expect_json '.currentIssueCount' '3'
+}
+
+@test "outputs totalIssueCount as the number of issues in state.json" {
+  printf '[
+    {"id":"01","issue":"issues/01-foo.md","done":true, "blocked_by":[]},
+    {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]},
+    {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]}
+  ]' >"$PLAN_DIR/state.json"
+  bats_run_zsh "ralph-start $PLAN_DIR"
+  [[ "$status" -eq 0 ]]
+  expect_json '.totalIssueCount' '3'
+}
+
+@test "outputs correct counts when state.json is out of order" {
+  printf '[
+    {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]},
+    {"id":"01","issue":"issues/01-foo.md","done":true, "blocked_by":[]},
+    {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]}
+  ]' >"$PLAN_DIR/state.json"
+  bats_run_zsh "ralph-start $PLAN_DIR"
+  [[ "$status" -eq 0 ]]
+  expect_json '.currentIssueCount' '2'
+  expect_json '.totalIssueCount' '3'
+}
+
+@test "finished output has no count fields" {
+  printf '[
+    {"id":"01","issue":"issues/01-foo.md","done":true,"blocked_by":[]}
+  ]' >"$PLAN_DIR/state.json"
+  bats_run_zsh "ralph-start $PLAN_DIR"
+  [[ "$status" -eq 0 ]]
+  expect_json '.currentIssueCount' 'null'
+  expect_json '.totalIssueCount' 'null'
+}
+
+@test "deadlocked output has no count fields" {
+  printf '[
+    {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":["02"]},
+    {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":["01"]}
+  ]' >"$PLAN_DIR/state.json"
+  bats_run_zsh "ralph-start $PLAN_DIR"
+  [[ "$status" -eq 0 ]]
+  expect_json '.currentIssueCount' 'null'
+  expect_json '.totalIssueCount' 'null'
+}

@@ -26,7 +26,7 @@ Run `ralph-start $ARGUMENTS` and parse the JSON output:
 
 - `status: "finished"` → display "All issues complete." and stop.
 - `status: "deadlocked"` → display the `message` field and stop.
-- `status: "ready"` → continue.
+- `status: "ready"` → continue. Keep `currentIssueCount` and `totalIssueCount` for the recap.
 
 Read the file at the `guidance` path — accumulated knowledge from prior sessions.
 
@@ -153,7 +153,7 @@ Load [commit-hint.md](references/commit-hint.md) for the format and rules.
 
 Print:
 ```
-Issue {currentIssueNumber}/{totalIssueCount}
+Issue {currentIssueCount}/{totalIssueCount}
 
 **Problem solved:** {the problem this issue addressed}
 
