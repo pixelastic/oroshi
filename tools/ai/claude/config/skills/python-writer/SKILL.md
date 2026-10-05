@@ -73,7 +73,7 @@ Apply patterns from [Style](./references/style.md):
 | Pattern | Rule |
 |---|---|
 | Return early | No avoidable nesting |
-
+| Function docs | `#` comment above the function, not a docstring |
 
 Run `python-test <filepath>` to confirm tests still pass.
 
