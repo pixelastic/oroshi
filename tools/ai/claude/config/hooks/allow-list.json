@@ -265,6 +265,8 @@
   "json-lint",
   "js-fix",
   "js-lint",
+  "js-test",
+  "js-test-path",
   "kitty --version",
   "kitty @ ls",
   "kitty @ --help",

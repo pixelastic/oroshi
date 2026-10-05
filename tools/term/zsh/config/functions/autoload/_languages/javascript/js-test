@@ -1,0 +1,20 @@
+# Run Vitest on the test files of the given files or directories
+# Usage:
+# $ js-test ./path/to/__tests__/file.js        # Run a single test file
+# $ js-test ./path/to/module.js                # Source file → resolved via js-test-path
+# $ js-test ./path/to/dir/                     # Run all tests in a directory
+# $ js-test module.js __tests__/module.js      # Mixed inputs (deduplicated)
+setopt local_options err_return
+
+# Expand directories, filter to JS files, map to test files
+local expanded="$(file-expand --filter is-js --map js-test-path "$@")"
+
+# No testable files found
+[[ "$expanded" == "" ]] && return 0
+
+# Deduplicate: a source file and its test file resolve to the same test
+local -aU testFiles=("${(@f)expanded}")
+
+# Run from the top-level yarn root of the first file (subshell keeps the caller's cwd)
+local yarnRoot="$(yarn-root --force "${testFiles[1]:h}")"
+(cd "$yarnRoot" && yarn run test "${testFiles[@]}")

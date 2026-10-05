@@ -116,29 +116,47 @@ setup() {
 
 # ─── JS ───────────────────────────────────────────────────────────────────────
 
-@test "exits 0 when is-js true and yarn test passes" {
+@test "calls js-test with the test file of a dirty JS source" {
   echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
   bats_git add script.js
   bats_git commit --quiet -m "add script.js"
   echo 'changed' >> "$BATS_GIT_DIR/script.js"
 
   zsh-test-path() { printf ''; }
-  yarn() { return 0; }
-  bats_mock zsh-test-path yarn
+  js-test-path() { echo "$BATS_GIT_DIR/__tests__/script.js"; }
+  js-test() { echo "js-test $*" > "$BATS_TMP_DIR/calls.txt"; }
+  bats_mock zsh-test-path js-test-path js-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" == "js-test $BATS_GIT_DIR/__tests__/script.js" ]]
+}
+
+@test "exits 0 and js-test is not called when JS source has no matching test" {
+  echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
+  bats_git add script.js
+  bats_git commit --quiet -m "add script.js"
+  echo 'changed' >> "$BATS_GIT_DIR/script.js"
+
+  zsh-test-path() { printf ''; }
+  js-test-path() { printf ''; }
+  js-test() { return 1; }
+  bats_mock zsh-test-path js-test-path js-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
 }
 
-@test "exits non-zero when is-js true and yarn test fails" {
+@test "exits non-zero when js-test fails" {
   echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
   bats_git add script.js
   bats_git commit --quiet -m "add script.js"
   echo 'changed' >> "$BATS_GIT_DIR/script.js"
 
   zsh-test-path() { printf ''; }
-  yarn() { return 1; }
-  bats_mock zsh-test-path yarn
+  js-test-path() { echo "$BATS_GIT_DIR/__tests__/script.js"; }
+  js-test() { return 1; }
+  bats_mock zsh-test-path js-test-path js-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 1 ]]
@@ -222,7 +240,7 @@ setup() {
 
 # ─── COMBINED ─────────────────────────────────────────────────────────────────
 
-@test "runs both yarn and zsh-test when both types are dirty" {
+@test "runs both js-test and zsh-test when both types are dirty" {
   echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
   echo 'content' > "$BATS_GIT_DIR/script.zsh"
   bats_git add script.js script.zsh
@@ -231,13 +249,14 @@ setup() {
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
   zsh-test-path() { echo "path"; }
-  yarn() { echo "yarn" >> "$BATS_TMP_DIR/calls.txt"; }
+  js-test-path() { echo "path"; }
+  js-test() { echo "js-test" >> "$BATS_TMP_DIR/calls.txt"; }
   zsh-test() { echo "zsh-test" >> "$BATS_TMP_DIR/calls.txt"; }
-  bats_mock zsh-test-path yarn zsh-test
+  bats_mock zsh-test-path js-test-path js-test zsh-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" = $'yarn\nzsh-test' ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" = $'js-test\nzsh-test' ]]
 }
 
 # ─── CLAUDE CONTEXT ──────────────────────────────────────────────────────────

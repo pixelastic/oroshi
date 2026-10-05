@@ -21,7 +21,10 @@ for rawLine in ${(f)rawFiles}; do
   # Skip deleted files
   [[ "$gitStatus" == "D" ]] && continue
 
-  is-js "$fullPath" && jsPaths+=("$fullPath")
+  if is-js "$fullPath"; then
+    local jsTestPath="$(js-test-path "$fullPath")"
+    [[ "$jsTestPath" != "" ]] && jsPaths+=("$jsTestPath")
+  fi
 
   if is-python "$fullPath"; then
     local pythonTestPath="$(python-test-path "$fullPath")"
@@ -39,9 +42,9 @@ for rawLine in ${(f)rawFiles}; do
   fi
 done
 
-# Run Vitest for dirty JS source files (exits 0 silently if no related tests exist)
+# Run Vitest for dirty JS source files that have associated tests
 if [[ ${#jsPaths[@]} -gt 0 ]]; then
-  yarn run test --fail-fast --related "${jsPaths[@]}"
+  js-test "${jsPaths[@]}"
 fi
 
 # Run pytest for dirty Python source files (exits 0 silently if no related tests exist)

@@ -1,7 +1,7 @@
 ## Commands
 
 - **Testing go:** Run `go-test <filepath>`
-- **Testing js:** Run `yarn run test <filepath>`
+- **Testing js:** Run `js-test <filepath>`
 - **Testing python:** Run `python-test <filepath>`
 - **Testing zsh:** Run `zsh-test <filepath>`
 - Tests files live in `__tests__` directories
