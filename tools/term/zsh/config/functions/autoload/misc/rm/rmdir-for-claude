@@ -11,7 +11,7 @@ function rejectReason() {
 # No git repo → refuse
 if ! git-directory-is-repository; then
   echoerr "rmdir rejected. Reason: Not in a git repository."
-  echoerr "Use /bin/rmdir to bypass"
+  echoerr "Rerun the same command with /bin/rmdir. The user will then be asked to approve it."
   return 1
 fi
 
@@ -33,7 +33,7 @@ if [[ ${#errors} -gt 0 ]]; then
   for error in "${errors[@]}"; do
     echoerr "$error"
   done
-  echoerr "Use /bin/rmdir to bypass"
+  echoerr "Rerun the same command with /bin/rmdir. The user will then be asked to approve it."
   return 1
 fi
 

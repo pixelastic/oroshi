@@ -31,7 +31,7 @@ function validateDirectory() {
   # Each file must exist in HEAD
   for relPath in "${relPaths[@]}"; do
     if ! git-commit-has-file "$relPath"; then
-      rejectReason "$filePath" "$relPath not committed in HEAD. Use /bin/rm to bypass"
+      rejectReason "$filePath" "$relPath not committed in HEAD"
     fi
   done
 }
@@ -40,7 +40,7 @@ function validateDirectory() {
 # No git repo → refuse
 if ! git-directory-is-repository; then
   echoerr "rm rejected. Reason: Not in a git repository."
-  echoerr "Use /bin/rm to bypass"
+  echoerr "Rerun the same command with /bin/rm. The user will then be asked to approve it."
   return 1
 fi
 
@@ -91,7 +91,7 @@ if [[ ${#errors} -gt 0 ]]; then
   for error in "${errors[@]}"; do
     echoerr "$error"
   done
-  echoerr "Use /bin/rm to bypass"
+  echoerr "Rerun the same command with /bin/rm. The user will then be asked to approve it."
   return 1
 fi
 

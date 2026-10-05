@@ -30,6 +30,13 @@ setup() {
   [[ "$output" == *"/bin/rm"* ]]
 }
 
+@test "tells Claude to rerun with /bin/rm so the user is asked" {
+  echo "content" > "$BATS_GIT_DIR/untracked.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude untracked.txt"
+  [[ "$output" == *"Rerun the same command with /bin/rm. The user will then be asked to approve it."* ]]
+}
+
 # --- Git-ignored file ---
 
 @test "refuses git-ignored file" {
