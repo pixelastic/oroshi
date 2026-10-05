@@ -1,8 +1,9 @@
-# List inbox mails as a table: date, sender, subject
+# List inbox threads as a table, one row per thread, unread threads first
+# Columns: unread marker (●), date (MM/DD HH:mm), message count (blank for one message), authors, subject
 # Usage:
-# $ gmail-inbox            # latest mails (default limit: 100), pro account
+# $ gmail-inbox            # latest threads (default limit: 100), pro account
 # $ gmail-inbox --perso    # perso account
-# $ gmail-inbox --limit 5  # custom limit (default: 100)
+# $ gmail-inbox --limit 5  # custom limit, counted in threads (default: 100)
 setopt local_options err_return
 
 zparseopts -E -D \

@@ -136,6 +136,11 @@
   "table-separator":    "▮",
   "table-separator-secondary": "▯",
 
+  // Gmail
+  "gmail": {
+    "unread": "●"
+  },
+
   // Colors
   "colors": {
     "name":  "",
