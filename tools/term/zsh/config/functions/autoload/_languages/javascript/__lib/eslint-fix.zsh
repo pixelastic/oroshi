@@ -36,5 +36,18 @@ function eslint-fix() {
 
   local eslintArgs=(--config "$configFile" --fix)
 
-  cd "$workingDirectory" && eslint_d ${eslintArgs[@]} "$@" 2>/dev/null
+  # Change subshell to allow linting files outside of the caller's working dir
+  local exitCode=0
+  (cd "$workingDirectory" && eslint_d ${eslintArgs[@]} "$@" >/dev/null) || exitCode=$?
+
+  # eslint exit code 0: everything is fixed, no problem remains
+  [[ $exitCode -eq 0 ]] && return 0
+
+  # eslint exit code 1: fixed what it could, some problems remain, but we still
+  # consider that a success of eslint-fix
+  [[ $exitCode -eq 1 ]] && return 0
+
+  # Any other exit code: eslint itself failed (bad config, crash)
+  echoerr "Error: eslint failed (exit $exitCode)"
+  return 1
 }

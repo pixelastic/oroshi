@@ -35,7 +35,10 @@ function prettier-fix() {
     # Resolve config from original path or first file
     local configDir="${1:a:h}"
     [[ $originalPath != "" ]] && configDir="${originalPath:h}"
-    projectRoot="$(yarn-root $configDir --force)"
+
+    # Set project root to the top-level yarn root (if present)
+    local yarnRoot="$(yarn-root $configDir --force)"
+    [[ $yarnRoot != "" ]] && projectRoot="$yarnRoot"
   fi
 
   local prettierBin="$(__prettier-binary "$projectRoot")"

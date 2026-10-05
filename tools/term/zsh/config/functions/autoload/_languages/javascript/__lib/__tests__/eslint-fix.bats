@@ -146,3 +146,30 @@ SCRIPT
   [[ "$status" -eq 0 ]]
   [[ "$output" == "" ]]
 }
+
+@test "exits 0 when violations remain that eslint cannot fix" {
+  local file="$BATS_TMP_DIR/unfixable.js"
+  printf 'a == b;\n' > "$file"
+
+  mock_eslint <<'SCRIPT'
+#!/bin/bash
+exit 1
+SCRIPT
+
+  bats_run_zsh "source $LIB_DIR/eslint-fix.zsh && eslint-fix $file"
+  [[ "$status" -eq 0 ]]
+}
+
+@test "exits 1 with a message on stderr when eslint crashes" {
+  local file="$BATS_TMP_DIR/crash.js"
+  printf 'const a = 1;\n' > "$file"
+
+  mock_eslint <<'SCRIPT'
+#!/bin/bash
+exit 2
+SCRIPT
+
+  bats_run_zsh "source $LIB_DIR/eslint-fix.zsh && eslint-fix $file 2>&1"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"eslint"* ]]
+}

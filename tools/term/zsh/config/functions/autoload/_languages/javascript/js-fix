@@ -1,9 +1,60 @@
-# Fix a JS file
+# Fix JS files via prettier→eslint→prettier chain
 # Usage:
-# $ js-fix ./path/to/file.js                       # Output fixed code to stdout
-# $ js-fix --in-place ./path/to/file.js            # Overwrite the file in place
-# $ echo 'var a = "test";' | js-fix                           # js from stdin, fixed js to stdout
-# $ echo 'var a = "test";' | js-fix --filepath ./realpath.js  # Specify file location for config resolution
+# $ js-fix ./path/to/file.js                          # Fix file in place
+# $ js-fix file1.js file2.js                          # Fix multiple files in place
+# $ js-fix ./src/                                     # Expand directory, fix all JS files
+# $ js-fix --stdout ./path/to/file.js                 # Output fixed code to stdout
+# $ js-fix --original-path /real/path.js /tmp/file.js # Resolve config from real path
 setopt local_options err_return
 
-eslint-fix "$@"
+local scriptDirectory="${functions_source[$0]:A:h}"
+source "$scriptDirectory/__lib/prettier-fix.zsh"
+source "$scriptDirectory/__lib/eslint-fix.zsh"
+
+zparseopts -E -D \
+  -stdout=flagStdout \
+  -original-path:=flagOriginalPath
+local isStdout=${#flagStdout}
+local originalPath="${flagOriginalPath[2]}"
+
+# --stdout and --original-path only work with a single file
+if [[ ($isStdout -eq 1 || "$originalPath" != "") && ($# -ne 1 || -d "$1") ]]; then
+  echoerr "Error: --stdout and --original-path require a single file argument"
+  return 1
+fi
+
+# Expand directories, resolve file list
+local expanded="$(file-expand --filter is-js "$@")"
+
+# Nothing to fix
+[[ "$expanded" == "" ]] && return 0
+local -a files=("${(@f)expanded:a}")
+
+# Stdout mode: fix a temp copy, so the original stays untouched
+# The copy lives next to the real path, as eslint ignores files outside of its project
+local temporaryFile=""
+if [[ $isStdout -eq 1 ]]; then
+  local file="${files[1]}"
+  [[ "$originalPath" == "" ]] && originalPath="$file"
+  temporaryFile="$(mktemp "${originalPath:a:h}/.js-fix-XXXXXX.${file:e}")"
+  cp "$file" "$temporaryFile"
+  files=("$temporaryFile")
+fi
+
+local -a originalPathArgs=()
+[[ "$originalPath" != "" ]] && originalPathArgs=(--original-path "$originalPath")
+
+# Step 1: Format with prettier
+prettier-fix --parser babel "${originalPathArgs[@]}" "${files[@]}"
+
+# Step 2: Fix the content with ESLint
+eslint-fix "${originalPathArgs[@]}" "${files[@]}"
+
+# Step 3: Format with prettier again, to normalize what ESLint changed
+prettier-fix --parser babel "${originalPathArgs[@]}" "${files[@]}"
+
+# Stdout mode: output and cleanup
+if [[ "$temporaryFile" != "" ]]; then
+  cat "$temporaryFile"
+  rm -f "$temporaryFile"
+fi

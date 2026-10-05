@@ -221,3 +221,17 @@ SCRIPT
   bats_run_zsh "source $LIB_DIR/prettier-fix.zsh && prettier-fix $file"
   [[ "$status" -ne 0 ]]
 }
+
+@test "formats a file when yarn-root finds no project and exits 1" {
+  local file="$BATS_TMP_DIR/ugly.json"
+  printf '{"a":1}\n' > "$file"
+
+  # Like the real yarn-root, which exits 1 outside any project
+  yarn-root() { return 1; }
+  bats_mock yarn-root
+  bats_disable_worktree_aware
+
+  bats_run_zsh "source $LIB_DIR/prettier-fix.zsh && prettier-fix --parser json $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$file")" == '{ "a": 1 }' ]]
+}
