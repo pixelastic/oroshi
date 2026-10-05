@@ -4,7 +4,12 @@
 # $ go-test file1.go file2.go                    # Test multiple packages (deduplicated)
 # $ go-test ./pkg/                               # Expand directory, test all Go packages
 # $ go-test file.go ./pkg/                       # Mixed inputs
+# $ go-test --fail-fast ./pkg/                   # Stop at the first failing test and package
 setopt local_options err_return
+
+zparseopts -E -D -fail-fast=flagFailFast
+
+local isFailFast=${#flagFailFast}
 
 # No arguments: nothing to test
 [[ $# -eq 0 ]] && return 0
@@ -28,10 +33,16 @@ local moduleRoot="$(go-module-root "${files[1]}")"
 
 # Run go test from the module root so relative paths resolve correctly
 cd "$moduleRoot"
+local goArgs=()
+[[ $isFailFast == 1 ]] && goArgs+=(-failfast)
+
 local exitCode=0
 for dir in "${packageDirs[@]}"; do
   local relPath="${dir#"$moduleRoot"/}"
-  go test "./${relPath}/..." || exitCode=$?
+  go test "${goArgs[@]}" "./${relPath}/..." || exitCode=$?
+
+  # -failfast only stops inside one package: stop at the first failing package too
+  [[ $isFailFast == 1 && $exitCode -ne 0 ]] && break
 done
 
 return $exitCode

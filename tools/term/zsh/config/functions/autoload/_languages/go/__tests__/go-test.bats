@@ -97,3 +97,70 @@ setup() {
   [[ "$output" = "" ]]
   [[ ! -f "$BATS_TMP_DIR/calls.txt" ]]
 }
+
+# --- Fail fast (real go toolchain) ---
+
+# Write a package whose test file holds the given failing tests
+write_failing_package() {
+  local pkg="$1"
+  shift
+  local pkgDir="$BATS_TMP_DIR/mymod/pkg/$pkg"
+  mkdir -p "$pkgDir"
+  echo "package $pkg" > "$pkgDir/$pkg.go"
+  {
+    echo "package $pkg"
+    echo 'import "testing"'
+    for name in "$@"; do
+      echo "func $name(t *testing.T) { t.Fail() }"
+    done
+  } > "$pkgDir/${pkg}_test.go"
+}
+
+@test "reports every failure without --fail-fast" {
+  write_failing_package parser TestFirstFailure TestSecondFailure
+
+  bats_run_zsh "go-test $BATS_TMP_DIR/mymod/pkg/parser/parser.go"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"--- FAIL: TestFirstFailure"* ]]
+  [[ "$output" == *"--- FAIL: TestSecondFailure"* ]]
+}
+
+@test "reports only the first failure with --fail-fast" {
+  write_failing_package parser TestFirstFailure TestSecondFailure
+
+  bats_run_zsh "go-test --fail-fast $BATS_TMP_DIR/mymod/pkg/parser/parser.go"
+  [[ "$output" == *"--- FAIL: TestFirstFailure"* ]]
+  [[ "$output" != *"--- FAIL: TestSecondFailure"* ]]
+}
+
+@test "runs every failing package without --fail-fast" {
+  write_failing_package parser TestParserFailure
+  write_failing_package lexer TestLexerFailure
+
+  bats_run_zsh "go-test $BATS_TMP_DIR/mymod/pkg/parser/parser.go $BATS_TMP_DIR/mymod/pkg/lexer/lexer.go"
+  [[ "$output" == *"--- FAIL: TestParserFailure"* ]]
+  [[ "$output" == *"--- FAIL: TestLexerFailure"* ]]
+}
+
+@test "skips the packages after the first failing one with --fail-fast" {
+  write_failing_package parser TestParserFailure
+  write_failing_package lexer TestLexerFailure
+
+  bats_run_zsh "go-test --fail-fast $BATS_TMP_DIR/mymod/pkg/parser/parser.go $BATS_TMP_DIR/mymod/pkg/lexer/lexer.go"
+  [[ "$output" == *"--- FAIL: TestParserFailure"* ]]
+  [[ "$output" != *"TestLexerFailure"* ]]
+}
+
+@test "exits non-zero with --fail-fast when a test fails" {
+  write_failing_package parser TestFirstFailure TestSecondFailure
+
+  bats_run_zsh "go-test --fail-fast $BATS_TMP_DIR/mymod/pkg/parser/parser.go"
+  [[ "$status" -ne 0 ]]
+}
+
+@test "exits zero with --fail-fast when all tests pass" {
+  printf 'package parser\nimport "testing"\nfunc TestOk(t *testing.T) {}\n' > "$BATS_TMP_DIR/mymod/pkg/parser/parser_test.go"
+
+  bats_run_zsh "go-test --fail-fast $BATS_TMP_DIR/mymod/pkg/parser/parser.go"
+  [[ "$status" -eq 0 ]]
+}
