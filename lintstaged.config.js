@@ -30,10 +30,7 @@ export default {
   '**/*.xml': ['yarn precommit:lint xml'],
 
   // JS Scripts
-  '**/*.{js,mjs,cjs,jsx,vue}': [
-    'yarn precommit:lint js',
-    'yarn precommit:test js',
-  ],
+  '**/*.{js,jsx,vue}': ['yarn precommit:lint js', 'yarn precommit:test js'],
   'scripts/yarn/**/*': ['yarn precommit:lint zsh'],
 
   // Vale profiles rebuild

@@ -6,6 +6,9 @@
 # $ js-test module.js __tests__/module.js      # Mixed inputs (deduplicated)
 setopt local_options err_return
 
+local scriptDirectory="${functions_source[$0]:A:h}"
+source "$scriptDirectory/__lib/vitest-helpers.zsh"
+
 # Expand directories, filter to JS files, map to test files
 local expanded="$(file-expand --filter is-js --map js-test-path "$@")"
 
@@ -17,4 +20,5 @@ local -aU testFiles=("${(@f)expanded}")
 
 # Run from the top-level yarn root of the first file (subshell keeps the caller's cwd)
 local yarnRoot="$(yarn-root --force "${testFiles[1]:h}")"
-(cd "$yarnRoot" && yarn run test "${testFiles[@]}")
+local vitestBin="$(__vitest-bin "$yarnRoot")"
+(cd "$yarnRoot" && "$vitestBin" run "${testFiles[@]}")

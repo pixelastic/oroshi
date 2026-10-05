@@ -162,7 +162,8 @@ mock_eslint_in_project() {
 }
 
 add_eslint_install() {
-  mkdir -p "$1/node_modules/eslint"
+  mkdir -p "$1/node_modules/.bin"
+  touch "$1/node_modules/.bin/eslint"
 }
 
 @test "runs the global eslint_d rooted at the project with the project config when the project installs eslint" {

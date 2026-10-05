@@ -97,7 +97,8 @@ mock_eslint_in_project_fix() {
 }
 
 add_eslint_install_fix() {
-  mkdir -p "$1/node_modules/eslint"
+  mkdir -p "$1/node_modules/.bin"
+  touch "$1/node_modules/.bin/eslint"
 }
 
 @test "fix: roots eslint_d at the project when the project installs eslint" {
@@ -105,6 +106,7 @@ add_eslint_install_fix() {
   local file="$projectDirectory/app.js"
   mock_eslint_in_project_fix "$projectDirectory"
   add_eslint_install_fix "$projectDirectory"
+  touch "$projectDirectory/eslint.config.js"
   printf 'const x = 1;\n' > "$file"
 
   bats_run_zsh "source $LIB_DIR/eslint-fix.zsh && eslint-fix $file"

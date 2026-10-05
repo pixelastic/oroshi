@@ -7,23 +7,10 @@ setup() {
   mkdir -p "$PROJECT_DIR"
 }
 
-# Install the eslint package under the given directory
+# Install a fake eslint binary under the given directory
 add_eslint_install() {
-  mkdir -p "$1/node_modules/eslint"
-}
-
-# Create a workspace whose package.json declares eslint as a devDependency
-add_eslint_workspace() {
-  local workspaceDirectory="$PROJECT_DIR/$1"
-  mkdir -p "$workspaceDirectory"
-  jo devDependencies="$(jo eslint=9.39.2)" > "$workspaceDirectory/package.json"
-}
-
-# Create a workspace whose package.json declares no eslint
-add_plain_workspace() {
-  local workspaceDirectory="$PROJECT_DIR/$1"
-  mkdir -p "$workspaceDirectory"
-  jo name=plain > "$workspaceDirectory/package.json"
+  mkdir -p "$1/node_modules/.bin"
+  touch "$1/node_modules/.bin/eslint"
 }
 
 # Mock workspace enumeration to emit the given relative paths, rooted at PROJECT_DIR
@@ -31,6 +18,7 @@ mock_workspaces() {
   local lines=""
   local relativePath
   for relativePath in "$@"; do
+    mkdir -p "$PROJECT_DIR/$relativePath"
     lines+="pkg▮${relativePath}▮\n"
   done
 
@@ -43,7 +31,8 @@ mock_workspaces() {
 
 # __eslint-root
 
-@test "__eslint-root returns the project root when eslint is installed at the project root" {
+@test "__eslint-root returns the project root when it has a config and eslint installed" {
+  touch "$PROJECT_DIR/eslint.config.js"
   add_eslint_install "$PROJECT_DIR"
 
   bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-root $PROJECT_DIR"
@@ -51,9 +40,17 @@ mock_workspaces() {
   [[ "$output" == "$PROJECT_DIR" ]]
 }
 
-@test "__eslint-root returns the sub-workspace when only that workspace declares eslint" {
-  add_eslint_workspace "modules/lint"
-  add_plain_workspace "modules/app"
+@test "__eslint-root accepts a legacy .eslintrc.js config" {
+  touch "$PROJECT_DIR/.eslintrc.js"
+  add_eslint_install "$PROJECT_DIR"
+
+  bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-root $PROJECT_DIR"
+  [[ "$output" == "$PROJECT_DIR" ]]
+}
+
+@test "__eslint-root returns the workspace when only that workspace has eslint installed" {
+  touch "$PROJECT_DIR/eslint.config.js"
+  add_eslint_install "$PROJECT_DIR/modules/lint"
   mock_workspaces "modules/app" "modules/lint"
 
   bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-root $PROJECT_DIR"
@@ -61,18 +58,16 @@ mock_workspaces() {
   [[ "$output" == "$PROJECT_DIR/modules/lint" ]]
 }
 
-@test "__eslint-root returns the first workspace that declares eslint when several do" {
-  add_eslint_workspace "packages/lint"
-  add_eslint_workspace "tools/lint"
-  mock_workspaces "packages/lint" "tools/lint"
+@test "__eslint-root falls back to the bundled root when the project has eslint but no config" {
+  add_eslint_install "$PROJECT_DIR"
 
   bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-root $PROJECT_DIR"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == "$PROJECT_DIR/packages/lint" ]]
+  [[ "$output" == "$OROSHI_ROOT" ]]
 }
 
-@test "__eslint-root falls back to the bundled root when no workspace declares eslint" {
-  add_plain_workspace "modules/app"
+@test "__eslint-root falls back to the bundled root when the project has a config but no eslint" {
+  touch "$PROJECT_DIR/eslint.config.js"
   mock_workspaces "modules/app"
 
   bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-root $PROJECT_DIR"
@@ -84,4 +79,49 @@ mock_workspaces() {
   bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-root ''"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "$OROSHI_ROOT" ]]
+}
+
+# __eslint-config
+
+@test "__eslint-config returns the project config when it also has eslint installed" {
+  touch "$PROJECT_DIR/eslint.config.js"
+  add_eslint_install "$PROJECT_DIR"
+
+  bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-config $PROJECT_DIR"
+  [[ "$output" == "$PROJECT_DIR/eslint.config.js" ]]
+}
+
+@test "__eslint-config returns the project .eslintrc.js when it also has eslint installed" {
+  touch "$PROJECT_DIR/.eslintrc.js"
+  add_eslint_install "$PROJECT_DIR"
+
+  bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-config $PROJECT_DIR"
+  [[ "$output" == "$PROJECT_DIR/.eslintrc.js" ]]
+}
+
+@test "__eslint-config prefers eslint.config.js over .eslintrc.js" {
+  touch "$PROJECT_DIR/eslint.config.js" "$PROJECT_DIR/.eslintrc.js"
+  add_eslint_install "$PROJECT_DIR"
+
+  bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-config $PROJECT_DIR"
+  [[ "$output" == "$PROJECT_DIR/eslint.config.js" ]]
+}
+
+@test "__eslint-config returns the oroshi config when the project has a config but no eslint" {
+  touch "$PROJECT_DIR/eslint.config.js"
+
+  bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-config $PROJECT_DIR"
+  [[ "$output" == "$OROSHI_ROOT/eslint.config.js" ]]
+}
+
+@test "__eslint-config returns the oroshi config when the project has eslint but no config" {
+  add_eslint_install "$PROJECT_DIR"
+
+  bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-config $PROJECT_DIR"
+  [[ "$output" == "$OROSHI_ROOT/eslint.config.js" ]]
+}
+
+@test "__eslint-config returns the oroshi config when there is no project" {
+  bats_run_zsh "source $LIB_DIR/eslint-helpers.zsh && __eslint-config ''"
+  [[ "$output" == "$OROSHI_ROOT/eslint.config.js" ]]
 }
