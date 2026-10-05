@@ -1,6 +1,6 @@
 # Boolean: is the given file a JS file?
 # Usage:
-# $ is-js /path/to/script.js         # exit 0 (.js, .mjs, .cjs, .jsx, .vue)
+# $ is-js /path/to/script.js         # exit 0 (.js, .jsx, .vue)
 # $ is-js /path/to/bin-script        # exit 0 if shebang runs node (env or direct path)
 # $ is-js /path/to/script.ts         # exit 1 (TypeScript is out of scope)
 setopt local_options err_return
@@ -12,7 +12,7 @@ local filepath="$1"
 
 # JS extensions
 local ext="${filepath:e}"
-[[ " js mjs cjs jsx vue " == *" $ext "* ]] && return 0
+[[ " js jsx vue " == *" $ext "* ]] && return 0
 
 # Has a non-js extension
 [[ "$ext" != "" ]] && return 1

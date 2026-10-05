@@ -1,9 +1,9 @@
-# Fuzzy pick a JS test file
+# Fuzzy pick a JS file
 # Usage:
-# $ fzf-js-test                  # Interactive search
-# $ fzf-js-test --source         # Print test files
-# $ fzf-js-test --options        # Print FZF options (one per line)
-# $ fzf-js-test --postprocess    # Read selection from stdin, print filepath
+# $ fzf-js-files                  # Interactive search
+# $ fzf-js-files --source         # Print JS files
+# $ fzf-js-files --options        # Print FZF options (one per line)
+# $ fzf-js-files --postprocess    # Read selection from stdin, print filepath
 setopt local_options err_return
 source "${functions_source[$0]:A:h}/__lib/init.zsh"
 source "${functions_source[$0]:A:h}/__lib/fzf-colorize-path.zsh"
@@ -16,7 +16,8 @@ function fzf-source() {
   local items="$(fd \
     --type file \
     --extension js \
-    --full-path '/__tests__/' \
+    --extension jsx \
+    --extension vue \
     --base-directory "$SEARCH_PATH" \
     | sort-filepaths)"
   [[ "$items" == "" ]] && return 0
@@ -29,7 +30,7 @@ function fzf-source() {
 }
 
 function fzf-options() {
-  fzf-options-files "bin-zsh fzf-js-test" "$SEARCH_PATH"
+  fzf-options-files "bin-zsh fzf-js-files" "$SEARCH_PATH"
 }
 
 fzf-dispatch

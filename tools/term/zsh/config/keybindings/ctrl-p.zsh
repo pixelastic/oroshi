@@ -13,9 +13,12 @@ function oroshi-ctrl-p-widget() {
     vfa fzf-git-files-dirty-stageable
     vfrevert fzf-git-files-dirty
     bats fzf-bats-test
-    yrt fzf-js-test
-    yrtw fzf-js-test
-    yrtff fzf-js-test
+    yrt fzf-js-tests
+    yrtw fzf-js-tests
+    yrtff fzf-js-tests
+    js-lint fzf-js-files
+    js-fix fzf-js-files
+    js-test fzf-js-tests
     go-lint fzf-go-files
     go-fix fzf-go-files
     go-test fzf-go-tests

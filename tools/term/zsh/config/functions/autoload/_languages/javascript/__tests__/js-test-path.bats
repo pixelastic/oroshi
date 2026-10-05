@@ -50,7 +50,7 @@ setup() {
 @test "maps each accepted extension to its __tests__ sibling" {
   mkdir -p "$BATS_TMP_DIR/src/__tests__"
   local ext
-  for ext in mjs cjs jsx vue; do
+  for ext in jsx vue; do
     touch "$BATS_TMP_DIR/src/module.$ext"
     touch "$BATS_TMP_DIR/src/__tests__/module.$ext"
     bats_run_zsh "js-test-path $BATS_TMP_DIR/src/module.$ext"
@@ -62,7 +62,7 @@ setup() {
 @test "returns a test file of each accepted extension unchanged" {
   mkdir -p "$BATS_TMP_DIR/src/__tests__"
   local ext
-  for ext in mjs cjs jsx vue; do
+  for ext in jsx vue; do
     touch "$BATS_TMP_DIR/src/__tests__/module.$ext"
     bats_run_zsh "js-test-path $BATS_TMP_DIR/src/__tests__/module.$ext"
     [[ "$status" -eq 0 ]]

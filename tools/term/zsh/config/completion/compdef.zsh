@@ -291,9 +291,10 @@ compdef "_files -g '*.go'" \
   go-test
 # }}}
 # JS {{{
-compdef "_files -g '*.js'" \
+compdef "_files -g '*.{js,jsx,vue}'" \
   js-fix \
-  js-lint
+  js-lint \
+  js-test
 # }}}
 # JSON {{{
 compdef "_files -g '*.json'" \
@@ -318,11 +319,6 @@ compdef "_files -g '*.toml'" \
   toml-fix \
   toml-lint \
   toml2json
-# }}}
-# Vue {{{
-compdef "_files -g '*.vue'" \
-  js-fix \
-  js-lint
 # }}}
 # ZSH {{{
 compdef _bats-test \

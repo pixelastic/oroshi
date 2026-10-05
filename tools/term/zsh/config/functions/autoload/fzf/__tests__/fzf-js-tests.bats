@@ -3,8 +3,11 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
 
+  mkdir -p "$BATS_TMP_DIR/src" "$BATS_TMP_DIR/__tests__"
+  touch "$BATS_TMP_DIR/src/main.js" "$BATS_TMP_DIR/__tests__/my-test.js"
+
   # Mock git-directory-root to return a known path
-  git-directory-root() { echo "/project"; }
+  git-directory-root() { echo "$BATS_TMP_DIR"; }
   fd() { printf '__tests__/my-test.js\n'; }
   bats_mock git-directory-root fd
 }
@@ -12,14 +15,14 @@ setup() {
 # fzf-source
 
 @test "--source: first field is the absolute filepath" {
-  bats_run_zsh "fzf-js-test --source"
+  bats_run_zsh "fzf-js-tests --source"
   [[ "$status" -eq 0 ]]
   local firstField="${output%%▮*}"
-  [[ "$firstField" = "/project/__tests__/my-test.js" ]]
+  [[ "$firstField" = "$BATS_TMP_DIR/__tests__/my-test.js" ]]
 }
 
 @test "--source: second field is ANSI-colored" {
-  bats_run_zsh "fzf-js-test --source"
+  bats_run_zsh "fzf-js-tests --source"
   [[ "$status" -eq 0 ]]
   local secondField="${output##*▮}"
   [[ "$secondField" == *$'\e['* ]]
@@ -28,7 +31,7 @@ setup() {
 @test "--source: outputs nothing when no test files exist" {
   fd() { echo ""; }
   bats_mock fd
-  bats_run_zsh "fzf-js-test --source"
+  bats_run_zsh "fzf-js-tests --source"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 }

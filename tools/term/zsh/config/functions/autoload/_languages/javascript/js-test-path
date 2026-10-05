@@ -9,11 +9,10 @@ local filePath="$1"
 # No argument provided
 [[ "$filePath" == "" ]] && return 1
 
-# Has a non-js extension
-local ext="${filePath:e}"
-[[ "$ext" != "" && " js mjs cjs jsx vue " != *" $ext "* ]] && return 1
-
 local parentDir="${filePath:h:t}"
+
+# Not a JS file
+is-js "$filePath" || return 1
 
 # If the file is already a test (in __tests__), return it directly
 if [[ "$parentDir" == "__tests__" ]]; then
@@ -21,9 +20,6 @@ if [[ "$parentDir" == "__tests__" ]]; then
   echo "$filePath"
   return
 fi
-
-# Not a JS file
-is-js "$filePath" || return 1
 
 local testFile="${filePath:h}/__tests__/${filePath:t}"
 

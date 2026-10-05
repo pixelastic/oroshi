@@ -64,11 +64,21 @@ setup() {
 
 @test "exits 0 for each accepted extension" {
   local ext
-  for ext in mjs cjs jsx vue; do
+  for ext in jsx vue; do
     local file="$BATS_TMP_DIR/foo.$ext"
     echo "x" > "$file"
     bats_run_zsh "is-js $file"
     [[ "$status" -eq 0 ]]
+  done
+}
+
+@test "exits 1 for .mjs and .cjs files" {
+  local ext
+  for ext in mjs cjs; do
+    local file="$BATS_TMP_DIR/foo.$ext"
+    echo "x" > "$file"
+    bats_run_zsh "is-js $file"
+    [[ "$status" -eq 1 ]]
   done
 }
 
