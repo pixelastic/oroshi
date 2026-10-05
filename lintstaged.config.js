@@ -12,7 +12,7 @@ export default {
   '{**/*.bats,tools/term/bats/config/*}': ['yarn run lint:bats'],
 
   // Python files
-  '**/*.py': ['yarn run lint:python', 'yarn run test:python'],
+  '**/*.py': ['yarn precommit:lint python', 'yarn precommit:test python'],
 
   // Go files
   '**/*.go': ['yarn precommit:lint go', 'yarn precommit:test go'],

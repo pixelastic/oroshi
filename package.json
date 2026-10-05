@@ -30,11 +30,9 @@
     "lint": "./scripts/yarn/lint",
     "lint:bats": "./scripts/yarn/lint-bats",
     "lint:fix": "./scripts/yarn/lint-fix",
-    "lint:python": "./scripts/yarn/lint-python",
     "precommit:lint": "./scripts/yarn/precommit-lint",
     "precommit:test": "./scripts/yarn/precommit-test",
     "prose-build": "bin-zsh prose-build",
-    "test": "./scripts/yarn/test",
-    "test:python": "./scripts/yarn/test-python"
+    "test": "./scripts/yarn/test"
   }
 }
