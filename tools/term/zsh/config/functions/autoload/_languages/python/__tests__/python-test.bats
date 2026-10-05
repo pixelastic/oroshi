@@ -77,3 +77,39 @@ setup() {
   [[ "$output" = "" ]]
   [[ ! -f "$BATS_TMP_DIR/calls.txt" ]]
 }
+
+# ─── FAIL FAST ────────────────────────────────────────────────────────────────
+
+# Write a test file holding two failing tests
+write_failing_tests() {
+  printf 'def test_first_failure():\n    assert False\n\ndef test_second_failure():\n    assert False\n' > "$BATS_TMP_DIR/src/__tests__/test_failing.py"
+}
+
+@test "reports every failure without --fail-fast" {
+  write_failing_tests
+
+  bats_run_zsh "python-test $BATS_TMP_DIR/src/__tests__/test_failing.py"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"test_first_failure"* ]]
+  [[ "$output" == *"test_second_failure"* ]]
+}
+
+@test "reports only the first failure with --fail-fast" {
+  write_failing_tests
+
+  bats_run_zsh "python-test --fail-fast $BATS_TMP_DIR/src/__tests__/test_failing.py"
+  [[ "$output" == *"test_first_failure"* ]]
+  [[ "$output" != *"test_second_failure"* ]]
+}
+
+@test "exits non-zero with --fail-fast when a test fails" {
+  write_failing_tests
+
+  bats_run_zsh "python-test --fail-fast $BATS_TMP_DIR/src/__tests__/test_failing.py"
+  [[ "$status" -ne 0 ]]
+}
+
+@test "exits zero with --fail-fast when all tests pass" {
+  bats_run_zsh "python-test --fail-fast $BATS_TMP_DIR/src/__tests__/test_foo.py"
+  [[ "$status" -eq 0 ]]
+}

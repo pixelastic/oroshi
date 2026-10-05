@@ -4,7 +4,12 @@
 # $ python-test ./path/to/module.py                 # Source file → resolved via python-test-path
 # $ python-test ./path/to/tests/                    # Run all tests in a directory
 # $ python-test module.py __tests__/test_module.py  # Mixed inputs (deduplicated)
+# $ python-test --fail-fast ./path/to/tests/        # Stop at the first failing test
 setopt local_options err_return
+
+zparseopts -E -D -fail-fast=flagFailFast
+
+local isFailFast=${#flagFailFast}
 
 # Expand directories, filter to Python files, map to test files
 local expanded="$(file-expand --filter is-python --map python-test-path "$@")"
@@ -15,7 +20,9 @@ local expanded="$(file-expand --filter is-python --map python-test-path "$@")"
 # Deduplicate: a source file and its test file resolve to the same test
 local -aU testFiles=("${(@f)expanded}")
 
+local pytestArgs=(--spec --no-header)
+[[ $isFailFast == 1 ]] && pytestArgs+=(--exitfirst)
+
 pytest \
-  --spec \
-  --no-header \
+  "${pytestArgs[@]}" \
   "${testFiles[@]}" 2>&1
