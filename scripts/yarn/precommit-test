@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Test staged files for a given language
+# Test staged files for a given language, stopping at the first failure
 # Called by lint-staged via package.json
 # Usage:
 # $ precommit-test go /abs/path/to/file1.go /abs/path/to/file2.go
@@ -11,4 +11,4 @@ shift
 # No staged files to test
 [[ $# -eq 0 ]] && exit 0
 
-${lang}-test "$@"
+${lang}-test --fail-fast "$@"

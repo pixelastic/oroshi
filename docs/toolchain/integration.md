@@ -75,7 +75,7 @@ Iterates all modified and added files, resolves each to a test file via
 // Maps file glob patterns to lint and test commands that run on staged files.
 // Two generic yarn scripts handle all languages:
 //   yarn precommit:lint {lang} — calls {lang}-lint --fix on staged files
-//   yarn precommit:test {lang} — calls {lang}-test on staged files
+//   yarn precommit:test {lang} — calls {lang}-test --fail-fast on staged files
 // Example entries:
 // '**/*.go': ['yarn precommit:lint go', 'yarn precommit:test go']   // programming language
 // '**/*.json': ['yarn precommit:lint json']                         // configuration language
@@ -83,7 +83,7 @@ Iterates all modified and added files, resolves each to a test file via
 
 Two generic scripts in `scripts/yarn/` handle all languages:
 `precommit-lint` calls `{lang}-lint --fix` on its arguments,
-`precommit-test` calls `{lang}-test` on its arguments (not used for
+`precommit-test` calls `{lang}-test --fail-fast` on its arguments (not used for
 [configuration languages](README.md#language-categories)). Both take the
 language identifier as their first argument.
 
