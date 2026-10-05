@@ -124,7 +124,7 @@ if [[ "$results[bats-files]" != "" ]]; then
 fi
 
 if [[ "$results[js-files]" != "" ]]; then
-  displayLint --header "JS" -- yarn run lint:fix --js ${=results[js-files]}
+  displayLint --header "JS" -- js-lint --fix ${=results[js-files]}
 fi
 
 if [[ "$results[python-files]" != "" ]]; then

@@ -31,7 +31,7 @@ export default {
 
   // JS Scripts
   '**/*.{js,mjs,cjs,jsx,vue}': [
-    'yarn run lint:fix --js',
+    'yarn precommit:lint js',
     'yarn precommit:test js',
   ],
   'scripts/yarn/**/*': ['yarn precommit:lint zsh'],

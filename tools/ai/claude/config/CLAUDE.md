@@ -9,7 +9,7 @@
 - **Linting bats:** Run `bats-lint <filepath>`
 - **Linting go:** Run `go-lint <filepath>`
 - **Linting json:** Run `json-lint <filepath>`
-- **Linting js:** Run `yarn run lint:fix <filepath>`
+- **Linting js:** Run `js-lint <filepath>`
 - **Linting python:** Run `python-lint <filepath>`
 - **Linting svg:** Run `svg-lint <filepath>`
 - **Linting toml:** Run `toml-lint <filepath>`

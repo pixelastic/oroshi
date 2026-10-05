@@ -205,6 +205,24 @@ SCRIPT
   [[ "$output" == *"Config file not found"* ]]
 }
 
+@test "--json exits 1 with nothing on stdout when eslint_d crashes" {
+  local file="$BATS_TMP_DIR/app.js"
+  printf 'const x = 1;\n' > "$file"
+
+  mock_eslint <<'SCRIPT'
+#!/bin/bash
+printf 'eslint exploded\n' >&2
+exit 2
+SCRIPT
+
+  bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint --json $file 2>/dev/null"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == "" ]]
+
+  bats_run_zsh "source $LIB_DIR/eslint-lint.zsh && eslint-lint --json $file 2>&1 >/dev/null"
+  [[ "$output" == *"eslint exploded"* ]]
+}
+
 @test "runs the global eslint_d with the oroshi config when there is no project" {
   local file="$BATS_TMP_DIR/app.js"
   printf 'const x = 1;\n' > "$file"

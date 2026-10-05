@@ -25,7 +25,14 @@ function eslint-lint() {
   local eslintArgs=(--config "$configFile")
   [[ $isJson == 1 ]] && eslintArgs+=(--format json)
 
-  local rawOutput="$(cd "$workingDirectory" && eslint_d ${eslintArgs[@]} "$@")"
+  # eslint exits 0 when clean, 1 on violations and 2 on internal errors
+  local rawOutput
+  local exitCode=0
+  rawOutput="$(cd "$workingDirectory" && eslint_d ${eslintArgs[@]} "$@")" || exitCode=$?
+  if [[ $exitCode -gt 1 ]]; then
+    echoerr "Error: eslint failed (exit $exitCode)"
+    return 1
+  fi
 
   # JSON mode: transform eslint output to unified schema
   if [[ $isJson == 1 ]]; then
@@ -38,7 +45,7 @@ function eslint-lint() {
       column: .column,
       endColumn: (.endColumn // .column),
       message: .message
-    }]')"
+    } | with_entries(select(.value != null))]')"
 
     printf '%s\n' "$result"
     [[ "$result" != "[]" ]] && return 1

@@ -1,9 +1,55 @@
-# Lint a JS file
+# Lint one or more JS files or directories via eslint_d
+# Default output is stylish format (violations grouped by file)
 # Usage:
-# $ js-lint ./path/to/file.js                                # Lint file
-# $ js-lint --json ./path/to/file.js                         # Lint file, JSON output for vim
-# $ echo "var a = 42;" | js-lint                             # Lint stdin
-# $ echo "var a = 42;" | js-lint --filepath ./realpath.html  # Lint from stdin, with real location on disk
+# $ js-lint ./path/to/file.js          # Stylish output (default)
+# $ js-lint --json ./path/to/file.js   # Unified JSON output
+# $ js-lint --fix ./path/to/file.js    # js-fix, then report what remains
+# $ js-lint ./path/to/dir/             # Expand directory to JS files
+# $ js-lint file1.js file2.js          # Multiple files
 setopt local_options err_return
 
-eslint-lint "$@"
+local scriptDirectory="${functions_source[$0]:A:h}"
+source "$scriptDirectory/__lib/eslint-lint.zsh"
+
+zparseopts -E -D \
+  -fix=flagFix \
+  -json=flagJson
+local isFix=${#flagFix}
+local isJson=${#flagJson}
+
+# No inputs provided
+if [[ $# -eq 0 ]]; then
+  echoerr "Error: No files provided"
+  return 1
+fi
+
+# Expand directories and filter to JS files
+local expanded="$(file-expand --filter is-js "$@")"
+if [[ "$expanded" == "" ]]; then
+  [[ $isJson == 1 ]] && printf '[]\n'
+  return 0
+fi
+local -a inputs=("${(@f)expanded}")
+
+# Resolve inputs to absolute paths
+inputs=("${(@)inputs:a}")
+
+# Fix mode: js-fix first, linting is skipped when it fails
+if [[ $isFix == 1 ]]; then
+  js-fix "${inputs[@]}" || return 1
+fi
+
+# eslint-lint exits 1 on violations and on internal errors, only the latter prints no JSON
+local result="$(eslint-lint --json "${inputs[@]}")"
+[[ "$result" != "["* ]] && return 1
+
+# JSON mode: output the unified JSON array
+if [[ $isJson == 1 ]]; then
+  printf '%s\n' "$result"
+  [[ "$result" != "[]" ]] && return 1
+  return 0
+fi
+
+# Stylish mode (default): paths relative to git root (or $PWD outside a repo)
+local projectRoot="$(git-directory-root)"
+printf '%s' "$result" | json2stylish --root "$projectRoot/"

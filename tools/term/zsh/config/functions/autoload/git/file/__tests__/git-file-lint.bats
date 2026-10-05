@@ -162,38 +162,56 @@ setup() {
 
 # ─── JS ───────────────────────────────────────────────────────────────────────
 
-@test "exits 0 when is-js true and lint:fix has no output" {
+@test "exits 0 when is-js true and js-lint has no output" {
   echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
   bats_git add script.js
   bats_git commit --quiet -m "add script.js"
   echo 'changed' >> "$BATS_GIT_DIR/script.js"
 
   is-js() { return 0; }
-  yarn() { printf ''; }
-  bats_mock is-js yarn
+  js-lint() { printf ''; }
+  bats_mock is-js js-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "✔ All files are clean" ]]
 }
 
-@test "shows JS header and errors when is-js true and lint:fix has output" {
+@test "shows JS header and errors when is-js true and js-lint has output" {
   echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
   bats_git add script.js
   bats_git commit --quiet -m "add script.js"
   echo 'changed' >> "$BATS_GIT_DIR/script.js"
 
   is-js() { return 0; }
-  yarn() {
-    printf 'script.js:1:1: no-unused-vars: x is defined but never used\n';
-    return 1;
+  js-lint() {
+    printf 'script.js\n  1:1  error  x is defined but never used  no-unused-vars\n'
+    return 1
   }
-  bats_mock is-js yarn
+  bats_mock is-js js-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [[ "$status" -eq 1 ]]
   [[ "$output" =~ "── JS ──" ]]
   [[ "$output" =~ script.js ]]
+}
+
+@test "calls js-lint with --fix flag when dirty js files are found" {
+  echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
+  bats_git add script.js
+  bats_git commit --quiet -m "add script.js"
+  echo 'changed' >> "$BATS_GIT_DIR/script.js"
+
+  is-js() { return 0; }
+  js-lint() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/.js-lint-args"
+    printf ''
+  }
+  bats_mock is-js js-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  grep -q -- '--fix' "$BATS_TMP_DIR/.js-lint-args"
 }
 
 @test "exits 0 when is-js is false for all dirty files" {
