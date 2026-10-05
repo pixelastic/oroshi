@@ -14,9 +14,10 @@ setup() {
   }
   # Prevent config resolution from traversing the real filesystem
   yarn-root() {
-    return 1
+    echo ""
   }
   bats_mock prettier eslint_d yarn-root
+  bats_disable_worktree_aware
 }
 
 @test "modifies file in-place by default" {
@@ -135,4 +136,49 @@ setup() {
   # Verify config resolution uses original path — prettier gets --config based on original-path dir
   local calls="$(cat "$BATS_TMP_DIR/calls")"
   [[ "$(echo "$calls" | wc -l)" -eq 3 ]]
+}
+
+@test "formats package.json with the json-stringify parser, like yarn does" {
+  local file="$BATS_TMP_DIR/package.json"
+  echo '{"a":1}' > "$file"
+
+  bats_run_zsh "json-fix $file"
+  [[ "$status" -eq 0 ]]
+
+  local call1="$(sed -n '1p' "$BATS_TMP_DIR/calls")"
+  local call3="$(sed -n '3p' "$BATS_TMP_DIR/calls")"
+  [[ "$call1" == *"--parser json-stringify"* ]]
+  [[ "$call3" == *"--parser json-stringify"* ]]
+}
+
+@test "formats a file with the json-stringify parser when --original-path is a package.json" {
+  local file="$BATS_TMP_DIR/tmp-copy.json"
+  echo '{"a":1}' > "$file"
+  local originalDir="$BATS_TMP_DIR/project"
+  mkdir -p "$originalDir"
+  local originalPath="$originalDir/package.json"
+
+  bats_run_zsh "json-fix --original-path $originalPath $file"
+  [[ "$status" -eq 0 ]]
+
+  local call1="$(sed -n '1p' "$BATS_TMP_DIR/calls")"
+  [[ "$call1" == *"--parser json-stringify"* ]]
+}
+
+@test "formats package.json and other files with their own parser in a single run" {
+  local directory="$BATS_TMP_DIR/src"
+  mkdir -p "$directory"
+  echo '{}' > "$directory/package.json"
+  echo '{}' > "$directory/other.json"
+
+  bats_run_zsh "json-fix $directory"
+  [[ "$status" -eq 0 ]]
+
+  local calls="$(cat "$BATS_TMP_DIR/calls")"
+  local stringifyCalls="$(grep -- '--parser json-stringify' <<< "$calls")"
+  local jsonCalls="$(grep -- '--parser json ' <<< "$calls")"
+  [[ "$stringifyCalls" == *"package.json"* ]]
+  [[ "$stringifyCalls" != *"other.json"* ]]
+  [[ "$jsonCalls" == *"other.json"* ]]
+  [[ "$jsonCalls" != *"package.json"* ]]
 }

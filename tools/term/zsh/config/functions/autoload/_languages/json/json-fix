@@ -44,10 +44,32 @@ fi
 local -a originalPathArgs=()
 [[ $hasOriginalPath -eq 1 ]] && originalPathArgs=(--original-path "$originalPath")
 
-# Fix chain: prettier → eslint → prettier
-prettier-fix --parser json "${originalPathArgs[@]}" "${files[@]}"
+# If inputs contain package.json files, they need to be handled specifically:
+local -a packageFiles=(${(M)files:#(*/|)package.json})
+[[ "${originalPath:t}" == "package.json" ]] && packageFiles=("${files[@]}")
+local -a otherFiles=(${files:|packageFiles})
+
+# If input is mixed, we need to call json-fix recursively again on each group
+if [[ ${#packageFiles} -gt 0 && ${#otherFiles} -gt 0 ]]; then
+  json-fix "${packageFiles[@]}"
+  json-fix "${otherFiles[@]}"
+  return 0
+fi
+
+# Yarn rewrites package.json using JSON.stringify on each `yarn install` or
+# `yarn add` command, so we need to consider this as the "right" formatting.
+# Every other file will use prettier `json` formatter
+local parser=json
+[[ ${#packageFiles} -gt 0 ]] && parser=json-stringify
+
+# Step 1: Format with prettier
+prettier-fix --parser "$parser" "${originalPathArgs[@]}" "${files[@]}"
+
+# Step 2: Fix the content with ESLint
 eslint-fix "${originalPathArgs[@]}" "${files[@]}"
-prettier-fix --parser json "${originalPathArgs[@]}" "${files[@]}"
+
+# Step 3: Format with prettier again, to normalize what ESLint changed
+prettier-fix --parser "$parser" "${originalPathArgs[@]}" "${files[@]}"
 
 # Stdout mode: output and cleanup
 if [[ "$temporaryFile" != "" ]]; then
