@@ -12,7 +12,6 @@ import (
 //
 //	"#!/bin/zsh"               → "zsh"
 //	"#!/usr/bin/env python3"   → "python3"
-//	"#!/usr/bin/env -S node"   → "node"
 func Interpreter(firstLine string) string {
 	if !strings.HasPrefix(firstLine, "#!") {
 		return ""
@@ -29,11 +28,8 @@ func Interpreter(firstLine string) string {
 		return bin
 	}
 
-	// Skip flags after env (e.g. -S, -u)
-	for _, arg := range fields[1:] {
-		if !strings.HasPrefix(arg, "-") {
-			return arg
-		}
+	if len(fields) < 2 {
+		return ""
 	}
-	return ""
+	return fields[1]
 }

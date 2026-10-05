@@ -34,10 +34,6 @@ func TestParsesEnvNode(t *testing.T) {
 	assert.Equal(t, "node", Interpreter("#!/usr/bin/env node"))
 }
 
-func TestParsesEnvWithDashSFlag(t *testing.T) {
-	assert.Equal(t, "python3", Interpreter("#!/usr/bin/env -S python3 -u"))
-}
-
 func TestReturnsEmptyForNonShebang(t *testing.T) {
 	assert.Equal(t, "", Interpreter("# just a comment"))
 }

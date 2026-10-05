@@ -1,7 +1,8 @@
 # Boolean: is the given file a JS file?
 # Usage:
-# $ is-js /path/to/script.js         # exit 0 (.js extension)
-# $ is-js /path/to/bin-script        # exit 0 if shebang is #!/usr/bin/env node
+# $ is-js /path/to/script.js         # exit 0 (.js, .mjs, .cjs, .jsx, .vue)
+# $ is-js /path/to/bin-script        # exit 0 if shebang runs node (env or direct path)
+# $ is-js /path/to/script.ts         # exit 1 (TypeScript is out of scope)
 setopt local_options err_return
 
 local filepath="$1"
@@ -9,15 +10,17 @@ local filepath="$1"
 # Non-regular-files
 [[ ! -f "$filepath" ]] && return 1
 
-# .js extension
-[[ "$filepath" == *.js ]] && return 0
+# JS extensions
+local ext="${filepath:e}"
+[[ " js mjs cjs jsx vue " == *" $ext "* ]] && return 0
 
 # Has a non-js extension
-local ext="${filepath:e}"
 [[ "$ext" != "" ]] && return 1
 
 # No extension: check for node shebang on line 1
 local firstLine="$(head --lines=1 "$filepath")"
 [[ "$firstLine" == "#!/usr/bin/env node" ]] && return 0
+[[ "$firstLine" == "#!/usr/bin/node" ]] && return 0
+[[ "$firstLine" == "#!/usr/local/bin/node" ]] && return 0
 
 return 1

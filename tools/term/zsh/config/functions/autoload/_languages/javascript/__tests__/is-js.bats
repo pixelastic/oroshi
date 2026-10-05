@@ -61,3 +61,43 @@ setup() {
   bats_run_zsh "is-js $dir"
   [[ "$status" -eq 1 ]]
 }
+
+@test "exits 0 for each accepted extension" {
+  local ext
+  for ext in mjs cjs jsx vue; do
+    local file="$BATS_TMP_DIR/foo.$ext"
+    echo "x" > "$file"
+    bats_run_zsh "is-js $file"
+    [[ "$status" -eq 0 ]]
+  done
+}
+
+@test "exits 1 for .ts and .tsx files" {
+  local ext
+  for ext in ts tsx; do
+    local file="$BATS_TMP_DIR/foo.$ext"
+    echo "x" > "$file"
+    bats_run_zsh "is-js $file"
+    [[ "$status" -eq 1 ]]
+  done
+}
+
+@test "exits 1 for a missing file" {
+  bats_run_zsh "is-js $BATS_TMP_DIR/missing.js"
+  [[ "$status" -eq 1 ]]
+}
+
+
+@test "exits 0 for an extensionless file with direct-path node shebang" {
+  local file="$BATS_TMP_DIR/my-script"
+  printf '#!/usr/bin/node\nconsole.log("hi")\n' > "$file"
+  bats_run_zsh "is-js $file"
+  [[ "$status" -eq 0 ]]
+}
+
+@test "exits 1 for an extensionless file with a nodejs-like but different shebang" {
+  local file="$BATS_TMP_DIR/my-script"
+  printf '#!/usr/bin/env nodemon\nconsole.log("hi")\n' > "$file"
+  bats_run_zsh "is-js $file"
+  [[ "$status" -eq 1 ]]
+}

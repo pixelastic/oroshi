@@ -1,6 +1,7 @@
 # Given a path to a JS source file, return the path to its test file
 # Usage:
-# $ js-test-path ./path/to/module.js
+# $ js-test-path ./path/to/module.js           # → ./path/to/__tests__/module.js
+# $ js-test-path ./path/to/__tests__/module.js # Test file, returned as-is
 setopt local_options err_return
 
 local filePath="$1"
@@ -8,8 +9,9 @@ local filePath="$1"
 # No argument provided
 [[ "$filePath" == "" ]] && return 1
 
-# Not a JS file
-[[ "$filePath" != *.js ]] && return 1
+# Has a non-js extension
+local ext="${filePath:e}"
+[[ "$ext" != "" && " js mjs cjs jsx vue " != *" $ext "* ]] && return 1
 
 local parentDir="${filePath:h:t}"
 
@@ -19,6 +21,9 @@ if [[ "$parentDir" == "__tests__" ]]; then
   echo "$filePath"
   return
 fi
+
+# Not a JS file
+is-js "$filePath" || return 1
 
 local testFile="${filePath:h}/__tests__/${filePath:t}"
 

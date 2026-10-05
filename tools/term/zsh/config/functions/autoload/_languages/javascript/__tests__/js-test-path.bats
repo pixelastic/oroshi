@@ -46,3 +46,70 @@ setup() {
   [[ "$status" -eq 1 ]]
   [[ "$output" = "" ]]
 }
+
+@test "maps each accepted extension to its __tests__ sibling" {
+  mkdir -p "$BATS_TMP_DIR/src/__tests__"
+  local ext
+  for ext in mjs cjs jsx vue; do
+    touch "$BATS_TMP_DIR/src/module.$ext"
+    touch "$BATS_TMP_DIR/src/__tests__/module.$ext"
+    bats_run_zsh "js-test-path $BATS_TMP_DIR/src/module.$ext"
+    [[ "$status" -eq 0 ]]
+    [[ "$output" = "$BATS_TMP_DIR/src/__tests__/module.$ext" ]]
+  done
+}
+
+@test "returns a test file of each accepted extension unchanged" {
+  mkdir -p "$BATS_TMP_DIR/src/__tests__"
+  local ext
+  for ext in mjs cjs jsx vue; do
+    touch "$BATS_TMP_DIR/src/__tests__/module.$ext"
+    bats_run_zsh "js-test-path $BATS_TMP_DIR/src/__tests__/module.$ext"
+    [[ "$status" -eq 0 ]]
+    [[ "$output" = "$BATS_TMP_DIR/src/__tests__/module.$ext" ]]
+  done
+}
+
+@test "maps an extensionless node-shebang script to its __tests__ sibling" {
+  mkdir -p "$BATS_TMP_DIR/bin/__tests__"
+  printf '#!/usr/bin/env node\n' > "$BATS_TMP_DIR/bin/my-script"
+  touch "$BATS_TMP_DIR/bin/__tests__/my-script"
+  bats_run_zsh "js-test-path $BATS_TMP_DIR/bin/my-script"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$BATS_TMP_DIR/bin/__tests__/my-script" ]]
+}
+
+@test "returns 1 for .ts and .tsx files even with a sibling test" {
+  mkdir -p "$BATS_TMP_DIR/src/__tests__"
+  local ext
+  for ext in ts tsx; do
+    touch "$BATS_TMP_DIR/src/module.$ext"
+    touch "$BATS_TMP_DIR/src/__tests__/module.$ext"
+    bats_run_zsh "js-test-path $BATS_TMP_DIR/src/module.$ext"
+    [[ "$status" -eq 1 ]]
+    [[ "$output" = "" ]]
+  done
+}
+
+@test "returns 1 for a .ts or .tsx file inside __tests__" {
+  mkdir -p "$BATS_TMP_DIR/src/__tests__"
+  local ext
+  for ext in ts tsx; do
+    touch "$BATS_TMP_DIR/src/__tests__/module.$ext"
+    bats_run_zsh "js-test-path $BATS_TMP_DIR/src/__tests__/module.$ext"
+    [[ "$status" -eq 1 ]]
+    [[ "$output" = "" ]]
+  done
+}
+
+@test "returns 1 when no test exists for a .vue source or a node-shebang script" {
+  mkdir -p "$BATS_TMP_DIR/src"
+  touch "$BATS_TMP_DIR/src/orphan.vue"
+  printf '#!/usr/bin/env node\n' > "$BATS_TMP_DIR/src/orphan-script"
+  local file
+  for file in orphan.vue orphan-script; do
+    bats_run_zsh "js-test-path $BATS_TMP_DIR/src/$file"
+    [[ "$status" -eq 1 ]]
+    [[ "$output" = "" ]]
+  done
+}
