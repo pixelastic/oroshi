@@ -151,20 +151,6 @@ local config = {
       configureLinter = tomlHelper.configureLinter,
       configureFormatter = tomlHelper.configureFormatter,
     },
-    typescript = {
-      linters = { "oroshi_js_lint" },
-      formatters = { "oroshi_js_fix" },
-      configureLinter = javascriptHelper.configureLinter,
-      configureFormatter = javascriptHelper.configureFormatter,
-      formatterTimeout = 10000,
-    },
-    typescriptreact = {
-      linters = { "oroshi_js_lint" },
-      formatters = { "oroshi_js_fix" },
-      configureLinter = javascriptHelper.configureLinter,
-      configureFormatter = javascriptHelper.configureFormatter,
-      formatterTimeout = 10000,
-    },
     vue = {
       linters = { "oroshi_js_lint" },
       formatters = { "oroshi_js_fix" },

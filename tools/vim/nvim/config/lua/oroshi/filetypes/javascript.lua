@@ -1,9 +1,8 @@
 local M = {}
+local codeQuality = require("oroshi/plugins/helpers/code-quality")
 
 M.filetypeAliases = {
   "javascriptreact",
-  "typescriptreact",
-  "typescript",
   "vue",
 }
 
@@ -18,17 +17,13 @@ M.configureLinter = function(lint)
     return -- Already configured
   end
 
-  -- Note: Defined as a function, so we can dynamically find the buffer name
-  lint.linters.oroshi_js_lint = function()
-    local filename = F.bufferName()
-    return {
-      cmd = "bin-zsh",
-      stdin = true,
-      args = { "js-lint", "--json", "--stdin", "--filepath", filename },
-      ignore_exitcode = true,
-      parser = M.lintParser,
-    }
-  end
+  lint.linters.oroshi_js_lint = {
+    cmd = "bin-zsh",
+    args = { "js-lint", "--json" },
+    stdin = false,
+    ignore_exitcode = true,
+    parser = codeQuality.lintParser,
+  }
 end
 
 -- Configure formatter if not already configured
@@ -39,46 +34,15 @@ M.configureFormatter = function(conform)
 
   conform.formatters.oroshi_js_fix = {
     command = "bin-zsh",
-    stdin = true,
-    args = { "js-fix", "--piped", "--filepath", "$FILENAME" },
+    stdin = false,
+    args = function(_, ctx)
+      return { "js-fix", "$FILENAME", "--original-path", F.bufferName(ctx.buf) }
+    end,
     exit_codes = { 0, 1 }, -- Do not fail on unfixable errors
   }
 end
 
--- Parser to convert CLI output to diagnostics
-M.lintParser = function(output)
-  local json = vim.json.decode(output)
-  local result = F.first(json or {})
-  if not result then
-    return {}
-  end
-
-  local seenLines = {}
-  return F.compact(F.map(result.messages or {}, function(message)
-    -- Skip lines already handled (we only need to display one error per line)
-    local line = message.line
-    if seenLines[line] then
-      return false
-    end
-    seenLines[line] = true
-
-    return {
-      lnum = line - 1,
-      col = message.column - 1,
-      severity = M.__.convertSeverity(message.severity),
-      message = message.message,
-      source = "eslint",
-      code = message.ruleId,
-    }
-  end))
-end
-
 M.__ = {
-  -- Convert eslint severity (1 = warning, 2 = error) to vim.diagnostic severity
-  convertSeverity = function(jsonSeverity)
-    return jsonSeverity == 1 and vim.diagnostic.severity.WARN or vim.diagnostic.severity.ERROR
-  end,
-
   -- Auto import anything from firost/golgoth/etc on save if missing
   autoImportKnownModulesOnSave = function()
     local bufferId = F.bufferId()
