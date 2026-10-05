@@ -197,7 +197,9 @@
     "autosubmit-clipboard":   "blue",
     "model-openai":           "amber-6",
     "model-groq":             "orange",
-    "model-parakeet":         "gray"
+    "model-parakeet":         "gray",
+    "postprocess-none":       "gray",
+    "postprocess-midjourney": "purple"
   },
 
 

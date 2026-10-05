@@ -47,6 +47,21 @@ const INDICATORS = [
       parakeet: { icon: 'model-parakeet.svg', color: 'modes-model-parakeet' },
     },
   },
+  {
+    name: 'postprocess',
+    file: 'mic2txt-postprocess',
+    defaultValue: 'none',
+    values: {
+      none: {
+        icon: 'postprocess-none.svg',
+        color: 'modes-postprocess-none',
+      },
+      midjourney: {
+        icon: 'postprocess-midjourney.svg',
+        color: 'modes-postprocess-midjourney',
+      },
+    },
+  },
 ];
 
 class OroshiModes {
@@ -136,7 +151,7 @@ class OroshiModes {
   }
 
   /**
-   * Create the 3 St.Icon widgets, each wrapped in an St.Bin, and add to the box
+   * Create one St.Icon widget per indicator, each wrapped in an St.Bin, and add to the box
    */
   _createIndicators() {
     for (const config of INDICATORS) {
