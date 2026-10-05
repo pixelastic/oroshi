@@ -52,12 +52,13 @@ export const gmailMessages = {
   /**
    * Convert a metadata-only Gmail message resource to a flat message
    * @param {object} message - Gmail message resource, fetched with the metadata format
-   * @returns {object} Normalized message { id, threadId, from, subject, date, snippet, unread }
+   * @returns {object} Normalized message { id, threadId, from, subject, date, snippet, unread, inbox }
    */
   parseMetadata(message) {
     return {
       ...__.normalize(message),
       unread: _.includes(message.labelIds, 'UNREAD'),
+      inbox: _.includes(message.labelIds, 'INBOX'),
     };
   },
 

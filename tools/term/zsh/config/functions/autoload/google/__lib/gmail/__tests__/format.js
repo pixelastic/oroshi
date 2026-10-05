@@ -211,6 +211,7 @@ describe('gmailFormat', () => {
     beforeEach(() => {
       vi.spyOn(__, 'readColors').mockReturnValue({
         'gmail-date': { ansi: 166 },
+        'gmail-count': { ansi: 65 },
         'gmail-author': { ansi: 35 },
         'gmail-subject': { ansi: 77 },
       });
@@ -224,6 +225,15 @@ describe('gmailFormat', () => {
       expect(actual).toContain('\u001B[38;5;77mQuarterly report');
     });
 
+    it('colors the message count with its own color', async () => {
+      const actual = await gmailFormat([{ ...thread, count: 3 }], {
+        width: 200,
+      });
+
+      expect(actual).toContain('\u001B[38;5;65m3');
+      expect(actual).not.toContain('\u001B[38;5;166m3');
+    });
+
     it('keeps the visible layout when colored', async () => {
       const threads = [{ ...thread, unread: true, count: 4 }];
       const colored = await gmailFormat(threads, { width: 200 });
@@ -234,6 +244,8 @@ describe('gmailFormat', () => {
         .split('\u001B[0m')
         .join('')
         .split('\u001B[38;5;166m')
+        .join('')
+        .split('\u001B[38;5;65m')
         .join('')
         .split('\u001B[38;5;35m')
         .join('')
@@ -257,6 +269,7 @@ describe('gmailFormat readColors', () => {
     const actual = await __.readColors();
 
     expect(actual).toHaveProperty('gmail-date.ansi', expect.any(Number));
+    expect(actual).toHaveProperty('gmail-count.ansi', expect.any(Number));
     expect(actual).toHaveProperty('gmail-author.ansi', expect.any(Number));
     expect(actual).toHaveProperty('gmail-subject.ansi', expect.any(Number));
   });

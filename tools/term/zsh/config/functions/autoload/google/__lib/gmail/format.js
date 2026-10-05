@@ -14,6 +14,7 @@ const SEPARATOR = '  ';
 const AUTHORS_SEPARATOR = ', ';
 const ELLIPSIS = '…';
 const DATE_COLOR = 'gmail-date';
+const COUNT_COLOR = 'gmail-count';
 const AUTHORS_COLOR = 'gmail-author';
 const SUBJECT_COLOR = 'gmail-subject';
 const COLORS_RELATIVE_PATH = 'tools/term/zsh/config/theming/dist/colors.json';
@@ -52,7 +53,7 @@ export async function gmailFormat(threads, { width }) {
         [
           cell(thread.unread ? icons[UNREAD_ICON] : '', MARKER_WIDTH),
           cell(formatDate(thread.date), DATE_WIDTH, colors[DATE_COLOR]),
-          cell(formatCount(thread.count), countWidth, colors[DATE_COLOR], {
+          cell(formatCount(thread.count), countWidth, colors[COUNT_COLOR], {
             align: 'right',
           }),
           cell(

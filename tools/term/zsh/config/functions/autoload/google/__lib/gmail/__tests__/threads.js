@@ -182,7 +182,7 @@ describe('gmailThreads', () => {
     it('flags a thread with an unread message as unread', async () => {
       const actual = await gmailThreads.list(auth, { query: 'q', limit: 10 });
 
-      expect(_.map(actual, 'unread')).toEqual([true, true, false]);
+      expect(_.map(actual, 'unread')).toEqual([true, false, true]);
     });
 
     it('counts the messages of the thread', async () => {
@@ -201,6 +201,36 @@ describe('gmailThreads', () => {
       });
     });
 
+    it('takes date, subject and snippet from the latest inbox message, like the Gmail inbox', async () => {
+      vi.spyOn(__, 'fetchThreadIds').mockReturnValue([{ id: 't4' }]);
+      vi.spyOn(__, 'fetchThreadMetadata').mockReturnValue({
+        id: 't4',
+        messages: [
+          message('d1', {
+            from: 'Eve <eve@example.com>',
+            internalDate: 1000,
+            labelIds: ['INBOX'],
+          }),
+          message('d2', {
+            from: 'Tim <tim@example.com>',
+            internalDate: 2000,
+            labelIds: ['SENT'],
+          }),
+        ],
+      });
+
+      const actual = await gmailThreads.list(auth, { query: 'q', limit: 10 });
+
+      expect(actual[0]).toMatchObject({
+        date: 'date d1',
+        subject: 'subject d1',
+        snippet: 'snippet d1',
+        count: 2,
+        lastMessageId: 'd2',
+        lastMessageDate: 'date d2',
+      });
+    });
+
     it('deduplicates authors by display name, unread authors first', async () => {
       const actual = await gmailThreads.list(auth, { query: 'q', limit: 10 });
 
@@ -210,10 +240,10 @@ describe('gmailThreads', () => {
       ]);
     });
 
-    it('puts unread threads first, each group keeping its order', async () => {
+    it('keeps the order of the search', async () => {
       const actual = await gmailThreads.list(auth, { query: 'q', limit: 10 });
 
-      expect(_.map(actual, 'threadId')).toEqual(['t1', 't3', 't2']);
+      expect(_.map(actual, 'threadId')).toEqual(['t1', 't2', 't3']);
     });
 
     it('gives back a thread without messages as an empty summary', async () => {
@@ -232,5 +262,59 @@ describe('gmailThreads', () => {
 
       expect(actual).toEqual([]);
     });
+  });
+});
+
+describe('gmailThreads fetchThreadIds', () => {
+  const auth = { fake: 'auth' };
+  const page = (threadIds, nextPageToken) => ({
+    messages: threadIds.map((threadId, index) => ({
+      id: `m${index}`,
+      threadId,
+    })),
+    nextPageToken,
+  });
+
+  it('orders threads by their most recent matching message', async () => {
+    vi.spyOn(__, 'listMessageRefs').mockReturnValue(
+      page(['t2', 't1', 't2', 't3', 't1']),
+    );
+
+    const actual = await __.fetchThreadIds(auth, { query: 'q', limit: 10 });
+
+    expect(actual).toEqual([{ id: 't2' }, { id: 't1' }, { id: 't3' }]);
+  });
+
+  it('reads more pages until it has enough threads', async () => {
+    vi.spyOn(__, 'listMessageRefs')
+      .mockReturnValueOnce(page(['t1', 't1'], 'next'))
+      .mockReturnValueOnce(page(['t2', 't3']));
+
+    const actual = await __.fetchThreadIds(auth, { query: 'q', limit: 3 });
+
+    expect(actual).toEqual([{ id: 't1' }, { id: 't2' }, { id: 't3' }]);
+    expect(__.listMessageRefs).toHaveBeenLastCalledWith(auth, {
+      query: 'q',
+      pageToken: 'next',
+    });
+  });
+
+  it('stops at the limit without reading further pages', async () => {
+    vi.spyOn(__, 'listMessageRefs').mockReturnValue(
+      page(['t1', 't2', 't3'], 'next'),
+    );
+
+    const actual = await __.fetchThreadIds(auth, { query: 'q', limit: 2 });
+
+    expect(actual).toEqual([{ id: 't1' }, { id: 't2' }]);
+    expect(__.listMessageRefs).toHaveBeenCalledTimes(1);
+  });
+
+  it('returns no thread when the search finds none', async () => {
+    vi.spyOn(__, 'listMessageRefs').mockReturnValue({});
+
+    const actual = await __.fetchThreadIds(auth, { query: 'q', limit: 2 });
+
+    expect(actual).toEqual([]);
   });
 });

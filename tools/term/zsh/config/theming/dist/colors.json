@@ -567,6 +567,10 @@
     "ansi": 204,
     "hex": "#9ca3af"
   },
+  "gmail-count": {
+    "ansi": 65,
+    "hex": "#805ad5"
+  },
   "gmail-date": {
     "ansi": 166,
     "hex": "#0369a1"

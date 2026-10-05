@@ -2,9 +2,9 @@ import { _, dayjs } from 'golgoth';
 import { gmailSeparators } from './separators.js';
 
 /**
- * Format a thread as one raw line: threadId▮unread▮date▮count▮authors▮subject▮snippet
+ * Format a thread as one raw line: threadId▮unread▮date▮count▮authors▮subject▮snippet▮lastMessageId▮lastMessageDate
  * Newlines become spaces and separators are removed from every field. Authors are joined with ▯
- * @param {object} thread - Thread summary { threadId, unread, date, count, authors, subject, snippet }
+ * @param {object} thread - Thread summary { threadId, unread, date, count, authors, subject, snippet, lastMessageId, lastMessageDate }
  * @returns {Promise<string>} Raw line
  */
 export async function gmailFormatRaw(thread) {
@@ -26,6 +26,8 @@ export async function gmailFormatRaw(thread) {
     _.chain(thread.authors).map(clean).join(list).value(),
     clean(thread.subject),
     clean(thread.snippet),
+    clean(thread.lastMessageId),
+    isoDate(thread.lastMessageDate),
   ].join(field);
 }
 

@@ -1,9 +1,10 @@
-# List inbox threads, one per line, unread threads first
-# Fields: threadId▮unread▮date▮count▮authors▮subject▮snippet
-# unread is 1 or 0, date is ISO 8601, count is the number of messages, authors are separated by ▯, unread authors first
+# List inbox threads, one per line, unread threads first, most recent last message first
+# Fields: threadId▮unread▮date▮count▮authors▮subject▮snippet▮lastMessageId▮lastMessageDate
+# The latest threads of the Gmail inbox (important first, then everything else) are listed, unread ones before read ones, each group sorted by lastMessageDate (most recent first)
+# unread is 1 or 0, date is ISO 8601 (latest message in the inbox), lastMessageDate is ISO 8601 (latest message of the thread, sent ones included), count is the number of messages, authors are separated by ▯, unread authors first
 # Pass threadId to gmail-read to read the whole thread
 # Usage:
-# $ gmail-inbox-raw            # latest threads (default limit: 100), pro account
+# $ gmail-inbox-raw            # latest threads (default limit: 25), pro account
 # $ gmail-inbox-raw --perso    # perso account
 # $ gmail-inbox-raw --limit 5  # custom limit, counted in threads
 setopt local_options err_return

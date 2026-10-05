@@ -21,6 +21,8 @@ describe('gmailParseRaw', () => {
         authors: ['Bob', 'Alice Martin'],
         subject: 'Quarterly report',
         snippet: 'Please find the report attached',
+        lastMessageId: 'm9',
+        lastMessageDate: 'Sat, 04 Oct 2026 10:00:00 +0200',
       },
       expected: {
         threadId: 't1',
@@ -30,6 +32,8 @@ describe('gmailParseRaw', () => {
         authors: ['Bob', 'Alice Martin'],
         subject: 'Quarterly report',
         snippet: 'Please find the report attached',
+        lastMessageId: 'm9',
+        lastMessageDate: '2026-10-04T08:00:00.000Z',
       },
     },
     {
@@ -42,6 +46,8 @@ describe('gmailParseRaw', () => {
         authors: [],
         subject: '',
         snippet: '',
+        lastMessageId: '',
+        lastMessageDate: '',
       },
       expected: {
         threadId: 't2',
@@ -51,6 +57,8 @@ describe('gmailParseRaw', () => {
         authors: [],
         subject: '',
         snippet: '',
+        lastMessageId: '',
+        lastMessageDate: '',
       },
     },
   ])('$title', async ({ thread, expected }) => {

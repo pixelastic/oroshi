@@ -113,6 +113,7 @@
   // Gmail
   "gmail": {
     "author":  "gray-4",
+    "count":   "purple",
     "date":    "sky-6",
     "subject": "gray-3"
   },

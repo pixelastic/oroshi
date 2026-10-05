@@ -3,6 +3,6 @@
  * commands, overridden by --limit
  */
 export const gmailLimits = {
-  inbox: 100,
+  inbox: 25,
   search: 50,
 };

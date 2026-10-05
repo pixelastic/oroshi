@@ -10,6 +10,8 @@ describe('gmailFormatRaw', () => {
     authors: ['Bob', 'Alice Martin'],
     subject: 'Quarterly report',
     snippet: 'Please find the report attached',
+    lastMessageId: 'm9',
+    lastMessageDate: 'Sat, 04 Oct 2026 10:00:00 +0200',
   };
 
   beforeEach(() => {
@@ -19,11 +21,11 @@ describe('gmailFormatRaw', () => {
     });
   });
 
-  it('outputs seven fields in order', async () => {
+  it('outputs nine fields in order', async () => {
     const actual = await gmailFormatRaw(thread);
 
     expect(actual).toEqual(
-      't1▮1▮2026-10-03T19:26:59.000Z▮3▮Bob▯Alice Martin▮Quarterly report▮Please find the report attached',
+      't1▮1▮2026-10-03T19:26:59.000Z▮3▮Bob▯Alice Martin▮Quarterly report▮Please find the report attached▮m9▮2026-10-04T08:00:00.000Z',
     );
   });
 
@@ -65,7 +67,18 @@ describe('gmailFormatRaw', () => {
       expected: 'Alice▯Bob',
     },
     {
-      title: 'strips separators from the thread id',
+      title: 'leaves the last message date empty when it is invalid',
+      change: { lastMessageDate: 'not a date' },
+      field: 8,
+      expected: '',
+    },
+    {
+      title: 'strips separators from the last message id',
+      change: { lastMessageId: 'm▮9' },
+      field: 7,
+      expected: 'm9',
+    },
+    {
       change: { threadId: 't▮1' },
       field: 0,
       expected: 't1',
@@ -80,7 +93,7 @@ describe('gmailFormatRaw', () => {
     const line = await gmailFormatRaw({ ...thread, ...change });
     const actual = line.split('▮');
 
-    expect(actual).toHaveLength(7);
+    expect(actual).toHaveLength(9);
     expect(actual).toHaveProperty(field, expected);
   });
 });
