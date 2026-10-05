@@ -112,3 +112,50 @@ stub_curl() {
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"Usage: confluence-read <url|id>"* ]]
 }
+
+@test "removes the panel macro comment" {
+  stub_curl "page-with-macros.json"
+
+  bats_run_zsh "confluence-read 789012"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"Unsupported macro: panel"* ]]
+}
+
+@test "removes the table of contents comment" {
+  stub_curl "page-with-macros.json"
+
+  bats_run_zsh "confluence-read 789012"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"Table of Contents"* ]]
+}
+
+@test "keeps content that follows a removed comment on the same line" {
+  stub_curl "page-with-macros.json"
+
+  bats_run_zsh "confluence-read 789012"
+  [[ "$output" == *"> "*"**Info:** Info body"* ]]
+}
+
+@test "leaves other unsupported macro comments visible" {
+  stub_curl "page-with-macros.json"
+
+  bats_run_zsh "confluence-read 789012"
+  [[ "$output" == *"Unsupported macro: jira"* ]]
+}
+
+@test "leaves headings, text and lists unchanged" {
+  stub_curl "page-with-macros.json"
+
+  bats_run_zsh "confluence-read 789012"
+  [[ "$output" == *"## Intro"* ]]
+  [[ "$output" == *"Before"* ]]
+  [[ "$output" == *"- First item"* ]]
+  [[ "$output" == *"After"* ]]
+}
+
+@test "collapses the blank lines left by a removed comment" {
+  stub_curl "page-with-macros.json"
+
+  bats_run_zsh "confluence-read 789012"
+  [[ "$output" != *$'\n\n\n'* ]]
+}

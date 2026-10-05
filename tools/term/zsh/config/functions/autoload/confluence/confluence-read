@@ -24,4 +24,18 @@ local page="$(confluence-api "wiki/api/v2/pages/${id}?body-format=storage")"
 
 local converter="$(go-tool-path confluence-md)"
 
-print -r -- "$page" | jq --raw-output '.body.storage.value' | "$converter" html
+# Raw markdown content
+local markdown="$(print -r -- "$page" | jq --raw-output '.body.storage.value' | "$converter" html)"
+
+# We remove some useless HTML comments
+local noisyComments=(
+  'Table of Contents'
+  'Unsupported macro: panel'
+  'Unsupported macro: toc'
+)
+for comment in $noisyComments; do
+  markdown=${markdown//"<!-- $comment -->"$'\n\n'/}
+  markdown=${markdown//"<!-- $comment -->"/}
+done
+
+print -r -- "$markdown"

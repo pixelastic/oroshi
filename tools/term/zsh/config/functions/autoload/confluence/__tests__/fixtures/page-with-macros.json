@@ -1,0 +1,10 @@
+{
+  "id": 789012,
+  "title": "Example macros",
+  "body": {
+    "storage": {
+      "representation": "storage",
+      "value": "<h2>Intro</h2><ac:structured-macro ac:name=\"toc\" ac:schema-version=\"1\"><ac:parameter ac:name=\"maxLevel\">3</ac:parameter></ac:structured-macro><p>Before</p><ac:structured-macro ac:name=\"panel\" ac:schema-version=\"1\"><ac:parameter ac:name=\"title\">Note</ac:parameter><ac:rich-text-body><p>Inside panel</p></ac:rich-text-body></ac:structured-macro><ac:structured-macro ac:name=\"info\" ac:schema-version=\"1\"><ac:rich-text-body><p>Info body</p></ac:rich-text-body></ac:structured-macro><ac:structured-macro ac:name=\"jira\" ac:schema-version=\"1\"><ac:parameter ac:name=\"key\">X-1</ac:parameter></ac:structured-macro><ul><li>First item</li></ul><p>After</p>"
+    }
+  }
+}
