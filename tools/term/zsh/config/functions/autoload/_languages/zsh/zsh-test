@@ -4,7 +4,12 @@
 # $ zsh-test ./misc/__tests__/slugify.bats   # Run the test file directly
 # $ zsh-test file1.zsh file2.zsh             # Multiple files (deduplicated)
 # $ zsh-test ./misc/                         # Expand directory, run all its tests
+# $ zsh-test --fail-fast ./misc/             # Stop at the first failing test
 setopt local_options err_return
+
+zparseopts -E -D -fail-fast=flagFailFast
+
+local isFailFast=${#flagFailFast}
 
 # No arguments: nothing to test
 [[ $# -eq 0 ]] && return 0
@@ -18,4 +23,7 @@ local -aU testFiles=(
 # No test files found
 [[ ${#testFiles[@]} -eq 0 ]] && return 0
 
-bats "${testFiles[@]}"
+local batsArgs=()
+[[ $isFailFast == 1 ]] && batsArgs+=(--abort)
+
+bats "${batsArgs[@]}" "${testFiles[@]}"

@@ -84,3 +84,52 @@ setup() {
   bats_run_zsh "zsh-test $BATS_TMP_DIR/src/__tests__/foo.bats"
   [[ "$status" -ne 0 ]]
 }
+
+# ─── FAIL FAST ────────────────────────────────────────────────────────────────
+
+# Drop the bats mock from setup, so the real bats runs
+use_real_bats() {
+  rm -f "$MOCK_OVERRIDE"
+}
+
+# Write a bats file holding two failing tests
+write_failing_tests() {
+  cat > "$BATS_TMP_DIR/src/__tests__/failing.bats" <<'BATS'
+@test "first failure" { false; }
+@test "second failure" { false; }
+BATS
+}
+
+@test "reports every failure without --fail-fast" {
+  use_real_bats
+  write_failing_tests
+
+  bats_run_zsh "zsh-test $BATS_TMP_DIR/src/__tests__/failing.bats"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"first failure"* ]]
+  [[ "$output" == *"second failure"* ]]
+}
+
+@test "reports only the first failure with --fail-fast" {
+  use_real_bats
+  write_failing_tests
+
+  bats_run_zsh "zsh-test --fail-fast $BATS_TMP_DIR/src/__tests__/failing.bats"
+  [[ "$output" == *"first failure"* ]]
+  [[ "$output" != *"second failure"* ]]
+}
+
+@test "exits non-zero with --fail-fast when a test fails" {
+  use_real_bats
+  write_failing_tests
+
+  bats_run_zsh "zsh-test --fail-fast $BATS_TMP_DIR/src/__tests__/failing.bats"
+  [[ "$status" -ne 0 ]]
+}
+
+@test "exits zero with --fail-fast when all tests pass" {
+  use_real_bats
+
+  bats_run_zsh "zsh-test --fail-fast $BATS_TMP_DIR/src/__tests__/foo.bats"
+  [[ "$status" -eq 0 ]]
+}
