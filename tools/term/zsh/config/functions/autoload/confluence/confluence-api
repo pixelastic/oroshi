@@ -1,0 +1,52 @@
+# Do a GET call to the Confluence API through the Atlassian gateway
+# Usage:
+# $ confluence-api wiki/api/v2/pages/123456?body-format=storage # Returns json
+setopt local_options err_return
+
+local apiPath=$1
+
+# Every credential variable must be set
+local requiredVariables=(
+  OROSHI_CONFLUENCE_EMAIL
+  OROSHI_CONFLUENCE_API_TOKEN
+  OROSHI_CONFLUENCE_CLOUD_ID
+)
+local variableName
+for variableName in $requiredVariables; do
+  if [[ "${(P)variableName}" == "" ]]; then
+    echoerr "Error: ${variableName} is not set"
+    return 1
+  fi
+done
+
+local baseUrl="https://api.atlassian.com/ex/confluence/${OROSHI_CONFLUENCE_CLOUD_ID}"
+
+local response="$(curl \
+  --silent \
+  --user "${OROSHI_CONFLUENCE_EMAIL}:${OROSHI_CONFLUENCE_API_TOKEN}" \
+  --write-out $'\n%{http_code}' \
+  "${baseUrl}/${apiPath}")"
+
+local httpStatus="${response##*$'\n'}"
+local body="${response%$'\n'*}"
+
+# Success
+if [[ "$httpStatus" == 2* ]]; then
+  print -r -- "$body"
+  return 0
+fi
+
+# Token is rejected
+if [[ "$httpStatus" == 401 ]]; then
+  echoerr "Error: 401 Unauthorized, the OROSHI_CONFLUENCE_API_TOKEN token is expired or wrong"
+  return 1
+fi
+
+# Page does not exist, or the token cannot see it
+if [[ "$httpStatus" == 404 ]]; then
+  echoerr "Error: 404 Page not found or restricted"
+  return 1
+fi
+
+echoerr "Error: HTTP ${httpStatus} from Confluence: ${body}"
+return 1

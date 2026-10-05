@@ -1,0 +1,20 @@
+# Read a Confluence page by its id, output Markdown
+# Usage:
+# $ confluence-read 123456   # Page 123456, as Markdown
+setopt local_options err_return
+
+local id=$1
+# An id is required
+if [[ "$id" == "" ]]; then
+  echoerr "Usage: confluence-read <id>"
+  return 1
+fi
+
+local page="$(confluence-api "wiki/api/v2/pages/${id}?body-format=storage")"
+
+# The API helper already printed the error
+[[ "$page" == "" ]] && return 1
+
+local converter="$(go-tool-path confluence-md)"
+
+print -r -- "$page" | jq --raw-output '.body.storage.value' | "$converter" html
