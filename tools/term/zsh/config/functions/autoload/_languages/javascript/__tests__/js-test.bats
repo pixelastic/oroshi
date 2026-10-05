@@ -19,6 +19,9 @@ setup() {
   touch "$BATS_TMP_DIR/src/__tests__/foo.js"
   touch "$BATS_TMP_DIR/src/__tests__/bar.js"
 
+  # Remember the real oroshi root, for the tests that run the real vitest
+  REAL_OROSHI_ROOT="$OROSHI_ROOT"
+
   # Project vitest and oroshi vitest are both fakes, logging who was called
   make_vitest "$BATS_TMP_DIR"
   make_vitest "$BATS_TMP_DIR/oroshi"
@@ -156,4 +159,55 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
   [[ ! -f "$BATS_TMP_DIR/calls.txt" ]]
+}
+
+# ─── FAIL FAST ────────────────────────────────────────────────────────────────
+
+# Replace the fake vitest with the real one, linking the real node_modules
+use_real_vitest() {
+  rm --recursive --force "$BATS_TMP_DIR/node_modules"
+  ln --symbolic "$REAL_OROSHI_ROOT/node_modules" "$BATS_TMP_DIR/node_modules"
+  echo "export default { test: { include: ['**/__tests__/*.js'] } }" > "$BATS_TMP_DIR/vite.config.js"
+}
+
+# Write a test file holding two failing tests
+write_failing_tests() {
+  cat > "$BATS_TMP_DIR/src/__tests__/failing.js" <<'JS'
+import { test } from 'vitest';
+test('first failure', () => { throw new Error('first'); });
+test('second failure', () => { throw new Error('second'); });
+JS
+}
+
+@test "reports every failure without --fail-fast" {
+  use_real_vitest
+  write_failing_tests
+
+  bats_run_zsh "NO_COLOR=1 js-test $BATS_TMP_DIR/src/__tests__/failing.js"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"> first failure"* ]]
+  [[ "$output" == *"> second failure"* ]]
+}
+
+@test "reports only the first failure with --fail-fast" {
+  use_real_vitest
+  write_failing_tests
+
+  bats_run_zsh "NO_COLOR=1 js-test --fail-fast $BATS_TMP_DIR/src/__tests__/failing.js"
+  [[ "$output" == *"> first failure"* ]]
+  [[ "$output" != *"> second failure"* ]]
+}
+
+@test "exits non-zero with --fail-fast when a test fails" {
+  use_real_vitest
+  write_failing_tests
+
+  bats_run_zsh "NO_COLOR=1 js-test --fail-fast $BATS_TMP_DIR/src/__tests__/failing.js"
+  [[ "$status" -ne 0 ]]
+}
+
+@test "passes run --bail 1 to vitest with --fail-fast" {
+  bats_run_zsh "js-test --fail-fast $BATS_TMP_DIR/src/foo.js"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" == *"vitest run --bail 1 $BATS_TMP_DIR/src/__tests__/foo.js" ]]
 }

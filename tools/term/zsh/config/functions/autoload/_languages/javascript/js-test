@@ -4,7 +4,12 @@
 # $ js-test ./path/to/module.js                # Source file → resolved via js-test-path
 # $ js-test ./path/to/dir/                     # Run all tests in a directory
 # $ js-test module.js __tests__/module.js      # Mixed inputs (deduplicated)
+# $ js-test --fail-fast ./path/to/dir/         # Stop at the first failing test
 setopt local_options err_return
+
+zparseopts -E -D -fail-fast=flagFailFast
+
+local isFailFast=${#flagFailFast}
 
 local scriptDirectory="${functions_source[$0]:A:h}"
 source "$scriptDirectory/__lib/vitest-helpers.zsh"
@@ -21,4 +26,7 @@ local -aU testFiles=("${(@f)expanded}")
 # Run from the top-level yarn root of the first file (subshell keeps the caller's cwd)
 local yarnRoot="$(yarn-root --force "${testFiles[1]:h}")"
 local vitestBin="$(__vitest-bin "$yarnRoot")"
-(cd "$yarnRoot" && "$vitestBin" run "${testFiles[@]}")
+local vitestArgs=(run)
+[[ $isFailFast == 1 ]] && vitestArgs+=(--bail 1)
+
+(cd "$yarnRoot" && "$vitestBin" "${vitestArgs[@]}" "${testFiles[@]}")
