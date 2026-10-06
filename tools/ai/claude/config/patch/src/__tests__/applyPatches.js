@@ -122,7 +122,30 @@ describe('applyPatches', () => {
     expect(actual).toHaveProperty('code', 'CLAUDE_PATCH_UNKNOWN');
     expect(actual).toHaveProperty(
       'message',
-      'Unknown patch "nope", expected one of: suggestion',
+      'Unknown patch "nope", expected one of: suggestion, syntax',
     );
+  });
+
+  it('passes the options of each patch to its patch step', async () => {
+    const colorTable =
+      'if(t){let m=l(248,248,242),b=l(61,1,0),g=l(92,2,0),y=l(220,90,90);if(r)return{addLine:s?l(0,27,41):x(17),addDecoration:l(81,160,200),deleteDecoration:y};return{addLine:s?l(2,40,0):x(22),addWord:s?l(4,71,0):x(28),addDecoration:l(80,200,80),deleteLine:b,deleteDecoration:y}}';
+    const diffTable =
+      'var j=new Map([["keyword",l(249,38,114)],["_storage",l(102,217,239)],["title.function",l(166,226,46)],["comment",l(117,113,94)],["meta",l(117,113,94)],["variable",l(255,255,255)],["number",l(174,129,255)],["attr",l(166,226,46)],["built_in",l(102,217,239)],["operator",l(249,38,114)]]),G=new Map([["keyword",l(167,29,93)]]);';
+    const codeTable =
+      'var a=new Map(Object.entries({keyword:de.blue,string:de.red,subst:de.reset,"title.function":de.yellow,meta:de.grey,"meta-keyword":de.reset,"meta.keyword":de.reset,bullet:de.reset,code:de.reset,quote:de.reset,emphasis:de.italic}));function u(e){let t=e.replace(/^hljs-/,"");}';
+    await writeFile(
+      binaryPath,
+      buildBinary(`AAA${diffTable}BBB${codeTable}CCC${colorTable}DDD`),
+    );
+
+    await applyPatches(binaryPath, ['syntax'], {
+      syntax: {
+        scopeColors: { keyword: '#38a169' },
+        decorationColors: { added: '#276749', removed: '#7f1d1d' },
+      },
+    });
+
+    const actual = (await readFile(binaryPath)).toString('latin1');
+    expect(actual).toContain('keyword:l(56,161,105)');
   });
 });

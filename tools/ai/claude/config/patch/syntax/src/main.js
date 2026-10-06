@@ -3,8 +3,8 @@ import { parseArgs } from 'node:util';
 import { read, readJson } from 'firost';
 import { parse as parseJsonc } from 'jsonc-parser';
 import { patchBinary } from '../../src/patchBinary.js';
-import { patchHighlightTables } from './patchHighlightTables.js';
 import { resolveColors } from './resolveColors.js';
+import { syntaxPatch } from './syntaxPatch.js';
 
 /**
  * Patch the Claude Code binary so its syntax highlighting uses our colors
@@ -19,8 +19,9 @@ export async function main({ binaryPath, colorsPath }) {
   const scopeColors = resolveColors(config.scopes, colors);
   const decorationColors = resolveColors(config.diff, colors);
 
+  // Patched even when already patched, to apply changed colors
   await patchBinary(binaryPath, (text) =>
-    patchHighlightTables(text, scopeColors, decorationColors),
+    syntaxPatch.patch(text, { scopeColors, decorationColors }),
   );
 }
 

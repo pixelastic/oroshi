@@ -8,10 +8,11 @@ import { patches } from './patches.js';
  * Patches already present in the binary are skipped.
  * @param {string} binaryPath - Path to the claude.exe binary
  * @param {string[]} names - Names of the patches to apply
+ * @param {object} [options] - Map of patch name → options passed to its patch step
  * @returns {Promise<boolean>} True when the binary was rewritten
  * @throws {Error} CLAUDE_PATCH_UNKNOWN when a name is not registered
  */
-export async function applyPatches(binaryPath, names) {
+export async function applyPatches(binaryPath, names, options = {}) {
   const contracts = _.map(names, (name) => {
     if (!_.has(patches, name)) {
       throw firostError(
@@ -19,7 +20,7 @@ export async function applyPatches(binaryPath, names) {
         `Unknown patch "${name}", expected one of: ${_.chain(patches).keys().join(', ').value()}`,
       );
     }
-    return patches[name];
+    return { name, ...patches[name] };
   });
 
   return await patchBinary(binaryPath, (input) =>
@@ -29,7 +30,10 @@ export async function applyPatches(binaryPath, names) {
         if (contract.isPatched(current.text)) {
           return current;
         }
-        const { text, offsets } = contract.patch(current.text);
+        const { text, offsets } = contract.patch(
+          current.text,
+          options[contract.name],
+        );
         return { text, offsets: [...current.offsets, ...offsets] };
       },
       { text: input, offsets: [] },
