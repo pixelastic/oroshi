@@ -108,10 +108,7 @@ describe('stripModuleBytecode', () => {
     } catch (error) {
       actual = error;
     }
-    expect(actual).toHaveProperty(
-      'code',
-      'CLAUDE_SYNTAX_PATCH_MODULE_NOT_FOUND',
-    );
+    expect(actual).toHaveProperty('code', 'CLAUDE_PATCH_MODULE_NOT_FOUND');
   });
 
   it('throws when the binary is not a Bun binary', () => {
@@ -121,6 +118,6 @@ describe('stripModuleBytecode', () => {
     } catch (error) {
       actual = error;
     }
-    expect(actual).toHaveProperty('code', 'CLAUDE_SYNTAX_PATCH_NOT_BUN');
+    expect(actual).toHaveProperty('code', 'CLAUDE_PATCH_NOT_BUN');
   });
 });

@@ -34,7 +34,7 @@ export function stripModuleBytecode(binary, offsets) {
     );
     if (!module) {
       throw firostError(
-        'CLAUDE_SYNTAX_PATCH_MODULE_NOT_FOUND',
+        'CLAUDE_PATCH_MODULE_NOT_FOUND',
         `No module contains offset ${offset}`,
       );
     }
@@ -55,7 +55,7 @@ __ = {
     const offsetsPosition = trailerPosition - OFFSETS_SIZE;
     if (trailerPosition === -1 || offsetsPosition < 0) {
       throw firostError(
-        'CLAUDE_SYNTAX_PATCH_NOT_BUN',
+        'CLAUDE_PATCH_NOT_BUN',
         'Binary is not a Bun standalone executable',
       );
     }
