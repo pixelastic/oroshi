@@ -45,8 +45,8 @@ export default {
     'yarn run colors-build-and-stage',
 
   // Claude Code syntax colors patch (binary is not committed, nothing to stage)
-  'tools/ai/claude/config/syntax/**/*':
-    './tools/ai/claude/config/syntax/generate-syntax',
+  'tools/ai/claude/config/patch/syntax/**/*':
+    './tools/ai/claude/config/patch/syntax/generate-syntax',
 
   // Claude Code UI theme (output is outside the repo, nothing to stage)
   'tools/ai/claude/config/themes/src/**/*':

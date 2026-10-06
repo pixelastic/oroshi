@@ -60,7 +60,7 @@ setup() {
 
 @test "the marker literal equals PATCH_MARKER exported by the patch module" {
   local helperFile="tools/term/zsh/config/functions/autoload/ai/claude-is-color-patched"
-  local moduleFile="$PWD/tools/ai/claude/config/syntax/src/patchHighlightTables.js"
+  local moduleFile="$PWD/tools/ai/claude/config/patch/syntax/src/patchHighlightTables.js"
   local helperMarker="$(grep --only-matching --perl-regexp "PATCH_MARKER='\K[^']+" "$helperFile")"
   local moduleMarker="$(node --input-type=module --eval "import { PATCH_MARKER } from '$moduleFile'; process.stdout.write(PATCH_MARKER)")"
 

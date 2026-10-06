@@ -19,7 +19,7 @@ setup() {
   local args
   read -r -a args <<<"$output"
   [[ "$status" -eq 0 ]]
-  [[ "${args[0]}" == */tools/ai/claude/config/syntax/src/main.js ]]
+  [[ "${args[0]}" == */tools/ai/claude/config/patch/syntax/src/main.js ]]
   [[ "${args[1]}" == "--binary" ]]
   [[ "${args[2]}" == "$BATS_TMP_DIR/oroshi/node_modules/@anthropic-ai/claude-code/bin/claude.exe" ]]
   [[ "${args[3]}" == "--colors" ]]

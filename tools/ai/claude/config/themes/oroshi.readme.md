@@ -12,10 +12,10 @@ through `./generate-theme`.
 ## Syntax highlighting
 
 Claude has no settings to change syntax highlighting; it's hardcoded in its
-binary. But we have `../syntax/generate-syntax` that patches the binary in
+binary. But we have `../patch/syntax/generate-syntax` that patches the binary in
 place. It's fragile, can break on any update, but so far it's working.
 
-`../syntax/src/claude-syntax.jsonc` maps each highlight.js scope used by
+`../patch/syntax/src/claude-syntax.jsonc` maps each highlight.js scope used by
 Claude Code, and the diff line number and marker colors, to a color name from
 `colors.jsonc`, like the bat theme does. So changing a color name (e.g.
 `keyword`) updates Claude along with the other tools.

@@ -40,7 +40,7 @@ setup() {
 # Fake generate-syntax that logs its call, and a fake binary that logs its args
 _fake_generate_syntax() {
   local exitCode="${1:-0}"
-  local syntaxDir="$BATS_TMP_DIR/oroshi/tools/ai/claude/config/syntax"
+  local syntaxDir="$BATS_TMP_DIR/oroshi/tools/ai/claude/config/patch/syntax"
   mkdir -p "$syntaxDir"
   printf '#!/bin/zsh\necho generate-syntax >> "$BATS_TMP_DIR/calls.txt"\nexit %s\n' "$exitCode" > "$syntaxDir/generate-syntax"
   chmod +x "$syntaxDir/generate-syntax"

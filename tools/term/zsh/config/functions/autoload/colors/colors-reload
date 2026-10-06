@@ -20,5 +20,5 @@ $OROSHI_ROOT/tools/cli/rg/config/generate-config
 $OROSHI_ROOT/tools/git/git/config/generate-config
 $OROSHI_ROOT/tools/git/hunk/config/generate-config
 $OROSHI_ROOT/tools/ai/claude/config/themes/generate-theme
-$OROSHI_ROOT/tools/ai/claude/config/syntax/generate-syntax
+$OROSHI_ROOT/tools/ai/claude/config/patch/syntax/generate-syntax
 $OROSHI_ROOT/tools/vim/nvim/config/generate-syntax

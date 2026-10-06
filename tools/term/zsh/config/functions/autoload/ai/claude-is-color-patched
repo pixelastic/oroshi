@@ -5,7 +5,7 @@
 # Silent — no output, exit code only.
 setopt local_options err_return
 
-# Must equal PATCH_MARKER in tools/ai/claude/config/syntax/src/patchHighlightTables.js
+# Must equal PATCH_MARKER in tools/ai/claude/config/patch/syntax/src/patchHighlightTables.js
 local PATCH_MARKER='/*oroshi-patched*/'
 
 local binaryPath="${1:-$OROSHI_ROOT/node_modules/.bin/claude}"

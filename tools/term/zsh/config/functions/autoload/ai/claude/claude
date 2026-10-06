@@ -11,7 +11,7 @@ fi
 # Patch the syntax colors when the binary lacks the marker
 if ! claude-is-color-patched; then
   echo "Patching Claude Code syntax…"
-  local generateSyntax="$OROSHI_ROOT/tools/ai/claude/config/syntax/generate-syntax"
+  local generateSyntax="$OROSHI_ROOT/tools/ai/claude/config/patch/syntax/generate-syntax"
   # A failed patch must not block the launch
   $generateSyntax || echo "✘ Could not patch Claude Code syntax colors"
 fi

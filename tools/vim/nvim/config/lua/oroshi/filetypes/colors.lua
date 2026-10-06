@@ -59,8 +59,8 @@ M.onInit = function()
   F.onWrite("*colorscheme/syntax.lua", executeCommands("$OROSHI_ROOT/tools/vim/nvim/config/generate-syntax"))
   -- Claude
   F.onWrite(
-    "*tools/ai/claude/config/syntax/*",
-    executeCommands("$OROSHI_ROOT/tools/ai/claude/config/syntax/generate-syntax")
+    "*tools/ai/claude/config/patch/syntax/*",
+    executeCommands("$OROSHI_ROOT/tools/ai/claude/config/patch/syntax/generate-syntax")
   )
 end
 

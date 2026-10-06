@@ -4,7 +4,7 @@
 # hardcoded Monokai ones.
 # Must be re-run after each Claude Code update.
 # Usage:
-# $ tools/ai/claude/config/syntax/generate-syntax
+# $ tools/ai/claude/config/patch/syntax/generate-syntax
 set -e
 
 local currentDir=${0:a:h}
