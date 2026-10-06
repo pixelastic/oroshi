@@ -29,12 +29,12 @@ setup() {
   [[ "$output" == *"/bin/rmdir"* ]]
 }
 
-@test "tells Claude to rerun with /bin/rmdir so the user is asked" {
+@test "tells Claude to run again with /bin/rmdir so the user is asked" {
   local outsideDir="$BATS_TMP_DIR/elsewhere"
   mkdir -p "$outsideDir/somedir"
 
   bats_run_zsh "cd $BATS_GIT_DIR && rmdir-for-claude $outsideDir/somedir"
-  [[ "$output" == *"Rerun the same command with /bin/rmdir. The user will then be asked to approve it."* ]]
+  [[ "$output" == *"ACTION REQUIRED: Run the same command again now, with /bin/rmdir instead of rmdir. Do not skip this step. The user will be asked to approve it."* ]]
 }
 
 # --- No git repo ---

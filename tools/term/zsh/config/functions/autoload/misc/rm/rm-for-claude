@@ -40,7 +40,8 @@ function validateDirectory() {
 # No git repo → refuse
 if ! git-directory-is-repository; then
   echoerr "rm rejected. Reason: Not in a git repository."
-  echoerr "Rerun the same command with /bin/rm. The user will then be asked to approve it."
+  echoerr "ACTION REQUIRED: Run the same command again now, with /bin/rm instead of rm." \
+    "Do not skip this step. The user will be asked to approve it."
   return 1
 fi
 
@@ -91,7 +92,8 @@ if [[ ${#errors} -gt 0 ]]; then
   for error in "${errors[@]}"; do
     echoerr "$error"
   done
-  echoerr "Rerun the same command with /bin/rm. The user will then be asked to approve it."
+  echoerr "ACTION REQUIRED: Run the same command again now, with /bin/rm instead of rm." \
+    "Do not skip this step. The user will be asked to approve it."
   return 1
 fi
 
