@@ -30,4 +30,5 @@ _Avoid_: refresh, repaint
 - [Prose Linting](tools/prose/GLOSSARY.md) — Error, Warning, Suggestion — severity levels for agent-driven prose correction
 - [rm](tools/term/zsh/config/functions/autoload/misc/rm/__docs/GLOSSARY.md) — Safe deletion, Recoverable — safety vocabulary for CLI and Claude rm/rmdir variants
 - [Language Toolchain](docs/toolchain/README.md) — Per-language scripts, shared dispatchers, NeoVim integration, AI integration
+- [Airtable](tools/term/zsh/config/functions/autoload/airtable/__docs/GLOSSARY.md) — Bases, Tables, Records, Fields, Attachments, Base aliases, Read/Write tokens
 - [Lunii](tools/term/zsh/config/functions/autoload/worktools/lunii/__docs/GLOSSARY.md) — Packs, Podcasts, Episodes, Thumbnails — RSS-to-Lunii conversion vocabulary

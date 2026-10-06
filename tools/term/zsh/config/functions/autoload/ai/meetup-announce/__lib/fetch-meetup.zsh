@@ -28,8 +28,7 @@ function fetch-meetup() {
   )
   local fieldList="${(j/,/)fields}"
 
-  AIRTABLE_TOKEN="$AIRTABLE_DEVREL_MEETUPS_TOKEN_READONLY" \
-    airtable-record-read \
+  airtable-record-read \
     --base "$AIRTABLE_BASE_ID" \
     --table Meetups \
     --record "$recordId" \

@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "workspaces": [
+    "tools/term/zsh/config/functions/autoload/airtable/__lib",
     "tools/term/zsh/config/functions/autoload/google/__lib"
   ],
   "description": "This package.json is here to allow me to have pinned node libs",

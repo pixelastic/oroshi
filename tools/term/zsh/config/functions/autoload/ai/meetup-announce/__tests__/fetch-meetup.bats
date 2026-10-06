@@ -2,9 +2,8 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  export AIRTABLE_DEVREL_MEETUPS_TOKEN_READONLY="test-token-123"
   sourcePrefix="source '${OROSHI_ROOT}/tools/term/zsh/config/functions/autoload/ai/meetup-announce/__lib/fetch-meetup.zsh'"
-  EXPECTED_FIELDS="UUID,name,date,startTime,endTime,description,URL,notes,helpersFullName,guestRegisteredCount,guestAttendingCountFinal"
+  EXPECTED_FIELDS="UUID,name,date,startTime,endTime,description,URL,notes,helpersFullName,speakersFullName,guestRegisteredCount,guestAttendingCountFinal"
 }
 
 @test "returns JSON containing all expected fields" {
