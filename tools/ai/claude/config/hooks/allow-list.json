@@ -163,6 +163,7 @@
   "git reflog",
   "git remote get-url",
   "git remote",
+  "git rev-list",
   "git rev-parse",
   "git rm",
   "git show",
