@@ -36,6 +36,7 @@
   "claude",
   "claude-api",
   "claude-history chat",
+  "claude-is-suggestion-patched",
   "claude-stop",
   "clipboard-read",
   "clipboard-write",
