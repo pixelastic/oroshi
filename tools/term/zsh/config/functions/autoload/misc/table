@@ -11,6 +11,9 @@ local input="$1"
 local rawOutput="$(echo $input | column --table-noheadings --table --separator "▮")"
 
 for line in ${(f)rawOutput}; do
+  # Drop the padding column adds after a short last cell, or the truncation would hit it
+  line="${line%"${line##*[! ]}"}"
+
   # Redirect stdin so text-truncate (via text-ansi-remove) doesn't detect
   # a stale inherited pipe and read empty input instead of using its $1
   text-truncate "$line" < /dev/null

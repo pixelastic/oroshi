@@ -38,6 +38,19 @@ setup() {
   [[ "${lines[0]}" == "recB▮"* ]]
 }
 
+@test "keeps only the first Meetups up to --limit" {
+  bats_run_zsh "meetup-list-raw --limit 2"
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 2 ]]
+  [[ "${lines[1]}" == "recB▮"* ]]
+}
+
+@test "applies --limit after the status filter" {
+  bats_run_zsh "meetup-list-raw --status cancelled --limit 1"
+  [[ "${#lines[@]}" -eq 1 ]]
+  [[ "${lines[0]}" == "recC▮"* ]]
+}
+
 @test "prints nothing and exits zero when no Meetup has that status" {
   airtable-record-list-raw() {
     echo "recA▮2026-12-01▮⏳️ Pending▮Datadog User Group Paris▮"
@@ -75,4 +88,42 @@ setup() {
   bats_run_zsh "meetup-list-raw"
   [[ "$output" == *"AIRTABLE_TOKEN_READ is not set"* ]]
   [[ "$output" != *"recA"* ]]
+}
+
+@test "keeps only the Meetups of today or later with --upcoming" {
+  date() { echo "2026-09-15"; }
+  bats_mock date
+
+  bats_run_zsh "meetup-list-raw --upcoming"
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 2 ]]
+  [[ "${lines[0]}" == "recA▮"* ]]
+  [[ "${lines[1]}" == "recB▮"* ]]
+}
+
+@test "prints nothing when no Meetup is upcoming" {
+  date() { echo "2027-01-01"; }
+  bats_mock date
+
+  bats_run_zsh "meetup-list-raw --upcoming"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+}
+
+@test "applies --limit after --upcoming" {
+  date() { echo "2026-09-15"; }
+  bats_mock date
+
+  bats_run_zsh "meetup-list-raw --upcoming --limit 1"
+  [[ "${#lines[@]}" -eq 1 ]]
+  [[ "${lines[0]}" == "recA▮"* ]]
+}
+
+@test "combines --upcoming with --status" {
+  date() { echo "2026-09-15"; }
+  bats_mock date
+
+  bats_run_zsh "meetup-list-raw --upcoming --status confirmed"
+  [[ "${#lines[@]}" -eq 1 ]]
+  [[ "${lines[0]}" == "recB▮"* ]]
 }

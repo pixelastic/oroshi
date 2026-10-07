@@ -3,16 +3,24 @@
 # The status is its label: pending, confirmed or cancelled
 # An empty Field leaves an empty column
 # --status keeps only the meetups with that status
+# --upcoming keeps only the meetups of today or later
+# --limit keeps only the first meetups, once the other filters are applied (default: all)
 # One API call is made, so at most 100 meetups are listed
 # Usage:
 # $ meetup-list-raw
 # $ meetup-list-raw --status pending
+# $ meetup-list-raw --upcoming
+# $ meetup-list-raw --limit 10
 setopt local_options err_return
 
 zparseopts -E -D \
-  -status:=flagStatus
+  -status:=flagStatus \
+  -upcoming=flagUpcoming \
+  -limit:=flagLimit
 
 local statusFilter=${flagStatus[2]}
+local isUpcoming=${#flagUpcoming}
+local limit=${flagLimit[2]}
 
 # Only the statuses stored in Airtable can filter
 if [[ "$statusFilter" != "" && ! "$statusFilter" =~ ^(pending|confirmed|cancelled)$ ]]; then
@@ -32,8 +40,17 @@ local rawRecords="$(airtable-record-list-raw \
   --fields date,status,name,URL \
   --sort -date)"
 
+local today="$(date +%Y-%m-%d)"
+
+local printedCount=0
 for rawRecord in ${(f)rawRecords}; do
+  # Stop once the limit is reached
+  [[ "$limit" != "" && $printedCount -ge $limit ]] && break
+
   local fields=("${(@ps/▮/)rawRecord}")
+
+  # Skip the meetups already past (ISO dates sort like text)
+  [[ $isUpcoming == 1 && "${fields[2]}" < "$today" ]] && continue
 
   # Airtable stores a label such as "⏳️ Pending": the last word, in lowercase, is the status
   local label="${${(L)fields[3]}##* }"
@@ -43,4 +60,5 @@ for rawRecord in ${(f)rawRecords}; do
 
   fields[3]="$label"
   echo "${(j/▮/)fields}"
+  (( ++printedCount ))
 done

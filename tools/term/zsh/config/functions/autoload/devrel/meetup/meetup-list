@@ -1,21 +1,30 @@
 # List the DevRel meetups as a colored table, most recent first
-# Columns: record ID, date, status, name, URL
+# Columns: date, status, name, URL
 # Columns share the terminal width like any table, so the longest Field comes last
 # --status keeps only the meetups with that status (pending, confirmed or cancelled)
+# --upcoming keeps only the meetups of today or later
+# --limit keeps only the first meetups (default: 10)
 # Usage:
 # $ meetup-list
 # $ meetup-list --status pending
+# $ meetup-list --upcoming
+# $ meetup-list --limit 25
 setopt local_options err_return
 
 zparseopts -E -D \
-  -status:=flagStatus
+  -status:=flagStatus \
+  -upcoming=flagUpcoming \
+  -limit:=flagLimit
 
 local statusFilter=${flagStatus[2]}
+local isUpcoming=${#flagUpcoming}
+local limit=${flagLimit[2]:-10}
 
 colors-load-definitions
 
-local rawArgs=()
+local rawArgs=(--limit "$limit")
 [[ "$statusFilter" != "" ]] && rawArgs+=(--status "$statusFilter")
+[[ $isUpcoming == 1 ]] && rawArgs+=(--upcoming)
 
 # Nothing to display if there is no meetup
 local rawMeetups="$(meetup-list-raw "${rawArgs[@]}")"
@@ -24,7 +33,6 @@ local rawMeetups="$(meetup-list-raw "${rawArgs[@]}")"
 local output=""
 for rawMeetup in ${(f)rawMeetups}; do
   local fields=("${(@ps/▮/)rawMeetup}")
-  local recordId="${fields[1]}"
   local date="${fields[2]}"
   local meetupStatus="${fields[3]}"
   local name="${fields[4]}"
@@ -34,8 +42,7 @@ for rawMeetup in ${(f)rawMeetups}; do
   [[ "$meetupStatus" == "confirmed" ]] && statusColor=$COLORS[pointer]
   [[ "$meetupStatus" == "cancelled" ]] && statusColor=$COLORS[error]
 
-  local row="$(colorize "$recordId" $COLORS[airtable-record-id])"
-  row+="▮$(colorize "$date" $COLORS[date])"
+  local row="$(colorize "$date" $COLORS[date])"
   row+="▮$(colorize "$meetupStatus" $statusColor)"
   row+="▮${name}"
   row+="▮${url}"

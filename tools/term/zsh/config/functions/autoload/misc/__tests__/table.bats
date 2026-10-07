@@ -63,3 +63,13 @@ setup() {
   [[ "$output" == *$'\033'* ]]
   [[ "$output" != *$'\xef\xbf\xbd'* ]]
 }
+
+@test "does not truncate the padding of a short row next to a longer one" {
+  terminal-width() { REPLY=15; }
+  bats_mock terminal-width
+  bats_run_zsh "table 'ab▮Framer▮
+cd▮A much longer name▮'"
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" == "ab  Framer" ]]
+  [[ "${lines[1]}" == *"…" ]]
+}
