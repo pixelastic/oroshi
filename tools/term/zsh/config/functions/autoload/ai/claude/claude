@@ -1,4 +1,4 @@
-# Wrapper around claude, patching its syntax colors first when needed
+# Wrapper around claude, patching its syntax colors and suggestion key first when needed
 # Usage:
 # $ claude
 setopt local_options err_return
@@ -14,6 +14,14 @@ if ! claude-is-color-patched; then
   local generateSyntax="$OROSHI_ROOT/tools/ai/claude/config/patch/syntax/generate-syntax"
   # A failed patch must not block the launch
   $generateSyntax || echo "✘ Could not patch Claude Code syntax colors"
+fi
+
+# Patch the suggestion key when the binary still has the original handler
+if ! claude-is-suggestion-patched; then
+  echo "Patching Claude Code suggestion key…"
+  local generateSuggestion="$OROSHI_ROOT/tools/ai/claude/config/patch/suggestion/generate-suggestion"
+  # A failed patch must not block the launch
+  $generateSuggestion || echo "✘ Could not patch Claude Code suggestion key"
 fi
 
 # Binary may exit non-zero; continue to cleanup

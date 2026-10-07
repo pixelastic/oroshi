@@ -12,7 +12,8 @@ setup() {
   # Mock collaborators by default: no-op cleanup, binary has the patch marker
   kitty-tab-notification-remove() { :; }
   claude-is-color-patched() { return 0; }
-  bats_mock kitty-tab-notification-remove claude-is-color-patched
+  claude-is-suggestion-patched() { return 0; }
+  bats_mock kitty-tab-notification-remove claude-is-color-patched claude-is-suggestion-patched
 }
 
 @test "runs claude binary from OROSHI_ROOT node_modules" {
@@ -137,4 +138,79 @@ _mock_unpatched() {
   bats_run_zsh "claude --resume abc"
 
   [[ "$(tail -n 1 "$BATS_TMP_DIR/calls.txt")" == "binary --resume abc" ]]
+}
+
+# --- Suggestion key patch before launch ---
+
+_fake_generate_suggestion() {
+  local exitCode="${1:-0}"
+  local suggestionDir="$BATS_TMP_DIR/oroshi/tools/ai/claude/config/patch/suggestion"
+  mkdir -p "$suggestionDir"
+  printf '#!/bin/zsh\necho generate-suggestion >> "$BATS_TMP_DIR/calls.txt"\nexit %s\n' "$exitCode" > "$suggestionDir/generate-suggestion"
+  chmod +x "$suggestionDir/generate-suggestion"
+}
+
+_mock_suggestion_unpatched() {
+  claude-is-suggestion-patched() { return 1; }
+  bats_mock claude-is-suggestion-patched
+}
+
+@test "runs generate-suggestion when the suggestion key is not patched" {
+  _mock_suggestion_unpatched
+  _fake_generate_suggestion
+
+  bats_run_zsh "claude"
+
+  [[ "$(grep --count generate-suggestion "$BATS_TMP_DIR/calls.txt")" -eq 1 ]]
+}
+
+@test "prints the suggestion patching notice when the key is not patched" {
+  _mock_suggestion_unpatched
+  _fake_generate_suggestion
+
+  bats_run_zsh "claude"
+
+  [[ "$output" == *"Patching Claude Code suggestion key…"* ]]
+}
+
+@test "does not run generate-suggestion when the suggestion key is patched" {
+  _fake_generate_suggestion
+
+  bats_run_zsh "claude"
+
+  [[ ! -f "$BATS_TMP_DIR/calls.txt" ]]
+}
+
+@test "prints the error message and still launches claude when the suggestion patch fails" {
+  _mock_suggestion_unpatched
+  _fake_generate_suggestion 1
+  _fake_binary_logging_calls
+
+  bats_run_zsh "claude"
+
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"✘ Could not patch Claude Code suggestion key"* ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" == $'generate-suggestion\nbinary ' ]]
+}
+
+@test "still runs the color patch when the suggestion patch fails" {
+  _mock_unpatched
+  _mock_suggestion_unpatched
+  _fake_generate_syntax
+  _fake_generate_suggestion 1
+
+  bats_run_zsh "claude"
+
+  [[ "$(grep --count generate-syntax "$BATS_TMP_DIR/calls.txt")" -eq 1 ]]
+}
+
+@test "still runs the suggestion patch when the color patch fails" {
+  _mock_unpatched
+  _mock_suggestion_unpatched
+  _fake_generate_syntax 1
+  _fake_generate_suggestion
+
+  bats_run_zsh "claude"
+
+  [[ "$(grep --count generate-suggestion "$BATS_TMP_DIR/calls.txt")" -eq 1 ]]
 }

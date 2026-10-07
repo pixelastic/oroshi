@@ -1,0 +1,18 @@
+# Exit 0 if a Claude binary carries the oroshi prompt suggestion key patch, 1 if not.
+# Usage:
+# $ claude-is-suggestion-patched                # Check $OROSHI_ROOT/node_modules/.bin/claude
+# $ claude-is-suggestion-patched /path/to/bin   # Check a given binary
+# Silent — no output, exit code only.
+setopt local_options err_return
+
+local binaryPath="${1:-$OROSHI_ROOT/node_modules/.bin/claude}"
+
+# A missing file cannot carry the patch
+[[ ! -f "$binaryPath" ]] && return 1
+
+# Detection logic lives in the shared patch framework
+node \
+  "$OROSHI_ROOT/tools/ai/claude/config/patch/src/isPatched.js" \
+  --binary "$binaryPath" \
+  --name suggestion \
+  2> /dev/null
