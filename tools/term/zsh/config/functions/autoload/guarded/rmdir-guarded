@@ -1,8 +1,16 @@
 # Safe-delete empty directories only if inside the git worktree
 # Usage:
-# $ rmdir-for-claude emptydir          # Delete empty dir in worktree
-# $ rmdir-for-claude dir1 dir2         # Delete multiple empty dirs
+# $ rmdir-guarded emptydir          # Delete empty dir in worktree
+# $ rmdir-guarded dir1 dir2         # Delete multiple empty dirs
 setopt local_options err_return
+
+function emitRefusal() {
+  local retry="Run the same command again now, with /bin/rmdir instead of rmdir."
+  local approval="The user will be asked to approve it."
+  local reminder="Do not report the file as undeleted."
+
+  echoerr "[claude-guarded:refused] $retry $approval $reminder"
+}
 
 function rejectReason() {
   errors+=("rmdir $1 rejected. Reason: $2.")
@@ -11,8 +19,7 @@ function rejectReason() {
 # No git repo → refuse
 if ! git-directory-is-repository; then
   echoerr "rmdir rejected. Reason: Not in a git repository."
-  echoerr "ACTION REQUIRED: Run the same command again now, with /bin/rmdir instead of rmdir." \
-    "Do not skip this step. The user will be asked to approve it."
+  emitRefusal
   return 1
 fi
 
@@ -34,8 +41,7 @@ if [[ ${#errors} -gt 0 ]]; then
   for error in "${errors[@]}"; do
     echoerr "$error"
   done
-  echoerr "ACTION REQUIRED: Run the same command again now, with /bin/rmdir instead of rmdir." \
-    "Do not skip this step. The user will be asked to approve it."
+  emitRefusal
   return 1
 fi
 

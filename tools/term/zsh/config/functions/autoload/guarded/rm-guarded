@@ -1,9 +1,17 @@
 # Safe-delete files and directories only if recoverable from HEAD
 # Usage:
-# $ rm-for-claude file.txt           # Delete committed file
-# $ rm-for-claude -rf dir/           # Delete dir if all files in HEAD
-# $ rm-for-claude -f a.txt b.txt     # Flags forwarded to /bin/rm
+# $ rm-guarded file.txt           # Delete committed file
+# $ rm-guarded -rf dir/           # Delete dir if all files in HEAD
+# $ rm-guarded -f a.txt b.txt     # Flags forwarded to /bin/rm
 setopt local_options err_return
+
+function emitRefusal() {
+  local retry="Run the same command again now, with /bin/rm instead of rm."
+  local approval="The user will be asked to approve it."
+  local reminder="Do not report the file as undeleted."
+
+  echoerr "[claude-guarded:refused] $retry $approval $reminder"
+}
 
 function rejectReason() {
   errors+=("rm $1 rejected. Reason: $2.")
@@ -40,8 +48,7 @@ function validateDirectory() {
 # No git repo → refuse
 if ! git-directory-is-repository; then
   echoerr "rm rejected. Reason: Not in a git repository."
-  echoerr "ACTION REQUIRED: Run the same command again now, with /bin/rm instead of rm." \
-    "Do not skip this step. The user will be asked to approve it."
+  emitRefusal
   return 1
 fi
 
@@ -92,8 +99,7 @@ if [[ ${#errors} -gt 0 ]]; then
   for error in "${errors[@]}"; do
     echoerr "$error"
   done
-  echoerr "ACTION REQUIRED: Run the same command again now, with /bin/rm instead of rm." \
-    "Do not skip this step. The user will be asked to approve it."
+  emitRefusal
   return 1
 fi
 

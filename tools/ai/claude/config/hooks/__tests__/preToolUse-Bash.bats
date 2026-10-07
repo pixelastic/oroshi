@@ -49,21 +49,21 @@ setup() {
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm -f a"}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'rm-for-claude -f a'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'rm-guarded -f a'
 }
 
 @test "integration: applies rm guard-rail inside a compound command" {
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm -f a && ls | wc -l"}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'rm-for-claude -f a && ls | wc -l'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'rm-guarded -f a && ls | wc -l'
 }
 
-@test "integration: rewrite rmdir to rmdir-for-claude" {
+@test "integration: rewrite rmdir to rmdir-guarded" {
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rmdir emptydir"}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'rmdir-for-claude emptydir'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'rmdir-guarded emptydir'
 }
 
 @test "integration: reject wget with reason" {
@@ -305,38 +305,38 @@ setup() {
 
 @test "rm rewritten: allow with rewrittenCommand as updatedInput" {
   preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["rm-for-claude"],"rejected":[]},"rewrite":"rm-for-claude foo.txt"}'
+    print '{"allow":{"isAllowed":true,"allowed":["rm-guarded"],"rejected":[]},"rewrite":"rm-guarded foo.txt"}'
   }
   bats_mock preToolUse-Bash-solkan
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm foo.txt"}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'rm-for-claude foo.txt'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'rm-guarded foo.txt'
 }
 
 @test "rmdir rewritten: allow with rewrittenCommand as updatedInput" {
   preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["rmdir-for-claude"],"rejected":[]},"rewrite":"rmdir-for-claude emptydir"}'
+    print '{"allow":{"isAllowed":true,"allowed":["rmdir-guarded"],"rejected":[]},"rewrite":"rmdir-guarded emptydir"}'
   }
   bats_mock preToolUse-Bash-solkan
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rmdir emptydir"}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'rmdir-for-claude emptydir'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'rmdir-guarded emptydir'
 }
 
 @test "compound rm rewritten: allow with rewrittenCommand as updatedInput" {
   preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["ls","rm-for-claude"],"rejected":[]},"rewrite":"ls && rm-for-claude foo.txt"}'
+    print '{"allow":{"isAllowed":true,"allowed":["ls","rm-guarded"],"rejected":[]},"rewrite":"ls && rm-guarded foo.txt"}'
   }
   bats_mock preToolUse-Bash-solkan
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"ls && rm foo.txt"}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'ls && rm-for-claude foo.txt'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'ls && rm-guarded foo.txt'
 }
 
 @test "no rewrittenCommand from solkan: uses original inputCommand" {

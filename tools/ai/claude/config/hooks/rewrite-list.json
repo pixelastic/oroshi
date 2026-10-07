@@ -1,4 +1,4 @@
 {
-  "rm": "rm-for-claude",
-  "rmdir": "rmdir-for-claude"
+  "rm": "rm-guarded",
+  "rmdir": "rmdir-guarded"
 }

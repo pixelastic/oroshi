@@ -21,7 +21,7 @@ _Avoid_: deny, block, blacklist
 _Avoid_: transform, replace, substitute
 
 **rewrite list**:
-A JSON map of command names to replacements (e.g. `{"rm": "rm-for-claude"}`), consumed by **Solkan** via `--rewrite-list-file`. Solkan walks the shell AST and replaces matching command names — no matter how deeply nested in pipes, conditionals, or loops — before running allowlist validation.
+A JSON map of command names to replacements (e.g. `{"rm": "rm-guarded"}`), consumed by **Solkan** via `--rewrite-list-file`. Solkan walks the shell AST and replaces matching command names — no matter how deeply nested in pipes, conditionals, or loops — before running allowlist validation.
 _Avoid_: replace list, substitution map, rename map
 
 **auto-approve**:

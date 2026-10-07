@@ -12,7 +12,7 @@ setup() {
   bats_git add committed.txt
   bats_git commit -m "add committed.txt"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude committed.txt"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded committed.txt"
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_GIT_DIR/committed.txt" ]]
 }
@@ -22,7 +22,7 @@ setup() {
 @test "refuses untracked file with error message" {
   echo "content" > "$BATS_GIT_DIR/untracked.txt"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude untracked.txt"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded untracked.txt"
   [[ "$status" -eq 1 ]]
   [[ -e "$BATS_GIT_DIR/untracked.txt" ]]
   [[ "$output" == *"untracked.txt rejected"* ]]
@@ -30,11 +30,46 @@ setup() {
   [[ "$output" == *"/bin/rm"* ]]
 }
 
-@test "tells Claude to run again with /bin/rm so the user is asked" {
+@test "prints the refusal marker line on stderr when a path is not committed" {
   echo "content" > "$BATS_GIT_DIR/untracked.txt"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude untracked.txt"
-  [[ "$output" == *"ACTION REQUIRED: Run the same command again now, with /bin/rm instead of rm. Do not skip this step. The user will be asked to approve it."* ]]
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded untracked.txt 2>&1 >/dev/null"
+  [[ "$output" == *"[claude-guarded:refused] Run the same command again now, with /bin/rm instead of rm. The user will be asked to approve it. Do not report the file as undeleted."* ]]
+}
+
+@test "prints the refusal marker line outside a git repository" {
+  local noGitDir="$BATS_TMP_DIR/no-git"
+  mkdir -p "$noGitDir"
+  echo "content" > "$noGitDir/file.txt"
+
+  bats_run_zsh "cd $noGitDir && rm-guarded file.txt 2>&1 >/dev/null"
+  [[ "$output" == *"[claude-guarded:refused] Run the same command again now, with /bin/rm instead of rm. The user will be asked to approve it. Do not report the file as undeleted."* ]]
+}
+
+@test "prints the refusal marker on exactly one line when several paths fail" {
+  echo "a" > "$BATS_GIT_DIR/a.txt"
+  echo "b" > "$BATS_GIT_DIR/b.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded a.txt b.txt 2>&1 >/dev/null"
+  local markerLines="$(grep --count '^\[claude-guarded:refused\]' <<< "$output")"
+  [[ "$markerLines" -eq 1 ]]
+}
+
+@test "keeps the per-path rejection reasons next to the marker" {
+  echo "content" > "$BATS_GIT_DIR/untracked.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded untracked.txt 2>&1 >/dev/null"
+  [[ "$output" == *"rm untracked.txt rejected. Reason: Not committed in HEAD."* ]]
+}
+
+@test "prints no marker when deleting a committed file" {
+  echo "content" > "$BATS_GIT_DIR/committed.txt"
+  bats_git add committed.txt
+  bats_git commit -m "add committed.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded committed.txt 2>&1"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"[claude-guarded:refused]"* ]]
 }
 
 # --- Git-ignored file ---
@@ -45,7 +80,7 @@ setup() {
   bats_git commit -m "add gitignore"
   echo "content" > "$BATS_GIT_DIR/ignored.txt"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude ignored.txt"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded ignored.txt"
   [[ "$status" -eq 1 ]]
   [[ -e "$BATS_GIT_DIR/ignored.txt" ]]
 }
@@ -56,7 +91,7 @@ setup() {
   echo "content" > "$BATS_GIT_DIR/staged.txt"
   bats_git add staged.txt
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude staged.txt"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded staged.txt"
   [[ "$status" -eq 1 ]]
   [[ -e "$BATS_GIT_DIR/staged.txt" ]]
 }
@@ -68,7 +103,7 @@ setup() {
   mkdir -p "$outsideDir"
   echo "content" > "$outsideDir/outside.txt"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude $outsideDir/outside.txt"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded $outsideDir/outside.txt"
   [[ "$status" -eq 1 ]]
   [[ -e "$outsideDir/outside.txt" ]]
   [[ "$output" == *"outside.txt"* ]]
@@ -81,7 +116,7 @@ setup() {
   mkdir -p "$noGitDir"
   echo "content" > "$noGitDir/file.txt"
 
-  bats_run_zsh "cd $noGitDir && rm-for-claude file.txt"
+  bats_run_zsh "cd $noGitDir && rm-guarded file.txt"
   [[ "$status" -eq 1 ]]
   [[ -e "$noGitDir/file.txt" ]]
 }
@@ -94,7 +129,7 @@ setup() {
   bats_git add a.txt b.txt
   bats_git commit -m "add a and b"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude a.txt b.txt"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded a.txt b.txt"
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_GIT_DIR/a.txt" ]]
   [[ ! -e "$BATS_GIT_DIR/b.txt" ]]
@@ -108,7 +143,7 @@ setup() {
   bats_git commit -m "add good.txt"
   echo "untracked" > "$BATS_GIT_DIR/bad.txt"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude good.txt bad.txt"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded good.txt bad.txt"
   [[ "$status" -eq 1 ]]
   [[ -e "$BATS_GIT_DIR/good.txt" ]]
   [[ -e "$BATS_GIT_DIR/bad.txt" ]]
@@ -121,7 +156,7 @@ setup() {
   bats_git add flagged.txt
   bats_git commit -m "add flagged.txt"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -f flagged.txt"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded -f flagged.txt"
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_GIT_DIR/flagged.txt" ]]
 }
@@ -135,7 +170,7 @@ setup() {
   bats_git add mydir
   bats_git commit -m "add mydir"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r mydir"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded -r mydir"
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_GIT_DIR/mydir" ]]
 }
@@ -149,7 +184,7 @@ setup() {
   bats_git commit -m "add mydir"
   echo "untracked" > "$BATS_GIT_DIR/mydir/untracked.txt"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r mydir"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded -r mydir"
   [[ "$status" -eq 1 ]]
   [[ -d "$BATS_GIT_DIR/mydir" ]]
   [[ "$output" == *"untracked.txt"* ]]
@@ -165,7 +200,7 @@ setup() {
   bats_git commit -m "add mydir and gitignore"
   echo "ignored" > "$BATS_GIT_DIR/mydir/build.log"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r mydir"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded -r mydir"
   [[ "$status" -eq 1 ]]
   [[ -d "$BATS_GIT_DIR/mydir" ]]
 }
@@ -175,7 +210,7 @@ setup() {
 @test "deletes empty directory with -r and exits 0" {
   mkdir -p "$BATS_GIT_DIR/emptydir"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r emptydir"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded -r emptydir"
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_GIT_DIR/emptydir" ]]
 }
@@ -189,7 +224,7 @@ setup() {
   bats_git add file.txt mydir
   bats_git commit -m "add file and dir"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r file.txt mydir"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded -r file.txt mydir"
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_GIT_DIR/file.txt" ]]
   [[ ! -e "$BATS_GIT_DIR/mydir" ]]
@@ -205,7 +240,7 @@ setup() {
   bats_git commit -m "add file and dir"
   echo "untracked" > "$BATS_GIT_DIR/mydir/bad.txt"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -r file.txt mydir"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded -r file.txt mydir"
   [[ "$status" -eq 1 ]]
   [[ -e "$BATS_GIT_DIR/file.txt" ]]
   [[ -d "$BATS_GIT_DIR/mydir" ]]
@@ -219,7 +254,7 @@ setup() {
   bats_git add mydir
   bats_git commit -m "add mydir"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -rf mydir"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded -rf mydir"
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_GIT_DIR/mydir" ]]
 }
@@ -230,7 +265,7 @@ setup() {
   bats_git add mydir
   bats_git commit -m "add mydir"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude -R mydir"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded -R mydir"
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_GIT_DIR/mydir" ]]
 }
@@ -241,7 +276,7 @@ setup() {
   bats_git add mydir
   bats_git commit -m "add mydir"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude --recursive mydir"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded --recursive mydir"
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_GIT_DIR/mydir" ]]
 }
@@ -254,6 +289,6 @@ setup() {
   bats_git add mydir
   bats_git commit -m "add mydir"
 
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-for-claude mydir"
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded mydir"
   [[ "$status" -eq 1 ]]
 }
