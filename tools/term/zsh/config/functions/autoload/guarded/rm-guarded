@@ -6,15 +6,11 @@
 setopt local_options err_return
 
 function emitRefusal() {
-  local retry="Run the same command again now, with /bin/rm instead of rm."
-  local approval="The user will be asked to approve it."
-  local reminder="Do not report the file as undeleted."
-  local message="$retry $approval $reminder"
+  local need="This deletion needs the user's approval."
+  local retry="Retry the exact same command with /bin/rm in place of rm:"
+  local approval="the user will get an approval prompt, and nothing is deleted before they accept."
 
-  # The harness injects a wording variant in place of the text
-  [[ -f "$GUARDED_HARNESS_MESSAGE_FILE" ]] && message="$(<"$GUARDED_HARNESS_MESSAGE_FILE")"
-
-  echoerr "[claude-guarded:refused] $message"
+  echoerr "[claude-guarded:refused] $need $retry $approval"
 }
 
 function rejectReason() {

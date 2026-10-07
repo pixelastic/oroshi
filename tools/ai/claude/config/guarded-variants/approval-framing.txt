@@ -1,1 +1,0 @@
-This deletion needs the user's approval. Retry the exact same command with /bin/rm in place of rm: the user will get an approval prompt, and nothing is deleted before they accept.

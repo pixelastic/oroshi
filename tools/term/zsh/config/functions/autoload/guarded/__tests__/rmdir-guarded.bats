@@ -34,7 +34,7 @@ setup() {
   mkdir -p "$outsideDir/somedir"
 
   bats_run_zsh "cd $BATS_GIT_DIR && rmdir-guarded $outsideDir/somedir 2>&1 >/dev/null"
-  [[ "$output" == *"[claude-guarded:refused] Run the same command again now, with /bin/rmdir instead of rmdir. The user will be asked to approve it. Do not report the file as undeleted."* ]]
+  [[ "$output" == *"[claude-guarded:refused] This deletion needs the user's approval. Retry the exact same command with /bin/rmdir in place of rmdir: the user will get an approval prompt, and nothing is deleted before they accept."* ]]
 }
 
 @test "prints the refusal marker line outside a git repository" {
@@ -42,7 +42,7 @@ setup() {
   mkdir -p "$noGitDir/somedir"
 
   bats_run_zsh "cd $noGitDir && rmdir-guarded somedir 2>&1 >/dev/null"
-  [[ "$output" == *"[claude-guarded:refused] Run the same command again now, with /bin/rmdir instead of rmdir. The user will be asked to approve it. Do not report the file as undeleted."* ]]
+  [[ "$output" == *"[claude-guarded:refused] This deletion needs the user's approval. Retry the exact same command with /bin/rmdir in place of rmdir: the user will get an approval prompt, and nothing is deleted before they accept."* ]]
 }
 
 @test "prints the refusal marker on exactly one line when several dirs fail" {

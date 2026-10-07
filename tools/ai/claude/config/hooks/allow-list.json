@@ -229,7 +229,6 @@
   "gsettings get",
   "gsettings list-recursively",
   "gsettings list-schemas",
-  "guarded-harness-run",
   "gvm",
   "head",
   "helper-list",

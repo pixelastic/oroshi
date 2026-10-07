@@ -34,7 +34,7 @@ setup() {
   echo "content" > "$BATS_GIT_DIR/untracked.txt"
 
   bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded untracked.txt 2>&1 >/dev/null"
-  [[ "$output" == *"[claude-guarded:refused] Run the same command again now, with /bin/rm instead of rm. The user will be asked to approve it. Do not report the file as undeleted."* ]]
+  [[ "$output" == *"[claude-guarded:refused] This deletion needs the user's approval. Retry the exact same command with /bin/rm in place of rm: the user will get an approval prompt, and nothing is deleted before they accept."* ]]
 }
 
 @test "prints the refusal marker line outside a git repository" {
@@ -43,7 +43,7 @@ setup() {
   echo "content" > "$noGitDir/file.txt"
 
   bats_run_zsh "cd $noGitDir && rm-guarded file.txt 2>&1 >/dev/null"
-  [[ "$output" == *"[claude-guarded:refused] Run the same command again now, with /bin/rm instead of rm. The user will be asked to approve it. Do not report the file as undeleted."* ]]
+  [[ "$output" == *"[claude-guarded:refused] This deletion needs the user's approval. Retry the exact same command with /bin/rm in place of rm: the user will get an approval prompt, and nothing is deleted before they accept."* ]]
 }
 
 @test "prints the refusal marker on exactly one line when several paths fail" {
@@ -60,16 +60,6 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded untracked.txt 2>&1 >/dev/null"
   [[ "$output" == *"rm untracked.txt rejected. Reason: Not committed in HEAD."* ]]
-}
-
-@test "replaces the refusal text with the harness message file but keeps the marker" {
-  echo "content" > "$BATS_GIT_DIR/untracked.txt"
-  echo "Variant text naming /bin/rm." > "$BATS_TMP_DIR/variant.txt"
-  bats_mock_env GUARDED_HARNESS_MESSAGE_FILE "$BATS_TMP_DIR/variant.txt"
-
-  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded untracked.txt 2>&1 >/dev/null"
-  [[ "$output" == *"[claude-guarded:refused] Variant text naming /bin/rm."* ]]
-  [[ "$output" != *"Run the same command again now"* ]]
 }
 
 @test "prints no marker when deleting a committed file" {
