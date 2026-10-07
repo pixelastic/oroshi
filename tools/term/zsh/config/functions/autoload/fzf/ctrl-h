@@ -1,10 +1,10 @@
 # Search command history with fzf
 # Usage:
-# $ ctrl-r                    # Interactive history search
-# $ ctrl-r --source           # Print history entries (raw▮colored, served from cache if fresh)
-# $ ctrl-r --regenerate-cache # Rebuild colored output cache (with spinner when foreground)
-# $ ctrl-r --options          # Print FZF options (one per line)
-# $ ctrl-r --postprocess      # Read raw▮colored selection from stdin, print raw command
+# $ ctrl-h                    # Interactive history search
+# $ ctrl-h --source           # Print history entries (raw▮colored, served from cache if fresh)
+# $ ctrl-h --regenerate-cache # Rebuild colored output cache (with spinner when foreground)
+# $ ctrl-h --options          # Print FZF options (one per line)
+# $ ctrl-h --postprocess      # Read raw▮colored selection from stdin, print raw command
 setopt local_options err_return
 local __lib="${functions_source[$0]:A:h}/__lib"
 source "$__lib/init.zsh"
@@ -17,17 +17,17 @@ zparseopts -D -E \
 local isRegenerateCache=${#flagRegenerateCache}
 
 LAZY_THRESHOLD=100
-CTRLR_DIR="$OROSHI_FOLDER_STATE/fzf/ctrl-r"
-mkdir -p "$CTRLR_DIR"
+CTRLH_DIR="$OROSHI_FOLDER_STATE/fzf/ctrl-h"
+mkdir -p "$CTRLH_DIR"
 
 # Compare number of lines in the ~/.history VS number of lines last time we
 # checked
 local CURRENT_HISTORY_LINE_COUNT="$(wc -l <"$HISTFILE")"
 local lastHistoryLineCount=0
-[[ -f "$CTRLR_DIR/last-history-line-count" && -f "$CTRLR_DIR/cache" ]] && lastHistoryLineCount="$(\cat "$CTRLR_DIR/last-history-line-count")"
+[[ -f "$CTRLH_DIR/last-history-line-count" && -f "$CTRLH_DIR/cache" ]] && lastHistoryLineCount="$(\cat "$CTRLH_DIR/last-history-line-count")"
 local HISTORY_DIFF_COUNT=$((CURRENT_HISTORY_LINE_COUNT - lastHistoryLineCount))
 
-# Cache is fresh is both have the same number
+# Cache is fresh if both have the same number
 local isCacheFresh="0"
 [[ $CURRENT_HISTORY_LINE_COUNT -eq $lastHistoryLineCount ]] && isCacheFresh="1"
 
@@ -38,13 +38,13 @@ local isSmallDiff="0"
 # By default, we serve the cache lazily (display new entries uncolorized, and
 # update asynchronously when fzf closes).
 # But, if the cache is 100% fresh, we use it directly.
-# And f the cache is only slightly off, we regenerate what's missing then use
+# And if the cache is only slightly off, we regenerate what's missing then use
 # it.
 HISTORY_MODE="lazy"
 [[ "$isCacheFresh" == "1" ]] && HISTORY_MODE="fresh"
 [[ "$isSmallDiff" == "1" ]] && HISTORY_MODE="eager"
 # No cache file — force lazy regardless
-[[ ! -f "$CTRLR_DIR/cache" ]] && HISTORY_MODE="lazy"
+[[ ! -f "$CTRLH_DIR/cache" ]] && HISTORY_MODE="lazy"
 
 function fzf-source() {
   if [[ "$HISTORY_MODE" == "fresh" ]]; then
@@ -63,9 +63,9 @@ function fzf-source() {
 # Display cache file contents, if it exists
 function fzf-history-source-fresh() {
   # Stop if no cache file
-  [[ ! -s "$CTRLR_DIR/cache" ]] && return 0
+  [[ ! -s "$CTRLH_DIR/cache" ]] && return 0
 
-  \cat "$CTRLR_DIR/cache"
+  \cat "$CTRLH_DIR/cache"
 }
 
 # Cache is only slightly off, we update it then display it
@@ -104,7 +104,7 @@ function fzf-main() {
   if [[ "$HISTORY_MODE" == "lazy" ]]; then
     # </dev/null: detach stdin so background process doesn't hold the terminal
     # >/dev/null 2>&1: suppress stdout (cache content) and stderr (spinner)
-    (ctrl-r --regenerate-cache </dev/null >/dev/null 2>&1 &)
+    (ctrl-h --regenerate-cache </dev/null >/dev/null 2>&1 &)
   fi
   return 0
 }
@@ -120,7 +120,7 @@ function fzf-history-update-cache() {
   # Nothing to do if already up to date
   [[ $HISTORY_DIFF_COUNT -eq 0 ]] && return 0
 
-  local lockDir="$CTRLR_DIR/colorize.lock"
+  local lockDir="$CTRLH_DIR/colorize.lock"
 
   # If there is already a lock directory, it's probably because another update
   # process is running.
@@ -167,12 +167,12 @@ function fzf-history-update-cache() {
   fi
 
   # Update cache
-  local tmpFile="$CTRLR_DIR/cache.tmp"
+  local tmpFile="$CTRLH_DIR/cache.tmp"
   printf '%s\n' "${newEntries[@]}" >$tmpFile
-  [[ -f "$CTRLR_DIR/cache" ]] && \cat "$CTRLR_DIR/cache" >>$tmpFile
-  \mv "$tmpFile" "$CTRLR_DIR/cache"
+  [[ -f "$CTRLH_DIR/cache" ]] && \cat "$CTRLH_DIR/cache" >>$tmpFile
+  \mv "$tmpFile" "$CTRLH_DIR/cache"
   # Update number of lines
-  echo "$CURRENT_HISTORY_LINE_COUNT" >"$CTRLR_DIR/last-history-line-count"
+  echo "$CURRENT_HISTORY_LINE_COUNT" >"$CTRLH_DIR/last-history-line-count"
 
   # Release mutex
   \rm -rf "$lockDir"
@@ -180,7 +180,7 @@ function fzf-history-update-cache() {
 
 # Full cache rebuild from scratch
 function fzf-history-regenerate-cache() {
-  \rm -f "$CTRLR_DIR/cache" "$CTRLR_DIR/last-history-line-count"
+  \rm -f "$CTRLH_DIR/cache" "$CTRLH_DIR/last-history-line-count"
   HISTORY_DIFF_COUNT="$CURRENT_HISTORY_LINE_COUNT"
   fzf-history-update-cache --progress
 }

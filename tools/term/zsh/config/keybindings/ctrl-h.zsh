@@ -1,5 +1,5 @@
-# Ctrl-R to search in the history
-function oroshi-ctrl-r-widget() {
+# Ctrl-H to search in the history
+function oroshi-ctrl-h-widget() {
   # Stop if not available
   if ! command -v fzf >/dev/null; then
     echo "fzf is not installed"
@@ -8,7 +8,7 @@ function oroshi-ctrl-r-widget() {
   fi
 
   export PROMPT_PREVENT_REFRESH="1"
-  local selection="$(ctrl-r)"
+  local selection="$(ctrl-h)"
   export PROMPT_PREVENT_REFRESH="0"
 
   # Stop if no selection is made
@@ -19,6 +19,6 @@ function oroshi-ctrl-r-widget() {
   LBUFFER="${LBUFFER}${selection} "
   return 0
 }
-zle -N oroshi-ctrl-r-widget
-bindkey '^R' oroshi-ctrl-r-widget
+zle -N oroshi-ctrl-h-widget
+bindkey '^H' oroshi-ctrl-h-widget
 # }}}
