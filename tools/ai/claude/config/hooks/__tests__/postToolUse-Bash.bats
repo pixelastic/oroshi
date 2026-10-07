@@ -93,3 +93,91 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_TMP_DIR/solkan.log" ]]
 }
+
+@test "failure event relays a marker line as additionalContext" {
+  local input="$(jo session_id=test tool_use_id=toolu_01 hook_event_name=PostToolUseFailure tool_name=Bash \
+    error=$'Exit code 1\n[claude-guarded:refused] Retry with /bin/rm.')"
+
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --raw-output '.hookSpecificOutput.additionalContext' <<<"$output")" = "Retry with /bin/rm." ]]
+  [[ "$(jq --raw-output '.hookSpecificOutput.hookEventName' <<<"$output")" = "PostToolUseFailure" ]]
+}
+
+@test "failure event relays several marker lines" {
+  local input="$(jo session_id=test tool_use_id=toolu_01 hook_event_name=PostToolUseFailure tool_name=Bash \
+    error=$'Exit code 1\n[claude-guarded:refused] First.\n[claude-guarded:refused] Second.')"
+
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --raw-output '.hookSpecificOutput.additionalContext' <<<"$output")" = $'First.\nSecond.' ]]
+}
+
+@test "failure event without a marker prints nothing" {
+  local input="$(jo session_id=test tool_use_id=toolu_01 hook_event_name=PostToolUseFailure tool_name=Bash \
+    error=$'Exit code 1\nrm: cannot remove: No such file')"
+
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+}
+
+@test "failure event does not relay non-marker lines of the error" {
+  local input="$(jo session_id=test tool_use_id=toolu_01 hook_event_name=PostToolUseFailure tool_name=Bash \
+    error=$'Exit code 1\nsome stdout\n[claude-guarded:refused] Retry.\nrm: other failure')"
+
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"some stdout"* ]]
+  [[ "$output" != *"other failure"* ]]
+  [[ "$output" != *"Exit code"* ]]
+}
+
+@test "success event relays a marker line from a command that exited 0" {
+  local response="$(jo stdout=$'out-line\n[claude-guarded:refused] Retry with /bin/rm.' stderr=)"
+  local input="$(jo session_id=test tool_use_id=toolu_01 hook_event_name=PostToolUse tool_name=Bash \
+    tool_response="$response")"
+
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --raw-output '.hookSpecificOutput.additionalContext' <<<"$output")" = "Retry with /bin/rm." ]]
+  [[ "$(jq --raw-output '.hookSpecificOutput.hookEventName' <<<"$output")" = "PostToolUse" ]]
+}
+
+@test "success event relays a marker line written to stderr" {
+  local response="$(jo stdout= stderr=$'[claude-guarded:refused] Retry with /bin/rm.')"
+  local input="$(jo session_id=test tool_use_id=toolu_01 hook_event_name=PostToolUse tool_name=Bash \
+    tool_response="$response")"
+
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --raw-output '.hookSpecificOutput.additionalContext' <<<"$output")" = "Retry with /bin/rm." ]]
+}
+
+@test "relaying a marker still counts approvals of a pending tool use id" {
+  bats_run_zsh "${approvalPrefix}; approvalPendingAdd --tool-use-id toolu_01 --command rm"
+  local input="$(jo session_id=test tool_use_id=toolu_01 hook_event_name=PostToolUseFailure tool_name=Bash \
+    error=$'Exit code 1\n[claude-guarded:refused] Retry.')"
+
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --raw-output '.hookSpecificOutput.additionalContext' <<<"$output")" = "Retry." ]]
+
+  bats_run_zsh "${approvalPrefix}; approvalCountGet --command rm"
+  [[ "$output" = "1" ]]
+}
+
+@test "failure event relays a marker line written without a space after the marker" {
+  local input="$(jo session_id=test tool_use_id=toolu_01 hook_event_name=PostToolUseFailure tool_name=Bash \
+    error=$'Exit code 1\n[claude-guarded:refused]Retry.')"
+
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --raw-output '.hookSpecificOutput.additionalContext' <<<"$output")" = "Retry." ]]
+}
+
+@test "input that is not JSON exits 0 and prints nothing" {
+  bats_run_zsh "$SCRIPT 2>/dev/null" <<<'not json'
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+}

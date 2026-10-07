@@ -1,6 +1,9 @@
 #!/usr/bin/env zsh
 # zsh-lint disable-file=missingSetE
-# Hook must always exit 0 and print nothing
+# Hook must always exit 0, and print nothing unless relaying marker lines
+#
+# Relay: lines starting with the guarded marker, in the output of either event,
+# are returned without their prefix as additionalContext. Other lines are dropped
 #
 # Count Bash approvals: a post event means the command ran, so the user said Yes
 # to every command recorded as approval pending for that tool use id
@@ -15,6 +18,9 @@ local hookDir="${0:A:h}"
 # Approvals after which a command joins the session allow-list
 SESSION_ALLOW_LIST_THRESHOLD=3
 
+# Lines starting with this are written by the guarded helpers for the agent
+MARKER_PREFIX='[claude-guarded:refused]'
+
 # Parse input
 local inputJson="$(cat)"
 local toolUseId="$(json-get '.tool_use_id' <<<"$inputJson")"
@@ -23,6 +29,25 @@ local toolUseId="$(json-get '.tool_use_id' <<<"$inputJson")"
 export CLAUDE_SESSION_ID="$(json-get '.session_id' <<<"$inputJson")"
 
 source "${hookDir}/Bash-approval.zsh"
+
+# Failure event: output lives in .error. Success event: in .tool_response
+# Collect every field present, skip the missing ones, one line per field
+local outputFilter='
+  [.error, .tool_response.stdout, .tool_response.stderr]
+  | map(strings)
+  | join("\n")
+'
+local commandOutput="$(jq --raw-output "$outputFilter" <<<"$inputJson")"
+
+# Relay marker lines to the agent, without the marker prefix
+local -a markerLines=(${(@M)${(@f)commandOutput}:#${MARKER_PREFIX}*})
+if [[ "${#markerLines}" -gt 0 ]]; then
+  local -a relayedLines=("${(@)${(@)markerLines#${MARKER_PREFIX}}# }")
+  local relayedContext="${(F)relayedLines}"
+  jo hookSpecificOutput="$(jo \
+    hookEventName="$(json-get '.hook_event_name' <<<"$inputJson")" \
+    additionalContext="$relayedContext")"
+fi
 
 # Each pending command of this tool use was approved by the user
 local -a approvedCommands=(${(@f)$(approvalPendingGet --tool-use-id "$toolUseId")})
