@@ -31,6 +31,16 @@ bats_tmp_dir() {
   mkdir -p "$dir"
 
   export BATS_TMP_DIR="$dir"
+
+  # Default mock: the width of the window running the tests must never change
+  # their result (table truncates to it). A test can mock terminal-width again,
+  # and a test that never calls bats_tmp_dir keeps the real function
+  terminal-width() {
+    REPLY=80
+    [[ "$1" != "--reply" ]] && echo 80
+    return 0
+  }
+  bats_mock terminal-width
 }
 
 # bats_plans_dir

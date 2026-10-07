@@ -48,8 +48,6 @@ setup() {
 }
 
 @test "preserves ANSI color codes in non-truncated output" {
-  terminal-width() { REPLY=80; }
-  bats_mock terminal-width
   printf 'col▮\033[31mred\033[0m' > "$BATS_TMP_DIR/input.txt"
   bats_run_zsh "cat $BATS_TMP_DIR/input.txt | table"
   [[ "$status" -eq 0 ]]

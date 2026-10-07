@@ -1,0 +1,24 @@
+# Read a single DevRel meetup by Record ID, and print it as JSON
+# The JSON holds every non-empty Field, including the Attachment IDs
+# Usage:
+# $ meetup-read recXXX
+setopt local_options err_return
+
+local recordId="$1"
+
+# Nothing to read without a Record ID
+if [[ "$recordId" == "" ]]; then
+  echoerr "Usage: meetup-read <recordId>"
+  return 1
+fi
+
+# The DevRel Base ID lives in the private environment
+if [[ "$AIRTABLE_BASE_DEVREL" == "" ]]; then
+  echoerr "AIRTABLE_BASE_DEVREL is not set"
+  return 1
+fi
+
+airtable-record-read \
+  --base "$AIRTABLE_BASE_DEVREL" \
+  --table Meetups \
+  --record "$recordId"

@@ -1,0 +1,25 @@
+# Search the DevRel meetups by name, and print them as a JSON array
+# Each element is {"id": "recXXX", "fields": {…}}; an empty array means no match
+# Usage:
+# $ meetup-search datadog
+setopt local_options err_return
+
+local text="$1"
+
+# Nothing to search without a text
+if [[ "$text" == "" ]]; then
+  echoerr "Usage: meetup-search <text>"
+  return 1
+fi
+
+# The DevRel Base ID lives in the private environment
+if [[ "$AIRTABLE_BASE_DEVREL" == "" ]]; then
+  echoerr "AIRTABLE_BASE_DEVREL is not set"
+  return 1
+fi
+
+airtable-record-search \
+  --base "$AIRTABLE_BASE_DEVREL" \
+  --table Meetups \
+  --in name \
+  "$text"

@@ -1,0 +1,46 @@
+# List the DevRel meetups, one per line, most recent first
+# Fields: recordId▮date▮status▮name▮URL
+# The status is its label: pending, confirmed or cancelled
+# An empty Field leaves an empty column
+# --status keeps only the meetups with that status
+# One API call is made, so at most 100 meetups are listed
+# Usage:
+# $ meetup-list-raw
+# $ meetup-list-raw --status pending
+setopt local_options err_return
+
+zparseopts -E -D \
+  -status:=flagStatus
+
+local statusFilter=${flagStatus[2]}
+
+# Only the statuses stored in Airtable can filter
+if [[ "$statusFilter" != "" && ! "$statusFilter" =~ ^(pending|confirmed|cancelled)$ ]]; then
+  echoerr "Unknown status: $statusFilter (pending, confirmed or cancelled)"
+  return 1
+fi
+
+# The DevRel Base ID lives in the private environment
+if [[ "$AIRTABLE_BASE_DEVREL" == "" ]]; then
+  echoerr "AIRTABLE_BASE_DEVREL is not set"
+  return 1
+fi
+
+local rawRecords="$(airtable-record-list-raw \
+  --base "$AIRTABLE_BASE_DEVREL" \
+  --table Meetups \
+  --fields date,status,name,URL \
+  --sort -date)"
+
+for rawRecord in ${(f)rawRecords}; do
+  local fields=("${(@ps/▮/)rawRecord}")
+
+  # Airtable stores a label such as "⏳️ Pending": the last word, in lowercase, is the status
+  local label="${${(L)fields[3]}##* }"
+
+  # Skip the meetups of another status
+  [[ "$statusFilter" != "" && "$label" != "$statusFilter" ]] && continue
+
+  fields[3]="$label"
+  echo "${(j/▮/)fields}"
+done
