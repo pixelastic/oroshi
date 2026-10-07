@@ -2,7 +2,7 @@
 # Existing attachments stay in the field. The file must be 5 MB at most
 # Uses AIRTABLE_TOKEN_WRITE
 # Usage:
-# $ airtable-attachment-add --base DevRel --record recXXX --field Logo --file ./logo.png
+# $ airtable-attachment-add --base appXXX --record recXXX --field Logo --file ./logo.png
 setopt local_options err_return
 
 zparseopts -E -D \

@@ -4,7 +4,6 @@ import { airtableAttachmentRemove } from '../attachmentRemove.js';
 
 describe('airtableAttachmentRemove', () => {
   beforeEach(() => {
-    vi.stubEnv('AIRTABLE_BASE_DEVREL', 'appDEVREL123');
     vi.stubEnv('AIRTABLE_TOKEN_WRITE', 'write-token-abc');
     vi.stubEnv('AIRTABLE_TOKEN_READ', 'read-token-abc');
     // A GET reads the Field, a PATCH updates it
@@ -35,7 +34,7 @@ describe('airtableAttachmentRemove', () => {
   });
 
   const removeOptions = (options) => ({
-    base: 'DevRel',
+    base: 'appDEVREL123',
     table: 'Meetups',
     record: 'recABC',
     field: 'Logo',

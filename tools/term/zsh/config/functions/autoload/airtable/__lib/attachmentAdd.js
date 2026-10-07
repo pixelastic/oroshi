@@ -10,7 +10,7 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024;
  * Upload a local file into a Field of type Attachment, and return the ID of
  * the new Attachment. Airtable appends it and keeps the existing Attachments
  * @param {object} options - Upload options
- * @param {string} options.base - Base alias or Base ID
+ * @param {string} options.base - Base ID
  * @param {string} options.record - Record ID holding the Field
  * @param {string} options.field - Field name or Field ID of type Attachment
  * @param {string} options.file - Path of the local file, 5 MB at most

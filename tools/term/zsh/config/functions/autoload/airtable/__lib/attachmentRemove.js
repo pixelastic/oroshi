@@ -9,7 +9,7 @@ import { airtableRecordWrite } from './recordWrite.js';
  * Give either `attachments` or `all`. An ID that is not in the Field throws
  * and changes nothing, unless `all` is set
  * @param {object} options - Remove options
- * @param {string} options.base - Base alias or Base ID
+ * @param {string} options.base - Base ID
  * @param {string} options.table - Table name
  * @param {string} options.record - Record ID holding the Field
  * @param {string} options.field - Field name of type Attachment

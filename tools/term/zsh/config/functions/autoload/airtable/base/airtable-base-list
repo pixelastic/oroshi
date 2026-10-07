@@ -1,0 +1,25 @@
+# List the Airtable bases the read token can access as a colored table, one row per base
+# Columns: base ID (colored), name
+# Usage:
+# $ airtable-base-list
+setopt local_options err_return
+
+colors-load-definitions
+
+# Declared apart from its assignment, so a failing raw list stops the helper
+local rawBases=""
+rawBases="$(airtable-base-list-raw)"
+
+# Nothing to display if no base is accessible
+[[ "$rawBases" == "" ]] && return 0
+
+local output=""
+for rawBase in ${(f)rawBases}; do
+  local fields=("${(@ps/▮/)rawBase}")
+  local baseId="${fields[1]}"
+  local name="${fields[2]}"
+
+  output+="$(colorize "$baseId" $COLORS[airtable-base-id])▮${name}\n"
+done
+
+table $output

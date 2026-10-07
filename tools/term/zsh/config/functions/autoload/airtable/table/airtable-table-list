@@ -1,0 +1,30 @@
+# List the tables of an Airtable base as a colored table, one row per table
+# Columns: table ID (colored), name
+# Usage:
+# $ airtable-table-list --base appXXX
+setopt local_options err_return
+
+zparseopts -E -D \
+  -base:=flagBase
+
+local base=${flagBase[2]}
+
+colors-load-definitions
+
+# Declared apart from its assignment, so a failing raw list stops the helper
+local rawTables=""
+rawTables="$(airtable-table-list-raw --base "$base")"
+
+# Nothing to display if the base has no tables
+[[ "$rawTables" == "" ]] && return 0
+
+local output=""
+for rawTable in ${(f)rawTables}; do
+  local fields=("${(@ps/▮/)rawTable}")
+  local tableId="${fields[1]}"
+  local name="${fields[2]}"
+
+  output+="$(colorize "$tableId" $COLORS[airtable-table-id])▮${name}\n"
+done
+
+table $output

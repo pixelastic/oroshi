@@ -12,9 +12,9 @@ setup() {
 }
 
 @test "passes base, table, --in field, text, fields and limit to the JS module" {
-  bats_run_zsh "airtable-record-search --base DevRel --table Meetups --in name --fields name,date --limit 5 paris"
+  bats_run_zsh "airtable-record-search --base appXXX --table Meetups --in name --fields name,date --limit 5 paris"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/node-args")" == *"bin/airtable-record-search.js DevRel Meetups name paris name,date 5" ]]
+  [[ "$(cat "$BATS_TMP_DIR/node-args")" == *"bin/airtable-record-search.js appXXX Meetups name paris name,date 5" ]]
 }
 
 @test "passes empty fields and limit when they are not given" {
@@ -24,13 +24,13 @@ setup() {
 }
 
 @test "passes a text containing a quote unchanged" {
-  bats_run_zsh "airtable-record-search --base DevRel --table Meetups --in name \"it's\""
+  bats_run_zsh "airtable-record-search --base appXXX --table Meetups --in name \"it's\""
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/node-args")" == *"bin/airtable-record-search.js DevRel Meetups name it's  " ]]
+  [[ "$(cat "$BATS_TMP_DIR/node-args")" == *"bin/airtable-record-search.js appXXX Meetups name it's  " ]]
 }
 
 @test "prints the JSON of the JS module" {
-  bats_run_zsh "airtable-record-search --base DevRel --table Meetups --in name paris"
+  bats_run_zsh "airtable-record-search --base appXXX --table Meetups --in name paris"
   expect_json '.[0].id' 'recA'
 }
 
@@ -40,7 +40,7 @@ setup() {
   }
   bats_mock node
 
-  bats_run_zsh "airtable-record-search --base DevRel --table Meetups --in name nothing"
+  bats_run_zsh "airtable-record-search --base appXXX --table Meetups --in name nothing"
   [[ "$status" -eq 0 ]]
   expect_json 'length' '0'
 }
@@ -52,13 +52,13 @@ setup() {
   }
   bats_mock node
 
-  bats_run_zsh "airtable-record-search --base DevRel --table Meetups --in name paris"
+  bats_run_zsh "airtable-record-search --base appXXX --table Meetups --in name paris"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"Invalid formula"* ]]
 }
 
 @test "prints a usage error when the search text is missing" {
-  bats_run_zsh "airtable-record-search --base DevRel --table Meetups --in name"
+  bats_run_zsh "airtable-record-search --base appXXX --table Meetups --in name"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"Usage"* ]]
   [[ ! -f "$BATS_TMP_DIR/node-args" ]]

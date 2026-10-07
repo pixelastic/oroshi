@@ -1,6 +1,6 @@
 # Read a single Airtable record by ID, with optional field selection
 # Usage:
-# $ airtable-record-read --base DevRel --table Meetups --record recXXX
+# $ airtable-record-read --base appXXX --table Meetups --record recXXX
 # $ airtable-record-read --base appXXX --table Meetups --record recXXX --fields name,date
 setopt local_options err_return
 

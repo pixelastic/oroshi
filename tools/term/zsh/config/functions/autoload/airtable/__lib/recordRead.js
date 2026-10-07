@@ -5,7 +5,7 @@ import { airtableApi } from './api.js';
 /**
  * Read the Fields of a single Record
  * @param {object} options - Read options
- * @param {string} options.base - Base alias or Base ID
+ * @param {string} options.base - Base ID
  * @param {string} options.table - Table name
  * @param {string} options.record - Record ID
  * @param {string[]} [options.fields] - Fields to return, all by default

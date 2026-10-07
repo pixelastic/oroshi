@@ -13,19 +13,19 @@ setup() {
 }
 
 @test "passes base, table, fields, limit and sort to the raw list" {
-  bats_run_zsh "airtable-record-list --base DevRel --table Meetups --fields name,date --limit 5 --sort -date"
+  bats_run_zsh "airtable-record-list --base appXXX --table Meetups --fields name,date --limit 5 --sort -date"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--base DevRel --table Meetups --fields name,date --limit 5 --sort -date" ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--base appXXX --table Meetups --fields name,date --limit 5 --sort -date" ]]
 }
 
 @test "only passes the options it was given to the raw list" {
-  bats_run_zsh "airtable-record-list --base DevRel --table Meetups"
+  bats_run_zsh "airtable-record-list --base appXXX --table Meetups"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--base DevRel --table Meetups" ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--base appXXX --table Meetups" ]]
 }
 
 @test "shows the same rows as the raw list, with aligned columns" {
-  bats_run_zsh "airtable-record-list --base DevRel --table Meetups --fields name,city | text-ansi-remove"
+  bats_run_zsh "airtable-record-list --base appXXX --table Meetups --fields name,city | text-ansi-remove"
   [[ "$status" -eq 0 ]]
   [[ "${lines[0]}" == "recA  Paris Meetup  Paris, France" ]]
   # table pads the empty last column with spaces
@@ -34,7 +34,7 @@ setup() {
 }
 
 @test "colors the record ID" {
-  bats_run_zsh "airtable-record-list --base DevRel --table Meetups"
+  bats_run_zsh "airtable-record-list --base appXXX --table Meetups"
   [[ "${lines[0]}" == *$'\e['*"recA"* ]]
 }
 
@@ -44,7 +44,7 @@ setup() {
   }
   bats_mock airtable-record-list-raw
 
-  bats_run_zsh "airtable-record-list --base DevRel --table Empty"
+  bats_run_zsh "airtable-record-list --base appXXX --table Empty"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "" ]]
 }
@@ -56,7 +56,7 @@ setup() {
   }
   bats_mock airtable-record-list-raw
 
-  bats_run_zsh "airtable-record-list --base DevRel --table Meetups"
+  bats_run_zsh "airtable-record-list --base appXXX --table Meetups"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"AIRTABLE_TOKEN_READ is not set"* ]]
 }

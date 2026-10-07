@@ -7,7 +7,7 @@ import { airtableRecordRead } from './recordRead.js';
  * Replace every Attachment of a Field with one local file. The upload comes
  * first, so a failed upload leaves the old Attachments in place
  * @param {object} options - Replace options
- * @param {string} options.base - Base alias or Base ID
+ * @param {string} options.base - Base ID
  * @param {string} options.table - Table name
  * @param {string} options.record - Record ID holding the Field
  * @param {string} options.field - Field name of type Attachment

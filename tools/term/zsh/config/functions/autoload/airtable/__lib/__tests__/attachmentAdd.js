@@ -12,8 +12,6 @@ describe('airtableAttachmentAdd', () => {
     testDirectory = tmpDirectory('airtable-attachment');
     filepath = path.join(testDirectory, 'logo.png');
     await write('Hello world', filepath);
-
-    vi.stubEnv('AIRTABLE_BASE_DEVREL', 'appDEVREL123');
     vi.stubEnv('AIRTABLE_TOKEN_WRITE', 'write-token-abc');
     vi.spyOn(apiMock, 'fetch').mockReturnValue({
       ok: true,
@@ -35,7 +33,7 @@ describe('airtableAttachmentAdd', () => {
   });
 
   const addOptions = (options) => ({
-    base: 'DevRel',
+    base: 'appDEVREL123',
     record: 'recABC',
     field: 'Logo',
     file: filepath,

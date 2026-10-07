@@ -34,7 +34,6 @@ describe('airtableAttachmentReplace', () => {
       { id: 'attOLD1', filename: 'old1.png' },
       { id: 'attOLD2', filename: 'old2.png' },
     ];
-    vi.stubEnv('AIRTABLE_BASE_DEVREL', 'appDEVREL123');
     vi.stubEnv('AIRTABLE_TOKEN_WRITE', 'write-token-abc');
     vi.stubEnv('AIRTABLE_TOKEN_READ', 'read-token-abc');
     vi.spyOn(apiMock, 'fetch').mockImplementation(fakeAirtable);
@@ -45,7 +44,7 @@ describe('airtableAttachmentReplace', () => {
   });
 
   const replaceOptions = (options) => ({
-    base: 'DevRel',
+    base: 'appDEVREL123',
     table: 'Meetups',
     record: 'recABC',
     field: 'Logo',

@@ -13,7 +13,6 @@ describe('airtableRecordListRaw', () => {
   const requestedUrl = () => decodeURIComponent(apiMock.fetch.mock.calls[0][0]);
 
   beforeEach(() => {
-    vi.stubEnv('AIRTABLE_BASE_DEVREL', 'appDEVREL123');
     vi.stubEnv('AIRTABLE_TOKEN_READ', 'read-token-abc');
     vi.spyOn(separatorsMock, 'readIcons').mockReturnValue({
       'table-separator': '▮',
@@ -58,7 +57,7 @@ describe('airtableRecordListRaw', () => {
     },
   ])('$title', async ({ fields, expected }) => {
     const actual = await airtableRecordListRaw({
-      base: 'DevRel',
+      base: 'appDEVREL123',
       table: 'Meetups',
       fields,
     });
@@ -70,7 +69,7 @@ describe('airtableRecordListRaw', () => {
       records: [{ id: 'recA', fields: { name: 'Line one\nLine▮two▯three' } }],
     });
     const actual = await airtableRecordListRaw({
-      base: 'DevRel',
+      base: 'appDEVREL123',
       table: 'Meetups',
       fields: ['name'],
     });
@@ -80,7 +79,7 @@ describe('airtableRecordListRaw', () => {
   it('prints nothing for a Table without Records', async () => {
     respondWith({ records: [] });
     const actual = await airtableRecordListRaw({
-      base: 'DevRel',
+      base: 'appDEVREL123',
       table: 'Meetups',
     });
     expect(actual).toEqual([]);
@@ -88,12 +87,12 @@ describe('airtableRecordListRaw', () => {
 
   it('makes exactly one API call, even when Airtable offers a next page', async () => {
     respondWith({ records: [{ id: 'recA', fields: {} }], offset: 'itrNEXT' });
-    await airtableRecordListRaw({ base: 'DevRel', table: 'Meetups' });
+    await airtableRecordListRaw({ base: 'appDEVREL123', table: 'Meetups' });
     expect(apiMock.fetch).toHaveBeenCalledTimes(1);
   });
 
   it('reads with the Read token', async () => {
-    await airtableRecordListRaw({ base: 'DevRel', table: 'Meetups' });
+    await airtableRecordListRaw({ base: 'appDEVREL123', table: 'Meetups' });
     expect(apiMock.fetch).toHaveBeenCalledWith(
       'https://api.airtable.com/v0/appDEVREL123/Meetups',
       {
@@ -140,7 +139,7 @@ describe('airtableRecordListRaw', () => {
     },
   ])('$title', async ({ options, expected }) => {
     await airtableRecordListRaw({
-      base: 'DevRel',
+      base: 'appDEVREL123',
       table: 'Meetups',
       ...options,
     });

@@ -6,6 +6,7 @@ export let __;
 const HOST_URLS = {
   api: 'https://api.airtable.com/v0',
   content: 'https://content.airtable.com/v0',
+  schema: 'https://api.airtable.com/v0/meta/bases',
 };
 
 /**
@@ -13,11 +14,11 @@ const HOST_URLS = {
  * @param {object} options - Call options
  * @param {string} options.mode - "read" or "write", picks the token
  * @param {string} options.method - HTTP method
- * @param {string} options.base - Base alias (DevRel) or Base ID (appXXX)
- * @param {string|string[]} options.path - Path segments inside the Base, such as a Table name. Each segment is URL-encoded
+ * @param {string} [options.base] - Base ID (appXXX). Only the "schema" host can go without one, to list the Bases
+ * @param {string|string[]} [options.path] - Path segments inside the Base, such as a Table name. Each segment is URL-encoded
  * @param {object} [options.query] - Query parameters. A list sends each item as `key[]`, a list of objects as `key[index][property]`. Empty values are skipped
  * @param {object} [options.body] - JSON body to send
- * @param {string} [options.host] - "api", or "content" for file uploads
+ * @param {string} [options.host] - "api", "content" for file uploads, or "schema" for Bases and Tables
  * @returns {Promise<object>} The parsed response body
  */
 export async function airtableApi(options) {
@@ -41,8 +42,6 @@ export async function airtableApi(options) {
     );
   }
 
-  const baseId = __.resolveBase(base);
-
   const headers = { Authorization: `Bearer ${token}` };
   const request = { method, headers };
   if (body) {
@@ -50,10 +49,11 @@ export async function airtableApi(options) {
     request.body = JSON.stringify(body);
   }
 
-  const response = await __.fetch(
-    `${HOST_URLS[host]}/${baseId}/${__.encodePath(path)}${__.queryString(query)}`,
-    request,
-  );
+  const url = _.chain([HOST_URLS[host], base, __.encodePath(path)])
+    .compact()
+    .join('/')
+    .value();
+  const response = await __.fetch(`${url}${__.queryString(query)}`, request);
   const content = await __.readJson(response);
   if (response.ok) {
     return content;
@@ -68,11 +68,16 @@ export async function airtableApi(options) {
 __ = {
   /**
    * URL-encode each segment of a path
-   * @param {string|string[]} path - One segment, or a list of segments
-   * @returns {string} Encoded segments joined with a slash
+   * @param {string|string[]} [path] - One segment, or a list of segments
+   * @returns {string} Encoded segments joined with a slash, empty without a path
    */
   encodePath(path) {
-    return _.chain(path).castArray().map(encodeURIComponent).join('/').value();
+    return _.chain(path)
+      .castArray()
+      .compact()
+      .map(encodeURIComponent)
+      .join('/')
+      .value();
   },
   /**
    * Serialize query parameters the way Airtable expects them
@@ -108,26 +113,6 @@ __ = {
           )
         : [`${key}[]=${encodeURIComponent(item)}`],
     );
-  },
-  /**
-   * A Base ID passes through, anything else is a Base alias
-   * @param {string} base - Base alias or Base ID
-   * @returns {string} The Base ID
-   */
-  resolveBase(base) {
-    if (_.startsWith(base, 'app')) {
-      return base;
-    }
-
-    const baseVariable = `AIRTABLE_BASE_${_.toUpper(base)}`;
-    const baseId = process.env[baseVariable];
-    if (!baseId) {
-      throw firostError(
-        'AIRTABLE_API_UNKNOWN_BASE',
-        `${baseVariable} is not set`,
-      );
-    }
-    return baseId;
   },
   /**
    * Parse the body of a response. A gateway error can send a body that is not

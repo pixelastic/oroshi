@@ -2,8 +2,12 @@
 typeset -gA COLORS
 COLORS[ai]=146
 COLORS[ai:hex]="#b45309"
+COLORS[airtable-base-id]=105
+COLORS[airtable-base-id:hex]="#ea580c"
 COLORS[airtable-record-id]=105
 COLORS[airtable-record-id:hex]="#ea580c"
+COLORS[airtable-table-id]=105
+COLORS[airtable-table-id:hex]="#ea580c"
 COLORS[amber]=145
 COLORS[amber:hex]="#d97706"
 COLORS[amber-0]=140

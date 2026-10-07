@@ -4,7 +4,7 @@ import { airtableApi } from './api.js';
  * Create a Record, or update the given one, and return its ID. An update leaves
  * the Fields that are not given untouched
  * @param {object} options - Write options
- * @param {string} options.base - Base alias or Base ID
+ * @param {string} options.base - Base ID
  * @param {string} options.table - Table name
  * @param {string} [options.record] - Record ID to update. A new Record is created without it
  * @param {object} options.fields - Regular Fields to set, never Attachments

@@ -12,9 +12,9 @@ setup() {
 }
 
 @test "passes base, table, record and fields to the JS module" {
-  bats_run_zsh "airtable-record-read --base DevRel --table Meetups --record recABC --fields name,date"
+  bats_run_zsh "airtable-record-read --base appXXX --table Meetups --record recABC --fields name,date"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/node-args")" == *"bin/airtable-record-read.js DevRel Meetups recABC name,date" ]]
+  [[ "$(cat "$BATS_TMP_DIR/node-args")" == *"bin/airtable-record-read.js appXXX Meetups recABC name,date" ]]
 }
 
 @test "passes an empty field list when --fields is not given" {
@@ -24,7 +24,7 @@ setup() {
 }
 
 @test "prints the JSON of the JS module" {
-  bats_run_zsh "airtable-record-read --base DevRel --table Meetups --record recABC"
+  bats_run_zsh "airtable-record-read --base appXXX --table Meetups --record recABC"
   expect_json '.name' 'Paris Meetup'
 }
 
@@ -35,7 +35,7 @@ setup() {
   }
   bats_mock node
 
-  bats_run_zsh "airtable-record-read --base DevRel --table Meetups --record recNONE"
+  bats_run_zsh "airtable-record-read --base appXXX --table Meetups --record recNONE"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"Record not found"* ]]
 }

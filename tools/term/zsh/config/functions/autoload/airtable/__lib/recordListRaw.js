@@ -1,5 +1,6 @@
 import { _ } from 'golgoth';
 import { airtableApi } from './api.js';
+import { airtableRawColumn } from './rawColumn.js';
 import { airtableSeparators } from './separators.js';
 
 export let __;
@@ -11,7 +12,7 @@ const MAX_PAGE_SIZE = 100;
  * call. A line holds the Record ID, then the requested Fields in the order
  * given. The values of a multi-value Field use the list separator
  * @param {object} options - List options
- * @param {string} options.base - Base alias or Base ID
+ * @param {string} options.base - Base ID
  * @param {string} options.table - Table name
  * @param {string[]} [options.fields] - Fields to print, none by default
  * @param {number} [options.limit] - Maximum number of Records, capped at 100
@@ -38,7 +39,7 @@ export async function airtableRecordListRaw(options) {
     [
       record.id,
       ..._.map(fields, (field) =>
-        __.formatValue(record.fields[field], separators),
+        airtableRawColumn(record.fields[field], separators),
       ),
     ].join(separators.field),
   );
@@ -56,30 +57,5 @@ __ = {
       field: _.trimStart(sort, '-'),
       direction: _.startsWith(sort, '-') ? 'desc' : 'asc',
     };
-  },
-  /**
-   * Format the value of a Field as one raw column. Newlines become spaces and
-   * separators are removed. Airtable omits empty Fields, which stay empty
-   * @param {*} value - Value of the Field
-   * @param {object} separators - { field, list }
-   * @returns {string} Raw column
-   */
-  formatValue(value, separators) {
-    const clean = (item) =>
-      _.chain(_.isObject(item) ? JSON.stringify(item) : item)
-        .toString()
-        .replace(/\s*[\r\n]+\s*/g, ' ')
-        .split(separators.field)
-        .join('')
-        .split(separators.list)
-        .join('')
-        .value();
-
-    return _.chain(value)
-      .castArray()
-      .reject(_.isNil)
-      .map(clean)
-      .join(separators.list)
-      .value();
   },
 };

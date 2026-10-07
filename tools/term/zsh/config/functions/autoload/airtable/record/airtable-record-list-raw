@@ -5,10 +5,10 @@
 # --sort takes a field name, prefixed with - to sort descending; without it Airtable's order is arbitrary
 # One API call is made, so at most 100 records are listed (default: 100)
 # Usage:
-# $ airtable-record-list-raw --base DevRel --table Meetups
-# $ airtable-record-list-raw --base DevRel --table Meetups --fields name,date
+# $ airtable-record-list-raw --base appXXX --table Meetups
+# $ airtable-record-list-raw --base appXXX --table Meetups --fields name,date
 # $ airtable-record-list-raw --base appXXX --table Meetups --fields name --limit 10
-# $ airtable-record-list-raw --base DevRel --table Meetups --sort -date   # most recent first
+# $ airtable-record-list-raw --base appXXX --table Meetups --sort -date   # most recent first
 setopt local_options err_return
 
 zparseopts -E -D \

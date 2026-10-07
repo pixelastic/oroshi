@@ -1,0 +1,19 @@
+# List the tables of an Airtable base, one per line
+# Fields: tableId▮name
+# Usage:
+# $ airtable-table-list-raw --base appXXX
+setopt local_options err_return
+
+zparseopts -E -D \
+  -base:=flagBase
+
+local base=${flagBase[2]}
+
+# Nothing to list without a base
+if [[ "$base" == "" ]]; then
+  echoerr "Usage: airtable-table-list-raw --base <base>"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/airtable-table-list-raw.js" "$base"

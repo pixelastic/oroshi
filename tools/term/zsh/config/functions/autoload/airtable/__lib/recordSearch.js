@@ -9,7 +9,7 @@ const MAX_PAGE_SIZE = 100;
  * Find the Records whose Field contains a text, ignoring case, with a single
  * API call
  * @param {object} options - Search options
- * @param {string} options.base - Base alias or Base ID
+ * @param {string} options.base - Base ID
  * @param {string} options.table - Table name
  * @param {string} options.field - Field to search in
  * @param {string} options.text - Text to look for

@@ -13,18 +13,18 @@ setup() {
 }
 
 @test "passes the location, file and content type to the JS module" {
-  bats_run_zsh "airtable-attachment-replace --base DevRel --table Meetups --record recABC --field Logo --file $BATS_TMP_DIR/notes.txt"
+  bats_run_zsh "airtable-attachment-replace --base appXXX --table Meetups --record recABC --field Logo --file $BATS_TMP_DIR/notes.txt"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/node-args")" == *"bin/airtable-attachment-replace.js DevRel Meetups recABC Logo $BATS_TMP_DIR/notes.txt text/plain" ]]
+  [[ "$(cat "$BATS_TMP_DIR/node-args")" == *"bin/airtable-attachment-replace.js appXXX Meetups recABC Logo $BATS_TMP_DIR/notes.txt text/plain" ]]
 }
 
 @test "prints the Attachment ID of the JS module" {
-  bats_run_zsh "airtable-attachment-replace --base DevRel --table Meetups --record recABC --field Logo --file $BATS_TMP_DIR/notes.txt"
+  bats_run_zsh "airtable-attachment-replace --base appXXX --table Meetups --record recABC --field Logo --file $BATS_TMP_DIR/notes.txt"
   [[ "$output" == "attNEW" ]]
 }
 
 @test "fails with a usage error when a flag is missing" {
-  bats_run_zsh "airtable-attachment-replace --base DevRel --table Meetups --record recABC --file $BATS_TMP_DIR/notes.txt"
+  bats_run_zsh "airtable-attachment-replace --base appXXX --table Meetups --record recABC --file $BATS_TMP_DIR/notes.txt"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"--field"* ]]
   [[ ! -e "$BATS_TMP_DIR/node-args" ]]
@@ -37,7 +37,7 @@ setup() {
   }
   bats_mock node
 
-  bats_run_zsh "airtable-attachment-replace --base DevRel --table Meetups --record recABC --field Logo --file nope.png"
+  bats_run_zsh "airtable-attachment-replace --base appXXX --table Meetups --record recABC --field Logo --file nope.png"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"Upload failed"* ]]
 }

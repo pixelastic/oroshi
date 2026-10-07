@@ -2,9 +2,9 @@
 # The other Attachments stay in the field. Nothing changes if an ID is not in the field
 # Uses AIRTABLE_TOKEN_READ and AIRTABLE_TOKEN_WRITE
 # Usage:
-# $ airtable-attachment-remove --base DevRel --table Meetups --record recXXX --field Logo --attachment attXXX
-# $ airtable-attachment-remove --base DevRel --table Meetups --record recXXX --field Logo --attachment attXXX --attachment attYYY
-# $ airtable-attachment-remove --base DevRel --table Meetups --record recXXX --field Logo --all
+# $ airtable-attachment-remove --base appXXX --table Meetups --record recXXX --field Logo --attachment attXXX
+# $ airtable-attachment-remove --base appXXX --table Meetups --record recXXX --field Logo --attachment attXXX --attachment attYYY
+# $ airtable-attachment-remove --base appXXX --table Meetups --record recXXX --field Logo --all
 setopt local_options err_return
 
 zparseopts -E -D \

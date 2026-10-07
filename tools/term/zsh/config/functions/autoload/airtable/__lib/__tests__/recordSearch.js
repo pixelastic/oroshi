@@ -10,7 +10,6 @@ describe('airtableRecordSearch', () => {
   const formula = "filterByFormula=SEARCH(LOWER('datadog'),LOWER({name}))";
 
   beforeEach(() => {
-    vi.stubEnv('AIRTABLE_BASE_DEVREL', 'appDEVREL123');
     vi.stubEnv('AIRTABLE_TOKEN_READ', 'read-token-abc');
     vi.spyOn(apiMock, 'fetch').mockReturnValue({
       ok: true,
@@ -24,7 +23,7 @@ describe('airtableRecordSearch', () => {
 
   const search = (options) =>
     airtableRecordSearch({
-      base: 'DevRel',
+      base: 'appDEVREL123',
       table: 'Meetups',
       field: 'name',
       text: 'datadog',

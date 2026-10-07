@@ -3,8 +3,8 @@
 # Each element is {"id": "recXXX", "fields": {…}}; without --fields, it holds every non-empty field
 # One API call is made, so at most 100 records are returned (default: 100)
 # Usage:
-# $ airtable-record-search --base DevRel --table Meetups --in name datadog
-# $ airtable-record-search --base DevRel --table Meetups --in name --fields name,date --limit 5 "user group"
+# $ airtable-record-search --base appXXX --table Meetups --in name datadog
+# $ airtable-record-search --base appXXX --table Meetups --in name --fields name,date --limit 5 "user group"
 setopt local_options err_return
 
 zparseopts -E -D \

@@ -3,7 +3,6 @@ import { airtableRecordWrite } from '../recordWrite.js';
 
 describe('airtableRecordWrite', () => {
   beforeEach(() => {
-    vi.stubEnv('AIRTABLE_BASE_DEVREL', 'appDEVREL123');
     vi.stubEnv('AIRTABLE_TOKEN_WRITE', 'write-token-abc');
     vi.stubEnv('AIRTABLE_TOKEN_READ', 'read-token-abc');
     vi.spyOn(apiMock, 'fetch').mockReturnValue({
@@ -23,7 +22,7 @@ describe('airtableRecordWrite', () => {
   describe('without a Record ID', () => {
     it('creates a Record and returns its ID', async () => {
       const actual = await airtableRecordWrite({
-        base: 'DevRel',
+        base: 'appDEVREL123',
         table: 'Meetups',
         fields: { name: 'Paris Meetup' },
       });
@@ -37,7 +36,7 @@ describe('airtableRecordWrite', () => {
 
     it('keeps the type of numbers and booleans', async () => {
       await airtableRecordWrite({
-        base: 'DevRel',
+        base: 'appDEVREL123',
         table: 'Meetups',
         fields: { attendees: 42, confirmed: true },
       });
@@ -57,7 +56,7 @@ describe('airtableRecordWrite', () => {
       });
 
       const actual = await airtableRecordWrite({
-        base: 'DevRel',
+        base: 'appDEVREL123',
         table: 'Meetups',
         record: 'recABC',
         fields: { name: 'Paris Meetup' },
@@ -74,7 +73,7 @@ describe('airtableRecordWrite', () => {
   describe('tokens', () => {
     it('sends the Write token', async () => {
       await airtableRecordWrite({
-        base: 'DevRel',
+        base: 'appDEVREL123',
         table: 'Meetups',
         fields: { name: 'Paris Meetup' },
       });
@@ -87,7 +86,7 @@ describe('airtableRecordWrite', () => {
       let actual = null;
       try {
         await airtableRecordWrite({
-          base: 'DevRel',
+          base: 'appDEVREL123',
           table: 'Meetups',
           fields: { name: 'Paris Meetup' },
         });
@@ -115,7 +114,7 @@ describe('airtableRecordWrite', () => {
       let actual = null;
       try {
         await airtableRecordWrite({
-          base: 'DevRel',
+          base: 'appDEVREL123',
           table: 'Meetups',
           fields: { nope: 1 },
         });

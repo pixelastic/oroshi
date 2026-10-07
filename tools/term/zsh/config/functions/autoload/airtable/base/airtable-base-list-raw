@@ -1,0 +1,8 @@
+# List the Airtable bases the read token can access, one per line
+# Fields: baseId▮name
+# Usage:
+# $ airtable-base-list-raw
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/airtable-base-list-raw.js"

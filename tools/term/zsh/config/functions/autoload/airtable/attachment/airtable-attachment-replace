@@ -2,7 +2,7 @@
 # The file is uploaded first, so a failed upload keeps the old Attachments. The file must be 5 MB at most
 # Uses AIRTABLE_TOKEN_READ and AIRTABLE_TOKEN_WRITE
 # Usage:
-# $ airtable-attachment-replace --base DevRel --table Meetups --record recXXX --field Logo --file ./logo.png
+# $ airtable-attachment-replace --base appXXX --table Meetups --record recXXX --field Logo --file ./logo.png
 setopt local_options err_return
 
 zparseopts -E -D \

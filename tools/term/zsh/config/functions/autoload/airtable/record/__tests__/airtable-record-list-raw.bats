@@ -12,9 +12,9 @@ setup() {
 }
 
 @test "passes base, table, fields, limit and sort to the JS module" {
-  bats_run_zsh "airtable-record-list-raw --base DevRel --table Meetups --fields name,date --limit 5 --sort -date"
+  bats_run_zsh "airtable-record-list-raw --base appXXX --table Meetups --fields name,date --limit 5 --sort -date"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/node-args")" == *"bin/airtable-record-list-raw.js DevRel Meetups name,date 5 -date" ]]
+  [[ "$(cat "$BATS_TMP_DIR/node-args")" == *"bin/airtable-record-list-raw.js appXXX Meetups name,date 5 -date" ]]
 }
 
 @test "passes empty fields, limit and sort when they are not given" {
@@ -24,7 +24,7 @@ setup() {
 }
 
 @test "prints the lines of the JS module" {
-  bats_run_zsh "airtable-record-list-raw --base DevRel --table Meetups"
+  bats_run_zsh "airtable-record-list-raw --base appXXX --table Meetups"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "recABC▮Paris Meetup" ]]
 }
@@ -35,7 +35,7 @@ setup() {
   }
   bats_mock node
 
-  bats_run_zsh "airtable-record-list-raw --base DevRel --table Empty"
+  bats_run_zsh "airtable-record-list-raw --base appXXX --table Empty"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "" ]]
 }
@@ -47,7 +47,7 @@ setup() {
   }
   bats_mock node
 
-  bats_run_zsh "airtable-record-list-raw --base DevRel --table Meetups"
+  bats_run_zsh "airtable-record-list-raw --base appXXX --table Meetups"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"AIRTABLE_TOKEN_READ is not set"* ]]
 }

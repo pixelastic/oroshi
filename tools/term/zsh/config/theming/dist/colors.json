@@ -3,7 +3,15 @@
     "ansi": 146,
     "hex": "#b45309"
   },
+  "airtable-base-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
   "airtable-record-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "airtable-table-id": {
     "ansi": 105,
     "hex": "#ea580c"
   },

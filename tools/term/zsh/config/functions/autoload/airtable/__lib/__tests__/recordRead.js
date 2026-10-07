@@ -8,7 +8,6 @@ describe('airtableRecordRead', () => {
   };
 
   beforeEach(() => {
-    vi.stubEnv('AIRTABLE_BASE_DEVREL', 'appDEVREL123');
     vi.stubEnv('AIRTABLE_TOKEN_READ', 'read-token-abc');
     vi.spyOn(apiMock, 'fetch').mockReturnValue({
       ok: true,
@@ -24,7 +23,7 @@ describe('airtableRecordRead', () => {
 
   it('returns the fields of the Record', async () => {
     const actual = await airtableRecordRead({
-      base: 'DevRel',
+      base: 'appDEVREL123',
       table: 'Meetups',
       record: 'recABC',
     });
@@ -42,7 +41,7 @@ describe('airtableRecordRead', () => {
 
   it('restricts the request to the requested Fields', async () => {
     await airtableRecordRead({
-      base: 'DevRel',
+      base: 'appDEVREL123',
       table: 'Meetups',
       record: 'recABC',
       fields: ['name', 'date'],
@@ -52,7 +51,7 @@ describe('airtableRecordRead', () => {
 
   it('requests every Field by default', async () => {
     await airtableRecordRead({
-      base: 'DevRel',
+      base: 'appDEVREL123',
       table: 'Meetups',
       record: 'recABC',
     });
@@ -69,7 +68,7 @@ describe('airtableRecordRead', () => {
     let actual = null;
     try {
       await airtableRecordRead({
-        base: 'DevRel',
+        base: 'appDEVREL123',
         table: 'Meetups',
         record: 'recNONE',
       });

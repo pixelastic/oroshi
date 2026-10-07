@@ -3,8 +3,8 @@
 # --fields is a JSON object of regular fields, never attachments
 # Uses AIRTABLE_TOKEN_WRITE
 # Usage:
-# $ airtable-record-write --base DevRel --table Meetups --fields '{"name":"Paris","attendees":42}'
-# $ airtable-record-write --base DevRel --table Meetups --record recXXX --fields '{"status":"✅ Confirmed"}'
+# $ airtable-record-write --base appXXX --table Meetups --fields '{"name":"Paris","attendees":42}'
+# $ airtable-record-write --base appXXX --table Meetups --record recXXX --fields '{"status":"✅ Confirmed"}'
 setopt local_options err_return
 
 zparseopts -E -D \

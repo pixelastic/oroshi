@@ -8,49 +8,12 @@ describe('airtableApi', () => {
   });
 
   beforeEach(() => {
-    vi.stubEnv('AIRTABLE_BASE_DEVREL', 'appDEVREL123');
     vi.stubEnv('AIRTABLE_TOKEN_READ', 'read-token-abc');
     vi.stubEnv('AIRTABLE_TOKEN_WRITE', 'write-token-xyz');
     vi.spyOn(__, 'fetch').mockReturnValue(response(200, { ok: true }));
   });
   afterEach(() => {
     vi.unstubAllEnvs();
-  });
-
-  describe('Base alias', () => {
-    it.each([
-      { title: 'alias', input: 'DevRel', expected: 'appDEVREL123' },
-      { title: 'lowercase alias', input: 'devrel', expected: 'appDEVREL123' },
-      { title: 'Base ID', input: 'appXXX999', expected: 'appXXX999' },
-    ])('resolves a $title', async ({ input, expected }) => {
-      await airtableApi({
-        mode: 'read',
-        method: 'GET',
-        base: input,
-        path: 'Meetups',
-      });
-
-      const actual = __.fetch.mock.calls[0][0];
-      expect(actual).toEqual(`https://api.airtable.com/v0/${expected}/Meetups`);
-    });
-
-    it('names the missing variable when the alias is unknown', async () => {
-      let actual = null;
-      try {
-        await airtableApi({
-          mode: 'read',
-          method: 'GET',
-          base: 'Nowhere',
-          path: 'Meetups',
-        });
-      } catch (error) {
-        actual = error;
-      }
-      expect(actual).toHaveProperty(
-        'message',
-        'AIRTABLE_BASE_NOWHERE is not set',
-      );
-    });
   });
 
   describe('tokens', () => {
@@ -61,7 +24,7 @@ describe('airtableApi', () => {
       await airtableApi({
         mode,
         method: 'GET',
-        base: 'DevRel',
+        base: 'appDEVREL123',
         path: 'Meetups',
       });
 
@@ -77,7 +40,7 @@ describe('airtableApi', () => {
         await airtableApi({
           mode: 'write',
           method: 'POST',
-          base: 'DevRel',
+          base: 'appDEVREL123',
           path: 'Meetups',
         });
       } catch (error) {
@@ -95,7 +58,7 @@ describe('airtableApi', () => {
         await airtableApi({
           mode: 'delete',
           method: 'GET',
-          base: 'DevRel',
+          base: 'appDEVREL123',
           path: 'Meetups',
         });
       } catch (error) {
@@ -125,7 +88,7 @@ describe('airtableApi', () => {
       await airtableApi({
         mode: 'read',
         method: 'GET',
-        base: 'DevRel',
+        base: 'appDEVREL123',
         path,
       });
 
@@ -150,9 +113,34 @@ describe('airtableApi', () => {
       await airtableApi({
         mode: 'read',
         method: 'GET',
-        base: 'DevRel',
+        base: 'appDEVREL123',
         path: 'Meetups',
         host,
+      });
+
+      const actual = __.fetch.mock.calls[0][0];
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('schema host', () => {
+    it.each([
+      {
+        title: 'lists the Bases without a Base',
+        options: {},
+        expected: 'https://api.airtable.com/v0/meta/bases',
+      },
+      {
+        title: 'lists the Tables of a Base',
+        options: { base: 'appDEVREL123', path: 'tables' },
+        expected: 'https://api.airtable.com/v0/meta/bases/appDEVREL123/tables',
+      },
+    ])('$title', async ({ options, expected }) => {
+      await airtableApi({
+        mode: 'read',
+        method: 'GET',
+        host: 'schema',
+        ...options,
       });
 
       const actual = __.fetch.mock.calls[0][0];
@@ -206,7 +194,7 @@ describe('airtableApi', () => {
       await airtableApi({
         mode: 'read',
         method: 'GET',
-        base: 'DevRel',
+        base: 'appDEVREL123',
         path: 'Meetups',
         query,
       });
@@ -221,7 +209,7 @@ describe('airtableApi', () => {
       await airtableApi({
         mode: 'write',
         method: 'PATCH',
-        base: 'DevRel',
+        base: 'appDEVREL123',
         path: 'Meetups/recABC',
       });
 
@@ -234,7 +222,7 @@ describe('airtableApi', () => {
       await airtableApi({
         mode: 'write',
         method: 'POST',
-        base: 'DevRel',
+        base: 'appDEVREL123',
         path: 'Meetups',
         body,
       });
@@ -248,7 +236,7 @@ describe('airtableApi', () => {
       await airtableApi({
         mode: 'read',
         method: 'GET',
-        base: 'DevRel',
+        base: 'appDEVREL123',
         path: 'Meetups',
       });
 
@@ -264,7 +252,7 @@ describe('airtableApi', () => {
       const actual = await airtableApi({
         mode: 'read',
         method: 'GET',
-        base: 'DevRel',
+        base: 'appDEVREL123',
         path: 'Meetups/recABC',
       });
       expect(actual).toEqual({ id: 'recABC' });
@@ -315,7 +303,7 @@ describe('airtableApi', () => {
         await airtableApi({
           mode: 'read',
           method: 'GET',
-          base: 'DevRel',
+          base: 'appDEVREL123',
           path: 'Meetups',
         });
       } catch (error) {
@@ -332,7 +320,7 @@ describe('airtableApi', () => {
         await airtableApi({
           mode: 'read',
           method: 'GET',
-          base: 'DevRel',
+          base: 'appDEVREL123',
           path: 'Meetups',
         });
       } catch (error) {

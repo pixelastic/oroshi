@@ -71,7 +71,9 @@
 
   // Airtable
   "airtable": {
-    "record-id": "orange"
+    "base-id": "orange",
+    "record-id": "orange",
+    "table-id": "orange"
   },
 
   // Claude AI

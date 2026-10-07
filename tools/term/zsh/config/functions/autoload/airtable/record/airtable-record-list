@@ -3,10 +3,10 @@
 # Columns share the terminal width like any table, so put the longest field last
 # --sort takes a field name, prefixed with - to sort descending; without it Airtable's order is arbitrary
 # Usage:
-# $ airtable-record-list --base DevRel --table Meetups
-# $ airtable-record-list --base DevRel --table Meetups --fields name,date
+# $ airtable-record-list --base appXXX --table Meetups
+# $ airtable-record-list --base appXXX --table Meetups --fields name,date
 # $ airtable-record-list --base appXXX --table Meetups --fields name --limit 10
-# $ airtable-record-list --base DevRel --table Meetups --sort -date   # most recent first
+# $ airtable-record-list --base appXXX --table Meetups --sort -date   # most recent first
 setopt local_options err_return
 
 zparseopts -E -D \
