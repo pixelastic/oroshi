@@ -1,0 +1,33 @@
+# Search the records of an Airtable table by text, and print them as a JSON array
+# A record matches when the field given to --in contains the text, ignoring case
+# Each element is {"id": "recXXX", "fields": {…}}; without --fields, it holds every non-empty field
+# One API call is made, so at most 100 records are returned (default: 100)
+# Usage:
+# $ airtable-record-search --base DevRel --table Meetups --in name datadog
+# $ airtable-record-search --base DevRel --table Meetups --in name --fields name,date --limit 5 "user group"
+setopt local_options err_return
+
+zparseopts -E -D \
+  -base:=flagBase \
+  -table:=flagTable \
+  -in:=flagIn \
+  -fields:=flagFields \
+  -limit:=flagLimit
+
+local base=${flagBase[2]}
+local table=${flagTable[2]}
+local field=${flagIn[2]}
+local fieldList=${flagFields[2]}
+local limit=${flagLimit[2]}
+local text="$1"
+
+# Nothing to search without a text
+if [[ "$text" == "" ]]; then
+  echoerr "Usage: airtable-record-search --base <base> --table <table>" \
+    "--in <field> [--fields <a,b>] [--limit <n>] <text>"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/airtable-record-search.js" \
+  "$base" "$table" "$field" "$text" "$fieldList" "$limit"

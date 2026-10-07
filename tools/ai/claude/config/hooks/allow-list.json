@@ -4,6 +4,7 @@
   "airtable-record-list",
   "airtable-record-list-raw",
   "airtable-record-read",
+  "airtable-record-search",
   "alias",
   "apt list",
   "apt-cache search",
