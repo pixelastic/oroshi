@@ -1,0 +1,28 @@
+# List the Records of an Airtable table, one per line
+# Fields: recordId▮field1▮field2▮…
+# The fields are the ones given to --fields, in that order; without --fields, a line holds only the record ID
+# An empty field leaves an empty column, the values of a multi-value field are separated by ▯
+# --sort takes a field name, prefixed with - to sort descending; without it Airtable's order is arbitrary
+# One API call is made, so at most 100 records are listed (default: 100)
+# Usage:
+# $ airtable-record-list-raw --base DevRel --table Meetups
+# $ airtable-record-list-raw --base DevRel --table Meetups --fields name,date
+# $ airtable-record-list-raw --base appXXX --table Meetups --fields name --limit 10
+# $ airtable-record-list-raw --base DevRel --table Meetups --sort -date   # most recent first
+setopt local_options err_return
+
+zparseopts -E -D \
+  -base:=flagBase \
+  -table:=flagTable \
+  -fields:=flagFields \
+  -limit:=flagLimit \
+  -sort:=flagSort
+
+local base=${flagBase[2]}
+local table=${flagTable[2]}
+local fieldList=${flagFields[2]}
+local limit=${flagLimit[2]}
+local sort=${flagSort[2]}
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/airtable-record-list-raw.js" "$base" "$table" "$fieldList" "$limit" "$sort"

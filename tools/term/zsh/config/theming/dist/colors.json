@@ -3,6 +3,10 @@
     "ansi": 146,
     "hex": "#b45309"
   },
+  "airtable-record-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
   "amber": {
     "ansi": 145,
     "hex": "#d97706"

@@ -1,0 +1,52 @@
+# List the Records of an Airtable table as a colored table, one row per record
+# Columns: record ID (colored), then the fields given to --fields; the values of a multi-value field are separated by a comma
+# Columns share the terminal width like any table, so put the longest field last
+# --sort takes a field name, prefixed with - to sort descending; without it Airtable's order is arbitrary
+# Usage:
+# $ airtable-record-list --base DevRel --table Meetups
+# $ airtable-record-list --base DevRel --table Meetups --fields name,date
+# $ airtable-record-list --base appXXX --table Meetups --fields name --limit 10
+# $ airtable-record-list --base DevRel --table Meetups --sort -date   # most recent first
+setopt local_options err_return
+
+zparseopts -E -D \
+  -base:=flagBase \
+  -table:=flagTable \
+  -fields:=flagFields \
+  -limit:=flagLimit \
+  -sort:=flagSort
+
+local base=${flagBase[2]}
+local table=${flagTable[2]}
+local fieldList=${flagFields[2]}
+local limit=${flagLimit[2]}
+local sort=${flagSort[2]}
+
+colors-load-definitions
+
+local rawArgs=(--base "$base" --table "$table")
+[[ "$fieldList" != "" ]] && rawArgs+=(--fields "$fieldList")
+[[ "$limit" != "" ]] && rawArgs+=(--limit "$limit")
+[[ "$sort" != "" ]] && rawArgs+=(--sort "$sort")
+
+# Declared apart from its assignment, so a failing raw list stops the helper
+local rawRecords=""
+rawRecords="$(airtable-record-list-raw "${rawArgs[@]}")"
+
+# Nothing to display if the table has no records
+[[ "$rawRecords" == "" ]] && return 0
+
+local output=""
+for rawRecord in ${(f)rawRecords}; do
+  local fields=("${(@ps/▮/)rawRecord}")
+  local recordId="${fields[1]}"
+
+  local row="$(colorize "$recordId" $COLORS[airtable-record-id])"
+  for value in "${(@)fields[2,-1]}"; do
+    row+="▮${value//▯/, }"
+  done
+
+  output+="$row\n"
+done
+
+table $output

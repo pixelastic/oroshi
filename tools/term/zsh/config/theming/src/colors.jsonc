@@ -69,6 +69,11 @@
   "variable-type": "red-3",
   "warning":      "yellow",
 
+  // Airtable
+  "airtable": {
+    "record-id": "orange"
+  },
+
   // Claude AI
   "claude": {
     "default":        "amber-6",

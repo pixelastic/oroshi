@@ -1,6 +1,8 @@
 [
   "aberlaas",
   "adb",
+  "airtable-record-list",
+  "airtable-record-list-raw",
   "airtable-record-read",
   "alias",
   "apt list",

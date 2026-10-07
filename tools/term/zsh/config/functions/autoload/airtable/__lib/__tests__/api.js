@@ -108,6 +108,88 @@ describe('airtableApi', () => {
     });
   });
 
+  describe('path', () => {
+    it.each([
+      {
+        title: 'encodes a name with spaces and symbols',
+        path: 'My Meetups/2026',
+        expected:
+          'https://api.airtable.com/v0/appDEVREL123/My%20Meetups%2F2026',
+      },
+      {
+        title: 'joins several segments with a slash',
+        path: ['My Meetups', 'recA'],
+        expected: 'https://api.airtable.com/v0/appDEVREL123/My%20Meetups/recA',
+      },
+    ])('$title', async ({ path, expected }) => {
+      await airtableApi({
+        mode: 'read',
+        method: 'GET',
+        base: 'DevRel',
+        path,
+      });
+
+      const actual = __.fetch.mock.calls[0][0];
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('query', () => {
+    it.each([
+      {
+        title: 'adds no query string without a query',
+        query: undefined,
+        expected: 'https://api.airtable.com/v0/appDEVREL123/Meetups',
+      },
+      {
+        title: 'adds no query string for an empty query',
+        query: {},
+        expected: 'https://api.airtable.com/v0/appDEVREL123/Meetups',
+      },
+      {
+        title: 'sends scalar values',
+        query: { pageSize: 5, view: 'Grid' },
+        expected:
+          'https://api.airtable.com/v0/appDEVREL123/Meetups?pageSize=5&view=Grid',
+      },
+      {
+        title: 'encodes values',
+        query: { filterByFormula: "RECORD_ID()='recA'" },
+        expected:
+          "https://api.airtable.com/v0/appDEVREL123/Meetups?filterByFormula=RECORD_ID()%3D'recA'",
+      },
+      {
+        title: 'sends a list of values as repeated key[]',
+        query: { fields: ['name', 'start date'] },
+        expected:
+          'https://api.airtable.com/v0/appDEVREL123/Meetups?fields[]=name&fields[]=start%20date',
+      },
+      {
+        title: 'sends a list of objects as indexed key[i][property]',
+        query: { sort: [{ field: 'date', direction: 'desc' }] },
+        expected:
+          'https://api.airtable.com/v0/appDEVREL123/Meetups?sort[0][field]=date&sort[0][direction]=desc',
+      },
+      {
+        title: 'skips empty values',
+        query: { pageSize: undefined, fields: [], view: null, offset: 'itr1' },
+        expected:
+          'https://api.airtable.com/v0/appDEVREL123/Meetups?offset=itr1',
+      },
+    ])('$title', async ({ query, expected }) => {
+      await airtableApi({
+        mode: 'read',
+        method: 'GET',
+        base: 'DevRel',
+        path: 'Meetups',
+        query,
+      });
+
+      const actual = __.fetch.mock.calls[0][0];
+      expect(actual).toEqual(expected);
+    });
+  });
+
   describe('request', () => {
     it('sends the method', async () => {
       await airtableApi({
