@@ -1,0 +1,35 @@
+# Create an Airtable record, or update the given one, and print its ID
+# Without --record, a new record is created. With it, only the given fields change
+# --fields is a JSON object of regular fields, never attachments
+# Uses AIRTABLE_TOKEN_WRITE
+# Usage:
+# $ airtable-record-write --base DevRel --table Meetups --fields '{"name":"Paris","attendees":42}'
+# $ airtable-record-write --base DevRel --table Meetups --record recXXX --fields '{"status":"✅ Confirmed"}'
+setopt local_options err_return
+
+zparseopts -E -D \
+  -base:=flagBase \
+  -table:=flagTable \
+  -record:=flagRecord \
+  -fields:=flagFields
+
+local base=${flagBase[2]}
+local table=${flagTable[2]}
+local recordId=${flagRecord[2]}
+local fieldsJson=${flagFields[2]}
+
+# Nothing to write without --fields
+if [[ "$fieldsJson" == "" ]]; then
+  echoerr "Usage: airtable-record-write --base <base> --table <table>" \
+    "--fields '<json>' [--record <recordId>]"
+  return 1
+fi
+
+# Fail before any request when --fields is not a JSON object
+if ! jq --exit-status 'type == "object"' <<<"$fieldsJson" >/dev/null 2>&1; then
+  echoerr "--fields must be a JSON object"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/airtable-record-write.js" "$base" "$table" "$fieldsJson" "$recordId"
