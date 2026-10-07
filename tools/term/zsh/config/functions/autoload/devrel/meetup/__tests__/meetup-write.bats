@@ -109,7 +109,7 @@ expect_field() {
 @test "adds the image to the Record once it exists" {
   bats_run_zsh "meetup-write --name Paris --image ./logo.png"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/attachment-args")" == "--base appDEV --record recNEW --field image --file ./logo.png" ]]
+  [[ "$(cat "$BATS_TMP_DIR/attachment-args")" == "--base appDEV --record recNEW --field assetInputs --file ./logo.png" ]]
   [[ "$(cat "$BATS_TMP_DIR/calls")" == $'write\nattachment' ]]
 }
 

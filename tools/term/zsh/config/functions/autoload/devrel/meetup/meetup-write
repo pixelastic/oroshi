@@ -1,7 +1,7 @@
 # Create a DevRel meetup, and print its Record ID
 # The Record ID is printed as soon as the meetup exists, before the image step
 # --status is pending (default), confirmed or cancelled
-# --image is a local file, uploaded to the image Field after the Record is created
+# --image is a local file, uploaded to the assetInputs Field after the Record is created
 # If the image upload fails, the Record stays and the exit code is non-zero
 # Uses AIRTABLE_TOKEN_WRITE
 # Usage:
@@ -77,7 +77,7 @@ echo "$recordId"
 if ! airtable-attachment-add \
   --base "$AIRTABLE_BASE_DEVREL" \
   --record "$recordId" \
-  --field image \
+  --field assetInputs \
   --file "$image"; then
   echoerr "Meetup $recordId was created, but its image failed to upload"
   return 1
