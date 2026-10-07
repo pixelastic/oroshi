@@ -325,6 +325,7 @@
   "nm",
   "node --version",
   "node_modules/.bin/aberlaas test",
+  "nohup",
   "notion block list",
   "notion db query",
   "notion",
