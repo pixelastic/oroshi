@@ -20,10 +20,5 @@ come with the command vocabulary.
 
 ## Detail files
 
+- [architecture.md](architecture.md) — Where the code lives, how a service is configured and authenticated, and how it fails.
 - [commands/list-raw.md](commands/list-raw.md) — Print the entities of a service as plain lines, one per line, for agents and scripts to parse.
-
-## Adding an API
-
-Follow these steps in order.
-
-1. Add the commands, starting with `list-raw`: [commands/list-raw.md](commands/list-raw.md).
