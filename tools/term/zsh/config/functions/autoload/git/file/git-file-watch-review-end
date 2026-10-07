@@ -19,4 +19,4 @@ local commentsFile="${OROSHI_FOLDER_STATE}/git-file-watch/${slug}.json"
 local idsJson="$(printf '%s\n' "$@" | jq -R . | jq -sc .)"
 local filtered="$(jq --argjson ids "$idsJson" '[.[] | select(.id as $id | $ids | index($id) | not)]' "$commentsFile")"
 
-echo "$filtered" > "$commentsFile"
+print -r -- "$filtered" > "$commentsFile"

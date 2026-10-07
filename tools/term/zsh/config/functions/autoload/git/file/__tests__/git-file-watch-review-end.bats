@@ -82,3 +82,17 @@ JSON
   bats_run_zsh "git-file-watch-review-end some-id"
   [[ "$status" -eq 0 ]]
 }
+
+@test "preserves escaped newlines in remaining reviews" {
+  cat > "$COMMENTS_FILE" <<'JSON'
+[
+  {"id":"aaa","filepath":"/src/a.go","lineNumber":1,"lineContent":"a","review":"line1\nline2\ttab","commitHash":"c1"},
+  {"id":"bbb","filepath":"/src/b.go","lineNumber":2,"lineContent":"b","review":"rb","commitHash":"c2"}
+]
+JSON
+
+  bats_run_zsh "git-file-watch-review-end bbb"
+  [[ "$status" -eq 0 ]]
+
+  [[ "$(jq -r '.[0].review' "$COMMENTS_FILE")" == $'line1\nline2\ttab' ]]
+}
