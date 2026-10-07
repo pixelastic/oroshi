@@ -16,7 +16,7 @@
   "dependencies": {
     "@anthropic-ai/claude-code": "2.1.287",
     "@prettier/plugin-xml": "3.4.1",
-    "aberlaas": "2.39.2",
+    "aberlaas": "2.40.0",
     "bats": "1.13.0",
     "eslint_d": "14.3.0",
     "firost": "5.11.0",

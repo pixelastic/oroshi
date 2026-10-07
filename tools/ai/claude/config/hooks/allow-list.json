@@ -1,6 +1,7 @@
 [
   "aberlaas",
   "adb",
+  "airtable-attachment-add",
   "airtable-base-list",
   "airtable-base-list-raw",
   "airtable-record-list",
@@ -319,6 +320,7 @@
   "meetup-list-raw",
   "meetup-read",
   "meetup-search",
+  "meetup-write",
   "midjourney-fix",
   "midjourney-prompt",
   "midjourney-writer-end",
@@ -483,6 +485,7 @@
   "tools/ai/claude/deploy",
   "topydo",
   "touch",
+  "tputs",
   "tracker3 status",
   "tree",
   "true",
