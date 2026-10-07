@@ -1,0 +1,15 @@
+# Run a command from a keybinding, without touching the command line or the history
+# Usage (inside a zle widget):
+# $ run-command git-file-watch   # Run it, then come back to the line as it was
+setopt local_options err_return
+
+# Nothing to run without a command
+[[ "$1" == "" ]] && return 1
+
+echo ""
+
+export PROMPT_PREVENT_REFRESH="1"
+"$@"
+export PROMPT_PREVENT_REFRESH="0"
+
+zle reset-prompt

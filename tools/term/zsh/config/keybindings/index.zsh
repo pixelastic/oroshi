@@ -15,6 +15,7 @@ source ${0:A:h}/ctrl-a.zsh       # Accept all suggestions
 source ${0:A:h}/ctrl-e.zsh       # Edit line in vim
 source ${0:A:h}/ctrl-shift-e.zsh # Copy current command line to clipboard
 source ${0:A:h}/ctrl-h.zsh       # Fuzzy-find history commands
+source ${0:A:h}/ctrl-w.zsh       # Watch changed files
 source ${0:A:h}/ctrl-y.zsh       # Copy current directory to clipboard
 source ${0:A:h}/ctrl-shift-y.zsh # Copy last command + output to clipboard
 source ${0:A:h}/ctrl-i.zsh       # Open Claude Code
@@ -30,7 +31,6 @@ source ${0:A:h}/ctrl-shift-l.zsh # Clear terminal
 
 source ${0:A:h}/ctrl-b.zsh             # Fuzzy-find binaries in $PATH
 source ${0:A:h}/ctrl-n.zsh             # Open current directory in Nautilus
-source ${0:A:h}/ctrl-question-mark.zsh # Explain what the current command does
 
 # }}}
 
