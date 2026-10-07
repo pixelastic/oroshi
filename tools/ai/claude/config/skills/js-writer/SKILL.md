@@ -156,7 +156,7 @@ Write code that passes automated lint.
 | "These comments are clutter, I'll clean them up" | Never remove existing comments |
 | "mockResolvedValue is more idiomatic Vitest" | Always `mockReturnValue(value)` — abstract away sync/async |
 | "expect().rejects.toThrow() is cleaner" | Use `let actual = null` + try/catch pattern |
-| "I'll put this dependency in `__` in case we need to mock it later" | Only add to `__` what tests actually mock. YAGNI. |
+| "This helper is too small for `__`" | All local helpers go in `__`. Only imports are conditional. |
 
 ## Checklist
 
@@ -166,6 +166,7 @@ Write code that passes automated lint.
 - [ ] Test files in `__tests__/` use plain module name (e.g. `fetch.js`), no `.test.` or `.spec.` suffix
 - [ ] No `for` loop; `_.each`/`_.map`/`pMap` used instead
 - [ ] ES6 modules — named exports, `.js` extension on local imports
+- [ ] No top-level function except the exported one
 - [ ] JSDoc on all functions (exported and private in `__`)
 - [ ] Existing comments preserved
 - [ ] Comments follow [Comments](./references/comments.md)
