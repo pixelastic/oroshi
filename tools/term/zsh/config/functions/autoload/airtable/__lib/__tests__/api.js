@@ -134,6 +134,32 @@ describe('airtableApi', () => {
     });
   });
 
+  describe('host', () => {
+    it.each([
+      {
+        title: 'the API host by default',
+        host: undefined,
+        expected: 'https://api.airtable.com/v0/appDEVREL123/Meetups',
+      },
+      {
+        title: 'the content host for uploads',
+        host: 'content',
+        expected: 'https://content.airtable.com/v0/appDEVREL123/Meetups',
+      },
+    ])('calls $title', async ({ host, expected }) => {
+      await airtableApi({
+        mode: 'read',
+        method: 'GET',
+        base: 'DevRel',
+        path: 'Meetups',
+        host,
+      });
+
+      const actual = __.fetch.mock.calls[0][0];
+      expect(actual).toEqual(expected);
+    });
+  });
+
   describe('query', () => {
     it.each([
       {

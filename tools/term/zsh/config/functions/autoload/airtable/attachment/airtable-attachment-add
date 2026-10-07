@@ -1,0 +1,40 @@
+# Upload a local file into a Field of type Attachment, and print the new Attachment ID
+# Existing attachments stay in the field. The file must be 5 MB at most
+# Uses AIRTABLE_TOKEN_WRITE
+# Usage:
+# $ airtable-attachment-add --base DevRel --record recXXX --field Logo --file ./logo.png
+setopt local_options err_return
+
+zparseopts -E -D \
+  -base:=flagBase \
+  -record:=flagRecord \
+  -field:=flagField \
+  -file:=flagFile
+
+local base=${flagBase[2]}
+local recordId=${flagRecord[2]}
+local field=${flagField[2]}
+local file=${flagFile[2]}
+
+# Every flag is needed to tell where the file goes
+local missingFlags=()
+[[ "$base" == "" ]] && missingFlags+=(--base)
+[[ "$recordId" == "" ]] && missingFlags+=(--record)
+[[ "$field" == "" ]] && missingFlags+=(--field)
+[[ "$file" == "" ]] && missingFlags+=(--file)
+if [[ ${#missingFlags} -gt 0 ]]; then
+  echoerr "Missing ${missingFlags[*]}." \
+    "Usage: airtable-attachment-add --base <base>" \
+    "--record <recordId> --field <field> --file <path>"
+  return 1
+fi
+
+local contentType="$(file --brief --mime-type "$file")"
+
+local libDirectory="${functions_source[$0]:A:h:h}/__lib"
+node "${libDirectory}/bin/airtable-attachment-add.js" \
+  "$base" \
+  "$recordId" \
+  "$field" \
+  "$file" \
+  "$contentType"

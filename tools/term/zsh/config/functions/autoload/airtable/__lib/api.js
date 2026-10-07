@@ -3,7 +3,10 @@ import { firostError } from 'firost';
 
 export let __;
 
-const API_URL = 'https://api.airtable.com/v0';
+const HOST_URLS = {
+  api: 'https://api.airtable.com/v0',
+  content: 'https://content.airtable.com/v0',
+};
 
 /**
  * Call the Airtable API with the Read token or the Write token
@@ -14,10 +17,11 @@ const API_URL = 'https://api.airtable.com/v0';
  * @param {string|string[]} options.path - Path segments inside the Base, such as a Table name. Each segment is URL-encoded
  * @param {object} [options.query] - Query parameters. A list sends each item as `key[]`, a list of objects as `key[index][property]`. Empty values are skipped
  * @param {object} [options.body] - JSON body to send
+ * @param {string} [options.host] - "api", or "content" for file uploads
  * @returns {Promise<object>} The parsed response body
  */
 export async function airtableApi(options) {
-  const { mode, method, base, path, query, body } = options;
+  const { mode, method, base, path, query, body, host = 'api' } = options;
 
   // Return early if the mode is neither read nor write
   if (!['read', 'write'].includes(mode)) {
@@ -47,7 +51,7 @@ export async function airtableApi(options) {
   }
 
   const response = await __.fetch(
-    `${API_URL}/${baseId}/${__.encodePath(path)}${__.queryString(query)}`,
+    `${HOST_URLS[host]}/${baseId}/${__.encodePath(path)}${__.queryString(query)}`,
     request,
   );
   const content = await __.readJson(response);
