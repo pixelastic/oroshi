@@ -33,7 +33,7 @@ def _make_screen_tracking():
     return screen
 
 
-def _make_tab_data(is_active=False):
+def _make_tab_data():
     return {
         "fg": 0x112233,
         "bg": 0x445566,
@@ -41,7 +41,6 @@ def _make_tab_data(is_active=False):
         "notificationMarker": "",
         "separatorBg": 0x778899,
         "separatorFg": 0xAABBCC,
-        "isActive": is_active,
         "id": 1,
     }
 
@@ -139,73 +138,3 @@ def test_returns_screen_cursor_x(mocker):
     result, _ = _call_second_pass(screen=screen)
 
     assert result == 42
-
-
-# --- second_pass — activeTabId ---
-
-
-def test_active_tab_id_set_when_active_tab_encountered(mocker):
-    mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    tabState["manifest"] = {
-        1: _make_tab_data(is_active=True),
-    }
-
-    _call_second_pass(tab_id=1, is_last=False)
-
-    assert tabState["activeTabId"] == 1
-
-
-def test_active_tab_id_not_set_for_inactive_tab(mocker):
-    mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    tabState["manifest"] = {
-        1: _make_tab_data(is_active=False),
-    }
-    tabState["activeTabId"] = 99
-
-    _call_second_pass(tab_id=1, is_last=False)
-
-    assert tabState["activeTabId"] == 99
-
-
-# --- second_pass — cleanup call ---
-
-
-def test_cleanup_called_on_last_tab(mocker):
-    mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mock_redraw = mocker.patch("lib.tabs_second_pass.redraw")
-
-    _call_second_pass(is_last=True)
-
-    mock_redraw.cleanup.assert_called_once_with()
-
-
-def test_cleanup_not_called_mid_cycle(mocker):
-    mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mock_redraw = mocker.patch("lib.tabs_second_pass.redraw")
-
-    _call_second_pass(is_last=False)
-
-    mock_redraw.cleanup.assert_not_called()
-
-
-# --- second_pass — tab_switch.check call ---
-
-
-def test_tab_switch_check_called_on_last_tab(mocker):
-    mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.redraw")
-    mock_tab_switch = mocker.patch("lib.tabs_second_pass.tab_switch")
-
-    _call_second_pass(is_last=True)
-
-    mock_tab_switch.check.assert_called_once_with()
-
-
-def test_tab_switch_check_not_called_mid_cycle(mocker):
-    mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.redraw")
-    mock_tab_switch = mocker.patch("lib.tabs_second_pass.tab_switch")
-
-    _call_second_pass(is_last=False)
-
-    mock_tab_switch.check.assert_not_called()

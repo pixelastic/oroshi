@@ -38,9 +38,6 @@ def cleanup():
     for k in stale_ids:
         del tabState["manifest"][k]
 
-    # Reset allTabIds so first_pass can rebuild it next cycle
-    tabState["allTabIds"] = []
-
     # Remove notification entries for closed tabs
     live_strings = {str(tid) for tid in live_tab_ids}
     _remove_notification_entries(lambda tid: tid in live_strings)

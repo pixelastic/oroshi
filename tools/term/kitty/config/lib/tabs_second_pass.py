@@ -1,6 +1,7 @@
 from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData
-from lib import redraw, tab_data, tab_switch
+
+from lib import tab_data
 from lib.helper import ansi_to_kitty
 from lib.state import tabState
 
@@ -22,20 +23,9 @@ def second_pass(
     tab_id = tab.tab_id
     tab_item = tabState["manifest"][tab_id]
 
-    # Track active tab as we encounter it
-    if tab_item.get("isActive"):
-        tabState["activeTabId"] = tab_id
-
     # Display only if we have enough room
     if tab_id in tabState["displayedTabIds"]:
         draw_tab_item(tab_item, screen)
-
-    # Once we've drawn the last tab, our job is almost done
-    if is_last:
-        # Fire any on_tab_switch callback
-        tab_switch.check()
-        # Cleanup any loose ends, so next redraw starts clean
-        redraw.cleanup()
 
     return screen.cursor.x
 

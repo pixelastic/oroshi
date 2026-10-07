@@ -152,12 +152,12 @@ def test_cleanup_empty_live_set_removes_all():
     assert content == ""
 
 
-def test_cleanup_resets_all_tab_ids():
+def test_cleanup_keeps_all_tab_ids():
     tabState["allTabIds"] = [1, 2, 3]
 
     redraw.cleanup()
 
-    assert tabState["allTabIds"] == []
+    assert tabState["allTabIds"] == [1, 2, 3]
 
 
 def test_cleanup_removes_stale_manifest_entries():

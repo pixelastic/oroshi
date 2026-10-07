@@ -11,6 +11,7 @@ def reset_state():
     tabState["allTabIds"] = []
     tabState["displayedTabIds"] = []
     tabState["notificationIds"] = set()
+    tabState["activeTabId"] = None
     yield
 
 
@@ -64,19 +65,43 @@ def test_reload_check_called_before_redraw_check(mocker):
     assert call_order == ["reload", "redraw"]
 
 
-def test_reload_and_redraw_beacon_checks_not_called_on_subsequent_invocation(mocker):
+def test_reload_and_redraw_beacon_checks_not_called_on_subsequent_tab(mocker):
     mocker.patch("lib.tabs_first_pass.build_tab_data", return_value={"id": 1})
     mock_reload = mocker.patch("lib.tabs_first_pass.reload.check")
     mock_redraw = mocker.patch("lib.tabs_first_pass.redraw.check")
     mocker.patch("lib.tabs_first_pass.pick_tabs_to_display")
 
-    # First call: allTabIds is empty → checks run
-    tabs_first_pass.first_pass(*_make_args())
-    # Second call: allTabIds non-empty → checks must not run again
-    tabs_first_pass.first_pass(*_make_args())
+    # First tab starts the cycle → checks run
+    tabs_first_pass.first_pass(*_make_args(index=1))
+    # Second tab belongs to the same cycle → checks must not run again
+    tabs_first_pass.first_pass(*_make_args(index=2))
 
     mock_reload.assert_called_once()
     mock_redraw.assert_called_once()
+
+
+def test_all_tab_ids_reset_on_first_tab(mocker):
+    mocker.patch("lib.tabs_first_pass.build_tab_data", return_value={"id": 5})
+    mocker.patch("lib.tabs_first_pass.reload.check")
+    mocker.patch("lib.tabs_first_pass.redraw.check")
+    mocker.patch("lib.tabs_first_pass.pick_tabs_to_display")
+    tabState["allTabIds"] = [7, 8]
+
+    tabs_first_pass.first_pass(*_make_args(index=1))
+
+    assert tabState["allTabIds"] == [5]
+
+
+def test_all_tab_ids_kept_on_later_tab(mocker):
+    mocker.patch("lib.tabs_first_pass.build_tab_data", return_value={"id": 5})
+    mocker.patch("lib.tabs_first_pass.reload.check")
+    mocker.patch("lib.tabs_first_pass.redraw.check")
+    mocker.patch("lib.tabs_first_pass.pick_tabs_to_display")
+    tabState["allTabIds"] = [7]
+
+    tabs_first_pass.first_pass(*_make_args(index=2))
+
+    assert tabState["allTabIds"] == [7, 5]
 
 
 # --- Manifest population ---
@@ -134,6 +159,38 @@ def test_tab_id_not_duplicated_on_repeated_call(mocker):
     assert tabState["allTabIds"].count(5) == 1
 
 
+# --- Active tab ---
+
+
+def test_active_tab_id_set_when_active_tab_encountered(mocker):
+    mocker.patch(
+        "lib.tabs_first_pass.build_tab_data",
+        return_value={"id": 3, "isActive": True},
+    )
+    mocker.patch("lib.tabs_first_pass.reload.check")
+    mocker.patch("lib.tabs_first_pass.redraw.check")
+    mocker.patch("lib.tabs_first_pass.pick_tabs_to_display")
+
+    tabs_first_pass.first_pass(*_make_args())
+
+    assert tabState["activeTabId"] == 3
+
+
+def test_active_tab_id_not_set_for_inactive_tab(mocker):
+    mocker.patch(
+        "lib.tabs_first_pass.build_tab_data",
+        return_value={"id": 3, "isActive": False},
+    )
+    mocker.patch("lib.tabs_first_pass.reload.check")
+    mocker.patch("lib.tabs_first_pass.redraw.check")
+    mocker.patch("lib.tabs_first_pass.pick_tabs_to_display")
+    tabState["activeTabId"] = 99
+
+    tabs_first_pass.first_pass(*_make_args())
+
+    assert tabState["activeTabId"] == 99
+
+
 # --- Separator background ---
 
 
@@ -187,3 +244,41 @@ def test_pick_tabs_not_called_when_is_last_false(mocker):
     tabs_first_pass.first_pass(*_make_args(is_last=False))
 
     mock_pick.assert_not_called()
+
+
+def test_end_of_cycle_steps_run_in_order_on_last_tab(mocker):
+    mocker.patch("lib.tabs_first_pass.build_tab_data", return_value={"id": 1})
+    mocker.patch("lib.tabs_first_pass.reload.check")
+    mocker.patch("lib.tabs_first_pass.redraw.check")
+
+    call_order = []
+    mocker.patch(
+        "lib.tabs_first_pass.pick_tabs_to_display",
+        side_effect=lambda screen: call_order.append("pick"),
+    )
+    mocker.patch(
+        "lib.tabs_first_pass.tab_switch.check",
+        side_effect=lambda: call_order.append("tab_switch"),
+    )
+    mocker.patch(
+        "lib.tabs_first_pass.redraw.cleanup",
+        side_effect=lambda: call_order.append("cleanup"),
+    )
+
+    tabs_first_pass.first_pass(*_make_args(is_last=True))
+
+    assert call_order == ["pick", "tab_switch", "cleanup"]
+
+
+def test_end_of_cycle_steps_skipped_mid_cycle(mocker):
+    mocker.patch("lib.tabs_first_pass.build_tab_data", return_value={"id": 1})
+    mocker.patch("lib.tabs_first_pass.reload.check")
+    mocker.patch("lib.tabs_first_pass.redraw.check")
+    mocker.patch("lib.tabs_first_pass.pick_tabs_to_display")
+    mock_switch = mocker.patch("lib.tabs_first_pass.tab_switch.check")
+    mock_cleanup = mocker.patch("lib.tabs_first_pass.redraw.cleanup")
+
+    tabs_first_pass.first_pass(*_make_args(is_last=False))
+
+    mock_switch.assert_not_called()
+    mock_cleanup.assert_not_called()
