@@ -1,0 +1,60 @@
+# Remove Attachments from a Field of type Attachment, by ID
+# The other Attachments stay in the field. Nothing changes if an ID is not in the field
+# Uses AIRTABLE_TOKEN_READ and AIRTABLE_TOKEN_WRITE
+# Usage:
+# $ airtable-attachment-remove --base DevRel --table Meetups --record recXXX --field Logo --attachment attXXX
+# $ airtable-attachment-remove --base DevRel --table Meetups --record recXXX --field Logo --attachment attXXX --attachment attYYY
+# $ airtable-attachment-remove --base DevRel --table Meetups --record recXXX --field Logo --all
+setopt local_options err_return
+
+zparseopts -E -D \
+  -base:=flagBase \
+  -table:=flagTable \
+  -record:=flagRecord \
+  -field:=flagField \
+  -attachment+:=flagAttachments \
+  -all=flagAll
+
+local base=${flagBase[2]}
+local table=${flagTable[2]}
+local recordId=${flagRecord[2]}
+local field=${flagField[2]}
+local isAll=${#flagAll}
+# Each --attachment adds a flag and a value to the array, keep the values
+local attachmentIds=(${flagAttachments:#--attachment})
+
+# Every flag is needed to tell which field to change
+local missingFlags=()
+[[ "$base" == "" ]] && missingFlags+=(--base)
+[[ "$table" == "" ]] && missingFlags+=(--table)
+[[ "$recordId" == "" ]] && missingFlags+=(--record)
+[[ "$field" == "" ]] && missingFlags+=(--field)
+if [[ ${#missingFlags} -gt 0 ]]; then
+  echoerr "Missing ${missingFlags[*]}." \
+    "Usage: airtable-attachment-remove --base <base> --table <table>" \
+    "--record <recordId> --field <field> (--attachment <attachmentId>... | --all)"
+  return 1
+fi
+
+# Something has to be removed
+if [[ ${#attachmentIds} -eq 0 && $isAll == 0 ]]; then
+  echoerr "Missing --attachment <attachmentId> or --all"
+  return 1
+fi
+
+# Removing by ID and removing everything contradict each other
+if [[ ${#attachmentIds} -gt 0 && $isAll == 1 ]]; then
+  echoerr "--attachment and --all cannot be used together"
+  return 1
+fi
+
+local removeArgs=("${attachmentIds[@]}")
+[[ $isAll == 1 ]] && removeArgs=(--all)
+
+local libDirectory="${functions_source[$0]:A:h:h}/__lib"
+node "${libDirectory}/bin/airtable-attachment-remove.js" \
+  "$base" \
+  "$table" \
+  "$recordId" \
+  "$field" \
+  "${removeArgs[@]}"

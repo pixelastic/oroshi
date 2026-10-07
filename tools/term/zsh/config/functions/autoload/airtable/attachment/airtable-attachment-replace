@@ -1,0 +1,44 @@
+# Replace every Attachment of a Field with one local file, and print the new Attachment ID
+# The file is uploaded first, so a failed upload keeps the old Attachments. The file must be 5 MB at most
+# Uses AIRTABLE_TOKEN_READ and AIRTABLE_TOKEN_WRITE
+# Usage:
+# $ airtable-attachment-replace --base DevRel --table Meetups --record recXXX --field Logo --file ./logo.png
+setopt local_options err_return
+
+zparseopts -E -D \
+  -base:=flagBase \
+  -table:=flagTable \
+  -record:=flagRecord \
+  -field:=flagField \
+  -file:=flagFile
+
+local base=${flagBase[2]}
+local table=${flagTable[2]}
+local recordId=${flagRecord[2]}
+local field=${flagField[2]}
+local file=${flagFile[2]}
+
+# Every flag is needed to tell where the file goes
+local missingFlags=()
+[[ "$base" == "" ]] && missingFlags+=(--base)
+[[ "$table" == "" ]] && missingFlags+=(--table)
+[[ "$recordId" == "" ]] && missingFlags+=(--record)
+[[ "$field" == "" ]] && missingFlags+=(--field)
+[[ "$file" == "" ]] && missingFlags+=(--file)
+if [[ ${#missingFlags} -gt 0 ]]; then
+  echoerr "Missing ${missingFlags[*]}." \
+    "Usage: airtable-attachment-replace --base <base> --table <table>" \
+    "--record <recordId> --field <field> --file <path>"
+  return 1
+fi
+
+local contentType="$(file --brief --mime-type "$file")"
+
+local libDirectory="${functions_source[$0]:A:h:h}/__lib"
+node "${libDirectory}/bin/airtable-attachment-replace.js" \
+  "$base" \
+  "$table" \
+  "$recordId" \
+  "$field" \
+  "$file" \
+  "$contentType"
