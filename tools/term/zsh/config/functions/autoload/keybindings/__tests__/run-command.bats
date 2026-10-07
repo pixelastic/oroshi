@@ -41,3 +41,11 @@ setup() {
   [[ "$status" -ne 0 ]]
   [[ ! -f "$BATS_TMP_DIR/zle-calls" ]]
 }
+
+@test "redraws the prompt even when the command fails" {
+  failing-command() { return 1; }
+  bats_mock failing-command
+
+  bats_run_zsh "run-command failing-command"
+  [[ "$(cat "$BATS_TMP_DIR/zle-calls")" = "reset-prompt" ]]
+}

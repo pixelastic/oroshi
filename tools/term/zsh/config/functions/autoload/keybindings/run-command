@@ -9,7 +9,8 @@ setopt local_options err_return
 echo ""
 
 export PROMPT_PREVENT_REFRESH="1"
-"$@"
+# A failing command must not skip the prompt redraw below
+"$@" || true
 export PROMPT_PREVENT_REFRESH="0"
 
 zle reset-prompt
