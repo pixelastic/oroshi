@@ -15,12 +15,16 @@ setup() {
   [[ "$output" == *"lockfile"* ]]
 }
 
-@test "returns 0 and does not run the command when lockfile already exists" {
+@test "returns 0 and does not run the command when a live process holds the lockfile" {
   local lockfile="$BATS_TMP_DIR/lock"
   local side_effect="$BATS_TMP_DIR/side-effect"
-  touch "$lockfile"
+  sleep 30 &
+  local livePid=$!
+  echo "$livePid" > "$lockfile"
 
   bats_run_zsh "bin-fork 'touch $side_effect' $lockfile"
+  kill "$livePid"
+
   [[ "$status" -eq 0 ]]
   [[ ! -f "$side_effect" ]]
 }
@@ -80,4 +84,40 @@ setup() {
   [[ -f "$BATS_TMP_DIR/lockfile-seen" ]]
   # Lockfile removed after completion
   [[ ! -f "$lockfile" ]]
+}
+
+@test "writes the PID of a live process in the lockfile during execution" {
+  local lockfile="$BATS_TMP_DIR/lock"
+  # Command that checks, while it runs, that the lockfile holds a live PID
+  local cmd="kill -0 \$(<$lockfile) && touch $BATS_TMP_DIR/pid-alive"
+
+  bats_run_zsh "bin-fork '$cmd' $lockfile"
+  [[ "$status" -eq 0 ]]
+
+  local i=0
+  while [[ ! -f "$BATS_TMP_DIR/pid-alive" ]] && (( i < 50 )); do
+    sleep 0.1
+    (( i++ ))
+  done
+
+  [[ -f "$BATS_TMP_DIR/pid-alive" ]]
+}
+
+@test "replaces a stale lockfile and runs the command" {
+  local lockfile="$BATS_TMP_DIR/lock"
+  local side_effect="$BATS_TMP_DIR/side-effect"
+  sleep 0.1 &
+  local deadPid=$!
+  wait "$deadPid"
+  echo "$deadPid" > "$lockfile"
+
+  bats_run_zsh "bin-fork 'touch $side_effect' $lockfile"
+  [[ "$status" -eq 0 ]]
+
+  local i=0
+  while [[ ! -f "$side_effect" ]] && (( i < 50 )); do
+    sleep 0.1
+    (( i++ ))
+  done
+  [[ -f "$side_effect" ]]
 }

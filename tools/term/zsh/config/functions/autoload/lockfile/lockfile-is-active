@@ -1,0 +1,25 @@
+# Check if a lockfile written by bin-fork belongs to a live process
+# A lockfile whose process is gone is stale, and gets removed
+# Usage:
+# $ lockfile-is-active /path/to/file.lock && echo "running"
+setopt local_options err_return
+
+local lockfilePath="$1"
+
+# Lockfile does not exist, nothing is running
+[[ ! -r $lockfilePath ]] && return 1
+
+local lockPid="$(<"$lockfilePath")"
+
+# An empty lockfile has no process to check
+local isProcessRunning=0
+if [[ "$lockPid" != "" ]]; then
+  kill -0 "$lockPid" 2>/dev/null && isProcessRunning=1
+fi
+
+# Process is alive, the lockfile is valid
+[[ $isProcessRunning == 1 ]] && return 0
+
+# Process is gone, the lockfile is stale
+rm --force "$lockfilePath"
+return 1

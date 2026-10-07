@@ -2,6 +2,7 @@
 # Usage:
 # $ bin-fork "yarn install" /tmp/yarn-install-in-progress
 setopt local_options err_return no_monitor
+zmodload zsh/system
 
 local commandToRun="$1"
 local lockfilePath="$2"
@@ -12,16 +13,14 @@ if [[ $lockfilePath == '' ]]; then
   return 1
 fi
 
-# If lockfile already exists, we stop, because we don't want to run twice the
-# same command
-if [[ -r $lockfilePath ]]; then
-  return 0
-fi
+# If the process that created the lockfile is still running, we stop
+lockfile-is-active "$lockfilePath" && return 0
 
 # The complex bash command below works like this:
 # - Add "&" at the end to run it in the background
 # - Wrap it in "()" so the "1" applies to everything, not just the last command
-# - Start by creating the lockfile
+# - Start by creating the lockfile, containing the PID of this subshell
+#   ($sysparams[pid], because $$ would be the PID of the parent shell)
 # - Then only if it worked, evaluate our custom command
 # - Wrap it in "()" as well so we can hide all its output with "&>/dev/null"
 # - No matter if the previous command fails or succeed, we remove our lockfile
@@ -29,7 +28,7 @@ fi
 
 local promptPid="$(prompt-pid)"
 (\
-    touch "$lockfilePath" \
+    echo "$sysparams[pid]" > "$lockfilePath" \
     && (eval $commandToRun) &>/dev/null; \
     rm "$lockfilePath"; \
     prompt-redraw $promptPid

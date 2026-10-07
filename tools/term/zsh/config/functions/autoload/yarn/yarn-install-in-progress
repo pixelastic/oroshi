@@ -4,6 +4,11 @@
 setopt local_options err_return
 
 git-dependencies-in-progress-lockfile node --reply
-# Lockfile exists, install is running
-[[ -r $REPLY ]] && return 0
+
+# Lockfile held by a live process, install is still running
+if lockfile-is-active "$REPLY"; then
+  return 0
+fi
+
+# No live process, no install running
 return 1
