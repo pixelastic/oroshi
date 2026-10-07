@@ -30,3 +30,15 @@ function oroshi-prompt-asynchronous-populate() {
   async &!
   OROSHI_ASYNCHRONOUS_PID=$!
 }
+
+# Refresh every prompt part. Used by precmd, and by any widget that runs a
+# command and must show an up-to-date prompt afterwards (see run-command)
+function oroshi-prompt-refresh() {
+  # Do not stop if one of those commands returns non-zero
+  setopt local_options no_err_return
+
+  oroshi-git-env-store
+  oroshi-prompt-synchronous-populate
+  oroshi-prompt-asynchronous-populate
+  return 0
+}

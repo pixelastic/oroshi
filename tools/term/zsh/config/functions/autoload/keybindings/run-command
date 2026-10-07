@@ -13,4 +13,9 @@ export PROMPT_PREVENT_REFRESH="1"
 "$@" || true
 export PROMPT_PREVENT_REFRESH="0"
 
+# Prompt parts are normally rebuilt by precmd, which a widget never triggers.
+# The command may have changed the repo, so we refresh them before redrawing
+# A failing refresh must not skip the prompt redraw below
+oroshi-prompt-refresh || true
+
 zle reset-prompt

@@ -17,9 +17,7 @@ source ${0:A:h}/zsh-queue.zsh
 add-zsh-hook precmd oroshi-aliases-precmd # must be first
 add-zsh-hook precmd oroshi-last-command-exit-store
 add-zsh-hook precmd oroshi-pwd-guard
-add-zsh-hook precmd oroshi-git-env-store
-add-zsh-hook precmd oroshi-prompt-synchronous-populate
-add-zsh-hook precmd oroshi-prompt-asynchronous-populate
+add-zsh-hook precmd oroshi-prompt-refresh
 add-zsh-hook precmd oroshi-slow-command-precmd
 # }}}
 

@@ -16,6 +16,8 @@ source ${0:A:h}/ctrl-e.zsh       # Edit line in vim
 source ${0:A:h}/ctrl-shift-e.zsh # Copy current command line to clipboard
 source ${0:A:h}/ctrl-h.zsh       # Fuzzy-find history commands
 source ${0:A:h}/ctrl-r.zsh       # Run ralph
+source ${0:A:h}/ctrl-s.zsh       # Commit all changes
+source ${0:A:h}/ctrl-shift-s.zsh # Commit all changes, then run ralph
 source ${0:A:h}/ctrl-w.zsh       # Watch changed files
 source ${0:A:h}/ctrl-y.zsh       # Copy current directory to clipboard
 source ${0:A:h}/ctrl-shift-y.zsh # Copy last command + output to clipboard
