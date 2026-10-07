@@ -1,0 +1,84 @@
+# Create a DevRel meetup, and print its Record ID
+# The Record ID is printed as soon as the meetup exists, before the image step
+# --status is pending (default), confirmed or cancelled
+# --image is a local file, uploaded to the image Field after the Record is created
+# If the image upload fails, the Record stays and the exit code is non-zero
+# Uses AIRTABLE_TOKEN_WRITE
+# Usage:
+# $ meetup-write --name "Datadog User Group Paris"
+# $ meetup-write --name "Datadog User Group Paris" --date 2026-12-01 --url https://example.com --notes "Talk TBD" --image ./logo.png --status confirmed
+setopt local_options err_return
+
+zparseopts -E -D \
+  -name:=flagName \
+  -url:=flagUrl \
+  -date:=flagDate \
+  -notes:=flagNotes \
+  -image:=flagImage \
+  -status:=flagStatus
+
+local name=${flagName[2]}
+local url=${flagUrl[2]}
+local date=${flagDate[2]}
+local notes=${flagNotes[2]}
+local image=${flagImage[2]}
+local statusKey=${flagStatus[2]:-pending}
+
+# Nothing to create without a name
+if [[ "$name" == "" ]]; then
+  echoerr "Usage: meetup-write --name <name> [--url <url>] [--date <YYYY-MM-DD>]" \
+    "[--notes <text>] [--image <path>] [--status pending|confirmed|cancelled]"
+  return 1
+fi
+
+# The labels stored in Airtable, by status
+local -A statusLabels=(
+  pending "⏳️ Pending"
+  confirmed "✅ Confirmed"
+  cancelled "🛑 Cancelled"
+)
+
+# Only the statuses stored in Airtable can be written
+if [[ "${statusLabels[$statusKey]}" == "" ]]; then
+  echoerr "Unknown status: $statusKey (pending, confirmed or cancelled)"
+  return 1
+fi
+
+# The DevRel Base ID lives in the private environment
+if [[ "$AIRTABLE_BASE_DEVREL" == "" ]]; then
+  echoerr "AIRTABLE_BASE_DEVREL is not set"
+  return 1
+fi
+
+# Fields of the flags not given stay out of the JSON
+local fieldsJson="$(jq --null-input --compact-output \
+  --arg name "$name" \
+  --arg url "$url" \
+  --arg date "$date" \
+  --arg notes "$notes" \
+  --arg status "${statusLabels[$statusKey]}" \
+'{name: $name, URL: $url, date: $date, notes: $notes, status: $status}
+    | with_entries(select(.value != ""))')"
+
+local recordId="$(airtable-record-write \
+  --base "$AIRTABLE_BASE_DEVREL" \
+  --table Meetups \
+  --fields "$fieldsJson")"
+
+# The write failed and printed its error: there is no Record to report
+[[ "$recordId" == "" ]] && return 1
+
+echo "$recordId"
+
+# Nothing more to do without an image
+[[ "$image" == "" ]] && return 0
+
+# The Record stays whatever happens to the image
+if ! airtable-attachment-add \
+  --base "$AIRTABLE_BASE_DEVREL" \
+  --record "$recordId" \
+  --field image \
+  --file "$image"; then
+  echoerr "Meetup $recordId was created, but its image failed to upload"
+  return 1
+fi
