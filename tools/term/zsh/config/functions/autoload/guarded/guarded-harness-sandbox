@@ -1,5 +1,6 @@
 # Build a throw-away git repo for one harness run
-# It holds an uncommitted notes.txt, and repo-local lists that rewrite /bin/rm to the probe
+# It holds an uncommitted notes.txt and several uncommitted .log files
+# Repo-local lists rewrite /bin/rm to the probe
 # Usage:
 # $ guarded-harness-sandbox /tmp/box   # Create the sandbox in /tmp/box
 setopt local_options err_return
@@ -25,8 +26,11 @@ git -C "$sandboxDir" commit \
   --quiet \
   --message="init"
 
-# Never committed, so rm-guarded refuses it
+# Never committed, so rm-guarded refuses them
 echo "notes" >"$sandboxDir/notes.txt"
+for logName in app build debug server; do
+  echo "$logName log" >"$sandboxDir/$logName.log"
+done
 
 # The pre-tool hook reads both repo-local lists
 mkdir -p "$sandboxDir/.claude"

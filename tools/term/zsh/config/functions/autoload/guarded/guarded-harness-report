@@ -1,0 +1,41 @@
+# Print the success rate per variant, model and prompt for all runs under a directory
+# Reads every run-*/result.json written by guarded-harness-run
+# Usage:
+# $ guarded-harness-report /tmp/out   # One table row per variant, model and prompt
+setopt local_options err_return
+
+local resultsDir="$1"
+
+# Missing directory → nothing to report
+if [[ ! -d "$resultsDir" ]]; then
+  echoerr "Usage: guarded-harness-report <results-dir>"
+  return 1
+fi
+
+local -a resultFiles=("$resultsDir"/**/result.json(N))
+
+# No results → nothing to report
+if [[ ${#resultFiles} -eq 0 ]]; then
+  echoerr "No result.json found in $resultsDir"
+  return 1
+fi
+
+local rows="$(jq \
+  --raw-output \
+  --slurp \
+'group_by([.variant, .model, .prompt])
+    | map({
+        variant: .[0].variant,
+        model: .[0].model,
+        prompt: .[0].prompt,
+        runs: length,
+        wins: map(select(.success == true)) | length
+      })
+    | sort_by(.variant, .model, .prompt)
+    | .[]
+    | [.variant, .model, .prompt, "\(.wins)/\(.runs)", "\(.wins * 100 / .runs | round)%"]
+    | join("▮")' \
+"${resultFiles[@]}")"
+
+table "variant▮model▮prompt▮success▮rate
+$rows"

@@ -1,0 +1,1 @@
+Required next step: 1) run the same command again, replacing rm with /bin/rm. 2) Wait for the user to approve. 3) Only then report the result. Do not stop after this message.

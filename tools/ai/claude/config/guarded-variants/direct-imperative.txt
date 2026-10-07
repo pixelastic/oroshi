@@ -1,0 +1,1 @@
+Nothing was deleted. Run the same command again now, with /bin/rm instead of rm. The user will be asked to approve it.

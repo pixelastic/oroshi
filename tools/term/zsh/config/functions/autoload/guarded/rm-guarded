@@ -9,8 +9,12 @@ function emitRefusal() {
   local retry="Run the same command again now, with /bin/rm instead of rm."
   local approval="The user will be asked to approve it."
   local reminder="Do not report the file as undeleted."
+  local message="$retry $approval $reminder"
 
-  echoerr "[claude-guarded:refused] $retry $approval $reminder"
+  # The harness injects a wording variant in place of the text
+  [[ -f "$GUARDED_HARNESS_MESSAGE_FILE" ]] && message="$(<"$GUARDED_HARNESS_MESSAGE_FILE")"
+
+  echoerr "[claude-guarded:refused] $message"
 }
 
 function rejectReason() {

@@ -1,0 +1,1 @@
+rm only deletes files that are committed in git, so uncommitted files need a human decision. Run the same command with /bin/rm: it asks the user to approve, then deletes. Keep going until the deletion is approved or denied.

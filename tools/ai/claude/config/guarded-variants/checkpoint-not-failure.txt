@@ -1,0 +1,1 @@
+Safe delete declined: the file is not recoverable from git. This is a normal checkpoint, not a failure. The next step is to run the same command with /bin/rm, which asks the user to confirm.
