@@ -54,8 +54,8 @@
 2026-09-18 Add lets be honest as allowed in Vale speech profile (disable ai-tells.AffirmativeFormulas) domain:Misc size:small id:vale-speech-honest
 2026-09-21 Add gslide-comment-add script to post comments anchored to slides/elements. BLOCKED: Slides API insertComment is Developer Preview only (requires paid Google Workspace). Wait for GA release. Drive Comments v3 cannot anchor on Slides. domain:Google size:medium id:gslide-comment
 2026-09-25 Reduce height of Claude Code slash-command skills list (now dozens shown vs ~5 before, takes too much screen space) domain:Claude size:small id:slash-menu
-2026-09-27 Refactor hooks/preToolUse-Bash (~75 lines mixing concerns: solkan check, approval/reject counts, subagent detection) into separate functions or files domain:Claude size:medium id:pretooluse-refactor
 2026-09-27 Worktree merge output: color extensionless executable files with the executable color (currently white) domain:Git size:small id:worktree-exec-color
 2026-09-29 Fix aberlaas readme: it stacks a new 'DO NOT EDIT MANUALLY' banner on each run when .README.template.md self-includes {file:README.md} (emulation repo has 6 banners) domain:JavaScript size:small id:readme-banner
 2026-10-03 Status bar: show running background shells next to running sub-agents, with a different icon and color domain:Claude size:medium id:statusbar-shells
 2026-10-03 Investigate pulsing running sub-agents in the status line (opacity or color fade, like Claude's blinking dot); depends on status bar refresh rate domain:Claude size:medium id:agent-pulse p:statusbar-shells
+2026-10-07 Refactor all Claude hooks (preToolUse and postToolUse): split mixed concerns into single-concern functions or separate hooks, no behavior change domain:Claude size:large id:hooks-split

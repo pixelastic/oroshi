@@ -9400,7 +9400,7 @@ __metadata:
     jsonc-parser: "npm:3.3.1"
     pietro: "npm:0.6.1"
     prettier: "npm:3.6.2"
-    solkan: "npm:0.13.1"
+    solkan: "npm:0.14.0"
   languageName: unknown
   linkType: soft
 
@@ -11037,9 +11037,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solkan@npm:0.13.1":
-  version: 0.13.1
-  resolution: "solkan@npm:0.13.1"
+"solkan@npm:0.14.0":
+  version: 0.14.0
+  resolution: "solkan@npm:0.14.0"
   dependencies:
     firost: "npm:5.11.0"
     golgoth: "npm:3.1.0"
@@ -11048,7 +11048,7 @@ __metadata:
     unbash: "npm:3.0.0"
   bin:
     solkan: ./bin/solkan
-  checksum: 10c0/65b6c5775542746373701fcf4fd4f850e95bfc13b4ff43cda420f7a30808974f8e3f95f861ff2c836f0844786115afd48cdd9c0ee645d098e623fbee580b2268
+  checksum: 10c0/34cac2ae68eab70f1f4c850539e60947988d16e0788534936d6be25645ab849ff409c62e3e4258f2be0025b4286d1532bb90f8d82326caf8017de3c3213c472c
   languageName: node
   linkType: hard
 

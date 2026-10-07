@@ -25,7 +25,7 @@
     "jsonc-parser": "3.3.1",
     "pietro": "0.6.1",
     "prettier": "3.6.2",
-    "solkan": "0.13.1"
+    "solkan": "0.14.0"
   },
   "scripts": {
     "colors-build-and-stage": "./scripts/yarn/colors-build-and-stage",
