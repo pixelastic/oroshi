@@ -1,0 +1,21 @@
+# Run a command from a keybinding, without touching the command line or the history
+# Usage (inside a zle widget):
+# $ run-command-silent git-file-watch   # Run it, then come back to the line as it was
+setopt local_options err_return
+
+# Nothing to run without a command
+[[ "$1" == "" ]] && return 1
+
+echo ""
+
+export PROMPT_PREVENT_REFRESH="1"
+# A failing command must not skip the prompt redraw below
+"$@" || true
+export PROMPT_PREVENT_REFRESH="0"
+
+# Prompt parts are normally rebuilt by precmd, which a widget never triggers.
+# The command may have changed the repo, so we refresh them before redrawing
+# A failing refresh must not skip the prompt redraw below
+oroshi-prompt-refresh || true
+
+zle reset-prompt

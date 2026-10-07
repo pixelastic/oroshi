@@ -6,8 +6,8 @@ setup() {
 }
 
 @test "widget: runs git-file-watch" {
-  run-command() { echo "$@" >"$BATS_TMP_DIR/calls"; }
-  bats_mock run-command
+  run-command-silent() { echo "$@" >"$BATS_TMP_DIR/calls"; }
+  bats_mock run-command-silent
 
   bats_run_zsh "${sourcePrefix}; oroshi-ctrl-w-widget"
   [[ "$status" -eq 0 ]]

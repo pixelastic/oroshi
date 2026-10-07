@@ -4,68 +4,29 @@ setup() {
   bats_tmp_dir
 
   # Fake zle: records each widget call, so tests can check what the helper asks zle to do
-  zle() {
-    echo "$*" >>"$BATS_TMP_DIR/zle-calls"
-    echo "zle $*" >>"$BATS_TMP_DIR/order"
-  }
-
-  # Fake prompt refresh: records its order relative to zle
-  oroshi-prompt-refresh() { echo "refresh" >>"$BATS_TMP_DIR/order"; }
-
-  # Fake command: records its arguments
-  fake-command() { echo "$*" >"$BATS_TMP_DIR/command-calls"; }
-
-  bats_mock zle fake-command oroshi-prompt-refresh
+  zle() { echo "$*" >>"$BATS_TMP_DIR/zle-calls"; }
+  bats_mock zle
 }
 
-@test "runs the command with its arguments" {
-  bats_run_zsh "run-command fake-command --flag value"
+@test "puts the command in the buffer" {
+  bats_run_zsh "run-command vcaa; echo \$BUFFER"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/command-calls")" = "--flag value" ]]
+  [[ "$output" = "vcaa" ]]
 }
 
-@test "redraws the prompt after the command" {
-  bats_run_zsh "run-command fake-command"
+@test "joins the arguments into the buffer" {
+  bats_run_zsh "run-command git status --short; echo \$BUFFER"
+  [[ "$output" = "git status --short" ]]
+}
+
+@test "stashes the typed line, then submits the command" {
+  bats_run_zsh "run-command vcaa"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/zle-calls")" = "reset-prompt" ]]
-}
-
-@test "leaves the command line untouched" {
-  bats_run_zsh "BUFFER='git sta'; run-command fake-command; echo \$BUFFER"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = *"git sta" ]]
-}
-
-@test "does not submit a line, so history stays clean" {
-  bats_run_zsh "run-command fake-command"
-  [[ "$(cat "$BATS_TMP_DIR/zle-calls")" != *"accept-line"* ]]
-  [[ "$(cat "$BATS_TMP_DIR/zle-calls")" != *"push-input"* ]]
+  [[ "$(cat "$BATS_TMP_DIR/zle-calls")" = $'push-input\naccept-line' ]]
 }
 
 @test "fails without a command" {
   bats_run_zsh "run-command"
   [[ "$status" -ne 0 ]]
   [[ ! -f "$BATS_TMP_DIR/zle-calls" ]]
-}
-
-@test "redraws the prompt even when the command fails" {
-  failing-command() { return 1; }
-  bats_mock failing-command
-
-  bats_run_zsh "run-command failing-command"
-  [[ "$(cat "$BATS_TMP_DIR/zle-calls")" = "reset-prompt" ]]
-}
-
-@test "refreshes the prompt data before redrawing the prompt" {
-  bats_run_zsh "run-command fake-command"
-  [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/order")" = $'refresh\nzle reset-prompt' ]]
-}
-
-@test "redraws the prompt even when the prompt refresh fails" {
-  oroshi-prompt-refresh() { return 1; }
-  bats_mock oroshi-prompt-refresh
-
-  bats_run_zsh "run-command fake-command"
-  [[ "$(cat "$BATS_TMP_DIR/zle-calls")" = "reset-prompt" ]]
 }

@@ -6,8 +6,8 @@ setup() {
 }
 
 @test "widget: runs ralph" {
-  run-command() { echo "$@" >"$BATS_TMP_DIR/calls"; }
-  bats_mock run-command
+  run-command-silent() { echo "$@" >"$BATS_TMP_DIR/calls"; }
+  bats_mock run-command-silent
 
   bats_run_zsh "${sourcePrefix}; oroshi-ctrl-r-widget"
   [[ "$status" -eq 0 ]]

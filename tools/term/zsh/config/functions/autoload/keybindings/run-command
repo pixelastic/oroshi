@@ -1,21 +1,12 @@
-# Run a command from a keybinding, without touching the command line or the history
+# Run a command from a keybinding as if it was typed and submitted, so it enters the history and its output can be retrieved
 # Usage (inside a zle widget):
-# $ run-command git-file-watch   # Run it, then come back to the line as it was
+# $ run-command vcaa   # Submit it, the typed line comes back at the next prompt
 setopt local_options err_return
 
 # Nothing to run without a command
 [[ "$1" == "" ]] && return 1
 
-echo ""
-
-export PROMPT_PREVENT_REFRESH="1"
-# A failing command must not skip the prompt redraw below
-"$@" || true
-export PROMPT_PREVENT_REFRESH="0"
-
-# Prompt parts are normally rebuilt by precmd, which a widget never triggers.
-# The command may have changed the repo, so we refresh them before redrawing
-# A failing refresh must not skip the prompt redraw below
-oroshi-prompt-refresh || true
-
-zle reset-prompt
+# Stash the typed line, it comes back at the next prompt
+zle push-input
+BUFFER="$*"
+zle accept-line
