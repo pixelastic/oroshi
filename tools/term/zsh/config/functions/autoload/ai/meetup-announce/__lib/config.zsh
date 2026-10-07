@@ -1,4 +1,4 @@
-# Centralized message IDs and Airtable configuration
+# Centralized message IDs
 # Sourced by meetup-announce scripts — pure data, no logic
 
 earlyMessages=(
@@ -15,5 +15,3 @@ lastMessages=(
   last--team-devmarketing--reminder
   last--help-recruiting--reminder
 )
-
-AIRTABLE_BASE_ID="appOxzXtlKI4Q7qr4"

@@ -13,8 +13,8 @@ setup() {
   bats_mock_env OROSHI_FOLDER_STATE "$BATS_TMP_DIR"
   bats_mock_env DRAFT_DIR "$DRAFT_DIR"
 
-  # Mock all __lib/ collaborators
-  fetch-meetup() {
+  # Mock all collaborators
+  meetup-read() {
     echo '{"UUID":"abc-123","name":"Paris Meetup","date":"2026-09-15","startTime":"19:00","endTime":"22:00","description":"A great meetup","URL":"https://example.com","notes":"Some notes","helpersFullName":["Alice","Bob"],"guestRegisteredCount":42,"guestAttendingCountFinal":35}'
   }
 
@@ -27,7 +27,7 @@ setup() {
   kitty-window-create() { printf '%s' "$*" > "$BATS_TMP_DIR/kitty-window-create-args"; }
   kitty-window-tab-id() { echo "42"; }
 
-  bats_mock fetch-meetup resolve-draft-dir compute-schedule kitty-window-create kitty-window-tab-id
+  bats_mock meetup-read resolve-draft-dir compute-schedule kitty-window-create kitty-window-tab-id
 }
 
 # -- Happy path --
@@ -77,10 +77,10 @@ setup() {
 
 @test "parses meetup fields correctly when description contains escaped newlines" {
   # print -r avoids ZSH echo interpreting \n — mimics real Airtable JSON with newlines in text fields
-  fetch-meetup() {
+  meetup-read() {
     print -r -- '{"UUID":"abc-123","name":"Paris Meetup","date":"2026-09-15","startTime":"19:00","endTime":"22:00","description":"Line one\nLine two\nLine three","URL":"https://example.com","notes":"Note\nwith newlines","helpersFullName":["Alice"],"guestRegisteredCount":42,"guestAttendingCountFinal":35}'
   }
-  bats_mock fetch-meetup
+  bats_mock meetup-read
 
   bats_run_zsh "meetup-announce-start recABC123"
   [[ "$status" -eq 0 ]]
@@ -95,10 +95,11 @@ setup() {
   [[ "$status" -ne 0 ]]
 }
 
-@test "exits non-zero when fetch-meetup fails" {
-  fetch-meetup() { return 1; }
-  bats_mock fetch-meetup
+@test "exits non-zero when meetup-read fails" {
+  meetup-read() { return 1; }
+  bats_mock meetup-read
 
   bats_run_zsh "meetup-announce-start recBAD"
   [[ "$status" -ne 0 ]]
+  [[ "$output" == *"Cannot read meetup recBAD"* ]]
 }

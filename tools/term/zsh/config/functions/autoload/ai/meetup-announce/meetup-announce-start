@@ -17,13 +17,18 @@ local callingTabId="$(kitty-window-tab-id)"
 
 # Source internal lib functions
 local libDir="${functions_source[$0]:A:h}/__lib"
-source "$libDir/fetch-meetup.zsh"
 source "$libDir/resolve-draft-dir.zsh"
 source "$libDir/compute-schedule.zsh"
 
-# Fetch meetup data from Airtable
-local meetupJson="$(fetch-meetup "$recordId")"
-[[ "$meetupJson" == "" ]] && return 1
+# Read meetup data from Airtable
+local meetupJson="$(meetup-read "$recordId")"
+
+# Guard: meetup-read failed or returned nothing
+if [[ "$meetupJson" == "" ]]; then
+  echoerr "Cannot read meetup $recordId"
+  return 1
+fi
+
 local meetupName="$(jq -r '.name' <<< "$meetupJson")"
 local eventDate="$(jq -r '.date' <<< "$meetupJson")"
 local startTime="$(jq -r '.startTime' <<< "$meetupJson")"
