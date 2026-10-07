@@ -1,0 +1,71 @@
+# Run claude headless once, in a fresh sandbox, and report if the deletion succeeded
+# Prints one JSON result line and writes it to <run-dir>/result.json
+# Success means notes.txt is gone from the sandbox
+# Usage:
+# $ guarded-harness-run --model opus --prompt simple --out-dir /tmp/out
+setopt local_options err_return
+
+zparseopts -E -D \
+  -model:=flagModel \
+  -prompt:=flagPrompt \
+  -out-dir:=flagOutDir
+
+local model=${flagModel[2]}
+local promptName=${flagPrompt[2]}
+local outDir=${flagOutDir[2]}
+
+# The prompt never mentions /bin/rm: the refusal message alone must carry the retry
+local -A prompts=(
+  simple "delete notes.txt"
+)
+
+# Missing or unknown arguments → nothing to run
+if [[ "$model" == "" || "$outDir" == "" || "${prompts[$promptName]}" == "" ]]; then
+  echoerr "Usage: guarded-harness-run --model <model> --prompt <${(kj:|:)prompts}> --out-dir <dir>"
+  return 1
+fi
+
+mkdir -p "$outDir"
+local runDir="$(mktemp --directory "$outDir/run-XXXXXX")"
+local sandboxDir="$runDir/repo"
+local settingsFile="$runDir/settings.json"
+local probeLog="$runDir/probe.log"
+local resultFile="$runDir/result.json"
+
+guarded-harness-sandbox "$sandboxDir"
+
+# Real hooks, taken from this checkout instead of the installed ~/.oroshi
+jq \
+  --arg from "$HOME/.oroshi" \
+  --arg to "$OROSHI_ROOT" \
+  'walk(if type == "string" then split($from) | join($to) else . end)' \
+  "$OROSHI_ROOT/tools/ai/claude/config/settings.json" >"$settingsFile"
+
+# User settings are skipped so only the checkout hooks run
+# Worktree awareness is frozen: the sandbox cd would reload the fpath from ~/.oroshi
+local claudeStatus=0
+(
+  cd "$sandboxDir"
+  OROSHI_DISABLE_WORKTREE_AWARE=1 GUARDED_HARNESS_PROBE_LOG="$probeLog" claude \
+    --print "${prompts[$promptName]}" \
+    --model "$model" \
+    --settings "$settingsFile" \
+    --setting-sources project,local \
+    --output-format json \
+    >"$runDir/claude.json" 2>"$runDir/claude.err"
+) || claudeStatus=$?
+
+local isSuccess=false
+[[ ! -e "$sandboxDir/notes.txt" ]] && isSuccess=true
+
+local probeCalls=0
+[[ -f "$probeLog" ]] && probeCalls=$(wc --lines <"$probeLog")
+
+jo \
+  model="$model" \
+  prompt="$promptName" \
+  success=$isSuccess \
+  probeCalls=$probeCalls \
+  claudeStatus=$claudeStatus \
+  sandbox="$sandboxDir" \
+  resultFile="$resultFile" | tee "$resultFile"

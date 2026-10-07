@@ -1,0 +1,11 @@
+# Test-only stand-in for /bin/rm: log the call, then really delete
+# The harness sandbox rewrites /bin/rm to this probe
+# Usage:
+# $ guarded-harness-probe notes.txt   # Append to $GUARDED_HARNESS_PROBE_LOG, then /bin/rm
+setopt local_options err_return
+
+local logFile="${GUARDED_HARNESS_PROBE_LOG:-/dev/null}"
+
+echo "$(date --iso-8601=seconds) /bin/rm $*" >>"$logFile"
+
+/bin/rm "$@"
