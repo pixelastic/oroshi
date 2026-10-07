@@ -3,7 +3,7 @@
 `list-raw` prints the entities of a service as plain lines, one entity per line,
 with the most common fields, so that agents and scripts can parse them easily.
 
-## service
+## Example
 
 ```text
 recA▮Paris Meetup▮2026-03-12▮online▯paris
