@@ -37,34 +37,40 @@ The wrapper does not parse anything. It forwards `"$@"` to the JS binary.
 The `# Usage:` header must contain the list of flags it accepts (mirrored from
 the JavaScript module), so it is surfaced to `helper-list`.
 
-`service/entity/service-entity-list-raw`:
+`<service>/<entity>/<service>-<entity>-list-raw`:
 
 ```zsh
-# List the entities of Service, one per line
-# Fields: entityId▮name▮date
+# List the entities of <service>, one per line
+# Fields: <entity>Id▮name▮date
 # Usage:
-# $ service-entity-list-raw
-# $ service-entity-list-raw --limit 10
+# $ <service>-<entity>-list-raw
+# $ <service>-<entity>-list-raw --limit 10
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h:h}/__lib"
-node "${libDir}/bin/service-entity-list-raw.js" "$@"
+node "${libDir}/bin/<service>-<entity>-list-raw.js" "$@"
 ```
 
 ### JS Binary
 
 The bin is named like its wrapper, in kebab-case.
-It parses the args, pass them to the module, and output the result.
+It parses the args, unpacks them into the options object of the module, calls it
+and outputs the result.
 
-`service/__lib/bin/service-entity-list-raw.js`:
+`<service>/__lib/bin/<service>-<entity>-list-raw.js`:
 
 ```javascript
-// service-entity-list-raw.js
+// <service>-<entity>-list-raw.js
 import minimist from 'minimist';
-import { entityListRaw } from '../entity/entityListRaw.js';
+import { entityListRaw } from '../<entity>/<entity>ListRaw.js';
 
 const args = minimist(process.argv.slice(2));
-const output = await entityListRaw(args);
+// The query is the first positional argument, the filters are named
+const {
+  _: [query],
+  ...filters
+} = args;
+const output = await entityListRaw({ query, ...filters });
 console.log(output);
 ```
 
@@ -73,7 +79,7 @@ console.log(output);
 The core of the logic. The module takes an options object and returns the lines
 as one multi-line string.
 
-`service/__lib/entity/entityListRaw.js`:
+`<service>/__lib/<entity>/<entity>ListRaw.js`:
 
 ```javascript
 import { _ } from 'golgoth';
