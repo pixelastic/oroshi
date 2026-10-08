@@ -1,17 +1,21 @@
-# Add a command to the Claude Code skills allowlist
+# Add one or more commands to the Claude Code skills allowlist
 # Usage:
 # $ skills-allowlist-add "tree"
+# $ skills-allowlist-add tree "apt list" jq
 setopt local_options err_return
-local allowedCommand="$1"
 local allowlistFile=~/.oroshi/tools/ai/claude/config/hooks/allow-list.json
 
-if [[ "$allowedCommand" == "" ]]; then
+# At least one command is required
+if [[ $# -eq 0 ]]; then
   echoerr "Error: Command required"
-  echoerr "Usage: skills-allowlist-add <command>"
+  echoerr "Usage: skills-allowlist-add <command>..."
   return 1
 fi
 
-json-array-add --input "$allowlistFile" --unique "$allowedCommand"
+local allowedCommand
+for allowedCommand in "$@"; do
+  json-array-add --input "$allowlistFile" --unique "$allowedCommand"
+done
 
 # Sort using json-array-sort (matching Neovim behavior)
 # Empty stdin: json-array-sort reads a piped stdin over its file arg
