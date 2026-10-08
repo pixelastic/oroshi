@@ -40,6 +40,7 @@ api/
         └── <entity>/
             ├── index.js
             ├── <entity>ListRaw.js
+            ├── format<Entity>.js
             └── __tests__/
                 └── <entity>ListRaw.js
 ```
@@ -66,6 +67,7 @@ Each `<service>` folder contains:
     - `<entity>Search.js` to search through all entities
     - `<entity>ListRaw.js` to list entities (machine-readable)
     - `<entity>Read.js` to read a specific entity
+    - `format<Entity>.js` to give every command the same output format
     - etc.
 
 The `list` wrapper has no module. It calls `list-raw` and adds colors and
@@ -74,7 +76,8 @@ The `list` wrapper has no module. It calls `list-raw` and adds colors and
 ### Focused APIs
 
 Focused APIs (where one entity is largely predominant) follow a simpler
-architecture that skips the intermediate `<entity>` folders.
+architecture that skips the intermediate `<entity>` folders. Their formatting
+function is `format.js`, next to `callApi.js`.
 
 ## @oroshi/api-shared
 
@@ -106,6 +109,20 @@ Each service owns a `getConfig.js` file that exports `getConfig`.
   never touch the environment.
 - Env variables are prefixed with the name of the service: `SERVICE_TOKEN`,
   `SERVICE_BASE_URL`.
+
+## `format<Entity>.js`
+
+Each entity owns a `format<Entity>.js` file in its folder (`formatPage.js`,
+`formatRecord.js`) that exports `format<Entity>`. A focused API has `format.js`
+instead.
+
+- It takes one entity, as returned by the API, and returns a unified formatted version of it.
+- By default, it will be the raw object as returned by the API, so agents can
+easily understand what it represent.
+- Optionally, we may format/clean it to make it easier to consume by the other scripts.
+- Having one central formatting method ensure all helpers deal with the same
+shape of the data.
+- Other modules call it through `__` (`__.formatEntity()`), so tests stub it.
 
 ## Accounts
 
@@ -178,5 +195,23 @@ export function getConfig() {
   return {
     token: process.env.SERVICE_TOKEN,
   };
+}
+```
+
+### `format<Entity>.js`
+
+The one place that defines what a command prints for an entity.
+
+`<service>/__lib/<entity>/format<Entity>.js`:
+
+```javascript
+/**
+ * Format one entity of the API, to give every command the same output
+ * @param {object} response - The entity, as returned by the API
+ * @returns {object} The entity, as close as possible to the API
+ */
+export function formatEntity(response) {
+  // Keep the shape of the API, and only tidy what makes it easier to read
+  return response;
 }
 ```

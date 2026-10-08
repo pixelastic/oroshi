@@ -14,53 +14,57 @@ header mirrors what the JavaScript module accepts. It is the text that
 
 ## Positional and named
 
-- If there is only one required argument, make it positional.
-- If there are several required arguments, make them all named.
-- Optional arguments are always named.
+Each command doc lists the exact arguments of its command. These principles
+guided the choices:
+
+- The main input of a command is positional: the query of `search`, the id of
+  `read`, the content of `create` and `update`.
+- Everything else is named: anchors (a table, a space), the id of an entity
+  when the content takes the positional slot, filters and options.
 
 ```text
 $ <service>-<entity>-read recA
-$ <service>-<entity>-update --<entity>Id recA --data '{"name":"Paris"}'
+$ <service>-<entity>-read recA --table Meetups
+$ <service>-<entity>-update --<entity>Id recA '{"name":"Paris"}'
 ```
-
-The first call has one required argument: the id is positional. The second
-call has two (the id and the content): both are named.
 
 ## Flag names
 
 - A flag that holds an identifier is camelCase, built from the `<entity>` and
   `Id`: `--pageId`, `--recordId`, `--mailId`.
-- Every other flag is lowercase: `--file`, `--limit`, `--account`.
+- Every other flag is lowercase: `--file`, `--limit`, `--account`, `--table`.
 
-## Passing data
+## Passing content
 
-Helpers like `-create` or `-update` that need to pass data can have one of two
-shapes:
+Commands like `create` and `update` receive the content of an entity. Each
+entity uses one of two modes, chosen when the entity is added and noted in the
+glossary of the service.
 
-- `--data` (default): Accepts a JSON object that contains the whole data
-OR
-- Dedicated fields: like `--title` and `--status` if the shape is simple enough
+- **Fixed schema**: each field is a named flag, like `--title` and `--body`.
+  There is no `--data`.
+- **Open schema**: the whole content is a JSON object, passed as the positional
+  argument. There is no field flag.
 
 ```text
 $ confluence-page-create --title "Paris Meetup"
-$ airtable-record-create --data '{"title":"Paris Meetup","seats":80}'
+$ airtable-record-create --table Meetups '{"title":"Paris Meetup","seats":80}'
 ```
 
 ### `-file` suffix
 
-Long inputs, like an Airtable record `--data` or a Gmail message `--body` can
-also be passed with a `-file` suffix (`--data-file` or `--body-file`).
+Long inputs can be read from a file.
 
-In that case the content of the specified filepath is read and used as the
-value.
+- Fixed schema: a field that can be long also accepts a `-file` twin
+  (`--body-file`). The content of the file is used as the value of the field.
+- Open schema: `--data-file` replaces the positional JSON. The content of the
+  file is parsed as the JSON object.
 
-If both the regular and the `-file` suffixed version are passed, the `-file`
-argument takes precedence.
-
+If both the regular and the `-file` version are passed, the `-file` argument
+takes precedence.
 
 ```text
 $ confluence-page-create --title "Paris Meetup" --body-file ./about.md
-$ airtable-record-create --data-file ./entity.json
+$ airtable-record-create --table Meetups --data-file ./entity.json
 ```
 
 ## `--limit`

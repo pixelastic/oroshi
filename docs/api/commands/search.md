@@ -27,6 +27,7 @@ data of each entity.
 
 - `search` is the lowest-level way to find information in a service.
 - It returns a JSON array, one element per entity.
+- Each element goes through the `format<Entity>` function of the service.
 
 ## Arguments
 
@@ -98,13 +99,14 @@ The module takes an options object and returns the entities as an array of data.
 
 ```javascript
 import { callApi } from '../callApi.js';
+import { formatEntity } from './format<Entity>.js';
 
 export let __;
 
 /**
  * Search the entities of the service
  * @param {object} options - The query, the filters and the limit
- * @returns {Promise<object[]>} The entities, as returned by the API
+ * @returns {Promise<object[]>} The entities, formatted
  */
 export async function entitySearch(options) {
   // Set default options
@@ -113,11 +115,12 @@ export async function entitySearch(options) {
 
   // Call the API, potentially handling pagination
 
-  // Return the results, potentially cleaning/formatting it
+  // Return the results, each one passed through __.formatEntity
 }
 
 __ = {
   callApi,
+  formatEntity,
 };
 ```
 
@@ -127,7 +130,7 @@ The test covers the module only. It stubs `callApi` through `__` and has two
 parts:
 
 - Assert that the options passed are correctly transformed into the right API call
-- Assert that the return of the API is correcly returned by the function,
-potentially being cleaned/formatted before being returned.
+- Assert that each entity returned by the API is correctly formatted and
+returned by the function.
 
 The zsh wrapper and the node binary are so thin that they need no test.

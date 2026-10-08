@@ -27,6 +27,14 @@ See [list-raw.md](commands/list-raw.md) for more details.
 
 ## JSON
 
-Commands like `search` and `read` are mostly meant to be used by other scripts
-ot by an agent, so they output JSON.
+Commands like `search`, `read`, `create` and `update` are mostly meant to be
+used by other scripts or by an agent, so they output JSON.
+
+All four print the same format: `read`, `create` and `update` print one
+entity, `search` prints an array of entities. The format stays as close as
+possible to what the API returns, so that agents can keep following the
+documentation of the API. It can be tidied when that makes it easier to read.
+Each entity goes through the `format<Entity>` function of the service, which is
+the one place that defines it. See
+[architecture.md](architecture.md#formatentityjs).
 
