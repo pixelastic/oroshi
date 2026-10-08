@@ -25,5 +25,6 @@ come with the command vocabulary.
 - [arguments.md](arguments.md) — How a command receives its arguments: positional or named, flag names, content, limit and accounts.
 - [output.md](output.md) — What a command prints: the raw format, JSON, streams, and the `# Usage:`, `# Fields:` and `# Writes:` headers.
 - [commands/list-raw.md](commands/list-raw.md) — Print the entities of a service as plain lines, one per line, for agents and scripts to parse.
+- [commands/list.md](commands/list.md) — Print the entities of a service as a colored table, for humans to read.
 - [commands/search.md](commands/search.md) — Find entities across a whole service and print them as rich JSON.
 - [commands/read.md](commands/read.md) — Take the id of an entity, and print that entity as JSON.
