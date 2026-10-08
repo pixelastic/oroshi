@@ -38,6 +38,14 @@ setup() {
   [[ "$output" = "$BATS_GIT_DIR" ]]
 }
 
+@test "arg is a repo path, current directory outside any repo: returns repo root" {
+  cd "$BATS_TMP_DIR"
+  bats_disable_worktree_aware
+  bats_run_zsh "git-directory-root $BATS_GIT_DIR"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$BATS_GIT_DIR" ]]
+}
+
 @test "arg path contains .git/: returns repo root" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-directory-root $BATS_GIT_DIR/.git/config"

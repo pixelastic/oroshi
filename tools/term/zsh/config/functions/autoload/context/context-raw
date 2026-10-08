@@ -18,13 +18,10 @@ local projectOverride="${flagProject[2]}"
 local branchOverride="${flagBranch[2]}"
 local effectivePath="${1:-$PWD}"
 
-# Submodule detection: if inside a submodule whose superproject is a worktree,
-# resolve everything from the superproject
-local superproject=""
-superproject="$(git -C "$effectivePath" rev-parse --show-superproject-working-tree 2>/dev/null)" || true
-if [[ "$superproject" != "" ]] && git-directory-is-worktree "$superproject"; then
-  effectivePath="$superproject"
-fi
+# Submodule detection: if inside a submodule, resolve everything from the
+# superproject
+local superproject="$(git-directory-superproject "$effectivePath")"
+[[ "$superproject" != "" ]] && effectivePath="$superproject"
 
 # Project: override, else git-directory-name fallback chain
 local project="$projectOverride"
@@ -47,6 +44,13 @@ if git-directory-is-worktree "$effectivePath"; then
   root="$(git-directory-root "$effectivePath")"
 else
   root="$(project-path "$project" 2>/dev/null)" || true
+fi
+
+# Unregistered project: the git root is the root
+if [[ "$root" == "" ]]; then
+  if git-directory-is-repository "$effectivePath"; then
+    root="$(git-directory-root "$effectivePath")"
+  fi
 fi
 
 local result="${project}▮${branch}▮${root}"

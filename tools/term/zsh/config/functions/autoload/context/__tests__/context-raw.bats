@@ -48,13 +48,48 @@ setup() {
   [[ "$output" = "parent▮feature-branch▮/worktrees/parent--branch" ]]
 }
 
-@test "submodule-in-non-worktree: returns project▮▮root" {
-  _mock_defaults
-  git() { echo "/repos/parent"; }
-  bats_mock git
-  bats_run_zsh "cd $BATS_TMP_DIR && context-raw /some/submodule/path"
+# Real (unmocked) repo "parent" with a real submodule at ./private
+_real_submodule_setup() {
+  bats_git_dir 'parent' > /dev/null
+  bats_git_submodule "$BATS_GIT_DIR" 'private'
+  bats_disable_worktree_aware
+}
+
+@test "submodule in a regular checkout: returns superproject▮▮superprojectRoot" {
+  _real_submodule_setup
+  bats_run_zsh "cd $BATS_TMP_DIR && context-raw $BATS_TMP_DIR/parent/private"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "myproject▮▮/repos/myproject" ]]
+  [[ "$output" = "parent▮▮$BATS_TMP_DIR/parent" ]]
+}
+
+@test "submodule in a regular checkout: context-root returns the superproject root" {
+  _real_submodule_setup
+  bats_run_zsh "cd $BATS_TMP_DIR && context-root $BATS_TMP_DIR/parent/private"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$BATS_TMP_DIR/parent" ]]
+}
+
+@test "submodule in a regular checkout: context-path includes the submodule directory" {
+  _real_submodule_setup
+  bats_run_zsh "cd $BATS_TMP_DIR && context-path $BATS_TMP_DIR/parent/private"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "private" ]]
+}
+
+@test "unregistered repo: returns project▮▮gitRoot" {
+  bats_git_dir 'plain' > /dev/null
+  bats_disable_worktree_aware
+  bats_run_zsh "cd $BATS_TMP_DIR && context-raw $BATS_TMP_DIR/plain"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "plain▮▮$BATS_TMP_DIR/plain" ]]
+}
+
+@test "--project override outside a git repo: returns empty root" {
+  bats_tmp_dir
+  bats_disable_worktree_aware
+  bats_run_zsh "cd $BATS_TMP_DIR && context-raw --project custom $BATS_TMP_DIR"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "custom▮▮" ]]
 }
 
 @test "--project override: replaces auto-detected project" {

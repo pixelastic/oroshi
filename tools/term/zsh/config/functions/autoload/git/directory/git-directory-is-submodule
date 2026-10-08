@@ -6,5 +6,5 @@ setopt local_options err_return
 local targetPath="${1:-$PWD}"
 [[ -f "$targetPath" ]] && targetPath="${targetPath:h}"
 
-local superproject="$(git -C "$targetPath" rev-parse --show-superproject-working-tree 2>/dev/null)"
+local superproject="$(git-directory-superproject "$targetPath")"
 [[ "$superproject" != "" ]]

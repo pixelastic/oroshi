@@ -23,17 +23,17 @@ function replyOrEcho() {
   echo $1
 }
 
-# If not in a git repo, we simply return the current path
-if ! git-directory-is-repository; then
-  replyOrEcho $PWD
-  return 1
-fi
-
 # Check from the given directory, or the current one if none specified
 local targetPath="$1"
 [[ $targetPath == "" ]] && targetPath="$PWD"
 [[ ! -d "$targetPath" ]] && targetPath="${targetPath:h}"
 [[ $targetPath[-1] != "/" ]] && targetPath+="/"
+
+# If not in a git repo, we simply return the current path
+if ! git-directory-is-repository "$targetPath"; then
+  replyOrEcho $PWD
+  return 1
+fi
 
 # If path contains a .git/ folder, we remove anything after it
 if [[ $targetPath == *.git/* ]]; then
@@ -43,7 +43,7 @@ fi
 
 # If -f is passed, we try the superproject root
 if [[ $isForce == "1" ]]; then
-  local gitRoot="$(git -C "$targetPath" rev-parse --show-superproject-working-tree)"
+  local gitRoot="$(git-directory-superproject "$targetPath")"
   if [[ $gitRoot != "" ]]; then
     replyOrEcho $gitRoot
     return 0

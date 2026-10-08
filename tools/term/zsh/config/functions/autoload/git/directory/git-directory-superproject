@@ -1,0 +1,10 @@
+# Returns the root of the repo containing the current (or given) submodule
+# Empty if the path is not inside a submodule
+# Usage:
+# $ git-directory-superproject [path]
+setopt local_options err_return
+
+local targetPath="${1:-$PWD}"
+[[ -f "$targetPath" ]] && targetPath="${targetPath:h}"
+
+git -C "$targetPath" rev-parse --show-superproject-working-tree 2>/dev/null || true

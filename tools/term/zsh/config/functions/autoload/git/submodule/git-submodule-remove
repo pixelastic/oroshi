@@ -16,7 +16,7 @@ for submoduleName in $@; do
     continue
   fi
   # Skip non-submodules
-  if ! git-is-submodule $absolutePath; then
+  if ! git-directory-is-submodule $absolutePath; then
     echo "✘ ${submoduleName} is not a submodule"
     continue
   fi
