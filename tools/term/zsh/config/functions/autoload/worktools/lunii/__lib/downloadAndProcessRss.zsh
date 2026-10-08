@@ -10,7 +10,7 @@ function downloadAndProcessRss() {
     --skip-zip-generation \
     --skip-image-convert \
     --use-open-ai-tts \
-    --open-ai-api-key "$OPENAI_API_KEY" \
+    --open-ai-api-key "$OPENAI_API_KEY_PERSO" \
     --open-ai-voice nova \
     --lang fr \
     --rss-split-length 9999 \

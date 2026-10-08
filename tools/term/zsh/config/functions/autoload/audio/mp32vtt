@@ -20,15 +20,15 @@ if [[ "$inputFile" != *.mp3 ]]; then
 fi
 
 # API key required
-if [[ "$OPENAI_API_KEY" == "" ]]; then
-  echoerr "Error: OPENAI_API_KEY not set"
+if [[ "$OPENAI_WHISPER_API_KEY" == "" ]]; then
+  echoerr "Error: OPENAI_WHISPER_API_KEY not set"
   return 1
 fi
 
 local outputFile="${inputFile:r}.vtt"
 
-curl -s https://api.openai.com/v1/audio/transcriptions \
-  -H "Authorization: Bearer $OPENAI_API_KEY" \
+curl -s https://eu.api.openai.com/v1/audio/transcriptions \
+  -H "Authorization: Bearer $OPENAI_WHISPER_API_KEY" \
   -F "file=@$inputFile" \
   -F "model=whisper-1" \
   -F "response_format=vtt" >"$outputFile"

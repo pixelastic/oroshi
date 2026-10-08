@@ -26,7 +26,7 @@ BASH
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -45,7 +45,7 @@ BASH
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -53,13 +53,13 @@ BASH
   [[ "$pass1" == *"--use-open-ai-tts"* ]]
 }
 
-@test "passes --open-ai-api-key with OPENAI_API_KEY env var to studio-pack-generator" {
+@test "passes --open-ai-api-key with OPENAI_API_KEY_PERSO env var to studio-pack-generator" {
   studio-pack-generator() { echo "$@" >> "$BATS_TMP_DIR/spg_calls.txt"; }
   eval "$(_curl_rss_only)"
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key-123
+  export OPENAI_API_KEY_PERSO=test-key-123
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -73,7 +73,7 @@ BASH
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -87,7 +87,7 @@ BASH
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -101,7 +101,7 @@ BASH
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -119,7 +119,7 @@ BASH
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-tts https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -136,7 +136,7 @@ BASH
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -174,7 +174,7 @@ BASH
   bats_mock studio-pack-generator curl txt2svg svg2png resizeToLunii
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-openai-key
+  export OPENAI_API_KEY_PERSO=test-openai-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-generate-episode-thumbnails https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -194,7 +194,7 @@ BASH
   bats_mock studio-pack-generator curl img-dimensions magick
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -215,7 +215,7 @@ BASH
   bats_mock studio-pack-generator curl img-dimensions magick
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -235,7 +235,7 @@ BASH
   bats_mock studio-pack-generator curl img-dimensions magick
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -250,7 +250,7 @@ BASH
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -267,7 +267,7 @@ BASH
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "rss2lunii --output-dir $targetDir https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
@@ -284,7 +284,7 @@ BASH
   bats_mock studio-pack-generator curl
   bats_disable_worktree_aware
 
-  export OPENAI_API_KEY=test-key
+  export OPENAI_API_KEY_PERSO=test-key
   bats_run_zsh "cd $BATS_TMP_DIR && rss2lunii --force-generate-episode-thumbnails --force-tts https://example.com/feed.xml"
   [[ "$status" -eq 0 ]]
 
