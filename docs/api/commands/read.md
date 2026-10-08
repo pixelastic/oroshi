@@ -33,7 +33,7 @@ Example: `airtable-record-read recXXX --table Meetups`
 
 ### ZSH Wrapper
 
-The wrapper does not parse anything. It forwards `"$@"` to the JS binary.
+The wrapper does not parse anything. It forwards `"$@"` to the bin.
 
 `<service>/<entity>/<service>-<entity>-read`:
 
@@ -108,8 +108,8 @@ __ = {
 ### Test
 
 The test covers the module only. It mocks `callApi` through `__` and mostly
-checks two things:
+checks two behaviors:
 - Given a specific id (or object), the module calls `callApi` with the right path and options.
 - The returned value is the response of the API, passed through `formatEntity`.
 
-The zsh wrapper and the node binary are so thin that they need no test.
+The zsh wrapper and the bin are so thin that they need no test.

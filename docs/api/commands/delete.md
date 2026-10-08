@@ -25,7 +25,7 @@ The id is a positional argument, and the anchor (if any) is named, as in
 
 ### ZSH Wrapper
 
-The wrapper does not parse anything. It forwards `"$@"` to the JS binary.
+The wrapper does not parse anything. It forwards `"$@"` to the bin.
 
 `<service>/<entity>/<service>-<entity>-delete`:
 
@@ -97,9 +97,9 @@ __ = {
 ### Test
 
 The vitest test covers the module only. It mocks `callApi` through `__` and
-mostly checks two things:
+mostly checks two behaviors:
 - Given an id, the module calls `callApi` with the `DELETE` method and the right
   path.
 - The returned value is the id it received.
 
-The zsh wrapper and the node binary are so thin that they need no test.
+The zsh wrapper and the bin are so thin that they need no test.

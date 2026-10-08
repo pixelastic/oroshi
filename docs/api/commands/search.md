@@ -45,7 +45,7 @@ text to look for.
 $ gmail-search "from:alice label:work after:2026/01/01 before:2026/03/31" --limit 10
 
 # Example #2: Notion has no query language, so the positional argument is the
-text to search, and additional named arguments configure the search further
+# text to search, and additional named arguments configure the search further
 $ notion-search "meetup" --type page --limit 10
 ```
 
@@ -54,7 +54,7 @@ $ notion-search "meetup" --type page --limit 10
 
 ### ZSH Wrapper
 
-The wrapper does not parse anything. It forwards `"$@"` to the JS binary.
+The wrapper does not parse anything. It forwards `"$@"` to the bin.
 
 `<service>/<entity>/<service>-<entity>-search`:
 
@@ -133,4 +133,4 @@ parts:
 - Assert that each entity returned by the API is correctly formatted and
 returned by the function.
 
-The zsh wrapper and the node binary are so thin that they need no test.
+The zsh wrapper and the bin are so thin that they need no test.

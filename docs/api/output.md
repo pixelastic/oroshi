@@ -1,10 +1,10 @@
 # Output
 
-This file defines the type of displayed output of each commands.
+This file defines what each command prints.
 
 ## Raw format
 
-`-list-raw` commands display a list if `<entities>` in a machine-readable
+`-list-raw` commands display a list of entities in a machine-readable
 format, which is then read by `-list`.
 
 The format is defined like this:
@@ -28,7 +28,7 @@ See [list-raw.md](commands/list-raw.md) for more details.
 ## JSON
 
 Commands like `search`, `read`, `create` and `update` are mostly meant to be
-used by other scripts or by an agent, so they output JSON.
+used by other commands or by an agent, so they output JSON.
 
 All four print the same format: `read`, `create` and `update` print one
 entity, `search` prints an array of entities. The format stays as close as

@@ -5,7 +5,7 @@ The words used across `docs/api/`. Every doc uses these terms, and no others.
 ## Language
 
 **Service**:
-The top-level web API that helpers talk to (Airtable, Gmail, Notion, Make, etc).
+The top-level web API that helpers talk to (Airtable, Gmail, Notion, Make, etc.).
 _Avoid_: domain, subdomain, provider, integration
 
 **Entity**:
@@ -56,8 +56,26 @@ _Avoid_: strict schema
 
 **Open schema**:
 An entity whose fields depend on the data.
-Example: an Airtable record has a difference shape depending on its table.
+Example: an Airtable record has a different shape depending on its table.
 _Avoid_: loose schema, free schema
+
+**Wrapper**:
+The thin ZSH file of a command, in `$PATH`. It forwards `"$@"` to the bin.
+_Avoid_: alias, launcher
+
+**Bin**:
+The JavaScript file that parses the arguments with `minimist`, calls the module
+and prints the result.
+_Avoid_: binary, CLI
+
+**Module**:
+The JavaScript file that holds the logic of a command. It takes either an `id`
+or an `options` object as input. Returns data but prints nothing.
+_Avoid_: handler, controller
+
+**Shared workspace**:
+The `api/shared` workspace. It holds the code that at least two services need.
+_Avoid_: common, utils
 
 
 ## Verbs
@@ -95,8 +113,8 @@ Remove an entity, and print its id. It exists only where a service needs it.
 _Avoid_: `remove`, `destroy`
 
 **Service verb**:
-A verb outside the closed vocabulary, for an action that is not CRUD
-Example: `activate`, `run`, `enable`
+A verb outside the closed vocabulary, for an action that is not CRUD.
+Example: `activate`, `run`, `enable`.
 _Avoid_: custom verb
 
 ## Relationships
@@ -105,6 +123,9 @@ _Avoid_: custom verb
 - A **Command** applies one verb to one **Entity**, or to the dominant
   **Entity** of a **Focused API**.
 - An **API helper** is made of the **Commands** of one **Service**.
+- A **Command** is made of a **Wrapper**, a **Bin** and a **Module**.
+- A **Service** may use the **Shared workspace** for the code it has in common
+  with another **Service**.
 - A **Command** takes at most one **Positional argument**, and any number of
   **Named arguments**.
 
@@ -115,4 +136,4 @@ _Avoid_: custom verb
   first, the service becomes **Composite**: rename its commands and modules to
   carry the entity.
 - Some **Entities** of a given **Service** can have a **Fixed schema** while
-  others can have an **Open schema**/
+  others can have an **Open schema**.

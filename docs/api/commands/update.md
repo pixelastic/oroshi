@@ -40,7 +40,7 @@ $ airtable-record-update '{"seats":90}' --recordId recA --table Meetups
 
 ### ZSH Wrapper
 
-The wrapper does not parse anything. It forwards `"$@"` to the JS binary.
+The wrapper does not parse anything. It forwards `"$@"` to the bin.
 
 The `# Usage:` header must contain the list of flags it accepts, mirrored from
 the JavaScript module. Keep only the lines of the mode of the entity.
@@ -121,10 +121,10 @@ __ = {
 ### Test
 
 The vitest test covers the module only. It mocks `callApi` through `__` and
-mostly checks three things:
+mostly checks three behaviors:
 - Given an id and some fields, the module calls `callApi` with the right method,
   path and body.
 - The body holds only the given fields, and never the id.
 - The returned value is the response of the API, passed through `formatEntity`.
 
-The zsh wrapper and the node binary are so thin that they need no test.
+The zsh wrapper and the bin are so thin that they need no test.

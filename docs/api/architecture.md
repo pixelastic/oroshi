@@ -6,16 +6,15 @@ documentation.
 
 ## ZSH and JavaScript
 
-The public scripts (available in `$PATH`) are thin ZSH wrappers. They call a
-JavaScript binary, which itself calls an internal JavaScript module.
+The public commands (available in `$PATH`) are thin ZSH wrappers. They call a
+bin, which itself calls an internal JavaScript module.
 
 That underlying module is where all the logic lives, and is thoroughly tested.
-The ZSH wrapper and the JavaScript binary are just thin proxies without much
-logic.
+The ZSH wrapper and the bin are just thin proxies without much logic.
 
 ## Folder layout
 
-All API helpers live in the `api` domain folder:
+All API helpers live in the `api` autoload folder:
 `tools/term/zsh/config/functions/autoload/api/`. It holds one workspace per
 service, plus one shared workspace.
 
@@ -60,7 +59,7 @@ Each `<service>` folder contains:
     `@oroshi/api-shared` as a dependency, for the shared API helpers
   - `getConfig.js` to hold the API keys and other config
   - `callApi.js` to query the API in a unified way
-  - a `bin/` folder to hold the JavaScript binaries
+  - a `bin/` folder to hold the bins
   - an `<entity>/` folder per entity:
     - a barrel `index.js`
     - a `__tests__/` folder for module tests
@@ -85,6 +84,20 @@ function is `format.js`, next to `callApi.js`.
 transport, error handling, etc). Code moves there when at least two services
 need it.
 
+## Service glossary
+
+Each service has a `__docs/GLOSSARY.md` that defines its own vocabulary. It uses
+the format of the [API glossary](GLOSSARY.md), and does not repeat it. It
+contains:
+
+- **Entities**: one entry per entity, with what it is in the service, its
+  schema (fixed or open) and its anchor, if it has one.
+- **Service verbs**: one entry per verb outside the closed vocabulary
+  (`activate`, `run`), with what it does.
+- **Service terms**: the words of the service that a command, a flag or an
+  error uses, and that could be confused with another (an id, a base, a
+  space).
+
 ## JavaScript conventions
 
 - One export per file.
@@ -93,10 +106,11 @@ need it.
 - All services have a `getConfig.js` and a `callApi.js`.
 - Other files carry the entity in their name (e.g. `record/recordListRaw.js`).
   - Exception: the dominant entity of a focused API has no name (`listRaw.js`).
-- Modules take an options object, return data and print nothing.
-- Binaries are in kebab-case and named like their wrapper
-  (`bin/service-entity-list-raw.js`).
-- Binaries parse arguments with `minimist`, call the module and print the
+- Modules take what the bin unpacks (a bare id, or an options object when they
+  need several arguments), return data and print nothing.
+- Bins are in kebab-case and named like their wrapper
+  (`bin/<service>-<entity>-list-raw.js`).
+- Bins parse arguments with `minimist`, call the module and print the
   result with `console.log`. They have no `try/catch`.
 
 ## `getConfig.js`
@@ -107,8 +121,8 @@ Each service owns a `getConfig.js` file that exports `getConfig`.
   the service.
 - Other modules call it through `__` (`__.getConfig()`), so tests mock it and
   never touch the environment.
-- Env variables are prefixed with the name of the service: `SERVICE_TOKEN`,
-  `SERVICE_BASE_URL`.
+- Env variables are prefixed with the name of the service: `<SERVICE>_TOKEN`,
+  `<SERVICE>_BASE_URL`.
 
 ## `format<Entity>.js`
 
@@ -119,7 +133,8 @@ instead.
 - It takes one entity, as returned by the API, and returns a unified formatted version of it.
 - By default, it will be the raw object as returned by the API, so agents can
 easily understand what it represent.
-- Optionally, we may format/clean it to make it easier to consume by the other scripts.
+- Optionally, we may format or clean it, to make it easier for other commands
+  to consume.
 - Having one central formatting method ensure all helpers deal with the same
 shape of the data.
 - Other modules call it through `__` (`__.formatEntity()`), so tests mock it.
@@ -196,6 +211,51 @@ export function getConfig() {
     token: process.env.SERVICE_TOKEN,
   };
 }
+```
+
+### `callApi.js`
+
+The only way to talk to the service. It exposes the HTTP call as `__.fetch`, so
+tests mock it.
+
+`<service>/__lib/callApi.js`:
+
+```javascript
+import { firostError } from 'firost';
+import { getConfig } from './getConfig.js';
+
+export let __;
+
+/**
+ * Call the API of the service
+ * @param {object} options - Request options
+ * @param {string} options.path - Path of the endpoint
+ * @param {string} [options.method] - HTTP method
+ * @param {object} [options.body] - Body of the request, sent as JSON
+ * @returns {object} The JSON response of the API
+ */
+export async function callApi(options) {
+  const { path, method = 'GET', body } = options;
+  const { token } = __.getConfig();
+
+  const response = await __.fetch(`https://api.<service>.com/${path}`, {
+    method,
+    headers: { Authorization: `Bearer ${token}` },
+    body: body && JSON.stringify(body),
+  });
+  const data = await response.json();
+
+  // Every non-2xx status becomes a typed error
+  if (!response.ok) {
+    throw firostError(
+      '<SERVICE>_REQUEST_FAILED',
+      `HTTP ${response.status}: ${data.message}`,
+    );
+  }
+  return data;
+}
+
+__ = { fetch, getConfig };
 ```
 
 ### `format<Entity>.js`

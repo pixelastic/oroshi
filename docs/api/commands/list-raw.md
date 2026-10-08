@@ -32,7 +32,7 @@ instead.
 
 ### ZSH Wrapper
 
-The wrapper does not parse anything. It forwards `"$@"` to the JS binary.
+The wrapper does not parse anything. It forwards `"$@"` to the bin.
 
 The `# Usage:` header must contain the list of flags it accepts (mirrored from
 the JavaScript module), so it is surfaced to `helper-list`.
@@ -117,5 +117,5 @@ __ = {
 
 ### Test
 
-The test covers the module only. The zsh wrapper and node binary are so thin we
+The test covers the module only. The zsh wrapper and bin are so thin we
 don't need to test them.

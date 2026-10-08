@@ -12,7 +12,6 @@ The comment lines at the top of the ZSH wrappers contain the documentation.
 ### Example
 
 ```zsh
-#!/usr/bin/env zsh
 # One-line description of the command
 # (Optional details of what the command does)
 # Usage:

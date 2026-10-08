@@ -21,7 +21,7 @@ point to the code under test:
 | `callApi.js`      | Yes    | vitest | `__lib/__tests__/callApi.js`         |
 | `list` wrapper    | Yes    | bats   | `<entity>/__tests__/`                |
 | Other wrappers    | No     |        |                                      |
-| JavaScript binary | No     |        |                                      |
+| Bin               | No     |        |                                      |
 
 - A test file has the name of the file it tests (`recordRead.js` is tested by
   `__tests__/recordRead.js`), with no `.test.` or `.spec.` suffix.
@@ -30,9 +30,9 @@ point to the code under test:
 - Test names are sentences that say what the code does:
   `returns the entity formatted`, not `test read`.
 
-## Wrappers and binaries
+## Wrappers and bins
 
-Plain wrappers only forward `"$@"`. Binaries only parse the arguments with
+Plain wrappers only forward `"$@"`. Bins only parse the arguments with
 `minimist`, call the module and print the result. Neither holds logic, so
 neither has a test. Their behavior is covered through the module they call.
 
