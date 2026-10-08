@@ -125,6 +125,8 @@ compdef _make-targets \
 # 🤖 AI {{{
 compdef _plans \
   ralph
+compdef _skills-allowlist-add \
+  skills-allowlist-add
 # }}}
 # 🖼️ Images {{{
 compdef _image-resize img-resize

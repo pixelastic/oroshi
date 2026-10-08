@@ -1,0 +1,19 @@
+# Suggest the commands not yet in the Claude Code skills allowlist
+# Usage:
+# $ complete-skills-allowlist-add
+setopt local_options err_return
+local allowlistFile=~/.oroshi/tools/ai/claude/config/hooks/allow-list.json
+
+local candidates=(${(f)"$(ctrl-b --source)"})
+
+# Without an allowlist, every candidate is suggested
+local allowed=()
+[[ -f "$allowlistFile" ]] && allowed=(${(f)"$(jq --raw-output '.[]' "$allowlistFile")"})
+
+# Exact match only: `apt list` does not hide `apt`
+local suggestions=(${candidates:|allowed})
+
+# Nothing to suggest
+(( $#suggestions == 0 )) && return 0
+
+print -l -- $suggestions

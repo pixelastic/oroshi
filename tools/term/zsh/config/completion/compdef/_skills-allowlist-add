@@ -1,0 +1,12 @@
+#compdef
+
+# Suggest the commands not yet in the skills allowlist
+function _skills-allowlist-add() {
+  colors-load-definitions
+  icons-load-definitions
+
+  local suggestions=(${(f)"$(complete-skills-allowlist-add)"})
+  local label=" $ICONS[completion-commands] Commands "
+  local header="$(completion-header ai gray-2 "$label")"
+  _describe -V "$header" suggestions
+}
