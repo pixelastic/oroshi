@@ -107,7 +107,7 @@ __ = {
 
 ### Test
 
-The test covers the module only. It stubs `callApi` through `__` and mostly
+The test covers the module only. It mocks `callApi` through `__` and mostly
 checks two things:
 - Given a specific id (or object), the module calls `callApi` with the right path and options.
 - The returned value is the response of the API, passed through `formatEntity`.

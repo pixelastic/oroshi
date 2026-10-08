@@ -82,7 +82,7 @@ table $output
 `list` has a bats test, because `table` aligns the columns
 and the colors depend on the terminal.
 
-The test stubs `list-raw` with canned lines, and covers:
+The test mocks `list-raw` with canned lines, and covers:
 - The flags are passed to `list-raw` as received.
 - The rows match the raw lines, with aligned columns.
 - An empty listing prints nothing and exits with zero.

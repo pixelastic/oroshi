@@ -15,6 +15,7 @@ humans and agents can guess how any service behaves.
 - [documentation.md](documentation.md) — How commands are documented
 - [arguments.md](arguments.md) — How a command receives its arguments: positional or named, flag names, content, limit and accounts.
 - [output.md](output.md) — What a command prints: the raw format, JSON, streams, and the `# Usage:` and `# Fields:` headers.
+- [tests.md](tests.md) — How API helpers are tested: what each layer covers, how `__` and `getConfig` are mocked, fixtures, and the `list` bats test.
 - [commands/README.md](commands/README.md) — The table of all commands, and the service-specific verbs.
 - [commands/list-raw.md](commands/list-raw.md) — Print the entities of a service as plain lines, one per line, for agents and scripts to parse.
 - [commands/list.md](commands/list.md) — Print the entities of a service as a colored table, for humans to read.

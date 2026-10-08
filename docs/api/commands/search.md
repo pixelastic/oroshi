@@ -126,7 +126,7 @@ __ = {
 
 ### Test
 
-The test covers the module only. It stubs `callApi` through `__` and has two
+The test covers the module only. It mocks `callApi` through `__` and has two
 parts:
 
 - Assert that the options passed are correctly transformed into the right API call

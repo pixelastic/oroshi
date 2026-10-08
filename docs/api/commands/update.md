@@ -120,7 +120,7 @@ __ = {
 
 ### Test
 
-The vitest test covers the module only. It stubs `callApi` through `__` and
+The vitest test covers the module only. It mocks `callApi` through `__` and
 mostly checks three things:
 - Given an id and some fields, the module calls `callApi` with the right method,
   path and body.

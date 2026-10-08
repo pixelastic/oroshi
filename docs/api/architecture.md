@@ -122,7 +122,7 @@ easily understand what it represent.
 - Optionally, we may format/clean it to make it easier to consume by the other scripts.
 - Having one central formatting method ensure all helpers deal with the same
 shape of the data.
-- Other modules call it through `__` (`__.formatEntity()`), so tests stub it.
+- Other modules call it through `__` (`__.formatEntity()`), so tests mock it.
 
 ## Accounts
 
