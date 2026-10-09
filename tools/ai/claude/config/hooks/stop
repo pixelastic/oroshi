@@ -12,6 +12,10 @@ local hasRunningSubagent="$(printf '%s\n' "$stdinData" \
   | jq -r 'any(.background_tasks[]?; .type == "subagent")')"
 [[ "$hasRunningSubagent" == "true" ]] && exit 0
 
+# Stay silent between issues of an auto ralph chain
+local ralphMode="$(ralph-mode 2>/dev/null)"
+[[ "$ralphMode" == "auto" ]] && exit 0
+
 # Notify without sound when disabled or empty
 if [[ "${OROSHI_CLAUDE_STOP_SOUND}" == "no" || "${OROSHI_CLAUDE_STOP_SOUND}" == "" ]]; then
   kitty-notify --sound no

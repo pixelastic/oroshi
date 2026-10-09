@@ -125,3 +125,47 @@ make_transcript() {
   [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound claude-stop-fast.mp3" ]]
 }
+
+@test "does not notify when the ralph session mode is auto" {
+  ralph-mode() { printf 'auto\n'; }
+  bats_mock ralph-mode
+  export OROSHI_CLAUDE_STOP_SOUND="auto"
+
+  run_stop '{"transcript_path":"/some/path.jsonl"}'
+
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/kitty-notify-args" ]]
+}
+
+@test "notifies when the ralph session mode is single" {
+  ralph-mode() { printf 'single\n'; }
+  bats_mock ralph-mode
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+
+  run_stop '{"transcript_path":"/some/path.jsonl"}'
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound no" ]]
+}
+
+@test "notifies when no ralph session runs" {
+  ralph-mode() { :; }
+  bats_mock ralph-mode
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+
+  run_stop '{"transcript_path":"/some/path.jsonl"}'
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound no" ]]
+}
+
+@test "notifies when ralph-mode fails outside a plan" {
+  ralph-mode() { return 1; }
+  bats_mock ralph-mode
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+
+  run_stop '{"transcript_path":"/some/path.jsonl"}'
+
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/kitty-notify-args")" = "--sound no" ]]
+}
