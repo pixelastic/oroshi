@@ -5,11 +5,13 @@
 # $ js-test ./path/to/dir/                     # Run all tests in a directory
 # $ js-test module.js __tests__/module.js      # Mixed inputs (deduplicated)
 # $ js-test --fail-fast ./path/to/dir/         # Stop at the first failing test
-setopt local_options err_return
+# $ js-test --token-saving ./path/to/dir/      # Show only failures, or "All tests passed."
+setopt local_options err_return extended_glob
 
-zparseopts -E -D -fail-fast=flagFailFast
+zparseopts -E -D -fail-fast=flagFailFast -token-saving=flagTokenSaving
 
 local isFailFast=${#flagFailFast}
+local isTokenSaving=${#flagTokenSaving}
 
 local scriptDirectory="${functions_source[$0]:A:h}"
 source "$scriptDirectory/__lib/vitest-helpers.zsh"
@@ -29,4 +31,31 @@ local vitestBin="$(__vitest-bin "$yarnRoot")"
 local vitestArgs=(run)
 [[ $isFailFast == 1 ]] && vitestArgs+=(--bail 1)
 
-(cd "$yarnRoot" && "$vitestBin" "${vitestArgs[@]}" "${testFiles[@]}")
+# Not token saving: run vitest as is
+if [[ $isTokenSaving == 0 ]]; then
+  (cd "$yarnRoot" && "$vitestBin" "${vitestArgs[@]}" "${testFiles[@]}")
+  return $?
+fi
+
+# Token saving: the dot reporter replaces the per-file lines.
+# NO_COLOR and FORCE_COLOR=0 keep ANSI codes (FORCE_COLOR under yarn) from breaking the line filter below.
+vitestArgs+=(--reporter=dot)
+
+local exitCode=0
+local output=""
+output="$(cd "$yarnRoot" && NO_COLOR=1 FORCE_COLOR=0 "$vitestBin" "${vitestArgs[@]}" "${testFiles[@]}" 2>&1)" || exitCode=$?
+
+# Every test passed: nothing worth printing
+if [[ $exitCode -eq 0 ]]; then
+  print "All tests passed."
+  return 0
+fi
+
+# Console output of passing tests and the dots come first; failures start at the first "⎯⎯ Failed … ⎯⎯" banner.
+# Drop the timing lines at the end.
+local -a lines=("${(@f)output}")
+local firstBanner=${lines[(i)*⎯⎯ [A-Z]*⎯⎯*]}
+lines=("${(@)lines[firstBanner,-1]}")
+lines=("${(@)lines:#[ ]#(Start at|Duration)[ ]*}")
+print -l -- "${lines[@]}"
+return $exitCode

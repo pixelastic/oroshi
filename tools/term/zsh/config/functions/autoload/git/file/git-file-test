@@ -1,7 +1,16 @@
 # Run ZSH, Vitest, Go, and pytest tests for all dirty files that have an associated test
 # Usage:
-# $ git-file-test
+# $ git-file-test                  # Run tests for all dirty files
+# $ git-file-test --token-saving   # Forward --token-saving to every {lang}-test
 setopt local_options err_return
+
+zparseopts -E -D -- -token-saving=flagTokenSaving
+
+# Forwarded to every {lang}-test
+local isTokenSaving=${#flagTokenSaving}
+local tokenSavingArgs=()
+[[ $isTokenSaving == 1 ]] && tokenSavingArgs+=(--token-saving)
+
 local gitRoot="$(git-directory-root)"
 local rawFiles="$(git-file-list-dirty-raw)"
 
@@ -44,21 +53,21 @@ done
 
 # Run Vitest for dirty JS source files that have associated tests
 if [[ ${#jsPaths[@]} -gt 0 ]]; then
-  js-test "${jsPaths[@]}"
+  js-test "${tokenSavingArgs[@]}" "${jsPaths[@]}"
 fi
 
 # Run pytest for dirty Python source files (exits 0 silently if no related tests exist)
 if [[ ${#pythonPaths[@]} -gt 0 ]]; then
-  python-test "${pythonPaths[@]}"
+  python-test "${tokenSavingArgs[@]}" "${pythonPaths[@]}"
 fi
 
 # Run go test for dirty Go source files that have associated tests
 if [[ ${#goPaths[@]} -gt 0 ]]; then
-  go-test "${goPaths[@]}"
+  go-test "${tokenSavingArgs[@]}" "${goPaths[@]}"
 fi
 
 # No ZSH tests found for any dirty file
 [[ ${#zshPaths[@]} -eq 0 ]] && return 0
 
 # Run bats for dirty ZSH and BATS files that have associated tests
-zsh-test "${zshPaths[@]}"
+zsh-test "${tokenSavingArgs[@]}" "${zshPaths[@]}"

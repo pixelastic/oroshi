@@ -340,3 +340,82 @@ setup() {
   [[ "$output" = "" ]]
 }
 
+# ─── TOKEN SAVING ────────────────────────────────────────────────────────────
+
+@test "--token-saving forwards the flag to zsh-test" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  bats_git add script.zsh
+  bats_git commit --quiet -m "add script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
+
+  zsh-test-path() { echo "path"; }
+  zsh-test() { echo "$@" > "$BATS_TMP_DIR/calls.txt"; }
+  bats_mock zsh-test-path zsh-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test --token-saving"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" = "--token-saving $BATS_GIT_DIR/script.zsh" ]]
+}
+
+@test "--token-saving forwards the flag to go-test" {
+  echo 'package main' > "$BATS_GIT_DIR/main.go"
+  bats_git add main.go
+  bats_git commit --quiet -m "add main.go"
+  echo 'changed' >> "$BATS_GIT_DIR/main.go"
+
+  zsh-test-path() { printf ''; }
+  go-test-path() { echo "$BATS_GIT_DIR/main_test.go"; }
+  go-test() { echo "$@" > "$BATS_TMP_DIR/calls.txt"; }
+  bats_mock zsh-test-path go-test-path go-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test --token-saving"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" = "--token-saving $BATS_GIT_DIR/main.go" ]]
+}
+
+@test "--token-saving forwards the flag to python-test" {
+  echo 'x = 1' > "$BATS_GIT_DIR/module.py"
+  bats_git add module.py
+  bats_git commit --quiet -m "add module.py"
+  echo 'changed' >> "$BATS_GIT_DIR/module.py"
+
+  zsh-test-path() { printf ''; }
+  python-test-path() { echo "$BATS_GIT_DIR/__tests__/test_module.py"; }
+  python-test() { echo "$@" > "$BATS_TMP_DIR/calls.txt"; }
+  bats_mock zsh-test-path python-test-path python-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test --token-saving"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" = "--token-saving $BATS_GIT_DIR/__tests__/test_module.py" ]]
+}
+
+@test "--token-saving forwards the flag to js-test" {
+  echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
+  bats_git add script.js
+  bats_git commit --quiet -m "add script.js"
+  echo 'changed' >> "$BATS_GIT_DIR/script.js"
+
+  zsh-test-path() { printf ''; }
+  js-test-path() { echo "$BATS_GIT_DIR/__tests__/script.js"; }
+  js-test() { echo "$@" > "$BATS_TMP_DIR/calls.txt"; }
+  bats_mock zsh-test-path js-test-path js-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test --token-saving"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" = "--token-saving $BATS_GIT_DIR/__tests__/script.js" ]]
+}
+
+@test "does not forward --token-saving without the flag" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  bats_git add script.zsh
+  bats_git commit --quiet -m "add script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
+
+  zsh-test-path() { echo "path"; }
+  zsh-test() { echo "$@" > "$BATS_TMP_DIR/calls.txt"; }
+  bats_mock zsh-test-path zsh-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" = "$BATS_GIT_DIR/script.zsh" ]]
+}

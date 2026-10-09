@@ -1,5 +1,7 @@
 {
+  "git-file-test": "git-file-test-token-saving",
   "go-test": "go-test-token-saving",
+  "js-test": "js-test-token-saving",
   "python-test": "python-test-token-saving",
   "zsh-test": "zsh-test-token-saving"
 }

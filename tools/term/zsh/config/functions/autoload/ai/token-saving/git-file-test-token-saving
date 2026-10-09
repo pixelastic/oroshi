@@ -1,0 +1,13 @@
+# Run git-file-test with output reduced to failures only
+# Set OROSHI_DISABLE_TOKEN_SAVING=1 to run git-file-test unchanged
+# Usage:
+# $ git-file-test-token-saving   # Same arguments as git-file-test
+setopt local_options err_return
+
+# Token saving disabled: run the original command unchanged
+if [[ "$OROSHI_DISABLE_TOKEN_SAVING" == "1" ]]; then
+  git-file-test "$@"
+  return $?
+fi
+
+git-file-test --token-saving "$@"

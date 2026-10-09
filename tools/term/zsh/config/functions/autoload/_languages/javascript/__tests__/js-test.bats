@@ -211,3 +211,80 @@ JS
   [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/calls.txt")" == *"vitest run --bail 1 $BATS_TMP_DIR/src/__tests__/foo.js" ]]
 }
+
+# ─── TOKEN SAVING ─────────────────────────────────────────────────────────────
+
+# Write a test file holding one passing test that logs to the console
+write_passing_test() {
+  cat > "$BATS_TMP_DIR/src/__tests__/passing.js" <<'JS'
+import { test } from 'vitest';
+test('passes quietly', () => { console.log('passing noise'); });
+JS
+}
+
+# Write a test file holding one failing test
+write_failing_test() {
+  cat > "$BATS_TMP_DIR/src/__tests__/failing.js" <<'JS'
+import { test } from 'vitest';
+test('first failure', () => { throw new Error('first'); });
+JS
+}
+
+@test "--token-saving prints only 'All tests passed.' when every test passes" {
+  use_real_vitest
+  write_passing_test
+
+  bats_run_zsh "js-test --token-saving $BATS_TMP_DIR/src/__tests__/passing.js"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "All tests passed." ]]
+}
+
+@test "--token-saving shows failing tests and their errors" {
+  use_real_vitest
+  write_failing_test
+
+  bats_run_zsh "js-test --token-saving $BATS_TMP_DIR/src/__tests__/failing.js"
+  [[ "$output" == *"first failure"* ]]
+  [[ "$output" == *"Error: first"* ]]
+}
+
+@test "--token-saving hides passing tests" {
+  use_real_vitest
+  write_passing_test
+  write_failing_test
+
+  bats_run_zsh "js-test --token-saving $BATS_TMP_DIR/src/__tests__/passing.js $BATS_TMP_DIR/src/__tests__/failing.js"
+  [[ "$output" == *"first failure"* ]]
+  [[ "$output" != *"passes quietly"* ]]
+  [[ "$output" != *"passing noise"* ]]
+  [[ "$output" != *"RUN "* ]]
+  [[ "$output" != *"Duration"* ]]
+}
+
+@test "--token-saving exits non-zero when a test fails" {
+  use_real_vitest
+  write_failing_test
+
+  bats_run_zsh "js-test --token-saving $BATS_TMP_DIR/src/__tests__/failing.js"
+  [[ "$status" -ne 0 ]]
+}
+
+@test "--token-saving keeps --fail-fast" {
+  use_real_vitest
+  write_failing_tests
+
+  bats_run_zsh "js-test --token-saving --fail-fast $BATS_TMP_DIR/src/__tests__/failing.js"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"> first failure"* ]]
+  [[ "$output" != *"> second failure"* ]]
+}
+
+@test "prints the full output without --token-saving" {
+  use_real_vitest
+  write_passing_test
+
+  bats_run_zsh "NO_COLOR=1 js-test $BATS_TMP_DIR/src/__tests__/passing.js"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"passing noise"* ]]
+  [[ "$output" == *"Duration"* ]]
+}
