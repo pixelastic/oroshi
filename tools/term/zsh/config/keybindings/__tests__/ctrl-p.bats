@@ -60,3 +60,12 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" = "src/a.ts 'my file.pdf' " ]]
 }
+
+@test "widget: dispatches to fzf-skills-allowlist-add when last word is skala" {
+  fzf-skills-allowlist-add() { echo "jq"; }
+  bats_mock fzf-skills-allowlist-add
+
+  bats_run_zsh "${sourcePrefix}; LBUFFER='skala '; oroshi-ctrl-p-widget; echo \$LBUFFER"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "skala jq " ]]
+}

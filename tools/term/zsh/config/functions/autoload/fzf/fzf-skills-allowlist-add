@@ -1,0 +1,21 @@
+# Fuzzy pick commands to add to the skills allowlist
+# Usage:
+# $ fzf-skills-allowlist-add                  # Interactive multi-select
+# $ fzf-skills-allowlist-add --source         # Print non-allowlisted commands
+# $ fzf-skills-allowlist-add --options        # Print FZF options (one per line)
+# $ fzf-skills-allowlist-add --postprocess    # Read selection from stdin, print command names
+setopt local_options err_return
+source "${functions_source[$0]:A:h}/__lib/init.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-options-prompt-label.zsh"
+
+function fzf-source() {
+  complete-skills-allowlist-add
+}
+
+function fzf-options() {
+  echo "--prompt=$(fzf-options-prompt-label fzf-commands Commands yellow amber-dark)"
+  echo "--preview=bin-zsh ctrl-b --preview {}"
+  echo "--ansi"
+}
+
+fzf-dispatch

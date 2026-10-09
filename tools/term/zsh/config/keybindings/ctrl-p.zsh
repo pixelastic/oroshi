@@ -34,6 +34,7 @@ function oroshi-ctrl-p-widget() {
     zsh-lint fzf-zsh-files
     zsh-fix fzf-zsh-files
     zsh-test fzf-zsh-tests
+    skala fzf-skills-allowlist-add
   )
 
   # Dispatch to context-aware picker based on last word in buffer
