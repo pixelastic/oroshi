@@ -17,6 +17,7 @@ recB▮Lyon Meetup▮▮
 - The **id always comes first**
 - An empty field leaves an empty column: `recB▮Lyon▮▮` has two empty columns.
 - A newline inside a value becomes a space.
+- An empty listing prints one empty line.
 
 In most cases, `list-raw` sits on top of `search`: it passes the flags it
 receives to `search`, gets the JSON back and turns it into lines.

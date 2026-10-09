@@ -81,7 +81,7 @@ _Avoid_: common, utils
 ## Verbs
 
 The closed vocabulary of commands. A service implements only the verbs it
-needs. See [commands/README.md](commands/README.md) for the table with links.
+needs. See [reference/commands/README.md](reference/commands/README.md) for the table with links.
 
 **`list`**:
 Print the entities as a colored table, for humans.

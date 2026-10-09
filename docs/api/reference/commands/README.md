@@ -30,4 +30,4 @@ A service may also have needs of its own, with its own verbs: `activate` or
 table.
 
 The words used here (service, entity, command, verb) are defined in the
-[glossary](../GLOSSARY.md).
+[glossary](../../GLOSSARY.md).

@@ -37,7 +37,7 @@ Plain wrappers only forward `"$@"`. Bins only parse the arguments with
 neither has a test. Their behavior is covered through the module they call.
 
 `list` is the only wrapper with logic: it calls `list-raw` and builds a table.
-It is the only command with a bats test. See [`list`](commands/list.md#test).
+It is the only command with a bats test. See [`list`](reference/commands/list.md#test).
 
 ## vitest
 
