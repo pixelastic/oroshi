@@ -80,8 +80,8 @@ create a new plan by invoking the `/plan` skill, passing approved findings as co
 
 **If `currentWave` is `rewrite` or `restructure`:**
 update the existing plan previously created by `/plan`.
-Read the plan's `state.json`, find the highest issue `id`, create new issue
-files starting from the next id, and append entries to `state.json`.
+Read the plan's `state.json`, find the highest issue `id` in `.issues[]`, create new issue
+files starting from the next id, and append entries to `.issues[]`.
 
 For each finding, apply the test gate:
 - If tests exist for the affected code → create the refactoring issue.
@@ -101,7 +101,7 @@ Write each refactoring issue using [references/refactoring-issue.template.md](re
 
 Read the checkpoint template for `currentWave`: `references/checkpoint-<currentWave>.template.md`
 
-Write the checkpoint as an issue file, add it to state.json after this wave's issues.
+Write the checkpoint as an issue file, add it to `.issues[]` in state.json after this wave's issues.
 Replace `<next-wave>` in the template with `nextWave` from Step 1.
 
 ---

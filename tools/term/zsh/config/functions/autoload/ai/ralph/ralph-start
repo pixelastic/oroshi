@@ -21,8 +21,10 @@ fi
 
 # Find first eligible issue: not done, all blockers done, sorted by id
 local issueJson="$(jq '
-  [.[] | select(.done == true) | .id] as $done
-  | [.[] | select(.done == false) | select(.blocked_by | all(. as $b | $done | index($b) != null))]
+  [.issues[] | select(.done == true) | .id] as $done
+  | [.issues[]
+      | select(.done == false)
+      | select(.blocked_by | all(. as $b | $done | index($b) != null))]
   | sort_by(.id)
   | .[0]
 ' "$dir/state.json" 2>/dev/null)"

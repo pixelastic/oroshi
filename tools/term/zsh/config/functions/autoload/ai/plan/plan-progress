@@ -11,12 +11,12 @@ local dir="${1:-$(plan-directory)}"
 # state.json absent → not a valid plan directory
 [[ ! -f "$dir/state.json" ]] && return 1
 
-local total="$(jq 'if type == "array" then length else error end' "$dir/state.json" 2>/dev/null)"
-# jq failed or non-array → malformed state.json
+local total="$(jq 'if (type == "object" and (.issues | type) == "array") then (.issues | length) else error end' "$dir/state.json" 2>/dev/null)"
+# jq failed or no .issues array → malformed state.json
 [[ "$total" == "" ]] && return 1
-# Empty array → no issues to track
+# Empty issues → nothing to track
 [[ ! "$total" -gt 0 ]] && return 1
 
-local done="$(jq '[.[] | select(.done == true)] | length' "$dir/state.json")"
+local done="$(jq '[.issues[] | select(.done == true)] | length' "$dir/state.json")"
 
 print "${done}▮${total}"

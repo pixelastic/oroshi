@@ -7,9 +7,9 @@ setup() {
 }
 
 @test "outputs status:ready with first eligible issue" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.status' 'ready'
@@ -17,30 +17,30 @@ setup() {
 }
 
 @test "picks lowest id when multiple eligible" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":true, "blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]},
     {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.id' '02'
 }
 
 @test "skips issues with unresolved blockers" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":["01"]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.id' '01'
 }
 
 @test "all paths in output are absolute" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json_glob '.issue' '/*'
@@ -51,29 +51,29 @@ setup() {
 }
 
 @test "issue resolves relative path from plan dir" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.issue' "$PLAN_DIR/issues/01-foo.md"
 }
 
 @test "outputs status:finished when all issues complete" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":true,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":true,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.status' 'finished'
 }
 
 @test "outputs status:deadlocked when all issues are blocked" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":["02"]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":["01"]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.status' 'deadlocked'
@@ -91,54 +91,54 @@ setup() {
 }
 
 @test "picks lowest id even when state.json is out of order" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]},
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.id' '01'
 }
 
 @test "outputs currentIssueCount 1 when no issue is done" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.currentIssueCount' '1'
 }
 
 @test "outputs currentIssueCount as done count plus one when some issues are done" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":true, "blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":true, "blocked_by":[]},
     {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.currentIssueCount' '3'
 }
 
 @test "outputs totalIssueCount as the number of issues in state.json" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":true, "blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]},
     {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.totalIssueCount' '3'
 }
 
 @test "outputs correct counts when state.json is out of order" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]},
     {"id":"01","issue":"issues/01-foo.md","done":true, "blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.currentIssueCount' '2'
@@ -146,9 +146,9 @@ setup() {
 }
 
 @test "finished output has no count fields" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":true,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.currentIssueCount' 'null'
@@ -156,12 +156,18 @@ setup() {
 }
 
 @test "deadlocked output has no count fields" {
-  printf '[
+  printf '{"branchedAt":"abc","issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":["02"]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":["01"]}
-  ]' >"$PLAN_DIR/state.json"
+  ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.currentIssueCount' 'null'
   expect_json '.totalIssueCount' 'null'
+}
+
+@test "exits 1 on a bare array" {
+  printf '[{"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}]' >"$PLAN_DIR/state.json"
+  bats_run_zsh "ralph-start $PLAN_DIR"
+  [[ "$status" -eq 1 ]]
 }

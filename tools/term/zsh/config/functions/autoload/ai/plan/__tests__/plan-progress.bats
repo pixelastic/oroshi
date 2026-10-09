@@ -7,35 +7,35 @@ setup() {
 }
 
 @test "outputs done▮total for mixed done values" {
-  printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]},{"id":"03","issue":"i.md","done":false,"blocked_by":[]}]' > "$PLAN_DIR/state.json"
+  printf '{"branchedAt":"abc","issues":[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]},{"id":"03","issue":"i.md","done":false,"blocked_by":[]}]}' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "1▮3" ]]
 }
 
 @test "counts only done==true strictly (null and string excluded)" {
-  printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]},{"id":"03","issue":"i.md","done":null,"blocked_by":[]},{"id":"04","issue":"i.md","done":"true","blocked_by":[]}]' > "$PLAN_DIR/state.json"
+  printf '{"branchedAt":"abc","issues":[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]},{"id":"03","issue":"i.md","done":null,"blocked_by":[]},{"id":"04","issue":"i.md","done":"true","blocked_by":[]}]}' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "1▮4" ]]
 }
 
 @test "outputs done▮total with all done true" {
-  printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":true,"blocked_by":[]}]' > "$PLAN_DIR/state.json"
+  printf '{"branchedAt":"abc","issues":[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":true,"blocked_by":[]}]}' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "2▮2" ]]
 }
 
 @test "outputs done▮total with all done false" {
-  printf '[{"id":"01","issue":"i.md","done":false,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]}]' > "$PLAN_DIR/state.json"
+  printf '{"branchedAt":"abc","issues":[{"id":"01","issue":"i.md","done":false,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]}]}' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "0▮2" ]]
 }
 
-@test "exits 1 for empty array" {
-  printf '[]' > "$PLAN_DIR/state.json"
+@test "exits 1 when issues is empty" {
+  printf '{"branchedAt":"abc","issues":[]}' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"
   [[ "$status" -eq 1 ]]
 }
@@ -55,7 +55,7 @@ setup() {
   bats_plans_dir
   local planDirectory="$MOCK_OROSHI_PLANS_DIR/repo--feat_no-arg"
   mkdir -p "$planDirectory"
-  printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]}]' > "$planDirectory/state.json"
+  printf '{"branchedAt":"abc","issues":[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]}]}' > "$planDirectory/state.json"
 
   plan-directory() { echo "$BATS_TMP_DIR/plans/repo--feat_no-arg"; }
   bats_mock plan-directory
@@ -63,4 +63,10 @@ setup() {
   bats_run_zsh "plan-progress"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "1▮2" ]]
+}
+
+@test "exits 1 on a bare array" {
+  printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]}]' > "$PLAN_DIR/state.json"
+  bats_run_zsh "plan-progress $PLAN_DIR"
+  [[ "$status" -eq 1 ]]
 }

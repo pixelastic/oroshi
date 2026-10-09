@@ -67,7 +67,7 @@ writing issue files once the user approves the breakdown.
 **Exit criterion:** All issue files, `state.json`, and `GUIDANCE.md` created in `<planDir>`.
 
 - Create one issue per slice following [the issue template](./templates/issues-XX-slug.template.md)
-- Create a [state.json](./templates/state-json.template.md) containing all issues and their dependencies
+- Fill the `.issues[]` array of `state.json` (created by `plan-start`) following [state.json](./templates/state-json.template.md), with all issues and their dependencies
 - Create a [GUIDANCE.md](./templates/GUIDANCE.template.md) to guide subsequent agents
 
 ---
@@ -88,6 +88,6 @@ Suggested type is `plan(<slug>)` where slug is the plan directory name.
 - [ ] Each issue contains "What to build" and "Acceptance criteria"
 - [ ] Each issue has considered its Behavioral Tests
 - [ ] Each issue has considered its Scaffolding Tests
-- [ ] `state.json` written — all issues with `done: false`
+- [ ] `state.json` `.issues[]` filled — all issues with `done: false`, `branchedAt` untouched
 - [ ] `GUIDANCE.md` written — Guidance + Discoveries sections present
 - [ ] `COMMIT_HINT.md` written with `plan(<slug>)` type

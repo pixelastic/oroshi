@@ -1,7 +1,9 @@
 # Display the current commit hash
 # Usage
-# $ git-commit-current     # Current commit hash
+# $ git-commit-current              # Current commit hash
+# $ git-commit-current /path/repo   # Current commit hash of repo at path
 setopt local_options err_return
-git log \
+local repoDir="${1:-$PWD}"
+git -C "$repoDir" log \
   --format='%h' \
   --max-count 1

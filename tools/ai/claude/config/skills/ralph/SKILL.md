@@ -115,8 +115,8 @@ If you have any `## Scaffolding Tests` from the issue:
 
 All paths of the following files are from `ralph-start` output.
 
-1. **Update `state.json`**: find the issue
-   entry by `id`, set `done: true`, add `recap` — a short one-sentence summary
+1. **Update `state.json`**: find the entry in `.issues[]`
+   by `id`, set `done: true`, add `recap` — a short one-sentence summary
    of what was done.
 
 2. **Append to `GUIDANCE.md`** under `## Discoveries`:

@@ -16,7 +16,7 @@ setup() {
 
 @test "sets done=true in loop mode with open issues" {
   jq -n '{"mode":"loop","done":false,"prd_done":false}' > "$PRD_DIR/ralph.json"
-  printf '[{"id":"1","issue":"foo.md","done":false,"blocked_by":[]}]' > "$PRD_DIR/state.json"
+  printf '{"branchedAt":"abc","issues":[{"id":"1","issue":"foo.md","done":false,"blocked_by":[]}]}' > "$PRD_DIR/state.json"
   bats_run_zsh "ralph-end $PRD_DIR"
   [[ "$status" -eq 0 ]]
   [[ "$(jq -r '.done' "$PRD_DIR/ralph.json")" = "true" ]]
@@ -25,7 +25,7 @@ setup() {
 
 @test "sets done=true and prd_done=true in loop mode when all issues complete" {
   jq -n '{"mode":"loop","done":false,"prd_done":false}' > "$PRD_DIR/ralph.json"
-  printf '[{"id":"1","issue":"foo.md","done":true,"blocked_by":[]}]' > "$PRD_DIR/state.json"
+  printf '{"branchedAt":"abc","issues":[{"id":"1","issue":"foo.md","done":true,"blocked_by":[]}]}' > "$PRD_DIR/state.json"
   bats_run_zsh "ralph-end $PRD_DIR"
   [[ "$status" -eq 0 ]]
   [[ "$(jq -r '.done' "$PRD_DIR/ralph.json")" = "true" ]]
@@ -51,7 +51,7 @@ setup() {
 
 @test "does not modify state.json" {
   jq -n '{"mode":"loop","done":false,"prd_done":false}' > "$PRD_DIR/ralph.json"
-  printf '[{"id":"1","issue":"foo.md","done":true,"blocked_by":[]}]' > "$PRD_DIR/state.json"
+  printf '{"branchedAt":"abc","issues":[{"id":"1","issue":"foo.md","done":true,"blocked_by":[]}]}' > "$PRD_DIR/state.json"
   local before="$(cat "$PRD_DIR/state.json")"
   bats_run_zsh "ralph-end $PRD_DIR"
   [[ "$status" -eq 0 ]]

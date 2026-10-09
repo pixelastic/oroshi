@@ -13,7 +13,7 @@ setup() {
 }
 
 @test "runs exactly N iterations when --max N is given" {
-  echo '[{"id":"1","done":false,"blocked_by":[]}]' >"$PRD_DIR/state.json"
+  echo '{"branchedAt":"abc","issues":[{"id":"1","done":false,"blocked_by":[]}]}' >"$PRD_DIR/state.json"
 
   git-directory-root() { echo "$GIT_REPO"; }
   claude() { echo "change $$" >>"$GIT_REPO/output.txt"; }
@@ -29,7 +29,7 @@ setup() {
 }
 
 @test "exits early when prd_done is set after an iteration" {
-  echo '[{"id":"1","done":true,"blocked_by":[]}]' >"$PRD_DIR/state.json"
+  echo '{"branchedAt":"abc","issues":[{"id":"1","done":true,"blocked_by":[]}]}' >"$PRD_DIR/state.json"
 
   git-directory-root() { echo "$GIT_REPO"; }
   claude() {
@@ -49,7 +49,7 @@ setup() {
 }
 
 @test "stops cleanly on Ctrl+C with no commit" {
-  echo '[{"id":"1","done":false,"blocked_by":[]}]' >"$PRD_DIR/state.json"
+  echo '{"branchedAt":"abc","issues":[{"id":"1","done":false,"blocked_by":[]}]}' >"$PRD_DIR/state.json"
 
   git-directory-root() { echo "$GIT_REPO"; }
   claude() { return 130; }
@@ -65,7 +65,7 @@ setup() {
 }
 
 @test "ralph.json exists during each iteration and is cleared after all iterations complete" {
-  echo '[{"id":"1","done":false,"blocked_by":[]},{"id":"2","done":false,"blocked_by":[]}]' >"$PRD_DIR/state.json"
+  echo '{"branchedAt":"abc","issues":[{"id":"1","done":false,"blocked_by":[]},{"id":"2","done":false,"blocked_by":[]}]}' >"$PRD_DIR/state.json"
 
   git-directory-root() { echo "$GIT_REPO"; }
   claude() {
