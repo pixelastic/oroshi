@@ -35,7 +35,7 @@ Follow these steps, in order, to add the API helper of a new service:
 3. Choose the verbs each entity needs, and the arguments of each command
    ([reference/commands/README.md](reference/commands/README.md), [arguments.md](arguments.md)).
 4. Implement the commands in this order, copying the template of each verb:
-   - [`search`](reference/commands/search.md)
+   - [`search`](reference/commands/search.md), first: `list-raw` sits on top of it
    - [`list-raw`](reference/commands/list-raw.md)
    - [`list`](reference/commands/list.md)
    - [`read`](reference/commands/read.md)

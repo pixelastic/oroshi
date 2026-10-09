@@ -14,20 +14,22 @@ recB▮Lyon Meetup▮▮
 
 - One line per entity, fields separated by `▮`.
 - The values of a multi-value field are separated by `▯`.
-- The **id always comes first**
+- The **id always comes first**.
 - An empty field leaves an empty column: `recB▮Lyon▮▮` has two empty columns.
 - A newline inside a value becomes a space.
+- The module removes `▮` from the values, so they cannot break the columns.
 - An empty listing prints one empty line.
 
-In most cases, `list-raw` sits on top of `search`: it passes the flags it
-receives to `search`, gets the JSON back and turns it into lines.
+`list-raw` sits on top of [`search`](search.md): it passes its flags to
+`search`, gets the JSON back and turns it into lines.
 
-If `search` is not suitable, `list-raw` can call better-suited endpoints
-instead.
+If the service has no endpoint to search the entities, `search` is skipped.
+`list-raw` then calls `callApi` directly, with the most realistic call.
 
 ## Arguments
 
-`list-raw` accepts the same flags as `search`, and passes them through.
+`list-raw` accepts the same flags as [`search`](search.md), and passes them
+through.
 
 ## Template
 
@@ -80,9 +82,11 @@ as one multi-line string.
 
 `<service>/__lib/<entity>/<entity>ListRaw.js`:
 
+#### On top of `search`
+
 ```javascript
 import { _ } from 'golgoth';
-import { entitySearch } from './entitySearch.js';
+import { entitySearch } from './<entity>Search.js';
 
 export let __;
 
@@ -111,6 +115,43 @@ __ = {
     return [entity.id, entity.name, entity.date].join('▮');
   },
   entitySearch,
+};
+```
+
+#### Direct
+
+```javascript
+import { _ } from 'golgoth';
+import { callApi } from '../callApi.js';
+
+export let __;
+
+/**
+ * List the entities as raw lines, one per entity
+ * @param {object} options - The flags accepted by the command
+ * @returns {Promise<string>} Raw lines, joined with a newline
+ */
+export async function entityListRaw(options) {
+  // Transform options into API parameters
+
+  // Call the endpoint that returns the entities, paginating up to --limit
+  // (page or cursor, each module paginates itself)
+  const entities = await __.callApi();
+
+  // One line per entity
+  return _.chain(entities).map(__.toLine).join('\n').value();
+}
+
+__ = {
+  /**
+   * Turn one entity of the API response into a raw line
+   * @param {object} entity - Entity as returned by the API
+   * @returns {string} The id first, then the fields, separated by ▮
+   */
+  toLine(entity) {
+    // Apply the raw format rules of the Role section
+  },
+  callApi,
 };
 ```
 

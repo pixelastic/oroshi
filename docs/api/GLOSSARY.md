@@ -92,7 +92,7 @@ Print the entities as `▮`-separated lines, id first, for agents and scripts.
 _Avoid_: `list --raw`, `dump`
 
 **`search`**:
-Find entities across the whole service, as rich JSON.
+Find entities of one type, as rich JSON.
 _Avoid_: `find`, `query`
 
 **`read`**:

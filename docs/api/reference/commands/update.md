@@ -64,7 +64,7 @@ The bin parses the args, calls the module and prints the entity as JSON.
 ```javascript
 // <service>-<entity>-update.js
 import minimist from 'minimist';
-import { entityUpdate } from '../<entity>/entityUpdate.js';
+import { entityUpdate } from '../<entity>/<entity>Update.js';
 
 const args = minimist(process.argv.slice(2));
 // The content is the positional argument (open schema), or the named fields.

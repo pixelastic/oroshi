@@ -31,6 +31,8 @@ data of each entity.
 - Search is always per entity: `<service>-<entity>-search`.
 - If the service only has a global search, `<service>-<entity>-search` runs it
   and filters the results on the type of the entity.
+- `search` is the foundation of [`list-raw`](list-raw.md): implement it first.
+  Skip it only if the service has no endpoint to search the entities.
 
 ## Arguments
 
@@ -114,7 +116,9 @@ export async function entitySearch(options) {
 
   // Transform options into API parameters
 
-  // Call the API, potentially handling pagination
+  // Call the API
+
+  // Paginate up to --limit (page or cursor, each module paginates itself)
 
   // Return the results, each one passed through __.formatEntity
 }
