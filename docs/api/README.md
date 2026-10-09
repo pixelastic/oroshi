@@ -10,7 +10,7 @@ format, so that humans and agents can guess how any service behaves.
 
 ## Detail files
 
-- [GLOSSARY.md](GLOSSARY.md) — The terms used across these docs: service, entity, command, its three layers, focused and composite API, argument kinds, schemas and verbs.
+- [GLOSSARY.md](GLOSSARY.md) — The terms used across these docs: service, entity, command, its three layers, argument kinds, schemas and verbs.
 - [architecture.md](architecture.md) — Where the code lives, how a service is configured and authenticated, and how it fails.
 - [arguments.md](arguments.md) — How a command receives its arguments: positional or named, flag names, content, limit and accounts.
 - [documentation.md](documentation.md) — How commands are documented
@@ -18,7 +18,7 @@ format, so that humans and agents can guess how any service behaves.
 - [reference/commands/README.md](reference/commands/README.md) — The table of all commands, and the service-specific verbs.
 - [reference/commands/list-raw.md](reference/commands/list-raw.md) — Print the entities of a service as plain lines, one per line, for agents and scripts to parse.
 - [reference/commands/list.md](reference/commands/list.md) — Print the entities of a service as a colored table, for humans to read.
-- [reference/commands/search.md](reference/commands/search.md) — Find entities across a whole service and print them as rich JSON.
+- [reference/commands/search.md](reference/commands/search.md) — Find entities of one type and print them as rich JSON.
 - [reference/commands/read.md](reference/commands/read.md) — Take the id of an entity, and print that entity as JSON.
 - [reference/commands/create.md](reference/commands/create.md) — Create an entity, and print it as JSON, like `read` does.
 - [reference/commands/update.md](reference/commands/update.md) — Change some fields of an entity, and print it as JSON, like `read` does.
@@ -29,14 +29,12 @@ format, so that humans and agents can guess how any service behaves.
 Follow these steps, in order, to add the API helper of a new service:
 
 1. Create the workspace of the service: its `package.json`, `getConfig.js` and
-   `callApi.js` ([architecture.md](architecture.md)).
-2. Choose the entities of the service, and decide whether it is a focused or a
-   composite API ([GLOSSARY.md](GLOSSARY.md)).
-3. For each entity, decide whether its schema is fixed or open
+   `callApi.js`, then one folder per entity ([architecture.md](architecture.md)).
+2. For each entity, decide whether its schema is fixed or open
    ([GLOSSARY.md](GLOSSARY.md)).
-4. Choose the verbs each entity needs, and the arguments of each command
+3. Choose the verbs each entity needs, and the arguments of each command
    ([reference/commands/README.md](reference/commands/README.md), [arguments.md](arguments.md)).
-5. Implement the commands in this order, copying the template of each verb:
+4. Implement the commands in this order, copying the template of each verb:
    - [`search`](reference/commands/search.md)
    - [`list-raw`](reference/commands/list-raw.md)
    - [`list`](reference/commands/list.md)
@@ -49,5 +47,5 @@ Follow these steps, in order, to add the API helper of a new service:
    [`list-raw`](reference/commands/list-raw.md#role).
    Each command has its header documented ([documentation.md](documentation.md)).
    Each command is tested ([tests.md](tests.md)).
-6. Define the entities, service verbs and terms of the service in its glossary
+5. Define the entities, custom verbs and terms of the service in its glossary
    ([architecture.md](architecture.md#service-glossary)).

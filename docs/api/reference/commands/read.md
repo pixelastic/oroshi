@@ -23,7 +23,7 @@ fields.
 ## Arguments
 
 The id is always a positional argument.
-Example: `gmail-read {id}`
+Example: `gmail-mail-read {id}`
 
 If the entity needs to be anchored to a specific parent (a folder, a workspace,
 a table, etc) then the anchor is passed as a named argument.

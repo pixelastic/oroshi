@@ -1,6 +1,6 @@
 # `search`
 
-`search` finds entities across a whole service and prints them as a JSON array.
+`search` finds entities of one type and prints them as a JSON array.
 It is the low-level entry point: it accepts many filters and returns the full
 data of each entity.
 
@@ -28,6 +28,9 @@ data of each entity.
 - `search` is the lowest-level way to find information in a service.
 - It returns a JSON array, one element per entity.
 - Each element goes through the `format<Entity>` function of the service.
+- Search is always per entity: `<service>-<entity>-search`.
+- If the service only has a global search, `<service>-<entity>-search` runs it
+  and filters the results on the type of the entity.
 
 ## Arguments
 
@@ -42,11 +45,11 @@ text to look for.
 ```text
 # Example #1: GMail has a query language, but still need an option to limit the
 # number of results
-$ gmail-search "from:alice label:work after:2026/01/01 before:2026/03/31" --limit 10
+$ gmail-mail-search "from:alice label:work after:2026/01/01 before:2026/03/31" --limit 10
 
 # Example #2: Notion has no query language, so the positional argument is the
 # text to search, and additional named arguments configure the search further
-$ notion-search "meetup" --type page --limit 10
+$ notion-page-search "meetup" --limit 10
 ```
 
 

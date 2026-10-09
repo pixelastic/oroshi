@@ -16,13 +16,10 @@ The ZSH wrapper and the bin are just thin proxies without much logic.
 
 All API helpers live in the `api` autoload folder:
 `tools/term/zsh/config/functions/autoload/api/`. It holds one workspace per
-service, plus one shared workspace.
+service.
 
 ```text
 api/
-├── shared/
-│   └── __lib/
-│       └── package.json
 └── <service>/
     ├── __docs/
     │   └── GLOSSARY.md
@@ -37,7 +34,6 @@ api/
         ├── bin/
         │   └── <service>-<entity>-list-raw.js
         └── <entity>/
-            ├── index.js
             ├── <entity>ListRaw.js
             ├── format<Entity>.js
             └── __tests__/
@@ -55,15 +51,13 @@ Each `<service>` folder contains:
 - a `__docs/` folder:
   - a `GLOSSARY.md` to define the vocabulary of the service
 - a `__lib/` folder to act as a yarn workspace:
-  - `package.json` to have its own dependency list. It usually declares
-    `@oroshi/api-shared` as a dependency, for the shared API helpers
+  - `package.json` to have its own dependency list
   - `getConfig.js` to hold the API keys and other config
   - `callApi.js` to query the API in a unified way
   - a `bin/` folder to hold the bins
   - an `<entity>/` folder per entity:
-    - a barrel `index.js`
     - a `__tests__/` folder for module tests
-    - `<entity>Search.js` to search through all entities
+    - `<entity>Search.js` to search through the entities of that type
     - `<entity>ListRaw.js` to list entities (machine-readable)
     - `<entity>Read.js` to read a specific entity
     - `format<Entity>.js` to give every command the same output format
@@ -72,17 +66,8 @@ Each `<service>` folder contains:
 The `list` wrapper has no module. It calls `list-raw` and adds colors and
 `table`.
 
-### Focused APIs
-
-Focused APIs (where one entity is largely predominant) follow a simpler
-architecture that skips the intermediate `<entity>` folders. Their formatting
-function is `format.js`, next to `callApi.js`.
-
-## @oroshi/api-shared
-
-`api/shared/__lib` holds the code shared across all API services (HTTP
-transport, error handling, etc). Code moves there when at least two services
-need it.
+A service with a single entity keeps its `<entity>` folder. The layout does not
+change.
 
 ## Service glossary
 
@@ -105,7 +90,6 @@ contains:
 - `__` is a special named export that holds the internals that tests mock.
 - All services have a `getConfig.js` and a `callApi.js`.
 - Other files carry the entity in their name (e.g. `record/recordListRaw.js`).
-  - Exception: the dominant entity of a focused API has no name (`listRaw.js`).
 - Modules take what the bin unpacks (a bare id, or an options object when they
   need several arguments), return data and print nothing.
 - Bins are in kebab-case and named like their wrapper
@@ -127,8 +111,7 @@ Each service owns a `getConfig.js` file that exports `getConfig`.
 ## `format<Entity>.js`
 
 Each entity owns a `format<Entity>.js` file in its folder (`formatPage.js`,
-`formatRecord.js`) that exports `format<Entity>`. A focused API has `format.js`
-instead.
+`formatRecord.js`) that exports `format<Entity>`.
 
 - It takes one entity, as returned by the API, and returns a unified formatted version of it.
 - By default, it will be the raw object as returned by the API, so agents can
@@ -187,7 +170,6 @@ user runs it by hand.
   "description": "Helpers to read and write <service>",
   "license": "MIT",
   "dependencies": {
-    "@oroshi/api-shared": "workspace:*",
     "firost": "5.11.0",
     "golgoth": "3.1.0",
     "minimist": "1.2.8"

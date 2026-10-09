@@ -25,8 +25,6 @@ point to the code under test:
 
 - A test file has the name of the file it tests (`recordRead.js` is tested by
   `__tests__/recordRead.js`), with no `.test.` or `.spec.` suffix.
-- A focused API has no `<entity>/` folder. Its module tests live in
-  `__lib/__tests__/`.
 - Test names are sentences that say what the code does:
   `returns the entity formatted`, not `test read`.
 
