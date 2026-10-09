@@ -105,5 +105,6 @@
   "theme": "custom:oroshi",
   "preferredNotifChannel": "notifications_disabled",
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": false
+  "voiceEnabled": false,
+  "agentPushNotifEnabled": true
 }
