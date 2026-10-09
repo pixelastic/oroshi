@@ -1,4 +1,5 @@
 # Signal end of ralph session
+# In auto mode: queue the next command, then stop Claude.
 # Usage:
 # $ ralph-end <dir>
 setopt local_options err_return
@@ -9,4 +10,27 @@ if [[ "$dir" == "" ]]; then
   return 1
 fi
 
-return 0
+# If single mode, let's stop here
+[[ "$(ralph-mode "$dir")" == "single" ]] && return 0
+
+# If auto mode, let's enqueue the next command, then stop Claude
+local progress=(${(@ps/▮/)"$(plan-progress "$dir")"})
+local doneCount=$progress[1]
+local totalCount=$progress[2]
+
+# If we have more issues to tackle, open a new ralph session
+local nextCommand="ralph --auto ${(q)dir}"
+
+# If this was the last issue, let's review everything we did so far instead
+if [[ "$doneCount" == "$totalCount" ]]; then
+  local branchedAt="$(jq --raw-output '.branchedAt' "$dir/state.json")"
+  local reviewPrompt="/review ref:${branchedAt}..HEAD spec:${dir}/PRD.md"
+  nextCommand="claude ${(qq)reviewPrompt}"
+fi
+
+# Add the next command to the zsh queue
+local group="{ git-commit-create-all-auto && ${nextCommand} || true; }; exec zsh"
+zsh-queue-write "exec zsh -ic ${(qq)group}"
+
+# now, stop Claude, so zsh takes over
+claude-stop
