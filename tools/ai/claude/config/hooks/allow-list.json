@@ -179,6 +179,7 @@
   "git-branch-current",
   "git-branch-list",
   "git-branch-slug",
+  "git-commit-current",
   "git-commit-message",
   "git-depedencies-update",
   "git-directory-gitdir",

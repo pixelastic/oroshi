@@ -4,7 +4,6 @@
 2026-09-15 Set up complete Lua toolchain: linter, fixer, test framework, integrations, writer skill domain:Lua size:large id:lua-toolchain
 2026-09-15 Upgrade Claude to latest version, evaluate if new color scheme is tolerable with git-file-watch domain:Misc size:large id:upgrade-claude
 2026-09-15 Remove terminal corruption workaround wrapper (no longer needed after upgrade) domain:Misc size:small id:fix-terminal-corruption p:upgrade-claude
-2026-09-15 Autonomous ralph: auto-chain ralph runs on a project's remaining issues overnight domain:Misc size:large id:ralph-nightshift p:upgrade-claude
 2026-09-14 Lint rule: prefer `\cmd` over `command cmd` for alias bypass domain:Zsh size:small id:zsh-lint-backslash
 2026-09-15 Evaluate Claude MCP Slack server for Slack interaction domain:Misc size:large id:slack-mcp
 2026-09-15 Build slack-* commands to read updates from a specific channel domain:Misc size:medium id:slack-reader p:slack-mcp
