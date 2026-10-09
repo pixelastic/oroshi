@@ -30,6 +30,22 @@ through.
 If `list-raw` requires some specific argument (like a `--table` anchor for
 Airtable), then `list` requires them as well.
 
+## Colors
+
+The wrapper colors the id, the name and the description with a functional
+token each.
+
+The developer adds these tokens to the theme colors source,
+`tools/term/zsh/config/theming/src/colors.jsonc`. Then they run `colors-build`.
+
+```jsonc
+"<service>": {
+  "<entity>-id": "orange",
+  "<entity>-name": "gray-3",
+  "<entity>-description": "gray"
+}
+```
+
 ## Template
 
 ### ZSH Wrapper
