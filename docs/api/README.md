@@ -23,6 +23,9 @@ format, so that humans and agents can guess how any service behaves.
 - [reference/commands/create.md](reference/commands/create.md) — Create an entity, and print it as JSON, like `read` does.
 - [reference/commands/update.md](reference/commands/update.md) — Change some fields of an entity, and print it as JSON, like `read` does.
 - [reference/commands/delete.md](reference/commands/delete.md) — Remove an entity, and print its id.
+- [reference/lib/getConfig.md](reference/lib/getConfig.md) — The only way to read the credentials and the configuration of a service.
+- [reference/lib/callApi.md](reference/lib/callApi.md) — The only way to talk to a service, and the typed error of every failed call.
+- [reference/lib/formatEntity.md](reference/lib/formatEntity.md) — The one place that defines what a command prints for an entity.
 
 ## Adding an API
 

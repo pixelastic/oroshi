@@ -55,15 +55,17 @@ Each `<service>` folder contains:
   - a `GLOSSARY.md` to define the vocabulary of the service
 - a `__lib/` folder to act as a yarn workspace:
   - `package.json` to have its own dependency list
-  - `getConfig.js` to hold the API keys and other config
-  - `callApi.js` to query the API in a unified way
+  - [`getConfig.js`](reference/lib/getConfig.md) to hold the API keys and other
+    config
+  - [`callApi.js`](reference/lib/callApi.md) to query the API in a unified way
   - a `bin/` folder to hold the bins
   - an `<entity>/` folder per entity:
     - a `__tests__/` folder for module tests
     - `<entity>Search.js` to search through the entities of that type
     - `<entity>ListRaw.js` to list entities (machine-readable)
     - `<entity>Read.js` to read a specific entity
-    - `format<Entity>.js` to give every command the same output format
+    - [`format<Entity>.js`](reference/lib/formatEntity.md) to give every command
+      the same output format
     - etc.
 
 The `list` wrapper has no module. It calls `list-raw` and adds colors and
@@ -91,7 +93,9 @@ contains:
 - One export per file.
 - A file is named exactly like the function it exports.
 - `__` is a special named export that holds the internals that tests mock.
-- All services have a `getConfig.js` and a `callApi.js`.
+- All services have a [`getConfig.js`](reference/lib/getConfig.md) and a
+  [`callApi.js`](reference/lib/callApi.md). Each entity has a
+  [`format<Entity>.js`](reference/lib/formatEntity.md).
 - Other files carry the entity in their name (e.g. `record/recordListRaw.js`).
 - Modules take what the bin unpacks (a bare id, or an options object when they
   need several arguments), return data and print nothing.
@@ -99,31 +103,6 @@ contains:
   (`bin/<service>-<entity>-list-raw.js`).
 - Bins parse arguments with `minimist`, call the module and print the
   result with `console.log`. They have no `try/catch`.
-
-## `getConfig.js`
-
-Each service owns a `getConfig.js` file that exports `getConfig`.
-
-- `getConfig` is the only way to get the credentials and other configuration of
-  the service.
-- Other modules call it through `__` (`__.getConfig()`), so tests mock it and
-  never touch the environment.
-- Env variables are prefixed with the name of the service: `<SERVICE>_TOKEN`,
-  `<SERVICE>_BASE_URL`.
-
-## `format<Entity>.js`
-
-Each entity owns a `format<Entity>.js` file in its folder (`formatPage.js`,
-`formatRecord.js`) that exports `format<Entity>`.
-
-- It takes one entity, as returned by the API, and returns a unified formatted version of it.
-- By default, it will be the raw object as returned by the API, so agents can
-easily understand what it represent.
-- Optionally, we may format or clean it, to make it easier for other commands
-  to consume.
-- Having one central formatting method ensure all helpers deal with the same
-shape of the data.
-- Other modules call it through `__` (`__.formatEntity()`), so tests mock it.
 
 ## Accounts
 
@@ -154,9 +133,9 @@ user runs it by hand.
 
 - Every failure is a `firostError` with a code: `<SERVICE>_<CAUSE>`
   (`<SERVICE>_TOKEN_MISSING`, `<SERVICE>_LOGIN_REQUIRED`).
-- `callApi` turns every non-2xx status into a typed error. The error carries
-  the HTTP status and the message of the API in its message
-  (`HTTP 404: Not found`).
+- [`callApi`](reference/lib/callApi.md) turns every non-2xx status into a typed
+  error. The error carries the HTTP status and the message of the API in its
+  message (`HTTP 404: Not found`).
 
 ## Templates
 
@@ -177,86 +156,5 @@ user runs it by hand.
     "golgoth": "3.1.0",
     "minimist": "1.2.8"
   }
-}
-```
-
-### `getConfig.js`
-
-The only way to get the credentials and other configuration.
-
-`<service>/__lib/getConfig.js`:
-
-```javascript
-/**
- * Read the configuration of the service from the environment
- * @returns {object} { token }, the credentials of the service
- */
-export function getConfig() {
-  return {
-    token: process.env.SERVICE_TOKEN,
-  };
-}
-```
-
-### `callApi.js`
-
-The only way to talk to the service. It exposes the HTTP call as `__.fetch`, so
-tests mock it.
-
-`<service>/__lib/callApi.js`:
-
-```javascript
-import { firostError } from 'firost';
-import { getConfig } from './getConfig.js';
-
-export let __;
-
-/**
- * Call the API of the service
- * @param {object} options - Request options
- * @param {string} options.path - Path of the endpoint
- * @param {string} [options.method] - HTTP method
- * @param {object} [options.body] - Body of the request, sent as JSON
- * @returns {object} The JSON response of the API
- */
-export async function callApi(options) {
-  const { path, method = 'GET', body } = options;
-  const { token } = __.getConfig();
-
-  const response = await __.fetch(`https://api.<service>.com/${path}`, {
-    method,
-    headers: { Authorization: `Bearer ${token}` },
-    body: body && JSON.stringify(body),
-  });
-  const data = await response.json();
-
-  // Every non-2xx status becomes a typed error
-  if (!response.ok) {
-    throw firostError(
-      '<SERVICE>_REQUEST_FAILED',
-      `HTTP ${response.status}: ${data.message}`,
-    );
-  }
-  return data;
-}
-
-__ = { fetch, getConfig };
-```
-
-### `format<Entity>.js`
-
-The one place that defines what a command prints for an entity.
-
-`<service>/__lib/<entity>/format<Entity>.js`:
-
-```javascript
-/**
- * Format one entity of the API, to give every command the same output
- * @param {object} response - The entity, as returned by the API
- * @returns {object} The entity, as close as possible to the API
- */
-export function formatEntity(response) {
-  // Keep the shape of the API, and only tidy what makes it easier to read
-  return response;
 }
 ```
