@@ -145,13 +145,11 @@ Load [commit-hint.md](references/commit-hint.md) for the format and rules.
 
 ## Step 8 — HANDOFF
 
-**Goal:** End automation, hand off to user for review.
+**Goal:** End the session with a recap, then hand off to the user or to the next queued command.
 
-**Exit criterion:** `ralph-end` called, session recap displayed.
+**Exit criterion:** Session recap displayed, `ralph-end` called.
 
-- Run `ralph-end $ARGUMENTS` first
-
-Print:
+Print the recap first:
 ```
 Issue {currentIssueCount}/{totalIssueCount}
 
@@ -171,6 +169,8 @@ Also surface items that need the user's attention.
 Include only items that the diff does not show.
 When in doubt, include.
 Write `None.` if there is nothing.
+
+Then run `ralph-end $ARGUMENTS`.
 
 **Stop here. Do not commit. Do not start the next issue. Wait for the user.**
 
@@ -237,6 +237,7 @@ HANDOFF:
 - [ ] Report has only **Problem solved**, **What changed** and **Worth checking**
 - [ ] Report omits test files, scaffold tests, and test and lint results
 - [ ] **Worth checking** surfaces notable `GUIDANCE.md` and `review-log.md` content, or says `None.`
+- [ ] Printed the report, then ran `ralph-end`
 - [ ] **Stopped — waiting for user to commit**
 USER REVIEW:
 - [ ] Each user-requested change followed by refactor → lint → test
