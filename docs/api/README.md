@@ -38,6 +38,7 @@ the commands concerned.
 - [reference/commands/login.md](reference/commands/login.md) — Get the OAuth tokens of a service, and save them. Only OAuth APIs have it.
 - [reference/commands/custom.md](reference/commands/custom.md) — Add a verb of your own, for an action that is not CRUD.
 - [reference/lib/getConfig.md](reference/lib/getConfig.md) — The only way to read the credentials and the configuration of a service.
+- [reference/lib/setAccount.md](reference/lib/setAccount.md) — Choose the account that `getConfig` reads, for the whole command.
 - [reference/lib/callApi.md](reference/lib/callApi.md) — The only way to talk to a service, and the error of every failed call.
 - [reference/lib/formatEntity.md](reference/lib/formatEntity.md) — The one place that defines what a command prints for an entity.
 - [reference/docs/glossary.md](reference/docs/glossary.md) — The role of the glossary of each service, and what it must define.

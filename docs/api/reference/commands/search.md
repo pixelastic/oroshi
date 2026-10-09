@@ -66,6 +66,7 @@ $ notion-page-search "meetup" --limit 10
 # Usage:
 # $ <service>-<entity>-search "paris meetup"
 # $ <service>-<entity>-search "paris meetup" --limit 10
+# $ <service>-<entity>-search "paris meetup" --account perso
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h:h}/__lib"

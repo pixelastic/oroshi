@@ -4,9 +4,15 @@ This file defines how a command receives its arguments.
 
 ## Parsing
 
-The JavaScript bin parses the arguments with `minimist` and passes the result to
-the module. The wrapper is described in
-[architecture.md](architecture.md#zsh-and-javascript).
+The JavaScript bin parses the arguments with `minimist` and unpacks them into
+one options object for the module. The positional argument and the named flags
+become its keys: `<entity>Id`, the anchors and the filters. The wrapper is
+described in [architecture.md](architecture.md#zsh-and-javascript).
+
+The bin also reads `--account`. It calls
+[`setAccount`](reference/lib/setAccount.md) with it once, before calling the
+module, and keeps it out of the options object
+([architecture.md](architecture.md#accounts)).
 
 The wrapper lists the accepted arguments in its `# Usage:` header. The
 header mirrors what the JavaScript module accepts. Agents read it with
@@ -79,4 +85,4 @@ Commands that return several entities (`list-raw`, `search`) accept
 Some services can be used with several accounts. The default account is always
 used, but can be overridden with `--account <accountName>`.
 
-How accounts and their tokens work is defined in [architecture.md](architecture.md#accounts).
+How an account selects its credentials is defined in [architecture.md](architecture.md#accounts).

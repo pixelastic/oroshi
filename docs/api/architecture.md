@@ -34,6 +34,7 @@ api/
     └── __lib/
         ├── package.json
         ├── getConfig.js
+        ├── setAccount.js
         ├── callApi.js
         ├── login.js             # OAuth services only
         ├── bin/
@@ -62,6 +63,7 @@ Each `<service>` folder contains:
   - `package.json` to have its own dependency list
   - [`getConfig.js`](reference/lib/getConfig.md) to hold the API keys and other
     config
+  - [`setAccount.js`](reference/lib/setAccount.md) to choose the account
   - [`callApi.js`](reference/lib/callApi.md) to query the API in a unified way
   - a `bin/` folder to hold the bins
   - an `<entity>/` folder per entity:
@@ -90,12 +92,13 @@ role and required content are in
 - One export per file.
 - A file is named exactly like the function it exports.
 - `__` is a special named export that holds the internals that tests mock.
-- All services have a [`getConfig.js`](reference/lib/getConfig.md) and a
-  [`callApi.js`](reference/lib/callApi.md). Each entity has a
+- All services have a [`getConfig.js`](reference/lib/getConfig.md), a
+  [`setAccount.js`](reference/lib/setAccount.md) and a [`callApi.js`](reference/lib/callApi.md). Each entity has a
   [`format<Entity>.js`](reference/lib/formatEntity.md).
 - Other files carry the entity in their name (e.g. `record/recordListRaw.js`).
-- Modules take what the bin unpacks (a bare id, or an options object when they
-  need several arguments), return data and print nothing.
+- Modules take one options object, return data and print nothing. The bin
+  unpacks the positional argument and the named flags into that object. Its keys
+  are the `<entity>Id`, the anchors and the filters.
 - Bins are in kebab-case and named like their wrapper
   (`bin/<service>-<entity>-list-raw.js`).
 - Bins parse arguments with `minimist`, call the module and print the
@@ -111,8 +114,14 @@ $ <service>-<entity>-list-raw
 $ <service>-<entity>-list-raw --account perso
 ```
 
-An OAuth API saves the tokens of each account with its
-[`login`](reference/commands/login.md) command.
+- A **Key API** would read from `<SERVICE>_TOKEN_PERSO` instead of `<SERVICE>_TOKEN`.
+- An **OAuth API** would read from `tokens-perso.json` instead of `tokens.json`.
+
+The account never travels through the modules. Every service has a
+[`setAccount`](reference/lib/setAccount.md). Every bin parses `--account`, calls
+`setAccount` with it before anything else, and keeps it out of the options
+object. [`getConfig`](reference/lib/getConfig.md) then returns the
+credentials of that account for the whole command.
 
 ## Errors
 

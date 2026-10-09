@@ -47,6 +47,7 @@ the JavaScript module. Keep only the lines of the mode of the entity.
 # $ <service>-<entity>-create --title "Paris Meetup"
 # $ <service>-<entity>-create '{"title":"Paris Meetup"}'
 # $ <service>-<entity>-create --data-file ./<entity>.json
+# $ <service>-<entity>-create --title "Paris Meetup" --account perso
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h:h}/__lib"

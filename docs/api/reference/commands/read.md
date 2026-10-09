@@ -39,6 +39,7 @@ Example: `airtable-record-read recXXX --table Meetups`
 # Read an entity of <service> by its id, and print it as JSON
 # Usage:
 # $ <service>-<entity>-read <entity>Id
+# $ <service>-<entity>-read <entity>Id --account perso
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h:h}/__lib"
@@ -47,8 +48,8 @@ node "${libDir}/bin/<service>-<entity>-read.js" "$@"
 
 ### JS Bin
 
-The bin parses the args, unpacks them into what the module expects, calls it and
-prints the result as JSON.
+The bin parses the args, unpacks them into one options object (the id, the
+anchors if any), calls the module and prints the result as JSON.
 
 `<service>/__lib/bin/<service>-<entity>-read.js`:
 
@@ -58,26 +59,18 @@ import minimist from 'minimist';
 import { entityRead } from '../<entity>/<entity>Read.js';
 
 const args = minimist(process.argv.slice(2));
-const entityId = args._[0];
-const output = await entityRead(entityId);
-console.log(JSON.stringify(output, null, 2));
-```
-
-Alternatively, if the entity needs an anchor, the anchor is named and passed to
-the module with the id, as an object:
-
-```javascript
+// The id is the positional argument, the anchors are named
 const {
   _: [entityId],
-  ...anchors
+  ...options
 } = args;
-const output = await entityRead({ entityId, ...anchors });
+const output = await entityRead({ entityId, ...options });
+console.log(JSON.stringify(output, null, 2));
 ```
 
 ### Module
 
-The module takes the id (or an object, as seen above) and returns the entity as
-data.
+The module takes one options object and returns the entity as data.
 
 `<service>/__lib/<entity>/<entity>Read.js`:
 
@@ -89,10 +82,14 @@ export let __;
 
 /**
  * Read one entity of the service
- * @param {string} entityId - Id of the entity
+ * @param {object} options - Id of the entity, and its anchors if any
+ * @param {string} options.entityId - Id of the entity
  * @returns {Promise<object>} The entity, formatted
  */
-export async function entityRead(entityId) {
+export async function entityRead(options) {
+  const { entityId } = options;
+
+  // Call the API, with the id of the entity
   const response = await __.callApi(`entities/${entityId}`);
   return __.formatEntity(response);
 }
@@ -107,7 +104,7 @@ __ = {
 
 The test covers the module only. It mocks `callApi` through `__` and mostly
 checks two behaviors:
-- Given a specific id (or object), the module calls `callApi` with the right path and options.
+- Given an id, the module calls `callApi` with the right path.
 - The returned value is the response of the API, passed through `formatEntity`.
 
 The zsh wrapper and the bin are so thin that they need no test.

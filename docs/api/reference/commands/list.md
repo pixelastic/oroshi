@@ -65,6 +65,7 @@ the internal JavaScript module.
 # Usage:
 # $ <service>-<entity>-list
 # $ <service>-<entity>-list --limit 10
+# $ <service>-<entity>-list --account perso
 setopt local_options err_return
 
 colors-load-definitions

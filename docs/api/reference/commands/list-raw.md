@@ -46,6 +46,7 @@ the JavaScript module), so `helper-documentation` can print it.
 # Usage:
 # $ <service>-<entity>-list-raw
 # $ <service>-<entity>-list-raw --limit 10
+# $ <service>-<entity>-list-raw --account perso
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h:h}/__lib"

@@ -49,6 +49,7 @@ the JavaScript module. Keep only the lines of the mode of the entity.
 # $ <service>-<entity>-update --<entity>Id <id> --title "Paris Meetup 2026"
 # $ <service>-<entity>-update --<entity>Id <id> '{"seats":90}'
 # $ <service>-<entity>-update --<entity>Id <id> --data-file ./<entity>.json
+# $ <service>-<entity>-update --<entity>Id <id> --title "Paris" --account perso
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h:h}/__lib"

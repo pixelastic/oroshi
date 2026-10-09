@@ -31,6 +31,7 @@ The id is a positional argument, and the anchor (if any) is named, as in
 # Delete an entity of <service> by its id, and print the id
 # Usage:
 # $ <service>-<entity>-delete <entity>Id
+# $ <service>-<entity>-delete <entity>Id --account perso
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h:h}/__lib"
@@ -53,16 +54,15 @@ const args = minimist(process.argv.slice(2));
 // The id is the positional argument, the anchor (if any) is named
 const {
   _: [entityId],
-  ...anchor
+  ...options
 } = args;
-const output = await entityDelete({ entityId, ...anchor });
+const output = await entityDelete({ entityId, ...options });
 console.log(output);
 ```
 
 ### Module
 
-The module takes the id and the anchor as one options object and returns the
-id it removed.
+The module takes one options object and returns the id it removed.
 
 `<service>/__lib/<entity>/<entity>Delete.js`:
 

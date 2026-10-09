@@ -14,7 +14,10 @@
 
 ## Inputs/Outputs
 
-- Input: none. A service with several accounts takes the `account` to read
+- Input: none. `getConfig` holds a private `account`, `null` by default. While it
+  is `null`, `getConfig` returns the credentials of the default account.
+  [`setAccount`](setAccount.md) changes it, and `getConfig` then returns the
+  credentials of that account
   ([architecture.md](../../architecture.md#accounts)).
 - Output: an object with the configuration of the service. Its keys depend on
   the service (`token`, `baseUrl`, …).
@@ -29,14 +32,20 @@
 ```javascript
 import { firostError } from 'firost';
 
+export let __;
+
 /**
  * Read the configuration of the service from the environment
  * @returns {object} The credentials and the configuration of the service
  */
 export function getConfig() {
+  const { account } = __;
+
   // One key per variable, each prefixed with the name of the service.
-  // Add the keys your service needs (base URL, account, etc.)
-  const token = process.env.<SERVICE>_TOKEN;
+  // The account selects the variable, as defined in architecture.md#accounts.
+  // Add the keys your service needs (base URL, etc.)
+  const suffix = account ? `_${account.toUpperCase()}` : '';
+  const token = process.env[`<SERVICE>_TOKEN${suffix}`];
 
   // Fail early when a required variable is empty
   if (!token) {
@@ -45,8 +54,13 @@ export function getConfig() {
 
   return { token };
 }
+
+// The account that setAccount changes. Null is the default account
+__ = {
+  account: null,
+};
 ```
 
 The test covers the function only. It sets the environment variables and checks
-the returned object. It also checks that an empty variable throws the typed
-error.
+the returned object, for the default account and for another one (by setting
+`__.account`). It also checks that an empty variable throws the typed error.

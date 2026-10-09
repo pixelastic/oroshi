@@ -78,8 +78,9 @@ and prints the result.
 _Avoid_: binary, CLI
 
 **Module**:
-The JavaScript file that holds the logic of a command. It takes either an `id`
-or an `options` object as input. Returns data but prints nothing.
+The JavaScript file that holds the logic of a command. It takes one
+options object as input, which the **Bin** fills from the **Positional
+argument** and the **Named arguments**. Returns data but prints nothing.
 _Avoid_: handler, controller
 
 ## Verbs

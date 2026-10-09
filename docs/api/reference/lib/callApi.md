@@ -21,8 +21,6 @@ answers.
   - `body`: the body of the request. The default is no body.
   - `query`: the query parameters of the URL.
   - `headers`: the headers of the request.
-  - `account`: the account whose credentials are used. `callApi` passes it to
-    `getConfig`.
 - `method` and `body` override their default.
 - `query` and `headers` merge over the defaults of the service. A passed key
   replaces the default key. An `Authorization` header can be replaced this way.
@@ -51,14 +49,13 @@ export let __;
  * @param {object} [options.body] - Body of the request
  * @param {object} [options.query] - Query parameters, merged over the defaults
  * @param {object} [options.headers] - Headers, merged over the defaults
- * @param {string} [options.account] - Account whose credentials are used
  * @returns {Promise<object|string>} The response of the API, or the empty body
  */
 export async function callApi(path, options = {}) {
-  const { method = 'GET', body, query, headers, account } = options;
+  const { method = 'GET', body, query, headers } = options;
 
-  // 1. Read the config of the account
-  const { token } = __.getConfig({ account });
+  // 1. Read the config of the service
+  const { token } = __.getConfig();
 
   // 2. Build the URL from the path and the query. The base URL is fixed, or
   //    comes from the config. The query is the default query of the service,
