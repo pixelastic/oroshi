@@ -2,7 +2,7 @@
 
 An API helper is the set of commands that talk to one web service (Airtable,
 Gmail, Notion, Confluence, Make, …) and print the result on stdout. Every
-command has the same three layers: a thin ZSH wrapper that forwards `"$@"`, a
+command has the same three layers: a thin ZSH wrapper, a
 kebab-case JavaScript bin that parses the arguments with `minimist`, and a
 camelCase JavaScript module that calls the service and returns data. All
 commands share one command vocabulary, one argument convention and one output

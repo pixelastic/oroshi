@@ -33,8 +33,6 @@ Example: `airtable-record-read recXXX --table Meetups`
 
 ### ZSH Wrapper
 
-The wrapper does not parse anything. It forwards `"$@"` to the bin.
-
 `<service>/<entity>/<service>-<entity>-read`:
 
 ```zsh

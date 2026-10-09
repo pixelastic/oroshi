@@ -21,26 +21,20 @@ would have returned it.
 
 ## Arguments
 
-If the entity has a fixed schema, each field is a named flag. A field that can
-be long also accepts its `-file` twin.
+The content follows the schema of the entity, see
+[Passing content](../../arguments.md#passing-content).
 
 ```text
+# Fixed schema
 $ confluence-page-create --title "Paris Meetup" --body-file ./about.md
-```
 
-If the entity has an open schema, the content is a JSON object, passed as the
-positional argument or with `--data-file`.
-
-```text
+# Open schema
 $ airtable-record-create --table Meetups '{"title":"Paris Meetup","seats":80}'
-$ notion-page-create --data-file ./page.json
 ```
 
 ## Template
 
 ### ZSH Wrapper
-
-The wrapper does not parse anything. It forwards `"$@"` to the bin.
 
 The `# Usage:` header must contain the list of flags it accepts, mirrored from
 the JavaScript module. Keep only the lines of the mode of the entity.

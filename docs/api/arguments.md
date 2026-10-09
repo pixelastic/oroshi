@@ -4,11 +4,11 @@ This file defines how a command receives its arguments.
 
 ## Parsing
 
-The ZSH wrapper does not parse anything. It forwards `"$@"` to the JavaScript
-bin, which parses the arguments with `minimist` and passes the result to the
-module.
+The JavaScript bin parses the arguments with `minimist` and passes the result to
+the module. The wrapper is described in
+[architecture.md](architecture.md#zsh-and-javascript).
 
-The wrapper still lists the accepted arguments in its `# Usage:` header. The
+The wrapper lists the accepted arguments in its `# Usage:` header. The
 header mirrors what the JavaScript module accepts. It is the text that
 `helper-list` shows, so keep both in sync.
 
@@ -32,7 +32,8 @@ $ <service>-<entity>-update --<entity>Id recA '{"name":"Paris"}'
 
 - A flag that holds an identifier is camelCase, built from the `<entity>` and
   `Id`: `--pageId`, `--recordId`, `--mailId`.
-- Every other flag is lowercase: `--file`, `--limit`, `--account`, `--table`.
+- Every other flag is lowercase kebab-case: `--limit`, `--account`, `--table`,
+  `--data-file`, `--min-date`.
 
 ## Passing content
 
@@ -69,11 +70,8 @@ $ airtable-record-create --table Meetups --data-file ./entity.json
 
 ## `--limit`
 
-Commands that return several entities (`list-raw`, `search`) accept `--limit`.
-
-- The default is 25.
-- If a default API call can get that many items, the module needs to internally
-  handle pagination to get to the `--limit` value.
+Commands that return several entities (`list-raw`, `search`) accept
+`--limit`. The default is 25.
 
 ## `--account`
 

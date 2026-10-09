@@ -12,6 +12,9 @@ bin, which itself calls an internal JavaScript module.
 That underlying module is where all the logic lives, and is thoroughly tested.
 The ZSH wrapper and the bin are just thin proxies without much logic.
 
+The wrapper does not parse anything. It forwards `"$@"` to the bin. The bin
+parses the arguments, as described in [arguments.md](arguments.md#parsing).
+
 ## Folder layout
 
 All API helpers live in the `api` autoload folder:

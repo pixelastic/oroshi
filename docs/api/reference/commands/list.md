@@ -20,7 +20,7 @@ service/entity (usually the most recent first).
 
 - `list` is the human view of [`list-raw`](list-raw.md).
 - It displays a `-raw` list in a table with colors and aligned columns
-- It forwards `"$@"` to `list-raw`, and accepts the same flags.
+- It accepts the same flags as `list-raw`.
 
 ## Arguments
 
@@ -34,7 +34,8 @@ Airtable), then `list` requires them as well.
 
 ### ZSH Wrapper
 
-The wrapper forwards `"$@"` to `list-raw`, then colors and aligns the lines.
+The wrapper passes its arguments to `list-raw`, then colors and aligns the
+lines.
 
 The `# Usage:` header must contain the list of flags it accepts, mirrored from
 the internal JavaScript module.

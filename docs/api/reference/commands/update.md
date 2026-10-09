@@ -22,25 +22,20 @@ same format as [`read`](read.md).
 
 ## Arguments
 
-If the entity has a fixed schema, each field is a named flag. A field that can
-be long also accepts its `-file` twin.
+The content follows the schema of the entity, see
+[Passing content](../../arguments.md#passing-content).
 
 ```text
+# Fixed schema
+$ confluence-page-update --pageId 1f3a --title "Paris Meetup 2026"
+
+# Open schema
 $ notion-page-update --pageId 1f3a --data-file ./changes.json
-```
-
-If the entity has an open schema, the content is a JSON object, passed as the
-positional argument or with `--data-file`.
-
-```text
-$ airtable-record-update '{"seats":90}' --recordId recA --table Meetups
 ```
 
 ## Template
 
 ### ZSH Wrapper
-
-The wrapper does not parse anything. It forwards `"$@"` to the bin.
 
 The `# Usage:` header must contain the list of flags it accepts, mirrored from
 the JavaScript module. Keep only the lines of the mode of the entity.

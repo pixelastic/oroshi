@@ -57,8 +57,6 @@ $ notion-page-search "meetup" --limit 10
 
 ### ZSH Wrapper
 
-The wrapper does not parse anything. It forwards `"$@"` to the bin.
-
 `<service>/<entity>/<service>-<entity>-search`:
 
 ```zsh

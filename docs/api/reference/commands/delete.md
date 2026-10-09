@@ -25,8 +25,6 @@ The id is a positional argument, and the anchor (if any) is named, as in
 
 ### ZSH Wrapper
 
-The wrapper does not parse anything. It forwards `"$@"` to the bin.
-
 `<service>/<entity>/<service>-<entity>-delete`:
 
 ```zsh

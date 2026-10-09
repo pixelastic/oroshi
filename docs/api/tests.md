@@ -30,7 +30,7 @@ point to the code under test:
 
 ## Wrappers and bins
 
-Plain wrappers only forward `"$@"`. Bins only parse the arguments with
+Plain wrappers only pass their arguments on. Bins only parse the arguments with
 `minimist`, call the module and print the result. Neither holds logic, so
 neither has a test. Their behavior is covered through the module they call.
 

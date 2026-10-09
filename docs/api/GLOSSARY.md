@@ -60,7 +60,7 @@ Example: an Airtable record has a different shape depending on its table.
 _Avoid_: loose schema, free schema
 
 **Wrapper**:
-The thin ZSH file of a command, in `$PATH`. It forwards `"$@"` to the bin.
+The thin ZSH file of a command, in `$PATH`. It calls the bin.
 _Avoid_: alias, launcher
 
 **Bin**:

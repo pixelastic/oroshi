@@ -33,8 +33,6 @@ instead.
 
 ### ZSH Wrapper
 
-The wrapper does not parse anything. It forwards `"$@"` to the bin.
-
 The `# Usage:` header must contain the list of flags it accepts (mirrored from
 the JavaScript module), so it is surfaced to `helper-list`.
 
