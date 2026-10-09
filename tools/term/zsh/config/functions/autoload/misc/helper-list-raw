@@ -12,27 +12,6 @@ local query="$*"
 local autoloadDir="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload"
 local scriptsDir="$OROSHI_ROOT/scripts/bin"
 
-# Internal helper: extract description from a file
-# Scripts (line 2, after shebang), autoloaded functions (line 1).
-function _extract_description() {
-  local file="$1"
-
-  # Autoloaded functions have description on line 1
-  # Scripts have a shebang on line 1, description on line 2
-  local lineNum
-  [[ "$file" == "$autoloadDir"/* ]] && lineNum=1
-  [[ "$file" == "$scriptsDir"/* ]] && lineNum=2
-
-  local descLine="$(sed -n "${lineNum}p" "$file")"
-
-  # Strip comment prefix
-  [[ "$descLine" == "# "* ]] && descLine="${descLine#\# }"
-  [[ "$descLine" == "#"* ]] && descLine=""
-
-  echo "$descLine"
-}
-
-
 # Collect all helper files from both directories
 local allFiles="$(
   {
@@ -72,6 +51,6 @@ for name in ${(f)matchedNames}; do
   # Name matched but file not found in scan results
   [[ "$filepath" == "" ]] && continue
 
-  local description="$(_extract_description "$filepath")"
-  echo "${name}▮${description}▮${filepath}"
+  helper-description --reply "$name"
+  echo "${name}▮${REPLY}▮${filepath}"
 done

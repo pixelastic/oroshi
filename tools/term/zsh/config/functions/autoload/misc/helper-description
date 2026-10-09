@@ -1,0 +1,37 @@
+# Print the one-line description of a helper
+# Usage:
+# $ helper-description slugify         # Description of an autoloaded function or a script
+# $ helper-description --reply slugify # Write to $REPLY, no echo
+# Exits non-zero when the name is unknown
+setopt local_options err_return
+
+local flagReply=()
+zparseopts -E -D \
+  -reply=flagReply
+
+local isReply=${#flagReply}
+local name="$1"
+
+# A name is required
+[[ "$name" == "" ]] && return 1
+
+# Unknown name: helper-path fails, err_return stops here
+helper-path --reply "$name"
+local filepath="$REPLY"
+
+# Autoloaded functions have the description on line 1
+# Scripts have a shebang on line 1, and the description on line 2
+local content="$(<"$filepath")"
+local lines=("${(@f)content}")
+local description="$lines[1]"
+[[ "$description" == "#!"* ]] && description="$lines[2]"
+
+# Only a "# text" comment is a description, strip its prefix
+[[ "$description" != "# "* ]] && description=""
+description="${description#\# }"
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$description"
+  return
+fi
+echo "$description"
