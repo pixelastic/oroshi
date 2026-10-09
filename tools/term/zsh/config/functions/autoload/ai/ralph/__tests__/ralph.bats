@@ -110,3 +110,58 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" == *"/ralph ${BATS_TMP_DIR}"* ]]
 }
+
+@test "--auto on a finished plan runs nothing and succeeds" {
+  ralph-is-running() { return 1; }
+  git-directory-root() { echo "$BATS_TMP_DIR"; }
+  plan-progress() { echo "3▮3"; }
+  claude() { touch "$BATS_TMP_DIR/claude-called"; }
+  bats_mock ralph-is-running git-directory-root plan-progress claude
+
+  bats_run_zsh "ralph --auto '$PRD_DIR'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"no remaining issue"* ]]
+  [[ ! -f "$BATS_TMP_DIR/claude-called" ]]
+  [[ ! -f "$PRD_DIR/ralph.json" ]]
+}
+
+@test "--auto with remaining issues launches Claude" {
+  ralph-is-running() { return 1; }
+  git-directory-root() { echo "$BATS_TMP_DIR"; }
+  plan-progress() { echo "2▮3"; }
+  claude() { touch "$BATS_TMP_DIR/claude-called"; }
+  bats_mock ralph-is-running git-directory-root plan-progress claude
+
+  bats_run_zsh "ralph --auto '$PRD_DIR'"
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/claude-called" ]]
+}
+
+@test "--auto with an empty queue after Claude exits stops quietly" {
+  ralph-is-running() { return 1; }
+  git-directory-root() { echo "$BATS_TMP_DIR"; }
+  plan-progress() { echo "1▮3"; }
+  claude() { return 0; }
+  zsh-queue-write() { touch "$BATS_TMP_DIR/queue-written"; }
+  kitty-notify() { touch "$BATS_TMP_DIR/notified"; }
+  bats_mock ralph-is-running git-directory-root plan-progress claude zsh-queue-write kitty-notify
+
+  bats_run_zsh "ralph --auto '$PRD_DIR'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+  [[ ! -f "$BATS_TMP_DIR/queue-written" ]]
+  [[ ! -f "$BATS_TMP_DIR/notified" ]]
+  [[ ! -f "$PRD_DIR/ralph.json" ]]
+}
+
+@test "single mode on a finished plan runs nothing and succeeds" {
+  ralph-is-running() { return 1; }
+  git-directory-root() { echo "$BATS_TMP_DIR"; }
+  plan-progress() { echo "3▮3"; }
+  claude() { touch "$BATS_TMP_DIR/claude-called"; }
+  bats_mock ralph-is-running git-directory-root plan-progress claude
+
+  bats_run_zsh "ralph '$PRD_DIR'"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/claude-called" ]]
+}

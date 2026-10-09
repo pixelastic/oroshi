@@ -23,6 +23,15 @@ if ralph-is-running "$dir"; then
   return 1
 fi
 
+# A finished plan has nothing left to run, whatever the mode
+local progress=(${(@ps/▮/)"$(plan-progress "$dir")"})
+local doneCount=$progress[1]
+local totalCount=$progress[2]
+if [[ "$doneCount" != "" && "$doneCount" == "$totalCount" ]]; then
+  print "ralph: ✅ no remaining issue"
+  return 0
+fi
+
 # Initialize the lock
 jq -n --arg mode "$mode" '{"mode":$mode}' >"$dir/ralph.json"
 
