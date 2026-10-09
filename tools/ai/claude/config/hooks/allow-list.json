@@ -326,6 +326,7 @@
   "lsblk",
   "lspci",
   "ls",
+  "ls-token-saving",
   "lua-lint",
   "magick",
   "make-api",

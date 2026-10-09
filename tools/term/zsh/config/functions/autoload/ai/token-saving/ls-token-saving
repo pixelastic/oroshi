@@ -1,0 +1,34 @@
+# Run ls with output reduced to names, types, sizes and symlink targets
+# Lossy: drops permissions, owner, group, date, `total`, `.` and `..`
+# Set OROSHI_DISABLE_TOKEN_SAVING=1 to run ls unchanged
+# Usage:
+# $ ls-token-saving -la            # Same arguments as ls
+# $ ls-token-saving -la src docs   # Several paths
+setopt local_options err_return
+
+# Token saving disabled: run the original command unchanged
+if [[ "$OROSHI_DISABLE_TOKEN_SAVING" == "1" ]]; then
+  command ls "$@"
+  return $?
+fi
+
+# Long format without owner, group and date, then classified names
+local listing=""
+local exitCode=0
+listing="$(command ls \
+  -o \
+  -g \
+  --human-readable \
+  --classify \
+  --time-style=+ \
+  "$@")" || exitCode=$?
+
+# Keep `size  name` and drop the permissions and the link count
+listing="$(print -r -- "$listing" | command sed --regexp-extended \
+  --expression '/^total /d' \
+  --expression 's/^[^ ]+ +[0-9]+ +([^ ]+) +/\1 /' \
+  --expression '/^[^ ]+ \.\.?\/$/d')"
+
+print -r -- "$listing"
+print -r -- "[token-saving: set OROSHI_DISABLE_TOKEN_SAVING=1 for raw output]"
+return $exitCode

@@ -211,6 +211,18 @@ setup() {
   expect_json '.rewrite' 'git-file-test-token-saving'
 }
 
+@test "rewrites a single ls command with the token-saving list" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'ls -la dir'"
+  [[ "$status" -eq 0 ]]
+  expect_json '.rewrite' 'ls-token-saving -la dir'
+}
+
+@test "keeps ls in a pipe unchanged" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'ls -la dir | wc -l'"
+  [[ "$status" -eq 0 ]]
+  expect_json_null '.rewrite'
+}
+
 @test "keeps zsh-test in a pipe unchanged" {
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'zsh-test a.bats | head'"
   [[ "$status" -eq 0 ]]
