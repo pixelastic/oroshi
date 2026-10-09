@@ -27,4 +27,4 @@ if [[ "$messageId" == "" || "$partId" == "" ]]; then
 fi
 
 local libDir="${functions_source[$0]:A:h}/__lib"
-node "${libDir}/gmail/attachment.js" "$account" "$messageId" "$partId" "$out"
+node "${libDir}/gmail/bin/attachment.js" "$account" "$messageId" "$partId" "$out"

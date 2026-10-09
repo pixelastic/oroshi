@@ -21,4 +21,4 @@ if [[ "$threadId" == "" ]]; then
 fi
 
 local libDir="${functions_source[$0]:A:h}/__lib"
-node "${libDir}/gmail/read.js" "$account" "$threadId"
+node "${libDir}/gmail/bin/read.js" "$account" "$threadId"

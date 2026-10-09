@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'node:url';
 import { pMap } from 'golgoth';
 import { gmailFormat } from './format.js';
 import { gmailInboxRaw } from './inboxRaw.js';
@@ -27,14 +26,3 @@ export async function gmailInbox(
 }
 
 __ = { gmailInboxRaw };
-
-// CLI entry
-const currentFile = fileURLToPath(import.meta.url);
-if (process.argv[1] === currentFile) {
-  const [account, limit, width] = process.argv.slice(2);
-  const table = await gmailInbox(account, {
-    limit: Number(limit) || gmailLimits.inbox,
-    width: Number(width) || DEFAULT_WIDTH,
-  });
-  process.stdout.write(`${table}\n`);
-}

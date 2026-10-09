@@ -1,6 +1,5 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { _, pMap } from 'golgoth';
 import { gdocRead } from './read.js';
 
@@ -89,19 +88,3 @@ __ = {
 
   gdocRead,
 };
-
-// CLI entry
-const currentFile = fileURLToPath(import.meta.url);
-if (process.argv[1] === currentFile) {
-  const input = process.argv[2];
-
-  if (!input) {
-    console.error('Usage: gdoc2md <url-or-doc-id>');
-    process.exit(1);
-  }
-
-  const { markdown, images, slug } = await gdoc2md(input);
-  const outputDirectory = join(process.cwd(), slug);
-  await __.writeOutput(outputDirectory, markdown, images);
-  console.log(outputDirectory);
-}

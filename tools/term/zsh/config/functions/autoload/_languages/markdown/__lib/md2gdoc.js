@@ -1,9 +1,8 @@
 import { createReadStream } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { mkdirp, remove, run } from 'firost';
 import { google } from 'googleapis';
-import { googleAuth } from '../../../google/__lib/googleAuth.js';
+import { googleAuth } from '../../../google/__lib/google/auth.js';
 
 export let __;
 
@@ -28,7 +27,7 @@ export async function md2gdoc(filepath, userOptions = {}) {
 
   await __.runPandoc(filepath, outputPath, path.dirname(filepath));
 
-  const auth = await __.getAuth();
+  const auth = await __.googleAuth();
   const docId = await __.uploadDoc(auth, title, outputPath);
   await __.setPageless(auth, docId);
   const url = `https://docs.google.com/document/d/${docId}/edit`;
@@ -51,20 +50,20 @@ __ = {
   },
 
   /**
+   * Pandoc reference DOCX path, read from OROSHI_MD2GDOC_REFERENCE_DOC
+   * @returns {string} Reference DOCX path
+   */
+  get REFERENCE_DOC() {
+    return process.env.OROSHI_MD2GDOC_REFERENCE_DOC;
+  },
+
+  /**
    * Extract title from filepath (filename without extension)
    * @param {string} filepath - Path to the file
    * @returns {string} Title
    */
   titleFromPath(filepath) {
     return path.basename(filepath, path.extname(filepath));
-  },
-
-  /**
-   * Get authenticated Google OAuth2 client
-   * @returns {object} OAuth2Client
-   */
-  getAuth() {
-    return googleAuth();
   },
 
   /**
@@ -75,16 +74,9 @@ __ = {
    * @returns {Promise<void>}
    */
   async runPandoc(filepath, outputPath, cwd) {
-    const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-    const referencePath = path.join(
-      scriptDir,
-      '..',
-      '__config',
-      'reference.docx',
-    );
-    await mkdirp(TMP_DIR);
-    const command = `pandoc -f markdown-auto_identifiers "${filepath}" -o "${outputPath}" --reference-doc="${referencePath}" --extract-media=${TMP_DIR}/`;
-    await run(command, { shell: true, stdout: false, stderr: false, cwd });
+    await __.mkdirp(TMP_DIR);
+    const command = `pandoc -f markdown-auto_identifiers "${filepath}" -o "${outputPath}" --reference-doc="${__.REFERENCE_DOC}" --extract-media=${TMP_DIR}/`;
+    await __.run(command, { shell: true, stdout: false, stderr: false, cwd });
   },
 
   /**
@@ -95,7 +87,7 @@ __ = {
    * @returns {string} Created document ID
    */
   async uploadDoc(auth, title, docxPath) {
-    const drive = google.drive({ version: 'v3', auth });
+    const drive = __.google.drive({ version: 'v3', auth });
     const response = await drive.files.create({
       requestBody: {
         name: title,
@@ -105,7 +97,7 @@ __ = {
       media: {
         mimeType:
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        body: createReadStream(docxPath),
+        body: __.createReadStream(docxPath),
       },
     });
     return response.data.id;
@@ -118,7 +110,7 @@ __ = {
    * @returns {Promise<void>}
    */
   async setPageless(auth, docId) {
-    const docs = google.docs({ version: 'v1', auth });
+    const docs = __.google.docs({ version: 'v1', auth });
     await docs.documents.batchUpdate({
       documentId: docId,
       requestBody: {
@@ -142,7 +134,7 @@ __ = {
    * @returns {Promise<void>}
    */
   async openBrowser(url) {
-    await run(`xdg-open "${url}"`, {
+    await __.run(`xdg-open "${url}"`, {
       shell: true,
       stdout: false,
       stderr: false,
@@ -157,34 +149,10 @@ __ = {
   cleanup() {
     return remove(TMP_DIR);
   },
+
+  createReadStream,
+  google,
+  googleAuth,
+  mkdirp,
+  run,
 };
-
-// CLI entry
-const currentFile = fileURLToPath(import.meta.url);
-if (process.argv[1] === currentFile) {
-  const args = process.argv.slice(2);
-  const options = {};
-
-  const noOpenIndex = args.indexOf('--no-open');
-  if (noOpenIndex !== -1) {
-    options.open = false;
-    args.splice(noOpenIndex, 1);
-  }
-
-  const titleIndex = args.indexOf('--title');
-  if (titleIndex !== -1) {
-    options.title = args[titleIndex + 1];
-    args.splice(titleIndex, 2);
-  }
-
-  const filepath = args[0];
-  if (!filepath) {
-    console.error(
-      'Usage: md2gdoc <file.md> [--title "Custom Title"] [--no-open]',
-    );
-    process.exit(1);
-  }
-
-  const url = await md2gdoc(filepath, options);
-  console.log(url);
-}

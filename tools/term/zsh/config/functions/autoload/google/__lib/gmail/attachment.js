@@ -1,6 +1,5 @@
 import { mkdir, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { googleAuth } from '../google/auth.js';
 import { gmailMessages } from './messages.js';
 
@@ -52,15 +51,3 @@ __ = {
 
   googleAuth,
 };
-
-// CLI entry
-const currentFile = fileURLToPath(import.meta.url);
-if (process.argv[1] === currentFile) {
-  const [account, messageId, partId, out] = process.argv.slice(2);
-  const filepath = await gmailAttachment(account, {
-    messageId,
-    partId,
-    out,
-  });
-  process.stdout.write(`${filepath}\n`);
-}

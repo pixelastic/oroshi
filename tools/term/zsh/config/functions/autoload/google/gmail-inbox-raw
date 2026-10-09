@@ -19,4 +19,4 @@ local account="pro"
 local limit=${flagLimit[2]}
 
 local libDir="${functions_source[$0]:A:h}/__lib"
-node "${libDir}/gmail/inboxRaw.js" "$account" "$limit"
+node "${libDir}/gmail/bin/inboxRaw.js" "$account" "$limit"

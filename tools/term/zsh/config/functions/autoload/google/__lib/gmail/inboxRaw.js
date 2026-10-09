@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'node:url';
 import { _, dayjs, pMap } from 'golgoth';
 import { googleAuth } from '../google/auth.js';
 import { gmailFormatRaw } from './formatRaw.js';
@@ -43,14 +42,3 @@ export async function gmailInboxRaw(account, limit = gmailLimits.inbox) {
 }
 
 __ = { googleAuth };
-
-// CLI entry
-const currentFile = fileURLToPath(import.meta.url);
-if (process.argv[1] === currentFile) {
-  const [account, limit] = process.argv.slice(2);
-  const lines = await gmailInboxRaw(
-    account,
-    Number(limit) || gmailLimits.inbox,
-  );
-  process.stdout.write(lines.map((line) => `${line}\n`).join(''));
-}

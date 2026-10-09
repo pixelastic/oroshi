@@ -23,4 +23,4 @@ if [[ "$query" == "" ]]; then
 fi
 
 local libDir="${functions_source[$0]:A:h}/__lib"
-node "${libDir}/gmail/search.js" "$account" "$query" "$limit"
+node "${libDir}/gmail/bin/search.js" "$account" "$query" "$limit"
