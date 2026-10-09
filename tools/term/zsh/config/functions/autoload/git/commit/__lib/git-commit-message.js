@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'node:url';
 import { _ } from 'golgoth';
 import { run } from 'firost';
 import { commitWithHint } from './commitWithHint.js';
@@ -67,7 +66,3 @@ __ = {
   run,
   formatMessage,
 };
-
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  await main(process.argv[2]);
-}
