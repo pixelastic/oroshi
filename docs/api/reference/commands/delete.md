@@ -81,7 +81,7 @@ export async function entityDelete(options) {
   const { entityId } = options;
 
   // Call the API, with the id of the entity
-  await __.callApi({ method: 'DELETE', path: `entities/${entityId}` });
+  await __.callApi(`entities/${entityId}`, { method: 'DELETE' });
 
   // Return the id
   return entityId;

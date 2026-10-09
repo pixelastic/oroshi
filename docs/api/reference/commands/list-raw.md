@@ -132,11 +132,12 @@ export let __;
  * @returns {Promise<string>} Raw lines, joined with a newline
  */
 export async function entityListRaw(options) {
-  // Transform options into API parameters
+  // Transform options into the query of the API call
+  const query = {};
 
   // Call the endpoint that returns the entities, paginating up to --limit
   // (page or cursor, each module paginates itself)
-  const entities = await __.callApi();
+  const entities = await __.callApi('entities', { query });
 
   // One line per entity
   return _.chain(entities).map(__.toLine).join('\n').value();

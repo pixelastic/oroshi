@@ -8,6 +8,9 @@ camelCase JavaScript module that calls the service and returns data. All
 commands share one command vocabulary, one argument convention and one output
 format, so that humans and agents can guess how any service behaves.
 
+This file holds the generic rules. The exceptions are defined in the files of
+the commands concerned.
+
 ## Template notation
 
 - A name in angle brackets (`<service>`, `<entity>`, `<Entity>`) in a path, a
@@ -35,7 +38,7 @@ format, so that humans and agents can guess how any service behaves.
 - [reference/commands/login.md](reference/commands/login.md) — Get the OAuth tokens of a service, and save them. Only OAuth APIs have it.
 - [reference/commands/custom.md](reference/commands/custom.md) — Add a verb of your own, for an action that is not CRUD.
 - [reference/lib/getConfig.md](reference/lib/getConfig.md) — The only way to read the credentials and the configuration of a service.
-- [reference/lib/callApi.md](reference/lib/callApi.md) — The only way to talk to a service, and the typed error of every failed call.
+- [reference/lib/callApi.md](reference/lib/callApi.md) — The only way to talk to a service, and the error of every failed call.
 - [reference/lib/formatEntity.md](reference/lib/formatEntity.md) — The one place that defines what a command prints for an entity.
 - [reference/docs/glossary.md](reference/docs/glossary.md) — The role of the glossary of each service, and what it must define.
 

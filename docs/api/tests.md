@@ -41,6 +41,9 @@ It is the only command with a bats test. See [`list`](reference/commands/list.md
 ## vitest
 
 vitest covers the modules, `getConfig` and `callApi`. Tests run with `js-test`.
+A test mocks a collaborator through `__`, with `vi.spyOn(__, 'name')`. The
+`js-writer` skill defines this convention
+([architecture.md](architecture.md#javascript-conventions)).
 
 ### Mocking `getConfig`
 
@@ -56,6 +59,7 @@ vi.spyOn(__, 'getConfig').mockReturnValue({ token: 'secret-token' });
 `callApi` is the only module that talks to the network, and it has its own
 tests. They mock the HTTP call (`__.fetch`) to return a response with a status
 and a body, and assert on the request it received (url, method, headers, body).
+The behaviors to cover are listed in [`callApi`](reference/lib/callApi.md#template).
 
 Every other module mocks `callApi` whenever it needs an API response. Their
 tests never mock `fetch`.
@@ -78,7 +82,7 @@ describe('entityRead', () => {
   it('calls the API with the id of the entity', async () => {
     await entityRead('recA');
 
-    expect(__.callApi).toHaveBeenCalledWith({ path: 'entities/recA' });
+    expect(__.callApi).toHaveBeenCalledWith('entities/recA');
   });
 
   it('returns the response of the API, formatted', async () => {
@@ -86,49 +90,6 @@ describe('entityRead', () => {
 
     expect(__.formatEntity).toHaveBeenCalledWith(response);
     expect(actual).toEqual({ id: 'formatted' });
-  });
-});
-```
-
-`<service>/__lib/__tests__/callApi.js`:
-
-```javascript
-import { __, callApi } from '../callApi.js';
-
-describe('callApi', () => {
-  beforeEach(() => {
-    // Mock the config, never the environment
-    vi.spyOn(__, 'getConfig').mockReturnValue({ token: 'secret-token' });
-  });
-
-  it('sends the token of the config', async () => {
-    vi.spyOn(__, 'fetch').mockReturnValue({
-      ok: true,
-      status: 200,
-      json: () => ({ id: 'recA' }),
-    });
-
-    await callApi({ path: 'entities/recA' });
-
-    const headers = __.fetch.mock.calls[0][1].headers;
-    expect(headers).toHaveProperty('Authorization', 'Bearer secret-token');
-  });
-
-  it('throws a typed error with the status and the message', async () => {
-    vi.spyOn(__, 'fetch').mockReturnValue({
-      ok: false,
-      status: 404,
-      json: () => ({ message: 'Not found' }),
-    });
-
-    let actual = null;
-    try {
-      await callApi({ path: 'entities/recZ' });
-    } catch (error) {
-      actual = error;
-    }
-
-    expect(actual).toHaveProperty('message', 'HTTP 404: Not found');
   });
 });
 ```

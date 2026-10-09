@@ -93,7 +93,7 @@ export let __;
  * @returns {Promise<object>} The entity, formatted
  */
 export async function entityRead(entityId) {
-  const response = await __.callApi({ path: `entities/${entityId}` });
+  const response = await __.callApi(`entities/${entityId}`);
   return __.formatEntity(response);
 }
 

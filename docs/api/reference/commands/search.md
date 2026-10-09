@@ -116,7 +116,8 @@ export async function entitySearch(options) {
 
   // Transform options into API parameters
 
-  // Call the API
+  // Call the API: the path first, then the query
+  await __.callApi(path, options);
 
   // Paginate up to --limit (page or cursor, each module paginates itself)
 

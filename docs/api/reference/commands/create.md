@@ -97,7 +97,8 @@ export async function entityCreate(options) {
 
   // Transform the content into the body of the API call
 
-  // Call the API
+  // Call the API: the path first, then the method and the body
+  await __.callApi(path, options);
 
   // Return the new entity, passed through __.formatEntity
 }

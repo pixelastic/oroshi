@@ -116,11 +116,12 @@ An OAuth API saves the tokens of each account with its
 
 ## Errors
 
-- Every failure is a `firostError` with a code: `<SERVICE>_<CAUSE>`
-  (`<SERVICE>_TOKEN_MISSING`, `<SERVICE>_LOGIN_REQUIRED`).
-- [`callApi`](reference/lib/callApi.md) turns every non-2xx status into a typed
-  error. The error carries the HTTP status and the message of the API in its
-  message (`HTTP 404: Not found`).
+- Every known failure is a `firostError` with a code: `<SERVICE>_<CAUSE>`
+  (`<SERVICE>_TOKEN_MISSING`, `<SERVICE>_LOGIN_REQUIRED`). This includes the
+  3xx, 4xx and 5xx statuses that [`callApi`](reference/lib/callApi.md) checks.
+- The message of the error holds the body of the API, or the part of it where
+  the service puts its message.
+- Bins have no `try/catch`. The error reaches the user as it is.
 
 ## Templates
 
