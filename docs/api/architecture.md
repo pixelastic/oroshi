@@ -27,7 +27,6 @@ api/
 └── <service>/
     ├── __docs/
     │   └── GLOSSARY.md
-    ├── <service>-login          # OAuth services only
     ├── <entity>/
     │   ├── <service>-<entity>-list
     │   └── <service>-<entity>-list-raw
@@ -36,9 +35,7 @@ api/
         ├── getConfig.js
         ├── setAccount.js
         ├── callApi.js
-        ├── login.js             # OAuth services only
         ├── bin/
-        │   ├── <service>-login.js   # OAuth services only
         │   └── <service>-<entity>-list-raw.js
         └── <entity>/
             ├── <entity>ListRaw.js
@@ -55,8 +52,6 @@ Each `<service>` folder contains:
   - `<entity>-list-raw`
   - `<entity>-read`
   - etc.
-- a `<service>-login` wrapper, for OAuth services only
-  ([`login`](reference/commands/login.md))
 - a `__docs/` folder:
   - a `GLOSSARY.md` to define the vocabulary of the service
 - a `__lib/` folder to act as a yarn workspace:
@@ -126,7 +121,7 @@ credentials of that account for the whole command.
 ## Errors
 
 - Every known failure is a `firostError` with a code: `<SERVICE>_<CAUSE>`
-  (`<SERVICE>_TOKEN_MISSING`, `<SERVICE>_LOGIN_REQUIRED`). This includes the
+  (`<SERVICE>_TOKEN_MISSING`). This includes the
   3xx, 4xx and 5xx statuses that [`callApi`](reference/lib/callApi.md) checks.
 - The message of the error holds the body of the API, or the part of it where
   the service puts its message.

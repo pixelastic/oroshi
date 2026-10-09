@@ -69,7 +69,6 @@ export async function callApi(path, options = {}) {
   //    Adapt to the service:
   //    - a token in the Authorization header
   //    - a key in a custom header
-  //    - the OAuth tokens saved by `<service>-login` (see commands/login.md)
   const defaultHeaders = { Authorization: `Bearer ${token}` };
 
   // 4. Call the API. `method` and `body` replace the defaults.

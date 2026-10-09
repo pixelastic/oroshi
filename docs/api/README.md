@@ -23,6 +23,7 @@ the commands concerned.
 ## Detail files
 
 - [GLOSSARY.md](GLOSSARY.md) — The terms used across these docs: service, entity, command, its three layers, argument kinds, schemas and verbs.
+- [oauth.md](oauth.md) — What an OAuth API adds to the generic rules, in one place.
 - [architecture.md](architecture.md) — Where the code lives, how a service is configured and authenticated, and how it fails.
 - [arguments.md](arguments.md) — How a command receives its arguments: positional or named, flag names, content, limit and accounts.
 - [documentation.md](documentation.md) — How commands are documented: the header of the ZSH wrapper, and how agents find it with `helper-list` and `helper-documentation`.
@@ -35,7 +36,6 @@ the commands concerned.
 - [reference/commands/create.md](reference/commands/create.md) — Create an entity, and print it as JSON, like `read` does.
 - [reference/commands/update.md](reference/commands/update.md) — Change some fields of an entity, and print it as JSON, like `read` does.
 - [reference/commands/delete.md](reference/commands/delete.md) — Remove an entity, and print its id.
-- [reference/commands/login.md](reference/commands/login.md) — Get the OAuth tokens of a service, and save them. Only OAuth APIs have it.
 - [reference/commands/custom.md](reference/commands/custom.md) — Add a verb of your own, for an action that is not CRUD.
 - [reference/lib/getConfig.md](reference/lib/getConfig.md) — The only way to read the credentials and the configuration of a service.
 - [reference/lib/setAccount.md](reference/lib/setAccount.md) — Choose the account that `getConfig` reads, for the whole command.
@@ -55,7 +55,8 @@ Follow these steps, in order, to add the API helper of a new service:
 2. Create the workspace of the service: its `package.json`
    ([architecture.md](architecture.md)), its
    [`getConfig.js`](reference/lib/getConfig.md) and its
-   [`callApi.js`](reference/lib/callApi.md).
+   [`callApi.js`](reference/lib/callApi.md). For an OAuth API, also read
+   [oauth.md](oauth.md): it changes both and adds the command to log in.
 3. Choose the verbs each entity needs, and the arguments of each command
    ([reference/commands/README.md](reference/commands/README.md), [arguments.md](arguments.md)).
 4. Implement the commands of each entity in this order, copying the template of
@@ -77,5 +78,4 @@ Follow these steps, in order, to add the API helper of a new service:
    [`list-raw`](reference/commands/list-raw.md#role).
    Each command has its header documented ([documentation.md](documentation.md)).
    Each command is tested ([tests.md](tests.md)).
-5. For an OAuth API only, implement its [`login`](reference/commands/login.md).
-   A key API has none.
+

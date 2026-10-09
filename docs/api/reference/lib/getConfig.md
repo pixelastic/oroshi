@@ -22,8 +22,6 @@
 - Output: an object with the configuration of the service. Its keys depend on
   the service (`token`, `baseUrl`, …).
 - Error: `<SERVICE>_TOKEN_MISSING` when a required variable is empty.
-- An OAuth API reads its app id and secret here. Its tokens come from
-  [`login`](../commands/login.md), not from `getConfig`.
 
 ## Template
 

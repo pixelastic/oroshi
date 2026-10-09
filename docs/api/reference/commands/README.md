@@ -16,7 +16,6 @@ The vocabulary is closed: a command is named after one of these verbs.
 | [`create`](create.md)       | Make a new entity, and print it as JSON           |
 | [`update`](update.md)       | Change some fields of an entity, and print it     |
 | [`delete`](delete.md)       | Remove an entity, and print its id                |
-| [`login`](login.md)         | Get the OAuth tokens (optional, OAuth only)       |
 
 
 If some verbs do not make sense conceptually for some entities (for example `update` a

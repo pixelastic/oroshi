@@ -38,7 +38,7 @@ Examples: Gmail and Confluence.
 _Avoid_: grant API
 
 **Login**:
-The optional command of an **OAuth API**. It opens the browser, gets the tokens
+The command of an **OAuth API**. It opens the browser, gets the tokens
 and saves them. See
 [reference/commands/login.md](reference/commands/login.md).
 _Avoid_: `auth`, `connect`, `signin`
@@ -127,7 +127,7 @@ _Avoid_: service verb
 
 - A **Service** manages one or more **Entities**.
 - A **Service** is either a **Key API** or an **OAuth API**.
-- An **OAuth API** may have a **Login**. A **Key API** has none.
+- An **OAuth API** has a **Login**. A **Key API** has none.
 - A **Command** applies one verb to one **Entity**.
 - An **API helper** is made of the **Commands** of one **Service**.
 - A **Command** is made of a **Wrapper**, a **Bin** and a **Module**.

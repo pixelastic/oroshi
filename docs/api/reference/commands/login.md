@@ -3,6 +3,9 @@
 `login` gets the OAuth tokens of a service and saves them, so that the other
 commands can call the API.
 
+`login` is an exception to the generic rules: it has no entity, it is named
+`<service>-login`, and it does not live in an entity folder.
+
 ## Example
 
 ```text
@@ -12,19 +15,17 @@ $ confluence-login --account perso
 
 ## Role
 
-- `login` is optional. Only an OAuth API needs it. A key API has no login, and
-  must not build one.
-- It is the only command that is not named `<service>-<entity>-<verb>`. It is
-  named `<service>-login`, and has no entity.
+- An OAuth API has a `login`. A key API has none.
 - It opens a browser, so that the user grants access. It gets the tokens, and
   saves them.
 - The tokens go to the state folder of the service:
   `$OROSHI_FOLDER_STATE/<service>/tokens.json`.
 - The default account uses `tokens.json`. Another account uses
   `tokens-<account>.json` in the same folder.
-- When the grant is missing or expired, the other commands fail with the typed
-  error `<SERVICE>_LOGIN_REQUIRED`. Its message points to this command:
-  `run <service>-login`.
+- When the tokens file is missing, or when the API reports a missing login, the
+  other commands fail with the typed error `<SERVICE>_LOGIN_REQUIRED`. Its
+  message points to this command: `run <service>-login`. See
+  [oauth.md](../../oauth.md).
 - No command logs in by itself. Only `<service>-login` opens a browser, and the
   user runs it by hand.
 

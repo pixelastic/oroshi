@@ -17,7 +17,6 @@ point to the code under test:
 | Layer             | Tested | Tool   | Location                             |
 |-------------------|--------|--------|--------------------------------------|
 | Module            | Yes    | vitest | `__lib/<entity>/__tests__/`          |
-| `login.js`        | Yes    | vitest | `__lib/__tests__/login.js`           |
 | `getConfig.js`    | Yes    | vitest | `__lib/__tests__/getConfig.js`       |
 | `callApi.js`      | Yes    | vitest | `__lib/__tests__/callApi.js`         |
 | `list` wrapper    | Yes    | bats   | `<entity>/__tests__/`                |
