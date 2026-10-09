@@ -1,0 +1,42 @@
+# Print the documentation of a file: its leading comment block, without comment prefixes
+# Usage:
+# $ file-documentation ./slugify # Header of the file, shebang and #autoload skipped
+# Stops at the first non-comment line
+# Exits non-zero when the file cannot be read
+setopt local_options err_return
+
+local filepath="$1"
+
+# A path is required
+[[ "$filepath" == "" ]] && return 1
+
+# Unreadable file
+[[ ! -r "$filepath" ]] && return 1
+
+local content="$(<"$filepath")"
+local started=0
+local blockLines=()
+local line
+for line in "${(@f)content}"; do
+  # Skip shebang and #autoload directives
+  [[ "$line" == "#!"* ]] && continue
+  [[ "$line" == "#autoload"* ]] && continue
+  # Skip empty lines and bare comment lines before content starts
+  if [[ $started == 0 ]]; then
+    [[ "$line" == "#" ]] && continue
+    [[ "$line" == "" ]] && continue
+  fi
+  # Stop at first non-comment line
+  [[ "$line" != "#"* ]] && break
+  started=1
+  # Strip leading "# " or "#" prefix
+  line="${line#\#\# }"
+  line="${line#\# }"
+  line="${line#\#}"
+  blockLines+=("$line")
+done
+
+# No header: nothing to print
+[[ ${#blockLines} == 0 ]] && return 0
+
+print -rl -- "${blockLines[@]}"

@@ -1,0 +1,30 @@
+# Print the whole header comment of a helper
+# Usage:
+# $ helper-documentation slugify         # Description, details and usage of an autoloaded function or a script
+# $ helper-documentation --reply slugify # Write to $REPLY, no echo
+# Exits non-zero when the name is unknown
+setopt local_options err_return
+
+local flagReply=()
+zparseopts -E -D \
+  -reply=flagReply
+
+local isReply=${#flagReply}
+local name="$1"
+
+# A name is required
+[[ "$name" == "" ]] && return 1
+
+# Unknown name: helper-path fails, err_return stops here
+helper-path --reply "$name"
+local filepath="$REPLY"
+
+local documentation="$(file-documentation "$filepath")"
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$documentation"
+  return
+fi
+# No header: print nothing
+[[ "$documentation" == "" ]] && return 0
+echo "$documentation"

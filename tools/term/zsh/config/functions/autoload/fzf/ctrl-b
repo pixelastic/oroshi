@@ -38,26 +38,12 @@ function fzf-preview-function-header() {
 
 function fzf-preview-comment-block() {
   local filePath="$1"
-  local fileContent="$(<"$filePath")"
+  local fileComment="$(file-documentation "$filePath")"
   local line
-  local started=0
   local commentBlock=""
-  for line in "${(@f)fileContent}"; do
-    # Skip shebang and #autoload directives
-    [[ "$line" == "#!"* ]] && continue
-    [[ "$line" == "#autoload"* ]] && continue
-    # Skip empty lines and bare comment lines before content starts
-    if [[ $started == 0 ]]; then
-      [[ "$line" == "#" ]] && continue
-      [[ "$line" == "" ]] && continue
-    fi
-    # Stop at first non-comment line
-    [[ "$line" != "#"* ]] && break
-    started=1
-    # Strip leading "# " or "#" prefix
-    line="${line#\#\# }"
-    line="${line#\# }"
-    line="${line#\#}"
+  # No header: nothing to loop over
+  [[ "$fileComment" == "" ]] && return 0
+  for line in "${(@f)fileComment}"; do
     commentBlock+=" ${line}\n"
   done
 
