@@ -6,8 +6,9 @@ documentation.
 
 ## ZSH and JavaScript
 
-The public commands (available in `$PATH`) are thin ZSH wrappers. They call a
-bin, which itself calls an internal JavaScript module.
+The public commands are thin ZSH wrappers. Each wrapper is an autoloaded
+function, found in `$fpath`. It calls a bin, which itself calls an internal
+JavaScript module. Each `__lib` folder is a workspace.
 
 That underlying module is where all the logic lives, and is thoroughly tested.
 The ZSH wrapper and the bin are just thin proxies without much logic.

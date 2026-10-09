@@ -8,6 +8,15 @@ camelCase JavaScript module that calls the service and returns data. All
 commands share one command vocabulary, one argument convention and one output
 format, so that humans and agents can guess how any service behaves.
 
+## Template notation
+
+- A name in angle brackets (`<service>`, `<entity>`, `<Entity>`) in a path, a
+  string or a comment is a placeholder. Replace it with the real name
+  (`airtable`, `record`, `Record`).
+- Inside a JavaScript identifier, the plain words `entity` and `Entity` play
+  the same role: `entityRead` becomes `recordRead`, and `formatEntity` becomes
+  `formatRecord`. The examples stay lintable that way.
+
 ## Detail files
 
 - [GLOSSARY.md](GLOSSARY.md) — The terms used across these docs: service, entity, command, its three layers, argument kinds, schemas and verbs.

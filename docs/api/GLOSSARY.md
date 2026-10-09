@@ -2,6 +2,9 @@
 
 The words used across `docs/api/`. Every doc uses these terms, and no others.
 
+This file holds the generic rules. The exceptions are defined in the files of
+the commands concerned.
+
 ## Language
 
 **Service**:
@@ -65,7 +68,8 @@ Example: an Airtable record has a different shape depending on its table.
 _Avoid_: loose schema, free schema
 
 **Wrapper**:
-The thin ZSH file of a command, in `$PATH`. It calls the bin.
+The thin ZSH file of a command, an autoloaded function found in `$fpath`. It
+calls the bin.
 _Avoid_: alias, launcher
 
 **Bin**:
