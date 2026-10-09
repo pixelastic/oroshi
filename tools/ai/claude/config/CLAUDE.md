@@ -52,6 +52,8 @@ Discover helpers with `helper-list <domain> [action]` — all returned helpers a
 - `helper-list git branch` — find git branch helpers
 - `helper-list img` — list all image helpers
 
+Read the flags and usage of a helper with `helper-documentation <name>`.
+
 Use matching helpers over raw commands; if none match, fall back to standard tools.
 
 ## Throw-away scripts

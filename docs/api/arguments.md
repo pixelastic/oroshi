@@ -9,8 +9,9 @@ the module. The wrapper is described in
 [architecture.md](architecture.md#zsh-and-javascript).
 
 The wrapper lists the accepted arguments in its `# Usage:` header. The
-header mirrors what the JavaScript module accepts. It is the text that
-`helper-list` shows, so keep both in sync.
+header mirrors what the JavaScript module accepts. Agents read it with
+`helper-documentation` (see [documentation.md](documentation.md)), so keep
+both in sync.
 
 ## Positional and named
 

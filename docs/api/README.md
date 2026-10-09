@@ -13,7 +13,7 @@ format, so that humans and agents can guess how any service behaves.
 - [GLOSSARY.md](GLOSSARY.md) — The terms used across these docs: service, entity, command, its three layers, argument kinds, schemas and verbs.
 - [architecture.md](architecture.md) — Where the code lives, how a service is configured and authenticated, and how it fails.
 - [arguments.md](arguments.md) — How a command receives its arguments: positional or named, flag names, content, limit and accounts.
-- [documentation.md](documentation.md) — How commands are documented
+- [documentation.md](documentation.md) — How commands are documented: the header of the ZSH wrapper, and how agents find it with `helper-list` and `helper-documentation`.
 - [tests.md](tests.md) — How API helpers are tested: what each layer covers, how `__` and `getConfig` are mocked, fixtures, and the `list` bats test.
 - [reference/commands/README.md](reference/commands/README.md) — The table of all commands, and the service-specific verbs.
 - [reference/commands/list-raw.md](reference/commands/list-raw.md) — Print the entities of a service as plain lines, one per line, for agents and scripts to parse.

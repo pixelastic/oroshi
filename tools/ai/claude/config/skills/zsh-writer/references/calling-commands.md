@@ -35,19 +35,18 @@ Calling porcelain bypasses that work and creates duplication.
 | `docker-container-is-running web` | `docker inspect -f '{{.State.Running}}' web` |
 | `docker-container-stop web` | `docker stop $(docker ps -q --filter name=web)` |
 | `node-module-list-raw` | `npm list --global --depth=0` |
-| And more... | Check `helper-list-raw ...` |
+| And more... | Check `helper-list ...` |
 
 
-Before falling back to porcelain, run `helper-list-raw` to discover available helpers.
+Before falling back to porcelain, discover available helpers in two steps:
 
-```
+1. `helper-list <domain> [action]` lists helpers with their name and description.
+2. `helper-documentation <name>` prints the full header of one helper, with its usage and flags.
+
 Example:
 ```zsh
-helper-list-raw git
-git-branch-copy▮Copy a branch▮{filepath}
-git-branch-pull▮Pull a branch▮{filepath}
-git-branch-list▮Display the list of local branches▮{filepath}
-# ...
+helper-list git branch
+helper-documentation git-branch-copy
 ```
 
 ## Stderr suppression in subshells

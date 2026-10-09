@@ -36,7 +36,7 @@ through.
 ### ZSH Wrapper
 
 The `# Usage:` header must contain the list of flags it accepts (mirrored from
-the JavaScript module), so it is surfaced to `helper-list`.
+the JavaScript module), so `helper-documentation` can print it.
 
 `<service>/<entity>/<service>-<entity>-list-raw`:
 
