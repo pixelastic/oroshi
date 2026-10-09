@@ -164,3 +164,78 @@ write_failing_package() {
   bats_run_zsh "go-test --fail-fast $BATS_TMP_DIR/mymod/pkg/parser/parser.go"
   [[ "$status" -eq 0 ]]
 }
+
+# --- Token saving (real go toolchain) ---
+
+# Write a package whose test file holds the given passing tests
+write_passing_package() {
+  local pkg="$1"
+  shift
+  local pkgDir="$BATS_TMP_DIR/mymod/pkg/$pkg"
+  mkdir -p "$pkgDir"
+  echo "package $pkg" > "$pkgDir/$pkg.go"
+  {
+    echo "package $pkg"
+    echo 'import "testing"'
+    for name in "$@"; do
+      echo "func $name(t *testing.T) {}"
+    done
+  } > "$pkgDir/${pkg}_test.go"
+}
+
+@test "--token-saving hides passing tests and packages" {
+  write_passing_package lexer TestLexerWorks
+  write_failing_package parser TestParserFailure
+
+  bats_run_zsh "go-test --token-saving $BATS_TMP_DIR/mymod/pkg/parser/parser.go $BATS_TMP_DIR/mymod/pkg/lexer/lexer.go"
+  [[ "$output" != *"TestLexerWorks"* ]]
+  [[ "$output" != *"lexer"* ]]
+  [[ "$output" != *"PASS"* ]]
+  [[ "$output" != *"=== RUN"* ]]
+}
+
+@test "--token-saving shows failing test names and their output" {
+  local pkgDir="$BATS_TMP_DIR/mymod/pkg/parser"
+  printf 'package parser\nimport "testing"\nfunc TestBroken(t *testing.T) { t.Errorf("expected 1, got 2") }\n' > "$pkgDir/parser_test.go"
+
+  bats_run_zsh "go-test --token-saving $pkgDir/parser.go"
+  [[ "$output" == *"--- FAIL: TestBroken"* ]]
+  [[ "$output" == *"expected 1, got 2"* ]]
+}
+
+@test "--token-saving prints All tests passed. when every test passes" {
+  write_passing_package parser TestOk
+  write_passing_package lexer TestAlsoOk
+
+  bats_run_zsh "go-test --token-saving $BATS_TMP_DIR/mymod/pkg/parser/parser.go $BATS_TMP_DIR/mymod/pkg/lexer/lexer.go"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "All tests passed." ]]
+}
+
+@test "--token-saving exits non-zero when a test fails in any package" {
+  write_failing_package parser TestParserFailure
+  write_passing_package lexer TestLexerWorks
+
+  bats_run_zsh "go-test --token-saving $BATS_TMP_DIR/mymod/pkg/parser/parser.go $BATS_TMP_DIR/mymod/pkg/lexer/lexer.go"
+  [[ "$status" -ne 0 ]]
+
+  bats_run_zsh "go-test --token-saving $BATS_TMP_DIR/mymod/pkg/lexer/lexer.go $BATS_TMP_DIR/mymod/pkg/parser/parser.go"
+  [[ "$status" -ne 0 ]]
+}
+
+@test "--token-saving shows the compiler errors of a package that does not build" {
+  printf 'package parser\nimport "testing"\nfunc TestBroken(t *testing.T) { undefinedThing() }\n' > "$BATS_TMP_DIR/mymod/pkg/parser/parser_test.go"
+
+  bats_run_zsh "go-test --token-saving $BATS_TMP_DIR/mymod/pkg/parser/parser.go"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"undefinedThing"* ]]
+}
+
+@test "prints the full go output without --token-saving" {
+  write_passing_package parser TestOk
+
+  bats_run_zsh "go-test $BATS_TMP_DIR/mymod/pkg/parser/parser.go"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"ok"*"example.com/mymod/pkg/parser"* ]]
+  [[ "$output" != *"All tests passed."* ]]
+}

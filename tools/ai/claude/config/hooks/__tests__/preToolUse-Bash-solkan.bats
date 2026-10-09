@@ -187,6 +187,12 @@ setup() {
   expect_json '.rewrite' 'zsh-test-token-saving a.bats'
 }
 
+@test "rewrites a single go-test command with the token-saving list" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'go-test ./x'"
+  [[ "$status" -eq 0 ]]
+  expect_json '.rewrite' 'go-test-token-saving ./x'
+}
+
 @test "keeps zsh-test in a pipe unchanged" {
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'zsh-test a.bats | head'"
   [[ "$status" -eq 0 ]]
@@ -214,13 +220,13 @@ setup() {
 @test "applies the rm guard-rail to a single command" {
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'rm -f a'"
   [[ "$status" -eq 0 ]]
-  expect_json '.rewrite' 'rm-for-claude -f a'
+  expect_json '.rewrite' 'rm-guarded -f a'
 }
 
 @test "applies the rm guard-rail to a compound command" {
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'rm -f a | cat'"
   [[ "$status" -eq 0 ]]
-  expect_json '.rewrite' 'rm-for-claude -f a | cat'
+  expect_json '.rewrite' 'rm-guarded -f a | cat'
 }
 
 @test "uses the local token-saving list for a single command" {

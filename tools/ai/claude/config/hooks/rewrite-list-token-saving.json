@@ -1,3 +1,4 @@
 {
+  "go-test": "go-test-token-saving",
   "zsh-test": "zsh-test-token-saving"
 }

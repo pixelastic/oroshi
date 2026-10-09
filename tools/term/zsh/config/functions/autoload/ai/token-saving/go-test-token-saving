@@ -1,0 +1,13 @@
+# Run go-test with output reduced to failures only
+# Set OROSHI_DISABLE_TOKEN_SAVING=1 to run go-test unchanged
+# Usage:
+# $ go-test-token-saving ./pkg/parser   # Same arguments as go-test
+setopt local_options err_return
+
+# Token saving disabled: run the original command unchanged
+if [[ "$OROSHI_DISABLE_TOKEN_SAVING" == "1" ]]; then
+  go-test "$@"
+  return $?
+fi
+
+go-test --token-saving "$@"

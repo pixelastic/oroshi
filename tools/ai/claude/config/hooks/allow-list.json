@@ -242,6 +242,7 @@
   "go-module-root",
   "go-test",
   "go-test-path",
+  "go-test-token-saving",
   "go-tool-path",
   "grep",
   "gresource",

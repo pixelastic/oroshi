@@ -5,11 +5,13 @@
 # $ go-test ./pkg/                               # Expand directory, test all Go packages
 # $ go-test file.go ./pkg/                       # Mixed inputs
 # $ go-test --fail-fast ./pkg/                   # Stop at the first failing test and package
+# $ go-test --token-saving ./pkg/                # Show only failures, or "All tests passed."
 setopt local_options err_return
 
-zparseopts -E -D -fail-fast=flagFailFast
+zparseopts -E -D -fail-fast=flagFailFast -token-saving=flagTokenSaving
 
 local isFailFast=${#flagFailFast}
+local isTokenSaving=${#flagTokenSaving}
 
 # No arguments: nothing to test
 [[ $# -eq 0 ]] && return 0
@@ -36,13 +38,49 @@ cd "$moduleRoot"
 local goArgs=()
 [[ $isFailFast == 1 ]] && goArgs+=(-failfast)
 
+# Run `go test` and print only what failed, keeping go's exit code.
+# `go test` has no native "failures only" option: run it in full with -json,
+# then reparse the events to keep only the output of failing tests, failing
+# packages and build errors. Drops go's own "=== RUN" style markers.
+function _go-test-failures-only() {
+  # shellcheck disable=SC2016
+  local jqFilter='
+    ([.[] | select(.Action == "fail") | "\(.Package)|\(.Test)"] | INDEX(.)) as $failed
+    | .[]
+    | select(
+        .Action == "build-output"
+        or (
+          .Action == "output"
+          and $failed["\(.Package)|\(.Test)"] != null
+          and (.Output | test("^(=== (RUN|PAUSE|CONT|NAME)|FAIL\n$)") | not)
+        )
+      )
+    | .Output
+  '
+  local exitCode=0
+  local events=""
+  events="$(go test -json "$@")" || exitCode=$?
+  print -r -- "$events" | jq --join-output --slurp "$jqFilter"
+  return $exitCode
+}
+
 local exitCode=0
 for dir in "${packageDirs[@]}"; do
-  local relPath="${dir#"$moduleRoot"/}"
-  go test "${goArgs[@]}" "./${relPath}/..." || exitCode=$?
-
   # -failfast only stops inside one package: stop at the first failing package too
   [[ $isFailFast == 1 && $exitCode -ne 0 ]] && break
+
+  local relPath="${dir#"$moduleRoot"/}"
+
+  # Token saving: print only the failures, then go to the next package
+  if [[ $isTokenSaving -eq 1 ]]; then
+    _go-test-failures-only "${goArgs[@]}" "./${relPath}/..." || exitCode=$?
+    continue
+  fi
+
+  go test "${goArgs[@]}" "./${relPath}/..." || exitCode=$?
 done
+
+# Token saving: nothing was printed because every test passed
+[[ $isTokenSaving -eq 1 && $exitCode -eq 0 ]] && print "All tests passed."
 
 return $exitCode
