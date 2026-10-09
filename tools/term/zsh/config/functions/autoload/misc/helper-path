@@ -1,0 +1,35 @@
+# Turn the name of a helper into the full path of its file
+# Usage:
+# $ helper-path slugify         # Path of an autoloaded function or a script
+# $ helper-path --reply slugify # Write to $REPLY, no echo
+# Exits non-zero and prints nothing when the name is unknown
+setopt local_options err_return
+
+local flagReply=()
+zparseopts -E -D \
+  -reply=flagReply
+
+local isReply=${#flagReply}
+local name="$1"
+
+# A name is required
+[[ "$name" == "" ]] && return 1
+
+# Autoloaded function, already loaded: zsh remembers the file it came from
+local filepath="${functions_source[$name]}"
+
+# Autoloaded function, not loaded yet: look for it in the function path
+local candidates=(${^fpath}/$name(N-.))
+[[ "$filepath" == "" ]] && filepath="${candidates[1]}"
+
+# Script: look for it in the executable path
+[[ "$filepath" == "" ]] && filepath="$(whence -p "$name")"
+
+# Unknown name
+[[ "$filepath" == "" ]] && return 1
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$filepath"
+  return
+fi
+echo "$filepath"
