@@ -1,13 +1,13 @@
 # Clear ralph session lock
 # Usage:
-# $ ralph-clear [dir]   # dir defaults to plan-directory
+# $ ralph-clear [dir]   # dir defaults to the worktree plan directory, then cwd
 setopt local_options err_return
 
-local dir="${1:-$(plan-directory 2>/dev/null)}"
-if [[ "$dir" == "" ]]; then
-  print "ralph-clear: no plan directory found"
-  return 1
+local rawArg="${1:-}"
+# If already in a worktree with a plan, use it
+if [[ "$rawArg" == "" ]]; then
+  rawArg="$(plan-directory)" || rawArg="."
 fi
-dir="${dir:a}"
+local dir="${rawArg:a}"
 
 rm -f "$dir/ralph.json"

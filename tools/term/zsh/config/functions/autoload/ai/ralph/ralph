@@ -1,10 +1,14 @@
-# Run ralph in single-shot mode
+# Run a ralph session on a plan directory
+#
 # Usage:
-# $ ralph <dir>
+# $ ralph [--auto] [dir]   # dir defaults to the worktree plan directory, then cwd
 setopt local_options err_return
 
-local scriptDir="${functions_source[$0]:A:h}"
-source "$scriptDir/__lib/ralph-single.zsh"
+local autoFlag
+zparseopts -D -E -- -auto=autoFlag
+
+local mode="single"
+[[ "$autoFlag" != "" ]] && mode="auto"
 
 local rawArg="${1:-}"
 # If already in a worktree with a plan, use it
@@ -13,4 +17,23 @@ if [[ "$rawArg" == "" ]]; then
 fi
 local dir="${rawArg:a}"
 
-ralph-single "$dir"
+# Refuse if any session is already running
+if ralph-is-running "$dir"; then
+  print "ralph: ❌ session already in progress"
+  return 1
+fi
+
+# Initialize the lock
+jq -n --arg mode "$mode" '{"mode":$mode}' >"$dir/ralph.json"
+
+# Navigate to git root
+cd "$(git-directory-root)"
+
+# Launch Claude in foreground; capture exit code
+local claudeExit=0
+claude --permission-mode acceptEdits "/ralph $dir" || claudeExit=$?
+
+# Always clear the lock, even on failure
+ralph-clear "$dir"
+
+return $claudeExit

@@ -6,7 +6,7 @@ setup() {
 }
 
 @test "removes ralph.json" {
-  jq -n '{"mode":"single","done":false,"prd_done":false}' > "$DIR/ralph.json"
+  jq -n '{"mode":"single"}' > "$DIR/ralph.json"
   [[ -f "$DIR/ralph.json" ]]
   bats_run_zsh "ralph-clear $DIR"
   [[ "$status" -eq 0 ]]
@@ -19,9 +19,22 @@ setup() {
   [[ "$status" -eq 0 ]]
 }
 
-@test "fails without dir and no plan-directory" {
+@test "no arg + worktree has plan → clears the plan directory" {
+  plan-directory() { echo "$DIR"; }
+  bats_mock plan-directory
+  jq -n '{"mode":"single"}' > "$DIR/ralph.json"
+
+  bats_run_zsh "cd / && ralph-clear"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$DIR/ralph.json" ]]
+}
+
+@test "no arg + no worktree plan → falls back to cwd" {
   plan-directory() { return 1; }
   bats_mock plan-directory
-  bats_run_zsh "ralph-clear"
-  [[ "$status" -ne 0 ]]
+  jq -n '{"mode":"single"}' > "$DIR/ralph.json"
+
+  bats_run_zsh "cd $DIR && ralph-clear"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$DIR/ralph.json" ]]
 }

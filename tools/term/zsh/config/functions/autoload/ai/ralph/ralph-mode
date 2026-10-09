@@ -1,0 +1,14 @@
+# Print the mode of the running ralph session (empty if none)
+# Usage:
+# $ ralph-mode [dir]   # dir defaults to the worktree plan directory, then cwd
+setopt local_options err_return
+
+local rawArg="${1:-}"
+# If already in a worktree with a plan, use it
+if [[ "$rawArg" == "" ]]; then
+  rawArg="$(plan-directory)" || rawArg="."
+fi
+local dir="${rawArg:a}"
+
+[[ ! -f "$dir/ralph.json" ]] && return 0
+jq -r '.mode // empty' "$dir/ralph.json"
