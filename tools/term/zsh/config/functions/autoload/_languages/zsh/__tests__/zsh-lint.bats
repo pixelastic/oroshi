@@ -309,3 +309,22 @@ mock_one_violation() {
   bats_run_zsh "zsh-lint $file"
   [[ ! -f "$BATS_TMP_DIR/zsh_fix_called" ]]
 }
+
+# --- Real shellcheck findings ---
+
+@test "shellcheck finding: prints a stylish report instead of crashing" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf "x='\$y'\n" > "$file"
+  bats_run_zsh "zsh-lint $file"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"SC2016"* ]]
+  [[ "$output" != *"jq: error"* ]]
+}
+
+@test "--json: shellcheck finding has a string code" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf "x='\$y'\n" > "$file"
+  bats_run_zsh "zsh-lint --json $file"
+  [[ "$status" -eq 1 ]]
+  [[ "$(printf '%s' "$output" | jq --raw-output '[.[] | select(.code == "SC2016")] | length')" == '1' ]]
+}

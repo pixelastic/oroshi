@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  sourcePrefix="source '${BATS_TEST_DIRNAME}/../__lib/zsh-lint-shellcheck.zsh'"
+  sourcePrefix="source '${BATS_TEST_DIRNAME}/../__lib/shellcheck-lint.zsh'; source '${BATS_TEST_DIRNAME}/../__lib/zsh-lint-shellcheck.zsh'"
 }
 
 @test "outputs [] and exits 0 for clean file" {
@@ -33,4 +33,12 @@ setup() {
   bats_run_zsh "${sourcePrefix}; zsh-lint-shellcheck $file"
   run bash -c "printf '%s' '$output' | jq 'type == \"array\"'"
   [[ "$output" == 'true' ]]
+}
+
+@test "reports a finding that is not excluded with a string code" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf "x='\$y'\n" >"$file"
+  bats_run_zsh "${sourcePrefix}; zsh-lint-shellcheck $file"
+  [[ "$status" -eq 1 ]]
+  [[ "$(printf '%s' "$output" | jq --raw-output '[.[].code] | contains(["SC2016"])')" == 'true' ]]
 }

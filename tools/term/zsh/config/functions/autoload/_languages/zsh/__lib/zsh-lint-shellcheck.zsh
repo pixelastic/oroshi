@@ -1,5 +1,6 @@
 # Defines zsh-lint-shellcheck() for use by zsh-lint
 # Sourced by the orchestrator — not standalone, no shebang
+# Delegates to shellcheck-lint, which the orchestrator must source first
 #
 # Usage (called by the orchestrator):
 # $ zsh-lint-shellcheck file.zsh [file2.zsh ...]
@@ -54,28 +55,5 @@ function zsh-lint-shellcheck() {
     SC2300  # parameter expansion on command substitution
   )
 
-  # Exclude directories from the inputs
-  local -a input=()
-  for item in "$@"; do
-    [[ -d $item ]] && continue
-    input+=("$item")
-  done
-
-  if [[ ${#input} -eq 0 ]]; then
-    printf '[]\n'
-    return 0
-  fi
-
-  # Run shellcheck (|| true so a non-zero exit on findings doesn't abort)
-  local scOutput="$(shellcheck \
-    --shell=bash \
-    --external-sources \
-    --format=json \
-    --exclude="${(j:,:)excludedRules}" \
-    "${input[@]}" || true)"
-  [[ "$scOutput" == "" ]] && scOutput="[]"
-
-  printf '%s\n' "$scOutput"
-  [[ "$(printf '%s' "$scOutput" | jq 'length')" -gt 0 ]] && return 1
-  return 0
+  shellcheck-lint --json --exclude "${(j:,:)excludedRules}" "$@"
 }
