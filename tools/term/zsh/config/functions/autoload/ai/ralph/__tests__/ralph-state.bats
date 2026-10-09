@@ -6,9 +6,9 @@ setup() {
 }
 
 @test "init creates state file with given mode" {
-  bats_run_zsh "ralph-state $DIR init loop"
+  bats_run_zsh "ralph-state $DIR init auto"
   [[ "$status" -eq 0 ]]
-  [[ "$(jq -r .mode "$DIR/ralph.json")" = "loop" ]]
+  [[ "$(jq -r .mode "$DIR/ralph.json")" = "auto" ]]
   [[ "$(jq -r .done "$DIR/ralph.json")" = "false" ]]
   [[ "$(jq -r .prd_done "$DIR/ralph.json")" = "false" ]]
 }
@@ -20,15 +20,15 @@ setup() {
 }
 
 @test "get returns value" {
-  jq -n '{"mode":"loop","done":false,"prd_done":false}' > "$DIR/ralph.json"
+  jq -n '{"mode":"auto","done":false,"prd_done":false}' > "$DIR/ralph.json"
   [[ -f "$DIR/ralph.json" ]]
   bats_run_zsh "ralph-state $DIR get mode"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "loop" ]]
+  [[ "$output" = "auto" ]]
 }
 
 @test "set updates a boolean value" {
-  jq -n '{"mode":"loop","done":false,"prd_done":false}' > "$DIR/ralph.json"
+  jq -n '{"mode":"auto","done":false,"prd_done":false}' > "$DIR/ralph.json"
   bats_run_zsh "ralph-state $DIR set done true"
   [[ "$status" -eq 0 ]]
   [[ "$(jq -r .done "$DIR/ralph.json")" = "true" ]]

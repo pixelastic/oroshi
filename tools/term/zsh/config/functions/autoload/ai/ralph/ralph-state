@@ -1,6 +1,6 @@
 # Manage ralph session state
 # Usage:
-#   ralph-state <dir> init [mode]     # Create state (mode: loop|single, default: single)
+#   ralph-state <dir> init [mode]     # Create state (default mode: single)
 #   ralph-state <dir> get <key>       # Read a value (empty if not set)
 #   ralph-state <dir> set <key> <val> # Write a JSON-typed value (true, false, '"text"')
 setopt local_options err_return
