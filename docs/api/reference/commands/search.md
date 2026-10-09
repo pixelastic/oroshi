@@ -45,7 +45,7 @@ to cover all use-cases. In that case, the positional argument is usually simply 
 text to look for.
 
 ```text
-# Example #1: GMail has a query language, but still need an option to limit the
+# Example #1: Gmail has a query language, but still needs an option to limit the
 # number of results
 $ gmail-mail-search "from:alice label:work after:2026/01/01 before:2026/03/31" --limit 10
 

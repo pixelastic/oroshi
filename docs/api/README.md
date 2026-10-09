@@ -34,25 +34,35 @@ format, so that humans and agents can guess how any service behaves.
 
 Follow these steps, in order, to add the API helper of a new service:
 
-1. Create the workspace of the service: its `package.json`, `getConfig.js` and
-   `callApi.js`, then one folder per entity ([architecture.md](architecture.md)).
-2. For each entity, decide whether its schema is fixed or open
-   ([GLOSSARY.md](GLOSSARY.md)).
+1. Define the service in its glossary: its authentication kind, its entities
+   (with a fixed or open schema each, see [GLOSSARY.md](GLOSSARY.md)), its
+   custom verbs and its terms
+   ([reference/docs/glossary.md](reference/docs/glossary.md)). The next steps
+   follow from it.
+2. Create the workspace of the service: its `package.json`
+   ([architecture.md](architecture.md)), its
+   [`getConfig.js`](reference/lib/getConfig.md) and its
+   [`callApi.js`](reference/lib/callApi.md).
 3. Choose the verbs each entity needs, and the arguments of each command
    ([reference/commands/README.md](reference/commands/README.md), [arguments.md](arguments.md)).
-4. Implement the commands in this order, copying the template of each verb:
-   - [`search`](reference/commands/search.md), first: `list-raw` sits on top of it
+4. Implement the commands of each entity in this order, copying the template of
+   each verb. The first command creates the folder of the entity, and its
+   [`format<Entity>.js`](reference/lib/formatEntity.md): write it once a real
+   API response shows what to tidy.
+   - [`search`](reference/commands/search.md), first: `list-raw` sits on top of
+     it. Skip it only if the service has no endpoint to search the entities.
    - [`list-raw`](reference/commands/list-raw.md)
    - [`list`](reference/commands/list.md)
    - [`read`](reference/commands/read.md)
    - [`create`](reference/commands/create.md)
    - [`update`](reference/commands/update.md)
-   - [`delete`](reference/commands/delete.md).
+   - [`delete`](reference/commands/delete.md)
+   - a [custom verb](reference/commands/custom.md), for an action that is not
+     CRUD.
 
    Each command prints the format described in its own file, for example
    [`list-raw`](reference/commands/list-raw.md#role).
    Each command has its header documented ([documentation.md](documentation.md)).
    Each command is tested ([tests.md](tests.md)).
-5. Define the service in its glossary: its authentication kind, entities,
-   custom verbs and terms
-   ([reference/docs/glossary.md](reference/docs/glossary.md)).
+5. For an OAuth API only, implement its [`login`](reference/commands/login.md).
+   A key API has none.

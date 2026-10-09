@@ -21,6 +21,8 @@ service/entity (usually the most recent first).
 - `list` is the human view of [`list-raw`](list-raw.md).
 - It displays a `-raw` list in a table with colors and aligned columns
 - It accepts the same flags as `list-raw`.
+- It is the only command without a bin or a module. Its wrapper calls
+  `list-raw` and does the rest itself.
 
 ## Arguments
 

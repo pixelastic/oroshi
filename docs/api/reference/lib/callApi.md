@@ -16,7 +16,8 @@ answers.
 ## Inputs/Outputs
 
 - Input: an `options` object. It has at least the `path` of the endpoint, and
-  may have a `method` (default `GET`) and a `body`.
+  may have a `method` (default `GET`) and a `body`. A service with several
+  accounts also takes the `account`, and passes it to `getConfig`.
 - Output: the parsed JSON response of the API.
 - Error: a `<SERVICE>_...` error, with the message `HTTP <status>: <message>`.
 

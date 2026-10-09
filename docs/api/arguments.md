@@ -77,6 +77,6 @@ Commands that return several entities (`list-raw`, `search`) accept
 ## `--account`
 
 Some services can be used with several accounts. The default account is always
-used, but can be overriden with `--account <accountName>`.
+used, but can be overridden with `--account <accountName>`.
 
 How accounts and their tokens work is defined in [architecture.md](architecture.md#accounts).

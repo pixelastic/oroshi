@@ -34,7 +34,9 @@ api/
         ├── package.json
         ├── getConfig.js
         ├── callApi.js
+        ├── login.js             # OAuth services only
         ├── bin/
+        │   ├── <service>-login.js   # OAuth services only
         │   └── <service>-<entity>-list-raw.js
         └── <entity>/
             ├── <entity>ListRaw.js
@@ -51,6 +53,8 @@ Each `<service>` folder contains:
   - `<entity>-list-raw`
   - `<entity>-read`
   - etc.
+- a `<service>-login` wrapper, for OAuth services only
+  ([`login`](reference/commands/login.md))
 - a `__docs/` folder:
   - a `GLOSSARY.md` to define the vocabulary of the service
 - a `__lib/` folder to act as a yarn workspace:

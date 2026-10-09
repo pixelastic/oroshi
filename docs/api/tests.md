@@ -17,6 +17,7 @@ point to the code under test:
 | Layer             | Tested | Tool   | Location                             |
 |-------------------|--------|--------|--------------------------------------|
 | Module            | Yes    | vitest | `__lib/<entity>/__tests__/`          |
+| `login.js`        | Yes    | vitest | `__lib/__tests__/login.js`           |
 | `getConfig.js`    | Yes    | vitest | `__lib/__tests__/getConfig.js`       |
 | `callApi.js`      | Yes    | vitest | `__lib/__tests__/callApi.js`         |
 | `list` wrapper    | Yes    | bats   | `<entity>/__tests__/`                |
@@ -163,9 +164,10 @@ values replaced:
 
 ## bats
 
-Only one file require a `bats` test: `list`. `list` reads data from `list-raw`,
-filter it, colorize it, and pass it to `table` for a nicer display in columns.
+Only one file requires a `bats` test: `list`. `list` reads data from `list-raw`,
+filters it, colorizes it, and passes it to `table` for a nicer display in
+columns.
 
-Its test mocks `list-raw` and assert the final output based on various inputs.
+Its test mocks `list-raw` and asserts the final output based on various inputs.
 Both `list-raw` and `table` are themselves tested, so the tests of `list` only
 focus on the transformation aspect.
