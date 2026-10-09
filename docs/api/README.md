@@ -15,7 +15,7 @@ format, so that humans and agents can guess how any service behaves.
 - [arguments.md](arguments.md) — How a command receives its arguments: positional or named, flag names, content, limit and accounts.
 - [documentation.md](documentation.md) — How commands are documented: the header of the ZSH wrapper, and how agents find it with `helper-list` and `helper-documentation`.
 - [tests.md](tests.md) — How API helpers are tested: what each layer covers, how `__` and `getConfig` are mocked, fixtures, and the `list` bats test.
-- [reference/commands/README.md](reference/commands/README.md) — The table of all commands, and the service-specific verbs.
+- [reference/commands/README.md](reference/commands/README.md) — The table of all commands, and the custom verbs.
 - [reference/commands/list-raw.md](reference/commands/list-raw.md) — Print the entities of a service as plain lines, one per line, for agents and scripts to parse.
 - [reference/commands/list.md](reference/commands/list.md) — Print the entities of a service as a colored table, for humans to read.
 - [reference/commands/search.md](reference/commands/search.md) — Find entities of one type and print them as rich JSON.
@@ -23,6 +23,8 @@ format, so that humans and agents can guess how any service behaves.
 - [reference/commands/create.md](reference/commands/create.md) — Create an entity, and print it as JSON, like `read` does.
 - [reference/commands/update.md](reference/commands/update.md) — Change some fields of an entity, and print it as JSON, like `read` does.
 - [reference/commands/delete.md](reference/commands/delete.md) — Remove an entity, and print its id.
+- [reference/commands/login.md](reference/commands/login.md) — Get the OAuth tokens of a service, and save them. Only OAuth APIs have it.
+- [reference/commands/custom.md](reference/commands/custom.md) — Add a verb of your own, for an action that is not CRUD.
 - [reference/lib/getConfig.md](reference/lib/getConfig.md) — The only way to read the credentials and the configuration of a service.
 - [reference/lib/callApi.md](reference/lib/callApi.md) — The only way to talk to a service, and the typed error of every failed call.
 - [reference/lib/formatEntity.md](reference/lib/formatEntity.md) — The one place that defines what a command prints for an entity.

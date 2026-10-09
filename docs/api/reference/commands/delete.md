@@ -37,7 +37,7 @@ local libDir="${functions_source[$0]:A:h:h}/__lib"
 node "${libDir}/bin/<service>-<entity>-delete.js" "$@"
 ```
 
-### JS Binary
+### JS Bin
 
 The bin parses the args, unpacks them into what the module expects, calls it and
 prints the id as is.

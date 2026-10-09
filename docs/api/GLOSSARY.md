@@ -14,26 +14,31 @@ commands list, read and change.
 _Avoid_: object, item, resource
 
 **Command**:
-An executable named after one service and one verb, that a human or an agent
-runs from the shell (`<service>-<entity>-<action>`).
+An executable named after one service, one entity and one verb, that a human or
+an agent runs from the shell (`<service>-<entity>-<action>`).
 _Avoid_: script, function, tool, bare helper
 
 **API helper**:
 The set of commands of one service.
 _Avoid_: integration, client
 
-**Focused API**:
-A service where one entity clearly dominates. The entity is left out of the
-command names (`<service>-<action>`) and of its module names (`listRaw.js`).
-Secondary entities keep long names.
-Examples: Gmail (messages) and Confluence (pages).
-_Avoid_: simple API
+**Key API**:
+A service that authenticates with a key or a token kept in the config. It has
+no **Login**.
+Examples: Notion and Make.
+_Avoid_: token API
 
-**Composite API**:
-A service with several entities, none dominant. Every command is named
-`<service>-<entity>-<action>`.
-Examples: Airtable (records, tables) and Make (scenarios, connections).
-_Avoid_: multi-entity API
+**OAuth API**:
+A service that authenticates with OAuth tokens, granted by the user in a
+browser. It gets them with a **Login**.
+Examples: Gmail and Confluence.
+_Avoid_: grant API
+
+**Login**:
+The optional command of an **OAuth API**. It opens the browser, gets the tokens
+and saves them. See
+[reference/commands/login.md](reference/commands/login.md).
+_Avoid_: `auth`, `connect`, `signin`
 
 **Positional argument**:
 An argument given by its place on the command line. A command has at most one,
@@ -73,67 +78,61 @@ The JavaScript file that holds the logic of a command. It takes either an `id`
 or an `options` object as input. Returns data but prints nothing.
 _Avoid_: handler, controller
 
-**Shared workspace**:
-The `api/shared` workspace. It holds the code that at least two services need.
-_Avoid_: common, utils
-
-
 ## Verbs
 
 The closed vocabulary of commands. A service implements only the verbs it
 needs. See [reference/commands/README.md](reference/commands/README.md) for the table with links.
 
-**`list`**:
+**[`list`](reference/commands/list.md)**:
 Print the entities as a colored table, for humans.
 _Avoid_: `ls`, `show`, `inbox`
 
-**`list-raw`**:
+**[`list-raw`](reference/commands/list-raw.md)**:
 Print the entities as `▮`-separated lines, id first, for agents and scripts.
 _Avoid_: `list --raw`, `dump`
 
-**`search`**:
+**[`search`](reference/commands/search.md)**:
 Find entities of one type, as rich JSON.
 _Avoid_: `find`, `query`
 
-**`read`**:
+**[`read`](reference/commands/read.md)**:
 Print one entity, from its id, as JSON.
 _Avoid_: `get`, `fetch`, `show`
 
-**`create`**:
+**[`create`](reference/commands/create.md)**:
 Make a new entity, and print it as JSON.
 _Avoid_: `add`, `new`, `write`
 
-**`update`**:
+**[`update`](reference/commands/update.md)**:
 Change some fields of an entity, and print it as JSON. Only the given fields
 change.
 _Avoid_: `edit`, `set`, `write`
 
-**`delete`**:
+**[`delete`](reference/commands/delete.md)**:
 Remove an entity, and print its id. It exists only where a service needs it.
 _Avoid_: `remove`, `destroy`
 
-**Service verb**:
+**Custom verb**:
 A verb outside the closed vocabulary, for an action that is not CRUD.
-Example: `activate`, `run`, `enable`.
-_Avoid_: custom verb
+Example: `activate`, `run`, `enable`. See
+[reference/commands/custom.md](reference/commands/custom.md).
+_Avoid_: service verb
 
 ## Relationships
 
 - A **Service** manages one or more **Entities**.
-- A **Command** applies one verb to one **Entity**, or to the dominant
-  **Entity** of a **Focused API**.
+- A **Service** is either a **Key API** or an **OAuth API**.
+- An **OAuth API** may have a **Login**. A **Key API** has none.
+- A **Command** applies one verb to one **Entity**.
 - An **API helper** is made of the **Commands** of one **Service**.
 - A **Command** is made of a **Wrapper**, a **Bin** and a **Module**.
-- A **Service** may use the **Shared workspace** for the code it has in common
-  with another **Service**.
 - A **Command** takes at most one **Positional argument**, and any number of
   **Named arguments**.
 
 ## Flagged ambiguities
 
-- The shape of a service (Focused/Composite API) is chosen when it is created.
-  When a second entity of a **Focused API** grows as important as the
-  first, the service becomes **Composite**: rename its commands and modules to
-  carry the entity.
+- A **Custom verb** is not a new kind of **Command**. It is named
+  `<service>-<entity>-<action>`, like the others, and never replaces a verb of
+  the closed vocabulary.
 - Some **Entities** of a given **Service** can have a **Fixed schema** while
   others can have an **Open schema**.

@@ -55,7 +55,7 @@ local libDir="${functions_source[$0]:A:h:h}/__lib"
 node "${libDir}/bin/<service>-<entity>-update.js" "$@"
 ```
 
-### JS Binary
+### JS Bin
 
 The bin parses the args, calls the module and prints the entity as JSON.
 
