@@ -1,5 +1,3 @@
-import { fileURLToPath } from 'node:url';
-import { parseArgs } from 'node:util';
 import { read, readJson } from 'firost';
 import { parse as parseJsonc } from 'jsonc-parser';
 import { patchBinary } from '../../src/patchBinary.js';
@@ -23,17 +21,4 @@ export async function main({ binaryPath, colorsPath }) {
   await patchBinary(binaryPath, (text) =>
     syntaxPatch.patch(text, { scopeColors, decorationColors }),
   );
-}
-
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const { values } = parseArgs({
-    options: {
-      binary: { type: 'string' },
-      colors: { type: 'string' },
-    },
-  });
-  await main({
-    binaryPath: values.binary,
-    colorsPath: values.colors,
-  });
 }

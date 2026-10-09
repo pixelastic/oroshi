@@ -19,6 +19,6 @@ fi
 
 # Patch the real file, not the yarn symlink
 node \
-  "$currentDir/src/main.js" \
+  "$currentDir/src/bin/main.js" \
   --binary "${binaryPath:A}" \
   --colors "$colorsPath"
