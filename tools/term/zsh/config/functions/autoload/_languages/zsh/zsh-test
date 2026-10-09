@@ -5,11 +5,13 @@
 # $ zsh-test file1.zsh file2.zsh             # Multiple files (deduplicated)
 # $ zsh-test ./misc/                         # Expand directory, run all its tests
 # $ zsh-test --fail-fast ./misc/             # Stop at the first failing test
+# $ zsh-test --token-saving ./misc/          # Show only failures, or "All tests passed."
 setopt local_options err_return
 
-zparseopts -E -D -fail-fast=flagFailFast
+zparseopts -E -D -- -fail-fast=flagFailFast -token-saving=flagTokenSaving
 
 local isFailFast=${#flagFailFast}
+local isTokenSaving=${#flagTokenSaving}
 
 # No arguments: nothing to test
 [[ $# -eq 0 ]] && return 0
@@ -26,4 +28,26 @@ local -aU testFiles=(
 local batsArgs=()
 [[ $isFailFast == 1 ]] && batsArgs+=(--abort)
 
-bats "${batsArgs[@]}" "${testFiles[@]}"
+# Full bats output, exit code is bats's
+if [[ $isTokenSaving -eq 0 ]]; then
+  bats "${batsArgs[@]}" "${testFiles[@]}"
+  return $?
+fi
+
+# Token saving: run bats in TAP format, keep failures only
+local exitCode=0
+local tapOutput=""
+tapOutput="$(bats --tap "${batsArgs[@]}" "${testFiles[@]}")" || exitCode=$?
+local failureLines=(${${(f)tapOutput}:#(ok *|1..*)})
+
+# Everything passed
+if [[ $exitCode -eq 0 ]]; then
+  print "All tests passed."
+  return 0
+fi
+
+# Failed without any TAP failure line (e.g. bats crashed): show it all
+[[ ${#failureLines[@]} -eq 0 ]] && failureLines=(${(f)tapOutput})
+
+print -l -- "${failureLines[@]}"
+return $exitCode

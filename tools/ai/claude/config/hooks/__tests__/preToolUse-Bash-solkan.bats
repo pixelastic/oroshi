@@ -178,3 +178,67 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" == *'"rewrite"'* ]]
 }
+
+# Rewrite-list selection: single command vs compound command
+
+@test "rewrites a single zsh-test command with the token-saving list" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'zsh-test a.bats'"
+  [[ "$status" -eq 0 ]]
+  expect_json '.rewrite' 'zsh-test-token-saving a.bats'
+}
+
+@test "keeps zsh-test in a pipe unchanged" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'zsh-test a.bats | head'"
+  [[ "$status" -eq 0 ]]
+  expect_json_null '.rewrite'
+}
+
+@test "keeps zsh-test in an && chain unchanged" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'zsh-test a.bats && echo ok'"
+  [[ "$status" -eq 0 ]]
+  expect_json_null '.rewrite'
+}
+
+@test "keeps zsh-test in a command substitution unchanged" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'x=\$(zsh-test a.bats)'"
+  [[ "$status" -eq 0 ]]
+  expect_json_null '.rewrite'
+}
+
+@test "keeps a quoted operator inside a single command" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'zsh-test \"a | b.bats\"'"
+  [[ "$status" -eq 0 ]]
+  expect_json '.rewrite' 'zsh-test-token-saving "a | b.bats"'
+}
+
+@test "applies the rm guard-rail to a single command" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'rm -f a'"
+  [[ "$status" -eq 0 ]]
+  expect_json '.rewrite' 'rm-for-claude -f a'
+}
+
+@test "applies the rm guard-rail to a compound command" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'rm -f a | cat'"
+  [[ "$status" -eq 0 ]]
+  expect_json '.rewrite' 'rm-for-claude -f a | cat'
+}
+
+@test "uses the local token-saving list for a single command" {
+  mkdir -p "$BATS_TMP_DIR/fakerepo/.claude"
+  echo '{"my-cmd": "my-cmd-token-saving"}' > "$BATS_TMP_DIR/fakerepo/.claude/rewrite-list-token-saving.json"
+  git-directory-root() { echo "$BATS_TMP_DIR/fakerepo"; }
+  bats_mock git-directory-root
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'my-cmd foo'"
+  expect_json '.rewrite' 'my-cmd-token-saving foo'
+}
+
+@test "ignores the local token-saving list for a compound command" {
+  mkdir -p "$BATS_TMP_DIR/fakerepo/.claude"
+  echo '{"my-cmd": "my-cmd-token-saving"}' > "$BATS_TMP_DIR/fakerepo/.claude/rewrite-list-token-saving.json"
+  git-directory-root() { echo "$BATS_TMP_DIR/fakerepo"; }
+  bats_mock git-directory-root
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'my-cmd foo | cat'"
+  expect_json_null '.rewrite'
+}

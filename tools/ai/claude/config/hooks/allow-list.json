@@ -572,6 +572,7 @@
   "zsh-lint-custom",
   "zsh-lint-shellcheck",
   "zsh-test",
+  "zsh-test-token-saving",
   "./node_modules/.bin/bats",
   "/bin/cat",
   "/tmp/oroshi/claude/scripts/**",

@@ -197,6 +197,7 @@ and `{lang}-lint` relate to each other.
 # $ js-test src/                                            # all tests in directory
 # $ js-test src/foo.js src/bar.js src/__tests__/baz.js      # mix of sources, tests, directories
 # $ js-test --fail-fast src/                                # stop at the first failing test
+# $ js-test --token-saving src/                             # failures only
 ```
 
 **Notes:**
@@ -210,11 +211,19 @@ When the underlying runner has a built-in option for this, the script should use
 
 Only the pre-commit test script (`precommit-test`) passes this flag.
 
+**--token-saving:**
+
+Each `{lang}-test` owns its own token-saving filtering.
+
+- Shows only failing tests and their error output
+- Prints `All tests passed.` when nothing fails
+
 **Dependencies:**
 
 - Uses [`{lang}-test-path`](#lang-test-path) to locate the test file when given a source file
 - Used by [`git-file-test`](integration.md#git-file-test) to test changed files
 - Used by `precommit-test` with `--fail-fast`
+- Called with `--token-saving` by [`{lang}-test-token-saving`](#token-saving-wrappers)
 
 ---
 
@@ -237,6 +246,27 @@ Source files map to test files in a sibling `__tests__/` directory. The exact na
 
 - Used by [`git-file-test`](integration.md#git-file-test) to resolve source files to test files
 - Used by [`{lang}-test`](#lang-test) when given a source file
+
+---
+
+## Token-saving wrappers
+
+```zsh
+# <command>-token-saving <args> runs the reduced-output form of `<command> <args>`.
+# Usage:
+# $ zsh-test-token-saving src/       # → zsh-test --token-saving src/
+# $ OROSHI_DISABLE_TOKEN_SAVING=1 zsh-test-token-saving src/   # → zsh-test src/
+```
+
+Wrappers live in the `ai/token-saving` autoload domain.
+
+A wrapper holds no token-saving logic.
+It only calls its underlying command with `--token-saving`.
+
+The wrapper's honors the `OROSHI_DISABLE_TOKEN_SAVING` switch: when set, it
+calls the command as usual, otherwise it calls it with `--token-saving`.
+
+Every wrapper is listed in the hook's `allow-list.json`.
 
 ---
 

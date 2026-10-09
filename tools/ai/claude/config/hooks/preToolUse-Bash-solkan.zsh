@@ -15,8 +15,9 @@ source "${hookDir}/Bash-approval.zsh"
 function preToolUse-Bash-solkan() {
   local repoRoot="$(git-directory-root)"
   local localAllowList="${repoRoot}/.claude/allow-list.json"
-  local localRewriteList="${repoRoot}/.claude/rewrite-list.json"
   local sessionAllowList="$(sessionAllowListFile)"
+  local localRewriteList="${repoRoot}/.claude/rewrite-list.json"
+  local localTokenSavingList="${repoRoot}/.claude/rewrite-list-token-saving.json"
 
   local solkanArgs=(
     --allow-list-file "${hookDir}/allow-list.json"
@@ -32,5 +33,22 @@ function preToolUse-Bash-solkan() {
   # Extra rewrite-list from repo-local config
   [[ -f "$localRewriteList" ]] && solkanArgs+=(--rewrite-list-file "$localRewriteList")
 
+  # First pass without token-saving: Solkan tells how many commands there are
+  local solkanJson=""
+  local exitCode=0
+  solkanJson="$(solkan "${solkanArgs[@]}" "$1")" || exitCode=$?
+
+  # How many commands do we have?
+  local commandCount="$(jq '.allow | (.allowed + .rejected) | length' <<<"$solkanJson" 2>/dev/null)"
+
+  # If more than one, we run it
+  if [[ "$commandCount" != "1" ]]; then
+    print -r -- "$solkanJson"
+    return $exitCode
+  fi
+
+  # If only one command, we rewrite it to include the token-saving version (if any)
+  solkanArgs+=(--rewrite-list-file "${hookDir}/rewrite-list-token-saving.json")
+  [[ -f "$localTokenSavingList" ]] && solkanArgs+=(--rewrite-list-file "$localTokenSavingList")
   solkan "${solkanArgs[@]}" "$1"
 }

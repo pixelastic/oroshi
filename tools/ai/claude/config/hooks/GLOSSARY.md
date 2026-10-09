@@ -24,6 +24,22 @@ _Avoid_: transform, replace, substitute
 A JSON map of command names to replacements (e.g. `{"rm": "rm-guarded"}`), consumed by **Solkan** via `--rewrite-list-file`. Solkan walks the shell AST and replaces matching command names — no matter how deeply nested in pipes, conditionals, or loops — before running allowlist validation.
 _Avoid_: replace list, substitution map, rename map
 
+**single command**:
+A command string for which **Solkan** reports exactly one command.
+_Avoid_: simple command, lone command, plain command
+
+**compound command**:
+Any command string for which **Solkan** reports zero or several commands (pipe, chain of different binaries, command substitution).
+_Avoid_: complex command, chained command, pipeline
+
+**token-saving rewrite list**:
+A **rewrite list** (`rewrite-list-token-saving.json`, plus the repo-local variant under `.claude/`) layered on top of the regular **rewrite list** for a **single command** only. It holds **token-saving wrapper** mappings only (e.g. `{"zsh-test": "zsh-test-token-saving"}`); the guard-rails stay in the regular list.
+_Avoid_: output list, short list, quiet list
+
+**token-saving wrapper**:
+A `<command>-token-saving` function that runs the reduced-output form of `<command>`. It changes the output format only, honours `OROSHI_DISABLE_TOKEN_SAVING=1` by running the original command unchanged, and is on the allow-list.
+_Avoid_: quiet wrapper, filter, compressor
+
 **auto-approve**:
 The hook output when Solkan **allow**s a command.
 _Avoid_: auto-allow, silent-approve, bypass
@@ -59,6 +75,7 @@ _Avoid_: running subagent, active agent, live subagent
 ## Relationships
 
 - **Solkan** has two phases: **rewrite list** (substitute command names in AST) then allowlist (**allow** or **reject**). The allowlist decision is binary — never partial.
+- The regular **rewrite list** always applies, guard-rails included. For a **single command**, the **token-saving rewrite list** is added after it and overrides it on conflict; for a **compound command**, it is not passed.
 - Each command receives exactly one **Solkan** decision.
 - Each **allow** produces exactly one **auto-approve**; each **reject** produces exactly one **ask with reason** (a maybe — the human decides).
 - A **rewrite** produces one `updatedInput` JSON field; a command left unchanged produces none.

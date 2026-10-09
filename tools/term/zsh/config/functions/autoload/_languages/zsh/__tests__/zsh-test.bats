@@ -133,3 +133,71 @@ BATS
   bats_run_zsh "zsh-test --fail-fast $BATS_TMP_DIR/src/__tests__/foo.bats"
   [[ "$status" -eq 0 ]]
 }
+
+# ─── TOKEN SAVING ─────────────────────────────────────────────────────────────
+
+@test "--token-saving hides passing tests" {
+  bats() {
+    printf '%s\n' '1..2' 'ok 1 foo' 'not ok 2 bar' '# (in test file bar.bats, line 3)'
+    return 1
+  }
+  bats_mock bats
+
+  bats_run_zsh "zsh-test --token-saving $BATS_TMP_DIR/src/__tests__/foo.bats"
+  [[ "$output" != *"ok 1 foo"* ]]
+  [[ "$output" != *"1..2"* ]]
+}
+
+@test "--token-saving shows failing test names and their error output" {
+  bats() {
+    printf '%s\n' '1..2' 'ok 1 foo' 'not ok 2 bar'
+    printf '%s\n' '# (in test file bar.bats, line 3)' "#   \`false' failed"
+    return 1
+  }
+  bats_mock bats
+
+  bats_run_zsh "zsh-test --token-saving $BATS_TMP_DIR/src/__tests__/foo.bats"
+  [[ "$output" == *"not ok 2 bar"* ]]
+  [[ "$output" == *"# (in test file bar.bats, line 3)"* ]]
+  [[ "$output" == *"failed"* ]]
+}
+
+@test "--token-saving prints All tests passed. when every test passes" {
+  bats() { printf '%s\n' '1..2' 'ok 1 foo' 'ok 2 bar'; }
+  bats_mock bats
+
+  bats_run_zsh "zsh-test --token-saving $BATS_TMP_DIR/src/__tests__/foo.bats"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "All tests passed." ]]
+}
+
+@test "--token-saving exits non-zero when a test fails" {
+  bats() {
+    printf '%s\n' '1..1' 'not ok 1 foo'
+    return 1
+  }
+  bats_mock bats
+
+  bats_run_zsh "zsh-test --token-saving $BATS_TMP_DIR/src/__tests__/foo.bats"
+  [[ "$status" -ne 0 ]]
+}
+
+@test "--token-saving still resolves source files to their tests" {
+  bats() {
+    printf '%s\n' "$@" >> "$BATS_TMP_DIR/calls.txt"
+    printf '%s\n' '1..1' 'ok 1 foo'
+  }
+  bats_mock bats
+
+  bats_run_zsh "zsh-test --token-saving $BATS_TMP_DIR/src/foo.zsh"
+  [[ "$(cat "$BATS_TMP_DIR/calls.txt")" = *"$BATS_TMP_DIR/src/__tests__/foo.bats" ]]
+}
+
+@test "prints the full bats output without --token-saving" {
+  bats() { printf '%s\n' '1..2' 'ok 1 foo' 'ok 2 bar'; }
+  bats_mock bats
+
+  bats_run_zsh "zsh-test $BATS_TMP_DIR/src/__tests__/foo.bats"
+  [[ "$output" == *"ok 1 foo"* ]]
+  [[ "$output" == *"1..2"* ]]
+}
