@@ -113,3 +113,67 @@ write_failing_tests() {
   bats_run_zsh "python-test --fail-fast $BATS_TMP_DIR/src/__tests__/test_foo.py"
   [[ "$status" -eq 0 ]]
 }
+
+# ─── TOKEN SAVING ─────────────────────────────────────────────────────────────
+
+# Write a test file holding one passing and one failing test
+write_mixed_tests() {
+  printf 'def test_passing_one():\n    assert True\n\ndef test_broken_one():\n    assert 1 == 2\n' > "$BATS_TMP_DIR/src/__tests__/test_mixed.py"
+}
+
+@test "--token-saving hides passing tests" {
+  write_mixed_tests
+
+  bats_run_zsh "python-test --token-saving $BATS_TMP_DIR/src/__tests__/test_mixed.py"
+  [[ "$output" != *"Passing one"* ]]
+  [[ "$output" != *"PASSED"* ]]
+  [[ "$output" != *"1 passed"* ]]
+}
+
+@test "--token-saving shows failing test names and their tracebacks" {
+  write_mixed_tests
+
+  bats_run_zsh "python-test --token-saving $BATS_TMP_DIR/src/__tests__/test_mixed.py"
+  [[ "$output" == *"test_broken_one"* ]]
+  [[ "$output" == *"assert 1 == 2"* ]]
+}
+
+@test "--token-saving drops the session header and progress lines" {
+  write_mixed_tests
+
+  bats_run_zsh "python-test --token-saving $BATS_TMP_DIR/src/__tests__/test_mixed.py"
+  [[ "$output" != *"test session starts"* ]]
+  [[ "$output" != *"rootdir"* ]]
+  [[ "$output" != *"[100%]"* ]]
+}
+
+@test "--token-saving prints All tests passed. when every test passes" {
+  bats_run_zsh "python-test --token-saving $BATS_TMP_DIR/src/__tests__/test_foo.py"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "All tests passed." ]]
+}
+
+@test "--token-saving exits non-zero when a test fails" {
+  write_mixed_tests
+
+  bats_run_zsh "python-test --token-saving $BATS_TMP_DIR/src/__tests__/test_mixed.py"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" != *"All tests passed."* ]]
+}
+
+@test "--token-saving works with --fail-fast" {
+  write_failing_tests
+
+  bats_run_zsh "python-test --token-saving --fail-fast $BATS_TMP_DIR/src/__tests__/test_failing.py"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"test_first_failure"* ]]
+  [[ "$output" != *"test_second_failure"* ]]
+}
+
+@test "without --token-saving prints passing tests" {
+  write_mixed_tests
+
+  bats_run_zsh "python-test $BATS_TMP_DIR/src/__tests__/test_mixed.py"
+  [[ "$output" == *"Passing one"* ]]
+  [[ "$output" == *"Broken one"* ]]
+}

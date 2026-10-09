@@ -415,6 +415,7 @@
   "python-lint",
   "python-test",
   "python-test-path",
+  "python-test-token-saving",
   "qmk",
   "ralph-end",
   "ralph-log",

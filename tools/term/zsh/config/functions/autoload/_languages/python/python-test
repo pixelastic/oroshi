@@ -5,11 +5,13 @@
 # $ python-test ./path/to/tests/                    # Run all tests in a directory
 # $ python-test module.py __tests__/test_module.py  # Mixed inputs (deduplicated)
 # $ python-test --fail-fast ./path/to/tests/        # Stop at the first failing test
-setopt local_options err_return
+# $ python-test --token-saving ./path/to/tests/     # Show only failures, or "All tests passed."
+setopt local_options err_return extended_glob
 
-zparseopts -E -D -fail-fast=flagFailFast
+zparseopts -E -D -fail-fast=flagFailFast -token-saving=flagTokenSaving
 
 local isFailFast=${#flagFailFast}
+local isTokenSaving=${#flagTokenSaving}
 
 # Expand directories, filter to Python files, map to test files
 local expanded="$(file-expand --filter is-python --map python-test-path "$@")"
@@ -20,9 +22,38 @@ local expanded="$(file-expand --filter is-python --map python-test-path "$@")"
 # Deduplicate: a source file and its test file resolve to the same test
 local -aU testFiles=("${(@f)expanded}")
 
-local pytestArgs=(--spec --no-header)
+# Arguments shared by both modes
+local pytestArgs=(--no-header)
 [[ $isFailFast == 1 ]] && pytestArgs+=(--exitfirst)
 
-pytest \
-  "${pytestArgs[@]}" \
-  "${testFiles[@]}" 2>&1
+# Not token saving: run pytest as is
+if [[ $isTokenSaving == 0 ]]; then
+  pytest \
+    --spec \
+    "${pytestArgs[@]}" \
+    "${testFiles[@]}" 2>&1
+  return $?
+fi
+
+# Token saving: pytest's quiet mode, with short tracebacks, replaces the spec output.
+# --color=no keeps ANSI codes (FORCE_COLOR under yarn) from breaking the line filters below.
+# It still prints progress lines and a final "N passed in Xs" line:
+# drop them, keep the failures and the "short test summary info" section.
+pytestArgs+=(--quiet --tb=short --color=no)
+
+local exitCode=0
+local output=""
+output="$(pytest "${pytestArgs[@]}" "${testFiles[@]}" 2>&1)" || exitCode=$?
+
+# Every test passed: nothing worth printing
+if [[ $exitCode -eq 0 ]]; then
+  print "All tests passed."
+  return 0
+fi
+
+# Progress lines look like ".F.  [ 50%]", the final line like "1 failed, 2 passed in 0.02s"
+local -a lines=("${(@f)output}")
+lines=("${(@)lines:#[.FEsxXR]## #\[ #[0-9]##%\]}")
+lines=("${(@)lines:#*[0-9]" "(passed|failed|error|errors|skipped|xfailed|xpassed|warning|warnings|deselected)*" in "[0-9.]##s*}")
+print -l -- "${lines[@]}"
+return $exitCode

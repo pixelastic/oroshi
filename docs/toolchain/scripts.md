@@ -218,6 +218,9 @@ Each `{lang}-test` owns its own token-saving filtering.
 - Shows only failing tests and their error output
 - Prints `All tests passed.` when nothing fails
 
+How the output is reduced depends on the runner.
+Some runners have a native option for it; others need custom filtering code.
+
 **Dependencies:**
 
 - Uses [`{lang}-test-path`](#lang-test-path) to locate the test file when given a source file
@@ -255,6 +258,7 @@ Source files map to test files in a sibling `__tests__/` directory. The exact na
 # <command>-token-saving <args> runs the reduced-output form of `<command> <args>`.
 # Usage:
 # $ zsh-test-token-saving src/       # → zsh-test --token-saving src/
+# $ python-test-token-saving tests/  # → python-test --token-saving tests/
 # $ OROSHI_DISABLE_TOKEN_SAVING=1 zsh-test-token-saving src/   # → zsh-test src/
 ```
 

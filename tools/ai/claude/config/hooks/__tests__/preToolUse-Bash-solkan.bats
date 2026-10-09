@@ -193,6 +193,12 @@ setup() {
   expect_json '.rewrite' 'go-test-token-saving ./x'
 }
 
+@test "rewrites a single python-test command with the token-saving list" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'python-test tests/'"
+  [[ "$status" -eq 0 ]]
+  expect_json '.rewrite' 'python-test-token-saving tests/'
+}
+
 @test "keeps zsh-test in a pipe unchanged" {
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'zsh-test a.bats | head'"
   [[ "$status" -eq 0 ]]
