@@ -82,7 +82,7 @@ contains:
 
 - **Entities**: one entry per entity, with what it is in the service, its
   schema (fixed or open) and its anchor, if it has one.
-- **Service verbs**: one entry per verb outside the closed vocabulary
+- **Custom verbs**: one entry per [custom verb](reference/commands/custom.md)
   (`activate`, `run`), with what it does.
 - **Service terms**: the words of the service that a command, a flag or an
   error uses, and that could be confused with another (an id, a base, a
@@ -114,20 +114,8 @@ $ <service>-<entity>-list-raw
 $ <service>-<entity>-list-raw --account perso
 ```
 
-## OAuth
-
-A service that needs a user grant (OAuth) saves its tokens in a service
-subfolder of the state folder: `$OROSHI_FOLDER_STATE/<service>/tokens.json`.
-
-The default account uses `tokens.json`. Another account uses
-`tokens-<accountName>.json` in the same folder.
-
-When the grant is missing or expired, the command fails with the typed error
-`<SERVICE>_LOGIN_REQUIRED`. Its message points to the login command:
-`run <service>-login`.
-
-No command logs in by itself. Only `<service>-login` opens a browser, and the
-user runs it by hand.
+An OAuth API saves the tokens of each account with its
+[`login`](reference/commands/login.md) command.
 
 ## Errors
 
