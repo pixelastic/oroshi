@@ -4,6 +4,13 @@
 - DO NOT use `export default`, always named exports
 - Include `.js` extension on local imports
 
+## Export or Execute
+
+A file either exports functions or is executable. Never both.
+
+- A file that exports functions runs nothing when imported.
+- An executable file exports nothing.
+
 ## Private Methods (`__`)
 
 The exported function is the only top-level function in a module.
