@@ -26,6 +26,7 @@ format, so that humans and agents can guess how any service behaves.
 - [reference/lib/getConfig.md](reference/lib/getConfig.md) — The only way to read the credentials and the configuration of a service.
 - [reference/lib/callApi.md](reference/lib/callApi.md) — The only way to talk to a service, and the typed error of every failed call.
 - [reference/lib/formatEntity.md](reference/lib/formatEntity.md) — The one place that defines what a command prints for an entity.
+- [reference/docs/glossary.md](reference/docs/glossary.md) — The role of the glossary of each service, and what it must define.
 
 ## Adding an API
 
@@ -50,5 +51,6 @@ Follow these steps, in order, to add the API helper of a new service:
    [`list-raw`](reference/commands/list-raw.md#role).
    Each command has its header documented ([documentation.md](documentation.md)).
    Each command is tested ([tests.md](tests.md)).
-5. Define the entities, custom verbs and terms of the service in its glossary
-   ([architecture.md](architecture.md#service-glossary)).
+5. Define the service in its glossary: its authentication kind, entities,
+   custom verbs and terms
+   ([reference/docs/glossary.md](reference/docs/glossary.md)).

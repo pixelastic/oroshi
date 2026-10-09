@@ -76,17 +76,9 @@ change.
 
 ## Service glossary
 
-Each service has a `__docs/GLOSSARY.md` that defines its own vocabulary. It uses
-the format of the [API glossary](GLOSSARY.md), and does not repeat it. It
-contains:
-
-- **Entities**: one entry per entity, with what it is in the service, its
-  schema (fixed or open) and its anchor, if it has one.
-- **Custom verbs**: one entry per [custom verb](reference/commands/custom.md)
-  (`activate`, `run`), with what it does.
-- **Service terms**: the words of the service that a command, a flag or an
-  error uses, and that could be confused with another (an id, a base, a
-  space).
+Each service has a `__docs/GLOSSARY.md` that defines its own vocabulary. Its
+role and required content are in
+[reference/docs/glossary.md](reference/docs/glossary.md).
 
 ## JavaScript conventions
 
