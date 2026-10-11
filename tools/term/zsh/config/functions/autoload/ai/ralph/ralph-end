@@ -10,8 +10,11 @@ if [[ "$dir" == "" ]]; then
   return 1
 fi
 
+local mode="$(ralph-mode "$dir")"
+ralph-log "ralph-end: called mode='${mode}' dir=${dir}"
+
 # If single mode, let's stop here
-[[ "$(ralph-mode "$dir")" == "single" ]] && return 0
+[[ "$mode" == "single" ]] && return 0
 
 # If auto mode, let's enqueue the next command, then stop Claude
 local progress=(${(@ps/▮/)"$(plan-progress "$dir")"})
@@ -29,8 +32,20 @@ if [[ "$doneCount" == "$totalCount" ]]; then
 fi
 
 # Add the next command to the zsh queue
-local group="{ git-commit-create-all-auto && ${nextCommand} || true; }; exec zsh"
+# The group traces its life in the ralph log: its start, a signal that kills it,
+# a failed step, and its end. The EXIT trap does not fire on the final exec, so
+# a missing "done" line means the shell died inside the group
+local group="{ ralph-log 'queued group: start';"
+group+=" trap 'ralph-log \"queued group: EXIT status=\$?\"' EXIT;"
+group+=" trap 'ralph-log \"queued group: got HUP\"; exit 129' HUP;"
+group+=" trap 'ralph-log \"queued group: got TERM\"; exit 143' TERM;"
+group+=" git-commit-create-all-auto && ${nextCommand}"
+group+=" || ralph-log \"queued group: step failed status=\$?\";"
+group+=" ralph-log 'queued group: done'; }; exec zsh"
+ralph-log "ralph-end: queueing next='${nextCommand}' progress=${doneCount}/${totalCount}"
 zsh-queue-write "exec zsh -ic ${(qq)group}"
 
 # now, stop Claude, so zsh takes over
+ralph-log "ralph-end: stopping claude"
 claude-stop
+ralph-log "ralph-end: claude-stop returned status=$?"

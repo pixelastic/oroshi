@@ -14,7 +14,8 @@ setup() {
   zsh-queue-write() { echo "zsh-queue-write $*" >> "$BATS_TMP_DIR/calls.txt"; }
   # Default: claude is the immediate parent
   process-tree-raw() { echo "300▮claude"; }
-  bats_mock is-claude is-claude-subagent kill zsh-queue-write process-tree-raw
+  ralph-log() { :; }
+  bats_mock is-claude is-claude-subagent kill zsh-queue-write process-tree-raw ralph-log
 }
 
 # --- Guard: not in Claude ---

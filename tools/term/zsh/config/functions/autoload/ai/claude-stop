@@ -26,4 +26,5 @@ fi
 
 local -a parts=(${(@ps/▮/)claudeLine})
 [[ "$nextCommand" != "" ]] && zsh-queue-write "$nextCommand"
+ralph-log "claude-stop: SIGTERM to pid=$parts[1], chain: ${(j: > :)${(f)ancestors}}"
 kill -TERM "$parts[1]"

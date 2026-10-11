@@ -1,0 +1,16 @@
+# Append one debug line to the ralph log, to trace how a ralph session ends
+# A line holds the time, the pid and parent pid of the caller, the Kitty window id, then the message
+# The log is $OROSHI_FOLDER_STATE/ralph-debug.log. This helper never fails
+# Usage:
+# $ ralph-log "ralph-end: queued the next command"
+setopt local_options err_return
+
+local logFile="${OROSHI_FOLDER_STATE}/ralph-debug.log"
+
+# No state folder, nowhere to write
+[[ "$OROSHI_FOLDER_STATE" == "" ]] && return 0
+
+mkdir -p "${logFile:h}"
+local timestamp="$(date '+%F %T.%3N')"
+print -r -- "$timestamp pid=$$ ppid=$PPID win=${KITTY_WINDOW_ID:-none} $*" >>"$logFile" || true
+return 0

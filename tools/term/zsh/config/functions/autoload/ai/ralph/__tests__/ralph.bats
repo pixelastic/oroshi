@@ -2,6 +2,9 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  # The ralph log is a trace for debugging, tests keep it empty
+  ralph-log() { :; }
+  bats_mock ralph-log
   export PRD_DIR="$BATS_TMP_DIR/plans/feature"
   mkdir -p "$PRD_DIR"
 }
