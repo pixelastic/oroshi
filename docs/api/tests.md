@@ -81,13 +81,13 @@ describe('entityRead', () => {
   });
 
   it('calls the API with the id of the entity', async () => {
-    await entityRead('recA');
+    await entityRead({ entityId: 'recA' });
 
     expect(__.callApi).toHaveBeenCalledWith('entities/recA');
   });
 
   it('returns the response of the API, formatted', async () => {
-    const actual = await entityRead('recA');
+    const actual = await entityRead({ entityId: 'recA' });
 
     expect(__.formatEntity).toHaveBeenCalledWith(response);
     expect(actual).toEqual({ id: 'formatted' });

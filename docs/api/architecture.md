@@ -78,9 +78,8 @@ change.
 
 ## Service glossary
 
-Each service has a `__docs/GLOSSARY.md` that defines its own vocabulary. Its
-role and required content are in
-[reference/docs/glossary.md](reference/docs/glossary.md).
+Each service has a glossary that defines its own vocabulary. See
+[reference/docs/glossary.md](reference/docs/glossary.md) for details.
 
 ## JavaScript conventions
 

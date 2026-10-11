@@ -103,8 +103,8 @@ export async function entityUpdate(options) {
   // Transform the content into the body of the API call, with only the fields
   // to change
 
-  // Call the API: the path first, then the query
-  await __.callApi(path, options);
+  // Call the API: the path first, then the method and the body
+  await __.callApi(path, { method, body });
 
   // Return the updated entity, passed through __.formatEntity
 }

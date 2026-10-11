@@ -54,7 +54,7 @@ named.
 _Avoid_: option, switch, parameter
 
 **Anchor**:
-When an id is not enough to uniquely identify an entity, and anchor is needed
+When an id is not enough to uniquely identify an entity, an anchor is needed
 (like a table, a workspace, etc).
 _Avoid_: scope, context
 

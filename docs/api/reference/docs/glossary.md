@@ -4,7 +4,7 @@ Each service has a glossary that defines its own vocabulary.
 
 ## Role
 
-- Each service has one, in `<service>/__docs/GLOSSARY.md`.
+- Each service has one.
 - It uses the format of the [API glossary](../../GLOSSARY.md), and does not
   repeat it. A term of the API glossary is not defined again.
 - It tells an agent how to name and call the commands of the service, without
@@ -12,8 +12,8 @@ Each service has a glossary that defines its own vocabulary.
 
 ## How to write it
 
-Write the glossary with the `/glossary` skill. The skill sets the format, and
-this page does not repeat it.
+Write the glossary of the service with the `/glossary` skill, in the
+`GLOSSARY.md` file of the `__docs` folder of the service.
 
 ## Required content
 

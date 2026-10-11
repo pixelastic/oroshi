@@ -9,10 +9,10 @@ a command prints.
   entity.
 - Each entity owns one, in `<service>/__lib/<entity>/format<Entity>.js`
   (`formatPage.js`, `formatRecord.js`).
-- By default, it's an identity pass-through (it returns the same object it got
+- By default, it's an identity pass-through (it returns the same entity it got
 as input).
-- It tidies the object only when a real response shows that a command
-  needs it, to make the object easier for other commands to consume.
+- It tidies the entity only when a real response shows that a command
+  needs it, to make the entity easier for other commands to consume.
 - Having one central function ensures all commands deal with the same shape of
   data.
 - Other modules call it through `__` (`__.formatEntity()`), so tests mock it.

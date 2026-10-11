@@ -22,7 +22,7 @@ service/entity (usually the most recent first).
 ## Role
 
 - `list` is the human view of [`list-raw`](list-raw.md).
-- It displays a `-raw` list in a table with colors and aligned columns
+- It displays a `-raw` list in a table with colors and aligned columns.
 - It accepts the same flags as `list-raw`.
 - It takes its columns from the lines of `list-raw`, whatever their number.
 

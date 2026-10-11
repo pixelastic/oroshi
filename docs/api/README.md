@@ -47,11 +47,10 @@ the commands concerned.
 
 Follow these steps, in order, to add the API helper of a new service:
 
-1. Define the service in its glossary: its authentication kind, its entities
-   (with a fixed or open schema each, see [GLOSSARY.md](GLOSSARY.md)), its
-   custom verbs and its terms
-   ([reference/docs/glossary.md](reference/docs/glossary.md)). The next steps
-   follow from it.
+1. Write the glossary of the service with the `/glossary` skill: its
+   authentication kind, its entities (with a fixed or open schema each, see
+   [GLOSSARY.md](GLOSSARY.md)), its custom verbs and its terms
+   ([reference/docs/glossary.md](reference/docs/glossary.md)).
 2. Plan the service before writing any code, with its glossary from step 1 as
    the base.
    - Read the documentation of the API of the service.
