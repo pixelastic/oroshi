@@ -20,7 +20,7 @@ const DEFAULT_LIMIT = 25;
 export async function tableListRaw(options) {
   const { baseId, limit = DEFAULT_LIMIT } = options;
 
-  // Without it the endpoint would be meta/bases/undefined/tables
+  // Without baseId, the endpoint would be meta/bases/undefined/tables
   if (!baseId) {
     throw firostError('AIRTABLE_BASE_ID_MISSING', 'Pass --baseId');
   }

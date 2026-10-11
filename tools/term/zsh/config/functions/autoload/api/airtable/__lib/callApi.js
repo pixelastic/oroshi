@@ -50,7 +50,7 @@ export async function callApi(path, options = {}) {
   const text = await response.text();
 
   if (!response.ok) {
-    throw firostError('AIRTABLE_REQUEST_FAILED', text);
+    throw firostError('AIRTABLE_REQUEST_FAILED', `${response.status} ${text}`);
   }
 
   // Return an empty body as it is, parse anything else

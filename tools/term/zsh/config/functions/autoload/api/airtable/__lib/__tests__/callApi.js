@@ -98,7 +98,7 @@ describe('callApi', () => {
     {
       title: 'a non-2xx response',
       setup: () => response(404, '{"error":{"message":"NOT_FOUND"}}'),
-      expected: '{"error":{"message":"NOT_FOUND"}}',
+      expected: '404 {"error":{"message":"NOT_FOUND"}}',
     },
     {
       title: 'a 2xx body that is not JSON',

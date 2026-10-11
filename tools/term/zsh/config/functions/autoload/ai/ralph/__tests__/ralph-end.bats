@@ -113,4 +113,3 @@ mock_auto_collaborators() {
   [[ "$queued" == *"got TERM"* ]]
   [[ "$queued" == *"queued group: done"* ]]
 }
-
