@@ -49,13 +49,16 @@ prints the id as is.
 // <service>-<entity>-delete.js
 import minimist from 'minimist';
 import { entityDelete } from '../<entity>/<entity>Delete.js';
+import { setAccount } from '../setAccount.js';
 
 const args = minimist(process.argv.slice(2));
 // The id is the positional argument, the anchor (if any) is named
 const {
   _: [entityId],
+  account,
   ...options
 } = args;
+setAccount(account);
 const output = await entityDelete({ entityId, ...options });
 console.log(output);
 ```

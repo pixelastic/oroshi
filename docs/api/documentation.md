@@ -21,5 +21,7 @@ The comment lines at the top of the ZSH wrappers contain the documentation.
 - `# Usage:` lists the accepted arguments, as one `$` example per line. It
   mirrors what the JavaScript module accepts. `helper-documentation` prints it.
 
-This documentation of publicly accepted flags need to be constantly kept in sync
-with the actual behavior implemented in the underlying JavaScript module.
+The `# Usage:` header of every wrapper must list all the flags that the
+JavaScript module accepts, and nothing else. Keep it in sync with the module.
+The `create` and `update` templates show a `# Usage:` line for each schema mode
+(fixed and open). The wrapper of an entity keeps only the lines of its own mode.

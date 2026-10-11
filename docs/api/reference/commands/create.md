@@ -36,9 +36,6 @@ $ airtable-record-create --table Meetups '{"title":"Paris Meetup","seats":80}'
 
 ### ZSH Wrapper
 
-The `# Usage:` header must contain the list of flags it accepts, mirrored from
-the JavaScript module. Keep only the lines of the mode of the entity.
-
 `<service>/<entity>/<service>-<entity>-create`:
 
 ```zsh
@@ -64,13 +61,16 @@ The bin parses the args, calls the module and prints the entity as JSON.
 // <service>-<entity>-create.js
 import minimist from 'minimist';
 import { entityCreate } from '../<entity>/<entity>Create.js';
+import { setAccount } from '../setAccount.js';
 
 const args = minimist(process.argv.slice(2));
 // The content is the positional argument (open schema), or the named fields
 const {
   _: [content],
+  account,
   ...options
 } = args;
+setAccount(account);
 const output = await entityCreate({ content, ...options });
 console.log(JSON.stringify(output, null, 2));
 ```

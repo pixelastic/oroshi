@@ -41,9 +41,6 @@ The `# Fields:` header is the reference documentation of the fields that
 prints it, so a caller knows the output format. The developer keeps it in sync
 with `toLine`.
 
-The `# Usage:` header must contain the list of flags it accepts (mirrored from
-the JavaScript module), so `helper-documentation` can print it.
-
 `<service>/<entity>/<service>-<entity>-list-raw`:
 
 ```zsh
@@ -71,13 +68,16 @@ and outputs the result.
 // <service>-<entity>-list-raw.js
 import minimist from 'minimist';
 import { entityListRaw } from '../<entity>/<entity>ListRaw.js';
+import { setAccount } from '../setAccount.js';
 
 const args = minimist(process.argv.slice(2));
 // The query is the first positional argument, the filters are named
 const {
   _: [query],
+  account,
   ...filters
 } = args;
+setAccount(account);
 const output = await entityListRaw({ query, ...filters });
 console.log(output);
 ```

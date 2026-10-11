@@ -57,13 +57,16 @@ anchors if any), calls the module and prints the result as JSON.
 // <service>-<entity>-read.js
 import minimist from 'minimist';
 import { entityRead } from '../<entity>/<entity>Read.js';
+import { setAccount } from '../setAccount.js';
 
 const args = minimist(process.argv.slice(2));
 // The id is the positional argument, the anchors are named
 const {
   _: [entityId],
+  account,
   ...options
 } = args;
+setAccount(account);
 const output = await entityRead({ entityId, ...options });
 console.log(JSON.stringify(output, null, 2));
 ```

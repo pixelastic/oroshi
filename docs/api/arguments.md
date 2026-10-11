@@ -9,15 +9,11 @@ one options object for the module. The positional argument and the named flags
 become its keys: `<entity>Id`, the anchors and the filters. The wrapper is
 described in [architecture.md](architecture.md#zsh-and-javascript).
 
-The bin also reads `--account`. It calls
-[`setAccount`](reference/lib/setAccount.md) with it once, before calling the
-module, and keeps it out of the options object
-([architecture.md](architecture.md#accounts)).
+The bin handles `--account` itself, as defined in
+[architecture.md](architecture.md#accounts).
 
-The wrapper lists the accepted arguments in its `# Usage:` header. The
-header mirrors what the JavaScript module accepts. Agents read it with
-`helper-documentation` (see [documentation.md](documentation.md)), so keep
-both in sync.
+The wrapper lists the accepted arguments in its `# Usage:` header, as defined in
+[documentation.md](documentation.md).
 
 ## Positional and named
 
@@ -82,7 +78,4 @@ Commands that return several entities (`list-raw`, `search`) accept
 
 ## `--account`
 
-Some services can be used with several accounts. The default account is always
-used, but can be overridden with `--account <accountName>`.
-
-How an account selects its credentials is defined in [architecture.md](architecture.md#accounts).
+See [architecture.md](architecture.md#accounts).

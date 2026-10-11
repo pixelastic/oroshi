@@ -83,9 +83,10 @@ Each service has a glossary that defines its own vocabulary. See
 
 ## JavaScript conventions
 
-- One export per file.
+- One export per file, plus `__`.
 - A file is named exactly like the function it exports.
-- `__` is a special named export that holds the internals that tests mock.
+- `__` is always allowed as an extra export. It holds the internals that tests
+  mock.
 - All services have a [`getConfig.js`](reference/lib/getConfig.md), a
   [`setAccount.js`](reference/lib/setAccount.md) and a [`callApi.js`](reference/lib/callApi.md). Each entity has a
   [`format<Entity>.js`](reference/lib/formatEntity.md).
@@ -112,16 +113,17 @@ $ <service>-<entity>-list-raw --account perso
 - An **OAuth API** would read from `tokens-perso.json` instead of `tokens.json`.
 
 The account never travels through the modules. Every service has a
-[`setAccount`](reference/lib/setAccount.md). Every bin parses `--account`, calls
-`setAccount` with it before anything else, and keeps it out of the options
-object. [`getConfig`](reference/lib/getConfig.md) then returns the
-credentials of that account for the whole command.
+[`setAccount`](reference/lib/setAccount.md). Every bin that calls the API
+extracts `--account` from the parsed arguments, calls `setAccount` with it
+before anything else, and keeps it out of the options object.
+[`getConfig`](reference/lib/getConfig.md) then returns the credentials of that
+account for the whole command.
 
 ## Errors
 
 - Every known failure is a `firostError` with a code: `<SERVICE>_<CAUSE>`
-  (`<SERVICE>_TOKEN_MISSING`). This includes the
-  3xx, 4xx and 5xx statuses that [`callApi`](reference/lib/callApi.md) checks.
+  (`<SERVICE>_TOKEN_MISSING`). This includes every
+  non-2xx status that [`callApi`](reference/lib/callApi.md) receives.
 - The message of the error holds the body of the API, or the part of it where
   the service puts its message.
 - Bins have no `try/catch`. The error reaches the user as it is.

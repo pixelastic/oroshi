@@ -16,9 +16,6 @@ recB  Lyon Meetup
 Only the id is colored by default. The columns are aligned. The values of a
 multi-value field are separated by a comma.
 
-Entities are displayed in a default order that makes sense for the given
-service/entity (usually the most recent first).
-
 ## Role
 
 - `list` is the human view of [`list-raw`](list-raw.md).
@@ -67,9 +64,6 @@ column:
 The wrapper passes its arguments to `list-raw`, then colors the id and aligns
 the lines. It reads the columns from the raw lines, whatever their number.
 
-The `# Usage:` header must contain the list of flags it accepts, mirrored from
-the internal JavaScript module.
-
 `<service>/<entity>/<service>-<entity>-list`:
 
 ```zsh
@@ -102,7 +96,7 @@ for rawEntity in ${(f)rawEntities}; do
   rows+=("${(j:▮:)columns}")
 done
 
-# One row per line, separated by real newlines
+# One row per line, separated by real newlines. `table` splits the columns on ▮
 table "${(F)rows}"
 ```
 

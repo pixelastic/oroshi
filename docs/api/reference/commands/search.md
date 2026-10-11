@@ -84,13 +84,16 @@ calls it and prints the result as JSON.
 // <service>-<entity>-search.js
 import minimist from 'minimist';
 import { entitySearch } from '../<entity>/<entity>Search.js';
+import { setAccount } from '../setAccount.js';
 
 const args = minimist(process.argv.slice(2));
 // The query is the first positional argument, the filters are named
 const {
   _: [query],
+  account,
   ...filters
 } = args;
+setAccount(account);
 const output = await entitySearch({ query, ...filters });
 console.log(JSON.stringify(output, null, 2));
 ```

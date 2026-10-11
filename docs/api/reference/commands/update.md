@@ -37,9 +37,6 @@ $ notion-page-update --pageId 1f3a --data-file ./changes.json
 
 ### ZSH Wrapper
 
-The `# Usage:` header must contain the list of flags it accepts, mirrored from
-the JavaScript module. Keep only the lines of the mode of the entity.
-
 `<service>/<entity>/<service>-<entity>-update`:
 
 ```zsh
@@ -66,14 +63,17 @@ The bin parses the args, calls the module and prints the entity as JSON.
 // <service>-<entity>-update.js
 import minimist from 'minimist';
 import { entityUpdate } from '../<entity>/<entity>Update.js';
+import { setAccount } from '../setAccount.js';
 
 const args = minimist(process.argv.slice(2));
 // The content is the positional argument (open schema), or the named fields.
 // The id is named
 const {
   _: [content],
+  account,
   ...options
 } = args;
+setAccount(account);
 const output = await entityUpdate({ content, ...options });
 console.log(JSON.stringify(output, null, 2));
 ```
