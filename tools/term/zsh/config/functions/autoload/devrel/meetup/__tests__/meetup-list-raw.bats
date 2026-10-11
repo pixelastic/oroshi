@@ -5,19 +5,19 @@ setup() {
   # Stub the raw record list to record its arguments, then print canned lines
   airtable-record-list-raw() {
     print -r -- "$@" >"$BATS_TMP_DIR/raw-args"
-    echo "recA▮2026-12-01▮⏳️ Pending▮Datadog User Group Paris▮https://datadog.example"
-    echo "recB▮2026-09-15▮✅ Confirmed▮Paris Meetup▮"
-    echo "recC▮2026-06-01▮🛑 Cancelled▮Lyon Meetup▮https://lyon.example"
+    echo 'recC▮{"date":"2026-06-01","status":"🛑 Cancelled","name":"Lyon Meetup","URL":"https://lyon.example"}'
+    echo 'recA▮{"date":"2026-12-01","status":"⏳️ Pending","name":"Datadog User Group Paris","URL":"https://datadog.example"}'
+    echo 'recB▮{"date":"2026-09-15","status":"✅ Confirmed","name":"Paris Meetup"}'
   }
   bats_mock airtable-record-list-raw
   bats_mock_env "BATS_TMP_DIR" "$BATS_TMP_DIR"
   bats_mock_env "AIRTABLE_BASE_DEVREL" "appDEV"
 }
 
-@test "lists the Meetups Table of the DevRel Base, most recent first" {
+@test "lists the Meetups Table of the DevRel Base" {
   bats_run_zsh "meetup-list-raw"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--base appDEV --table Meetups --fields date,status,name,URL --sort -date" ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--baseId appDEV --tableId Meetups --limit 1000" ]]
 }
 
 @test "prints record ID, date, status, name and URL, in that order" {
@@ -53,7 +53,7 @@ setup() {
 
 @test "prints nothing and exits zero when no Meetup has that status" {
   airtable-record-list-raw() {
-    echo "recA▮2026-12-01▮⏳️ Pending▮Datadog User Group Paris▮"
+    echo 'recA▮{"date":"2026-12-01","status":"⏳️ Pending","name":"Datadog User Group Paris"}'
   }
   bats_mock airtable-record-list-raw
 
@@ -126,4 +126,11 @@ setup() {
   bats_run_zsh "meetup-list-raw --upcoming --status confirmed"
   [[ "${#lines[@]}" -eq 1 ]]
   [[ "${lines[0]}" == "recB▮"* ]]
+}
+
+@test "sorts the Meetups by date, most recent first" {
+  bats_run_zsh "meetup-list-raw"
+  [[ "${lines[0]}" == "recA▮"* ]]
+  [[ "${lines[1]}" == "recB▮"* ]]
+  [[ "${lines[2]}" == "recC▮"* ]]
 }

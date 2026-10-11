@@ -27,7 +27,7 @@ guided the choices:
 
 ```text
 $ <service>-<entity>-read recA
-$ <service>-<entity>-read recA --table Meetups
+$ <service>-<entity>-read recA --baseId appA --tableId Meetups
 $ <service>-<entity>-update --<entity>Id recA '{"name":"Paris"}'
 ```
 
@@ -35,7 +35,7 @@ $ <service>-<entity>-update --<entity>Id recA '{"name":"Paris"}'
 
 - A flag that holds an identifier is camelCase, built from the `<entity>` and
   `Id`: `--pageId`, `--recordId`, `--mailId`.
-- Every other flag is lowercase kebab-case: `--limit`, `--account`, `--table`,
+- Every other flag is lowercase kebab-case: `--limit`, `--account`,
   `--data-file`, `--min-date`.
 
 ## Passing content
@@ -51,7 +51,7 @@ glossary of the service.
 
 ```text
 $ confluence-page-create --title "Paris Meetup"
-$ airtable-record-create --table Meetups '{"title":"Paris Meetup","seats":80}'
+$ airtable-record-create --baseId appA --tableId Meetups '{"title":"Paris Meetup","seats":80}'
 ```
 
 ### `-file` suffix
@@ -68,7 +68,7 @@ takes precedence.
 
 ```text
 $ confluence-page-create --title "Paris Meetup" --body-file ./about.md
-$ airtable-record-create --table Meetups --data-file ./entity.json
+$ airtable-record-create --baseId appA --tableId Meetups --data-file ./entity.json
 ```
 
 ## `--limit`

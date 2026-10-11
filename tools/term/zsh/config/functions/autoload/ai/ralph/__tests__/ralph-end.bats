@@ -56,7 +56,7 @@ mock_auto_collaborators() {
   bats_run_zsh "ralph-end $PRD_DIR"
   [[ "$status" -eq 0 ]]
   local queued="$(grep "queue:" "$CALLS")"
-  [[ "$queued" == "queue: exec zsh -ic "* ]]
+  [[ "$queued" == "queue: zsh -ic "* ]]
   [[ "$queued" == *"git-commit-create-all-auto && ralph --auto $PRD_DIR"* ]]
   [[ "$queued" != *"/review"* ]]
 }
@@ -72,12 +72,21 @@ mock_auto_collaborators() {
   [[ "$queued" != *"ralph --auto"* ]]
 }
 
-@test "auto: queued command is one SIGINT-safe group ending in one interactive shell" {
+@test "auto: queued command is one SIGINT-safe group run by a child shell" {
   mock_auto_collaborators
   bats_run_zsh "ralph-end $PRD_DIR"
   local queued="$(grep "queue:" "$CALLS")"
-  [[ "$queued" == *"; }; exec zsh"* ]]
-  [[ "$(grep -o "exec zsh" <<<"$queued" | wc -l)" -eq 2 ]]
+  [[ "$queued" == "queue: zsh -ic '{ "* ]]
+  [[ "$queued" == *"; }'" ]]
+}
+
+# exec from the queue hook kills the Kitty window before the new shell runs anything
+@test "auto: queued command never execs, so the window shell stays alive" {
+  mock_auto_collaborators
+  bats_run_zsh "ralph-end $PRD_DIR"
+  local queued="$(grep "queue:" "$CALLS")"
+  [[ "$queued" != *"exec "* ]]
+  [[ "$queued" != *"9>"* ]]
 }
 
 @test "auto: queues the command before stopping Claude" {
@@ -105,10 +114,3 @@ mock_auto_collaborators() {
   [[ "$queued" == *"queued group: done"* ]]
 }
 
-@test "auto: queued shell sends its stderr to the ralph log folder, and gives it back to the next shell" {
-  mock_auto_collaborators
-  bats_run_zsh "ralph-end $PRD_DIR"
-  local queued="$(grep "queue:" "$CALLS")"
-  [[ "$queued" == *"9>&2 2>>"*"ralph-stderr.log"* ]]
-  [[ "$queued" == *"exec zsh 2>&9 9>&-"* ]]
-}

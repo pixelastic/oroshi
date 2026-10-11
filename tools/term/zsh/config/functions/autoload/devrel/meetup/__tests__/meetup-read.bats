@@ -5,7 +5,7 @@ setup() {
   # Stub the record read to record its arguments, then print a canned Record
   airtable-record-read() {
     print -r -- "$@" >"$BATS_TMP_DIR/read-args"
-    echo '{"name":"Datadog User Group Paris","date":"2026-12-01","image":[{"id":"attA","filename":"logo.png"}]}'
+    echo '{"id":"recXXX","fields":{"name":"Datadog User Group Paris","date":"2026-12-01","image":[{"id":"attA","filename":"logo.png"}]}}'
   }
   bats_mock airtable-record-read
   bats_mock_env "BATS_TMP_DIR" "$BATS_TMP_DIR"
@@ -15,11 +15,12 @@ setup() {
 @test "reads the Record from the Meetups Table of the DevRel Base" {
   bats_run_zsh "meetup-read recXXX"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/read-args")" == "--base appDEV --table Meetups --record recXXX" ]]
+  [[ "$(cat "$BATS_TMP_DIR/read-args")" == "recXXX --baseId appDEV --tableId Meetups" ]]
 }
 
-@test "prints the Fields as JSON, including the Attachment IDs" {
+@test "prints the Fields as flat JSON, including the Attachment IDs" {
   bats_run_zsh "meetup-read recXXX"
+  expect_json 'has("fields")' 'false'
   expect_json '.name' 'Datadog User Group Paris'
   expect_json '.image[0].id' 'attA'
 }

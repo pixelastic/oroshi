@@ -1,5 +1,5 @@
-# Read a single DevRel meetup by Record ID, and print it as JSON
-# The JSON holds every non-empty Field, including the Attachment IDs
+# Read a single DevRel meetup by Record ID, and print its Fields as flat JSON
+# The JSON holds every non-empty Field, including the Attachment IDs, but not the Record ID
 # Usage:
 # $ meetup-read recXXX
 setopt local_options err_return
@@ -18,7 +18,12 @@ if [[ "$AIRTABLE_BASE_DEVREL" == "" ]]; then
   return 1
 fi
 
-airtable-record-read \
-  --base "$AIRTABLE_BASE_DEVREL" \
-  --table Meetups \
-  --record "$recordId"
+local record="$(airtable-record-read \
+  "$recordId" \
+  --baseId "$AIRTABLE_BASE_DEVREL" \
+  --tableId Meetups)"
+
+# The read failed and printed its error: there is no Record to print
+[[ "$record" == "" ]] && return 1
+
+jq '.fields' <<< "$record"

@@ -2,11 +2,11 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  # Stub the record write to log its arguments and the call order, then print a canned record ID
-  airtable-record-write() {
+  # Stub the record create to log its arguments and the call order, then print a canned record ID
+  airtable-record-create() {
     print -r -- "$@" >"$BATS_TMP_DIR/write-args"
-    echo "write" >>"$BATS_TMP_DIR/calls"
-    echo "recNEW"
+    echo "create" >>"$BATS_TMP_DIR/calls"
+    echo '{"id":"recNEW","fields":{}}'
   }
   # Stub the attachment add to log its arguments and the call order
   airtable-attachment-add() {
@@ -14,18 +14,18 @@ setup() {
     echo "attachment" >>"$BATS_TMP_DIR/calls"
     echo "attNEW"
   }
-  bats_mock airtable-record-write airtable-attachment-add
+  bats_mock airtable-record-create airtable-attachment-add
   bats_mock_env "BATS_TMP_DIR" "$BATS_TMP_DIR"
   bats_mock_env "AIRTABLE_BASE_DEVREL" "appDEV"
 }
 
-# Reads the --fields JSON the record write received
+# Reads the content JSON the record create received
 written_fields() {
   local args="$(cat "$BATS_TMP_DIR/write-args")"
-  echo "${args#*--fields }"
+  echo "${args#*--tableId Meetups }"
 }
 
-# Asserts that jq -r <path> on the --fields JSON the record write received equals <expected>
+# Asserts that jq -r <path> on the content JSON the record create received equals <expected>
 expect_field() {
   local jqPath="$1"
   local expected="$2"
@@ -40,7 +40,7 @@ expect_field() {
 @test "creates a pending meetup from the name alone" {
   bats_run_zsh "meetup-write --name 'Datadog User Group Paris'"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/write-args")" == "--base appDEV --table Meetups --fields "* ]]
+  [[ "$(cat "$BATS_TMP_DIR/write-args")" == "--baseId appDEV --tableId Meetups {"* ]]
   expect_field '.name' 'Datadog User Group Paris'
   expect_field '.status' '⏳️ Pending'
 }
@@ -109,8 +109,8 @@ expect_field() {
 @test "adds the image to the Record once it exists" {
   bats_run_zsh "meetup-write --name Paris --image ./logo.png"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/attachment-args")" == "--base appDEV --record recNEW --field assetInputs --file ./logo.png" ]]
-  [[ "$(cat "$BATS_TMP_DIR/calls")" == $'write\nattachment' ]]
+  [[ "$(cat "$BATS_TMP_DIR/attachment-args")" == "--baseId appDEV --tableId Meetups --recordId recNEW --field assetInputs --file ./logo.png" ]]
+  [[ "$(cat "$BATS_TMP_DIR/calls")" == $'create\nattachment' ]]
 }
 
 @test "prints the record ID before the image step" {
@@ -137,12 +137,12 @@ expect_field() {
   [[ "$output" == *"recNEW"*"image"* ]]
 }
 
-@test "exits non-zero when the record write fails" {
-  airtable-record-write() {
+@test "exits non-zero when the record create fails" {
+  airtable-record-create() {
     echo "Invalid token" >&2
     return 1
   }
-  bats_mock airtable-record-write
+  bats_mock airtable-record-create
 
   bats_run_zsh "meetup-write --name Paris --image ./logo.png"
   [[ "$status" -ne 0 ]]

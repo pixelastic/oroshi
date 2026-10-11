@@ -32,21 +32,20 @@ if [[ "$doneCount" == "$totalCount" ]]; then
 fi
 
 # Add the next command to the zsh queue
+# A child shell runs it. Never exec here: the queue hook runs inside zle, and an
+# exec from there kills the Kitty window before the new shell runs anything.
+# The child ends with the group, and the window shell takes over again
 # The group traces its life in the ralph log: its start, a signal that kills it,
-# a failed step, and its end. The EXIT trap does not fire on the final exec, so
-# a missing "done" line means the shell died inside the group
+# a failed step, and its end. A missing "done" line means the shell died inside the group
 local group="{ ralph-log 'queued group: start';"
 group+=" trap 'ralph-log \"queued group: EXIT status=\$?\"' EXIT;"
 group+=" trap 'ralph-log \"queued group: got HUP\"; exit 129' HUP;"
 group+=" trap 'ralph-log \"queued group: got TERM\"; exit 143' TERM;"
 group+=" git-commit-create-all-auto && ${nextCommand}"
 group+=" || ralph-log \"queued group: step failed status=\$?\";"
-group+=" ralph-log 'queued group: done'; }; exec zsh 2>&9 9>&-"
+group+=" ralph-log 'queued group: done'; }"
 ralph-log "ralph-end: queueing next='${nextCommand}' progress=${doneCount}/${totalCount}"
-# The startup errors of that shell would vanish with the window, so its stderr
-# goes to a file. The terminal is kept on fd 9, and given back to the next shell
-local stderrFile="\${OROSHI_FOLDER_STATE}/ralph-stderr.log"
-zsh-queue-write "exec zsh -ic ${(qq)group} 9>&2 2>>${stderrFile}"
+zsh-queue-write "zsh -ic ${(qq)group}"
 
 # now, stop Claude, so zsh takes over
 ralph-log "ralph-end: stopping claude"

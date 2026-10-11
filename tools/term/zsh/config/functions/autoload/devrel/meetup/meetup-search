@@ -18,8 +18,12 @@ if [[ "$AIRTABLE_BASE_DEVREL" == "" ]]; then
   return 1
 fi
 
+# The search text goes inside an Airtable string: escape its backslashes and quotes
+local escapedText="${text//\\/\\\\}"
+escapedText="${escapedText//\"/\\\"}"
+
 airtable-record-search \
-  --base "$AIRTABLE_BASE_DEVREL" \
-  --table Meetups \
-  --in name \
-  "$text"
+  --baseId "$AIRTABLE_BASE_DEVREL" \
+  --tableId Meetups \
+  --limit 100 \
+  "SEARCH(LOWER(\"$escapedText\"), LOWER({name}))"

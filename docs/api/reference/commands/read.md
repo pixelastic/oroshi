@@ -27,7 +27,7 @@ Example: `gmail-mail-read {id}`
 
 If the entity needs an anchor (a folder, a workspace, a table, etc), `read`
 requires it as a named argument.
-Example: `airtable-record-read recXXX --table Meetups`
+Example: `airtable-record-read recXXX --baseId appXXX --tableId Meetups`
 
 ## Template
 

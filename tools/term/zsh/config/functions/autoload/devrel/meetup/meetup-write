@@ -60,13 +60,15 @@ local fieldsJson="$(jq --null-input --compact-output \
 '{name: $name, URL: $url, date: $date, notes: $notes, status: $status}
     | with_entries(select(.value != ""))')"
 
-local recordId="$(airtable-record-write \
-  --base "$AIRTABLE_BASE_DEVREL" \
-  --table Meetups \
-  --fields "$fieldsJson")"
+local record="$(airtable-record-create \
+  --baseId "$AIRTABLE_BASE_DEVREL" \
+  --tableId Meetups \
+  "$fieldsJson")"
 
-# The write failed and printed its error: there is no Record to report
-[[ "$recordId" == "" ]] && return 1
+# The create failed and printed its error: there is no Record to report
+[[ "$record" == "" ]] && return 1
+
+local recordId="$(jq --raw-output '.id' <<< "$record")"
 
 echo "$recordId"
 
@@ -75,8 +77,9 @@ echo "$recordId"
 
 # The Record stays whatever happens to the image
 if ! airtable-attachment-add \
-  --base "$AIRTABLE_BASE_DEVREL" \
-  --record "$recordId" \
+  --baseId "$AIRTABLE_BASE_DEVREL" \
+  --tableId Meetups \
+  --recordId "$recordId" \
   --field assetInputs \
   --file "$image"; then
   echoerr "Meetup $recordId was created, but its image failed to upload"

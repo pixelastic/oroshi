@@ -15,7 +15,7 @@ setup() {
 @test "searches the name of the Meetups Table of the DevRel Base" {
   bats_run_zsh "meetup-search datadog"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/search-args")" == "--base appDEV --table Meetups --in name datadog" ]]
+  [[ "$(cat "$BATS_TMP_DIR/search-args")" == "--baseId appDEV --tableId Meetups --limit 100 SEARCH(LOWER(\"datadog\"), LOWER({name}))" ]]
 }
 
 @test "returns the matching Meetups as JSON" {
@@ -61,4 +61,21 @@ setup() {
   bats_run_zsh "meetup-search datadog"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"Invalid formula"* ]]
+}
+
+@test "escapes the quotes of the search text in the formula" {
+  bats_run_zsh "meetup-search 'say \"hi\"'"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/search-args")" == *'SEARCH(LOWER("say \"hi\""), LOWER({name}))' ]]
+}
+
+@test "escapes the backslashes of the search text in the formula" {
+  bats_run_zsh "meetup-search 'a\\b'"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/search-args")" == *'SEARCH(LOWER("a\\b"), LOWER({name}))' ]]
+}
+
+@test "asks for up to 100 Meetups" {
+  bats_run_zsh "meetup-search datadog"
+  [[ "$(cat "$BATS_TMP_DIR/search-args")" == *" --limit 100"* ]]
 }

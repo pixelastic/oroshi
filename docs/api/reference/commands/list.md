@@ -28,7 +28,7 @@ comma.
 `list` accepts the same flags as [`list-raw`](list-raw.md), and passes them
 through.
 
-If the entity has an anchor (like `--table` for an Airtable record), `list-raw`
+If the entity has an anchor (like `--baseId` and `--tableId` for an Airtable record), `list-raw`
 requires it, and `list` requires it too.
 
 ## Colors

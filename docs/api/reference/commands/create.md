@@ -29,7 +29,7 @@ The content follows the schema of the entity, see
 $ confluence-page-create --title "Paris Meetup" --body-file ./about.md
 
 # Open schema
-$ airtable-record-create --table Meetups '{"title":"Paris Meetup","seats":80}'
+$ airtable-record-create --baseId appA --tableId Meetups '{"title":"Paris Meetup","seats":80}'
 ```
 
 ## Template

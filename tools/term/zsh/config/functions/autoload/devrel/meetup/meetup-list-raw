@@ -5,7 +5,7 @@
 # --status keeps only the meetups with that status
 # --upcoming keeps only the meetups of today or later
 # --limit keeps only the first meetups, once the other filters are applied (default: all)
-# One API call is made, so at most 100 meetups are listed
+# At most 1000 meetups are listed
 # Usage:
 # $ meetup-list-raw
 # $ meetup-list-raw --status pending
@@ -34,11 +34,26 @@ if [[ "$AIRTABLE_BASE_DEVREL" == "" ]]; then
   return 1
 fi
 
+# The API cannot sort: each line holds the Fields as JSON, sorted here by date
 local rawRecords="$(airtable-record-list-raw \
-  --base "$AIRTABLE_BASE_DEVREL" \
-  --table Meetups \
-  --fields date,status,name,URL \
-  --sort -date)"
+  --baseId "$AIRTABLE_BASE_DEVREL" \
+  --tableId Meetups \
+  --limit 1000)"
+
+# An empty Field leaves an empty column
+rawRecords="$(jq \
+  --raw-input \
+  --raw-output \
+  --slurp \
+'
+  split("\n")
+  | map(select(. != "") | split("▮") | {id: .[0], fields: (.[1] | fromjson)})
+  | sort_by(.fields.date // "")
+  | reverse
+  | .[]
+  | [.id, (.fields.date // ""), (.fields.status // ""), (.fields.name // ""), (.fields.URL // "")]
+  | join("▮")
+' <<< "$rawRecords")"
 
 local today="$(date +%Y-%m-%d)"
 
