@@ -125,8 +125,8 @@ values replaced:
 ## bats
 
 Only one file requires a `bats` test: `list`. `list` reads data from `list-raw`,
-filters it, colorizes it, and passes it to `table` for a nicer display in
-columns.
+colors the id, and passes it to `table` for a nicer display in columns. A
+failing `list-raw` makes `list` fail.
 
 Its test mocks `list-raw` and asserts the final output based on various inputs.
 Both `list-raw` and `table` are themselves tested, so the tests of `list` only

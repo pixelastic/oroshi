@@ -14,8 +14,9 @@ recB▮Lyon Meetup▮▮
 
 - One line per entity, fields separated by `▮`.
 - The values of a multi-value field are separated by `▯`.
-- The **id always comes first**.
-- An empty field leaves an empty column: `recB▮Lyon▮▮` has two empty columns.
+- The **id always comes first**. The other columns depend on the entity.
+- An empty field leaves an empty column: `recB▮Lyon Meetup▮▮` has two empty
+  columns.
 - A newline inside a value becomes a space.
 - The module removes `▮` from the values, so they cannot break the columns.
 - An empty listing prints one empty line.
@@ -35,6 +36,11 @@ through.
 
 ### ZSH Wrapper
 
+The `# Fields:` header is the reference documentation of the fields that
+`list-raw` returns, in the same order as the columns. `helper-documentation`
+prints it, so a caller knows the output format. The developer keeps it in sync
+with `toLine`.
+
 The `# Usage:` header must contain the list of flags it accepts (mirrored from
 the JavaScript module), so `helper-documentation` can print it.
 
@@ -42,7 +48,7 @@ the JavaScript module), so `helper-documentation` can print it.
 
 ```zsh
 # List the entities of <service>, one per line
-# Fields: <entity>Id▮name▮date
+# Fields: <entity>Id▮name▮date▮tags
 # Usage:
 # $ <service>-<entity>-list-raw
 # $ <service>-<entity>-list-raw --limit 10
@@ -108,12 +114,14 @@ __ = {
   /**
    * Turn one entity into a raw line
    * @param {object} entity - Entity as returned by search
-   * @returns {string} The id first, then the fields, separated by ▮
+   * @returns {string} The fields, separated by ▮
    */
   toLine(entity) {
-    // Join multi-values with ▯, replace newlines with a space and remove
-    // the separators from the values
-    return [entity.id, entity.name, entity.date].join('▮');
+    // Pick the fields of the entity to show, then apply the raw format rules
+    // of the Role section: join multi-values with ▯, replace newlines with a
+    // space and remove the separators from the values
+    const fields = [entity.id];
+    return fields.join('▮');
   },
   entitySearch,
 };
@@ -148,10 +156,11 @@ __ = {
   /**
    * Turn one entity of the API response into a raw line
    * @param {object} entity - Entity as returned by the API
-   * @returns {string} The id first, then the fields, separated by ▮
+   * @returns {string} The fields, separated by ▮
    */
   toLine(entity) {
-    // Apply the raw format rules of the Role section
+    // Pick the fields of the entity to show, then apply the raw format rules
+    // of the Role section
   },
   callApi,
 };

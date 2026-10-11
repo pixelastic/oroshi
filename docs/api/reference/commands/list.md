@@ -3,6 +3,9 @@
 `list` prints the entities of a service as a colored table, for humans to read
 in a terminal.
 
+`list` is an exception to the generic rules: it has no bin and no module. Its
+wrapper calls [`list-raw`](list-raw.md) and does the rest itself.
+
 ## Example
 
 ```text
@@ -10,8 +13,8 @@ recA  Paris Meetup  2026-03-12  online, paris
 recB  Lyon Meetup
 ```
 
-The id is colored. The columns are aligned. The values of a multi-value field
-are separated by a comma.
+Only the id is colored by default. The columns are aligned. The values of a
+multi-value field are separated by a comma.
 
 Entities are displayed in a default order that makes sense for the given
 service/entity (usually the most recent first).
@@ -21,8 +24,7 @@ service/entity (usually the most recent first).
 - `list` is the human view of [`list-raw`](list-raw.md).
 - It displays a `-raw` list in a table with colors and aligned columns
 - It accepts the same flags as `list-raw`.
-- It is the only command without a bin or a module. Its wrapper calls
-  `list-raw` and does the rest itself.
+- It takes its columns from the lines of `list-raw`, whatever their number.
 
 ## Arguments
 
@@ -34,26 +36,36 @@ Airtable), then `list` requires them as well.
 
 ## Colors
 
-The wrapper colors the id, the name and the description with a functional
-token each.
+Only the id is colored by default. The wrapper colors it with a functional
+token.
 
-The developer adds these tokens to the theme colors source,
-`tools/term/zsh/config/theming/src/colors.jsonc`. Then they run `colors-build`.
+The developer adds this token to the theme colors source,
+`tools/term/zsh/config/theming/src/colors.jsonc`, as a placeholder so more
+colors can come later. Then they run `colors-build`.
 
 ```jsonc
 "<service>": {
-  "<entity>-id": "orange",
-  "<entity>-name": "gray-3",
-  "<entity>-description": "gray"
+  "<entity>-id": "orange"
 }
+```
+
+### Suggestions
+
+The id is always colored. The other columns depend on the entity, so their
+colors are optional. To color a column, the developer adds one token for it,
+and the wrapper colors that column with it. For example, to dim the name
+column:
+
+```jsonc
+"<entity>-name": "gray-3"
 ```
 
 ## Template
 
 ### ZSH Wrapper
 
-The wrapper passes its arguments to `list-raw`, then colors and aligns the
-lines.
+The wrapper passes its arguments to `list-raw`, then colors the id and aligns
+the lines. It reads the columns from the raw lines, whatever their number.
 
 The `# Usage:` header must contain the list of flags it accepts, mirrored from
 the internal JavaScript module.
@@ -78,23 +90,20 @@ local rawEntities="$($rawCommand "$@")"
 # Nothing to display if there is no entity
 [[ "$rawEntities" == "" ]] && return 0
 
-local output=""
+local rows=()
 for rawEntity in ${(f)rawEntities}; do
   local fields=("${(@ps/▮/)rawEntity}")
-  local entityId="${fields[1]}"
-  local entityName="${fields[2]}"
-  local entityDescription="${fields[3]}"
 
-  # Color each field, and show the multi-values with commas
-  local row=""
-  row+="$(colorize "$entityId" $COLORS[<service>-<entity>-id])▮"
-  row+="$(colorize "$entityName" $COLORS[<service>-<entity>-name])▮"
-  row+="$(colorize "${entityDescription//▯/, }" $COLORS[<service>-<entity>-description])"
+  # Color the id. Keep the other columns as they are, and
+  # show their multi-values with commas
+  local columns=("$(colorize "${fields[1]}" $COLORS[<service>-<entity>-id])")
+  columns+=("${(@)fields[2,-1]//▯/, }")
 
-  output+="$row\n"
+  rows+=("${(j:▮:)columns}")
 done
 
-table $output
+# One row per line, separated by real newlines
+table "${(F)rows}"
 ```
 
 ### Test
@@ -105,5 +114,6 @@ and the colors depend on the terminal.
 The test mocks `list-raw` with canned lines, and covers:
 - The flags are passed to `list-raw` as received.
 - The rows match the raw lines, with aligned columns.
+- Only the id is colored by default.
 - An empty listing prints nothing and exits with zero.
 - A failing `list-raw` makes `list` exit with a non-zero status.
