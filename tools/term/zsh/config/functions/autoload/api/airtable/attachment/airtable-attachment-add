@@ -1,40 +1,27 @@
-# Upload a local file into a Field of type Attachment, and print the new Attachment ID
-# Existing attachments stay in the field. The file must be 5 MB at most
-# Uses AIRTABLE_TOKEN
+# Upload a local file into a Field of type Attachment, and print the Record as JSON
+# The existing Attachments stay in the Field. The file must be 5 MB at most
 # Usage:
-# $ airtable-attachment-add --base appXXX --record recXXX --field Logo --file ./logo.png
+# $ airtable-attachment-add --baseId appXXX --tableId Meetups --recordId recXXX --field Logo --file ./logo.png
+# $ airtable-attachment-add --baseId appXXX --tableId Meetups --recordId recXXX --field Logo --file ./logo.png --account perso
 setopt local_options err_return
 
-zparseopts -E -D \
-  -base:=flagBase \
-  -record:=flagRecord \
-  -field:=flagField \
+# No -D: the arguments are only read here, the bin parses them
+zparseopts -E \
   -file:=flagFile
 
-local base=${flagBase[2]}
-local recordId=${flagRecord[2]}
-local field=${flagField[2]}
 local file=${flagFile[2]}
 
-# Every flag is needed to tell where the file goes
-local missingFlags=()
-[[ "$base" == "" ]] && missingFlags+=(--base)
-[[ "$recordId" == "" ]] && missingFlags+=(--record)
-[[ "$field" == "" ]] && missingFlags+=(--field)
-[[ "$file" == "" ]] && missingFlags+=(--file)
-if [[ ${#missingFlags} -gt 0 ]]; then
-  echoerr "Missing ${missingFlags[*]}." \
-    "Usage: airtable-attachment-add --base <base>" \
-    "--record <recordId> --field <field> --file <path>"
-  return 1
+# The content type comes from the file itself. A missing file fails in the module
+local contentTypeArgs=()
+if [[ -f "$file" ]]; then
+  local contentType="$(file \
+    --brief \
+    --mime-type \
+    "$file")"
+  contentTypeArgs=(--content-type "$contentType")
 fi
 
-local contentType="$(file --brief --mime-type "$file")"
-
-local libDirectory="${functions_source[$0]:A:h:h}/__lib"
-node "${libDirectory}/bin/airtable-attachment-add.js" \
-  "$base" \
-  "$recordId" \
-  "$field" \
-  "$file" \
-  "$contentType"
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/airtable-attachment-add.js" \
+  "$@" \
+  "${contentTypeArgs[@]}"

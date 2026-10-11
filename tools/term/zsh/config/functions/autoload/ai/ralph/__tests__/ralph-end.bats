@@ -104,3 +104,11 @@ mock_auto_collaborators() {
   [[ "$queued" == *"got TERM"* ]]
   [[ "$queued" == *"queued group: done"* ]]
 }
+
+@test "auto: queued shell sends its stderr to the ralph log folder, and gives it back to the next shell" {
+  mock_auto_collaborators
+  bats_run_zsh "ralph-end $PRD_DIR"
+  local queued="$(grep "queue:" "$CALLS")"
+  [[ "$queued" == *"9>&2 2>>"*"ralph-stderr.log"* ]]
+  [[ "$queued" == *"exec zsh 2>&9 9>&-"* ]]
+}

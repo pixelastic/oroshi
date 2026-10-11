@@ -41,9 +41,12 @@ group+=" trap 'ralph-log \"queued group: got HUP\"; exit 129' HUP;"
 group+=" trap 'ralph-log \"queued group: got TERM\"; exit 143' TERM;"
 group+=" git-commit-create-all-auto && ${nextCommand}"
 group+=" || ralph-log \"queued group: step failed status=\$?\";"
-group+=" ralph-log 'queued group: done'; }; exec zsh"
+group+=" ralph-log 'queued group: done'; }; exec zsh 2>&9 9>&-"
 ralph-log "ralph-end: queueing next='${nextCommand}' progress=${doneCount}/${totalCount}"
-zsh-queue-write "exec zsh -ic ${(qq)group}"
+# The startup errors of that shell would vanish with the window, so its stderr
+# goes to a file. The terminal is kept on fd 9, and given back to the next shell
+local stderrFile="\${OROSHI_FOLDER_STATE}/ralph-stderr.log"
+zsh-queue-write "exec zsh -ic ${(qq)group} 9>&2 2>>${stderrFile}"
 
 # now, stop Claude, so zsh takes over
 ralph-log "ralph-end: stopping claude"

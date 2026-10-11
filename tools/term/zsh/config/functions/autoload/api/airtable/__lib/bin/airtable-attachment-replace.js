@@ -1,13 +1,10 @@
-import { airtableAttachmentReplace } from '../attachmentReplace.js';
+// airtable-attachment-replace.js
+import minimist from 'minimist';
+import { attachmentReplace } from '../attachment/attachmentReplace.js';
+import { setAccount } from '../setAccount.js';
 
-const [base, table, record, field, file, contentType] = process.argv.slice(2);
-
-const attachmentId = await airtableAttachmentReplace({
-  base,
-  table,
-  record,
-  field,
-  file,
-  contentType,
-});
-console.log(attachmentId);
+const args = minimist(process.argv.slice(2), { string: ['field'] });
+const { 'content-type': contentType, account, ...options } = args;
+setAccount(account);
+const output = await attachmentReplace({ contentType, ...options });
+console.log(JSON.stringify(output, null, 2));

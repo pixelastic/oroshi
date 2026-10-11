@@ -1,15 +1,13 @@
-import { airtableAttachmentRemove } from '../attachmentRemove.js';
+// airtable-attachment-remove.js
+import minimist from 'minimist';
+import { attachmentRemove } from '../attachment/attachmentRemove.js';
+import { setAccount } from '../setAccount.js';
 
-const [base, table, record, field, ...attachments] = process.argv.slice(2);
-
-// The wrapper sends either --all or a list of Attachment IDs
-const all = attachments[0] === '--all';
-
-await airtableAttachmentRemove({
-  base,
-  table,
-  record,
-  field,
-  attachments: all ? [] : attachments,
-  all,
+const args = minimist(process.argv.slice(2), {
+  string: ['field', 'attachmentId'],
+  boolean: ['all'],
 });
+const { account, ...options } = args;
+setAccount(account);
+const output = await attachmentRemove(options);
+console.log(JSON.stringify(output, null, 2));
