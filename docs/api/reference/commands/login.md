@@ -118,6 +118,8 @@ __ = {
 
 ### Test
 
+The test lives in `<service>/__lib/__tests__/login.js`.
+
 The vitest test covers the module only. It mocks everything that opens a
 browser (and everything that waits for the grant or exchanges it) through `__`.
 It points `OROSHI_FOLDER_STATE` to a temporary folder, and mostly checks three

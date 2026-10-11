@@ -12,22 +12,6 @@ point to the code under test:
 - A `callApi` test mocks the HTTP call.
 - A `list` test mocks `list-raw`.
 
-## What is tested where
-
-| Layer             | Tested | Tool   | Location                             |
-|-------------------|--------|--------|--------------------------------------|
-| Module            | Yes    | vitest | `__lib/<entity>/__tests__/`          |
-| `getConfig.js`    | Yes    | vitest | `__lib/__tests__/getConfig.js`       |
-| `callApi.js`      | Yes    | vitest | `__lib/__tests__/callApi.js`         |
-| `list` wrapper    | Yes    | bats   | `<entity>/__tests__/`                |
-| Other wrappers    | No     |        |                                      |
-| Bin               | No     |        |                                      |
-
-- A test file has the name of the file it tests (`recordRead.js` is tested by
-  `__tests__/recordRead.js`), with no `.test.` or `.spec.` suffix.
-- Test names are sentences that say what the code does:
-  `returns the entity formatted`, not `test read`.
-
 ## Wrappers and bins
 
 Plain wrappers only pass their arguments on. Bins only parse the arguments with
@@ -39,7 +23,7 @@ It is the only command with a bats test. See [`list`](reference/commands/list.md
 
 ## vitest
 
-vitest covers the modules, `getConfig` and `callApi`. Tests run with `js-test`.
+vitest covers every JavaScript file except the bins. Tests run with `js-test`.
 A test mocks a collaborator through `__`, with `vi.spyOn(__, 'name')`. The
 `js-writer` skill defines this convention
 ([architecture.md](architecture.md#javascript-conventions)).

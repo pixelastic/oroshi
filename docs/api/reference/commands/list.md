@@ -102,6 +102,8 @@ table "${(F)rows}"
 
 ### Test
 
+The test lives in `<service>/<entity>/__tests__/<service>-<entity>-list.bats`.
+
 `list` has a bats test, because `table` aligns the columns
 and the colors depend on the terminal.
 

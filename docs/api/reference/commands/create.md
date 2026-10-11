@@ -112,6 +112,8 @@ __ = {
 
 ### Test
 
+The test lives in `<service>/__lib/<entity>/__tests__/<entity>Create.js`.
+
 The vitest test covers the module only. It mocks `callApi` through `__` and
 mostly checks three behaviors:
 - Given the content, the module calls `callApi` with the right method, path and

@@ -105,7 +105,9 @@ __ = {
 
 ### Test
 
-The test covers the module only. It mocks `callApi` through `__` and mostly
+The test lives in `<service>/__lib/<entity>/__tests__/<entity>Read.js`.
+
+The vitest test covers the module only. It mocks `callApi` through `__` and mostly
 checks two behaviors:
 - Given an id, the module calls `callApi` with the right path.
 - The returned value is the response of the API, passed through `formatEntity`.

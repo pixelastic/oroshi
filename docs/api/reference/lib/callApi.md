@@ -108,7 +108,9 @@ export async function callApi(path, options = {}) {
 __ = { fetch, getConfig };
 ```
 
-The test covers the function only. It mocks `__.getConfig` and `__.fetch`, and
+The test lives in `<service>/__lib/__tests__/callApi.js`.
+
+The vitest test covers the function only. It mocks `__.getConfig` and `__.fetch`, and
 checks these behaviors:
 - Given a successful response, the function returns its JSON body.
 - Given an empty body, the function returns it without throwing.

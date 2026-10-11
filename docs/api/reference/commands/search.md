@@ -136,7 +136,9 @@ __ = {
 
 ### Test
 
-The test covers the module only. It mocks `callApi` through `__` and has two
+The test lives in `<service>/__lib/<entity>/__tests__/<entity>Search.js`.
+
+The vitest test covers the module only. It mocks `callApi` through `__` and has two
 parts:
 
 - Assert that the options passed are correctly transformed into the right API call

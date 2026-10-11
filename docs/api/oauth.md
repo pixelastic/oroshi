@@ -11,7 +11,7 @@ An OAuth API adds a command and a file, and changes two shared modules:
   saves them.
 - A tokens file, written by `login`:
   `$OROSHI_FOLDER_STATE/<service>/tokens.json` (or `tokens-<account>.json` for a
-  non-default acount).
+  non-default account).
 - A [`getConfig`](#getconfig) that reads the tokens file.
 - A [`callApi`](#callapi) that keeps the tokens fresh.
 

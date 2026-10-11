@@ -49,7 +49,7 @@ export async function getConfig() {
 
   // Fail early when a required variable is empty
   if (!token) {
-    throw firostError('<SERVICE>_TOKEN_MISSING', 'Set <SERVICE>_TOKEN');
+    throw firostError('<SERVICE>_CREDENTIALS_MISSING', 'Set <SERVICE>_TOKEN');
   }
 
   return { token };
@@ -61,6 +61,8 @@ __ = {
 };
 ```
 
-The test covers the function only. It sets the environment variables and checks
+The test lives in `<service>/__lib/__tests__/getConfig.js`.
+
+The vitest test covers the function only. It sets the environment variables and checks
 the returned object, for the default account and for another one (by setting
 `__.account`). It also checks that an empty variable throws the typed error.

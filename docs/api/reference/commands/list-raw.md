@@ -169,7 +169,9 @@ __ = {
 
 ### Test
 
-The test covers the module only. The zsh wrapper and bin are so thin we
+The test lives in `<service>/__lib/<entity>/__tests__/<entity>ListRaw.js`.
+
+The vitest test covers the module only. The zsh wrapper and bin are so thin we
 don't need to test them.
 
 The `toLine` test gives `toLine` a minimal inline entity and asserts the line it

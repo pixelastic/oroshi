@@ -32,6 +32,8 @@ export function setAccount(account) {
 }
 ```
 
-The test covers the function only. It calls `setAccount` and checks that
+The test lives in `<service>/__lib/__tests__/setAccount.js`.
+
+The vitest test covers the function only. It calls `setAccount` and checks that
 `getConfig` returns the credentials of that account, then that an empty value
 brings back the default account.

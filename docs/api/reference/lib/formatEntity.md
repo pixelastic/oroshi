@@ -38,5 +38,7 @@ export function formatEntity(response) {
 }
 ```
 
-The test covers the function only. It checks that a given API response gives the
+The test lives in `<service>/__lib/<entity>/__tests__/format<Entity>.js`.
+
+The vitest test covers the function only. It checks that a given API response gives the
 expected entity.

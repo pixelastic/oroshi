@@ -36,6 +36,8 @@ and a module. Their content depends on the verb.
 
 ### Test
 
+The test lives in `<service>/__lib/<entity>/__tests__/<entity><Verb>.js`.
+
 The vitest test covers the module only. It mocks `callApi` through `__` and
 checks what is specific to the verb: the call to the API, and the returned
 value.

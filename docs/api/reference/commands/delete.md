@@ -95,6 +95,8 @@ __ = {
 
 ### Test
 
+The test lives in `<service>/__lib/<entity>/__tests__/<entity>Delete.js`.
+
 The vitest test covers the module only. It mocks `callApi` through `__` and
 mostly checks two behaviors:
 - Given an id, the module calls `callApi` with the `DELETE` method and the right
