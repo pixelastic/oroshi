@@ -18,7 +18,7 @@ the commands concerned.
   (`airtable`, `record`, `Record`).
 - Inside a JavaScript identifier, the plain words `entity` and `Entity` play
   the same role: `entityRead` becomes `recordRead`, and `formatEntity` becomes
-  `formatRecord`. The examples stay lintable that way.
+  `formatRecord`.
 
 ## Detail files
 
