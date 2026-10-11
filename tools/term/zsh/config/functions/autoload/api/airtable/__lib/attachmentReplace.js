@@ -1,7 +1,7 @@
 import { _ } from 'golgoth';
 import { airtableAttachmentAdd } from './attachmentAdd.js';
 import { airtableAttachmentRemove } from './attachmentRemove.js';
-import { airtableRecordRead } from './recordRead.js';
+import { recordRead } from './record/recordRead.js';
 
 /**
  * Replace every Attachment of a Field with one local file. The upload comes
@@ -18,13 +18,12 @@ import { airtableRecordRead } from './recordRead.js';
 export async function airtableAttachmentReplace(options) {
   const { base, table, record, field, file, contentType } = options;
 
-  const fields = await airtableRecordRead({
-    base,
-    table,
-    record,
-    fields: [field],
+  const found = await recordRead({
+    baseId: base,
+    tableId: table,
+    recordId: record,
   });
-  const oldIds = _.chain(fields).get([field], []).map('id').value();
+  const oldIds = _.chain(found).get(['fields', field], []).map('id').value();
 
   const newId = await airtableAttachmentAdd({
     base,

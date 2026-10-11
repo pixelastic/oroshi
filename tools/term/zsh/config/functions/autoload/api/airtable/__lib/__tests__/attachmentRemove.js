@@ -13,18 +13,14 @@ describe('airtableAttachmentRemove', () => {
         JSON.stringify(
           request.method === 'GET'
             ? {
-                records: [
-                  {
-                    id: 'recABC',
-                    fields: {
-                      Logo: [
-                        { id: 'attONE', filename: 'one.png' },
-                        { id: 'attTWO', filename: 'two.png' },
-                        { id: 'attTHREE', filename: 'three.png' },
-                      ],
-                    },
-                  },
-                ],
+                id: 'recABC',
+                fields: {
+                  Logo: [
+                    { id: 'attONE', filename: 'one.png' },
+                    { id: 'attTWO', filename: 'two.png' },
+                    { id: 'attTHREE', filename: 'three.png' },
+                  ],
+                },
               }
             : { id: 'recABC', fields: {} },
         ),
@@ -118,11 +114,7 @@ describe('airtableAttachmentRemove', () => {
         text: () =>
           JSON.stringify(
             request.method === 'GET'
-              ? {
-                  records: [
-                    { id: 'recABC', fields: { Logo: [{ id: 'attONE' }] } },
-                  ],
-                }
+              ? { id: 'recABC', fields: { Logo: [{ id: 'attONE' }] } }
               : {
                   error: { type: 'NOT_AUTHORIZED', message: 'Not authorized' },
                 },

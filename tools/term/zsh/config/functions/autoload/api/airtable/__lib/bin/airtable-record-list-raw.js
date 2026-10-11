@@ -1,13 +1,9 @@
-import { _ } from 'golgoth';
-import { airtableRecordListRaw } from '../recordListRaw.js';
+// airtable-record-list-raw.js
+import minimist from 'minimist';
+import { recordListRaw } from '../record/recordListRaw.js';
+import { setAccount } from '../setAccount.js';
 
-const [base, table, fieldList, limit, sort] = process.argv.slice(2);
-
-const lines = await airtableRecordListRaw({
-  base,
-  table,
-  fields: fieldList ? fieldList.split(',') : [],
-  limit: Number(limit) || undefined,
-  sort: sort || undefined,
-});
-_.each(lines, (line) => console.log(line));
+const { _: _positional, account, ...filters } = minimist(process.argv.slice(2));
+setAccount(account);
+const output = await recordListRaw(filters);
+console.log(output);

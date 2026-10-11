@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
-import { airtableRecordRead } from './recordRead.js';
+import { recordRead } from './record/recordRead.js';
 import { airtableRecordWrite } from './recordWrite.js';
 
 /**
@@ -20,13 +20,15 @@ import { airtableRecordWrite } from './recordWrite.js';
 export async function airtableAttachmentRemove(options) {
   const { base, table, record, field, attachments = [], all = false } = options;
 
-  const fields = await airtableRecordRead({
-    base,
-    table,
-    record,
-    fields: [field],
+  const found = await recordRead({
+    baseId: base,
+    tableId: table,
+    recordId: record,
   });
-  const currentIds = _.chain(fields).get([field], []).map('id').value();
+  const currentIds = _.chain(found)
+    .get(['fields', field], [])
+    .map('id')
+    .value();
 
   // Return early, before any update, if an ID is not in the Field
   const unknownIds = _.difference(attachments, currentIds);

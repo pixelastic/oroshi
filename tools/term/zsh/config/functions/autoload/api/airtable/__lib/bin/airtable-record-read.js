@@ -1,11 +1,15 @@
-import { airtableRecordRead } from '../recordRead.js';
+// airtable-record-read.js
+import minimist from 'minimist';
+import { recordRead } from '../record/recordRead.js';
+import { setAccount } from '../setAccount.js';
 
-const [base, table, record, fieldList] = process.argv.slice(2);
-
-const found = await airtableRecordRead({
-  base,
-  table,
-  record,
-  fields: fieldList ? fieldList.split(',') : [],
-});
-console.log(JSON.stringify(found, null, 2));
+const args = minimist(process.argv.slice(2));
+// The id is the positional argument, the anchors are named
+const {
+  _: [recordId],
+  account,
+  ...options
+} = args;
+setAccount(account);
+const output = await recordRead({ recordId, ...options });
+console.log(JSON.stringify(output, null, 2));

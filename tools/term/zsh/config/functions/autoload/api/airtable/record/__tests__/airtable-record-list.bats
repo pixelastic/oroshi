@@ -5,47 +5,39 @@ setup() {
   # Stub the raw list to record its arguments, then print canned lines
   airtable-record-list-raw() {
     print -r -- "$@" >"$BATS_TMP_DIR/raw-args"
-    echo "recA▮Paris Meetup▮Paris▯France"
-    echo "recB▮Lyon Meetup▮"
+    echo 'recA▮{"name":"Paris Meetup"}'
+    echo "recB▮{}"
   }
   bats_mock airtable-record-list-raw
   bats_mock_env "BATS_TMP_DIR" "$BATS_TMP_DIR"
 }
 
-@test "passes base, table, fields, limit and sort to the raw list" {
-  bats_run_zsh "airtable-record-list --base appXXX --table Meetups --fields name,date --limit 5 --sort -date"
+@test "passes the flags to the raw list as received" {
+  bats_run_zsh "airtable-record-list --baseId appXXX --tableId Meetups --limit 10"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--base appXXX --table Meetups --fields name,date --limit 5 --sort -date" ]]
-}
-
-@test "only passes the options it was given to the raw list" {
-  bats_run_zsh "airtable-record-list --base appXXX --table Meetups"
-  [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--base appXXX --table Meetups" ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--baseId appXXX --tableId Meetups --limit 10" ]]
 }
 
 @test "shows the same rows as the raw list, with aligned columns" {
-  bats_run_zsh "airtable-record-list --base appXXX --table Meetups --fields name,city | text-ansi-remove"
+  bats_run_zsh "airtable-record-list --baseId appXXX --tableId Meetups | text-ansi-remove"
   [[ "$status" -eq 0 ]]
-  [[ "${lines[0]}" == "recA  Paris Meetup  Paris, France" ]]
-  # table pads the empty last column with spaces
-  local pattern="^recB  Lyon Meetup *$"
-  [[ "${lines[1]}" =~ $pattern ]]
+  [[ "${lines[0]}" == 'recA  {"name":"Paris Meetup"}' ]]
+  [[ "${lines[1]}" == "recB  {}" ]]
 }
 
-@test "colors the record ID" {
-  bats_run_zsh "airtable-record-list --base appXXX --table Meetups"
-  [[ "${lines[0]}" == *$'\e['*"recA"* ]]
+@test "colors only the Record ID" {
+  bats_run_zsh "airtable-record-list --baseId appXXX --tableId Meetups"
+  [[ "${lines[0]}" == $'\e['*"recA"*$'\e[0m  {"name":"Paris Meetup"}' ]]
 }
 
-@test "prints nothing and exits zero for a Table without Records" {
+@test "prints nothing and exits non-zero for a Table without Records" {
   airtable-record-list-raw() {
-    return 0
+    echo ""
   }
   bats_mock airtable-record-list-raw
 
-  bats_run_zsh "airtable-record-list --base appXXX --table Empty"
-  [[ "$status" -eq 0 ]]
+  bats_run_zsh "airtable-record-list --baseId appXXX --tableId Empty"
+  [[ "$status" -ne 0 ]]
   [[ "$output" == "" ]]
 }
 
@@ -56,7 +48,7 @@ setup() {
   }
   bats_mock airtable-record-list-raw
 
-  bats_run_zsh "airtable-record-list --base appXXX --table Meetups"
+  bats_run_zsh "airtable-record-list --baseId appXXX --tableId Meetups"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"AIRTABLE_TOKEN is not set"* ]]
 }

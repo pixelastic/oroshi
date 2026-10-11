@@ -18,7 +18,7 @@ describe('airtableAttachmentReplace', () => {
       text: () => JSON.stringify(json),
     });
     if (request.method === 'GET') {
-      return respond({ records: [{ id: 'recABC', fields: { Logo: stored } }] });
+      return respond({ id: 'recABC', fields: { Logo: stored } });
     }
     if (request.method === 'POST') {
       stored = [...stored, { id: 'attNEW', filename: 'logo.png' }];

@@ -1,13 +1,15 @@
-import { airtableRecordSearch } from '../recordSearch.js';
+// airtable-record-search.js
+import minimist from 'minimist';
+import { recordSearch } from '../record/recordSearch.js';
+import { setAccount } from '../setAccount.js';
 
-const [base, table, field, text, fieldList, limit] = process.argv.slice(2);
-
-const found = await airtableRecordSearch({
-  base,
-  table,
-  field,
-  text,
-  fields: fieldList ? fieldList.split(',') : [],
-  limit: Number(limit) || undefined,
-});
-console.log(JSON.stringify(found, null, 2));
+const args = minimist(process.argv.slice(2));
+// The formula is the first positional argument, the filters are named
+const {
+  _: [query],
+  account,
+  ...filters
+} = args;
+setAccount(account);
+const output = await recordSearch({ query, ...filters });
+console.log(JSON.stringify(output, null, 2));
