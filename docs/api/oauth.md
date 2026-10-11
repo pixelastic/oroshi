@@ -10,9 +10,8 @@ An OAuth API adds a command and a file, and changes two shared modules:
 - A [`login`](reference/commands/login.md) command, which gets the tokens and
   saves them.
 - A tokens file, written by `login`:
-  `$OROSHI_FOLDER_STATE/<service>/tokens.json`. Another account uses
-  `tokens-<account>.json` ([architecture.md](architecture.md#accounts)). The
-  service decides what it saves in it.
+  `$OROSHI_FOLDER_STATE/<service>/tokens.json` (or `tokens-<account>.json` for a
+  non-default acount).
 - A [`getConfig`](#getconfig) that reads the tokens file.
 - A [`callApi`](#callapi) that keeps the tokens fresh.
 
@@ -36,7 +35,8 @@ The wrapper, the bin and the module of `login` follow the template of
 environment variable: `$OROSHI_FOLDER_STATE/<service>/tokens.json`, the file
 that `login` writes.
 
-When the tokens file is missing, `getConfig` fails early with a `firostError`
+When the tokens file is
+missing, it fails early with a `firostError`
 coded `<SERVICE>_LOGIN_REQUIRED`. The message tells the user what to run:
 `run <service>-login`.
 
@@ -48,7 +48,7 @@ missing tokens file throws the typed error.
 The `callApi` of an OAuth API follows
 [callApi.md](reference/lib/callApi.md), with three differences:
 
-- It reads the tokens through `__.getConfig()`, and authenticates with them.
+- It reads the tokens through `await __.getConfig()`, and authenticates with them.
 - It tries to keep the tokens fresh, on a best-effort basis. When they are about
   to expire, it asks the service for new ones (`__.refreshTokens`), and rewrites
   the tokens file. A failed refresh does not stop the call: it goes on with the

@@ -13,8 +13,6 @@ recA
 
 - `delete` removes one entity, identified by its id.
 - It prints the id it received, so that the output confirms what was removed.
-- A service has a `delete` command only if it decides it needs one. Most
-  services do not.
 
 ## Arguments
 

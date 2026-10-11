@@ -115,7 +115,7 @@ change.
 _Avoid_: `edit`, `set`, `write`
 
 **[`delete`](reference/commands/delete.md)**:
-Remove an entity, and print its id. It exists only where a service needs it.
+Remove an entity, and print its id.
 _Avoid_: `remove`, `destroy`
 
 **Custom verb**:

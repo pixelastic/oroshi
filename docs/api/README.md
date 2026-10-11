@@ -28,15 +28,7 @@ the commands concerned.
 - [arguments.md](arguments.md) — How a command receives its arguments: positional or named, flag names, content, limit and accounts.
 - [documentation.md](documentation.md) — How commands are documented: the header of the ZSH wrapper, and how agents find it with `helper-list` and `helper-documentation`.
 - [tests.md](tests.md) — How API helpers are tested: what each layer covers, how `__` and `getConfig` are mocked, test data, and the `list` bats test.
-- [reference/commands/README.md](reference/commands/README.md) — The table of all commands, and the custom verbs.
-- [reference/commands/list-raw.md](reference/commands/list-raw.md) — Print the entities of a service as plain lines, one per line, for agents and scripts to parse.
-- [reference/commands/list.md](reference/commands/list.md) — Print the entities of a service as a colored table, for humans to read.
-- [reference/commands/search.md](reference/commands/search.md) — Find entities of one type and print them as rich JSON.
-- [reference/commands/read.md](reference/commands/read.md) — Take the id of an entity, and print that entity as JSON.
-- [reference/commands/create.md](reference/commands/create.md) — Create an entity, and print it as JSON, like `read` does.
-- [reference/commands/update.md](reference/commands/update.md) — Change some fields of an entity, and print it as JSON, like `read` does.
-- [reference/commands/delete.md](reference/commands/delete.md) — Remove an entity, and print its id.
-- [reference/commands/custom.md](reference/commands/custom.md) — Add a verb of your own, for an action that is not CRUD.
+- [reference/commands/README.md](reference/commands/README.md) — The overview of all commands: the table of verbs, and the custom verbs.
 - [reference/lib/getConfig.md](reference/lib/getConfig.md) — The only way to read the credentials and the configuration of a service.
 - [reference/lib/setAccount.md](reference/lib/setAccount.md) — Choose the account that `getConfig` reads, for the whole command.
 - [reference/lib/callApi.md](reference/lib/callApi.md) — The only way to talk to a service, and the error of every failed call.
@@ -63,7 +55,7 @@ Follow these steps, in order, to add the API helper of a new service:
    [`getConfig.js`](reference/lib/getConfig.md) and its
    [`callApi.js`](reference/lib/callApi.md). For an OAuth API, also read
    [oauth.md](oauth.md): it changes both and adds the command to log in.
-4. Choose the verbs each entity needs, and the arguments of each command
+4. For each entity, implement every verb that the API allows. Choose the arguments of each command
    ([reference/commands/README.md](reference/commands/README.md), [arguments.md](arguments.md)).
 5. Implement the commands of each entity in this order, copying the template of
    each verb. Create [`format<Entity>.js`](reference/lib/formatEntity.md) for each entity. It

@@ -13,8 +13,8 @@ recA  Paris Meetup  2026-03-12  online, paris
 recB  Lyon Meetup
 ```
 
-Only the id is colored by default. The columns are aligned. The values of a
-multi-value field are separated by a comma.
+The columns are aligned. The values of a multi-value field are separated by a
+comma.
 
 ## Role
 
@@ -82,7 +82,7 @@ local rawCommand="${0}-raw"
 local rawEntities="$($rawCommand "$@")"
 
 # Nothing to display if there is no entity
-[[ "$rawEntities" == "" ]] && return 0
+[[ "$rawEntities" == "" ]] && return 1
 
 local rows=()
 for rawEntity in ${(f)rawEntities}; do
@@ -109,5 +109,4 @@ The test mocks `list-raw` with canned lines, and covers:
 - The flags are passed to `list-raw` as received.
 - The rows match the raw lines, with aligned columns.
 - Only the id is colored by default.
-- An empty listing prints nothing and exits with zero.
-- A failing `list-raw` makes `list` exit with a non-zero status.
+- An empty listing prints nothing and exits with a non-zero status.

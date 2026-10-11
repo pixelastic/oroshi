@@ -19,7 +19,7 @@ Write the glossary of the service with the `/glossary` skill, in the
 
 Whatever the drill settles, the glossary must define these points:
 
-- **Authentication**: the kind of the service, a key API or an OAuth API. An
+- **Authentication**: the kind of the service, a Key API or an OAuth API. An
   OAuth API needs a [`login`](../commands/login.md), see [oauth.md](../../oauth.md).
 - **Entities**: one entry per entity. It says what the entity is in this
   service, whether its schema is fixed or open, and its anchor, if it has one

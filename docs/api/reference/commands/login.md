@@ -15,13 +15,13 @@ $ confluence-login --account perso
 
 ## Role
 
-- An OAuth API has a `login`. A key API has none.
+- An OAuth API has a `login`. A Key API has none.
 - It opens a browser, so that the user grants access. It gets the tokens, and
   saves them.
 - The tokens go to the state folder of the service:
   `$OROSHI_FOLDER_STATE/<service>/tokens.json`.
-- The default account uses `tokens.json`. Another account uses
-  `tokens-<account>.json` in the same folder.
+- The default account and the other accounts use different files, see
+  [architecture.md](../../architecture.md#accounts).
 - When the tokens file is missing, or when the API reports a missing login, the
   other commands fail with the typed error `<SERVICE>_LOGIN_REQUIRED`. Its
   message points to this command: `run <service>-login`. See

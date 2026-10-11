@@ -50,7 +50,7 @@ Modules call `getConfig` through `__`, to get credentials and other config
 variables. Tests mock it to replace it with a config object:
 
 ```javascript
-vi.spyOn(__, 'getConfig').mockReturnValue({ token: 'secret-token' });
+vi.spyOn(__, 'getConfig').mockResolvedValue({ token: 'secret-token' });
 ```
 
 ### Mocking HTTP
@@ -103,8 +103,8 @@ template above. A command whose test needs more says so in its own file.
 ## bats
 
 Only one file requires a `bats` test: `list`. `list` reads data from `list-raw`,
-colors the id, and passes it to `table` for a nicer display in columns. A
-failing `list-raw` makes `list` fail.
+colors the id, and passes it to `table` for a nicer display in columns. An empty `list-raw` makes `list` stop with a
+non-zero status.
 
 Its test mocks `list-raw` and asserts the final output based on various inputs.
 Both `list-raw` and `table` are themselves tested, so the tests of `list` only

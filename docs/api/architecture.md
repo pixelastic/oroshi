@@ -122,10 +122,7 @@ account for the whole command.
 ## Errors
 
 - Every known failure is a `firostError` with a code: `<SERVICE>_<CAUSE>`
-  (`<SERVICE>_TOKEN_MISSING`). This includes every
-  non-2xx status that [`callApi`](reference/lib/callApi.md) receives.
-- The message of the error holds the body of the API, or the part of it where
-  the service puts its message.
+- The message of the error holds details (ideally taken from the API response)
 - Bins have no `try/catch`. The error reaches the user as it is.
 
 ## Templates

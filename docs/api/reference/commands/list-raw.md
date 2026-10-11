@@ -18,7 +18,8 @@ recB▮Lyon Meetup▮▮
 - An empty field leaves an empty column: `recB▮Lyon Meetup▮▮` has two empty
   columns.
 - A newline inside a value becomes a space.
-- The module removes `▮` from the values, so they cannot break the columns.
+- The module removes `▮` and `▯` from the values, so they cannot break the
+  columns.
 - An empty listing prints one empty line.
 
 `list-raw` sits on top of [`search`](search.md): it passes its flags to
@@ -171,7 +172,5 @@ __ = {
 The test covers the module only. The zsh wrapper and bin are so thin we
 don't need to test them.
 
-The `toLine` test transforms a real response into a line. It uses input that
-mirrors a real API response as closely as possible, with private values
-(names, emails, tokens, ids) replaced, and asserts the line `toLine` builds from
-it.
+The `toLine` test gives `toLine` a minimal inline entity and asserts the line it
+builds.

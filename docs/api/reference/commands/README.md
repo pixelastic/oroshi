@@ -18,7 +18,7 @@ The vocabulary is closed: a command is named after one of these verbs.
 | [`delete`](delete.md)       | Remove an entity, and print its id                |
 
 
-If some verbs do not make sense conceptually for some entities (for example `update` a
+If the API doesn't offer a way to perform certain verbs (like an `update` on a
 read-only `log`), then that command is not implemented.
 
 ### Custom verbs

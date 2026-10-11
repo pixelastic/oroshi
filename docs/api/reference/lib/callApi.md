@@ -28,8 +28,9 @@ answers.
 - Output: the parsed JSON response of the API.
 - An empty response body is returned as it is. A successful delete does not
   throw.
-- Error: a `firostError`, as described in
-  [architecture.md](../../architecture.md#errors).
+- Error: a `firostError` coded `<SERVICE>_REQUEST_FAILED`, for every failure:
+  no network, a non-2xx status, or a 2xx body that is not JSON. The message
+  tells them apart: the message of the original error, or the body of the API.
 
 ## Template
 
@@ -55,7 +56,7 @@ export async function callApi(path, options = {}) {
   const { method = 'GET', body, query, headers } = options;
 
   // 1. Read the config of the service
-  const { token } = __.getConfig();
+  const { token } = await __.getConfig();
 
   // 2. Build the URL from the path and the query. The base URL is fixed, or
   //    comes from the config. The query is the default query of the service,
@@ -73,11 +74,16 @@ export async function callApi(path, options = {}) {
 
   // 4. Call the API. `method` and `body` replace the defaults.
   //    Encode the body the way the service expects (for instance JSON)
-  const response = await __.fetch(url, {
-    method,
-    headers: { ...defaultHeaders, ...headers },
-    body: body && JSON.stringify(body),
-  });
+  let response;
+  try {
+    response = await __.fetch(url, {
+      method,
+      headers: { ...defaultHeaders, ...headers },
+      body: body && JSON.stringify(body),
+    });
+  } catch (error) {
+    throw firostError('<SERVICE>_REQUEST_FAILED', error.message);
+  }
 
   // 5. Read the body as text, so that an empty body does not throw
   const text = await response.text();
@@ -89,7 +95,14 @@ export async function callApi(path, options = {}) {
   }
 
   // 7. Return an empty body as it is, parse anything else
-  return text ? JSON.parse(text) : text;
+  if (!text) {
+    return text;
+  }
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw firostError('<SERVICE>_REQUEST_FAILED', text);
+  }
 }
 
 __ = { fetch, getConfig };
@@ -100,5 +113,9 @@ checks these behaviors:
 - Given a successful response, the function returns its JSON body.
 - Given an empty body, the function returns it without throwing.
 - Given `query` and `headers`, the request holds them merged over the defaults.
-- Given a failed response, the function throws the `firostError`, with the body
-  of the API as message.
+- Given a `fetch` that throws, the function throws `<SERVICE>_REQUEST_FAILED`,
+  with the message of the original error.
+- Given a 2xx body that is not JSON, the function throws
+  `<SERVICE>_REQUEST_FAILED`, with the body as message.
+- Given a failed response, the function throws `<SERVICE>_REQUEST_FAILED`, with
+  the body of the API as message.

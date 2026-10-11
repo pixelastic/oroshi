@@ -6,7 +6,7 @@
 
 - `getConfig` is the only way to read the credentials and the configuration of
   the service.
-- Other modules call it through `__` (`__.getConfig()`), so tests mock it and
+- Other modules call it through `__` (`await __.getConfig()`), so tests mock it and
   never touch the environment.
 - Env variables are prefixed with the name of the service: `<SERVICE>_TOKEN`,
   `<SERVICE>_BASE_URL`.
@@ -14,14 +14,16 @@
 
 ## Inputs/Outputs
 
+- `getConfig` is always `async`, whether the service reads environment
+  variables or a file. Callers `await` it.
 - Input: none. `getConfig` holds a private `account`, `null` by default. While it
   is `null`, `getConfig` returns the credentials of the default account.
   [`setAccount`](setAccount.md) changes it, and `getConfig` then returns the
   credentials of that account
   ([architecture.md](../../architecture.md#accounts)).
-- Output: an object with the configuration of the service. Its keys depend on
+- Output: a promise of an object with the configuration of the service. Its keys depend on
   the service (`token`, `baseUrl`, …).
-- Error: `<SERVICE>_TOKEN_MISSING` when a required variable is empty.
+- Error: `<SERVICE>_CREDENTIALS_MISSING` when a required variable is empty.
 
 ## Template
 
@@ -34,9 +36,9 @@ export let __;
 
 /**
  * Read the configuration of the service from the environment
- * @returns {object} The credentials and the configuration of the service
+ * @returns {Promise<object>} The credentials and the configuration of the service
  */
-export function getConfig() {
+export async function getConfig() {
   const { account } = __;
 
   // One key per variable, each prefixed with the name of the service.
