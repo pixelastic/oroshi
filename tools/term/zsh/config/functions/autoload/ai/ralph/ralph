@@ -39,8 +39,10 @@ jq -n --arg mode "$mode" '{"mode":$mode}' >"$dir/ralph.json"
 cd "$(git-directory-root)"
 
 # Launch Claude in foreground; capture exit code
+local permissionMode="acceptEdits"
+[[ "$mode" == "auto" ]] && permissionMode="auto"
 local claudeExit=0
-claude --permission-mode acceptEdits "/ralph $dir" || claudeExit=$?
+claude --permission-mode "$permissionMode" "/ralph $dir" || claudeExit=$?
 
 # Always clear the lock, even on failure
 ralph-clear "$dir"

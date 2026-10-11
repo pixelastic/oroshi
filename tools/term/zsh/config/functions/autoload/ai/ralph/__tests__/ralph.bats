@@ -34,6 +34,28 @@ setup() {
   [[ "$status" -eq 0 ]]
 }
 
+@test "launches Claude in acceptEdits permission mode in single mode" {
+  ralph-is-running() { return 1; }
+  git-directory-root() { echo "$BATS_TMP_DIR"; }
+  claude() { echo "ARGS:$*"; }
+  bats_mock ralph-is-running git-directory-root claude
+
+  bats_run_zsh "ralph '$PRD_DIR'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"--permission-mode acceptEdits"* ]]
+}
+
+@test "--auto launches Claude in auto permission mode" {
+  ralph-is-running() { return 1; }
+  git-directory-root() { echo "$BATS_TMP_DIR"; }
+  claude() { echo "ARGS:$*"; }
+  bats_mock ralph-is-running git-directory-root claude
+
+  bats_run_zsh "ralph --auto '$PRD_DIR'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"--permission-mode auto"* ]]
+}
+
 @test "clears ralph.json after Claude exits (happy path)" {
   ralph-is-running() { return 1; }
   git-directory-root() { echo "$BATS_TMP_DIR"; }
