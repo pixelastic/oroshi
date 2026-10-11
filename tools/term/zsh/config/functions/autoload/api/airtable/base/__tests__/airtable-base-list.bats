@@ -1,12 +1,21 @@
 bats_load_library 'helper'
 
 setup() {
-  # Stub the raw list to print canned lines
+  bats_tmp_dir
+  # Stub the raw list to record its arguments, then print canned lines
   airtable-base-list-raw() {
+    print -r -- "$@" >"$BATS_TMP_DIR/raw-args"
     echo "appABC▮DevRel"
     echo "appDEF▮Other Base"
   }
   bats_mock airtable-base-list-raw
+  bats_mock_env "BATS_TMP_DIR" "$BATS_TMP_DIR"
+}
+
+@test "passes the flags to the raw list as received" {
+  bats_run_zsh "airtable-base-list --limit 10 --account perso"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--limit 10 --account perso" ]]
 }
 
 @test "shows the same rows as the raw list, with aligned columns" {
@@ -16,19 +25,19 @@ setup() {
   [[ "${lines[1]}" == "appDEF  Other Base" ]]
 }
 
-@test "colors the Base ID" {
+@test "colors only the Base ID" {
   bats_run_zsh "airtable-base-list"
-  [[ "${lines[0]}" == *$'\e['*"appABC"* ]]
+  [[ "${lines[0]}" == $'\e['*"appABC"*$'\e[0m  DevRel' ]]
 }
 
-@test "prints nothing and exits zero when no Base is accessible" {
+@test "prints nothing and exits non-zero when no Base is accessible" {
   airtable-base-list-raw() {
-    return 0
+    echo ""
   }
   bats_mock airtable-base-list-raw
 
   bats_run_zsh "airtable-base-list"
-  [[ "$status" -eq 0 ]]
+  [[ "$status" -ne 0 ]]
   [[ "$output" == "" ]]
 }
 

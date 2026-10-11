@@ -12,32 +12,32 @@ setup() {
   bats_mock_env "BATS_TMP_DIR" "$BATS_TMP_DIR"
 }
 
-@test "passes the Base to the raw list" {
-  bats_run_zsh "airtable-table-list --base appXXX"
+@test "passes the flags to the raw list as received" {
+  bats_run_zsh "airtable-table-list --baseId appXXX --limit 10"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--base appXXX" ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--baseId appXXX --limit 10" ]]
 }
 
 @test "shows the same rows as the raw list, with aligned columns" {
-  bats_run_zsh "airtable-table-list --base appXXX | text-ansi-remove"
+  bats_run_zsh "airtable-table-list --baseId appXXX | text-ansi-remove"
   [[ "$status" -eq 0 ]]
   [[ "${lines[0]}" == "tblABC  Meetups" ]]
   [[ "${lines[1]}" == "tblDEF  Speakers and Talks" ]]
 }
 
-@test "colors the Table ID" {
-  bats_run_zsh "airtable-table-list --base appXXX"
-  [[ "${lines[0]}" == *$'\e['*"tblABC"* ]]
+@test "colors only the Table ID" {
+  bats_run_zsh "airtable-table-list --baseId appXXX"
+  [[ "${lines[0]}" == $'\e['*"tblABC"*$'\e[0m  Meetups' ]]
 }
 
-@test "prints nothing and exits zero for a Base without Tables" {
+@test "prints nothing and exits non-zero for a Base without Tables" {
   airtable-table-list-raw() {
-    return 0
+    echo ""
   }
   bats_mock airtable-table-list-raw
 
-  bats_run_zsh "airtable-table-list --base appXXX"
-  [[ "$status" -eq 0 ]]
+  bats_run_zsh "airtable-table-list --baseId appXXX"
+  [[ "$status" -ne 0 ]]
   [[ "$output" == "" ]]
 }
 
@@ -48,7 +48,7 @@ setup() {
   }
   bats_mock airtable-table-list-raw
 
-  bats_run_zsh "airtable-table-list --base appXXX"
+  bats_run_zsh "airtable-table-list --baseId appXXX"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"AIRTABLE_TOKEN is not set"* ]]
 }
