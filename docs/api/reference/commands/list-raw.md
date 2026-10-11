@@ -170,3 +170,8 @@ __ = {
 
 The test covers the module only. The zsh wrapper and bin are so thin we
 don't need to test them.
+
+The `toLine` test transforms a real response into a line. It uses input that
+mirrors a real API response as closely as possible, with private values
+(names, emails, tokens, ids) replaced, and asserts the line `toLine` builds from
+it.

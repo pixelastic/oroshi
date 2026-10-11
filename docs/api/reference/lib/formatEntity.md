@@ -40,3 +40,6 @@ export function formatEntity(response) {
 
 The test covers the function only. It checks that a given API response gives the
 expected entity.
+When `format<Entity>` is not the identity function, the test uses input that
+mirrors a real API response as closely as possible, with private values (names,
+emails, tokens, ids) replaced.

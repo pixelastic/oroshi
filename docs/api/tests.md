@@ -69,9 +69,11 @@ tests never mock `fetch`.
 
 ```javascript
 import { __, entityRead } from '../<entity>Read.js';
-import response from './fixtures/<entity>Read.json';
 
 describe('entityRead', () => {
+  // A minimal inline response: only the fields the test needs
+  const response = { id: 'recA' };
+
   beforeEach(() => {
     // Mock the collaborators of the module
     vi.spyOn(__, 'callApi').mockReturnValue(response);
@@ -93,34 +95,10 @@ describe('entityRead', () => {
 });
 ```
 
-## Fixtures
+## Test data
 
-A fixture is a copy of a real API response, cleaned of private data (names,
-emails, tokens, ids). It keeps the shape and the quirks of the response, so the
-tests exercise what the service really returns.
-
-- Fixtures are JSON files, in a `fixtures/` folder next to the tests that use
-  them: `__tests__/fixtures/<entity>Read.json`.
-- A fixture is named after the response it holds: `page-with-macros.json`,
-  `search-empty.json`.
-- A test imports a fixture and returns it from the mocked `callApi`, as in the
-  template above. It does not write the response by hand.
-- When the service changes its response, a developer refreshes the fixture from
-  a new real response, then fixes the tests.
-
-A fixture keeps the response as the service sent it, with only the private
-values replaced:
-
-`<service>/__lib/<entity>/__tests__/fixtures/<entity>Read.json`:
-
-```json
-{
-  "id": "entity-1",
-  "title": "Example title",
-  "owner": { "id": "user-1", "name": "Jane Doe" },
-  "labels": []
-}
-```
+Module tests mock `callApi` and return a minimal inline object, as in the
+template above. A command whose test needs more says so in its own file.
 
 ## bats
 
