@@ -3,7 +3,7 @@
 # --status is pending (default), confirmed or cancelled
 # --image is a local file, uploaded to the assetInputs Field after the Record is created
 # If the image upload fails, the Record stays and the exit code is non-zero
-# Uses AIRTABLE_TOKEN_WRITE
+# Uses AIRTABLE_TOKEN
 # Usage:
 # $ meetup-write --name "Datadog User Group Paris"
 # $ meetup-write --name "Datadog User Group Paris" --date 2026-12-01 --url https://example.com --notes "Talk TBD" --image ./logo.png --status confirmed

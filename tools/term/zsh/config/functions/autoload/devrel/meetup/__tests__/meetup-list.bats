@@ -58,13 +58,13 @@ setup() {
 
 @test "prints the error and no row when the raw list fails" {
   meetup-list-raw() {
-    echo "AIRTABLE_TOKEN_READ is not set" >&2
+    echo "AIRTABLE_TOKEN is not set" >&2
     return 1
   }
   bats_mock meetup-list-raw
 
   bats_run_zsh "meetup-list"
-  [[ "$output" == *"AIRTABLE_TOKEN_READ is not set"* ]]
+  [[ "$output" == *"AIRTABLE_TOKEN is not set"* ]]
   [[ "$output" != *"rec"* ]]
 }
 
