@@ -1,7 +1,7 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
 import { recordRead } from './record/recordRead.js';
-import { airtableRecordWrite } from './recordWrite.js';
+import { recordUpdate } from './record/recordUpdate.js';
 
 /**
  * Remove Attachments from a Field of type Attachment, by ID. Airtable has no
@@ -40,10 +40,10 @@ export async function airtableAttachmentRemove(options) {
   }
 
   const keptIds = all ? [] : _.difference(currentIds, attachments);
-  await airtableRecordWrite({
-    base,
-    table,
-    record,
-    fields: { [field]: _.map(keptIds, (id) => ({ id })) },
+  await recordUpdate({
+    baseId: base,
+    tableId: table,
+    recordId: record,
+    content: { [field]: _.map(keptIds, (id) => ({ id })) },
   });
 }

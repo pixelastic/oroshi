@@ -1,0 +1,10 @@
+# Create an Airtable record, and print it as JSON
+# The content is a JSON object of Fields, positional or from --data-file
+# Usage:
+# $ airtable-record-create --baseId appXXX --tableId Meetups '{"Name":"Paris","Seats":80}'
+# $ airtable-record-create --baseId appXXX --tableId Meetups --data-file ./record.json
+# $ airtable-record-create --baseId appXXX --tableId Meetups '{"Name":"Paris"}' --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/airtable-record-create.js" "$@"

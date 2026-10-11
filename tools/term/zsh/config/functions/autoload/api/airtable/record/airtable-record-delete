@@ -1,0 +1,9 @@
+# Delete an Airtable record by its ID, and print the ID
+# Usage:
+# $ airtable-record-delete recXXX --baseId appXXX --tableId Meetups
+# $ airtable-record-delete recXXX --baseId appXXX --tableId tblXXX
+# $ airtable-record-delete recXXX --baseId appXXX --tableId Meetups --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/airtable-record-delete.js" "$@"

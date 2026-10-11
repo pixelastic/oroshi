@@ -43,8 +43,8 @@ _Avoid_: key, read token, write token
 
 ## Example dialogue
 
-> **Dev:** "I want to add a logo to this **Record**. Do I call `airtable-record-write`?"
-> **Domain expert:** "No — `--fields` only holds regular **Fields**. Call `airtable-attachment-add` with the **Record** ID."
+> **Dev:** "I want to add a logo to this **Record**. Do I call `airtable-record-update`?"
+> **Domain expert:** "No — the JSON content only holds regular **Fields**. Call `airtable-attachment-add` with the **Record** ID."
 > **Dev:** "And to swap the logo?"
 > **Domain expert:** "Read the **Record** to get the `att` ID of the current **Attachment**, then call `airtable-attachment-replace`."
 > **Dev:** "Which **Base** do I pass?"

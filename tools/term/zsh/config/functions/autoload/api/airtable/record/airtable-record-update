@@ -1,0 +1,10 @@
+# Update some fields of an Airtable record, and print it as JSON
+# Only the given fields change
+# Usage:
+# $ airtable-record-update recXXX --baseId appXXX --tableId Meetups '{"Seats":90}'
+# $ airtable-record-update recXXX --baseId appXXX --tableId Meetups --data-file ./changes.json
+# $ airtable-record-update recXXX --baseId appXXX --tableId Meetups '{"Seats":90}' --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/airtable-record-update.js" "$@"
