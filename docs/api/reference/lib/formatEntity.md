@@ -9,9 +9,10 @@ a command prints.
   entity.
 - Each entity owns one, in `<service>/__lib/<entity>/format<Entity>.js`
   (`formatPage.js`, `formatRecord.js`).
-- By default, it returns the raw object of the API, so agents can easily
-  understand what it represents.
-- It may tidy the object, to make it easier for other commands to consume.
+- By default, it's an identity pass-through (it returns the same object it got
+as input).
+- It tidies the object only when a real response shows that a command
+  needs it, to make the object easier for other commands to consume.
 - Having one central function ensures all commands deal with the same shape of
   data.
 - Other modules call it through `__` (`__.formatEntity()`), so tests mock it.
@@ -32,7 +33,7 @@ a command prints.
  * @returns {object} The entity, as close as possible to the API
  */
 export function formatEntity(response) {
-  // Keep the shape of the API, and only tidy what makes it easier to read
+  // Identity by default. Tidy only what a real response shows is needed
   return response;
 }
 ```

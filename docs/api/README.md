@@ -52,17 +52,23 @@ Follow these steps, in order, to add the API helper of a new service:
    custom verbs and its terms
    ([reference/docs/glossary.md](reference/docs/glossary.md)). The next steps
    follow from it.
-2. Create the workspace of the service: its `package.json`
+2. Plan the service before writing any code, with its glossary from step 1 as
+   the base.
+   - Read the documentation of the API of the service.
+   - Ask the user for the credentials early, so that real calls are possible.
+   - Confirm the fields of each entity against the real API.
+   - Only then write the `# Fields:` header of
+     [`list-raw`](reference/commands/list-raw.md).
+3. Create the workspace of the service: its `package.json`
    ([architecture.md](architecture.md)), its
    [`getConfig.js`](reference/lib/getConfig.md) and its
    [`callApi.js`](reference/lib/callApi.md). For an OAuth API, also read
    [oauth.md](oauth.md): it changes both and adds the command to log in.
-3. Choose the verbs each entity needs, and the arguments of each command
+4. Choose the verbs each entity needs, and the arguments of each command
    ([reference/commands/README.md](reference/commands/README.md), [arguments.md](arguments.md)).
-4. Implement the commands of each entity in this order, copying the template of
-   each verb. The first command creates the folder of the entity, and its
-   [`format<Entity>.js`](reference/lib/formatEntity.md): write it once a real
-   API response shows what to tidy.
+5. Implement the commands of each entity in this order, copying the template of
+   each verb. Create [`format<Entity>.js`](reference/lib/formatEntity.md) for each entity. It
+   is a simple identity pass-through by default and evolves only if/when needed.
    - [`search`](reference/commands/search.md), first: `list-raw` sits on top of
      it. Skip it only if the service has no endpoint to search the entities.
    - [`list-raw`](reference/commands/list-raw.md)
@@ -78,4 +84,3 @@ Follow these steps, in order, to add the API helper of a new service:
    [`list-raw`](reference/commands/list-raw.md#role).
    Each command has its header documented ([documentation.md](documentation.md)).
    Each command is tested ([tests.md](tests.md)).
-

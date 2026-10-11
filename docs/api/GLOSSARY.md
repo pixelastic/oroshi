@@ -45,16 +45,17 @@ _Avoid_: `auth`, `connect`, `signin`
 
 **Positional argument**:
 An argument given by its place on the command line. A command has at most one,
-and it is the one required argument: an id, a query, or the content.
+for the main input: an id, a query, or the content.
 _Avoid_: bare argument, free argument
 
 **Named argument**:
-An argument given by a flag (`--limit 10`, `--pageId 1f3a`). Optional arguments
-and anchors are always named.
+An argument given by a flag (`--limit 10`, `--pageId 1f3a`). Anchors are always
+named.
 _Avoid_: option, switch, parameter
 
 **Anchor**:
-The optional parent an entity needs to be reached (a table, a space).
+When an id is not enough to uniquely identify an entity, and anchor is needed
+(like a table, a workspace, etc).
 _Avoid_: scope, context
 
 **Fixed schema**:

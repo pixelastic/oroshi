@@ -31,8 +31,8 @@ service/entity (usually the most recent first).
 `list` accepts the same flags as [`list-raw`](list-raw.md), and passes them
 through.
 
-If `list-raw` requires some specific argument (like a `--table` anchor for
-Airtable), then `list` requires them as well.
+If the entity has an anchor (like `--table` for an Airtable record), `list-raw`
+requires it, and `list` requires it too.
 
 ## Colors
 
