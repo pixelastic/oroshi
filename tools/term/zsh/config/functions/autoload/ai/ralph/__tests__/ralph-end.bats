@@ -2,9 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  # The ralph log is a trace for debugging, tests keep it empty
-  ralph-log() { :; }
-  bats_mock ralph-log
   mkdir -p "$BATS_TMP_DIR/prd-dir"
   export PRD_DIR="$BATS_TMP_DIR/prd-dir"
 }
@@ -102,14 +99,4 @@ mock_auto_collaborators() {
   bats_run_zsh "ralph-end $PRD_DIR"
   [[ "$status" -eq 0 ]]
   [[ ! -f "$CALLS" ]]
-}
-
-@test "auto: queued group logs its start, its end and the signals that kill it" {
-  mock_auto_collaborators
-  bats_run_zsh "ralph-end $PRD_DIR"
-  local queued="$(grep "queue:" "$CALLS")"
-  [[ "$queued" == *"queued group: start"* ]]
-  [[ "$queued" == *"got HUP"* ]]
-  [[ "$queued" == *"got TERM"* ]]
-  [[ "$queued" == *"queued group: done"* ]]
 }

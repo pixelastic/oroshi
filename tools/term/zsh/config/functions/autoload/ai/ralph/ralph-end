@@ -11,7 +11,6 @@ if [[ "$dir" == "" ]]; then
 fi
 
 local mode="$(ralph-mode "$dir")"
-ralph-log "ralph-end: called mode='${mode}' dir=${dir}"
 
 # If single mode, let's stop here
 [[ "$mode" == "single" ]] && return 0
@@ -35,19 +34,8 @@ fi
 # A child shell runs it. Never exec here: the queue hook runs inside zle, and an
 # exec from there kills the Kitty window before the new shell runs anything.
 # The child ends with the group, and the window shell takes over again
-# The group traces its life in the ralph log: its start, a signal that kills it,
-# a failed step, and its end. A missing "done" line means the shell died inside the group
-local group="{ ralph-log 'queued group: start';"
-group+=" trap 'ralph-log \"queued group: EXIT status=\$?\"' EXIT;"
-group+=" trap 'ralph-log \"queued group: got HUP\"; exit 129' HUP;"
-group+=" trap 'ralph-log \"queued group: got TERM\"; exit 143' TERM;"
-group+=" git-commit-create-all-auto && ${nextCommand}"
-group+=" || ralph-log \"queued group: step failed status=\$?\";"
-group+=" ralph-log 'queued group: done'; }"
-ralph-log "ralph-end: queueing next='${nextCommand}' progress=${doneCount}/${totalCount}"
+local group="{ git-commit-create-all-auto && ${nextCommand}; }"
 zsh-queue-write "zsh -ic ${(qq)group}"
 
 # now, stop Claude, so zsh takes over
-ralph-log "ralph-end: stopping claude"
 claude-stop
-ralph-log "ralph-end: claude-stop returned status=$?"

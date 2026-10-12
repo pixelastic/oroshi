@@ -9,7 +9,6 @@ function oroshi-zsh-queue-line-init() {
   [[ "$queuedCommand" == "" ]] && return 0
 
   zsh-queue-delete
-  ralph-log "zsh-queue: running queued command: ${queuedCommand}"
   BUFFER="$queuedCommand"
   zle accept-line
 }

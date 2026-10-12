@@ -42,12 +42,9 @@ cd "$(git-directory-root)"
 local permissionMode="acceptEdits"
 [[ "$mode" == "auto" ]] && permissionMode="auto"
 local claudeExit=0
-ralph-log "ralph: launching claude mode=${mode} dir=${dir}"
 claude --permission-mode "$permissionMode" "/ralph $dir" || claudeExit=$?
-ralph-log "ralph: claude exited status=${claudeExit}"
 
 # Always clear the lock, even on failure
 ralph-clear "$dir"
-ralph-log "ralph: lock cleared, returning ${claudeExit}"
 
 return $claudeExit
