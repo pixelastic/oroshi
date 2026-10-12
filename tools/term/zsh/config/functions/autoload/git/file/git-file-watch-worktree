@@ -1,0 +1,11 @@
+# Watch the diff since the worktree was created
+# Usage:
+# $ git-file-watch-worktree
+setopt local_options err_return
+
+local startCommit="$(git-worktree-start)"
+
+# No start commit found: nothing to diff against
+[[ "$startCommit" == "" ]] && return 1
+
+git-file-watch "$startCommit"
