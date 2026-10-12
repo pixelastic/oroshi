@@ -1,0 +1,8 @@
+# Read a Make scenario by its ID, and print it as JSON
+# Usage:
+# $ make-scenario-read 925
+# $ make-scenario-read 925 --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-scenario-read.js" "$@"

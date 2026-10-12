@@ -1,0 +1,13 @@
+# List the Scenarios of the Make team, one per line
+# Fields: scenarioId▮name▮isActive▮folderId▮lastEdit
+# isActive is true for an enabled Scenario, folderId is empty outside a Folder
+# Without text, every Scenario matches
+# Usage:
+# $ make-scenario-list-raw
+# $ make-scenario-list-raw "sync"
+# $ make-scenario-list-raw "sync" --limit 10
+# $ make-scenario-list-raw "sync" --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-scenario-list-raw.js" "$@"

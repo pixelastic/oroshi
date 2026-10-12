@@ -196,6 +196,11 @@
     "mic2txt-processing": "yellow-7"
   },
 
+  // Make
+  "make": {
+    "scenario-id": "orange"
+  },
+
   // Modes
   "modes": {
     "sound-enabled":          "green",
