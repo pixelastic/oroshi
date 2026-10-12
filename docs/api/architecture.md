@@ -27,6 +27,7 @@ api/
 ├── __shared/
 │   └── __lib/
 │       ├── package.json
+│       ├── parseBinArgs.js
 │       ├── queryString.js
 │       └── rawColumn.js
 └── <service>/
@@ -91,6 +92,8 @@ every service needs. Services import from it, for example
 - `queryString.js` turns an object of query parameters into a query string. It
   sends a list as `key[]`, and a list of objects as `key[index][property]`.
 - `getJsonFromOptions.js` gets a JSON value from the options of a command.
+- `parseBinArgs.js` parses the arguments of a bin into `positional`, `named` and
+  `_`. It calls the `setAccount` of the service with the `--account` flag.
 
 Move any other code that several services share there.
 
