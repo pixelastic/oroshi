@@ -15,7 +15,7 @@ point to the code under test:
 ## Wrappers and bins
 
 Plain wrappers only pass their arguments on. Bins only parse the arguments with
-`minimist`, call the module and print the result. Neither holds logic, so
+`parseBinArgs`, call the module and print the result. Neither holds logic, so
 neither has a test. Their behavior is covered through the module they call.
 
 `list` is the only wrapper with logic: it calls `list-raw` and builds a table.

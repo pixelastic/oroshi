@@ -74,8 +74,8 @@ calls the bin.
 _Avoid_: alias, launcher
 
 **Bin**:
-The JavaScript file that parses the arguments with `minimist`, calls the module
-and prints the result.
+The JavaScript file that parses the arguments with `parseBinArgs`, calls the
+module and prints the result.
 _Avoid_: binary, CLI
 
 **Module**:

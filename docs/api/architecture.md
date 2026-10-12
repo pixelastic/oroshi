@@ -117,8 +117,9 @@ Each service has a glossary that defines its own vocabulary. See
   are the `<entity>Id`, the anchors and the filters.
 - Bins are in kebab-case and named like their wrapper
   (`bin/<service>-<entity>-list-raw.js`).
-- Bins parse arguments with `minimist`, call the module and print the
-  result with `console.log`. They have no `try/catch`.
+- Bins parse arguments with the shared
+  [`parseBinArgs`](#shared-package), call the module and print the result with
+  `console.log`. They have no `try/catch`.
 
 ## Accounts
 
@@ -163,8 +164,7 @@ account for the whole command.
   "dependencies": {
     "@oroshi/api-shared": "workspace:*",
     "firost": "5.11.0",
-    "golgoth": "3.1.0",
-    "minimist": "1.2.8"
+    "golgoth": "3.1.0"
   }
 }
 ```

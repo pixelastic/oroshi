@@ -4,10 +4,11 @@ This file defines how a command receives its arguments.
 
 ## Parsing
 
-The JavaScript bin parses the arguments with `minimist` and unpacks them into
-one options object for the module. The positional argument and the named flags
-become its keys: `<entity>Id`, the anchors and the filters. The wrapper is
-described in [architecture.md](architecture.md#zsh-and-javascript).
+The JavaScript bin parses the arguments with the shared `parseBinArgs` helper
+and unpacks them into one options object for the module. The positional
+argument and the named flags become its keys: `<entity>Id`, the anchors and the
+filters. The wrapper is described in
+[architecture.md](architecture.md#zsh-and-javascript).
 
 The bin handles `--account` itself, as defined in
 [architecture.md](architecture.md#accounts).

@@ -34,6 +34,32 @@ and output work well with them:
 A custom verb has the same three layers as the other commands: a wrapper, a bin
 and a module. Their content depends on the verb.
 
+### JS Bin
+
+The bin parses the args with `parseBinArgs`, calls the module and prints the
+result, as in [`read`](read.md#js-bin). It prints JSON when the verb returns an
+entity, and the id otherwise.
+
+`<service>/__lib/bin/<service>-<entity>-<verb>.js`:
+
+```javascript
+// <service>-<entity>-<verb>.js
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
+import { entityVerb } from '../<entity>/<entity>Verb.js';
+import { setAccount } from '../setAccount.js';
+
+// The id is the positional argument, the options are named. A flag that must
+// stay a string or a boolean is declared in the minimist options
+const { positional, named } = parseBinArgs({
+  setAccount,
+  minimist: { boolean: ['wait'] },
+});
+const output = await entityVerb({ entityId: positional, ...named });
+console.log(
+  typeof output === 'string' ? output : JSON.stringify(output, null, 2),
+);
+```
+
 ### Test
 
 The test lives in `<service>/__lib/<entity>/__tests__/<entity><Verb>.js`.

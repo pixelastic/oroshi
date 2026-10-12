@@ -55,19 +55,13 @@ anchors if any), calls the module and prints the result as JSON.
 
 ```javascript
 // <service>-<entity>-read.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { entityRead } from '../<entity>/<entity>Read.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The id is the positional argument, the anchors are named
-const {
-  _: [entityId],
-  account,
-  ...options
-} = args;
-setAccount(account);
-const output = await entityRead({ entityId, ...options });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await entityRead({ entityId: positional, ...named });
 console.log(JSON.stringify(output, null, 2));
 ```
 

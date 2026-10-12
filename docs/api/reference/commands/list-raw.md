@@ -68,19 +68,13 @@ and outputs the result.
 
 ```javascript
 // <service>-<entity>-list-raw.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { entityListRaw } from '../<entity>/<entity>ListRaw.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The query is the first positional argument, the filters are named
-const {
-  _: [query],
-  account,
-  ...filters
-} = args;
-setAccount(account);
-const output = await entityListRaw({ query, ...filters });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await entityListRaw({ query: positional, ...named });
 console.log(output);
 ```
 

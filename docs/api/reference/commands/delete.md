@@ -45,19 +45,13 @@ prints the id as is.
 
 ```javascript
 // <service>-<entity>-delete.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { entityDelete } from '../<entity>/<entity>Delete.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The id is the positional argument, the anchor (if any) is named
-const {
-  _: [entityId],
-  account,
-  ...options
-} = args;
-setAccount(account);
-const output = await entityDelete({ entityId, ...options });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await entityDelete({ entityId: positional, ...named });
 console.log(output);
 ```
 

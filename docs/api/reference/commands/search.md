@@ -82,19 +82,13 @@ calls it and prints the result as JSON.
 
 ```javascript
 // <service>-<entity>-search.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { entitySearch } from '../<entity>/<entity>Search.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The query is the first positional argument, the filters are named
-const {
-  _: [query],
-  account,
-  ...filters
-} = args;
-setAccount(account);
-const output = await entitySearch({ query, ...filters });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await entitySearch({ query: positional, ...named });
 console.log(JSON.stringify(output, null, 2));
 ```
 

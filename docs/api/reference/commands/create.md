@@ -59,19 +59,13 @@ The bin parses the args, calls the module and prints the entity as JSON.
 
 ```javascript
 // <service>-<entity>-create.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { entityCreate } from '../<entity>/<entity>Create.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The content is the positional argument (open schema), or the named fields
-const {
-  _: [content],
-  account,
-  ...options
-} = args;
-setAccount(account);
-const output = await entityCreate({ content, ...options });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await entityCreate({ content: positional, ...named });
 console.log(JSON.stringify(output, null, 2));
 ```
 

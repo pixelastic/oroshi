@@ -63,10 +63,16 @@ wrote.
 
 ```javascript
 // <service>-login.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { login } from '../login.js';
 
-const { account } = minimist(process.argv.slice(2));
+// login writes the tokens of an account, so it keeps the account for itself
+let account;
+parseBinArgs({
+  setAccount(value) {
+    account = value;
+  },
+});
 const output = await login({ account });
 console.log(output);
 ```
