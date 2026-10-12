@@ -42,8 +42,9 @@ describe('attachmentAdd', () => {
 
     expect(__.callApi).toHaveBeenCalledTimes(1);
     expect(__.callApi).toHaveBeenCalledWith(
-      'https://content.airtable.com/v0/appDEVREL123/recABC/Logo/uploadAttachment',
+      'appDEVREL123/recABC/Logo/uploadAttachment',
       {
+        baseUrl: 'https://content.airtable.com/v0',
         method: 'POST',
         body: {
           contentType: 'image/png',

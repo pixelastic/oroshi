@@ -17,14 +17,15 @@ answers.
 
 - Input: `callApi(path, options)`. The `path` of the endpoint comes first. The
   `options` object is optional, and holds these keys:
+  - `baseUrl`: the base URL of the endpoint.
   - `method`: the HTTP method. The default is `GET`.
   - `body`: the body of the request. The default is no body.
   - `query`: the query parameters of the URL.
   - `headers`: the headers of the request.
-- `method` and `body` override their default.
+- `baseUrl`, `method` and `body` override their default.
 - `query` and `headers` merge over the defaults of the service. A passed key
   replaces the default key. An `Authorization` header can be replaced this way.
-- `callApi` builds the URL from the path and the query.
+- `callApi` builds the URL from the base URL, the path and the query.
 - Output: the parsed JSON response of the API.
 - An empty response body is returned as it is. A successful delete does not
   throw.
@@ -41,10 +42,13 @@ import { getConfig } from './getConfig.js';
 
 export let __;
 
+const BASE_URL = 'https://api.<service>.com';
+
 /**
  * Call the API of the service
  * @param {string} path - Path of the endpoint
  * @param {object} [options] - Request options
+ * @param {string} [options.baseUrl] - Base URL of the endpoint, for an entity served by another host
  * @param {string} [options.method] - HTTP method
  * @param {object} [options.body] - Body of the request
  * @param {object} [options.query] - Query parameters, merged over the defaults
@@ -52,17 +56,18 @@ export let __;
  * @returns {Promise<object|string>} The response of the API, or the empty body
  */
 export async function callApi(path, options = {}) {
-  const { method = 'GET', body, query, headers } = options;
+  const { baseUrl = BASE_URL, method = 'GET', body, query, headers } = options;
 
   // 1. Read the config of the service
   const { token } = await __.getConfig();
 
-  // 2. Build the URL from the path and the query. The base URL is fixed, or
-  //    comes from the config. The query is the default query of the service,
+  // 2. Build the URL from the base URL, the path and the query. The default
+  //    base URL is fixed, or comes from the config. `baseUrl` replaces it.
+  //    The query is the default query of the service,
   //    with `query` merged over it: a passed key replaces a default key
   const defaultQuery = {};
   const search = new URLSearchParams({ ...defaultQuery, ...query });
-  const url = `https://api.<service>.com/${path}?${search}`;
+  const url = `${baseUrl}/${path}?${search}`;
 
   // 3. Build the headers the same way: the default headers of the service,
   //    with `headers` merged over them. The defaults hold the authentication.
@@ -114,6 +119,7 @@ checks these behaviors:
 - Given a successful response, the function returns its JSON body.
 - Given an empty body, the function returns it without throwing.
 - Given `query` and `headers`, the request holds them merged over the defaults.
+- Given a `baseUrl`, the request goes to that base URL instead of the default.
 - Given a `fetch` that throws, the function throws `<SERVICE>_REQUEST_FAILED`,
   with the message of the original error.
 - Given a 2xx body that is not JSON, the function throws

@@ -154,6 +154,7 @@ account for the whole command.
   "description": "Helpers to read and write <service>",
   "license": "MIT",
   "dependencies": {
+    "@oroshi/api-shared": "workspace:*",
     "firost": "5.11.0",
     "golgoth": "3.1.0",
     "minimist": "1.2.8"

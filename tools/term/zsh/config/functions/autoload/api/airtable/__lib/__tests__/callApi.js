@@ -83,8 +83,9 @@ describe('callApi', () => {
     expect(actual).toEqual(`https://api.airtable.com/v0/appA/tblA${expected}`);
   });
 
-  it('uses an absolute URL as it is', async () => {
-    await callApi('https://content.airtable.com/v0/appA/recA/fldA/upload', {
+  it('uses the base URL it is given instead of the default one', async () => {
+    await callApi('appA/recA/fldA/upload', {
+      baseUrl: 'https://content.airtable.com/v0',
       method: 'POST',
     });
 

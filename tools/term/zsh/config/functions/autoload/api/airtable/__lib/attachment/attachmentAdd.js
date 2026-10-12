@@ -59,8 +59,9 @@ export async function attachmentAdd(options) {
   const contentType = await __.getContentType(file);
   const content = await readFile(file);
   await __.callApi(
-    `${CONTENT_URL}/${baseId}/${recordId}/${encodeURIComponent(field)}/uploadAttachment`,
+    `${baseId}/${recordId}/${encodeURIComponent(field)}/uploadAttachment`,
     {
+      baseUrl: CONTENT_URL,
       method: 'POST',
       body: {
         contentType,

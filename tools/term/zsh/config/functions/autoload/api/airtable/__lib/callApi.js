@@ -8,8 +8,9 @@ const BASE_URL = 'https://api.airtable.com/v0';
 
 /**
  * Call the Airtable API
- * @param {string} path - Path of the endpoint, or an absolute URL for another host
+ * @param {string} path - Path of the endpoint
  * @param {object} [options] - Request options
+ * @param {string} [options.baseUrl] - Base URL of the endpoint, for an entity served by another host
  * @param {string} [options.method] - HTTP method
  * @param {object} [options.body] - Body of the request
  * @param {object} [options.query] - Query parameters, merged over the defaults. A list is sent as `key[]`, a list of objects as `key[index][property]`. Empty values are skipped
@@ -17,17 +18,14 @@ const BASE_URL = 'https://api.airtable.com/v0';
  * @returns {Promise<object|string>} The response of the API, or the empty body
  */
 export async function callApi(path, options = {}) {
-  const { method = 'GET', body, query, headers } = options;
+  const { baseUrl = BASE_URL, method = 'GET', body, query, headers } = options;
 
   const { token } = await __.getConfig();
 
   // A passed query key replaces a default key
   const defaultQuery = {};
   const search = __.queryString({ ...defaultQuery, ...query });
-  const endpoint = _.startsWith(path, 'https://')
-    ? path
-    : `${BASE_URL}/${path}`;
-  const url = `${endpoint}${search}`;
+  const url = `${baseUrl}/${path}${search}`;
 
   // A passed header replaces a default header, the authentication included
   const defaultHeaders = {
