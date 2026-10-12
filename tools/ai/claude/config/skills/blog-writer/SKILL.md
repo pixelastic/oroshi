@@ -111,8 +111,8 @@ Skip this step when the user gave no image. Read `references/images.md`. Run thi
 3. The Reader Reviewer prompt also states the Reader of the Brief when the Brief overrides the default Reader, in one sentence.
 4. A style reference marked pending in Step 6 has no Reviewer. Skip it and tell the user.
 5. Present each report under its own heading, in this order: `## Voice`, `## Structure`, `## Reader`. Do not merge or rerank the axes.
-6. Keep only the Improvements. Hide the Nitpicks. An out-of-axis finding stays in the report of the Reviewer who raised it, and follows the same rule.
-7. Apply each Improvement with the Edit tool. Locate the place from the quote. When two Improvements contradict, keep the one that follows the Voice, and tell the user.
+6. Keep only the Improvements. Hide the Nitpicks. Never filter an out-of-axis finding: show it to the user under the report of the Reviewer who raised it, and do not apply it.
+7. Apply each in-axis Improvement with the Edit tool. Locate the place from the quote. When two Improvements contradict, keep the one that follows the Voice, and tell the user.
 8. Run `blog-lint <draft>` and the link check again. Fix each error and each broken link. Repeat until none remain.
 9. End with a one-line summary: Improvements per axis, then the total, then "(N nitpicks hidden)".
 
