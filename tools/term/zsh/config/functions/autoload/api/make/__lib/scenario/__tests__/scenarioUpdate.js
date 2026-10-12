@@ -1,4 +1,3 @@
-import { resolve } from 'node:path';
 import { __, scenarioUpdate } from '../scenarioUpdate.js';
 
 describe('scenarioUpdate', () => {
@@ -17,7 +16,7 @@ describe('scenarioUpdate', () => {
   beforeEach(() => {
     vi.spyOn(__, 'callApi').mockReturnValue({ scenario: { id: 925 } });
     vi.spyOn(__, 'formatScenario').mockReturnValue({ id: 'formatted' });
-    vi.spyOn(__, 'readJson').mockReturnValue({});
+    vi.spyOn(__, 'getJsonFromOptions').mockReturnValue(undefined);
   });
 
   it.each([
@@ -52,11 +51,10 @@ describe('scenarioUpdate', () => {
   });
 
   it('serializes the blueprint and the scheduling as JSON strings', async () => {
-    await scenarioUpdate({
-      scenarioId: 925,
-      blueprint: JSON.stringify(blueprint),
-      scheduling: JSON.stringify(scheduling),
-    });
+    const contents = { blueprint, scheduling };
+    __.getJsonFromOptions.mockImplementation((_options, key) => contents[key]);
+
+    await scenarioUpdate({ scenarioId: 925 });
 
     expect(sentBody()).toEqual({
       blueprint: JSON.stringify(blueprint),
@@ -64,33 +62,13 @@ describe('scenarioUpdate', () => {
     });
   });
 
-  it('reads the blueprint and the scheduling from their files', async () => {
-    __.readJson.mockImplementation((filepath) =>
-      filepath === resolve('./blueprint.json') ? blueprint : scheduling,
-    );
+  it('gets the blueprint and the scheduling from the options', async () => {
+    const options = { scenarioId: 925, blueprintFile: 'a', scheduling: 'b' };
 
-    await scenarioUpdate({
-      scenarioId: 925,
-      blueprintFile: './blueprint.json',
-      schedulingFile: './scheduling.json',
-    });
+    await scenarioUpdate(options);
 
-    expect(sentBody()).toEqual({
-      blueprint: JSON.stringify(blueprint),
-      scheduling: JSON.stringify(scheduling),
-    });
-  });
-
-  it('prefers the file version when both are given', async () => {
-    __.readJson.mockReturnValue(blueprint);
-
-    await scenarioUpdate({
-      scenarioId: 925,
-      blueprint: '{"flow":[{"id":1}]}',
-      blueprintFile: './blueprint.json',
-    });
-
-    expect(sentBody()).toEqual({ blueprint: JSON.stringify(blueprint) });
+    expect(__.getJsonFromOptions).toHaveBeenCalledWith(options, 'blueprint');
+    expect(__.getJsonFromOptions).toHaveBeenCalledWith(options, 'scheduling');
   });
 
   it('returns the updated scenario, formatted', async () => {

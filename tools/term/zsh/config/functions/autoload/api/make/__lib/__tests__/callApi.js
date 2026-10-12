@@ -18,41 +18,45 @@ describe('callApi', () => {
     );
   });
 
-  it('calls the URL built from the zone and the path', async () => {
-    await callApi('scenarios');
+  it.each([
+    {
+      title: 'the URL built from the zone and the path',
+      options: {},
+      expected: 'https://eu2.make.com/api/v2/scenarios',
+    },
+    {
+      title: 'the base URL it is given instead of the default one',
+      options: { baseUrl: 'https://other.make.com/api/v2' },
+      expected: 'https://other.make.com/api/v2/scenarios',
+    },
+    {
+      title: 'the query merged over the defaults',
+      options: { query: { teamId: 42, 'pg[limit]': 10 } },
+      expected: 'https://eu2.make.com/api/v2/scenarios?teamId=42&pg[limit]=10',
+    },
+  ])('calls $title', async ({ options, expected }) => {
+    await callApi('scenarios', options);
 
     const actual = __.fetch.mock.calls[0][0];
-    expect(actual).toEqual('https://eu2.make.com/api/v2/scenarios');
+    expect(actual).toEqual(expected);
   });
 
-  it('sends the Token authorization header', async () => {
-    await callApi('scenarios');
+  it.each([
+    {
+      title: 'the Token authorization header',
+      options: {},
+      expected: 'Token secret-key',
+    },
+    {
+      title: 'the headers merged over the defaults',
+      options: { headers: { Authorization: 'Other' } },
+      expected: 'Other',
+    },
+  ])('sends $title', async ({ options, expected }) => {
+    await callApi('scenarios', options);
 
     const actual = __.fetch.mock.calls[0][1].headers.Authorization;
-    expect(actual).toEqual('Token secret-key');
-  });
-
-  it('uses the base URL it is given instead of the default one', async () => {
-    await callApi('scenarios', { baseUrl: 'https://other.make.com/api/v2' });
-
-    const actual = __.fetch.mock.calls[0][0];
-    expect(actual).toEqual('https://other.make.com/api/v2/scenarios');
-  });
-
-  it('merges the query over the defaults', async () => {
-    await callApi('scenarios', { query: { teamId: 42, 'pg[limit]': 10 } });
-
-    const actual = __.fetch.mock.calls[0][0];
-    expect(actual).toEqual(
-      'https://eu2.make.com/api/v2/scenarios?teamId=42&pg[limit]=10',
-    );
-  });
-
-  it('merges the headers over the defaults', async () => {
-    await callApi('scenarios', { headers: { Authorization: 'Other' } });
-
-    const actual = __.fetch.mock.calls[0][1].headers.Authorization;
-    expect(actual).toEqual('Other');
+    expect(actual).toEqual(expected);
   });
 
   it('sends a JSON body', async () => {

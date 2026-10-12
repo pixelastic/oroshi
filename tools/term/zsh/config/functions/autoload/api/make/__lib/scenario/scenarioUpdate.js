@@ -1,6 +1,5 @@
-import { resolve } from 'node:path';
 import { _ } from 'golgoth';
-import { readJson } from 'firost';
+import { getJsonFromOptions } from '@oroshi/api-shared/getJsonFromOptions.js';
 import { callApi } from '../callApi.js';
 import { formatScenario } from './formatScenario.js';
 
@@ -19,24 +18,10 @@ export let __;
  * @returns {Promise<object>} The updated Scenario, formatted
  */
 export async function scenarioUpdate(options) {
-  const {
-    scenarioId,
-    name,
-    blueprint,
-    blueprintFile,
-    scheduling,
-    schedulingFile,
-    folderId,
-  } = options;
+  const { scenarioId, name, folderId } = options;
 
-  const blueprintContent = await __.parseJson({
-    inline: blueprint,
-    filepath: blueprintFile,
-  });
-  const schedulingContent = await __.parseJson({
-    inline: scheduling,
-    filepath: schedulingFile,
-  });
+  const blueprintContent = await __.getJsonFromOptions(options, 'blueprint');
+  const schedulingContent = await __.getJsonFromOptions(options, 'scheduling');
 
   // PATCH leaves the fields that are not given untouched
   const body = _.omitBy(
@@ -58,22 +43,7 @@ export async function scenarioUpdate(options) {
 }
 
 __ = {
-  /**
-   * Get a JSON value from a file, or inline. The file wins over the inline value
-   * @param {object} options - Where the value comes from
-   * @param {string|object} [options.inline] - JSON string, or the object itself
-   * @param {string} [options.filepath] - Path to a JSON file
-   * @returns {Promise<object|undefined>} The parsed value, undefined if there is neither
-   */
-  async parseJson(options) {
-    const { inline, filepath } = options;
-    if (filepath) {
-      // firost resolves a relative path from its own folder, not from the caller
-      return await __.readJson(resolve(filepath));
-    }
-    return _.isString(inline) ? JSON.parse(inline) : inline;
-  },
   callApi,
+  getJsonFromOptions,
   formatScenario,
-  readJson,
 };

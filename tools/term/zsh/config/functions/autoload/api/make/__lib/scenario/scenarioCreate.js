@@ -1,6 +1,4 @@
-import { resolve } from 'node:path';
-import { _ } from 'golgoth';
-import { readJson } from 'firost';
+import { getJsonFromOptions } from '@oroshi/api-shared/getJsonFromOptions.js';
 import { callApi } from '../callApi.js';
 import { getConfig } from '../getConfig.js';
 import { formatScenario } from './formatScenario.js';
@@ -19,26 +17,17 @@ export let __;
  * @returns {Promise<object>} The new Scenario, formatted
  */
 export async function scenarioCreate(options) {
-  const {
-    name,
-    blueprint,
-    blueprintFile,
-    scheduling,
-    schedulingFile,
-    folderId,
-  } = options;
+  const { name, folderId } = options;
 
   const { teamId } = await __.getConfig();
 
-  const blueprintContent = await __.parseJson({
-    inline: blueprint,
-    filepath: blueprintFile,
-    fallback: {},
-  });
-  const schedulingContent = await __.parseJson({
-    inline: scheduling,
-    filepath: schedulingFile,
-    fallback: { type: 'on-demand' },
+  const blueprintContent = await __.getJsonFromOptions(
+    options,
+    'blueprint',
+    {},
+  );
+  const schedulingContent = await __.getJsonFromOptions(options, 'scheduling', {
+    type: 'on-demand',
   });
 
   // Make reads the name of the Scenario from its Blueprint, and ignores the body
@@ -60,24 +49,8 @@ export async function scenarioCreate(options) {
 }
 
 __ = {
-  /**
-   * Get a JSON value from a file, or inline. The file wins over the inline value
-   * @param {object} options - Where the value comes from
-   * @param {string|object} [options.inline] - JSON string, or the object itself
-   * @param {string} [options.filepath] - Path to a JSON file
-   * @param {object} options.fallback - Value when there is neither
-   * @returns {Promise<object>} The parsed value
-   */
-  async parseJson(options) {
-    const { inline, filepath, fallback } = options;
-    if (filepath) {
-      // firost resolves a relative path from its own folder, not from the caller
-      return await __.readJson(resolve(filepath));
-    }
-    return _.isString(inline) ? JSON.parse(inline) : (inline ?? fallback);
-  },
   callApi,
+  getJsonFromOptions,
   formatScenario,
   getConfig,
-  readJson,
 };

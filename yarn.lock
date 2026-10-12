@@ -1373,6 +1373,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@oroshi/api-shared@workspace:tools/term/zsh/config/functions/autoload/api/__shared/__lib"
   dependencies:
+    firost: "npm:5.11.0"
     golgoth: "npm:3.1.0"
   languageName: unknown
   linkType: soft

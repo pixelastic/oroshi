@@ -1,4 +1,3 @@
-import { resolve } from 'node:path';
 import { __, scenarioRun } from '../scenarioRun.js';
 
 describe('scenarioRun', () => {
@@ -15,7 +14,7 @@ describe('scenarioRun', () => {
 
   beforeEach(() => {
     vi.spyOn(__, 'callApi').mockReturnValue({ executionId: 'abc123' });
-    vi.spyOn(__, 'readJson').mockReturnValue({});
+    vi.spyOn(__, 'getJsonFromOptions').mockReturnValue(undefined);
   });
 
   it('calls the run endpoint of the Scenario id', async () => {
@@ -27,30 +26,13 @@ describe('scenarioRun', () => {
     });
   });
 
-  it('sends the data given by --data', async () => {
-    await scenarioRun({ scenarioId: 925, data: JSON.stringify(data) });
+  it('sends the data got from the options', async () => {
+    __.getJsonFromOptions.mockReturnValue(data);
+    const options = { scenarioId: 925, data: 'a', dataFile: 'b' };
 
-    expect(sentBody()).toEqual({ data });
-  });
+    await scenarioRun(options);
 
-  it('reads the data from --data-file', async () => {
-    __.readJson.mockReturnValue(data);
-
-    await scenarioRun({ scenarioId: 925, dataFile: './data.json' });
-
-    expect(__.readJson).toHaveBeenCalledWith(resolve('./data.json'));
-    expect(sentBody()).toEqual({ data });
-  });
-
-  it('prefers the file version when both are given', async () => {
-    __.readJson.mockReturnValue(data);
-
-    await scenarioRun({
-      scenarioId: 925,
-      data: '{"email":"other"}',
-      dataFile: './data.json',
-    });
-
+    expect(__.getJsonFromOptions).toHaveBeenCalledWith(options, 'data');
     expect(sentBody()).toEqual({ data });
   });
 

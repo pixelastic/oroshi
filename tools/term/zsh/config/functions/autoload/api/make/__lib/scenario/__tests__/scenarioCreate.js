@@ -1,4 +1,3 @@
-import { resolve } from 'node:path';
 import { __, scenarioCreate } from '../scenarioCreate.js';
 
 describe('scenarioCreate', () => {
@@ -22,7 +21,11 @@ describe('scenarioCreate', () => {
     vi.spyOn(__, 'getConfig').mockReturnValue({ teamId: '215' });
     vi.spyOn(__, 'callApi').mockReturnValue({ scenario: { id: 925 } });
     vi.spyOn(__, 'formatScenario').mockReturnValue({ id: 'formatted' });
-    vi.spyOn(__, 'readJson').mockReturnValue({});
+    // The helper gets each JSON value from the options by its key
+    const contents = { blueprint, scheduling };
+    vi.spyOn(__, 'getJsonFromOptions').mockImplementation(
+      (_options, key) => contents[key],
+    );
   });
 
   it('sends the team, the name and the folder', async () => {
@@ -54,51 +57,18 @@ describe('scenarioCreate', () => {
     expect(body).toHaveProperty('scheduling', JSON.stringify(scheduling));
   });
 
-  it('schedules on-demand by default', async () => {
-    await scenarioCreate({ blueprint: JSON.stringify(blueprint) });
+  it('gets the blueprint and the scheduling from the options', async () => {
+    const options = { blueprint: 'a', blueprintFile: 'b', scheduling: 'c' };
 
-    expect(sentBody().scheduling).toEqual({ type: 'on-demand' });
-  });
+    await scenarioCreate(options);
 
-  it('reads the blueprint and the scheduling from their files', async () => {
-    __.readJson.mockImplementation((filepath) =>
-      filepath === resolve('./blueprint.json') ? blueprint : scheduling,
+    expect(__.getJsonFromOptions).toHaveBeenCalledWith(
+      options,
+      'blueprint',
+      {},
     );
-
-    await scenarioCreate({
-      blueprintFile: './blueprint.json',
-      schedulingFile: './scheduling.json',
-    });
-
-    expect(sentBody()).toEqual({
-      teamId: 215,
-      blueprint,
-      scheduling,
-    });
-  });
-
-  it('resolves a relative file path from the working directory', async () => {
-    await scenarioCreate({ blueprintFile: './blueprint.json' });
-
-    expect(__.readJson).toHaveBeenCalledWith(resolve('./blueprint.json'));
-  });
-
-  it('prefers the file version when both are given', async () => {
-    __.readJson.mockImplementation((filepath) =>
-      filepath === resolve('./blueprint.json') ? blueprint : scheduling,
-    );
-
-    await scenarioCreate({
-      blueprint: '{"flow":[{"id":1}]}',
-      blueprintFile: './blueprint.json',
-      scheduling: '{"type":"on-demand"}',
-      schedulingFile: './scheduling.json',
-    });
-
-    expect(sentBody()).toEqual({
-      teamId: 215,
-      blueprint,
-      scheduling,
+    expect(__.getJsonFromOptions).toHaveBeenCalledWith(options, 'scheduling', {
+      type: 'on-demand',
     });
   });
 

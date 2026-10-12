@@ -1,6 +1,5 @@
-import { resolve } from 'node:path';
 import { _ } from 'golgoth';
-import { readJson } from 'firost';
+import { getJsonFromOptions } from '@oroshi/api-shared/getJsonFromOptions.js';
 import { callApi } from '../callApi.js';
 
 export let __;
@@ -15,12 +14,9 @@ export let __;
  * @returns {Promise<string|object>} The execution ID, or with wait the response holding status and outputs
  */
 export async function scenarioRun(options) {
-  const { scenarioId, data, dataFile, wait } = options;
+  const { scenarioId, wait } = options;
 
-  const dataContent = await __.parseJson({
-    inline: data,
-    filepath: dataFile,
-  });
+  const dataContent = await __.getJsonFromOptions(options, 'data');
 
   // Keep only the given keys, so a missing data or responsive is not sent
   const body = _.omitBy(
@@ -39,21 +35,6 @@ export async function scenarioRun(options) {
 }
 
 __ = {
-  /**
-   * Get a JSON value from a file, or inline. The file wins over the inline value
-   * @param {object} options - Where the value comes from
-   * @param {string|object} [options.inline] - JSON string, or the object itself
-   * @param {string} [options.filepath] - Path to a JSON file
-   * @returns {Promise<object|undefined>} The parsed value, undefined if there is neither
-   */
-  async parseJson(options) {
-    const { inline, filepath } = options;
-    if (filepath) {
-      // firost resolves a relative path from its own folder, not from the caller
-      return await __.readJson(resolve(filepath));
-    }
-    return _.isString(inline) ? JSON.parse(inline) : inline;
-  },
   callApi,
-  readJson,
+  getJsonFromOptions,
 };

@@ -90,6 +90,7 @@ every service needs. Services import from it, for example
 - `rawColumn.js` formats one value as a column of [`list-raw`](reference/commands/list-raw.md#role).
 - `queryString.js` turns an object of query parameters into a query string. It
   sends a list as `key[]`, and a list of objects as `key[index][property]`.
+- `getJsonFromOptions.js` gets a JSON value from the options of a command.
 
 Move any other code that several services share there.
 

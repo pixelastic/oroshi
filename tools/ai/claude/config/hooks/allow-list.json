@@ -342,6 +342,7 @@
   "make-folder-list",
   "make-folder-list-raw",
   "make-folder-read",
+  "make-folder-search",
   "make-folder-update",
   "make-scenario-create",
   "make-scenario-delete",
