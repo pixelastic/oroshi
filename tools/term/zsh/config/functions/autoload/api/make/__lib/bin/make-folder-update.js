@@ -1,15 +1,12 @@
 // make-folder-update.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { folderUpdate } from '../folder/folderUpdate.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2), { string: ['name'] });
 // The id is the positional argument, the content is made of named fields
-const {
-  _: [folderId],
-  account,
-  ...options
-} = args;
-setAccount(account);
-const output = await folderUpdate({ folderId, ...options });
+const { positional, named } = parseBinArgs({
+  setAccount,
+  minimist: { string: ['name'] },
+});
+const output = await folderUpdate({ folderId: positional, ...named });
 console.log(JSON.stringify(output, null, 2));

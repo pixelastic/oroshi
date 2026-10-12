@@ -1,15 +1,9 @@
 // make-scenario-search.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { scenarioSearch } from '../scenario/scenarioSearch.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The text is the first positional argument, the filters are named
-const {
-  _: [query],
-  account,
-  ...filters
-} = args;
-setAccount(account);
-const output = await scenarioSearch({ query, ...filters });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await scenarioSearch({ query: positional, ...named });
 console.log(JSON.stringify(output, null, 2));

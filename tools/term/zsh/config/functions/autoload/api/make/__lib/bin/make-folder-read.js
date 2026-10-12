@@ -1,15 +1,9 @@
 // make-folder-read.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { folderRead } from '../folder/folderRead.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The id is the positional argument
-const {
-  _: [folderId],
-  account,
-  ...options
-} = args;
-setAccount(account);
-const output = await folderRead({ folderId, ...options });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await folderRead({ folderId: positional, ...named });
 console.log(JSON.stringify(output, null, 2));

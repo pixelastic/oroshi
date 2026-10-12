@@ -1,15 +1,9 @@
 // make-scenario-read.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { scenarioRead } from '../scenario/scenarioRead.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The id is the positional argument
-const {
-  _: [scenarioId],
-  account,
-  ...options
-} = args;
-setAccount(account);
-const output = await scenarioRead({ scenarioId, ...options });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await scenarioRead({ scenarioId: positional, ...named });
 console.log(JSON.stringify(output, null, 2));

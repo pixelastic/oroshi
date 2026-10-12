@@ -1,15 +1,9 @@
 // make-folder-delete.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { folderDelete } from '../folder/folderDelete.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The id is the positional argument
-const {
-  _: [folderId],
-  account,
-  ...options
-} = args;
-setAccount(account);
-const output = await folderDelete({ folderId, ...options });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await folderDelete({ folderId: positional, ...named });
 console.log(output);

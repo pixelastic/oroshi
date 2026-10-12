@@ -1,11 +1,9 @@
 // make-folder-list-raw.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { folderListRaw } from '../folder/folderListRaw.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The filters are named
-const { _: _positional, account, ...filters } = args;
-setAccount(account);
-const output = await folderListRaw(filters);
+const { named } = parseBinArgs({ setAccount });
+const output = await folderListRaw(named);
 console.log(output);

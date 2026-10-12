@@ -1,11 +1,12 @@
 // make-folder-create.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { folderCreate } from '../folder/folderCreate.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2), { string: ['name'] });
 // The content is made of named fields
-const { _: _positional, account, ...options } = args;
-setAccount(account);
-const output = await folderCreate(options);
+const { named } = parseBinArgs({
+  setAccount,
+  minimist: { string: ['name'] },
+});
+const output = await folderCreate(named);
 console.log(JSON.stringify(output, null, 2));

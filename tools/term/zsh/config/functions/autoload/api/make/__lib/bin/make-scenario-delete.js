@@ -1,15 +1,9 @@
 // make-scenario-delete.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { scenarioDelete } from '../scenario/scenarioDelete.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The id is the positional argument
-const {
-  _: [scenarioId],
-  account,
-  ...options
-} = args;
-setAccount(account);
-const output = await scenarioDelete({ scenarioId, ...options });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await scenarioDelete({ scenarioId: positional, ...named });
 console.log(output);
