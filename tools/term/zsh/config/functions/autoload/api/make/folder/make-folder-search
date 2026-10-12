@@ -1,9 +1,0 @@
-# Search the top-level Folders of the Make team, and print them as JSON
-# Usage:
-# $ make-folder-search
-# $ make-folder-search --limit 10
-# $ make-folder-search --account perso
-setopt local_options err_return
-
-local libDir="${functions_source[$0]:A:h:h}/__lib"
-node "${libDir}/bin/make-folder-search.js" "$@"

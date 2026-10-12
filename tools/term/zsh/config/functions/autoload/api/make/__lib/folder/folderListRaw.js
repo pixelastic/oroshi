@@ -1,19 +1,34 @@
 import { _ } from 'golgoth';
 import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
-import { folderSearch } from './folderSearch.js';
+import { callApi } from '../callApi.js';
+import { getConfig } from '../getConfig.js';
+import { formatFolder } from './formatFolder.js';
 
 export let __;
 
+const DEFAULT_LIMIT = 25;
+
 /**
- * List the Folders of the Team as raw lines, one per Folder
- * @param {object} options - Same options as search
+ * List the top-level Folders of the Team as raw lines, one per Folder
+ * @param {object} [options] - List options
+ * @param {number} [options.limit] - Maximum number of Folders
  * @returns {Promise<string>} Raw lines, joined with a newline
  */
-export async function folderListRaw(options) {
-  // Ask search for the Folders, with the flags we received
-  const folders = await __.folderSearch(options);
+export async function folderListRaw(options = {}) {
+  const { limit = DEFAULT_LIMIT } = options;
 
-  return _.chain(folders)
+  const { teamId } = await __.getConfig();
+  const response = await __.callApi('scenarios-folders', {
+    query: {
+      teamId,
+      'pg[limit]': limit,
+    },
+  });
+
+  // The API ignores pg[limit] on Folders, so the limit is applied here
+  return _.chain(response.scenariosFolders)
+    .take(limit)
+    .map((folder) => __.formatFolder(folder))
     .map((folder) => __.toLine(folder))
     .join('\n')
     .value();
@@ -22,7 +37,7 @@ export async function folderListRaw(options) {
 __ = {
   /**
    * Turn one Folder into a raw line
-   * @param {object} folder - Folder, as returned by search
+   * @param {object} folder - Folder, formatted
    * @returns {string} The id, name, path, parent Folder id and Scenario count, separated by ▮
    */
   toLine(folder) {
@@ -32,5 +47,7 @@ __ = {
       .join('▮')
       .value();
   },
-  folderSearch,
+  callApi,
+  getConfig,
+  formatFolder,
 };
