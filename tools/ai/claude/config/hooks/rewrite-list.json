@@ -1,4 +1,5 @@
 {
+  "find": "find-guarded",
   "rm": "rm-guarded",
   "rmdir": "rmdir-guarded"
 }

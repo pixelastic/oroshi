@@ -1,0 +1,30 @@
+# Run find, and stop it when the search takes too long
+# The output printed before the stop is kept, and a marker on stderr tells it is incomplete
+# Searches that act on files (-exec, -delete, …) are never stopped: a half-done action is worse than a slow one
+# Run /usr/bin/find to bypass the limit
+# Usage:
+# $ find-guarded . -name '*.js'        # Same arguments as find
+# $ find-guarded /home -name '*.js'    # Stopped after 2 seconds, exit code 124
+setopt local_options err_return
+
+TIME_LIMIT_SECONDS=2
+ACTION_PRIMARIES=(-delete -exec -execdir -ok -okdir -fprint -fprint0 -fprintf -fls)
+
+# Guard: a search that acts on files runs without a time limit
+if (( ${#${(@)argv:*ACTION_PRIMARIES}} > 0 )); then
+  command find "$@"
+  return $?
+fi
+
+local exitCode=0
+timeout "$TIME_LIMIT_SECONDS" find "$@" || exitCode=$?
+
+# Guard: find finished in time
+if [[ "$exitCode" != 124 ]]; then
+  return $exitCode
+fi
+
+local reason="find ran longer than ${TIME_LIMIT_SECONDS}s and was stopped: its output is incomplete."
+local advice="Narrow the search (deeper start path, -maxdepth, -name) or run /usr/bin/find to bypass the limit."
+echoerr "[claude-guarded:timeout] $reason $advice"
+return 124

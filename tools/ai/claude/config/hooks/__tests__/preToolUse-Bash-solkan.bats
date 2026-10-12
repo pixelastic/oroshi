@@ -259,6 +259,24 @@ setup() {
   expect_json '.rewrite' 'rm-guarded -f a | cat'
 }
 
+@test "applies the find guard-rail to a single command" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'find . -name x'"
+  [[ "$status" -eq 0 ]]
+  expect_json '.rewrite' 'find-guarded . -name x'
+}
+
+@test "applies the find guard-rail to a compound command" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'find . -name x | head'"
+  [[ "$status" -eq 0 ]]
+  expect_json '.rewrite' 'find-guarded . -name x | head'
+}
+
+@test "keeps /usr/bin/find unchanged" {
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan '/usr/bin/find . -name x'"
+  [[ "$status" -eq 0 ]]
+  expect_json_null '.rewrite'
+}
+
 @test "uses the local token-saving list for a single command" {
   mkdir -p "$BATS_TMP_DIR/fakerepo/.claude"
   echo '{"my-cmd": "my-cmd-token-saving"}' > "$BATS_TMP_DIR/fakerepo/.claude/rewrite-list-token-saving.json"
