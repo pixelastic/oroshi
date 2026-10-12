@@ -1,0 +1,24 @@
+# Count the prose words of a Markdown file
+# Usage:
+# $ markdown-wordcount file.md   # Print the number of prose words
+setopt local_options err_return
+
+local file="$1"
+
+# A regular file is required
+if [[ ! -f "$file" ]]; then
+  echoerr "Error: file not found: '$file'"
+  echoerr "Usage: markdown-wordcount <file>"
+  return 1
+fi
+
+# Skip the front matter block (only on the first line) and fenced code blocks
+awk '
+  NR == 1 && $0 == "---" { inFrontMatter = 1; next }
+  inFrontMatter && $0 == "---" { inFrontMatter = 0; next }
+  inFrontMatter { next }
+  /^[ \t]*(```|~~~)/ { inFence = !inFence; next }
+  inFence { next }
+  { count += NF }
+  END { print count + 0 }
+' "$file"
