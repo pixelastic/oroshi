@@ -1,0 +1,32 @@
+# Create or reopen a blog-writer article folder and output JSON with its paths
+# Usage:
+# $ blog-writer-start my-article
+# {"folder":"…/blog-writer/my-article","brief":"…/brief.md","interview":"…/interview.md","draft":"…/draft.md","images":"…/images"}
+setopt local_options err_return
+
+local slug="$1"
+
+# A slug is required
+if [[ "$slug" == "" ]]; then
+  echoerr "Usage: blog-writer-start <slug>"
+  return 1
+fi
+
+# Slug must be a safe folder name: no path separator, no leading dot
+if [[ ! "$slug" =~ '^[A-Za-z0-9_][A-Za-z0-9._-]*$' ]]; then
+  echoerr "Invalid slug: $slug"
+  return 1
+fi
+
+local folder="$OROSHI_FOLDER_STATE/blog-writer/$slug"
+local imagesFolder="$folder/images"
+
+# Idempotent: never overwrites existing files
+mkdir --parents "$imagesFolder"
+
+jo \
+  folder="$folder" \
+  brief="$folder/brief.md" \
+  interview="$folder/interview.md" \
+  draft="$folder/draft.md" \
+  images="$imagesFolder"
