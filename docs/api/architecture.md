@@ -27,6 +27,7 @@ api/
 ├── __shared/
 │   └── __lib/
 │       ├── package.json
+│       ├── queryString.js
 │       └── rawColumn.js
 └── <service>/
     ├── __docs/
@@ -87,6 +88,8 @@ every service needs. Services import from it, for example
 `import { rawColumn } from '@oroshi/api-shared/rawColumn.js'`.
 
 - `rawColumn.js` formats one value as a column of [`list-raw`](reference/commands/list-raw.md#role).
+- `queryString.js` turns an object of query parameters into a query string. It
+  sends a list as `key[]`, and a list of objects as `key[index][property]`.
 
 Move any other code that several services share there.
 

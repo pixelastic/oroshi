@@ -55,34 +55,6 @@ describe('callApi', () => {
     expect(actual).toEqual('Other');
   });
 
-  it.each([
-    {
-      title: 'a list as key[]',
-      query: { fields: ['name', 'date'] },
-      expected: '?fields%5B%5D=name&fields%5B%5D=date',
-    },
-    {
-      title: 'a list of objects as key[index][property]',
-      query: { sort: [{ field: 'name', direction: 'desc' }] },
-      expected: '?sort%5B0%5D%5Bfield%5D=name&sort%5B0%5D%5Bdirection%5D=desc',
-    },
-    {
-      title: 'a scalar as key=value',
-      query: { pageSize: 10 },
-      expected: '?pageSize=10',
-    },
-    {
-      title: 'nothing for empty values',
-      query: { pageSize: undefined, fields: [], offset: null },
-      expected: '',
-    },
-  ])('encodes $title', async ({ query, expected }) => {
-    await callApi('appA/tblA', { query });
-
-    const actual = __.fetch.mock.calls[0][0];
-    expect(actual).toEqual(`https://api.airtable.com/v0/appA/tblA${expected}`);
-  });
-
   it('uses the base URL it is given instead of the default one', async () => {
     await callApi('appA/recA/fldA/upload', {
       baseUrl: 'https://content.airtable.com/v0',

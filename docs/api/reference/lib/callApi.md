@@ -25,7 +25,9 @@ answers.
 - `baseUrl`, `method` and `body` override their default.
 - `query` and `headers` merge over the defaults of the service. A passed key
   replaces the default key. An `Authorization` header can be replaced this way.
-- `callApi` builds the URL from the base URL, the path and the query.
+- `callApi` builds the URL from the base URL, the path and the query. The
+  `queryString` helper of `@oroshi/api-shared` serializes the query: a list
+  becomes `key[]`, and nil values are skipped.
 - Output: the parsed JSON response of the API.
 - An empty response body is returned as it is. A successful delete does not
   throw.
@@ -38,6 +40,7 @@ answers.
 
 ```javascript
 import { firostError } from 'firost';
+import { queryString } from '@oroshi/api-shared/queryString.js';
 import { getConfig } from './getConfig.js';
 
 export let __;
@@ -66,8 +69,8 @@ export async function callApi(path, options = {}) {
   //    The query is the default query of the service,
   //    with `query` merged over it: a passed key replaces a default key
   const defaultQuery = {};
-  const search = new URLSearchParams({ ...defaultQuery, ...query });
-  const url = `${baseUrl}/${path}?${search}`;
+  const search = queryString({ ...defaultQuery, ...query });
+  const url = `${baseUrl}/${path}${search}`;
 
   // 3. Build the headers the same way: the default headers of the service,
   //    with `headers` merged over them. The defaults hold the authentication.
