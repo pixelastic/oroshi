@@ -1,4 +1,6 @@
 version: "2"
+run:
+  relative-path-mode: gomod
 linters:
   enable:
     - govet
@@ -8,3 +10,6 @@ linters:
   exclusions:
     paths:
       - node_modules
+formatters:
+  enable:
+    - gofmt

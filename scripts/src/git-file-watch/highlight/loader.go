@@ -149,4 +149,3 @@ func resolveInherits(queryPath string, queryDir string) []byte {
 	combined = append(combined, []byte(rest)...)
 	return combined
 }
-

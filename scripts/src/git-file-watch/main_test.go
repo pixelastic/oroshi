@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -306,9 +307,9 @@ func TestCursorSkipsFileHeaderWhenMovingDown(t *testing.T) {
 	th := loadTestTheme(t)
 	marker := diff.MarkerAdded
 	rows := []layout.Row{
-		layout.FileHeaderRow{Path: "a.go"},          // 0
+		layout.FileHeaderRow{Path: "a.go"},             // 0
 		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
-		layout.FileHeaderRow{Path: "b.go"},          // 2
+		layout.FileHeaderRow{Path: "b.go"},             // 2
 		layout.LineRow{LineNumber: 1, Marker: &marker}, // 3
 	}
 	m := testModel(th, rows)
@@ -325,9 +326,9 @@ func TestCursorSkipsFileHeaderWhenMovingUp(t *testing.T) {
 	th := loadTestTheme(t)
 	marker := diff.MarkerAdded
 	rows := []layout.Row{
-		layout.FileHeaderRow{Path: "a.go"},          // 0
+		layout.FileHeaderRow{Path: "a.go"},             // 0
 		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
-		layout.FileHeaderRow{Path: "b.go"},          // 2
+		layout.FileHeaderRow{Path: "b.go"},             // 2
 		layout.LineRow{LineNumber: 1, Marker: &marker}, // 3
 	}
 	m := testModel(th, rows)
@@ -344,9 +345,9 @@ func TestCursorSkipsSeparatorWhenMovingDown(t *testing.T) {
 	th := loadTestTheme(t)
 	marker := diff.MarkerAdded
 	rows := []layout.Row{
-		layout.FileHeaderRow{Path: "a.go"},          // 0
-		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
-		layout.SeparatorRow{},                       // 2
+		layout.FileHeaderRow{Path: "a.go"},              // 0
+		layout.LineRow{LineNumber: 1, Marker: &marker},  // 1
+		layout.SeparatorRow{},                           // 2
 		layout.LineRow{LineNumber: 10, Marker: &marker}, // 3
 	}
 	m := testModel(th, rows)
@@ -384,16 +385,16 @@ func TestFoldingSecondFileKeepsFirstFileVisible(t *testing.T) {
 	th := loadTestTheme(t)
 	marker := diff.MarkerAdded
 	rows := []layout.Row{
-		layout.FileHeaderRow{Path: "a.go"},              // 0
-		layout.LineRow{LineNumber: 1, Marker: &marker},  // 1
-		layout.LineRow{LineNumber: 2, Marker: &marker},  // 2
-		layout.LineRow{LineNumber: 3, Marker: &marker},  // 3
-		layout.LineRow{LineNumber: 4, Marker: &marker},  // 4
-		layout.FileHeaderRow{Path: "b.go"},              // 5
-		layout.LineRow{LineNumber: 1, Marker: &marker},  // 6
-		layout.LineRow{LineNumber: 2, Marker: &marker},  // 7
-		layout.LineRow{LineNumber: 3, Marker: &marker},  // 8
-		layout.LineRow{LineNumber: 4, Marker: &marker},  // 9
+		layout.FileHeaderRow{Path: "a.go"},             // 0
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 1
+		layout.LineRow{LineNumber: 2, Marker: &marker}, // 2
+		layout.LineRow{LineNumber: 3, Marker: &marker}, // 3
+		layout.LineRow{LineNumber: 4, Marker: &marker}, // 4
+		layout.FileHeaderRow{Path: "b.go"},             // 5
+		layout.LineRow{LineNumber: 1, Marker: &marker}, // 6
+		layout.LineRow{LineNumber: 2, Marker: &marker}, // 7
+		layout.LineRow{LineNumber: 3, Marker: &marker}, // 8
+		layout.LineRow{LineNumber: 4, Marker: &marker}, // 9
 	}
 	m := testModel(th, rows)
 	m.nav.ViewportHeight = 4
@@ -624,6 +625,45 @@ func TestCommitFinishedMsgRebuildsDisplay(t *testing.T) {
 
 	// Model should still be valid after handling CommitFinishedMsg
 	assert.NotNil(t, resultModel.theme)
+}
+
+func TestRebuildDisplayKeepsRefAfterFileChange(t *testing.T) {
+	th := loadTestTheme(t)
+	repo := t.TempDir()
+	runGitInRepo := func(args ...string) {
+		t.Helper()
+		cmd := exec.Command("git", args...)
+		cmd.Dir = repo
+		output, err := cmd.CombinedOutput()
+		require.NoError(t, err, string(output))
+	}
+	runGitInRepo("init", "--quiet", "--initial-branch=main")
+	runGitInRepo("config", "user.email", "test@example.com")
+	runGitInRepo("config", "user.name", "Test")
+	runGitInRepo("config", "commit.gpgsign", "false")
+	require.NoError(t, os.WriteFile(filepath.Join(repo, "base.txt"), []byte("base\n"), 0o644))
+	runGitInRepo("add", ".")
+	runGitInRepo("commit", "--quiet", "-m", "base")
+	runGitInRepo("tag", "start")
+	require.NoError(t, os.WriteFile(filepath.Join(repo, "committed.txt"), []byte("committed\n"), 0o644))
+	runGitInRepo("add", ".")
+	runGitInRepo("commit", "--quiet", "-m", "later")
+
+	m := testModelWithRoot(th, []layout.Row{}, repo)
+	m.highlighter = highlight.New(th)
+	m.commentsPath = filepath.Join(t.TempDir(), "comments.json")
+	m.ref = "start"
+
+	require.NoError(t, os.WriteFile(filepath.Join(repo, "base.txt"), []byte("base\nmodified\n"), 0o644))
+	m.rebuildDisplay()
+
+	var paths []string
+	for _, row := range m.rows {
+		if header, ok := row.(layout.FileHeaderRow); ok {
+			paths = append(paths, header.Path)
+		}
+	}
+	assert.ElementsMatch(t, []string{"base.txt", "committed.txt"}, paths)
 }
 
 func TestReloadCommentsDoesNotWriteFile(t *testing.T) {
@@ -984,9 +1024,9 @@ func TestRefreshIndicesSkipsNonLineRows(t *testing.T) {
 	th := loadTestTheme(t)
 	marker := diff.MarkerAdded
 	rows := []layout.Row{
-		layout.FileHeaderRow{Path: "file.go"},              // 0: header
+		layout.FileHeaderRow{Path: "file.go"},                               // 0: header
 		layout.LineRow{FilePath: "file.go", LineNumber: 1, Marker: &marker}, // 1: line
-		layout.SeparatorRow{},                              // 2: separator
+		layout.SeparatorRow{},                                               // 2: separator
 		layout.LineRow{FilePath: "file.go", LineNumber: 5, Marker: &marker}, // 3: line
 	}
 	m := testModel(th, rows)
@@ -1187,13 +1227,13 @@ func testModelWithRoot(th *theme.Theme, rows []layout.Row, repoRoot string) mode
 		Headers:   fileIndex.Headers,
 	}
 	return model{
-		theme:            th,
-		rows:             rows,
-		highlighted:      map[string][]highlight.StyledLine{},
-		rawLines:         map[string][]string{},
-		repoRoot:         repoRoot,
-		fileIndex:        fileIndex,
-		viewContext:      vc,
+		theme:           th,
+		rows:            rows,
+		highlighted:     map[string][]highlight.StyledLine{},
+		rawLines:        map[string][]string{},
+		repoRoot:        repoRoot,
+		fileIndex:       fileIndex,
+		viewContext:     vc,
 		commentIndex:    map[string]string{},
 		flashLines:      map[string]bool{},
 		lineNumberWidth: render.MaxLineNumberWidth(rows),

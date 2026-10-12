@@ -20,7 +20,7 @@ const (
 type Marker int
 
 const (
-	MarkerAdded    Marker = iota + 1
+	MarkerAdded Marker = iota + 1
 	MarkerModified
 	MarkerDeleted
 )

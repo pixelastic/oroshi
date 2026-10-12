@@ -27,8 +27,8 @@ type colorEntry struct {
 
 // filetypeEntry matches each value in filetypes.json.
 type filetypeEntry struct {
-	Bold    bool `json:"bold"`
-	Color   struct {
+	Bold  bool `json:"bold"`
+	Color struct {
 		ANSI int    `json:"ansi"`
 		Hex  string `json:"hex"`
 	} `json:"color"`

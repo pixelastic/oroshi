@@ -379,8 +379,8 @@ func TestMoveUpVisibleScrollsViewportToShowHeaderAboveCursor(t *testing.T) {
 	// Cursor on first navigable row (1), viewport starts at 1 (header at 0 is hidden)
 	state := State{Cursor: 1, ViewportOffset: 1, ViewportHeight: 5, RowCount: 6}
 	vc := ViewContext{
-		Navigable: []int{1, 3, 4, 5},          // code lines only
-		Visible:   []int{0, 1, 2, 3, 4, 5},    // includes header at 0
+		Navigable: []int{1, 3, 4, 5},       // code lines only
+		Visible:   []int{0, 1, 2, 3, 4, 5}, // includes header at 0
 	}
 
 	result := MoveUpVisible(state, vc)
@@ -952,4 +952,3 @@ func TestClampViewportVisibleCursorOnMultiRowWrappedLineStaysFullyVisible(t *tes
 	// Row 0(1) + Row 1(1) + Row 2(4) = 6 > 5, so viewport must scroll
 	assert.True(t, result.ViewportOffset > 0, "viewport should scroll to keep wrapped cursor line fully visible")
 }
-

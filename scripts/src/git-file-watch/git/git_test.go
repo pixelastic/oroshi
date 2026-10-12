@@ -1,10 +1,81 @@
 package git
 
 import (
+	"os"
+	"os/exec"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
+
+// --- Helpers ---
+
+func runGit(t *testing.T, directory string, args ...string) {
+	t.Helper()
+	cmd := exec.Command("git", args...)
+	cmd.Dir = directory
+	output, err := cmd.CombinedOutput()
+	require.NoError(t, err, string(output))
+}
+
+func writeFile(t *testing.T, directory, name, content string) {
+	t.Helper()
+	require.NoError(t, os.WriteFile(filepath.Join(directory, name), []byte(content), 0o644))
+}
+
+// newRepo creates a repository with one commit containing base.txt.
+func newRepo(t *testing.T) string {
+	t.Helper()
+	directory := t.TempDir()
+	runGit(t, directory, "init", "--quiet", "--initial-branch=main")
+	runGit(t, directory, "config", "user.email", "test@example.com")
+	runGit(t, directory, "config", "user.name", "Test")
+	runGit(t, directory, "config", "commit.gpgsign", "false")
+	writeFile(t, directory, "base.txt", "base\n")
+	runGit(t, directory, "add", ".")
+	runGit(t, directory, "commit", "--quiet", "-m", "base")
+	return directory
+}
+
+// --- VerifyRef ---
+
+func TestVerifyRefAcceptsBranch(t *testing.T) {
+	repo := newRepo(t)
+
+	assert.NoError(t, VerifyRef(repo, "main"))
+}
+
+func TestVerifyRefAcceptsTag(t *testing.T) {
+	repo := newRepo(t)
+	runGit(t, repo, "tag", "v1")
+
+	assert.NoError(t, VerifyRef(repo, "v1"))
+}
+
+func TestVerifyRefAcceptsCommitHash(t *testing.T) {
+	repo := newRepo(t)
+	hash, err := Head(repo)
+	require.NoError(t, err)
+
+	assert.NoError(t, VerifyRef(repo, hash))
+}
+
+func TestVerifyRefRejectsUnknownRef(t *testing.T) {
+	repo := newRepo(t)
+
+	err := VerifyRef(repo, "does-not-exist")
+
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "does-not-exist")
+}
+
+func TestVerifyRefRejectsEmptyRef(t *testing.T) {
+	repo := newRepo(t)
+
+	assert.Error(t, VerifyRef(repo, ""))
+}
 
 func TestSyntheticNewFileDiffGeneratesValidDiffHeader(t *testing.T) {
 	result := SyntheticNewFileDiff("src/new.go", "package main\n")
@@ -123,4 +194,69 @@ func TestPrefixDiffPathsHandlesFullDiff(t *testing.T) {
 	assert.Contains(t, result, "+++ b/private/file.go")
 	assert.Contains(t, result, "@@ -1,3 +1,4 @@")
 	assert.Contains(t, result, "+new\n")
+}
+
+// --- Diff ---
+
+func TestDiffWithRefIncludesCommittedChanges(t *testing.T) {
+	repo := newRepo(t)
+	runGit(t, repo, "tag", "start")
+	writeFile(t, repo, "committed.txt", "committed\n")
+	runGit(t, repo, "add", ".")
+	runGit(t, repo, "commit", "--quiet", "-m", "later")
+
+	result, err := Diff(repo, "start")
+
+	require.NoError(t, err)
+	assert.Contains(t, result, "diff --git a/committed.txt b/committed.txt")
+}
+
+func TestDiffWithRefIncludesStagedChanges(t *testing.T) {
+	repo := newRepo(t)
+	runGit(t, repo, "tag", "start")
+	writeFile(t, repo, "staged.txt", "staged\n")
+	runGit(t, repo, "add", "staged.txt")
+
+	result, err := Diff(repo, "start")
+
+	require.NoError(t, err)
+	assert.Contains(t, result, "diff --git a/staged.txt b/staged.txt")
+}
+
+func TestDiffWithRefIncludesUnstagedChanges(t *testing.T) {
+	repo := newRepo(t)
+	runGit(t, repo, "tag", "start")
+	writeFile(t, repo, "base.txt", "base\nmodified\n")
+
+	result, err := Diff(repo, "start")
+
+	require.NoError(t, err)
+	assert.Contains(t, result, "diff --git a/base.txt b/base.txt")
+	assert.Contains(t, result, "+modified")
+}
+
+func TestDiffWithRefIncludesUntrackedFilesAsNewFiles(t *testing.T) {
+	repo := newRepo(t)
+	runGit(t, repo, "tag", "start")
+	writeFile(t, repo, "untracked.txt", "untracked\n")
+
+	result, err := Diff(repo, "start")
+
+	require.NoError(t, err)
+	assert.Contains(t, result, "diff --git a/untracked.txt b/untracked.txt")
+	assert.Contains(t, result, "new file mode")
+}
+
+func TestDiffWithoutRefIgnoresCommittedChanges(t *testing.T) {
+	repo := newRepo(t)
+	writeFile(t, repo, "committed.txt", "committed\n")
+	runGit(t, repo, "add", ".")
+	runGit(t, repo, "commit", "--quiet", "-m", "later")
+	writeFile(t, repo, "base.txt", "base\nmodified\n")
+
+	result, err := Diff(repo, "")
+
+	require.NoError(t, err)
+	assert.Contains(t, result, "diff --git a/base.txt b/base.txt")
+	assert.NotContains(t, result, "committed.txt")
 }

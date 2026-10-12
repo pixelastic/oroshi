@@ -41,7 +41,8 @@ func (s *SignatureTracker) Changed(diffOutput string) bool {
 
 // Watch watches repoRoot for meaningful file changes and sends a signal
 // on the returned channel when the git diff output changes.
-func Watch(repoRoot string) (<-chan struct{}, error) {
+// A non-empty ref makes the diff compare against that ref.
+func Watch(repoRoot, ref string) (<-chan struct{}, error) {
 	fsWatcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		return nil, fmt.Errorf("creating fsnotify watcher: %w", err)
@@ -60,7 +61,7 @@ func Watch(repoRoot string) (<-chan struct{}, error) {
 	}
 
 	signals := make(chan struct{}, 1)
-	go debounceLoop(fsWatcher, repoRoot, signals)
+	go debounceLoop(fsWatcher, repoRoot, ref, signals)
 
 	return signals, nil
 }
@@ -77,12 +78,12 @@ func GitIndexPath() (string, error) {
 	return filepath.Join(gitDir, "index"), nil
 }
 
-func debounceLoop(fsWatcher *fsnotify.Watcher, repoRoot string, signals chan<- struct{}) {
+func debounceLoop(fsWatcher *fsnotify.Watcher, repoRoot, ref string, signals chan<- struct{}) {
 	defer func() { _ = fsWatcher.Close() }()
 
 	tracker := NewSignatureTracker()
 	// Seed the tracker with current diff so initial identical diffs don't signal
-	if initial, err := git.Diff(repoRoot); err == nil {
+	if initial, err := git.Diff(repoRoot, ref); err == nil {
 		tracker.Changed(initial)
 	}
 
@@ -107,7 +108,7 @@ func debounceLoop(fsWatcher *fsnotify.Watcher, repoRoot string, signals chan<- s
 			deadlineTimer.Stop()
 			deadlineTimer = nil
 		}
-		diffOutput, err := git.Diff(repoRoot)
+		diffOutput, err := git.Diff(repoRoot, ref)
 		if err != nil {
 			return
 		}
@@ -214,4 +215,3 @@ func shouldIgnoreDirectory(relativePath string, ignoredDirs map[string]bool) boo
 	}
 	return false
 }
-

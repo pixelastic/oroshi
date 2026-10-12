@@ -53,9 +53,10 @@ local lintBin="$(go-tool-path golangci-lint)"
 local moduleRoot="$(go-module-root "${packageDirs[1]}")"
 
 # Run golangci-lint from the module root with extra args
+local configPath="$OROSHI_ROOT/tools/_languages/go/golangci-lint/golangci.yml"
 function _runLint() {
   pushd "$moduleRoot" >/dev/null
-  "$lintBin" run "$@" "${packageDirs[@]}" 2>/dev/null
+  "$lintBin" run --config "$configPath" "$@" "${packageDirs[@]}" 2>/dev/null
   popd >/dev/null
 }
 

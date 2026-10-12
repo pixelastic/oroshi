@@ -29,6 +29,19 @@ func Head(repoRoot string) (string, error) {
 	return strings.TrimSpace(string(output)), nil
 }
 
+// VerifyRef returns an error when ref does not resolve to a commit.
+func VerifyRef(repoRoot, ref string) error {
+	if ref == "" {
+		return fmt.Errorf("empty ref")
+	}
+	cmd := exec.Command("git", "rev-parse", "--verify", "--quiet", ref+"^{commit}")
+	cmd.Dir = repoRoot
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("unknown ref %q: %w", ref, err)
+	}
+	return nil
+}
+
 // SyntheticNewFileDiff generates a git-diff-formatted string for an untracked file,
 // showing all lines as added. Binary files (containing null bytes) get a
 // "Binary files ... differ" marker instead of line content.
@@ -94,8 +107,14 @@ func Submodules(repoRoot string) []string {
 
 // Diff runs git diff in the given directory and returns the raw output,
 // including synthetic diffs for untracked files and submodule diffs.
-func Diff(repoRoot string) (string, error) {
-	cmd := exec.Command("git", "diff", "--ignore-submodules=all")
+// A non-empty ref diffs the working tree against that ref instead of the index.
+// Submodule diffs ignore the ref.
+func Diff(repoRoot, ref string) (string, error) {
+	args := []string{"diff", "--ignore-submodules=all"}
+	if ref != "" {
+		args = append(args, ref, "--")
+	}
+	cmd := exec.Command("git", args...)
 	cmd.Dir = repoRoot
 	output, err := cmd.Output()
 	if err != nil {

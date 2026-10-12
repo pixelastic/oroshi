@@ -47,9 +47,9 @@ func resolveCaptureStyles(names []string, language string, syntaxMap *SyntaxMap)
 }
 
 type captureSpan struct {
-	start      uint
-	end        uint
-	styleIndex int
+	start        uint
+	end          uint
+	styleIndex   int
 	patternIndex uint
 }
 
@@ -169,4 +169,3 @@ func styleToANSI(style SyntaxStyle) string {
 	}
 	return "\033[" + strings.Join(parts, ";") + "m"
 }
-

@@ -52,36 +52,37 @@ type FlashExpiredMsg struct{}
 type ReviewSentMsg struct{ err error }
 
 type model struct {
-	theme                *theme.Theme
-	rows                 []layout.Row
-	highlighted          map[string][]highlight.StyledLine
-	rawLines             map[string][]string
+	theme                 *theme.Theme
+	rows                  []layout.Row
+	highlighted           map[string][]highlight.StyledLine
+	rawLines              map[string][]string
 	watchChannel          <-chan struct{}
 	indexWatchChannel     <-chan struct{}
-	commentsWatchChannel <-chan struct{}
+	commentsWatchChannel  <-chan struct{}
 	syntaxMapWatchChannel <-chan struct{}
-	highlighter          *highlight.Highlighter
-	nav                  navigation.State
-	fileIndex            navigation.FileIndex
-	viewContext          navigation.ViewContext
-	pendingKey           string
-	repoRoot             string
-	userComments         []comments.Comment
-	commentsPath         string
-	commentIndex         map[string]string
-	editState            editing.State
-	editTextArea         textarea.Model
-	statusMessage        string
-	viewportWidth        int
-	lineNumberWidth      int
-	flashLines           map[string]bool
-	prevSnapshot         *flash.Snapshot
-	resolveHead          func(string) (string, error)
-	oroshiRoot           string
-	wrapLines            bool
-	showHelp             bool
-	reviewSent           bool
-	screenFlash          bool
+	highlighter           *highlight.Highlighter
+	nav                   navigation.State
+	fileIndex             navigation.FileIndex
+	viewContext           navigation.ViewContext
+	pendingKey            string
+	repoRoot              string
+	ref                   string
+	userComments          []comments.Comment
+	commentsPath          string
+	commentIndex          map[string]string
+	editState             editing.State
+	editTextArea          textarea.Model
+	statusMessage         string
+	viewportWidth         int
+	lineNumberWidth       int
+	flashLines            map[string]bool
+	prevSnapshot          *flash.Snapshot
+	resolveHead           func(string) (string, error)
+	oroshiRoot            string
+	wrapLines             bool
+	showHelp              bool
+	reviewSent            bool
+	screenFlash           bool
 }
 
 func (m model) Init() tea.Cmd {
@@ -344,7 +345,7 @@ func applyEditResult(userComments []comments.Comment, result editing.SaveResult,
 }
 
 func (m *model) rebuildDisplay() tea.Cmd {
-	rows, highlighted, rawLines, err := buildDisplay(m.repoRoot, m.highlighter)
+	rows, highlighted, rawLines, err := buildDisplay(m.repoRoot, m.ref, m.highlighter)
 	if err != nil {
 		return nil
 	}
@@ -710,6 +711,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	var ref string
+	if len(os.Args) > 1 {
+		ref = os.Args[1]
+		if err := git.VerifyRef(repoRoot, ref); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+	}
+
 	home, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -721,7 +731,7 @@ func main() {
 	queryDir := filepath.Join(home, ".local/share/nvim/lazy/nvim-treesitter/queries")
 	highlighter := highlight.NewWithTreeSitter(th, syntaxMapPath, grammarDir, queryDir)
 
-	rows, highlighted, rawLines, err := buildDisplay(repoRoot, highlighter)
+	rows, highlighted, rawLines, err := buildDisplay(repoRoot, ref, highlighter)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -739,7 +749,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	watchChannel, err := watcher.Watch(repoRoot)
+	watchChannel, err := watcher.Watch(repoRoot, ref)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -786,6 +796,7 @@ func main() {
 		prevSnapshot:          func() *flash.Snapshot { s := flash.NewSnapshot(rows, rawLines); return &s }(),
 		resolveHead:           git.Head,
 		repoRoot:              repoRoot,
+		ref:                   ref,
 		oroshiRoot:            oroshiRoot,
 		userComments:          userComments,
 		commentsPath:          commentsPath,
@@ -803,8 +814,8 @@ func main() {
 	}
 }
 
-func buildDisplay(repoRoot string, highlighter *highlight.Highlighter) ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
-	raw, err := git.Diff(repoRoot)
+func buildDisplay(repoRoot, ref string, highlighter *highlight.Highlighter) ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
+	raw, err := git.Diff(repoRoot, ref)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -879,4 +890,3 @@ func buildCommentIndex(userComments []comments.Comment, repoRoot string) map[str
 	}
 	return index
 }
-
