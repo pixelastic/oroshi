@@ -17,7 +17,7 @@ setup() {
   [[ "$output" = "src/file.ts " ]]
 }
 
-@test "widget: dispatches to fzf-git-files-dirty-stageable when last word is vfa" {
+@test "widget: dispatches to fzf-git-files-dirty-stageable when first word is vfa" {
   fzf-git-files-dirty-stageable() { echo "src/file.ts"; }
   bats_mock fzf-git-files-dirty-stageable
 
@@ -61,11 +61,29 @@ setup() {
   [[ "$output" = "src/a.ts 'my file.pdf' " ]]
 }
 
-@test "widget: dispatches to fzf-skills-allowlist-add when last word is skala" {
+@test "widget: dispatches to fzf-skills-allowlist-add when first word is skala" {
   fzf-skills-allowlist-add() { echo "jq"; }
   bats_mock fzf-skills-allowlist-add
 
   bats_run_zsh "${sourcePrefix}; LBUFFER='skala '; oroshi-ctrl-p-widget; echo \$LBUFFER"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "skala jq " ]]
+}
+
+@test "widget: keeps skala picker after an argument is already typed" {
+  fzf-skills-allowlist-add() { echo "rg"; }
+  bats_mock fzf-skills-allowlist-add
+
+  bats_run_zsh "${sourcePrefix}; LBUFFER='skala jq '; oroshi-ctrl-p-widget; echo \$LBUFFER"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "skala jq rg " ]]
+}
+
+@test "widget: keeps js-test picker after an argument is already typed" {
+  fzf-js-tests() { echo "src/b.test.js"; }
+  bats_mock fzf-js-tests
+
+  bats_run_zsh "${sourcePrefix}; LBUFFER='js-test src/a.test.js '; oroshi-ctrl-p-widget; echo \$LBUFFER"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "js-test src/a.test.js src/b.test.js " ]]
 }

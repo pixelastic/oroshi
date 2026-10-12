@@ -1,5 +1,5 @@
 # Ctrl-P: Search for a file in current git project
-# Dispatches to a context-aware picker based on the last word in LBUFFER
+# Dispatches to a context-aware picker based on the first word in LBUFFER
 
 function oroshi-ctrl-p-widget() {
   # Stop if not available
@@ -37,10 +37,10 @@ function oroshi-ctrl-p-widget() {
     skala fzf-skills-allowlist-add
   )
 
-  # Dispatch to context-aware picker based on last word in buffer
+  # Dispatch to context-aware picker based on first word in buffer
   local bufferWords=(${(z)LBUFFER})
-  local lastWord="${bufferWords[-1]}"
-  local picker="${specialPickers[$lastWord]}"
+  local firstWord="${bufferWords[1]}"
+  local picker="${specialPickers[$firstWord]}"
   [[ "$picker" == "" ]] && picker="ctrl-p"
 
   export PROMPT_PREVENT_REFRESH="1"
