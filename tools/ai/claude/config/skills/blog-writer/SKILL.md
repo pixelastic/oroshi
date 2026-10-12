@@ -1,15 +1,15 @@
 ---
 name: blog-writer
-description: Use when the user wants to write a short technical blog article from real work — code, a worktree, a branch, a PRD or a bare topic. Interviews the user, validates a Brief, writes an English Markdown Draft and lints it.
+description: Use when the user wants to write a short technical blog article from real work — code, a worktree, a branch, a PRD or a bare topic. Interviews the user, validates a Brief, writes an English Markdown Draft, lints it and has three Reviewers check it.
 ---
 
 # Blog Writer
 
 ## Overview
 
-Turn real work into a short technical article in English. The skill reads the **Source material**, interviews the user, validates a **Brief**, writes a **Draft** in an **Article folder**, lints it, and stops when the user approves.
+Turn real work into a short technical article in English. The skill reads the **Source material**, interviews the user, validates a **Brief**, writes a **Draft** in an **Article folder**, lints it, has three **Reviewers** check it, and stops when the user approves.
 
-Vocabulary: use the terms of `GLOSSARY.md` (Reader, Voice, Structure, Style, Brief, Article folder, Draft, Interview, Source material, Lint). Do not use the words listed under `_Avoid_`.
+Vocabulary: use the terms of `GLOSSARY.md` (Reader, Voice, Structure, Style, Brief, Article folder, Draft, Interview, Source material, Lint, Reviewer, Improvement, Nitpick). Do not use the words listed under `_Avoid_`.
 
 The user speaks French or English. Every written artifact is in English, except the interview verbatim.
 
@@ -81,7 +81,35 @@ Append each question and answer verbatim to the `interview` path.
 3. A violation with the rule `blog.WordLimit` means the Draft is too long. Do not trim blindly: go back to Step 4 and propose a split.
 4. Run `blog-lint` again. Repeat until zero errors remain. Warnings may stay when justified.
 
-### Step 7 — Show the Draft
+### Step 7 — Review
+
+**Goal:** Fix what the Lint cannot see, before the user reads the Draft.
+
+**Exit criterion:** Every Improvement is applied and `blog-lint` reports zero errors.
+
+1. Send a single message with 3 Agent tool calls, one per Reviewer. Use the `general-purpose` subagent type for each.
+2. Each prompt includes the absolute `draft` path and tells the Reviewer to:
+   - read the Draft;
+   - read its own reference file from the table below, and `references/review-format.md`, and nothing else;
+   - check the Draft against its axis only;
+   - return findings in the format of `references/review-format.md`, or `No findings.`
+3. The Reader Reviewer prompt also states the Reader of the Brief when the Brief overrides the default Reader, in one sentence.
+4. A style reference marked pending in Step 5 has no Reviewer. Skip it and tell the user.
+5. Present each report under its own heading, in this order: `## Voice`, `## Structure`, `## Reader`. Do not merge or rerank the axes.
+6. Keep only the Improvements. Hide the Nitpicks. An out-of-axis finding stays in the report of the Reviewer who raised it, and follows the same rule.
+7. Apply each Improvement with the Edit tool. Locate the place from the quote. When two Improvements contradict, keep the one that follows the Voice, and tell the user.
+8. Run `blog-lint <draft>` again and fix each error. Repeat until zero errors remain.
+9. End with a one-line summary: Improvements per axis, then the total, then "(N nitpicks hidden)".
+
+| Reviewer | Reference file |
+|---|---|
+| Voice | `references/voice.md` |
+| Structure | `references/structure.md` |
+| Reader | `references/reader.md` |
+
+Only when the harness has no sub-agents: run the three axes one after the other, each with its own notes, as if each were a separate Reviewer. Do not carry findings from one axis into the next.
+
+### Step 8 — Show the Draft
 
 **Goal:** Let the user read the Draft and decide.
 
@@ -105,6 +133,10 @@ Append each question and answer verbatim to the `interview` path.
 | "The user will want it in the clipboard" | Copy only on request. |
 | "I'll link the first article for background" | Every article stands alone. Recap what it assumes. |
 | "Style references are missing, I'll invent a Voice" | Tell the user they are pending. Write plainly with simple words. |
+| "I can review the three axes myself in one pass" | Each Reviewer needs an isolated context. Send the three Agent calls in one message. |
+| "A Reviewer found nothing, so it skipped the job" | A Reviewer may report nothing. Do not ask for findings. |
+| "The Nitpicks are cheap, I'll fix them too" | Apply only Improvements. Report the hidden Nitpick count. |
+| "The edits are small, no need to lint again" | Improvements can break the Lint. Run `blog-lint` again. |
 
 ## Checklist
 
@@ -116,5 +148,8 @@ Append each question and answer verbatim to the `interview` path.
 - [ ] Draft written in English at the `draft` path
 - [ ] Pending style references reported to the user
 - [ ] `blog-lint` returns zero errors
+- [ ] Three Reviewers sent in a single message, each reading only its own reference plus `references/review-format.md`
+- [ ] Only Improvements applied, hidden Nitpick count reported
+- [ ] `blog-lint` returns zero errors after the Improvements
 - [ ] User approved the Draft
 - [ ] Clipboard untouched unless requested
