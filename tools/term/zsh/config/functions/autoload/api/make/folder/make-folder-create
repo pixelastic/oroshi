@@ -1,0 +1,10 @@
+# Create a Make folder, and print it as JSON
+# The folder is at the top level, unless --parentFolderId is given
+# Usage:
+# $ make-folder-create --name "Paris Meetup"
+# $ make-folder-create --name "Paris Meetup" --parentFolderId 399268
+# $ make-folder-create --name "Paris Meetup" --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-folder-create.js" "$@"

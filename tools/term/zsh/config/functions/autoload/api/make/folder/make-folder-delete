@@ -1,0 +1,9 @@
+# Delete an empty Make folder by its ID, and print the ID
+# A folder that holds a subfolder or a scenario is refused
+# Usage:
+# $ make-folder-delete 399268
+# $ make-folder-delete 399268 --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-folder-delete.js" "$@"
