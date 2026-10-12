@@ -1,0 +1,10 @@
+# Search the Scenarios of the Make team by name, and print them as JSON
+# Without text, every Scenario matches
+# Usage:
+# $ make-scenario-search "sync"
+# $ make-scenario-search "sync" --limit 10
+# $ make-scenario-search "sync" --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-scenario-search.js" "$@"
