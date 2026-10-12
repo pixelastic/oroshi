@@ -1,0 +1,13 @@
+# Run an enabled Make scenario by its ID, and print the execution ID
+# With --wait, the run waits for its end (40 seconds at most) and prints the outputs as JSON
+# The inputs are JSON, inline or from a file. The file wins
+# Usage:
+# $ make-scenario-run 925
+# $ make-scenario-run 925 --wait
+# $ make-scenario-run 925 --data '{"email":"tim@example.com"}'
+# $ make-scenario-run 925 --data-file ./data.json
+# $ make-scenario-run 925 --wait --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-scenario-run.js" "$@"
