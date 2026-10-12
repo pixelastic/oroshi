@@ -58,7 +58,21 @@ Append each question and answer verbatim to the `interview` path.
 4. If the estimate exceeds 2000 prose words, do not write a Brief yet. Propose a split into standalone articles, each with its own Brief and Article folder. Wait for the user's decision. Write one Brief per article, and run Step 1 for each additional slug.
 5. Show the Brief. Apply the user's changes. Repeat until the user validates it.
 
-### Step 5 — Write the Draft
+### Step 5 — Images
+
+**Goal:** Save every image of the article in the `images` folder, named from its meaning.
+
+**Exit criterion:** Each image the user gave is a file in the `images` folder, and you hold its name and its alt text.
+
+Skip this step when the user gave no image. Read `references/images.md`. Run this step each time the user gives an image, at any point of the session: a pasted image must be copied in the same turn.
+
+1. Ask once, before the Draft, whether the article needs images. Do not insist.
+2. For an image URL, download it into the `images` folder. For a pasted image, copy it from the path of its `[Image: source: ...]` block. When that block is missing, ask the user for a path or a URL.
+3. Name the file from what it shows. Never overwrite an existing file.
+4. Look at the image and write its alt text.
+5. Never generate or edit an image.
+
+### Step 6 — Write the Draft
 
 **Goal:** Write the Draft in English, following the Brief and the Style.
 
@@ -67,25 +81,26 @@ Append each question and answer verbatim to the `interview` path.
 1. Read `references/draft-format.md`.
 2. Read the style references that exist: `references/style.md`, `references/voice.md`, `references/structure.md`. Missing files are pending. Tell the user which are pending, then write without them.
 3. Write in English, whatever language the user speaks, including quotes from the French Interview.
-4. Link the images already in the `images` folder with relative paths and an alt text.
+4. Link each image of the `images` folder with a relative path and its alt text, where the text needs it.
 5. Write the file with the Write tool, or Edit when the file exists.
 
-### Step 6 — Lint
+### Step 7 — Lint
 
 **Goal:** Remove every mechanical violation.
 
-**Exit criterion:** `blog-lint` reports zero errors.
+**Exit criterion:** `blog-lint` reports zero errors, and every image link points to an existing file and has an alt text.
 
 1. Run `blog-lint <draft>`. It prints a JSON array of violations with `line`, `rule`, `severity`, `match` and `message`.
 2. Fix each error with the Edit tool.
 3. A violation with the rule `blog.WordLimit` means the Draft is too long. Do not trim blindly: go back to Step 4 and propose a split.
-4. Run `blog-lint` again. Repeat until zero errors remain. Warnings may stay when justified.
+4. Run the link check of `references/images.md`. Fix each broken link or empty alt text: rename the link, save the missing image (Step 5) or remove the link.
+5. Run `blog-lint` and the link check again. Repeat until zero errors and zero broken links remain. Warnings may stay when justified.
 
-### Step 7 — Review
+### Step 8 — Review
 
 **Goal:** Fix what the Lint cannot see, before the user reads the Draft.
 
-**Exit criterion:** Every Improvement is applied and `blog-lint` reports zero errors.
+**Exit criterion:** Every Improvement is applied, `blog-lint` reports zero errors and the link check reports zero broken links.
 
 1. Send a single message with 3 Agent tool calls, one per Reviewer. Use the `general-purpose` subagent type for each.
 2. Each prompt includes the absolute `draft` path and tells the Reviewer to:
@@ -94,11 +109,11 @@ Append each question and answer verbatim to the `interview` path.
    - check the Draft against its axis only;
    - return findings in the format of `references/review-format.md`, or `No findings.`
 3. The Reader Reviewer prompt also states the Reader of the Brief when the Brief overrides the default Reader, in one sentence.
-4. A style reference marked pending in Step 5 has no Reviewer. Skip it and tell the user.
+4. A style reference marked pending in Step 6 has no Reviewer. Skip it and tell the user.
 5. Present each report under its own heading, in this order: `## Voice`, `## Structure`, `## Reader`. Do not merge or rerank the axes.
 6. Keep only the Improvements. Hide the Nitpicks. An out-of-axis finding stays in the report of the Reviewer who raised it, and follows the same rule.
 7. Apply each Improvement with the Edit tool. Locate the place from the quote. When two Improvements contradict, keep the one that follows the Voice, and tell the user.
-8. Run `blog-lint <draft>` again and fix each error. Repeat until zero errors remain.
+8. Run `blog-lint <draft>` and the link check again. Fix each error and each broken link. Repeat until none remain.
 9. End with a one-line summary: Improvements per axis, then the total, then "(N nitpicks hidden)".
 
 | Reviewer | Reference file |
@@ -109,7 +124,7 @@ Append each question and answer verbatim to the `interview` path.
 
 Only when the harness has no sub-agents: run the three axes one after the other, each with its own notes, as if each were a separate Reviewer. Do not carry findings from one axis into the next.
 
-### Step 8 — Show the Draft
+### Step 9 — Show the Draft
 
 **Goal:** Let the user read the Draft and decide.
 
@@ -117,7 +132,7 @@ Only when the harness has no sub-agents: run the three axes one after the other,
 
 1. Display the Draft from the `draft` path, and its word count from `markdown-wordcount <draft>`.
 2. Ask the user to approve or to request changes.
-3. Change requests: go back to Step 5, then run Step 6 again.
+3. Change requests: go back to Step 6, then run Step 7 again.
 4. Approval: the skill ends. Do not copy the Draft to the clipboard. Do it only on request, with `clipboard-write`. Save to another path only on request.
 
 ## Common Rationalizations
@@ -137,6 +152,12 @@ Only when the harness has no sub-agents: run the three axes one after the other,
 | "A Reviewer found nothing, so it skipped the job" | A Reviewer may report nothing. Do not ask for findings. |
 | "The Nitpicks are cheap, I'll fix them too" | Apply only Improvements. Report the hidden Nitpick count. |
 | "The edits are small, no need to lint again" | Improvements can break the Lint. Run `blog-lint` again. |
+| "The pasted image path is in /tmp, I'll copy it later" | `/tmp` is cleaned. Copy the image in the same turn as the paste. |
+| "I'll rebuild the pasted image path from the session id" | Read the path in the `[Image: source: ...]` block. Never rebuild it. |
+| "`1.png` is fine as a file name" | Name the file from what it shows. |
+| "The alt text can repeat the file name" | Look at the image. Say what it shows and what to notice. |
+| "The image is too big, I'll resize it" | The skill never edits an image. Tell the user. |
+| "The link looks right, no need to check it" | Run the link check. A broken link must not reach the user. |
 
 ## Checklist
 
@@ -145,11 +166,15 @@ Only when the harness has no sub-agents: run the three axes one after the other,
 - [ ] Interview: one question per turn, verbatim saved at the `interview` path
 - [ ] Brief validated by the user, saved at the `brief` path
 - [ ] Split proposed before drafting when the estimate exceeded 2000 prose words
+- [ ] Each image saved in the `images` folder, named from its meaning, copied in the turn it was pasted
 - [ ] Draft written in English at the `draft` path
 - [ ] Pending style references reported to the user
+- [ ] Every image has alt text written after looking at it
 - [ ] `blog-lint` returns zero errors
+- [ ] Link check reports zero broken links and zero empty alt texts
+- [ ] No image generated or edited
 - [ ] Three Reviewers sent in a single message, each reading only its own reference plus `references/review-format.md`
 - [ ] Only Improvements applied, hidden Nitpick count reported
-- [ ] `blog-lint` returns zero errors after the Improvements
+- [ ] `blog-lint` and the link check pass after the Improvements
 - [ ] User approved the Draft
 - [ ] Clipboard untouched unless requested
