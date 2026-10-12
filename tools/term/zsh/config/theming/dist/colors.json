@@ -871,6 +871,10 @@
     "ansi": 105,
     "hex": "#ea580c"
   },
+  "make-folder-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
   "make-scenario-id": {
     "ansi": 105,
     "hex": "#ea580c"

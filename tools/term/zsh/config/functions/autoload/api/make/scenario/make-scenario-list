@@ -1,9 +1,11 @@
 # List the Scenarios of the Make team as a colored table, one row per scenario
 # Without text, every Scenario matches
+# --folderId keeps only the Scenarios directly in that Folder
 # Usage:
 # $ make-scenario-list
 # $ make-scenario-list "sync"
 # $ make-scenario-list "sync" --limit 10
+# $ make-scenario-list --folderId 399268
 # $ make-scenario-list "sync" --account perso
 setopt local_options err_return
 

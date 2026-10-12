@@ -1,0 +1,9 @@
+# Read a Make folder by its ID, with its direct subfolders and scenarios, and print it as JSON
+# The Scenarios of the subfolders are not included
+# Usage:
+# $ make-folder-read 399268
+# $ make-folder-read 399268 --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-folder-read.js" "$@"

@@ -1,0 +1,11 @@
+# List the top-level Folders of the Make team, one per line
+# Fields: folderId▮name▮path▮parentFolderId▮scenariosTotal
+# parentFolderId is empty for a top-level Folder, path shows the names of its parents
+# Usage:
+# $ make-folder-list-raw
+# $ make-folder-list-raw --limit 10
+# $ make-folder-list-raw --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-folder-list-raw.js" "$@"
