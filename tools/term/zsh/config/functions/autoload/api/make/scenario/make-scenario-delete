@@ -1,0 +1,8 @@
+# Delete a Make scenario by its ID, and print the ID
+# Usage:
+# $ make-scenario-delete 925
+# $ make-scenario-delete 925 --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-scenario-delete.js" "$@"

@@ -1,0 +1,13 @@
+# Create a Make scenario, and print it as JSON
+# The Blueprint and the Scheduling are JSON, inline or from a file. The file wins
+# Scheduling is on-demand by default
+# Usage:
+# $ make-scenario-create --name "Paris Meetup" --blueprint-file ./blueprint.json
+# $ make-scenario-create --name "Paris Meetup" --blueprint '{"flow":[]}' --scheduling '{"type":"on-demand"}'
+# $ make-scenario-create --blueprint-file ./blueprint.json --scheduling-file ./scheduling.json
+# $ make-scenario-create --blueprint-file ./blueprint.json --folderId 12
+# $ make-scenario-create --blueprint-file ./blueprint.json --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-scenario-create.js" "$@"
