@@ -20,6 +20,7 @@ recB▮Lyon Meetup▮▮
 - A newline inside a value becomes a space.
 - The module removes `▮` and `▯` from the values, so they cannot break the
   columns.
+  `rawColumn` from `@oroshi/api-shared` applies these rules to one value.
 - An empty listing prints one empty line.
 
 `list-raw` sits on top of [`search`](search.md): it passes its flags to
@@ -94,6 +95,7 @@ as one multi-line string.
 
 ```javascript
 import { _ } from 'golgoth';
+import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
 import { entitySearch } from './<entity>Search.js';
 
 export let __;
@@ -118,10 +120,10 @@ __ = {
    * @returns {string} The fields, separated by ▮
    */
   toLine(entity) {
-    // Pick the fields of the entity to show, then apply the raw format rules
-    // of the Role section: join multi-values with ▯, replace newlines with a
-    // space and remove the separators from the values
-    const fields = [entity.id];
+    // Pick the fields of the entity to show, and format each one with
+    // rawColumn: it joins multi-values with ▯, replaces newlines with a space
+    // and removes the separators from the values
+    const fields = [entity.id].map(rawColumn);
     return fields.join('▮');
   },
   entitySearch,

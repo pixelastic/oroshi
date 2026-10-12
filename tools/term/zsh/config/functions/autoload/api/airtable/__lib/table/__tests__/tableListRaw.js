@@ -3,8 +3,6 @@ import { firostError } from 'firost';
 import { __, tableListRaw } from '../tableListRaw.js';
 
 describe('tableListRaw', () => {
-  const separators = { field: '▮', list: '▯' };
-
   beforeEach(() => {
     vi.spyOn(__, 'callApi').mockReturnValue({
       tables: [
@@ -17,7 +15,6 @@ describe('tableListRaw', () => {
       ...table,
       name: table.name.toUpperCase(),
     }));
-    vi.spyOn(__, 'airtableSeparators').mockReturnValue(separators);
   });
 
   it('reads the Tables of the Base from the schema endpoint', async () => {
@@ -93,7 +90,7 @@ describe('tableListRaw', () => {
         expected: 'tblA▮Line one Linetwothree',
       },
     ])('$title', ({ input, expected }) => {
-      const actual = __.toLine(input, separators);
+      const actual = __.toLine(input);
 
       expect(actual).toEqual(expected);
     });

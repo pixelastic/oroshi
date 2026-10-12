@@ -1362,9 +1362,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@oroshi/airtable@workspace:tools/term/zsh/config/functions/autoload/api/airtable/__lib"
   dependencies:
+    "@oroshi/api-shared": "workspace:*"
     firost: "npm:5.11.0"
     golgoth: "npm:3.1.0"
     minimist: "npm:1.2.8"
+  languageName: unknown
+  linkType: soft
+
+"@oroshi/api-shared@workspace:*, @oroshi/api-shared@workspace:tools/term/zsh/config/functions/autoload/api/__shared/__lib":
+  version: 0.0.0-use.local
+  resolution: "@oroshi/api-shared@workspace:tools/term/zsh/config/functions/autoload/api/__shared/__lib"
+  dependencies:
+    golgoth: "npm:3.1.0"
   languageName: unknown
   linkType: soft
 

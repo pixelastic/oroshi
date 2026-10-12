@@ -1,6 +1,5 @@
 import { _ } from 'golgoth';
-import { airtableRawColumn } from '../rawColumn.js';
-import { airtableSeparators } from '../separators.js';
+import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
 import { recordSearch } from './recordSearch.js';
 
 export let __;
@@ -15,9 +14,8 @@ export async function recordListRaw(options) {
   // An empty formula matches every Record
   const records = await __.recordSearch({ ...options, query: '' });
 
-  const separators = await __.airtableSeparators();
   return _.chain(records)
-    .map((record) => __.toLine(record, separators))
+    .map((record) => __.toLine(record))
     .join('\n')
     .value();
 }
@@ -26,15 +24,13 @@ __ = {
   /**
    * Turn one Record into a raw line
    * @param {object} record - Record, as returned by search
-   * @param {object} separators - { field, list }
-   * @returns {string} The Record ID and its Fields as JSON, separated by the field separator
+   * @returns {string} The Record ID and its Fields as JSON, separated by ▮
    */
-  toLine(record, separators) {
+  toLine(record) {
     return _.chain([record.id, record.fields])
-      .map((value) => airtableRawColumn(value, separators))
-      .join(separators.field)
+      .map((value) => rawColumn(value))
+      .join('▮')
       .value();
   },
-  airtableSeparators,
   recordSearch,
 };

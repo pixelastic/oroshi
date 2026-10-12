@@ -3,8 +3,6 @@ import { firostError } from 'firost';
 import { __, baseListRaw } from '../baseListRaw.js';
 
 describe('baseListRaw', () => {
-  const separators = { field: '▮', list: '▯' };
-
   beforeEach(() => {
     vi.spyOn(__, 'callApi').mockReturnValue({
       bases: [
@@ -17,7 +15,6 @@ describe('baseListRaw', () => {
       ...base,
       name: base.name.toUpperCase(),
     }));
-    vi.spyOn(__, 'airtableSeparators').mockReturnValue(separators);
   });
 
   it('reads the Bases from the schema endpoint', async () => {
@@ -81,7 +78,7 @@ describe('baseListRaw', () => {
         expected: 'appA▮Line one Linetwothree',
       },
     ])('$title', ({ input, expected }) => {
-      const actual = __.toLine(input, separators);
+      const actual = __.toLine(input);
 
       expect(actual).toEqual(expected);
     });

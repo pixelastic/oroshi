@@ -1,8 +1,7 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
+import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
 import { callApi } from '../callApi.js';
-import { airtableRawColumn } from '../rawColumn.js';
-import { airtableSeparators } from '../separators.js';
 import { formatTable } from './formatTable.js';
 
 export let __;
@@ -27,11 +26,10 @@ export async function tableListRaw(options) {
 
   const response = await __.callApi(`meta/bases/${baseId}/tables`);
 
-  const separators = await __.airtableSeparators();
   return _.chain(response.tables)
     .take(limit)
     .map(__.formatTable)
-    .map((table) => __.toLine(table, separators))
+    .map((table) => __.toLine(table))
     .join('\n')
     .value();
 }
@@ -40,16 +38,14 @@ __ = {
   /**
    * Turn one Table into a raw line
    * @param {object} table - Table, as formatted by formatTable
-   * @param {object} separators - { field, list }
-   * @returns {string} The Table ID and name, separated by the field separator
+   * @returns {string} The Table ID and name, separated by ▮
    */
-  toLine(table, separators) {
+  toLine(table) {
     return _.chain([table.id, table.name])
-      .map((value) => airtableRawColumn(value, separators))
-      .join(separators.field)
+      .map((value) => rawColumn(value))
+      .join('▮')
       .value();
   },
-  airtableSeparators,
   callApi,
   formatTable,
 };

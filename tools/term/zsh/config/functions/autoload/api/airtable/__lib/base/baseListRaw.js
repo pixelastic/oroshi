@@ -1,7 +1,6 @@
 import { _ } from 'golgoth';
+import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
 import { callApi } from '../callApi.js';
-import { airtableRawColumn } from '../rawColumn.js';
-import { airtableSeparators } from '../separators.js';
 import { formatBase } from './formatBase.js';
 
 export let __;
@@ -20,11 +19,10 @@ export async function baseListRaw(options = {}) {
 
   const response = await __.callApi('meta/bases');
 
-  const separators = await __.airtableSeparators();
   return _.chain(response.bases)
     .take(limit)
     .map(__.formatBase)
-    .map((base) => __.toLine(base, separators))
+    .map((base) => __.toLine(base))
     .join('\n')
     .value();
 }
@@ -33,16 +31,14 @@ __ = {
   /**
    * Turn one Base into a raw line
    * @param {object} base - Base, as formatted by formatBase
-   * @param {object} separators - { field, list }
-   * @returns {string} The Base ID and name, separated by the field separator
+   * @returns {string} The Base ID and name, separated by ▮
    */
-  toLine(base, separators) {
+  toLine(base) {
     return _.chain([base.id, base.name])
-      .map((value) => airtableRawColumn(value, separators))
-      .join(separators.field)
+      .map((value) => rawColumn(value))
+      .join('▮')
       .value();
   },
-  airtableSeparators,
   callApi,
   formatBase,
 };

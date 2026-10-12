@@ -24,6 +24,10 @@ service.
 
 ```text
 api/
+├── __shared/
+│   └── __lib/
+│       ├── package.json
+│       └── rawColumn.js
 └── <service>/
     ├── __docs/
     │   └── GLOSSARY.md
@@ -75,6 +79,16 @@ The `list` wrapper has no module. It calls `list-raw` and adds colors and
 
 A service with a single entity keeps its `<entity>` folder. The layout does not
 change.
+
+## Shared package
+
+`api/__shared/__lib/` is a yarn workspace (`@oroshi/api-shared`) for the code
+every service needs. Services import from it, for example
+`import { rawColumn } from '@oroshi/api-shared/rawColumn.js'`.
+
+- `rawColumn.js` formats one value as a column of [`list-raw`](reference/commands/list-raw.md#role).
+
+Move any other code that several services share there.
 
 ## Service glossary
 

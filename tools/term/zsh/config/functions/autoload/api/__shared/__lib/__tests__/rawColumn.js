@@ -1,8 +1,6 @@
-import { airtableRawColumn } from '../rawColumn.js';
+import { rawColumn } from '../rawColumn.js';
 
-describe('airtableRawColumn', () => {
-  const separators = { field: '▮', list: '▯' };
-
+describe('rawColumn', () => {
   it.each([
     { title: 'keeps a plain string', input: 'Paris', expected: 'Paris' },
     {
@@ -27,7 +25,7 @@ describe('airtableRawColumn', () => {
       expected: '{"id":"att1"}',
     },
   ])('$title', ({ input, expected }) => {
-    const actual = airtableRawColumn(input, separators);
+    const actual = rawColumn(input);
     expect(actual).toEqual(expected);
   });
 });

@@ -1,7 +1,6 @@
 import { __, recordListRaw } from '../recordListRaw.js';
 
 describe('recordListRaw', () => {
-  const separators = { field: '▮', list: '▯' };
   const anchors = { baseId: 'appDEVREL', tableId: 'tblMEETUPS' };
 
   beforeEach(() => {
@@ -9,7 +8,6 @@ describe('recordListRaw', () => {
       { id: 'recA', fields: { Name: 'Paris Meetup' } },
       { id: 'recB', fields: {} },
     ]);
-    vi.spyOn(__, 'airtableSeparators').mockReturnValue(separators);
   });
 
   it('searches with an empty formula and the flags it received', async () => {
@@ -49,7 +47,7 @@ describe('recordListRaw', () => {
         expected: 'recA▮{"Name":"Line one\\nLinetwothree"}',
       },
     ])('$title', ({ input, expected }) => {
-      const actual = __.toLine(input, separators);
+      const actual = __.toLine(input);
 
       expect(actual).toEqual(expected);
     });
