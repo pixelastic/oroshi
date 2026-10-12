@@ -22,6 +22,7 @@ describe('attachmentAdd', () => {
     await write('Hello world', filepath);
     vi.spyOn(__, 'callApi').mockReturnValue({ id: 'recABC' });
     vi.spyOn(__, 'recordRead').mockReturnValue(record);
+    vi.spyOn(__, 'getContentType').mockReturnValue('image/png');
   });
   afterEach(async () => {
     await remove(testDirectory);
@@ -33,7 +34,6 @@ describe('attachmentAdd', () => {
     recordId: 'recABC',
     field: 'Logo',
     file: filepath,
-    contentType: 'image/png',
     ...options,
   });
 
@@ -152,5 +152,25 @@ describe('attachmentAdd', () => {
 
     expect(actual).toHaveProperty('code', 'AIRTABLE_REQUEST_FAILED');
     expect(__.recordRead).not.toHaveBeenCalled();
+  });
+});
+
+describe('attachmentAdd.getContentType', () => {
+  let testDirectory = null;
+
+  beforeEach(() => {
+    testDirectory = tmpDirectory('airtable-attachment-content-type');
+  });
+  afterEach(async () => {
+    await remove(testDirectory);
+  });
+
+  it('detects the content type from the file itself', async () => {
+    const filepath = path.join(testDirectory, 'note.txt');
+    await write('Hello world', filepath);
+
+    const actual = await __.getContentType(filepath);
+
+    expect(actual).toEqual('text/plain');
   });
 });

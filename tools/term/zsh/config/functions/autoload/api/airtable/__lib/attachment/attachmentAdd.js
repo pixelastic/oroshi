@@ -1,6 +1,6 @@
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
-import { firostError, isFile } from 'firost';
+import { firostError, isFile, run } from 'firost';
 import { callApi } from '../callApi.js';
 import { recordRead } from '../record/recordRead.js';
 
@@ -18,11 +18,10 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024;
  * @param {string} options.recordId - Record ID holding the Field. Throws AIRTABLE_RECORD_ID_MISSING if empty
  * @param {string} options.field - Field name or Field ID of type Attachment. Throws AIRTABLE_FIELD_MISSING if empty
  * @param {string} options.file - Path of the local file, 5 MB at most. Throws AIRTABLE_FILE_MISSING if empty
- * @param {string} options.contentType - Content type of the file
  * @returns {Promise<object>} The Record, formatted, with the new Attachment last in the Field
  */
 export async function attachmentAdd(options) {
-  const { baseId, tableId, recordId, field, file, contentType } = options;
+  const { baseId, tableId, recordId, field, file } = options;
 
   // Without these, the endpoint would contain undefined
   if (!baseId) {
@@ -56,6 +55,8 @@ export async function attachmentAdd(options) {
     );
   }
 
+  // The content type comes from the file itself
+  const contentType = await __.getContentType(file);
   const content = await readFile(file);
   await __.callApi(
     `${CONTENT_URL}/${baseId}/${recordId}/${encodeURIComponent(field)}/uploadAttachment`,
@@ -74,4 +75,18 @@ export async function attachmentAdd(options) {
   return await __.recordRead({ baseId, tableId, recordId });
 }
 
-__ = { callApi, recordRead };
+__ = {
+  /**
+   * Get the content type of a local file
+   * @param {string} file - Path of the file
+   * @returns {Promise<string>} The MIME type, as detected by `file`
+   */
+  async getContentType(file) {
+    const { stdout } = await run(['file', '--brief', '--mime-type', file], {
+      stdout: false,
+    });
+    return stdout.trim();
+  },
+  callApi,
+  recordRead,
+};

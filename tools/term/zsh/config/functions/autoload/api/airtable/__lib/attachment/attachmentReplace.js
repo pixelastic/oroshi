@@ -13,7 +13,6 @@ export let __;
  * @param {string} options.recordId - Record ID holding the Field
  * @param {string} options.field - Field name of type Attachment
  * @param {string} options.file - Path of the local file, 5 MB at most
- * @param {string} options.contentType - Content type of the file
  * @returns {Promise<object>} The updated Record, formatted
  */
 export async function attachmentReplace(options) {

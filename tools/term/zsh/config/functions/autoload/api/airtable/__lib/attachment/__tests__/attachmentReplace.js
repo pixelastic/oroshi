@@ -24,7 +24,6 @@ describe('attachmentReplace', () => {
     recordId: 'recABC',
     field: 'Logo',
     file: './logo.png',
-    contentType: 'image/png',
     ...options,
   });
 

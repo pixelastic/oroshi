@@ -5,23 +5,5 @@
 # $ airtable-attachment-add --baseId appXXX --tableId Meetups --recordId recXXX --field Logo --file ./logo.png --account perso
 setopt local_options err_return
 
-# No -D: the arguments are only read here, the bin parses them
-zparseopts -E \
-  -file:=flagFile
-
-local file=${flagFile[2]}
-
-# The content type comes from the file itself. A missing file fails in the module
-local contentTypeArgs=()
-if [[ -f "$file" ]]; then
-  local contentType="$(file \
-    --brief \
-    --mime-type \
-    "$file")"
-  contentTypeArgs=(--content-type "$contentType")
-fi
-
 local libDir="${functions_source[$0]:A:h:h}/__lib"
-node "${libDir}/bin/airtable-attachment-add.js" \
-  "$@" \
-  "${contentTypeArgs[@]}"
+node "${libDir}/bin/airtable-attachment-add.js" "$@"

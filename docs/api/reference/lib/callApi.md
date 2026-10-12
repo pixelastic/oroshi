@@ -29,8 +29,7 @@ answers.
 - An empty response body is returned as it is. A successful delete does not
   throw.
 - Error: a `firostError` coded `<SERVICE>_REQUEST_FAILED`, for every failure:
-  no network, a non-2xx status, or a 2xx body that is not JSON. The message
-  tells them apart: the message of the original error, or the body of the API.
+  no network, a non-2xx status, or a 2xx body that is not JSON.
 
 ## Template
 
@@ -91,7 +90,7 @@ export async function callApi(path, options = {}) {
   // 6. Check the status before parsing. A failure becomes a firostError
   //    (see architecture.md#errors)
   if (!response.ok) {
-    throw firostError('<SERVICE>_REQUEST_FAILED', text);
+    throw firostError('<SERVICE>_REQUEST_FAILED', `${response.status} ${text}`);
   }
 
   // 7. Return an empty body as it is, parse anything else
@@ -120,4 +119,4 @@ checks these behaviors:
 - Given a 2xx body that is not JSON, the function throws
   `<SERVICE>_REQUEST_FAILED`, with the body as message.
 - Given a failed response, the function throws `<SERVICE>_REQUEST_FAILED`, with
-  the body of the API as message.
+  the HTTP status and the body of the API as message.
