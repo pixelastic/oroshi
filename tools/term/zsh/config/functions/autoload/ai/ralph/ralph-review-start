@@ -1,18 +1,30 @@
 # Output the review range and PRD path of a plan as JSON for the ralph-review skill
 # Usage:
-# $ ralph-review-start [<dir>]   # dir defaults to plan-directory output
+# $ ralph-review-start [<dir>]   # dir defaults to ".", a plan dir or any path plan-directory resolves (e.g. a worktree)
 setopt local_options err_return
 
-local dir="${1:-$(plan-directory)}"
+local dir="${1:-.}"
+
+# Not a plan dir (e.g. the worktree root): deduce the plan dir from it
+[[ ! -f "$dir/state.json" ]] && dir="$(plan-directory "$dir" 2>/dev/null)"
 
 # No plan dir resolved
-[[ "$dir" == "" ]] && return 1
+if [[ "$dir" == "" ]]; then
+  print "ralph-review-start: no plan directory found" >&2
+  return 1
+fi
 # state.json must exist
-[[ ! -f "$dir/state.json" ]] && return 1
+if [[ ! -f "$dir/state.json" ]]; then
+  print "ralph-review-start: state.json not found in $dir" >&2
+  return 1
+fi
 
 # branchedAt must be set
 local branchedAt="$(jq --raw-output '.branchedAt // ""' "$dir/state.json" 2>/dev/null)"
-[[ "$branchedAt" == "" ]] && return 1
+if [[ "$branchedAt" == "" ]]; then
+  print "ralph-review-start: no branchedAt (starting commit) in $dir/state.json" >&2
+  return 1
+fi
 
 local absDir="${dir:A}"
 jq -n \
