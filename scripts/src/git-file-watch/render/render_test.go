@@ -641,3 +641,40 @@ func loadTestTheme(t *testing.T) *theme.Theme {
 	require.NoError(t, err)
 	return th
 }
+
+// --- Summary ---
+
+func TestSummaryShowsFilesAdditionsAndDeletions(t *testing.T) {
+	th := loadTestTheme(t)
+
+	actual := Summary(th, diff.Stats{Files: 153, Added: 4018, Deleted: 338}, 80)
+
+	assert.Contains(t, actual, "153 files")
+	assert.Contains(t, actual, "+4018")
+	assert.Contains(t, actual, "−338")
+}
+
+func TestSummaryUsesSingularForOneFile(t *testing.T) {
+	th := loadTestTheme(t)
+
+	actual := Summary(th, diff.Stats{Files: 1, Added: 2, Deleted: 0}, 80)
+
+	assert.Contains(t, actual, "1 file")
+	assert.NotContains(t, actual, "1 files")
+}
+
+func TestSummaryIsEmptyWhenNoFile(t *testing.T) {
+	th := loadTestTheme(t)
+
+	assert.Equal(t, "", Summary(th, diff.Stats{}, 80))
+}
+
+func TestSummaryAlignsAdditionsAndDeletionsOnTheRightEdge(t *testing.T) {
+	th := loadTestTheme(t)
+
+	actual := Summary(th, diff.Stats{Files: 3, Added: 204, Deleted: 12}, 40)
+
+	assert.Equal(t, 40, lipgloss.Width(actual))
+	assert.True(t, strings.HasSuffix(actual, "−12 "))
+	assert.True(t, strings.HasPrefix(actual, " 3 files"))
+}

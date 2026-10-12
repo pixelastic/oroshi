@@ -315,3 +315,29 @@ func isSymlinkHeader(line string) bool {
 		line == "old mode 120000" ||
 		line == "new mode 120000"
 }
+
+// Stats holds the totals displayed in the header: files changed, lines added
+// and lines deleted.
+type Stats struct {
+	Files   int
+	Added   int
+	Deleted int
+}
+
+// Summarize totals the changed files and lines of a parsed diff.
+func Summarize(fileDiffs []FileDiff) Stats {
+	stats := Stats{Files: len(fileDiffs)}
+	for _, fileDiff := range fileDiffs {
+		for _, hunk := range fileDiff.Hunks {
+			for _, line := range hunk.Lines {
+				if line.Kind == KindAdded {
+					stats.Added++
+				}
+				if line.Kind == KindRemoved {
+					stats.Deleted++
+				}
+			}
+		}
+	}
+	return stats
+}

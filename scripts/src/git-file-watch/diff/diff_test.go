@@ -404,3 +404,36 @@ func TestParsesNewSymlinkAsBinary(t *testing.T) {
 	assert.True(t, result[0].Binary)
 	assert.Empty(t, result[0].Hunks)
 }
+
+// --- Summarize ---
+
+func TestSummarizeCountsFilesAndChangedLines(t *testing.T) {
+	fileDiffs := []FileDiff{
+		{Path: "a.go", Hunks: []Hunk{{Lines: []DiffLine{
+			{Kind: KindContext},
+			{Kind: KindAdded},
+			{Kind: KindAdded},
+			{Kind: KindRemoved},
+		}}}},
+		{Path: "b.go", Hunks: []Hunk{
+			{Lines: []DiffLine{{Kind: KindRemoved}}},
+			{Lines: []DiffLine{{Kind: KindAdded}}},
+		}},
+	}
+
+	actual := Summarize(fileDiffs)
+
+	assert.Equal(t, Stats{Files: 2, Added: 3, Deleted: 2}, actual)
+}
+
+func TestSummarizeCountsBinaryFilesWithoutLines(t *testing.T) {
+	fileDiffs := []FileDiff{{Path: "logo.png", Binary: true}}
+
+	actual := Summarize(fileDiffs)
+
+	assert.Equal(t, Stats{Files: 1}, actual)
+}
+
+func TestSummarizeIsEmptyForNoDiff(t *testing.T) {
+	assert.Equal(t, Stats{}, Summarize([]FileDiff{}))
+}

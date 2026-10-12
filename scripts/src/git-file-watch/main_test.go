@@ -12,6 +12,7 @@ import (
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/comments"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/diff"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/editing"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/gittest"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/layout"
 	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/navigation"
@@ -658,7 +659,7 @@ func TestRebuildDisplayKeepsRefAfterFileChange(t *testing.T) {
 // newTestRepo initializes an empty git repo and returns its path with a runner for git commands in it.
 func newTestRepo(t *testing.T) (string, func(args ...string)) {
 	t.Helper()
-	repo := t.TempDir()
+	repo := gittest.NewRepo(t)
 	runGitInRepo := func(args ...string) {
 		t.Helper()
 		cmd := exec.Command("git", args...)
@@ -666,10 +667,6 @@ func newTestRepo(t *testing.T) (string, func(args ...string)) {
 		output, err := cmd.CombinedOutput()
 		require.NoError(t, err, string(output))
 	}
-	runGitInRepo("init", "--quiet", "--initial-branch=main")
-	runGitInRepo("config", "user.email", "test@example.com")
-	runGitInRepo("config", "user.name", "Test")
-	runGitInRepo("config", "commit.gpgsign", "false")
 	return repo, runGitInRepo
 }
 
@@ -1337,4 +1334,60 @@ func testModelWithRoot(th *theme.Theme, rows []layout.Row, repoRoot string) mode
 			ViewportHeight: 40,
 		},
 	}
+}
+
+// --- Summary header ---
+
+func TestViewStartsWithSummaryHeader(t *testing.T) {
+	th := loadTestTheme(t)
+	m := testModel(th, []layout.Row{layout.FileHeaderRow{Path: "src/file.go"}})
+	m.stats = diff.Stats{Files: 3, Added: 42, Deleted: 7}
+
+	output := m.View()
+
+	firstLine := strings.SplitN(output, "\n", 2)[0]
+	assert.Contains(t, firstLine, "3 files")
+	assert.Contains(t, firstLine, "+42")
+	assert.Contains(t, firstLine, "−7")
+}
+
+func TestWindowSizeMsgReservesOneLineForSummaryHeader(t *testing.T) {
+	th := loadTestTheme(t)
+	m := testModel(th, []layout.Row{layout.FileHeaderRow{Path: "src/file.go"}})
+
+	result, _ := m.Update(tea.WindowSizeMsg{Width: 80, Height: 40})
+
+	assert.Equal(t, 39, result.(model).nav.ViewportHeight)
+}
+
+func TestRebuildDisplayRefreshesStats(t *testing.T) {
+	th := loadTestTheme(t)
+	repo := repoWithDeletedFiles(t, map[string]string{"old.txt": "first\nsecond\n"})
+	m := testModel(th, nil)
+	m.repoRoot = repo
+	m.ref = "start"
+	m.highlighter = highlight.New(th)
+
+	m.rebuildDisplay()
+
+	assert.Positive(t, m.stats.Files)
+}
+
+func TestViewFitsTheTerminalHeightSoTheSummaryHeaderStaysOnScreen(t *testing.T) {
+	th := loadTestTheme(t)
+	marker := diff.MarkerAdded
+	rows := []layout.Row{layout.FileHeaderRow{Path: "src/file.go"}}
+	for lineNumber := 1; lineNumber <= 100; lineNumber++ {
+		rows = append(rows, layout.LineRow{FilePath: "src/file.go", LineNumber: lineNumber, Marker: &marker})
+	}
+	m := testModel(th, rows)
+	m.stats = diff.Stats{Files: 1, Added: 100}
+	const terminalHeight = 11
+	result, _ := m.Update(tea.WindowSizeMsg{Width: 80, Height: terminalHeight})
+
+	output := result.(model).View()
+
+	// Bubble Tea drops the top lines when the view is taller than the terminal
+	assert.LessOrEqual(t, len(strings.Split(output, "\n")), terminalHeight)
+	assert.Contains(t, strings.SplitN(output, "\n", 2)[0], "1 file")
 }

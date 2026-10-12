@@ -420,3 +420,26 @@ func commentColorName(reviewSent bool) string {
 	}
 	return "orange"
 }
+
+// Summary renders the header line: changed files on the left, additions and
+// deletions on the right edge, colored like the gutter markers. Returns an
+// empty string when nothing changed.
+func Summary(th *theme.Theme, stats diff.Stats, width int) string {
+	if stats.Files == 0 {
+		return ""
+	}
+	filesStyle := lipgloss.NewStyle().Foreground(th.Lipgloss(MarkerColorName(diff.MarkerModified)))
+	addedStyle := lipgloss.NewStyle().Foreground(th.Lipgloss(MarkerColorName(diff.MarkerAdded)))
+	deletedStyle := lipgloss.NewStyle().Foreground(th.Lipgloss(MarkerColorName(diff.MarkerDeleted)))
+
+	noun := "files"
+	if stats.Files == 1 {
+		noun = "file"
+	}
+	files := " " + filesStyle.Render(fmt.Sprintf("%d %s", stats.Files, noun))
+	lines := addedStyle.Render(fmt.Sprintf("+%d", stats.Added)) +
+		" " + deletedStyle.Render(fmt.Sprintf("−%d", stats.Deleted))
+
+	gap := max(2, width-lipgloss.Width(files)-lipgloss.Width(lines)-1)
+	return files + strings.Repeat(" ", gap) + lines + " "
+}

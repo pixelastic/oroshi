@@ -73,6 +73,7 @@ type model struct {
 	editState             editing.State
 	editTextArea          textarea.Model
 	statusMessage         string
+	stats                 diff.Stats
 	viewportWidth         int
 	lineNumberWidth       int
 	flashLines            map[string]bool
@@ -84,6 +85,9 @@ type model struct {
 	reviewSent            bool
 	screenFlash           bool
 }
+
+// summaryHeaderHeight is the number of lines the summary header takes above the rows.
+const summaryHeaderHeight = 1
 
 func (m model) Init() tea.Cmd {
 	var commands []tea.Cmd
@@ -155,7 +159,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.flashLines = nil
 		return m, nil
 	case tea.WindowSizeMsg:
-		m.nav.ViewportHeight = msg.Height
+		m.nav.ViewportHeight = msg.Height - summaryHeaderHeight
 		m.viewportWidth = msg.Width
 		m.refreshIndices()
 		return m, nil
@@ -345,10 +349,12 @@ func applyEditResult(userComments []comments.Comment, result editing.SaveResult,
 }
 
 func (m *model) rebuildDisplay() tea.Cmd {
-	rows, highlighted, rawLines, err := buildDisplay(m.repoRoot, m.ref, m.highlighter)
+	fileDiffs, err := loadFileDiffs(m.repoRoot, m.ref)
 	if err != nil {
 		return nil
 	}
+	rows, highlighted, rawLines := buildRows(m.repoRoot, fileDiffs, m.highlighter)
+	m.stats = diff.Summarize(fileDiffs)
 
 	// Detect changed marked lines
 	snap := flash.NewSnapshot(rows, rawLines)
@@ -546,6 +552,9 @@ func (m model) View() string {
 	}
 
 	var builder strings.Builder
+	if summary := render.Summary(m.theme, m.stats, m.viewportWidth); summary != "" {
+		builder.WriteString(summary + "\n")
+	}
 	rendered, fileCount := 0, 0
 	for _, i := range m.viewContext.Visible { // Render visible rows within viewport
 		if i < m.nav.ViewportOffset { // Track file count for rows before viewport
@@ -580,15 +589,16 @@ func (m model) View() string {
 	if m.statusMessage != "" {
 		fmt.Fprintf(&builder, "\n%s\n", m.statusMessage)
 	}
-	output := builder.String()
+	// No trailing newline: it would make the view taller than the terminal and
+	// Bubble Tea would drop the summary header from the top
+	output := strings.TrimSuffix(builder.String(), "\n")
 	if m.screenFlash && m.viewportWidth > 0 {
 		flashBg := m.theme.Hex("orange-0")
-		var flashed strings.Builder
-		for _, line := range strings.Split(output, "\n") {
-			flashed.WriteString(render.ApplyLineBackground(line, flashBg, m.viewportWidth))
-			flashed.WriteByte('\n')
+		lines := strings.Split(output, "\n")
+		for i, line := range lines {
+			lines[i] = render.ApplyLineBackground(line, flashBg, m.viewportWidth)
 		}
-		return flashed.String()
+		return strings.Join(lines, "\n")
 	}
 	return output
 }
@@ -735,11 +745,13 @@ func main() {
 	queryDir := filepath.Join(home, ".local/share/nvim/lazy/nvim-treesitter/queries")
 	highlighter := highlight.NewWithTreeSitter(th, syntaxMapPath, grammarDir, queryDir)
 
-	rows, highlighted, rawLines, err := buildDisplay(repoRoot, ref, highlighter)
+	fileDiffs, err := loadFileDiffs(repoRoot, ref)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+
+	rows, highlighted, rawLines := buildRows(repoRoot, fileDiffs, highlighter)
 
 	commentsPath, err := resolveCommentsPath()
 	if err != nil {
@@ -788,6 +800,7 @@ func main() {
 	m := model{
 		theme:                 th,
 		rows:                  rows,
+		stats:                 diff.Summarize(fileDiffs),
 		highlighted:           highlighted,
 		rawLines:              rawLines,
 		watchChannel:          watchChannel,
@@ -819,12 +832,26 @@ func main() {
 }
 
 func buildDisplay(repoRoot, ref string, highlighter *highlight.Highlighter) ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string, error) {
-	raw, err := git.Diff(repoRoot, ref)
+	fileDiffs, err := loadFileDiffs(repoRoot, ref)
 	if err != nil {
 		return nil, nil, nil, err
 	}
 
-	fileDiffs := diff.Parse(raw)
+	rows, highlighted, rawLines := buildRows(repoRoot, fileDiffs, highlighter)
+	return rows, highlighted, rawLines, nil
+}
+
+// loadFileDiffs runs git diff and parses it. This is the cheap part of the
+// display, the slow part being the syntax highlighting done by buildRows.
+func loadFileDiffs(repoRoot, ref string) ([]diff.FileDiff, error) {
+	raw, err := git.Diff(repoRoot, ref)
+	if err != nil {
+		return nil, err
+	}
+	return diff.Parse(raw), nil
+}
+
+func buildRows(repoRoot string, fileDiffs []diff.FileDiff, highlighter *highlight.Highlighter) ([]layout.Row, map[string][]highlight.StyledLine, map[string][]string) {
 	highlightedFiles := make(map[string][]highlight.StyledLine)
 	rawLines := make(map[string][]string)
 	var allRows []layout.Row
@@ -851,7 +878,7 @@ func buildDisplay(repoRoot, ref string, highlighter *highlight.Highlighter) ([]l
 		allRows = append(allRows, rows...)
 	}
 
-	return allRows, highlightedFiles, rawLines, nil
+	return allRows, highlightedFiles, rawLines
 }
 
 func resolveCommentsPath() (string, error) {

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/gittest"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -29,7 +30,8 @@ func TestGitDirIsIgnored(t *testing.T) {
 // --- GitIndexPath ---
 
 func TestGitIndexPathUsesGitRevParse(t *testing.T) {
-	// This test runs in the actual repo, so git rev-parse works
+	t.Chdir(gittest.NewRepo(t))
+
 	result, err := GitIndexPath()
 
 	assert.NoError(t, err)

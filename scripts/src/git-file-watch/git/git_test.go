@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/pixelastic/oroshi/scripts/src/git-file-watch/gittest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -28,11 +29,7 @@ func writeFile(t *testing.T, directory, name, content string) {
 // newRepo creates a repository with one commit containing base.txt.
 func newRepo(t *testing.T) string {
 	t.Helper()
-	directory := t.TempDir()
-	runGit(t, directory, "init", "--quiet", "--initial-branch=main")
-	runGit(t, directory, "config", "user.email", "test@example.com")
-	runGit(t, directory, "config", "user.name", "Test")
-	runGit(t, directory, "config", "commit.gpgsign", "false")
+	directory := gittest.NewRepo(t)
 	writeFile(t, directory, "base.txt", "base\n")
 	runGit(t, directory, "add", ".")
 	runGit(t, directory, "commit", "--quiet", "-m", "base")
