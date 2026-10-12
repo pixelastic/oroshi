@@ -96,3 +96,27 @@ setup() {
   bats_run_zsh "prose-lint $file"
   [[ "$output" == *"vale: fatal error"* ]]
 }
+
+@test "blog profile: contractions are not flagged" {
+  local file="$BATS_TMP_DIR/contractions.md"
+  printf 'I don'"'"'t think it'"'"'s a problem.\n' > "$file"
+  bats_run_zsh "prose-lint --profile blog $file"
+  [[ "$output" != *"oroshi.NoContractions"* ]]
+}
+
+@test "oroshi.NoContractions still flags contractions when a profile enables it" {
+  local config="$BATS_TMP_DIR/strict.ini"
+  printf 'StylesPath = %s/tools/prose/vale/styles\n[*]\nBasedOnStyles = oroshi\noroshi.NoContractions = error\n' "$OROSHI_ROOT" > "$config"
+  local file="$BATS_TMP_DIR/contractions.md"
+  printf 'I don'"'"'t think it'"'"'s a problem.\n' > "$file"
+  bats_run_zsh "vale --config $config --output=JSON $file"
+  [[ "$output" == *"oroshi.NoContractions"* ]]
+}
+
+@test "blog profile: ordinals are still flagged" {
+  local file="$BATS_TMP_DIR/ordinal.md"
+  printf 'This is the 1st item in the list.\n' > "$file"
+  bats_run_zsh "prose-lint --profile blog $file"
+  [[ "$status" -eq 1 ]]
+  [[ "$(printf '%s' "$output" | jq -r '.[].rule')" == *"Google.Ordinal"* ]]
+}
