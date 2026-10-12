@@ -1,0 +1,16 @@
+# List the Executions of a Make scenario, newest first, one per line
+# Fields: executionId▮status▮type▮timestamp▮duration▮operations
+# status is 1 success, 2 warning, 3 error. It is empty for a log that is not an Execution (start, stop, modify)
+# duration is in milliseconds
+# The scenario is the anchor. --status is success, warning or error
+# Dates are ISO 8601, a date without time is midnight UTC
+# Usage:
+# $ make-execution-list-raw --scenarioId 925
+# $ make-execution-list-raw --scenarioId 925 --status error
+# $ make-execution-list-raw --scenarioId 925 --date-min 2026-10-12 --date-max 2026-10-13
+# $ make-execution-list-raw --scenarioId 925 --limit 10
+# $ make-execution-list-raw --scenarioId 925 --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-execution-list-raw.js" "$@"

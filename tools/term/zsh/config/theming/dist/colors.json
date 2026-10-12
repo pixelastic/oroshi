@@ -867,6 +867,10 @@
     "ansi": 45,
     "hex": "#d69e2e"
   },
+  "make-execution-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
   "make-scenario-id": {
     "ansi": 105,
     "hex": "#ea580c"

@@ -1,0 +1,9 @@
+# Read a Make execution by its ID, and print it as JSON
+# The scenario is the anchor
+# Usage:
+# $ make-execution-read cfcfaf06224143df8310fb2ce8543aa3 --scenarioId 925
+# $ make-execution-read cfcfaf06224143df8310fb2ce8543aa3 --scenarioId 925 --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-execution-read.js" "$@"
