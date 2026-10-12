@@ -11,7 +11,7 @@ export let __;
  * @param {string|object} [options.data] - Inputs as a JSON string, or the object itself
  * @param {string} [options.dataFile] - Path to a JSON file of the inputs. Wins over data
  * @param {boolean} [options.wait] - Wait for the end of the execution (40 seconds at most)
- * @returns {Promise<string|object>} The execution ID, or with wait the response holding status and outputs
+ * @returns {Promise<string|object>} The execution ID, or with wait the whole response of Make: execution ID, numeric status (1 when the run worked), and outputs if the Scenario defines any
  */
 export async function scenarioRun(options) {
   const { scenarioId, wait } = options;

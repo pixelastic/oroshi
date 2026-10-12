@@ -43,7 +43,7 @@ describe('scenarioRun', () => {
     expect(actual).toEqual('abc123');
   });
 
-  it('asks for a responsive run with --wait, and returns the outputs', async () => {
+  it('asks for a responsive run with --wait, and returns the whole response', async () => {
     const response = {
       executionId: 'abc123',
       status: 1,

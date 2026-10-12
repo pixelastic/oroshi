@@ -1,5 +1,6 @@
 # Run an enabled Make scenario by its ID, and print the execution ID
-# With --wait, the run waits for its end (40 seconds at most) and prints the outputs as JSON
+# With --wait, the run waits for its end (40 seconds at most) and prints the whole response of Make as JSON
+# The response holds the execution ID, the status (1 when the run worked) and the outputs, if the Scenario defines any
 # The inputs are JSON, inline or from a file. The file wins
 # Usage:
 # $ make-scenario-run 925

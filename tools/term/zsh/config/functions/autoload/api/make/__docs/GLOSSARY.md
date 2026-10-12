@@ -45,7 +45,7 @@ Takes a **Scenario** out of service.
 _Avoid_: deactivate, stop, pause
 
 **run**:
-Starts one **Execution** of an **Enabled** **Scenario** right away, and fails on a **Disabled** one.
+Starts one **Execution** of an **Enabled** **Scenario** right away, and fails on a **Disabled** one. It prints the execution ID, or with `--wait` the whole response of Make: execution ID, status and outputs.
 _Avoid_: start, trigger, execute
 
 ### Service terms
