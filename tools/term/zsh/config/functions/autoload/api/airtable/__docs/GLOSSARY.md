@@ -60,6 +60,12 @@ _Avoid_: filter, query
 The value of `--tableId`, which is a table ID starting with `tbl` or a **Table** name, forwarded as given.
 _Avoid_: table name, table
 
+## Flagged omissions
+
+There is no `create`, `update` or `delete` for a **Base** or a **Table** on purpose.
+These commands change a whole structure, and a mistake by an agent has a large
+blast radius, so we keep them out until we really need them.
+
 ## Relationships
 
 - A **Base** contains one or more **Tables**

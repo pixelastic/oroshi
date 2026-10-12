@@ -7,12 +7,12 @@ export let __;
 /**
  * List the Records of a Table as raw lines, one per Record. A line holds the
  * Record ID, then its Fields as JSON
- * @param {object} options - Same options as search, without the formula
+ * @param {object} options - Same options as search
  * @returns {Promise<string>} Raw lines, joined with a newline
  */
 export async function recordListRaw(options) {
-  // An empty formula matches every Record
-  const records = await __.recordSearch({ ...options, query: '' });
+  // Ask search for the Records, with the flags we received
+  const records = await __.recordSearch(options);
 
   return _.chain(records)
     .map((record) => __.toLine(record))

@@ -1,6 +1,7 @@
 # List the Records of an Airtable table as a colored table, one row per record
 # Usage:
 # $ airtable-record-list --baseId appXXX --tableId Meetups
+# $ airtable-record-list --baseId appXXX --tableId Meetups "{Name}='Paris'"
 # $ airtable-record-list --baseId appXXX --tableId tblXXX --limit 10
 # $ airtable-record-list --baseId appXXX --tableId Meetups --account perso
 setopt local_options err_return

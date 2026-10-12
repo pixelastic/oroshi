@@ -10,13 +10,13 @@ describe('recordListRaw', () => {
     ]);
   });
 
-  it('searches with an empty formula and the flags it received', async () => {
-    await recordListRaw({ ...anchors, limit: 10 });
+  it('searches with the formula and the flags it received', async () => {
+    await recordListRaw({ ...anchors, limit: 10, query: "{Name}='Paris'" });
 
     expect(__.recordSearch).toHaveBeenCalledWith({
       ...anchors,
       limit: 10,
-      query: '',
+      query: "{Name}='Paris'",
     });
   });
 
