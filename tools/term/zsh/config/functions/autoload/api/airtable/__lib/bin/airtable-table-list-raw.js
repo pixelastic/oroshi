@@ -1,9 +1,8 @@
 // airtable-table-list-raw.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { setAccount } from '../setAccount.js';
 import { tableListRaw } from '../table/tableListRaw.js';
 
-const { _: _positional, account, ...filters } = minimist(process.argv.slice(2));
-setAccount(account);
-const output = await tableListRaw(filters);
+const { named } = parseBinArgs({ setAccount });
+const output = await tableListRaw(named);
 console.log(output);

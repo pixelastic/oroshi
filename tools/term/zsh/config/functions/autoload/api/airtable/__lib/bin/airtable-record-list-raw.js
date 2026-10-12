@@ -1,15 +1,9 @@
 // airtable-record-list-raw.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { recordListRaw } from '../record/recordListRaw.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The formula is the first positional argument, the filters are named
-const {
-  _: [query],
-  account,
-  ...filters
-} = args;
-setAccount(account);
-const output = await recordListRaw({ query, ...filters });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await recordListRaw({ query: positional, ...named });
 console.log(output);

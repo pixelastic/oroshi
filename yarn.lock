@@ -1365,7 +1365,6 @@ __metadata:
     "@oroshi/api-shared": "workspace:*"
     firost: "npm:5.11.0"
     golgoth: "npm:3.1.0"
-    minimist: "npm:1.2.8"
   languageName: unknown
   linkType: soft
 

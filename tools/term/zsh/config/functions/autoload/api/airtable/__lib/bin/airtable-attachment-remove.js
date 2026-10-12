@@ -1,13 +1,14 @@
 // airtable-attachment-remove.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { attachmentRemove } from '../attachment/attachmentRemove.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2), {
-  string: ['field', 'attachmentId'],
-  boolean: ['all'],
+const { named } = parseBinArgs({
+  setAccount,
+  minimist: {
+    string: ['field', 'attachmentId'],
+    boolean: ['all'],
+  },
 });
-const { account, ...options } = args;
-setAccount(account);
-const output = await attachmentRemove(options);
+const output = await attachmentRemove(named);
 console.log(JSON.stringify(output, null, 2));

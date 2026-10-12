@@ -1,10 +1,11 @@
 // airtable-attachment-add.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { attachmentAdd } from '../attachment/attachmentAdd.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2), { string: ['field'] });
-const { account, ...options } = args;
-setAccount(account);
-const output = await attachmentAdd(options);
+const { named } = parseBinArgs({
+  setAccount,
+  minimist: { string: ['field'] },
+});
+const output = await attachmentAdd(named);
 console.log(JSON.stringify(output, null, 2));

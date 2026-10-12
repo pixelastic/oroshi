@@ -1,15 +1,9 @@
 // airtable-record-search.js
-import minimist from 'minimist';
+import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { recordSearch } from '../record/recordSearch.js';
 import { setAccount } from '../setAccount.js';
 
-const args = minimist(process.argv.slice(2));
 // The formula is the first positional argument, the filters are named
-const {
-  _: [query],
-  account,
-  ...filters
-} = args;
-setAccount(account);
-const output = await recordSearch({ query, ...filters });
+const { positional, named } = parseBinArgs({ setAccount });
+const output = await recordSearch({ query: positional, ...named });
 console.log(JSON.stringify(output, null, 2));
