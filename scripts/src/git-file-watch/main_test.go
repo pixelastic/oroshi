@@ -629,18 +629,7 @@ func TestCommitFinishedMsgRebuildsDisplay(t *testing.T) {
 
 func TestRebuildDisplayKeepsRefAfterFileChange(t *testing.T) {
 	th := loadTestTheme(t)
-	repo := t.TempDir()
-	runGitInRepo := func(args ...string) {
-		t.Helper()
-		cmd := exec.Command("git", args...)
-		cmd.Dir = repo
-		output, err := cmd.CombinedOutput()
-		require.NoError(t, err, string(output))
-	}
-	runGitInRepo("init", "--quiet", "--initial-branch=main")
-	runGitInRepo("config", "user.email", "test@example.com")
-	runGitInRepo("config", "user.name", "Test")
-	runGitInRepo("config", "commit.gpgsign", "false")
+	repo, runGitInRepo := newTestRepo(t)
 	require.NoError(t, os.WriteFile(filepath.Join(repo, "base.txt"), []byte("base\n"), 0o644))
 	runGitInRepo("add", ".")
 	runGitInRepo("commit", "--quiet", "-m", "base")
@@ -664,6 +653,112 @@ func TestRebuildDisplayKeepsRefAfterFileChange(t *testing.T) {
 		}
 	}
 	assert.ElementsMatch(t, []string{"base.txt", "committed.txt"}, paths)
+}
+
+// newTestRepo initializes an empty git repo and returns its path with a runner for git commands in it.
+func newTestRepo(t *testing.T) (string, func(args ...string)) {
+	t.Helper()
+	repo := t.TempDir()
+	runGitInRepo := func(args ...string) {
+		t.Helper()
+		cmd := exec.Command("git", args...)
+		cmd.Dir = repo
+		output, err := cmd.CombinedOutput()
+		require.NoError(t, err, string(output))
+	}
+	runGitInRepo("init", "--quiet", "--initial-branch=main")
+	runGitInRepo("config", "user.email", "test@example.com")
+	runGitInRepo("config", "user.name", "Test")
+	runGitInRepo("config", "commit.gpgsign", "false")
+	return repo, runGitInRepo
+}
+
+// repoWithDeletedFiles commits the given files under tag "start", then deletes them from disk.
+func repoWithDeletedFiles(t *testing.T, files map[string]string) string {
+	t.Helper()
+	repo, runGitInRepo := newTestRepo(t)
+	for path, content := range files {
+		absolutePath := filepath.Join(repo, path)
+		require.NoError(t, os.MkdirAll(filepath.Dir(absolutePath), 0o755))
+		require.NoError(t, os.WriteFile(absolutePath, []byte(content), 0o644))
+	}
+	runGitInRepo("add", ".")
+	runGitInRepo("commit", "--quiet", "-m", "base")
+	runGitInRepo("tag", "start")
+	for path := range files {
+		require.NoError(t, os.Remove(filepath.Join(repo, path)))
+	}
+	return repo
+}
+
+func TestBuildDisplayShowsDeletedFileWithItsRemovedLines(t *testing.T) {
+	th := loadTestTheme(t)
+	repo := repoWithDeletedFiles(t, map[string]string{"old.txt": "first\nsecond\n"})
+
+	rows, _, _, err := buildDisplay(repo, "start", highlight.New(th))
+
+	require.NoError(t, err)
+	require.Len(t, rows, 3)
+	header, ok := rows[0].(layout.FileHeaderRow)
+	require.True(t, ok)
+	assert.Equal(t, "old.txt", header.Path)
+	assert.True(t, header.Deleted)
+	removed, ok := rows[1].(layout.RemovedLineRow)
+	require.True(t, ok)
+	assert.Equal(t, "first", removed.Content)
+}
+
+func TestDeletedTestFileStartsFolded(t *testing.T) {
+	th := loadTestTheme(t)
+	repo := repoWithDeletedFiles(t, map[string]string{"src/__tests__/old.txt": "first\n"})
+
+	rows, _, _, err := buildDisplay(repo, "start", highlight.New(th))
+	require.NoError(t, err)
+
+	fileIndex := findFileHeaders(rows, navigation.FileIndex{})
+	assert.True(t, fileIndex.FoldState["src/__tests__/old.txt"])
+}
+
+func TestDeletedFileRemovedLinesAreNavigable(t *testing.T) {
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "old.go", Deleted: true},
+		layout.RemovedLineRow{FilePath: "old.go", LineNumber: 1, Content: "x"},
+	}
+	fileIndex := findFileHeaders(rows, navigation.FileIndex{})
+	visible := navigation.VisibleIndices(len(rows), fileIndex)
+
+	navigable := navigableFromVisible(rows, visible, fileIndex.FoldState)
+
+	assert.Equal(t, []int{1}, navigable)
+}
+
+func TestViewRendersRemovedLines(t *testing.T) {
+	th := loadTestTheme(t)
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "old.go", Deleted: true},
+		layout.RemovedLineRow{FilePath: "old.go", LineNumber: 1, Content: "package main"},
+	}
+	m := testModelWithRoot(th, rows, "/repo")
+	m.nav.ViewportHeight = 10
+
+	view := m.View()
+
+	assert.Contains(t, view, "package main")
+	assert.Contains(t, view, "✘")
+}
+
+func TestCursorOnRemovedLineHasNoCommentAnchor(t *testing.T) {
+	th := loadTestTheme(t)
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "old.go", Deleted: true},
+		layout.RemovedLineRow{FilePath: "old.go", LineNumber: 1, Content: "x"},
+	}
+	m := testModelWithRoot(th, rows, "/repo")
+	m.nav.Cursor = 1
+
+	_, _, _, ok := m.cursorLineContext()
+
+	assert.False(t, ok)
 }
 
 func TestReloadCommentsDoesNotWriteFile(t *testing.T) {

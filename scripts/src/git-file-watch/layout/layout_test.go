@@ -77,6 +77,64 @@ func TestMergesOverlappingContextRangesIntoOneBlock(t *testing.T) {
 	}
 }
 
+// --- Deleted files ---
+
+func deletedFileDiff() diff.FileDiff {
+	return diff.FileDiff{
+		Path:    "old.go",
+		Deleted: true,
+		Hunks: []diff.Hunk{{
+			OldStart: 1,
+			OldCount: 2,
+			Lines: []diff.DiffLine{
+				{Content: "package main", Kind: diff.KindRemoved},
+				{Content: "func main() {}", Kind: diff.KindRemoved},
+			},
+		}},
+	}
+}
+
+func TestDeletedFileHeaderIsFlaggedAsDeleted(t *testing.T) {
+	rows := Build(deletedFileDiff(), nil, 0)
+
+	header, ok := rows[0].(FileHeaderRow)
+	require.True(t, ok)
+	assert.Equal(t, "old.go", header.Path)
+	assert.True(t, header.Deleted)
+}
+
+func TestNonDeletedFileHeaderIsNotFlaggedAsDeleted(t *testing.T) {
+	rows := Build(fileDiffWithPath("file.go"), nil, 0)
+
+	header, ok := rows[0].(FileHeaderRow)
+	require.True(t, ok)
+	assert.False(t, header.Deleted)
+}
+
+func TestDeletedFileEmitsItsRemovedLines(t *testing.T) {
+	rows := Build(deletedFileDiff(), nil, 0)
+
+	require.Len(t, rows, 3)
+	first, ok := rows[1].(RemovedLineRow)
+	require.True(t, ok)
+	assert.Equal(t, "old.go", first.FilePath)
+	assert.Equal(t, 1, first.LineNumber)
+	assert.Equal(t, "package main", first.Content)
+	second, ok := rows[2].(RemovedLineRow)
+	require.True(t, ok)
+	assert.Equal(t, 2, second.LineNumber)
+	assert.Equal(t, "func main() {}", second.Content)
+}
+
+func TestDeletedFileOffersNoCommentAnchor(t *testing.T) {
+	rows := Build(deletedFileDiff(), nil, 0)
+
+	for _, row := range rows {
+		_, isLine := row.(LineRow)
+		assert.False(t, isLine, "deleted files must not emit LineRow")
+	}
+}
+
 // --- Separator insertion ---
 
 func TestInsertsSeparatorBetweenNonContiguousBlocks(t *testing.T) {

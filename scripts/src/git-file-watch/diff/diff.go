@@ -42,9 +42,10 @@ type Hunk struct {
 
 // FileDiff represents all changes to a single file.
 type FileDiff struct {
-	Path   string
-	Hunks  []Hunk
-	Binary bool
+	Path    string
+	Hunks   []Hunk
+	Binary  bool
+	Deleted bool
 }
 
 var hunkHeaderRegexp = regexp.MustCompile(`^@@ -(\d+),?(\d*) \+(\d+),?(\d*) @@`)
@@ -77,6 +78,10 @@ func Parse(raw string) []FileDiff {
 
 		if current == nil {
 			continue
+		}
+
+		if strings.HasPrefix(line, "deleted file mode ") {
+			current.Deleted = true
 		}
 
 		if strings.HasPrefix(line, "Binary files ") {

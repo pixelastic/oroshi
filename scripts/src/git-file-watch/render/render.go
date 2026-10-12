@@ -79,6 +79,9 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int, isCursor b
 	}
 
 	label := iconCol + "  " + dirStyle.Render(dir) + styledFile
+	if row.Deleted {
+		label = deletedHeaderLabel(ctx, dir+file)
+	}
 	if ctx.FoldState[row.Path] {
 		label += " [folded]"
 	}
@@ -88,6 +91,40 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int, isCursor b
 	b.WriteString(label)
 	b.WriteByte('\n')
 	return b.String()
+}
+
+// deletedHeaderLabel renders a deleted file's path in red, with a deletion
+// symbol right-aligned in the line number column. Uses raw ANSI escapes so the
+// color survives non-TTY environments.
+func deletedHeaderLabel(ctx Context, path string) string {
+	pad := ctx.LineNumberWidth - 1
+	if pad < 0 {
+		pad = 0
+	}
+	return strings.Repeat(" ", pad) + redForeground(ctx.Theme, "✘") + "  " + redForeground(ctx.Theme, path)
+}
+
+// redForeground wraps text in the deleted-line foreground color.
+func redForeground(th *theme.Theme, text string) string {
+	r, g, b := color.ParseHexColor(th.Hex(MarkerColorName(diff.MarkerDeleted)))
+	return fmt.Sprintf("\x1b[38;2;%d;%d;%dm%s\x1b[0m", r, g, b, text)
+}
+
+// RemovedLine renders a line of a deleted file: red gutter and old line
+// number, plain content without syntax highlighting.
+func RemovedLine(ctx Context, row layout.RemovedLineRow, isCursor bool) string {
+	numberString := fmt.Sprintf("%*d", ctx.LineNumberWidth, row.LineNumber)
+	content := strings.ReplaceAll(row.Content, "\t", "    ")
+	line := redForeground(ctx.Theme, "▌"+numberString) + " " + content
+	if ctx.ViewportWidth > 0 {
+		line = lipgloss.NewStyle().MaxWidth(ctx.ViewportWidth).Render(line)
+		bgName := MarkerBgColorName(diff.MarkerDeleted)
+		if isCursor {
+			bgName = "yellow-0"
+		}
+		line = ApplyLineBackground(line, ctx.Theme.Hex(bgName), ctx.ViewportWidth)
+	}
+	return line + "\n"
 }
 
 // BinaryLine renders a placeholder for binary file content.
@@ -275,8 +312,11 @@ func MarkerBgColorName(marker diff.Marker) string {
 func MaxLineNumberWidth(rows []layout.Row) int {
 	maxNum := 0
 	for _, row := range rows {
-		if lr, ok := row.(layout.LineRow); ok && lr.LineNumber > maxNum {
-			maxNum = lr.LineNumber
+		switch r := row.(type) {
+		case layout.LineRow:
+			maxNum = max(maxNum, r.LineNumber)
+		case layout.RemovedLineRow:
+			maxNum = max(maxNum, r.LineNumber)
 		}
 	}
 	if maxNum == 0 {

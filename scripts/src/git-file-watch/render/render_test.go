@@ -529,6 +529,71 @@ func TestBinaryLineWithoutCursorHasNoBgEscape(t *testing.T) {
 	assert.NotContains(t, line, "\x1b[48;2;", "non-cursor BinaryLine should have no bg escape")
 }
 
+// --- Deleted files ---
+
+func TestDeletedFileHeaderHasRedMarkerAndDeletionSymbol(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80, LineNumberWidth: 3}
+	row := layout.FileHeaderRow{Path: "src/old.go", Deleted: true}
+
+	result := FileHeader(ctx, row, 1, false)
+
+	assert.Contains(t, result, "old.go")
+	assert.Contains(t, result, "✘")
+	assert.Contains(t, result, "\x1b[38;2;127;29;29m", "should use red-8 foreground")
+}
+
+func TestRegularFileHeaderHasNoDeletionSymbol(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80, LineNumberWidth: 3}
+	row := layout.FileHeaderRow{Path: "src/main.go"}
+
+	result := FileHeader(ctx, row, 1, false)
+
+	assert.NotContains(t, result, "✘")
+}
+
+func TestRemovedLineShowsOldLineNumberAndContent(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, LineNumberWidth: 3}
+	row := layout.RemovedLineRow{FilePath: "old.go", LineNumber: 7, Content: "\tfunc main() {}"}
+
+	result := RemovedLine(ctx, row, false)
+
+	assert.Contains(t, result, "  7")
+	assert.Contains(t, result, "    func main() {}")
+	assert.True(t, strings.HasSuffix(result, "\n"))
+}
+
+func TestRemovedLineHasRedBackground(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80, LineNumberWidth: 3}
+	row := layout.RemovedLineRow{FilePath: "old.go", LineNumber: 1, Content: "x"}
+
+	result := RemovedLine(ctx, row, false)
+
+	assert.Contains(t, result, "\x1b[48;2;37;15;15m", "should use red-0 background")
+}
+
+func TestRemovedLineWithCursorUsesCursorBackground(t *testing.T) {
+	th := loadTestTheme(t)
+	ctx := Context{Theme: th, ViewportWidth: 80, LineNumberWidth: 3}
+	row := layout.RemovedLineRow{FilePath: "old.go", LineNumber: 1, Content: "x"}
+
+	result := RemovedLine(ctx, row, true)
+
+	assert.Contains(t, result, "\x1b[48;2;26;26;15m", "cursor should use yellow-0 bg")
+}
+
+func TestMaxLineNumberWidthCountsRemovedLines(t *testing.T) {
+	rows := []layout.Row{
+		layout.FileHeaderRow{Path: "old.go", Deleted: true},
+		layout.RemovedLineRow{FilePath: "old.go", LineNumber: 1234},
+	}
+
+	assert.Equal(t, 4, MaxLineNumberWidth(rows))
+}
+
 // --- Helpers ---
 
 func loadTestTheme(t *testing.T) *theme.Theme {

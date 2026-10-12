@@ -148,6 +148,47 @@ new file mode 100644
 	assert.Equal(t, KindAdded, hunk.Lines[2].Kind)
 }
 
+// --- Deleted file parsing ---
+
+func TestFlagsDeletedFile(t *testing.T) {
+	raw := `diff --git a/old.go b/old.go
+deleted file mode 100644
+index 1234567..0000000
+--- a/old.go
++++ /dev/null
+@@ -1,2 +0,0 @@
+-package main
+-
+`
+	result := Parse(raw)
+	require.Len(t, result, 1)
+	assert.True(t, result[0].Deleted)
+	assert.Equal(t, "old.go", result[0].Path)
+	require.Len(t, result[0].Hunks, 1)
+	assert.Equal(t, KindRemoved, result[0].Hunks[0].Lines[0].Kind)
+}
+
+func TestDoesNotFlagModifiedOrNewFilesAsDeleted(t *testing.T) {
+	raw := `diff --git a/modified.go b/modified.go
+index 1234567..abcdefg 100644
+--- a/modified.go
++++ b/modified.go
+@@ -1 +1 @@
+-old
++new
+diff --git a/new.go b/new.go
+new file mode 100644
+--- /dev/null
++++ b/new.go
+@@ -0,0 +1 @@
++package main
+`
+	result := Parse(raw)
+	require.Len(t, result, 2)
+	assert.False(t, result[0].Deleted)
+	assert.False(t, result[1].Deleted)
+}
+
 // --- Classification ---
 
 func TestMarksAddedLinesAsAdded(t *testing.T) {

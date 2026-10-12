@@ -36,10 +36,21 @@ func (SeparatorRow) isRow() {}
 
 // FileHeaderRow represents a file path header.
 type FileHeaderRow struct {
-	Path string
+	Path    string
+	Deleted bool
 }
 
 func (FileHeaderRow) isRow() {}
+
+// RemovedLineRow represents a line of a deleted file, numbered as in the old
+// version. It is not a LineRow, so it never carries a comment anchor.
+type RemovedLineRow struct {
+	FilePath   string
+	LineNumber int
+	Content    string
+}
+
+func (RemovedLineRow) isRow() {}
 
 // BinaryRow represents a placeholder for binary file content.
 type BinaryRow struct{}
@@ -54,7 +65,10 @@ type lineRange struct {
 // Build expands marked lines with context, merges ranges, and emits rows.
 func Build(fileDiff diff.FileDiff, markers map[int]diff.Marker, totalLines int) []Row {
 	if fileDiff.Binary {
-		return []Row{FileHeaderRow{Path: fileDiff.Path}, BinaryRow{}}
+		return []Row{FileHeaderRow{Path: fileDiff.Path, Deleted: fileDiff.Deleted}, BinaryRow{}}
+	}
+	if fileDiff.Deleted {
+		return buildDeleted(fileDiff)
 	}
 	if len(markers) == 0 {
 		return []Row{FileHeaderRow{Path: fileDiff.Path}}
@@ -63,6 +77,24 @@ func Build(fileDiff diff.FileDiff, markers map[int]diff.Marker, totalLines int) 
 	ranges := expandRanges(markers, totalLines)
 	merged := mergeRanges(ranges)
 	return emitRows(fileDiff.Path, merged, markers)
+}
+
+// buildDeleted emits the removed lines of a deleted file from the diff alone,
+// since the file is gone from disk.
+func buildDeleted(fileDiff diff.FileDiff) []Row {
+	rows := []Row{FileHeaderRow{Path: fileDiff.Path, Deleted: true}}
+	for _, hunk := range fileDiff.Hunks {
+		lineNumber := hunk.OldStart
+		for _, line := range hunk.Lines {
+			rows = append(rows, RemovedLineRow{
+				FilePath:   fileDiff.Path,
+				LineNumber: lineNumber,
+				Content:    line.Content,
+			})
+			lineNumber++
+		}
+	}
+	return rows
 }
 
 func expandRanges(markers map[int]diff.Marker, totalLines int) []lineRange {

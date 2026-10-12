@@ -569,6 +569,8 @@ func (m model) View() string {
 		case layout.BinaryRow:
 			s := render.BinaryLine(ctx, i == m.nav.Cursor)
 			builder.WriteString(s)
+		case layout.RemovedLineRow:
+			builder.WriteString(render.RemovedLine(ctx, r, i == m.nav.Cursor))
 		case layout.LineRow:
 			s := render.CodeLine(ctx, r, i == m.nav.Cursor)
 			rendered += strings.Count(s, "\n") - 1
@@ -645,6 +647,8 @@ func navigableFromVisible(rows []layout.Row, visibleIndices []int, foldState map
 		case layout.LineRow:
 			nav = append(nav, i)
 		case layout.BinaryRow:
+			nav = append(nav, i)
+		case layout.RemovedLineRow:
 			nav = append(nav, i)
 		case layout.FileHeaderRow:
 			if foldState[r.Path] {
@@ -826,7 +830,7 @@ func buildDisplay(repoRoot, ref string, highlighter *highlight.Highlighter) ([]l
 	var allRows []layout.Row
 
 	for _, fileDiff := range fileDiffs {
-		if fileDiff.Binary {
+		if fileDiff.Binary || fileDiff.Deleted {
 			rows := layout.Build(fileDiff, nil, 0)
 			allRows = append(allRows, rows...)
 			continue
