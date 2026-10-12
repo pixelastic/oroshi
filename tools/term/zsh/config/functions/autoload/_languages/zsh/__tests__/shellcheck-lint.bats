@@ -96,3 +96,35 @@ jq_output() {
   [[ "$status" -eq 1 ]]
   [[ "$output" == *'Error: shellcheck failed (exit 2)'* ]]
 }
+
+# --- Stylish output ---
+
+@test "prints a stylish report for a file with a finding" {
+  local file="$BATS_TMP_DIR/test.sh"
+  printf "x='\$y'\n" >"$file"
+  bats_run_zsh "${sourcePrefix}; shellcheck-lint $file"
+  [[ "$output" == "$file"$'\n'* ]]
+  [[ "$output" == *'  1:3  info  '*'  SC2016'* ]]
+}
+
+@test "prints nothing and returns 0 for a clean file in stylish mode" {
+  local file="$BATS_TMP_DIR/test.sh"
+  printf '# clean\n' >"$file"
+  bats_run_zsh "${sourcePrefix}; shellcheck-lint $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == '' ]]
+}
+
+@test "returns 1 in stylish mode when violations exist" {
+  local file="$BATS_TMP_DIR/test.sh"
+  printf "x='\$y'\n" >"$file"
+  bats_run_zsh "${sourcePrefix}; shellcheck-lint $file"
+  [[ "$status" -eq 1 ]]
+}
+
+@test "prints no JSON in stylish mode" {
+  local file="$BATS_TMP_DIR/test.sh"
+  printf "x='\$y'\n" >"$file"
+  bats_run_zsh "${sourcePrefix}; shellcheck-lint $file"
+  [[ "$output" != '['* ]]
+}
