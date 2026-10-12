@@ -1,0 +1,35 @@
+# Lint a blog draft with the Vale blog profile and enforce the word limit
+# Usage:
+# $ blog-lint draft.md   # Print a JSON array of violations, exit 1 if any
+setopt local_options err_return
+
+MAX_WORDS=2000
+
+local file="$1"
+
+# A regular file is required
+if [[ ! -f "$file" ]]; then
+  echoerr "Error: file not found: '$file'"
+  echoerr "Usage: blog-lint <file>"
+  return 1
+fi
+
+local violations="[]"
+local lintExit=0
+violations="$(prose-lint --profile blog "$file")" || lintExit=$?
+
+# Vale crashed
+[[ $lintExit -ge 2 ]] && return $lintExit
+
+# Above the word limit, append one violation
+local wordCount="$(markdown-wordcount "$file")"
+if [[ $wordCount -gt $MAX_WORDS ]]; then
+  violations="$(printf '%s' "$violations" | jq \
+    --compact-output \
+    --arg message "Draft has $wordCount words, the limit is $MAX_WORDS" \
+    '. + [{line: 1, rule: "blog.WordLimit", severity: "error", match: "", message: $message}]')"
+fi
+
+printf '%s\n' "$violations"
+[[ "$(printf '%s' "$violations" | jq 'length')" -gt 0 ]] && return 1
+return 0
