@@ -58,15 +58,25 @@ mock_auto_collaborators() {
   [[ "$queued" != *"/review"* ]]
 }
 
-@test "auto: after the last issue, queues commit then review from branchedAt with the PRD" {
+@test "auto: after the last issue, queues commit then ralph-review in auto permission mode" {
   mock_auto_collaborators
   export PROGRESS="3▮3"
   bats_run_zsh "ralph-end $PRD_DIR"
   [[ "$status" -eq 0 ]]
   local queued="$(grep "queue:" "$CALLS")"
-  [[ "$queued" == *"git-commit-create-all-auto && claude"* ]]
-  [[ "$queued" == *"/review ref:abc123..HEAD spec:$PRD_DIR/PRD.md"* ]]
+  [[ "$queued" == *"git-commit-create-all-auto && claude --permission-mode auto "* ]]
+  [[ "$queued" == *"/ralph-review $PRD_DIR"* ]]
   [[ "$queued" != *"ralph --auto"* ]]
+}
+
+@test "auto: after the last issue, does not queue a bare review" {
+  mock_auto_collaborators
+  export PROGRESS="3▮3"
+  bats_run_zsh "ralph-end $PRD_DIR"
+  local queued="$(grep "queue:" "$CALLS")"
+  [[ "$queued" != *"/review"* ]]
+  [[ "$queued" != *"branchedAt"* ]]
+  [[ "$queued" != *"abc123"* ]]
 }
 
 @test "auto: queued command is one SIGINT-safe group run by a child shell" {

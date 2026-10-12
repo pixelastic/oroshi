@@ -25,9 +25,8 @@ local nextCommand="ralph --auto ${(q)dir}"
 
 # If this was the last issue, let's review everything we did so far instead
 if [[ "$doneCount" == "$totalCount" ]]; then
-  local branchedAt="$(jq --raw-output '.branchedAt' "$dir/state.json")"
-  local reviewPrompt="/review ref:${branchedAt}..HEAD spec:${dir}/PRD.md"
-  nextCommand="claude ${(qq)reviewPrompt}"
+  local reviewPrompt="/ralph-review ${dir}"
+  nextCommand="claude --permission-mode auto ${(qq)reviewPrompt}"
 fi
 
 # Add the next command to the zsh queue
