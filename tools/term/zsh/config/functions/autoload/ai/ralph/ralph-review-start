@@ -26,10 +26,10 @@ if [[ "$branchedAt" == "" ]]; then
   return 1
 fi
 
-local absDir="${dir:A}"
+local absoluteDirectory="${dir:A}"
 jq -n \
   --arg branchedAt "$branchedAt" \
-  --arg dir "$absDir" \
+  --arg dir "$absoluteDirectory" \
 '{
     status: "ready",
     ref: ($branchedAt+"..HEAD"),

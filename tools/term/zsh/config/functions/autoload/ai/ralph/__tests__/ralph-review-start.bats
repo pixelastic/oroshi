@@ -56,6 +56,7 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/worktree"
   plan-directory() { echo "$PLAN_DIR"; }
   bats_mock plan-directory
+  bats_disable_worktree_aware
 
   bats_run_zsh "cd $BATS_TMP_DIR/worktree && ralph-review-start ."
   [[ "$status" -eq 0 ]]
@@ -67,6 +68,7 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/worktree"
   plan-directory() { echo "$PLAN_DIR"; }
   bats_mock plan-directory
+  bats_disable_worktree_aware
 
   bats_run_zsh "cd $BATS_TMP_DIR/worktree && ralph-review-start"
   [[ "$status" -eq 0 ]]
