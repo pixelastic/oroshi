@@ -1,0 +1,25 @@
+# Output the review range and PRD path of a plan as JSON for the ralph-review skill
+# Usage:
+# $ ralph-review-start [<dir>]   # dir defaults to plan-directory output
+setopt local_options err_return
+
+local dir="${1:-$(plan-directory)}"
+
+# No plan dir resolved
+[[ "$dir" == "" ]] && return 1
+# state.json must exist
+[[ ! -f "$dir/state.json" ]] && return 1
+
+# branchedAt must be set
+local branchedAt="$(jq --raw-output '.branchedAt // ""' "$dir/state.json" 2>/dev/null)"
+[[ "$branchedAt" == "" ]] && return 1
+
+local absDir="${dir:A}"
+jq -n \
+  --arg branchedAt "$branchedAt" \
+  --arg dir "$absDir" \
+'{
+    status: "ready",
+    ref: ($branchedAt+"..HEAD"),
+    spec: ($dir+"/PRD.md")
+  }'
