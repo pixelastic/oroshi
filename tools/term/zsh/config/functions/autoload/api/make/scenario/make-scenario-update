@@ -1,0 +1,15 @@
+# Update some fields of a Make scenario, and print it as JSON
+# Only the given fields change
+# The Blueprint and the Scheduling are JSON, inline or from a file. The file wins
+# Usage:
+# $ make-scenario-update 925 --name "Paris Meetup 2026"
+# $ make-scenario-update 925 --blueprint '{"flow":[]}'
+# $ make-scenario-update 925 --blueprint-file ./blueprint.json
+# $ make-scenario-update 925 --scheduling '{"type":"on-demand"}'
+# $ make-scenario-update 925 --scheduling-file ./scheduling.json
+# $ make-scenario-update 925 --folderId 12
+# $ make-scenario-update 925 --name "Paris" --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-scenario-update.js" "$@"
