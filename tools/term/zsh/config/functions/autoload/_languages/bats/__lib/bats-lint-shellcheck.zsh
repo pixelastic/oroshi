@@ -1,5 +1,6 @@
 # Defines bats-lint-shellcheck() for use by bats-lint
 # Sourced by the orchestrator — not standalone, no shebang
+# Delegates to shellcheck-lint, which the orchestrator must source first
 #
 # Usage (called by the orchestrator):
 # $ bats-lint-shellcheck file.bats [file2.bats ...]
@@ -14,44 +15,25 @@ function bats-lint-shellcheck() {
   excludedRules+=(SC2030) # Modification of var is local to subshell caused by @test
   excludedRules+=(SC2031) # Var was modified in a subshell; change might be lost in @test
 
-  # Exclude directories from the inputs
-  local -a input=()
-  for item in "$@"; do
-    [[ -d $item ]] && continue
-    input+=("$item")
-  done
+  # Run shellcheck through the shared helper (directories skipped, unified schema)
+  local scOutput="$(shellcheck-lint --json --exclude "${(j:,:)excludedRules}" "$@")"
 
-  # No files to check
-  if [[ ${#input} -eq 0 ]]; then
-    printf '[]\n'
-    return 0
-  fi
-
-  # Run shellcheck
-  local scOutput="$(shellcheck \
-    --shell=bash \
-    --external-sources \
-    --format=json \
-    --exclude="${(j:,:)excludedRules}" \
-    "${input[@]}")"
-  [[ "$scOutput" == "" ]] && scOutput="[]"
+  # shellcheck-lint prints nothing when shellcheck itself failed (error already on stderr)
+  [[ "$scOutput" == "" ]] && return 1
 
   # Filter SC2154 for BATS magic variables injected by `run` (output, status, lines, line).
   # ShellCheck cannot see these assignments, so it always flags them as false positives.
   # Message format: "<varname> is referenced but not assigned."
   local batsRunVars='["output","status","lines","line"]'
-  scOutput="$(printf '%s' "$scOutput" | jq -c \
+  local filtered="$(printf '%s' "$scOutput" | jq --compact-output \
     --argjson vars "$batsRunVars" \
   '[
         .[] | select(
-          (.code == 2154 and ((.message | split(" ")[0]) as $v | $vars | contains([$v]))
+          (.code == "SC2154" and ((.message | split(" ")[0]) as $v | $vars | contains([$v]))
         )
       | not)]')"
 
-  # Transform ShellCheck JSON: add "SC" prefix to integer code, drop fix suggestions
-  local transformed="$(printf '%s\n' "$scOutput" | jq -c '[.[] | .code = "SC" + (.code | tostring) | del(.fix)]')"
-
-  printf '%s\n' "$transformed"
-  [[ "$(printf '%s' "$transformed" | jq 'length')" -gt 0 ]] && return 1
+  printf '%s\n' "$filtered"
+  [[ "$filtered" != "[]" ]] && return 1
   return 0
 }

@@ -9,6 +9,7 @@ setopt local_options err_return
 
 local scriptDir="${functions_source[$0]:A:h}"
 
+source "$scriptDir/../zsh/__lib/shellcheck-lint.zsh"
 source "$scriptDir/__lib/bats-lint-shellcheck.zsh"
 source "$scriptDir/__lib/bats-lint-custom.zsh"
 
