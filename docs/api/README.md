@@ -23,6 +23,7 @@ the commands concerned.
 ## Detail files
 
 - [GLOSSARY.md](GLOSSARY.md) — The terms used across these docs: service, entity, command, its three layers, argument kinds, schemas and verbs.
+- [adding-an-api.md](adding-an-api.md) — The steps, in order, to add the API helper of a new service, and the final checklist.
 - [oauth.md](oauth.md) — What an OAuth API adds to the generic rules, in one place.
 - [architecture.md](architecture.md) — Where the code lives, how a service is configured and authenticated, and how it fails.
 - [arguments.md](arguments.md) — How a command receives its arguments: positional or named, flag names, content, limit and accounts.
@@ -37,41 +38,5 @@ the commands concerned.
 
 ## Adding an API
 
-Follow these steps, in order, to add the API helper of a new service:
-
-1. Write the glossary of the service with the `/glossary` skill: its
-   authentication kind, its entities (with a fixed or open schema each, see
-   [GLOSSARY.md](GLOSSARY.md)), its custom verbs and its terms
-   ([reference/docs/glossary.md](reference/docs/glossary.md)).
-2. Plan the service before writing any code, with its glossary from step 1 as
-   the base.
-   - Read the documentation of the API of the service.
-   - Ask the user for the credentials early, so that real calls are possible.
-   - Confirm the fields of each entity against the real API.
-   - Only then write the `# Fields:` header of
-     [`list-raw`](reference/commands/list-raw.md).
-3. Create the workspace of the service: its `package.json`
-   ([architecture.md](architecture.md)), its
-   [`getConfig.js`](reference/lib/getConfig.md) and its
-   [`callApi.js`](reference/lib/callApi.md). For an OAuth API, also read
-   [oauth.md](oauth.md): it changes both and adds the command to log in.
-4. For each entity, implement every verb that the API allows. Choose the arguments of each command
-   ([reference/commands/README.md](reference/commands/README.md), [arguments.md](arguments.md)).
-5. Implement the commands of each entity in this order, copying the template of
-   each verb. Create [`format<Entity>.js`](reference/lib/formatEntity.md) for each entity. It
-   is a simple identity pass-through by default and evolves only if/when needed.
-   - [`search`](reference/commands/search.md), first: `list-raw` sits on top of
-     it. Skip it only if the service has no endpoint to search the entities.
-   - [`list-raw`](reference/commands/list-raw.md)
-   - [`list`](reference/commands/list.md)
-   - [`read`](reference/commands/read.md)
-   - [`create`](reference/commands/create.md)
-   - [`update`](reference/commands/update.md)
-   - [`delete`](reference/commands/delete.md)
-   - a [custom verb](reference/commands/custom.md), for an action that is not
-     CRUD.
-
-   Each command prints the format described in its own file, for example
-   [`list-raw`](reference/commands/list-raw.md#role).
-   Each command has its header documented ([documentation.md](documentation.md)).
-   Each command is tested ([tests.md](tests.md)).
+To add the API helper of a new service, follow the steps of
+[adding-an-api.md](adding-an-api.md).
