@@ -1,0 +1,11 @@
+# Add some content at the end of a Notion page, and print it as JSON
+# The existing content stays
+# Usage:
+# $ notion-page-append --pageId pageId '## New section'
+# $ notion-page-append --pageId pageId --content-file ./section.md
+# $ notion-page-append --pageId https://www.notion.so/workspace/Meetup-3e07be57b8fa81bcb066c0275ed4b363 --content-file ./section.md
+# $ notion-page-append --pageId pageId --content-file ./section.md --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-page-append.js" "$@"

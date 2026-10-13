@@ -1,0 +1,11 @@
+# Delete one passage of a Notion page, and print the page as JSON
+# Notion fails if the passage is missing or appears several times
+# Usage:
+# $ notion-page-remove --pageId pageId --old 'Obsolete paragraph'
+# $ notion-page-remove --pageId pageId --old-file ./old.md
+# $ notion-page-remove --pageId https://www.notion.so/workspace/Meetup-3e07be57b8fa81bcb066c0275ed4b363 --old 'Obsolete paragraph'
+# $ notion-page-remove --pageId pageId --old 'Obsolete paragraph' --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-page-remove.js" "$@"

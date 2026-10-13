@@ -1,0 +1,12 @@
+# Swap one passage of a Notion page for another, and print the page as JSON
+# Notion fails if the old passage is missing or appears several times
+# To insert in the middle, repeat the old passage in the new one
+# Usage:
+# $ notion-page-replace --pageId pageId --old 'Pariss' --new 'Paris'
+# $ notion-page-replace --pageId pageId --old-file ./old.md --new-file ./new.md
+# $ notion-page-replace --pageId https://www.notion.so/workspace/Meetup-3e07be57b8fa81bcb066c0275ed4b363 --old 'Pariss' --new 'Paris'
+# $ notion-page-replace --pageId pageId --old 'Pariss' --new 'Paris' --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-page-replace.js" "$@"
