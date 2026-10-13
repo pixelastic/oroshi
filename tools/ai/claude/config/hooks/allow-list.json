@@ -390,6 +390,7 @@
   "notion-database-read",
   "notion-database-search",
   "notion-page-search",
+  "notion-page-read",
   "npm bin",
   "npm list",
   "npm ls",

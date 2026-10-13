@@ -1401,6 +1401,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@oroshi/notion@workspace:tools/term/zsh/config/functions/autoload/api/notion/__lib":
+  version: 0.0.0-use.local
+  resolution: "@oroshi/notion@workspace:tools/term/zsh/config/functions/autoload/api/notion/__lib"
+  dependencies:
+    "@oroshi/api-shared": "workspace:*"
+    firost: "npm:5.11.0"
+    golgoth: "npm:3.1.0"
+  languageName: unknown
+  linkType: soft
+
 "@ota-meshi/ast-token-store@npm:^0.3.0":
   version: 0.3.0
   resolution: "@ota-meshi/ast-token-store@npm:0.3.0"
