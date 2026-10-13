@@ -216,6 +216,10 @@
     "postprocess-midjourney": "purple"
   },
 
+  // Notion
+  "notion": {
+    "page-id": "orange"
+  },
 
   // Video
   "video": {

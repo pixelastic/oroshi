@@ -1,0 +1,10 @@
+# Search the titles of the Notion workspace for pages, and print them as JSON
+# Each element is {"id": "…", "url": "…", "properties": {…}}
+# Usage:
+# $ notion-page-search "paris meetup"
+# $ notion-page-search "paris meetup" --limit 5
+# $ notion-page-search "paris meetup" --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-page-search.js" "$@"

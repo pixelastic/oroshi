@@ -1,0 +1,11 @@
+# List the sub-pages of a Notion page, one per line
+# Fields: pageId▮title
+# Usage:
+# $ notion-page-list-raw pageId
+# $ notion-page-list-raw https://www.notion.so/workspace/Meetup-3e07be57b8fa81bcb066c0275ed4b363
+# $ notion-page-list-raw pageId --limit 10
+# $ notion-page-list-raw pageId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-page-list-raw.js" "$@"
