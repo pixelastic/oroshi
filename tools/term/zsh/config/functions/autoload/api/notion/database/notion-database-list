@@ -1,0 +1,32 @@
+# List the rows of a Notion database as a colored table, one line per row
+# Usage:
+# $ notion-database-list databaseId
+# $ notion-database-list https://www.notion.so/workspace/Meetups-3937be57b8fa80328fb5f25db51eaf21
+# $ notion-database-list databaseId --limit 10
+# $ notion-database-list databaseId --account perso
+setopt local_options err_return
+
+colors-load-definitions
+
+# The raw command is named like this wrapper, with a -raw suffix
+local rawCommand="${0}-raw"
+
+local rawRows="$($rawCommand "$@")"
+
+# Nothing to display if there is no row
+[[ "$rawRows" == "" ]] && return 1
+
+local rows=()
+for rawRow in ${(f)rawRows}; do
+  local fields=("${(@ps/▮/)rawRow}")
+
+  # Color the id. Keep the other columns as they are, and
+  # show their multi-values with commas
+  local columns=("$(colorize "${fields[1]}" $COLORS[notion-database-id])")
+  columns+=("${(@)fields[2,-1]//▯/, }")
+
+  rows+=("${(j:▮:)columns}")
+done
+
+# One row per line, separated by real newlines. `table` splits the columns on ▮
+table "${(F)rows}"

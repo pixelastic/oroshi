@@ -16,9 +16,8 @@ describe('databaseRead', () => {
 
   beforeEach(() => {
     vi.spyOn(__, 'parseId').mockReturnValue(databaseId);
-    vi.spyOn(__, 'callApi').mockImplementation((path) =>
-      path.startsWith('data_sources/') ? dataSource : database,
-    );
+    vi.spyOn(__, 'callApi').mockReturnValue(database);
+    vi.spyOn(__, 'resolveDataSource').mockReturnValue(dataSource);
     vi.spyOn(__, 'formatDatabase').mockReturnValue({ id: 'formatted' });
   });
 
@@ -35,10 +34,8 @@ describe('databaseRead', () => {
   it('resolves the data source before reading the schema', async () => {
     await databaseRead({ databaseId });
 
-    expect(__).toHaveProperty('callApi.mock.calls', [
-      [`databases/${databaseId}`],
-      [`data_sources/${dataSourceId}`],
-    ]);
+    expect(__.callApi).toHaveBeenCalledWith(`databases/${databaseId}`);
+    expect(__.resolveDataSource).toHaveBeenCalledWith(database);
   });
 
   it('accepts a URL as the Database id', async () => {

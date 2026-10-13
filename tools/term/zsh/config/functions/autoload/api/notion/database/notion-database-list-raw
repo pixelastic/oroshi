@@ -1,0 +1,13 @@
+# List the rows of a Notion database, one per line
+# Fields: pageId▮title
+# Usage:
+# $ notion-database-list-raw databaseId
+# $ notion-database-list-raw https://www.notion.so/workspace/Meetups-3937be57b8fa80328fb5f25db51eaf21
+# $ notion-database-list-raw databaseId --limit 10
+# $ notion-database-list-raw databaseId --filter '{"property":"Tags","multi_select":{"contains":"WORK"}}'
+# $ notion-database-list-raw databaseId --sort '[{"property":"Name","direction":"ascending"}]'
+# $ notion-database-list-raw databaseId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-database-list-raw.js" "$@"

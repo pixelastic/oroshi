@@ -1,6 +1,7 @@
 import { callApi } from '../callApi.js';
 import { parseId } from '../parseId.js';
 import { formatDatabase } from './formatDatabase.js';
+import { resolveDataSource } from './resolveDataSource.js';
 
 export let __;
 
@@ -20,16 +21,8 @@ export async function databaseRead(options) {
 }
 
 __ = {
-  /**
-   * Get the data source of a Database, which holds its properties. A Database
-   * has a single one
-   * @param {object} database - The Database, as returned by the API
-   * @returns {Promise<object>} The data source
-   */
-  resolveDataSource(database) {
-    return __.callApi(`data_sources/${database.data_sources[0].id}`);
-  },
   callApi,
   formatDatabase,
   parseId,
+  resolveDataSource,
 };

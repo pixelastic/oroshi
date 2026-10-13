@@ -999,6 +999,10 @@
     "ansi": 173,
     "hex": "#a78bfa"
   },
+  "notion-database-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
   "notion-page-id": {
     "ansi": 105,
     "hex": "#ea580c"
