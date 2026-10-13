@@ -1,0 +1,12 @@
+# Update the title and the properties of a Notion database, and print it as JSON
+# The changes are a JSON object { title, properties }, positional or from --data-file
+# Only the given keys change
+# Usage:
+# $ notion-database-update --databaseId databaseId '{"properties":{"Status":{"select":{}}}}'
+# $ notion-database-update --databaseId databaseId --data-file ./changes.json
+# $ notion-database-update --databaseId https://www.notion.so/workspace/Meetups-3e07be57b8fa81bcb066c0275ed4b363 --data-file ./changes.json
+# $ notion-database-update --databaseId databaseId --data-file ./changes.json --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-database-update.js" "$@"

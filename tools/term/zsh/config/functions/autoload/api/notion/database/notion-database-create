@@ -1,0 +1,12 @@
+# Create a Notion database under a parent page, and print it as JSON
+# The schema is a JSON object { title, properties }, positional or from --data-file
+# The parent is --parentPageId, as an ID or a URL. There is no creation at the root
+# Usage:
+# $ notion-database-create --parentPageId pageId '{"title":"Meetups","properties":{"Name":{"title":{}}}}'
+# $ notion-database-create --parentPageId pageId --data-file ./database.json
+# $ notion-database-create --parentPageId https://www.notion.so/workspace/Hub-3e07be57b8fa81bcb066c0275ed4b363 --data-file ./database.json
+# $ notion-database-create --parentPageId pageId --data-file ./database.json --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-database-create.js" "$@"
