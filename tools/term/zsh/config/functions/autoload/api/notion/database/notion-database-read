@@ -1,0 +1,9 @@
+# Read a Notion database by its ID or URL, and print it as JSON
+# Usage:
+# $ notion-database-read databaseId
+# $ notion-database-read https://www.notion.so/workspace/Meetups-3e07be57b8fa81bcb066c0275ed4b363?v=abc
+# $ notion-database-read databaseId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-database-read.js" "$@"

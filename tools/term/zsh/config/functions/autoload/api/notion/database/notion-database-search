@@ -1,0 +1,10 @@
+# Search the titles of the Notion workspace for databases, and print them as JSON
+# Each element is {"id": "…", "url": "…", "title": "…", "properties": {…}}
+# Usage:
+# $ notion-database-search "paris meetup"
+# $ notion-database-search "paris meetup" --limit 5
+# $ notion-database-search "paris meetup" --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-database-search.js" "$@"
