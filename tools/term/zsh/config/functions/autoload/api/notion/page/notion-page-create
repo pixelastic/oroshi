@@ -1,0 +1,13 @@
+# Create a Notion page under a parent, and print it as JSON
+# The properties are a JSON object, positional or from --data-file
+# The content is markdown, from --content or --content-file
+# The parent is --parentPageId or --parentDatabaseId, as an ID or a URL
+# Usage:
+# $ notion-page-create --parentPageId pageId '{"title":{"title":[{"text":{"content":"Paris"}}]}}'
+# $ notion-page-create --parentPageId pageId --data-file ./page.json --content-file ./body.md
+# $ notion-page-create --parentDatabaseId databaseId '{"Name":{"title":[{"text":{"content":"Paris"}}]}}' --content "# Hello"
+# $ notion-page-create --parentPageId pageId --data-file ./page.json --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-page-create.js" "$@"

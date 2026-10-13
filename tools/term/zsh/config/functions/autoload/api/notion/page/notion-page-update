@@ -1,0 +1,11 @@
+# Update some properties of a Notion page, and print it as JSON
+# Only the given properties change. An icon key is ignored
+# Usage:
+# $ notion-page-update --pageId pageId '{"Status":{"select":{"name":"Done"}}}'
+# $ notion-page-update --pageId pageId --data-file ./changes.json
+# $ notion-page-update --pageId https://www.notion.so/workspace/Meetup-3e07be57b8fa81bcb066c0275ed4b363 --data-file ./changes.json
+# $ notion-page-update --pageId pageId --data-file ./changes.json --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/notion-page-update.js" "$@"
