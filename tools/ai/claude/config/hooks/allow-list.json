@@ -392,6 +392,8 @@
   "notion-database-search",
   "notion-page-search",
   "notion-database-update",
+  "notion-icon-read",
+  "notion-icon-update",
   "notion-page-create",
   "notion-page-read",
   "notion-page-update",
