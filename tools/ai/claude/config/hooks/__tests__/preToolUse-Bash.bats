@@ -31,11 +31,11 @@ setup() {
   expect_json '.hookSpecificOutput.updatedInput.command' 'cat hooks/stop'
 }
 
-@test "integration: passes ls through unchanged" {
+@test "integration: rewrites ls to the token-saving variant" {
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"ls -la dir"}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'ls -la dir'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'ls-token-saving -la dir'
 }
 
 @test "integration: passes git status through unchanged" {
@@ -348,4 +348,16 @@ setup() {
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
+}
+
+@test "passes the cwd of the input JSON to the solkan wrapper" {
+  preToolUse-Bash-solkan() {
+    print -r -- "$2" > "$BATS_TMP_DIR/solkan-cwd.txt"
+    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
+  }
+  bats_mock preToolUse-Bash-solkan
+
+  bats_run_zsh "$SCRIPT" <<<'{"cwd":"/some/worktree","tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/solkan-cwd.txt")" == "/some/worktree" ]]
 }

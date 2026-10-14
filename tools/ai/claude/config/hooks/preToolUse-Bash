@@ -27,6 +27,7 @@ local logDir="${CLAUDE_HOOKS_LOG_DIR:-/tmp/oroshi/claude/hooks}"
 # Parse input
 local inputJson="$(cat)"
 local inputCommand="$(json-get '.tool_input.command' <<<"$inputJson")"
+local inputCwd="$(json-get '.cwd' <<<"$inputJson")"
 
 # Session id: scopes approval state, must be set before sourcing Bash-approval.zsh
 export CLAUDE_SESSION_ID="$(json-get '.session_id' <<<"$inputJson")"
@@ -42,7 +43,7 @@ jq '.' <<<"$inputJson" >"${logDir}/last-bash-input.json"
 # Solkan: is the command allowed? Capture JSON output alongside exit code
 local solkanJson=""
 local isAllowed=0
-if solkanJson="$(preToolUse-Bash-solkan "$inputCommand")"; then
+if solkanJson="$(preToolUse-Bash-solkan "$inputCommand" "$inputCwd")"; then
   isAllowed=1
 fi
 

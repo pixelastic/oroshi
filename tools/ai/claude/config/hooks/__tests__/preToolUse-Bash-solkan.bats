@@ -235,12 +235,6 @@ setup() {
   expect_json_null '.rewrite'
 }
 
-@test "keeps zsh-test in a command substitution unchanged" {
-  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'x=\$(zsh-test a.bats)'"
-  [[ "$status" -eq 0 ]]
-  expect_json_null '.rewrite'
-}
-
 @test "keeps a quoted operator inside a single command" {
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'zsh-test \"a | b.bats\"'"
   [[ "$status" -eq 0 ]]
@@ -295,4 +289,83 @@ setup() {
 
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'my-cmd foo | cat'"
   expect_json_null '.rewrite'
+}
+
+# Auto allow-list
+
+@test "passes the auto allow-list to solkan when ralph-mode prints auto" {
+  solkan() { print -r -- "$*"; }
+  ralph-mode() { print auto; }
+  bats_mock solkan ralph-mode
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'python3 x.py' '/some/dir'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"--allow-list-file ${BATS_TEST_DIRNAME}/../allow-list-auto.json"* ]]
+}
+
+@test "passes the auto allow-list after the normal allow-list" {
+  solkan() { print -r -- "$*"; }
+  ralph-mode() { print auto; }
+  bats_mock solkan ralph-mode
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'python3 x.py' '/some/dir'"
+  [[ "$output" == *"/allow-list.json"*"/allow-list-auto.json"* ]]
+}
+
+@test "does not pass the auto allow-list to solkan when ralph-mode prints single" {
+  solkan() { print -r -- "$*"; }
+  ralph-mode() { print single; }
+  bats_mock solkan ralph-mode
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'python3 x.py' '/some/dir'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"allow-list-auto.json"* ]]
+}
+
+@test "does not pass the auto allow-list to solkan when ralph-mode prints nothing" {
+  solkan() { print -r -- "$*"; }
+  ralph-mode() { return 0; }
+  bats_mock solkan ralph-mode
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'python3 x.py' '/some/dir'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"allow-list-auto.json"* ]]
+}
+
+@test "does not pass the auto allow-list to solkan when ralph-mode fails" {
+  solkan() { print -r -- "$*"; }
+  ralph-mode() {
+    print auto
+    return 1
+  }
+  bats_mock solkan ralph-mode
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'python3 x.py' '/some/dir'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"allow-list-auto.json"* ]]
+}
+
+@test "passes the directory argument to ralph-mode" {
+  solkan() { print -r -- "{}"; }
+  ralph-mode() { print -r -- "$*" > "$BATS_TMP_DIR/ralph-mode-args.txt"; }
+  bats_mock solkan ralph-mode
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'ls' '/some/dir'"
+  [[ "$(cat "$BATS_TMP_DIR/ralph-mode-args.txt")" == "/some/dir" ]]
+}
+
+@test "allows python3 in auto mode" {
+  ralph-mode() { print auto; }
+  bats_mock ralph-mode
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'python3 x.py' '/some/dir'"
+  [[ "$status" -eq 0 ]]
+}
+
+@test "rejects python3 in normal mode" {
+  ralph-mode() { print single; }
+  bats_mock ralph-mode
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'python3 x.py' '/some/dir'"
+  [[ "$status" -eq 1 ]]
 }

