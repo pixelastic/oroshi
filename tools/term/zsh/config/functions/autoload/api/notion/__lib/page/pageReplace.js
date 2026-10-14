@@ -19,15 +19,15 @@ export let __;
 export async function pageReplace(options) {
   const { oldFile, newFile } = options;
   const pageId = __.parseId(options.pageId);
-  const oldStr = oldFile ? await __.read(oldFile) : options.old;
-  const newStr = newFile ? await __.read(newFile) : options.new;
+  const oldPassage = oldFile ? await __.read(oldFile) : options.old;
+  const newPassage = newFile ? await __.read(newFile) : options.new;
 
   await __.callApi(`pages/${pageId}/markdown`, {
     method: 'PATCH',
     body: {
       type: 'update_content',
       update_content: {
-        content_updates: [{ old_str: oldStr, new_str: newStr }],
+        content_updates: [{ old_str: oldPassage, new_str: newPassage }],
       },
     },
   });

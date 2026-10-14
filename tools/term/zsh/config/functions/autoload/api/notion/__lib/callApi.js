@@ -13,7 +13,7 @@ const API_VERSION = '2026-03-11';
  * @param {object} [options] - Request options
  * @param {string} [options.method] - HTTP method
  * @param {object} [options.body] - Body of the request
- * @param {object} [options.query] - Query parameters, merged over the defaults
+ * @param {object} [options.query] - Query parameters
  * @param {object} [options.headers] - Headers, merged over the defaults
  * @returns {Promise<object|string>} The response of the API, or the empty body
  */
@@ -22,9 +22,7 @@ export async function callApi(path, options = {}) {
 
   const { token } = await __.getConfig();
 
-  // A passed query key replaces a default key
-  const defaultQuery = {};
-  const search = queryString({ ...defaultQuery, ...query });
+  const search = queryString(query);
   const url = `${BASE_URL}/${path}${search}`;
 
   // A passed header replaces a default header, the authentication included

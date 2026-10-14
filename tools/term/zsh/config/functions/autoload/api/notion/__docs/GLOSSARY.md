@@ -7,7 +7,7 @@ The commands that let a shell or an agent read and write Notion data. It follows
 ### Authentication
 
 **Token**:
-The single API token (`NOTION_TOKEN`) of this **Key API**, shared by every command. There is no **Login**.
+The API token of this **Key API**: `NOTION_TOKEN`, or `NOTION_TOKEN_<ACCOUNT>` for another account chosen with `--account`. There is no **Login**.
 _Avoid_: key, secret, integration token
 
 ### Entities
@@ -18,7 +18,7 @@ _Avoid_: row, entry, sub-page, document, note
 
 **Database**:
 A set of **Pages** that share the same **Properties**, identified by an ID. It always has a **Page** as its **Parent**, has no **Anchor**, and has an **Open schema**.
-_Avoid_: table, collection, data source
+_Avoid_: table, collection
 
 **Icon**:
 The emoji or the image URL shown next to the title of a **Page**. Its **Anchor** is `--pageId`, and it has a **Fixed schema**: one value.
@@ -82,7 +82,7 @@ _Avoid_: order, orderBy
 - A **Page** has zero or more **Properties**, and one **Content**
 - A **Page** has at most one **Icon**
 - `list` shows the **Pages** under a **Parent**. **Filter**, **Sort** and `--limit` choose which ones, in which order, and how many
-- Every command uses the same **Token**
+- Every command uses one **Token**, the one of the account it runs against
 
 ## Flagged ambiguities
 
@@ -95,7 +95,7 @@ _Avoid_: order, orderBy
 ## Example dialogue
 
 > **Dev:** "I want the list of the meetups in my **Database**. Which command?"
-> **Domain expert:** "Run `notion-page-list-raw` with the **Database** ID. Add a **Filter** to keep only some **Pages**, and `--limit` to cap them."
+> **Domain expert:** "Run `notion-database-list-raw` with the **Database** ID. Add a **Filter** to keep only some **Pages**, and `--limit` to cap them."
 > **Dev:** "And if I only know its name?"
 > **Domain expert:** "Run `notion-database-search` with the name. It looks at titles in the whole workspace."
 > **Dev:** "I spotted a typo in a **Page**. Do I resend all its **Content**?"

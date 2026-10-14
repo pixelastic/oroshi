@@ -43,7 +43,7 @@ describe('callApi', () => {
     expect(request).toHaveProperty('body', JSON.stringify({ title: 'A' }));
   });
 
-  it('merges the query over the defaults', async () => {
+  it('adds the query to the url', async () => {
     await callApi('search', { query: { page_size: 10 } });
 
     const actual = __.fetch.mock.calls[0][0];
