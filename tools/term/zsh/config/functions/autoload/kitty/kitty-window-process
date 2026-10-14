@@ -20,8 +20,6 @@ local processName="$(kitty-remote ls | jq -r --arg windowId "$windowId" '
 ')"
 
 # Unknown window, or no foreground process
-if [[ "$processName" == "" ]]; then
-  return 1
-fi
+[[ "$processName" == "" ]] && return 1
 
 echo "$processName"

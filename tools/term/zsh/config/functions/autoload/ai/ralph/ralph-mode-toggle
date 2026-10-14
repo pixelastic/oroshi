@@ -8,16 +8,16 @@ local rawArg="${1:-}"
 if [[ "$rawArg" == "" ]]; then
   rawArg="$(plan-directory)" || rawArg="."
 fi
-local dir="${rawArg:a}"
+local directory="${rawArg:a}"
 
 # No session running, nothing to toggle
-[[ ! -f "$dir/ralph.json" ]] && return 0
+[[ ! -f "$directory/ralph.json" ]] && return 0
 
 # Write to a temp file then rename, so readers never see a partial file
-local tmpFile="$(mktemp "$dir/ralph.json.XXXXXX")"
+local tmpFile="$(mktemp "$directory/ralph.json.XXXXXX")"
 local filter='.mode = (if .mode == "auto" then "single" else "auto" end)'
-if ! jq "$filter" "$dir/ralph.json" > "$tmpFile"; then
+if ! jq "$filter" "$directory/ralph.json" > "$tmpFile"; then
   rm --force "$tmpFile"
   return 1
 fi
-mv --force "$tmpFile" "$dir/ralph.json"
+mv --force "$tmpFile" "$directory/ralph.json"

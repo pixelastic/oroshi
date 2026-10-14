@@ -39,6 +39,7 @@ setup() {
 
 @test "no arg + worktree has plan → toggles the plan directory" {
   plan-directory() { echo "$DIR"; }
+  bats_disable_worktree_aware
   bats_mock plan-directory
   jq -n '{"mode":"single"}' > "$DIR/ralph.json"
 
@@ -49,6 +50,7 @@ setup() {
 
 @test "no arg + no worktree plan → falls back to cwd" {
   plan-directory() { return 1; }
+  bats_disable_worktree_aware
   bats_mock plan-directory
   jq -n '{"mode":"auto"}' > "$DIR/ralph.json"
 

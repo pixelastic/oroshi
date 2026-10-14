@@ -9,12 +9,12 @@ local processName="$(kitty-window-process "$windowId")"
 # Not a claude window, nothing to toggle
 [[ "$processName" != "claude" ]] && return 0
 
-local planDir="$(plan-directory)"
+local planDirectory="$(plan-directory)"
 
 # No plan for this directory
-[[ "$planDir" == "" ]] && return 0
+[[ "$planDirectory" == "" ]] && return 0
 
 # No ralph session running
-[[ ! -f "$planDir/ralph.json" ]] && return 0
+[[ ! -f "$planDirectory/ralph.json" ]] && return 0
 
-ralph-mode-toggle "$planDir"
+ralph-mode-toggle "$planDirectory"
