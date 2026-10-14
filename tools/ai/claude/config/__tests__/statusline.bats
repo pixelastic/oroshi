@@ -12,16 +12,19 @@ setup() {
     COLORS[claude-costHigh]=3
     COLORS[claude-model]=146
     COLORS[claude-mcp]=6
+    COLORS[ralph-auto]=226
   }
   context-badge() { echo "BADGE"; }
   icons-load-definitions() {
     typeset -gA ICONS
     ICONS[claude-mcp-context7]="⬡"
+    ICONS[ralph-auto]="AUTO"
   }
   plan-directory() { echo ""; }
   plan-badge() { echo ""; }
+  ralph-mode() { echo ""; }
   claude-subagent-badge() { echo ""; }
-  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge claude-subagent-badge
+  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge ralph-mode claude-subagent-badge
 }
 
 statusline_json() {
@@ -158,4 +161,34 @@ mock_mcp_servers() {
   statusline_run "/some/dir" 0 0 "abc-123"
   [[ "$status" -eq 0 ]]
   [[ "$(bats_strip_ansi "$output")" == *"test ⬡ " ]]
+}
+
+@test "ralph auto: yellow icon right after the plan badge when mode is auto" {
+  plan-directory() { echo "/some/plan/dir"; }
+  plan-badge() { echo "PLAN_BADGE"; }
+  ralph-mode() { [[ "$1" == "/some/plan/dir" ]] && echo "auto"; }
+  bats_mock plan-directory plan-badge ralph-mode
+  statusline_run "/some/dir"
+  [[ "$status" -eq 0 ]]
+  [[ "$(bats_strip_ansi "$output")" == *"PLAN_BADGE AUTO "* ]]
+  [[ "$output" == *$'\e[38;5;226m'"AUTO"* ]]
+}
+
+@test "ralph auto: no icon when mode is single" {
+  plan-directory() { echo "/some/plan/dir"; }
+  plan-badge() { echo "PLAN_BADGE"; }
+  ralph-mode() { echo "single"; }
+  bats_mock plan-directory plan-badge ralph-mode
+  statusline_run "/some/dir"
+  [[ "$status" -eq 0 ]]
+  [[ "$(bats_strip_ansi "$output")" != *"AUTO"* ]]
+}
+
+@test "ralph auto: no icon when ralph.json does not exist" {
+  plan-directory() { echo "/some/plan/dir"; }
+  plan-badge() { echo "PLAN_BADGE"; }
+  bats_mock plan-directory plan-badge
+  statusline_run "/some/dir"
+  [[ "$status" -eq 0 ]]
+  [[ "$(bats_strip_ansi "$output")" != *"AUTO"* ]]
 }

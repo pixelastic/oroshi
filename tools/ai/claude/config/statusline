@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Render the Claude Code statusline with context, cost, model, sub-agent, mcp and plan badges
+# Render the Claude Code statusline with context, cost, model, sub-agent, mcp, plan and ralph auto badges
 # Usage:
 # $ statusline < status.json  # Render from the Claude Code statusLine JSON
 # $ statusline --dry-run      # Render with fake session data
@@ -82,7 +82,13 @@ done
 [[ ${#mcpDisplay} -gt 0 ]] && statusline+=("${(j: :)mcpDisplay} ")
 
 # Ralph plan progress
-local planBadge="$(plan-badge "$(plan-directory "$currentDir")")"
+local planDirectory="$(plan-directory "$currentDir")"
+local planBadge="$(plan-badge "$planDirectory")"
 [[ "$planBadge" != "" ]] && statusline+=("$planBadge ")
+
+# Ralph auto mode
+local ralphMode=""
+[[ "$planDirectory" != "" ]] && ralphMode="$(ralph-mode "$planDirectory")"
+[[ "$ralphMode" == "auto" ]] && statusline+=("$(colorize "$ICONS[ralph-auto]" $COLORS[ralph-auto]) ")
 
 print "${(j::)statusline}"

@@ -95,6 +95,9 @@
     "text":           "white"
   },
 
+  // Ralph
+  "ralph-auto": "yellow",
+
   // Docker
   "docker": {
     "comment":           "gray-4",

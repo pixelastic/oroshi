@@ -56,6 +56,9 @@
   "claude-mcp-context7": "c7",
   "claude-subagent": "󱪂\u2002",
 
+  // Ralph
+  "ralph-auto": "󰠠\u2002",
+
   // Tools / Languages
   "bats":   "󰭟",
   "dropbox": "",

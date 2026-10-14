@@ -1187,6 +1187,10 @@
     "ansi": 60,
     "hex": "#201325"
   },
+  "ralph-auto": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
   "red": {
     "ansi": 25,
     "hex": "#dc2626"
