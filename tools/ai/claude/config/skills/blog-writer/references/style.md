@@ -16,7 +16,7 @@ Details in `voice.md`.
 Details in `structure.md`.
 
 - Open with the situation or the problem. No preamble.
-- Show what goes wrong, then fix it step by step.
+- Show what goes wrong, then fix it step by step, or follow the order of events.
 - Add headings when the article has distinct parts.
 - Close short, or stop after the last step.
 

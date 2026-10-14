@@ -19,7 +19,7 @@ feels written by the same person.
 - State a problem plainly: "it fails", "it did not work", "I was stuck", "no luck".
 - State a cause with "turns out" or "it happens because".
 - State a fix: "the fix is", "the trick is", "all I had to do was", "I ended up".
-- Pivot with short connectors: "But", "Then", "Now", "Still,", "Anyway,", "In the end".
+- Pivot with short connectors: "But", "Then", "So,", "Now", "Still,", "Anyway,", "In the end".
 - Start a sentence with "And" or "But" when it helps.
 - Hedge honestly: "I guess", "I think", "as far as I can tell", "I'm not sure why".
 - Leave technical nouns raw. Do not explain a word the Reader knows.

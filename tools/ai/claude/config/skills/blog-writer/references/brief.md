@@ -12,7 +12,7 @@ A Brief covers exactly one article. Each article has its own Brief and its own A
 |---|---|
 | Angle | The one point of the article, in one or two sentences |
 | Reader | The default Reader, or the override with one sentence |
-| Outline | The sections in order, one line each, following the Structure |
+| Outline | The sections in order, one line each, following the Structure. A chronological article is written as such, ordered as a timeline: event, reaction, what follows |
 | Length | The estimated prose words, at most 2000 |
 | Split decision | `single article`, or the list of articles with a slug each |
 | Assumed knowledge | What the article assumes, to recap in a short paragraph. Never a redirect to another article |
