@@ -3,7 +3,7 @@
 # $ helper-path slugify         # Path of an autoloaded function or a script
 # $ helper-path --reply slugify # Write to $REPLY, no echo
 # Exits non-zero and prints nothing when the name is unknown
-setopt local_options err_return
+setopt local_options err_return bare_glob_qual
 
 local flagReply=()
 zparseopts -E -D \
@@ -15,12 +15,10 @@ local name="$1"
 # A name is required
 [[ "$name" == "" ]] && return 1
 
-# Autoloaded function, already loaded: zsh remembers the file it came from
-local filepath="${functions_source[$name]}"
-
-# Autoloaded function, not loaded yet: look for it in the function path
+# Autoloaded function: look for it in the function path
+# (functions_source points to the shell snapshot in Claude Code's Bash tool)
 local candidates=(${^fpath}/$name(N-.))
-[[ "$filepath" == "" ]] && filepath="${candidates[1]}"
+local filepath="${candidates[1]}"
 
 # Script: look for it in the executable path
 [[ "$filepath" == "" ]] && filepath="$(whence -p "$name")"

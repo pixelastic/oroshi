@@ -29,6 +29,13 @@ setup() {
   [[ "$output" == "" ]]
 }
 
+# Shell options
+@test "prints the path of an autoloaded function when bare_glob_qual is off, like in Claude Code's Bash tool" {
+  bats_run_zsh "unsetopt bare_glob_qual; helper-path slugify"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/misc/slugify" ]]
+}
+
 # Reply
 @test "fills REPLY and prints nothing with --reply" {
   bats_run_zsh "helper-path --reply slugify && print -r -- \"reply=\$REPLY\""
