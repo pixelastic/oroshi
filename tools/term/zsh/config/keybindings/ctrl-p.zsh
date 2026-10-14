@@ -35,6 +35,9 @@ function oroshi-ctrl-p-widget() {
     zsh-fix fzf-zsh-files
     zsh-test fzf-zsh-tests
     skala fzf-skills-allowlist-add
+    helper-documentation fzf-helpers
+    helper-description fzf-helpers
+    helper-path fzf-helpers
   )
 
   # Dispatch to context-aware picker based on first word in buffer

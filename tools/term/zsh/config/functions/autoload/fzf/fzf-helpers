@@ -1,0 +1,44 @@
+# Fuzzy pick helpers by name
+# Usage:
+# $ fzf-helpers                  # Interactive multi-select
+# $ fzf-helpers --source         # Print "name▮colored name" for all helpers
+# $ fzf-helpers --options        # Print FZF options (one per line)
+# $ fzf-helpers --preview <name> # Print the documentation, as commented lines
+# $ fzf-helpers --postprocess    # Read selection from stdin, print helper names
+setopt local_options err_return
+source "${functions_source[$0]:A:h}/__lib/init.zsh"
+source "${functions_source[$0]:A:h}/__lib/fzf-options-prompt-label.zsh"
+
+function fzf-source() {
+  colors-load-definitions
+
+  # Color the marker once, then reuse its escape codes for every name
+  local marker="$(colorize "X" $COLORS[executable])"
+  local colorStart="${marker%%X*}"
+  local colorEnd="${marker#*X}"
+
+  local name
+  for name in ${(f)"$(complete-helpers)"}; do
+    echo "${name}▮${colorStart}${name}${colorEnd}"
+  done
+}
+
+function fzf-options() {
+  echo "--prompt=$(fzf-options-prompt-label fzf-commands Helpers yellow amber-dark)"
+  echo "--delimiter=▮"
+  echo "--with-nth=2"
+  echo "--preview=bin-zsh fzf-helpers --preview {1}"
+  echo "--ansi"
+}
+
+function fzf-preview() {
+  colors-load-definitions
+
+  local line
+  for line in "${(@f)$(helper-documentation "$1")}"; do
+    colorize --reply "#${line:+ $line}" $COLORS[comment]
+    echo "$REPLY"
+  done
+}
+
+fzf-dispatch

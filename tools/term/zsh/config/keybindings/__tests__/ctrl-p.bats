@@ -70,6 +70,33 @@ setup() {
   [[ "$output" = "skala jq " ]]
 }
 
+@test "widget: dispatches to fzf-helpers when first word is helper-documentation" {
+  fzf-helpers() { echo "json-lint"; }
+  bats_mock fzf-helpers
+
+  bats_run_zsh "${sourcePrefix}; LBUFFER='helper-documentation '; oroshi-ctrl-p-widget; echo \$LBUFFER"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "helper-documentation json-lint " ]]
+}
+
+@test "widget: dispatches to fzf-helpers when first word is helper-description" {
+  fzf-helpers() { echo "json-lint"; }
+  bats_mock fzf-helpers
+
+  bats_run_zsh "${sourcePrefix}; LBUFFER='helper-description '; oroshi-ctrl-p-widget; echo \$LBUFFER"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "helper-description json-lint " ]]
+}
+
+@test "widget: dispatches to fzf-helpers when first word is helper-path" {
+  fzf-helpers() { echo "json-lint"; }
+  bats_mock fzf-helpers
+
+  bats_run_zsh "${sourcePrefix}; LBUFFER='helper-path '; oroshi-ctrl-p-widget; echo \$LBUFFER"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "helper-path json-lint " ]]
+}
+
 @test "widget: keeps skala picker after an argument is already typed" {
   fzf-skills-allowlist-add() { echo "rg"; }
   bats_mock fzf-skills-allowlist-add
