@@ -6,6 +6,8 @@ setup() {
 }
 
 @test "prints the mode" {
+  plan-directory() { echo "$1"; }
+  bats_mock plan-directory
   jq -n '{"mode":"auto"}' > "$DIR/ralph.json"
   bats_run_zsh "ralph-mode $DIR"
   [[ "$status" -eq 0 ]]
@@ -13,6 +15,9 @@ setup() {
 }
 
 @test "prints nothing when no session is running" {
+  plan-directory() { echo "$1"; }
+  bats_mock plan-directory
+
   bats_run_zsh "ralph-mode $DIR"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
@@ -28,12 +33,43 @@ setup() {
   [[ "$output" = "auto" ]]
 }
 
-@test "no arg + no worktree plan → falls back to cwd" {
+@test "no arg + no worktree plan → prints nothing" {
   plan-directory() { return 1; }
   bats_mock plan-directory
   jq -n '{"mode":"single"}' > "$DIR/ralph.json"
 
   bats_run_zsh "cd $DIR && ralph-mode"
   [[ "$status" -eq 0 ]]
-  [[ "$output" = "single" ]]
+  [[ "$output" = "" ]]
+}
+
+@test "worktree without ralph.json → reads the resolved plan directory" {
+  mkdir --parents "$DIR/worktree" "$DIR/plan"
+  plan-directory() { echo "$DIR/plan"; }
+  bats_mock plan-directory
+  jq -n '{"mode":"auto"}' > "$DIR/plan/ralph.json"
+
+  bats_run_zsh "ralph-mode $DIR/worktree"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "auto" ]]
+}
+
+@test "worktree whose plan has no ralph.json → prints nothing" {
+  mkdir --parents "$DIR/worktree" "$DIR/plan"
+  plan-directory() { echo "$DIR/plan"; }
+  bats_mock plan-directory
+
+  bats_run_zsh "ralph-mode $DIR/worktree"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+}
+
+@test "worktree without a plan → prints nothing" {
+  mkdir --parents "$DIR/worktree"
+  plan-directory() { return 1; }
+  bats_mock plan-directory
+
+  bats_run_zsh "ralph-mode $DIR/worktree"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }

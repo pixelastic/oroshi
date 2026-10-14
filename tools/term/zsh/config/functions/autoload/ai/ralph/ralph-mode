@@ -1,14 +1,13 @@
 # Print the mode of the running ralph session (empty if none)
+# The session is found from a plan directory or from any path plan-directory resolves (e.g. a worktree)
 # Usage:
-# $ ralph-mode [dir]   # dir defaults to the worktree plan directory, then cwd
+# $ ralph-mode               # Reads plan directory of the current worktree
+# $ ralph-mode <worktree>    # Reads plan directory of the specific worktree
+# $ ralph-mode <plan-dir>    # Reads specified plan directory
 setopt local_options err_return
 
-local rawArg="${1:-}"
-# If already in a worktree with a plan, use it
-if [[ "$rawArg" == "" ]]; then
-  rawArg="$(plan-directory)" || rawArg="."
-fi
-local dir="${rawArg:a}"
+local dir="$(plan-directory "${1:-.}" 2>/dev/null)"
 
-[[ ! -f "$dir/ralph.json" ]] && return 0
+# No plan dir resolved or no session running
+[[ "$dir" == "" || ! -f "$dir/ralph.json" ]] && return 0
 jq -r '.mode // empty' "$dir/ralph.json"
