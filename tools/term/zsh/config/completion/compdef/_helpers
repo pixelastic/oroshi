@@ -1,0 +1,12 @@
+#compdef
+
+# Suggest all helper names
+function _helpers() {
+  colors-load-definitions
+  icons-load-definitions
+
+  local suggestions=(${(f)"$(complete-helpers)"})
+  local label=" $ICONS[filetype-script] Helpers "
+  local header="$(completion-header ai gray-2 "$label")"
+  _describe -V "$header" suggestions
+}

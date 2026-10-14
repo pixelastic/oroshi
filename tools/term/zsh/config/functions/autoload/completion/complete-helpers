@@ -1,0 +1,20 @@
+# Display list of all helper names (autoloaded functions and bin scripts)
+# Usage:
+# $ complete-helpers
+setopt local_options err_return
+
+local autoloadDirectory="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload"
+local scriptsDirectory="$OROSHI_ROOT/scripts/bin"
+
+# Paths containing `__` (__lib, __tests__, __docs) are not helpers
+# A missing root would print a find error into the completion menu, so mute stderr
+{
+  find "$autoloadDirectory" \
+    -type f \
+    ! -path '*__*' \
+    -printf '%f\n'
+  find "$scriptsDirectory" \
+    -type f \
+    ! -path '*__*' \
+    -printf '%f\n'
+} 2>/dev/null | sort --unique

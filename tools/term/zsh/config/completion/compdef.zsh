@@ -128,6 +128,12 @@ compdef _plans \
 compdef _skills-allowlist-add \
   skills-allowlist-add
 # }}}
+# 🧰 Helpers {{{
+compdef _helpers \
+  helper-description \
+  helper-documentation \
+  helper-path
+# }}}
 # 🖼️ Images {{{
 compdef _image-resize img-resize
 compdef "_files -g '*.{avif,bmp,gif,jpg,jpeg,png,svg,tiff,webp}'" \
