@@ -82,10 +82,46 @@ setup() {
 
 # This test uses the real Vale and the real word counter
 @test "draft with contractions: passes" {
-  unset -f prose-lint markdown-wordcount
+  # Empty the mock file so the real commands run
+  : > "$MOCK_OVERRIDE"
   local file="$BATS_TMP_DIR/contractions.md"
   printf 'I don'"'"'t think it'"'"'s a problem.\n' > "$file"
   bats_run_zsh "blog-lint $file"
   [[ "$output" != *"NoContractions"* ]]
   [[ "$status" -eq 0 ]]
+}
+
+# This test uses the real Vale and the real word counter
+@test "sentence starting with So: passes" {
+  # Empty the mock file so the real commands run
+  : > "$MOCK_OVERRIDE"
+  local file="$BATS_TMP_DIR/so.md"
+  printf 'The build was slow. So I cached the dependencies.\n' > "$file"
+  bats_run_zsh "blog-lint $file"
+  [[ "$output" != *"write-good.So"* ]]
+  [[ "$output" == '[]' ]]
+  [[ "$status" -eq 0 ]]
+}
+
+# This test uses the real Vale and the real word counter
+@test "paragraph starting with But: passes" {
+  # Empty the mock file so the real commands run
+  : > "$MOCK_OVERRIDE"
+  local file="$BATS_TMP_DIR/but.md"
+  printf 'The cache looked right.\n\nBut the build stayed slow.\n' > "$file"
+  bats_run_zsh "blog-lint $file"
+  [[ "$output" != *"proselint.But"* ]]
+  [[ "$output" == '[]' ]]
+  [[ "$status" -eq 0 ]]
+}
+
+# This test uses the real Vale and the real word counter
+@test "other blog rules still fire next to a So opener" {
+  # Empty the mock file so the real commands run
+  : > "$MOCK_OVERRIDE"
+  local file="$BATS_TMP_DIR/others.md"
+  printf 'So the build was 1st in line.\n' > "$file"
+  bats_run_zsh "blog-lint $file"
+  [[ "$output" == *"Google.Ordinal"* ]]
+  [[ "$status" -eq 1 ]]
 }
