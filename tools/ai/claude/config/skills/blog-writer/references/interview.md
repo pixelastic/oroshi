@@ -6,8 +6,11 @@ The Interview learns from the user what the Source material cannot tell. It foll
 
 Read the Source material. Find the facts yourself: errors, versions, snippets, decisions, rejected alternatives. Never ask the user for a fact the material holds.
 
+Look for numbers in the Source material first: durations, counts, sizes, versions. Ask the user for a number only when it matters to the story.
+
 Ask only about:
-- The why: what triggered the work, why this approach.
+- The trigger: the concrete moment the work began. When it happened, and why at that moment. Ask it early, in the Open phase.
+- The why: why this approach.
 - The background: what the user knew, tried, or assumed before.
 - The feeling: what surprised, annoyed or delighted the user.
 
