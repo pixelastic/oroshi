@@ -1,0 +1,27 @@
+# Print the foreground process name of a kitty window
+# Usage:
+# $ kitty-window-process 11   # claude
+setopt local_options err_return
+
+local windowId="$1"
+
+# No window id given
+if [[ "$windowId" == "" ]]; then
+  echo "Usage: kitty-window-process <windowId>"
+  return 2
+fi
+
+local processName="$(kitty-remote ls | jq -r --arg windowId "$windowId" '
+  .[0].tabs[].windows[]
+  | select(.id == ($windowId | tonumber))
+  | .foreground_processes[0].cmdline[0] // ""
+  | split("/")
+  | last
+')"
+
+# Unknown window, or no foreground process
+if [[ "$processName" == "" ]]; then
+  return 1
+fi
+
+echo "$processName"
