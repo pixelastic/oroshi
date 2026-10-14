@@ -1,15 +1,15 @@
 ---
 name: blog-writer
-description: Use when the user wants to write a short technical blog article from real work — code, a worktree, a branch, a PRD or a bare topic. Interviews the user, validates a Brief, writes an English Markdown Draft, lints it and has three Reviewers check it.
+description: Use when the user wants to write a short technical blog article from real work — code, a worktree, a branch, a PRD or a bare topic. Interviews the user, validates a Brief, writes an English Markdown Draft, lints it and has four Reviewers check it.
 ---
 
 # Blog Writer
 
 ## Overview
 
-Turn real work into a short technical article in English. The skill reads the **Source material**, interviews the user, validates a **Brief**, writes a **Draft** in an **Article folder**, lints it, has three **Reviewers** check it, and stops when the user approves.
+Turn real work into a short technical article in English. The skill reads the **Source material**, interviews the user, validates a **Brief**, writes a **Draft** in an **Article folder**, lints it, has four **Reviewers** check it, and stops when the user approves.
 
-Vocabulary: use the terms of `GLOSSARY.md` (Reader, Voice, Structure, Style, Brief, Article folder, Draft, Interview, Source material, Lint, Reviewer, Improvement, Nitpick). Do not use the words listed under `_Avoid_`.
+Vocabulary: use the terms of `GLOSSARY.md` (Reader, Voice, Structure, Story, Style, Brief, Article folder, Draft, Interview, Source material, Lint, Reviewer, Improvement, Nitpick). Do not use the words listed under `_Avoid_`.
 
 The user speaks French or English. Every written artifact is in English, except the interview verbatim.
 
@@ -79,7 +79,7 @@ Skip this step when the user gave no image. Read `references/images.md`. Run thi
 **Exit criterion:** The Draft is saved at the `draft` path.
 
 1. Read `references/draft-format.md`.
-2. Read the style references that exist: `references/style.md`, `references/voice.md`, `references/structure.md`. Missing files are pending. Tell the user which are pending, then write without them.
+2. Read the style references that exist: `references/style.md`, `references/voice.md`, `references/structure.md`, `references/story.md`. Missing files are pending. Tell the user which are pending, then write without them.
 3. Write in English, whatever language the user speaks, including quotes from the French Interview.
 4. Link each image of the `images` folder with a relative path and its alt text, where the text needs it.
 5. Write the file with the Write tool, or Edit when the file exists.
@@ -102,7 +102,7 @@ Skip this step when the user gave no image. Read `references/images.md`. Run thi
 
 **Exit criterion:** Every Improvement is applied, `blog-lint` reports zero errors and the link check reports zero broken links.
 
-1. Send a single message with 3 Agent tool calls, one per Reviewer. Use the `general-purpose` subagent type for each.
+1. Send a single message with 4 Agent tool calls, one per Reviewer. Use the `general-purpose` subagent type for each.
 2. Each prompt includes the absolute `draft` path and tells the Reviewer to:
    - read the Draft;
    - read its own reference file from the table below, and `references/review-format.md`, and nothing else;
@@ -110,7 +110,7 @@ Skip this step when the user gave no image. Read `references/images.md`. Run thi
    - return findings in the format of `references/review-format.md`, or `No findings.`
 3. The Reader Reviewer prompt also states the Reader of the Brief when the Brief overrides the default Reader, in one sentence.
 4. A style reference marked pending in Step 6 has no Reviewer. Skip it and tell the user.
-5. Present each report under its own heading, in this order: `## Voice`, `## Structure`, `## Reader`. Do not merge or rerank the axes.
+5. Present each report under its own heading, in this order: `## Voice`, `## Structure`, `## Reader`, `## Story`. Do not merge or rerank the axes.
 6. Keep only the Improvements. Hide the Nitpicks. Never filter an out-of-axis finding: show it to the user under the report of the Reviewer who raised it, and do not apply it.
 7. Apply each in-axis Improvement with the Edit tool. Locate the place from the quote. When two Improvements contradict, keep the one that follows the Voice, and tell the user.
 8. Run `blog-lint <draft>` and the link check again. Fix each error and each broken link. Repeat until none remain.
@@ -121,8 +121,9 @@ Skip this step when the user gave no image. Read `references/images.md`. Run thi
 | Voice | `references/voice.md` |
 | Structure | `references/structure.md` |
 | Reader | `references/reader.md` |
+| Story | `references/story.md` |
 
-Only when the harness has no sub-agents: run the three axes one after the other, each with its own notes, as if each were a separate Reviewer. Do not carry findings from one axis into the next.
+Only when the harness has no sub-agents: run the four axes one after the other, each with its own notes, as if each were a separate Reviewer. Do not carry findings from one axis into the next.
 
 ### Step 9 — Show the Draft
 
@@ -148,7 +149,7 @@ Only when the harness has no sub-agents: run the three axes one after the other,
 | "The user will want it in the clipboard" | Copy only on request. |
 | "I'll link the first article for background" | Every article stands alone. Recap what it assumes. |
 | "Style references are missing, I'll invent a Voice" | Tell the user they are pending. Write plainly with simple words. |
-| "I can review the three axes myself in one pass" | Each Reviewer needs an isolated context. Send the three Agent calls in one message. |
+| "I can review the four axes myself in one pass" | Each Reviewer needs an isolated context. Send the four Agent calls in one message. |
 | "A Reviewer found nothing, so it skipped the job" | A Reviewer may report nothing. Do not ask for findings. |
 | "The Nitpicks are cheap, I'll fix them too" | Apply only Improvements. Report the hidden Nitpick count. |
 | "The edits are small, no need to lint again" | Improvements can break the Lint. Run `blog-lint` again. |
@@ -173,7 +174,7 @@ Only when the harness has no sub-agents: run the three axes one after the other,
 - [ ] `blog-lint` returns zero errors
 - [ ] Link check reports zero broken links and zero empty alt texts
 - [ ] No image generated or edited
-- [ ] Three Reviewers sent in a single message, each reading only its own reference plus `references/review-format.md`
+- [ ] Four Reviewers sent in a single message, each reading only its own reference plus `references/review-format.md`
 - [ ] Only Improvements applied, hidden Nitpick count reported
 - [ ] `blog-lint` and the link check pass after the Improvements
 - [ ] User approved the Draft

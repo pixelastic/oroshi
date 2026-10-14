@@ -1,6 +1,6 @@
 # Review Format
 
-Format of the findings that a Reviewer returns. Each Reviewer checks one axis: the Voice, the Structure or the Reader.
+Format of the findings that a Reviewer returns. Each Reviewer checks one axis: the Voice, the Structure, the Reader or the Story.
 
 ## Rules
 
