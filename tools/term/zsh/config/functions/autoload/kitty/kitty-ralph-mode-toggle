@@ -1,0 +1,20 @@
+# Flip the ralph session mode when the focused kitty window runs claude
+# Usage:
+# $ kitty-ralph-mode-toggle
+setopt local_options err_return
+
+local windowId="$(kitty-window-id)"
+local processName="$(kitty-window-process "$windowId")"
+
+# Not a claude window, nothing to toggle
+[[ "$processName" != "claude" ]] && return 0
+
+local planDir="$(plan-directory)"
+
+# No plan for this directory
+[[ "$planDir" == "" ]] && return 0
+
+# No ralph session running
+[[ ! -f "$planDir/ralph.json" ]] && return 0
+
+ralph-mode-toggle "$planDir"
