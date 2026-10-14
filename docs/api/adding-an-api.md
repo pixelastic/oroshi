@@ -69,15 +69,12 @@ and its `callApi.js`.
 
 **Goal:** Let Claude call the new commands without a permission prompt.
 
-**Exit criterion:** Each command of step 3 that must be allowed is in
+**Exit criterion:** Each command of step 3 is in
 `tools/ai/claude/config/hooks/allow-list.json`.
 
-Add the commands to `allow-list.json`, in alphabetical order, with these rules:
-
-- Add `search`, `list-raw`, `list`, `read`, `create` and `update`.
-- Do not add `delete`.
-- Do not add `login` of an OAuth API.
-- Do not add a custom verb by default. Decide it case by case.
+Add every command of step 3 with `skills-allowlist-add <name>...`. Do not edit
+`allow-list.json` by hand: the helper keeps it sorted. Add the commands as soon
+as you create each one, so that Claude can test it without a permission prompt.
 
 ## Step 7 — Implement the commands
 
@@ -120,8 +117,7 @@ For each command:
 - [ ] The list of commands and their arguments is written down.
 - [ ] The workspace has its `package.json`, `getConfig.js` and `callApi.js`.
 - [ ] An OAuth API follows [oauth.md](oauth.md) and has its login command.
-- [ ] `allow-list.json` has the allowed commands, and no `delete`, `login` or
-      custom verb by default.
+- [ ] `allow-list.json` has every command.
 - [ ] Every entity has its `format<Entity>.js`.
 - [ ] Every command prints its documented format.
 - [ ] Every command has its documented header.

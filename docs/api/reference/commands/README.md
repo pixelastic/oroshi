@@ -29,10 +29,3 @@ verb of the table.
 
 The words used here (service, entity, command, verb) are defined in the
 [glossary](../../GLOSSARY.md).
-
-## Allow-list
-
-Every command is a helper. Add each one to the Claude allow-list with
-`skills-allowlist-add <name>` before creating it, so that Claude can test it
-without a permission prompt. See
-[Adding an API](../../README.md#adding-an-api).
