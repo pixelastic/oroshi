@@ -1,18 +1,22 @@
 import { _ } from 'golgoth';
 import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
-import { recordSearch } from './recordSearch.js';
+import { warnMoreResults } from '@oroshi/api-shared/warnMoreResults.js';
+import { recordSearchPaged } from './recordSearchPaged.js';
 
 export let __;
 
 /**
  * List the Records of a Table as raw lines, one per Record. A line holds the
  * Record ID, then its Fields as JSON
- * @param {object} options - Same options as search
+ * @param {object} options - Same options as the paged search
  * @returns {Promise<string>} Raw lines, joined with a newline
  */
 export async function recordListRaw(options) {
   // Ask search for the Records, with the flags we received
-  const records = await __.recordSearch(options);
+  const { records, hasMore } = await __.recordSearchPaged(options);
+  if (hasMore) {
+    __.warnMoreResults();
+  }
 
   return _.chain(records)
     .map((record) => __.toLine(record))
@@ -32,5 +36,6 @@ __ = {
       .join('▮')
       .value();
   },
-  recordSearch,
+  recordSearchPaged,
+  warnMoreResults,
 };

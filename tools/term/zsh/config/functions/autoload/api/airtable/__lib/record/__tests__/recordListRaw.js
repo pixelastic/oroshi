@@ -4,16 +4,20 @@ describe('recordListRaw', () => {
   const anchors = { baseId: 'appDEVREL', tableId: 'tblMEETUPS' };
 
   beforeEach(() => {
-    vi.spyOn(__, 'recordSearch').mockReturnValue([
-      { id: 'recA', fields: { Name: 'Paris Meetup' } },
-      { id: 'recB', fields: {} },
-    ]);
+    vi.spyOn(__, 'recordSearchPaged').mockReturnValue({
+      records: [
+        { id: 'recA', fields: { Name: 'Paris Meetup' } },
+        { id: 'recB', fields: {} },
+      ],
+      hasMore: false,
+    });
+    vi.spyOn(__, 'warnMoreResults').mockReturnValue();
   });
 
   it('searches with the formula and the flags it received', async () => {
     await recordListRaw({ ...anchors, limit: 10, query: "{Name}='Paris'" });
 
-    expect(__.recordSearch).toHaveBeenCalledWith({
+    expect(__.recordSearchPaged).toHaveBeenCalledWith({
       ...anchors,
       limit: 10,
       query: "{Name}='Paris'",
@@ -27,11 +31,29 @@ describe('recordListRaw', () => {
   });
 
   it('prints an empty line for a Table without Records', async () => {
-    __.recordSearch.mockReturnValue([]);
+    __.recordSearchPaged.mockReturnValue({ records: [], hasMore: false });
 
     const actual = await recordListRaw(anchors);
 
     expect(actual).toEqual('');
+  });
+
+  it('warns that more results exist, and still prints the lines', async () => {
+    __.recordSearchPaged.mockReturnValue({
+      records: [{ id: 'recA', fields: {} }],
+      hasMore: true,
+    });
+
+    const actual = await recordListRaw(anchors);
+
+    expect(__.warnMoreResults).toHaveBeenCalledTimes(1);
+    expect(actual).toEqual('recA▮{}');
+  });
+
+  it('does not warn when no more results exist', async () => {
+    await recordListRaw(anchors);
+
+    expect(__.warnMoreResults).not.toHaveBeenCalled();
   });
 
   describe('toLine', () => {

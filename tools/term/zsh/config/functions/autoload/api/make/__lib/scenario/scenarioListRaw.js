@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
 import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
-import { warnMoreResults } from '../warnMoreResults.js';
+import { warnMoreResults } from '@oroshi/api-shared/warnMoreResults.js';
 import { scenarioSearchPaged } from './scenarioSearchPaged.js';
 
 export let __;
