@@ -9,13 +9,13 @@ setup() {
 @test "creates the article folder and its images subfolder" {
   bats_run_zsh "blog-writer-start my-article"
   [[ "$status" -eq 0 ]]
-  [[ -d "$OROSHI_FOLDER_STATE/blog-writer/my-article" ]]
-  [[ -d "$OROSHI_FOLDER_STATE/blog-writer/my-article/images" ]]
+  [[ -d "$OROSHI_FOLDER_STATE/claude/blog-writer/my-article" ]]
+  [[ -d "$OROSHI_FOLDER_STATE/claude/blog-writer/my-article/images" ]]
 }
 
 @test "prints JSON with the folder, brief, interview, draft and images paths" {
   bats_run_zsh "blog-writer-start my-article"
-  local folder="$OROSHI_FOLDER_STATE/blog-writer/my-article"
+  local folder="$OROSHI_FOLDER_STATE/claude/blog-writer/my-article"
   [[ "$status" -eq 0 ]]
   expect_json '.folder' "$folder"
   expect_json '.brief' "$folder/brief.md"
@@ -26,7 +26,7 @@ setup() {
 
 @test "does not create the brief, interview or draft files" {
   bats_run_zsh "blog-writer-start my-article"
-  local folder="$OROSHI_FOLDER_STATE/blog-writer/my-article"
+  local folder="$OROSHI_FOLDER_STATE/claude/blog-writer/my-article"
   [[ ! -e "$folder/brief.md" ]]
   [[ ! -e "$folder/interview.md" ]]
   [[ ! -e "$folder/draft.md" ]]
@@ -34,7 +34,7 @@ setup() {
 
 @test "starting the same slug twice keeps existing files untouched" {
   bats_run_zsh "blog-writer-start my-article"
-  local folder="$OROSHI_FOLDER_STATE/blog-writer/my-article"
+  local folder="$OROSHI_FOLDER_STATE/claude/blog-writer/my-article"
   echo "my draft" > "$folder/draft.md"
   echo "my image" > "$folder/images/1.png"
 
@@ -74,7 +74,7 @@ setup() {
   bats_run_zsh "blog-writer-start a/b"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"Invalid slug"* ]]
-  [[ ! -e "$OROSHI_FOLDER_STATE/blog-writer/a" ]]
+  [[ ! -e "$OROSHI_FOLDER_STATE/claude/blog-writer/a" ]]
 }
 
 @test "fails when the slug starts with a dot" {

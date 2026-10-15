@@ -18,7 +18,7 @@ if [[ ! "$slug" =~ '^[A-Za-z0-9_][A-Za-z0-9._-]*$' ]]; then
   return 1
 fi
 
-local folder="$OROSHI_FOLDER_STATE/blog-writer/$slug"
+local folder="$OROSHI_FOLDER_STATE/claude/blog-writer/$slug"
 local imagesFolder="$folder/images"
 
 # Idempotent: never overwrites existing files
