@@ -7,9 +7,6 @@ import { formatFolder } from './formatFolder.js';
 
 export let __;
 
-// The most Scenarios the API returns in one page
-const MAX_SCENARIOS = 10000;
-
 /**
  * Read one Folder of the Team, with its direct subfolders and direct Scenarios
  * @param {object} options - Id of the Folder
@@ -30,7 +27,7 @@ export async function folderRead(options) {
   const subfolders = await __.listFolders(teamId, folderId);
   const scenarios = await __.scenarioSearch({
     folderId,
-    limit: MAX_SCENARIOS,
+    limit: Infinity,
   });
 
   return {

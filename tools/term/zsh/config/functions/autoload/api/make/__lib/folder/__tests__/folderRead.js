@@ -110,13 +110,13 @@ describe('folderRead', () => {
     ]);
   });
 
-  it('asks for the scenarios of this Folder only, up to the API maximum', async () => {
+  it('asks for the scenarios of this Folder only, with no limit', async () => {
     await folderRead({ folderId: 2 });
 
     expect(__.scenarioSearch).toHaveBeenCalledTimes(1);
     expect(__.scenarioSearch).toHaveBeenCalledWith({
       folderId: 2,
-      limit: 10000,
+      limit: Infinity,
     });
   });
 

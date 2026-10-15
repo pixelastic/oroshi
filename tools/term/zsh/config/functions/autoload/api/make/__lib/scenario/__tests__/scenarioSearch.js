@@ -2,65 +2,31 @@ import { __, scenarioSearch } from '../scenarioSearch.js';
 
 describe('scenarioSearch', () => {
   beforeEach(() => {
-    vi.spyOn(__, 'getConfig').mockReturnValue({
-      key: 'secret-key',
-      teamId: '42',
-      zone: 'eu2',
-    });
-    vi.spyOn(__, 'callApi').mockReturnValue({
+    vi.spyOn(__, 'scenarioSearchPaged').mockReturnValue({
       scenarios: [{ id: 1 }, { id: 2 }],
-    });
-    vi.spyOn(__, 'formatScenario').mockImplementation((scenario) => ({
-      id: scenario.id,
-      formatted: true,
-    }));
-  });
-
-  it('sends the team of the configuration', async () => {
-    await scenarioSearch({ query: 'sync' });
-
-    expect(__.callApi).toHaveBeenCalledWith('scenarios', {
-      query: expect.objectContaining({ teamId: '42' }),
+      hasMore: true,
     });
   });
 
-  it('sends the text as search', async () => {
-    await scenarioSearch({ query: 'sync' });
+  it('searches with the flags it received', async () => {
+    await scenarioSearch({ query: 'sync', folderId: 12, limit: 10 });
 
-    const { query } = __.callApi.mock.calls[0][1];
-    expect(query).toHaveProperty('search', 'sync');
+    expect(__.scenarioSearchPaged).toHaveBeenCalledWith({
+      query: 'sync',
+      folderId: 12,
+      limit: 10,
+    });
   });
 
-  it.each([
-    {
-      title: 'the Folder ID as folderId',
-      input: { folderId: 12 },
-      expected: 12,
-    },
-    { title: 'no folderId by default', input: {}, expected: undefined },
-  ])('sends $title', async ({ input, expected }) => {
-    await scenarioSearch(input);
-
-    const { query } = __.callApi.mock.calls[0][1];
-    expect(query).toHaveProperty('folderId', expected);
-  });
-
-  it.each([
-    { title: 'the limit as pg[limit]', input: { limit: 10 }, expected: 10 },
-    { title: '25 by default', input: {}, expected: 25 },
-  ])('sends $title', async ({ input, expected }) => {
-    await scenarioSearch({ query: 'sync', ...input });
-
-    const { query } = __.callApi.mock.calls[0][1];
-    expect(query).toHaveProperty(['pg[limit]'], expected);
-  });
-
-  it('returns the scenarios, formatted', async () => {
+  it('returns the Scenarios as a plain array', async () => {
     const actual = await scenarioSearch({ query: 'sync' });
 
-    expect(actual).toEqual([
-      { id: 1, formatted: true },
-      { id: 2, formatted: true },
-    ]);
+    expect(actual).toEqual([{ id: 1 }, { id: 2 }]);
+  });
+
+  it('searches without flags', async () => {
+    await scenarioSearch();
+
+    expect(__.scenarioSearchPaged).toHaveBeenCalledWith({});
   });
 });

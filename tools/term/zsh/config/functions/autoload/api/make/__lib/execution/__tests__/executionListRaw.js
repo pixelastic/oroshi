@@ -2,23 +2,27 @@ import { __, executionListRaw } from '../executionListRaw.js';
 
 describe('executionListRaw', () => {
   beforeEach(() => {
-    vi.spyOn(__, 'executionSearch').mockReturnValue([
-      {
-        id: 'cfcf',
-        status: 3,
-        type: 'auto',
-        timestamp: '2026-10-12T09:46:06.720Z',
-        duration: 190,
-        operations: 0,
-      },
-      { id: '7985', type: 'stop', timestamp: '2026-10-12T09:46:07.585Z' },
-    ]);
+    vi.spyOn(__, 'executionSearchPaged').mockReturnValue({
+      executions: [
+        {
+          id: 'cfcf',
+          status: 3,
+          type: 'auto',
+          timestamp: '2026-10-12T09:46:06.720Z',
+          duration: 190,
+          operations: 0,
+        },
+        { id: '7985', type: 'stop', timestamp: '2026-10-12T09:46:07.585Z' },
+      ],
+      hasMore: false,
+    });
+    vi.spyOn(__, 'warnMoreResults').mockReturnValue();
   });
 
   it('searches with the flags it received', async () => {
     await executionListRaw({ scenarioId: 925, status: 'error' });
 
-    expect(__.executionSearch).toHaveBeenCalledWith({
+    expect(__.executionSearchPaged).toHaveBeenCalledWith({
       scenarioId: 925,
       status: 'error',
     });
@@ -33,17 +37,38 @@ describe('executionListRaw', () => {
   });
 
   it('prints an empty line for no Execution', async () => {
-    __.executionSearch.mockReturnValue([]);
+    __.executionSearchPaged.mockReturnValue({ executions: [], hasMore: false });
 
     const actual = await executionListRaw({ scenarioId: 925 });
 
     expect(actual).toEqual('');
   });
+
+  it('warns that more results exist, and still prints the lines', async () => {
+    __.executionSearchPaged.mockReturnValue({
+      executions: [{ id: 'cfcf' }],
+      hasMore: true,
+    });
+
+    const actual = await executionListRaw({ scenarioId: 925 });
+
+    expect(__.warnMoreResults).toHaveBeenCalledTimes(1);
+    expect(actual).toEqual('cfcf▮▮▮▮▮');
+  });
+
+  it('does not warn when no more results exist', async () => {
+    await executionListRaw({ scenarioId: 925 });
+
+    expect(__.warnMoreResults).not.toHaveBeenCalled();
+  });
 });
 
 describe('executionListRaw arguments', () => {
   it('throws MAKE_SCENARIO_ID_MISSING without scenarioId, with no search', async () => {
-    vi.spyOn(__, 'executionSearch').mockReturnValue([]);
+    vi.spyOn(__, 'executionSearchPaged').mockReturnValue({
+      executions: [],
+      hasMore: false,
+    });
 
     let actual = null;
     try {
@@ -57,6 +82,6 @@ describe('executionListRaw arguments', () => {
       'message',
       'Missing --scenarioId, the Scenario ID is named. Usage: make-execution-list --scenarioId <scenarioId> [--status <status>]',
     );
-    expect(__.executionSearch).not.toHaveBeenCalled();
+    expect(__.executionSearchPaged).not.toHaveBeenCalled();
   });
 });

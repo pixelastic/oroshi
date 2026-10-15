@@ -1,7 +1,8 @@
 import { _ } from 'golgoth';
 import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
+import { warnMoreResults } from '../warnMoreResults.js';
 import { assertScenarioId } from './assertScenarioId.js';
-import { executionSearch } from './executionSearch.js';
+import { executionSearchPaged } from './executionSearchPaged.js';
 
 export let __;
 
@@ -17,7 +18,10 @@ export async function executionListRaw(options) {
   );
 
   // Ask search for the Executions, with the flags we received
-  const executions = await __.executionSearch(options);
+  const { executions, hasMore } = await __.executionSearchPaged(options);
+  if (hasMore) {
+    __.warnMoreResults();
+  }
 
   return _.chain(executions)
     .map((execution) => __.toLine(execution))
@@ -38,5 +42,6 @@ __ = {
       .join('▮')
       .value();
   },
-  executionSearch,
+  executionSearchPaged,
+  warnMoreResults,
 };

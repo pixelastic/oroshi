@@ -1,38 +1,17 @@
-import { _ } from 'golgoth';
-import { callApi } from '../callApi.js';
-import { getConfig } from '../getConfig.js';
-import { formatScenario } from './formatScenario.js';
+import { scenarioSearchPaged } from './scenarioSearchPaged.js';
 
 export let __;
 
-const DEFAULT_LIMIT = 25;
-
 /**
  * Search the Scenarios of the Team by name
- * @param {object} [options] - Search options
- * @param {string} [options.query] - Text to look for in the names, all Scenarios by default
- * @param {number|string} [options.folderId] - Only the Scenarios directly in this Folder
- * @param {number} [options.limit] - Maximum number of Scenarios
+ * @param {object} [options] - Same options as the paged search
  * @returns {Promise<object[]>} The Scenarios, formatted
  */
 export async function scenarioSearch(options = {}) {
-  const { query, folderId, limit = DEFAULT_LIMIT } = options;
-
-  const { teamId } = await __.getConfig();
-  const response = await __.callApi('scenarios', {
-    query: {
-      teamId,
-      search: query || undefined,
-      folderId,
-      'pg[limit]': limit,
-    },
-  });
-
-  return _.map(response.scenarios, __.formatScenario);
+  const { scenarios } = await __.scenarioSearchPaged(options);
+  return scenarios;
 }
 
 __ = {
-  callApi,
-  getConfig,
-  formatScenario,
+  scenarioSearchPaged,
 };
