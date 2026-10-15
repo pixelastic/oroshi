@@ -18,7 +18,6 @@ source ${0:A:h}/ctrl-h.zsh       # Fuzzy-find history commands
 source ${0:A:h}/ctrl-r.zsh       # Run ralph
 source ${0:A:h}/ctrl-s.zsh       # Commit all changes
 source ${0:A:h}/ctrl-shift-s.zsh # Commit all changes, then run ralph
-source ${0:A:h}/ctrl-w.zsh       # Watch changed files
 source ${0:A:h}/ctrl-y.zsh       # Copy current directory to clipboard
 source ${0:A:h}/ctrl-shift-y.zsh # Copy last command + output to clipboard
 source ${0:A:h}/ctrl-i.zsh       # Open Claude Code
@@ -32,8 +31,10 @@ source ${0:A:h}/ctrl-shift-g.zsh # Regexp search in files in subdir
 source ${0:A:h}/ctrl-l.zsh       # List all files in directory
 source ${0:A:h}/ctrl-shift-l.zsh # Clear terminal
 
-source ${0:A:h}/ctrl-b.zsh             # Fuzzy-find binaries in $PATH
-source ${0:A:h}/ctrl-n.zsh             # Open current directory in Nautilus
+source ${0:A:h}/ctrl-w.zsh       # Watch changed files
+source ${0:A:h}/ctrl-shift-w.zsh # Watch changed files since start of worktree
+source ${0:A:h}/ctrl-b.zsh       # Fuzzy-find binaries in $PATH
+source ${0:A:h}/ctrl-n.zsh       # Open current directory in Nautilus
 
 # }}}
 
