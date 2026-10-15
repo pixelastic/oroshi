@@ -1,3 +1,4 @@
+import childProcess from 'node:child_process';
 import { __, googleAuth } from '../auth.js';
 
 describe('googleAuth', () => {
@@ -8,14 +9,13 @@ describe('googleAuth', () => {
       setCredentials: vi.fn(),
       getAccessToken: vi.fn(),
     };
+    vi.spyOn(childProcess, 'spawn').mockReturnValue();
     vi.spyOn(__, 'createOAuth2Client').mockReturnValue(mockClient);
     vi.spyOn(__, 'readTokens').mockReturnValue({
       access_token: 'stale-access-token',
       refresh_token: 'test-refresh-token',
       expiry_date: 1234567890,
     });
-    vi.spyOn(__, 'runGoogleLogin').mockReturnValue();
-    vi.spyOn(__, 'consoleWarn').mockReturnValue();
   });
 
   it('returns an authenticated OAuth2 client', async () => {
@@ -30,29 +30,69 @@ describe('googleAuth', () => {
     });
   });
 
-  it('runs google-login when token file is missing', async () => {
-    let callCount = 0;
-    vi.spyOn(__, 'readTokens').mockImplementation(() => {
-      callCount++;
-      if (callCount === 1) throw new Error('ENOENT');
-      return { refresh_token: 'new-token' };
-    });
-    await googleAuth();
-    expect(__.runGoogleLogin).toHaveBeenCalled();
-    expect(__.consoleWarn).toHaveBeenCalledWith(
-      expect.stringContaining('google-login'),
-    );
-  });
+  describe('login required', () => {
+    const missing = () => {
+      vi.spyOn(__, 'readTokens').mockImplementation(() => {
+        throw new Error('ENOENT');
+      });
+    };
+    const expired = () => {
+      mockClient.getAccessToken.mockImplementation(() => {
+        throw new Error('invalid_grant');
+      });
+    };
 
-  it('re-authenticates on invalid_grant error', async () => {
-    mockClient.getAccessToken.mockImplementationOnce(() => {
-      throw new Error('invalid_grant');
-    });
-    await googleAuth();
-    expect(__.runGoogleLogin).toHaveBeenCalled();
-    expect(__.consoleWarn).toHaveBeenCalledWith(
-      expect.stringContaining('expired'),
+    it.each([
+      {
+        title: 'no token file exists',
+        arrange: missing,
+        account: 'pro',
+        expected: 'Google account "pro" is not logged in. Run google-login',
+      },
+      {
+        title: 'the token expired',
+        arrange: expired,
+        account: 'pro',
+        expected: 'Google token of account "pro" expired. Run google-login',
+      },
+      {
+        title: 'no token file exists for perso',
+        arrange: missing,
+        account: 'perso',
+        expected:
+          'Google account "perso" is not logged in. Run google-login --perso',
+      },
+      {
+        title: 'the token of perso expired',
+        arrange: expired,
+        account: 'perso',
+        expected:
+          'Google token of account "perso" expired. Run google-login --perso',
+      },
+    ])(
+      'throws GOOGLE_LOGIN_REQUIRED when $title',
+      async ({ arrange, account, expected }) => {
+        arrange();
+        let actual = null;
+        try {
+          await googleAuth(account);
+        } catch (error) {
+          actual = error;
+        }
+        expect(actual).toHaveProperty('code', 'GOOGLE_LOGIN_REQUIRED');
+        expect(actual).toHaveProperty('message', expected);
+      },
     );
+
+    it('never spawns a process', async () => {
+      missing();
+      try {
+        await googleAuth();
+      } catch {
+        // The error is expected
+      }
+      expect(childProcess.spawn).not.toHaveBeenCalled();
+    });
   });
 
   it('throws on unexpected getAccessToken errors', async () => {
@@ -101,27 +141,6 @@ describe('googleAuth', () => {
       vi.spyOn(__, 'readTokens').mockReturnValue({ refresh_token: 'x' });
       await googleAuth();
       expect(__.readTokens).toHaveBeenCalledWith('pro');
-    });
-
-    it.each([
-      {
-        title: 'logs in pro without flag',
-        account: 'pro',
-        expected: ['google-login'],
-      },
-      {
-        title: 'logs in perso with --perso',
-        account: 'perso',
-        expected: ['google-login', '--perso'],
-      },
-      {
-        title: 'logs in pro by default',
-        account: undefined,
-        expected: ['google-login'],
-      },
-    ])('$title', ({ account, expected }) => {
-      const actual = __.loginCommand(account);
-      expect(actual).toEqual(expected);
     });
   });
 });

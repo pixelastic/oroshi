@@ -1382,6 +1382,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@oroshi/google@workspace:tools/term/zsh/config/functions/autoload/google/__lib"
   dependencies:
+    "@oroshi/api-shared": "workspace:*"
     cli-truncate: "npm:5.2.0"
     firost: "npm:5.11.0"
     golgoth: "npm:3.1.0"

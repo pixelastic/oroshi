@@ -1,4 +1,4 @@
-import { consoleWarn, readJson, run } from 'firost';
+import { firostError, readJson } from 'firost';
 import { google } from 'googleapis';
 
 export let __;
@@ -7,15 +7,17 @@ export let __;
  * Returns an authenticated Google OAuth2 client
  * @param {string} account - Account to authenticate: "pro" (default) or "perso"
  * @returns {object} Authenticated OAuth2Client
+ * @throws {Error} GOOGLE_LOGIN_REQUIRED when the token is missing or expired
  */
 export async function googleAuth(account = 'pro') {
   let tokens;
   try {
     tokens = await __.readTokens(account);
   } catch {
-    __.consoleWarn('No Google tokens found. Running google-login...');
-    await __.runGoogleLogin(account);
-    tokens = await __.readTokens(account);
+    throw firostError(
+      'GOOGLE_LOGIN_REQUIRED',
+      `Google account "${account}" is not logged in. Run ${__.loginCommand(account)}`,
+    );
   }
 
   const client = __.createOAuth2Client();
@@ -26,13 +28,12 @@ export async function googleAuth(account = 'pro') {
     await client.getAccessToken();
   } catch (error) {
     if (error.message?.includes('invalid_grant')) {
-      __.consoleWarn('Google token expired. Running google-login...');
-      await __.runGoogleLogin(account);
-      tokens = await __.readTokens(account);
-      client.setCredentials({ refresh_token: tokens.refresh_token });
-    } else {
-      throw error;
+      throw firostError(
+        'GOOGLE_LOGIN_REQUIRED',
+        `Google token of account "${account}" expired. Run ${__.loginCommand(account)}`,
+      );
     }
+    throw error;
   }
 
   return client;
@@ -57,14 +58,12 @@ __ = {
     return `${process.env.OROSHI_FOLDER_STATE}/google/tokens${suffix}.json`;
   },
   /**
-   * Command that logs in an account
+   * Command that logs in an account, for the user to run
    * @param {string} account - "pro" or "perso"
-   * @returns {string[]} Command and arguments
+   * @returns {string} Command line
    */
   loginCommand(account = 'pro') {
-    return account === 'pro'
-      ? ['google-login']
-      : ['google-login', `--${account}`];
+    return account === 'pro' ? 'google-login' : `google-login --${account}`;
   },
   /**
    * Create a new OAuth2Client instance
@@ -75,23 +74,5 @@ __ = {
       process.env.OROSHI_GOOGLE_CLIENT_ID,
       process.env.OROSHI_GOOGLE_CLIENT_SECRET,
     );
-  },
-  /**
-   * Run google-login and wait for the user to complete auth
-   * @param {string} account - "pro" or "perso"
-   * @returns {Promise<void>}
-   */
-  async runGoogleLogin(account = 'pro') {
-    await run(__.loginCommand(account), {
-      stdin: 'inherit',
-      stdout: 'inherit',
-    });
-  },
-  /**
-   * Print a warning
-   * @param {string} message - Warning text
-   */
-  consoleWarn(message) {
-    consoleWarn(message);
   },
 };
