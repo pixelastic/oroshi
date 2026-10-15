@@ -1,5 +1,6 @@
 {
   "find": "find-guarded",
+  "google-login": "google-login-guarded",
   "rm": "rm-guarded",
   "rmdir": "rmdir-guarded"
 }

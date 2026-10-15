@@ -250,6 +250,7 @@
   "go-test-path",
   "go-test-token-saving",
   "go-tool-path",
+  "google-login-guarded",
   "grep",
   "gresource",
   "gsettings get",

@@ -1,0 +1,11 @@
+# Refuse to run google-login: it is interactive, and an agent cannot complete it
+# The refusal tells the agent to ask the user to run it in their own shell
+# Usage:
+# $ google-login-guarded            # Prints the refusal, exit code 1
+# $ google-login-guarded --perso    # Flags are ignored
+setopt local_options err_return
+
+local reason="google-login is interactive: it opens a browser and waits for the user to sign in. An agent cannot run it."
+local advice="Ask the user to run google-login in their own shell, then retry."
+echoerr "[claude-guarded:refused] $reason $advice"
+return 1

@@ -66,6 +66,27 @@ setup() {
   expect_json '.hookSpecificOutput.updatedInput.command' 'rmdir-guarded emptydir'
 }
 
+@test "integration: rewrite google-login to google-login-guarded" {
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"google-login"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'google-login-guarded'
+}
+
+@test "integration: rewrite google-login and keep its flag" {
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"google-login --perso"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'google-login-guarded --perso'
+}
+
+@test "integration: rewrite google-login inside a pipe or a conditional" {
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"google-login --perso | cat && google-login || echo failed"}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'google-login-guarded --perso | cat && google-login-guarded || echo failed'
+}
+
 @test "integration: reject wget with reason" {
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
