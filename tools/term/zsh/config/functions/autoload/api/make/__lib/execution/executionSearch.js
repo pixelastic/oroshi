@@ -1,6 +1,7 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
 import { callApi } from '../callApi.js';
+import { assertScenarioId } from './assertScenarioId.js';
 import { formatExecution } from './formatExecution.js';
 
 export let __;
@@ -26,6 +27,11 @@ export async function executionSearch(options) {
     dateMax,
     limit = DEFAULT_LIMIT,
   } = options;
+
+  assertScenarioId(
+    scenarioId,
+    'make-execution-search --scenarioId <scenarioId> [--status <status>]',
+  );
 
   // Convert the flags before calling the API, so a typo costs no request
   const query = {

@@ -116,3 +116,25 @@ describe('executionSearch', () => {
     ]);
   });
 });
+
+describe('executionSearch arguments', () => {
+  beforeEach(() => {
+    vi.spyOn(__, 'callApi').mockReturnValue({ scenarioLogs: [] });
+  });
+
+  it('throws MAKE_SCENARIO_ID_MISSING without scenarioId, with no API call', async () => {
+    let actual = null;
+    try {
+      await executionSearch({ status: 'error' });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', 'MAKE_SCENARIO_ID_MISSING');
+    expect(actual).toHaveProperty(
+      'message',
+      'Missing --scenarioId, the Scenario ID is named. Usage: make-execution-search --scenarioId <scenarioId> [--status <status>]',
+    );
+    expect(__.callApi).not.toHaveBeenCalled();
+  });
+});

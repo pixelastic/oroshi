@@ -1,4 +1,6 @@
+import { firostError } from 'firost';
 import { callApi } from '../callApi.js';
+import { assertScenarioId } from './assertScenarioId.js';
 import { formatExecution } from './formatExecution.js';
 
 export let __;
@@ -12,6 +14,18 @@ export let __;
  */
 export async function executionRead(options) {
   const { scenarioId, executionId } = options;
+
+  // Check the arguments before calling the API, so a typo costs no request
+  assertScenarioId(
+    scenarioId,
+    'make-execution-read <executionId> --scenarioId <scenarioId>',
+  );
+  if (!executionId) {
+    throw firostError(
+      'MAKE_EXECUTION_ID_MISSING',
+      'Missing the Execution ID, it is positional. Usage: make-execution-read <executionId> --scenarioId <scenarioId>',
+    );
+  }
 
   // The API wraps the Execution in a scenarioLog key
   const response = await __.callApi(

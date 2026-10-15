@@ -22,3 +22,38 @@ describe('executionRead', () => {
     expect(actual).toEqual({ id: 'formatted' });
   });
 });
+
+describe('executionRead arguments', () => {
+  beforeEach(() => {
+    vi.spyOn(__, 'callApi').mockReturnValue({ scenarioLog: {} });
+    vi.spyOn(__, 'formatExecution').mockReturnValue({});
+  });
+
+  it.each([
+    {
+      title: 'MAKE_SCENARIO_ID_MISSING without scenarioId',
+      input: { executionId: 'cfcf' },
+      code: 'MAKE_SCENARIO_ID_MISSING',
+      expected:
+        'Missing --scenarioId, the Scenario ID is named. Usage: make-execution-read <executionId> --scenarioId <scenarioId>',
+    },
+    {
+      title: 'MAKE_EXECUTION_ID_MISSING without executionId',
+      input: { scenarioId: 925 },
+      code: 'MAKE_EXECUTION_ID_MISSING',
+      expected:
+        'Missing the Execution ID, it is positional. Usage: make-execution-read <executionId> --scenarioId <scenarioId>',
+    },
+  ])('throws $title', async ({ input, code, expected }) => {
+    let actual = null;
+    try {
+      await executionRead(input);
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', code);
+    expect(actual).toHaveProperty('message', expected);
+    expect(__.callApi).not.toHaveBeenCalled();
+  });
+});

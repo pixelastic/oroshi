@@ -1,5 +1,6 @@
 import { _ } from 'golgoth';
 import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
+import { assertScenarioId } from './assertScenarioId.js';
 import { executionSearch } from './executionSearch.js';
 
 export let __;
@@ -10,6 +11,11 @@ export let __;
  * @returns {Promise<string>} Raw lines, joined with a newline
  */
 export async function executionListRaw(options) {
+  assertScenarioId(
+    options.scenarioId,
+    'make-execution-list --scenarioId <scenarioId> [--status <status>]',
+  );
+
   // Ask search for the Executions, with the flags we received
   const executions = await __.executionSearch(options);
 

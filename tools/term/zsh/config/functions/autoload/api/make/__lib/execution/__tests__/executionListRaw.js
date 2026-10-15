@@ -40,3 +40,23 @@ describe('executionListRaw', () => {
     expect(actual).toEqual('');
   });
 });
+
+describe('executionListRaw arguments', () => {
+  it('throws MAKE_SCENARIO_ID_MISSING without scenarioId, with no search', async () => {
+    vi.spyOn(__, 'executionSearch').mockReturnValue([]);
+
+    let actual = null;
+    try {
+      await executionListRaw({ status: 'error' });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', 'MAKE_SCENARIO_ID_MISSING');
+    expect(actual).toHaveProperty(
+      'message',
+      'Missing --scenarioId, the Scenario ID is named. Usage: make-execution-list --scenarioId <scenarioId> [--status <status>]',
+    );
+    expect(__.executionSearch).not.toHaveBeenCalled();
+  });
+});
