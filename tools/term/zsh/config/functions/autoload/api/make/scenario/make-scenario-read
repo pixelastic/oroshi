@@ -1,4 +1,7 @@
 # Read a Make scenario by its ID, and print it as JSON
+# The output is trimmed, with a nested flow of its modules, routers, routes and filters
+# The folderId can be read with make-folder-read
+# For the full blueprint, with mappers and parameters, use make-scenario-blueprint
 # Usage:
 # $ make-scenario-read 925
 # $ make-scenario-read 925 --account perso

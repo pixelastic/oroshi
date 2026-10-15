@@ -1,9 +1,18 @@
+import { _ } from 'golgoth';
+
 /**
- * Format one Scenario of the API, to give every command the same output
+ * Format one Scenario of the API, to keep only what is useful to read it
  * @param {object} response - The Scenario, as returned by the API
- * @returns {object} The Scenario, as close as possible to the API
+ * @returns {object} The Scenario, without operations, users, devices and other noise
  */
 export function formatScenario(response) {
-  // Identity by default. Tidy only what a real response shows is needed
-  return response;
+  return _.pick(response, [
+    'id',
+    'name',
+    'folderId',
+    'isActive',
+    'scheduling',
+    'lastEdit',
+    'nextExec',
+  ]);
 }

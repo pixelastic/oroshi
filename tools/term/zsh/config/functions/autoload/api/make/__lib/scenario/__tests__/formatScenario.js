@@ -1,11 +1,52 @@
 import { formatScenario } from '../formatScenario.js';
 
 describe('formatScenario', () => {
-  it('returns the scenario as the API gives it', () => {
-    const scenario = { id: 925, name: 'New scenario', isActive: false };
+  const input = {
+    id: 2353107,
+    name: 'triggerCheck',
+    teamId: 862420,
+    hookId: 1130512,
+    devices: [],
+    folderId: 131246,
+    slots: null,
+    usedPackages: ['gateway', 'util'],
+    lastEdit: '2026-02-26T14:24:01.044Z',
+    scheduling: { type: 'immediately' },
+    operations: null,
+    dlqCount: 0,
+    allDlqCount: 0,
+    createdByUser: { id: 1, name: 'Tim', email: 'tim@example.com' },
+    updatedByUser: { id: 1, name: 'Tim', email: 'tim@example.com' },
+    nextExec: null,
+    isActive: true,
+    type: 'scenario',
+  };
 
-    const actual = formatScenario(scenario);
+  it('keeps the listed fields only', () => {
+    const actual = formatScenario(input);
 
-    expect(actual).toEqual(scenario);
+    expect(actual).toEqual({
+      id: 2353107,
+      name: 'triggerCheck',
+      folderId: 131246,
+      isActive: true,
+      scheduling: { type: 'immediately' },
+      lastEdit: '2026-02-26T14:24:01.044Z',
+      nextExec: null,
+    });
+  });
+
+  it('drops the email of the users', () => {
+    const actual = JSON.stringify(formatScenario(input));
+
+    expect(actual).not.toContain('tim@example.com');
+  });
+
+  it('drops operations and dlqCount', () => {
+    const actual = formatScenario(input);
+
+    expect(actual).not.toHaveProperty('operations');
+    expect(actual).not.toHaveProperty('dlqCount');
+    expect(actual).not.toHaveProperty('allDlqCount');
   });
 });

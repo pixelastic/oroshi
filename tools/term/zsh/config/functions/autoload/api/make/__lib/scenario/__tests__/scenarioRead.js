@@ -2,21 +2,29 @@ import { __, scenarioRead } from '../scenarioRead.js';
 
 describe('scenarioRead', () => {
   beforeEach(() => {
-    vi.spyOn(__, 'callApi').mockReturnValue({ scenario: { id: 925 } });
+    vi.spyOn(__, 'callApi').mockImplementation((path) => {
+      if (path === 'scenarios/925/blueprint') {
+        return { response: { blueprint: { flow: [{ id: 1 }] } } };
+      }
+      return { scenario: { id: 925 } };
+    });
     vi.spyOn(__, 'formatScenario').mockReturnValue({ id: 'formatted' });
+    vi.spyOn(__, 'buildFlow').mockReturnValue([{ id: 'flow' }]);
   });
 
-  it('calls the endpoint of the Scenario id', async () => {
+  it('calls the endpoints of the Scenario and of its blueprint', async () => {
     await scenarioRead({ scenarioId: 925 });
 
     expect(__.callApi).toHaveBeenCalledWith('scenarios/925');
+    expect(__.callApi).toHaveBeenCalledWith('scenarios/925/blueprint');
   });
 
-  it('returns the Scenario, formatted', async () => {
+  it('returns the flow of the blueprint with the scenario fields', async () => {
     const actual = await scenarioRead({ scenarioId: 925 });
 
     expect(__.formatScenario).toHaveBeenCalledWith({ id: 925 });
-    expect(actual).toEqual({ id: 'formatted' });
+    expect(__.buildFlow).toHaveBeenCalledWith([{ id: 1 }]);
+    expect(actual).toEqual({ id: 'formatted', flow: [{ id: 'flow' }] });
   });
 
   it('lets the error of callApi reach the caller', async () => {
