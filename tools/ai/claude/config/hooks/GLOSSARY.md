@@ -60,6 +60,10 @@ _Avoid_: accept count, allow count, approval score
 A regular Solkan allow-list (JSON array of strings, same format as `allow-list.json`) scoped to the current session, at `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/allow-list.json`. A command enters it on its 3rd approval, keyed as Solkan reports it. Passed to Solkan as an extra `--allow-list-file` (absolute path) when it exists; a command in it is an **allow** like any other.
 _Avoid_: session whitelist, temporary allow, trusted commands
 
+**auto allow-list**:
+A regular Solkan allow-list (`allow-list-auto.json`) that add additional commands, for when ralph is run in auto mode.
+_Avoid_: ralph allow-list, interpreter list, auto-mode whitelist
+
 **tool use id**:
 The `tool_use_id` field of the hook input JSON. Identical in the pre and post events of the same Bash call — the only reliable way to correlate them, since post events receive the rewritten command.
 _Avoid_: call id, request id
@@ -83,6 +87,7 @@ _Avoid_: running subagent, active agent, live subagent
 - Each **ask with reason** writes one **approval pending** entry (`preToolUse-Bash`), keyed by its **tool use id** so the post event can find it; each **allow** writes none.
 - A post event (`PostToolUse` or `PostToolUseFailure`) for a **tool use id** means the user said Yes: `postToolUse-Bash` increments the **approval count** of every command in its **approval pending** entry, then removes that entry. When the user says No, no post event fires, so no count changes.
 - A command whose **approval count** reaches 3 joins the **session allow-list**: from then on, Solkan **allow**s it and it no longer appears in **ask with reason**.
+- The **auto allow-list** is added to the regular allow-list only while the ralph session of the session directory runs in `auto` mode.
 - Session state lives in `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json`, the **session allow-list** next to it; both owned by `Bash-approval.zsh`. Without a session id, nothing is recorded.
 - A Stop with at least one **pending subagent** never notifies; any other `background_tasks` entry never blocks it.
 
