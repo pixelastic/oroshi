@@ -4,20 +4,20 @@ describe('recordListRaw', () => {
   const anchors = { baseId: 'appDEVREL', tableId: 'tblMEETUPS' };
 
   beforeEach(() => {
-    vi.spyOn(__, 'recordSearchPaged').mockReturnValue({
-      records: [
+    vi.spyOn(__, 'recordSearch').mockReturnValue({
+      results: [
         { id: 'recA', fields: { Name: 'Paris Meetup' } },
         { id: 'recB', fields: {} },
       ],
       hasMore: false,
     });
-    vi.spyOn(__, 'warnMoreResults').mockReturnValue();
+    vi.spyOn(console, 'error').mockReturnValue();
   });
 
   it('searches with the formula and the flags it received', async () => {
     await recordListRaw({ ...anchors, limit: 10, query: "{Name}='Paris'" });
 
-    expect(__.recordSearchPaged).toHaveBeenCalledWith({
+    expect(__.recordSearch).toHaveBeenCalledWith({
       ...anchors,
       limit: 10,
       query: "{Name}='Paris'",
@@ -31,7 +31,7 @@ describe('recordListRaw', () => {
   });
 
   it('prints an empty line for a Table without Records', async () => {
-    __.recordSearchPaged.mockReturnValue({ records: [], hasMore: false });
+    __.recordSearch.mockReturnValue({ results: [], hasMore: false });
 
     const actual = await recordListRaw(anchors);
 
@@ -39,21 +39,23 @@ describe('recordListRaw', () => {
   });
 
   it('warns that more results exist, and still prints the lines', async () => {
-    __.recordSearchPaged.mockReturnValue({
-      records: [{ id: 'recA', fields: {} }],
+    __.recordSearch.mockReturnValue({
+      results: [{ id: 'recA', fields: {} }],
       hasMore: true,
     });
 
     const actual = await recordListRaw(anchors);
 
-    expect(__.warnMoreResults).toHaveBeenCalledTimes(1);
+    expect(console.error).toHaveBeenCalledWith(
+      'More results exist, raise --limit',
+    );
     expect(actual).toEqual('recA▮{}');
   });
 
   it('does not warn when no more results exist', async () => {
     await recordListRaw(anchors);
 
-    expect(__.warnMoreResults).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 
   describe('toLine', () => {

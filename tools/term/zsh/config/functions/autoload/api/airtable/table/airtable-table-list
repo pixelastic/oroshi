@@ -1,5 +1,5 @@
 # List the tables of an Airtable base as a colored table, one row per table
-# For humans: a colored, aligned table. For machines and agents, use airtable-table-list-raw
+# For machine consumption, use airtable-table-list-raw
 # Usage:
 # $ airtable-table-list --baseId appXXX
 # $ airtable-table-list --baseId appXXX --limit 10

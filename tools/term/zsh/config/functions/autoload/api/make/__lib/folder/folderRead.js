@@ -25,7 +25,7 @@ export async function folderRead(options) {
   // A found Folder may come from the nested children of a listing, so its
   // subfolders are always listed on their own
   const subfolders = await __.listFolders(teamId, folderId);
-  const scenarios = await __.scenarioSearch({
+  const { results: scenarios } = await __.scenarioSearch({
     folderId,
     limit: Infinity,
   });

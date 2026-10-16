@@ -10,6 +10,9 @@ await runBin(async () => {
     setAccount,
     minimist: { string: ['status', 'date-min', 'date-max'] },
   });
-  const output = await executionSearch(named);
-  console.log(JSON.stringify(output, null, 2));
+  const { results, hasMore } = await executionSearch(named);
+  if (hasMore) {
+    console.error('More results exist, raise --limit');
+  }
+  console.log(JSON.stringify(results, null, 2));
 });

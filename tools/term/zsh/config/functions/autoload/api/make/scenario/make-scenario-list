@@ -1,5 +1,5 @@
 # List the Scenarios of the Make team as a colored table, one row per scenario
-# For humans: a colored, aligned table. For machines and agents, use make-scenario-list-raw
+# For machine consumption, use make-scenario-list-raw
 # Without text, every Scenario matches
 # --folderId keeps only the Scenarios directly in that Folder
 # Usage:

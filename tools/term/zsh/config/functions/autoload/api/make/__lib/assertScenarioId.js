@@ -2,7 +2,7 @@ import { _ } from 'golgoth';
 import { firostError } from 'firost';
 
 /**
- * Throw when the Scenario ID anchor is missing
+ * Throw when the Scenario ID is missing
  * @param {number|string} [scenarioId] - Scenario ID, as received by the helper
  * @param {string} usage - Right usage of the helper, shown in the message
  */
@@ -12,6 +12,6 @@ export function assertScenarioId(scenarioId, usage) {
   }
   throw firostError(
     'MAKE_SCENARIO_ID_MISSING',
-    `Missing --scenarioId, the Scenario ID is named. Usage: ${usage}`,
+    `Missing the Scenario ID. Usage: ${usage}`,
   );
 }

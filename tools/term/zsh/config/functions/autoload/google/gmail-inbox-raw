@@ -1,5 +1,5 @@
-# List inbox threads, one per line, unread threads first, most recent last message first
-# For machines and agents: one line per item, columns separated by ▮, full values. For a table that is easy for a human to read, use gmail-inbox
+# List inbox threads, one per line, unread threads first, most recent last message first, for machine consumption
+# For human consumption, use gmail-inbox
 # Fields: threadId▮unread▮date▮count▮authors▮subject▮snippet▮lastMessageId▮lastMessageDate
 # The latest threads of the Gmail inbox (important first, then everything else) are listed, unread ones before read ones, each group sorted by lastMessageDate (most recent first)
 # unread is 1 or 0, date is ISO 8601 (latest message in the inbox), lastMessageDate is ISO 8601 (latest message of the thread, sent ones included), count is the number of messages, authors are separated by ▯, unread authors first

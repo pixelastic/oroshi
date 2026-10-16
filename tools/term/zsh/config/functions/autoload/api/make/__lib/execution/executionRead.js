@@ -1,6 +1,6 @@
 import { firostError } from 'firost';
+import { assertScenarioId } from '../assertScenarioId.js';
 import { callApi } from '../callApi.js';
-import { assertScenarioId } from './assertScenarioId.js';
 import { formatExecution } from './formatExecution.js';
 
 export let __;

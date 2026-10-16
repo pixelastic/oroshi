@@ -1,7 +1,7 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
+import { assertScenarioId } from '../assertScenarioId.js';
 import { callApi } from '../callApi.js';
-import { assertPositionalScenarioId } from './assertPositionalScenarioId.js';
 
 export let __;
 
@@ -22,7 +22,7 @@ export async function scenarioModuleSearch(options) {
   const { scenarioId, days, app } = options;
 
   // Check the arguments before calling the API, so a typo costs no request
-  assertPositionalScenarioId(scenarioId, USAGE);
+  assertScenarioId(scenarioId, USAGE);
   if (!_.isInteger(days) || !_.inRange(days, MIN_DAYS, MAX_DAYS + 1)) {
     throw firostError(
       'MAKE_DAYS_OUT_OF_RANGE',

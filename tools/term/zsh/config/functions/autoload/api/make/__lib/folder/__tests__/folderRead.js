@@ -50,9 +50,10 @@ describe('folderRead', () => {
     vi.spyOn(__, 'callApi').mockImplementation((_path, { query }) => ({
       scenariosFolders: tree[query.parentId ?? ''],
     }));
-    vi.spyOn(__, 'scenarioSearch').mockReturnValue([
-      { id: 100, name: 'Sync', folderId: 2 },
-    ]);
+    vi.spyOn(__, 'scenarioSearch').mockReturnValue({
+      results: [{ id: 100, name: 'Sync', folderId: 2 }],
+      hasMore: false,
+    });
   });
 
   it.each([

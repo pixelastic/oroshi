@@ -35,7 +35,7 @@ describe('executionRead arguments', () => {
       input: { executionId: 'cfcf' },
       code: 'MAKE_SCENARIO_ID_MISSING',
       expected:
-        'Missing --scenarioId, the Scenario ID is named. Usage: make-execution-read <executionId> --scenarioId <scenarioId>',
+        'Missing the Scenario ID. Usage: make-execution-read <executionId> --scenarioId <scenarioId>',
     },
     {
       title: 'MAKE_EXECUTION_ID_MISSING without executionId',

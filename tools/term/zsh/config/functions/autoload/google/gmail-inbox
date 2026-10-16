@@ -1,5 +1,5 @@
 # List inbox threads as a table, one row per thread, unread threads first, most recent last message first
-# For humans: a colored, aligned table. For machines and agents, use gmail-inbox-raw
+# For machine consumption, use gmail-inbox-raw
 # Columns: unread marker (●), date (MM/DD HH:mm), message count (blank for one message), authors, subject
 # Usage:
 # $ gmail-inbox            # latest threads (default limit: 25), pro account

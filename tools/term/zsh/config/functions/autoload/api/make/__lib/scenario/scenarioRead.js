@@ -1,3 +1,4 @@
+import { assertScenarioId } from '../assertScenarioId.js';
 import { callApi } from '../callApi.js';
 import { buildFlow } from './buildFlow.js';
 import { formatScenario } from './formatScenario.js';
@@ -12,6 +13,9 @@ export let __;
  */
 export async function scenarioRead(options) {
   const { scenarioId } = options;
+
+  // Check the argument before calling the API, so a typo costs no request
+  assertScenarioId(scenarioId, 'make-scenario-read <scenarioId>');
 
   // The API wraps the Scenario in a scenario key, and the blueprint in
   // response.blueprint. The single read gives no modules, so the blueprint

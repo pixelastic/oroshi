@@ -2,8 +2,8 @@ import { __, scenarioListRaw } from '../scenarioListRaw.js';
 
 describe('scenarioListRaw', () => {
   beforeEach(() => {
-    vi.spyOn(__, 'scenarioSearchPaged').mockReturnValue({
-      scenarios: [
+    vi.spyOn(__, 'scenarioSearch').mockReturnValue({
+      results: [
         {
           id: 925,
           name: 'Sync',
@@ -15,13 +15,13 @@ describe('scenarioListRaw', () => {
       ],
       hasMore: false,
     });
-    vi.spyOn(__, 'warnMoreResults').mockReturnValue();
+    vi.spyOn(console, 'error').mockReturnValue();
   });
 
   it('searches with the flags it received', async () => {
     await scenarioListRaw({ query: 'sync', limit: 10 });
 
-    expect(__.scenarioSearchPaged).toHaveBeenCalledWith({
+    expect(__.scenarioSearch).toHaveBeenCalledWith({
       query: 'sync',
       limit: 10,
     });
@@ -36,7 +36,7 @@ describe('scenarioListRaw', () => {
   });
 
   it('prints an empty line for no Scenario', async () => {
-    __.scenarioSearchPaged.mockReturnValue({ scenarios: [], hasMore: false });
+    __.scenarioSearch.mockReturnValue({ results: [], hasMore: false });
 
     const actual = await scenarioListRaw({});
 
@@ -44,21 +44,23 @@ describe('scenarioListRaw', () => {
   });
 
   it('warns that more results exist, and still prints the lines', async () => {
-    __.scenarioSearchPaged.mockReturnValue({
-      scenarios: [{ id: 925, name: 'Sync' }],
+    __.scenarioSearch.mockReturnValue({
+      results: [{ id: 925, name: 'Sync' }],
       hasMore: true,
     });
 
     const actual = await scenarioListRaw({});
 
-    expect(__.warnMoreResults).toHaveBeenCalledTimes(1);
+    expect(console.error).toHaveBeenCalledWith(
+      'More results exist, raise --limit',
+    );
     expect(actual).toEqual('925▮Sync▮▮▮');
   });
 
   it('does not warn when no more results exist', async () => {
     await scenarioListRaw({});
 
-    expect(__.warnMoreResults).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
   });
 
   describe('toLine', () => {

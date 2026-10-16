@@ -30,7 +30,7 @@ describe('scenarioBlueprint', () => {
     expect(actual).toHaveProperty('code', 'MAKE_SCENARIO_ID_MISSING');
     expect(actual).toHaveProperty(
       'message',
-      'Missing the Scenario ID, it is positional. Usage: make-scenario-blueprint <scenarioId>',
+      'Missing the Scenario ID. Usage: make-scenario-blueprint <scenarioId>',
     );
     expect(__.callApi).not.toHaveBeenCalled();
   });

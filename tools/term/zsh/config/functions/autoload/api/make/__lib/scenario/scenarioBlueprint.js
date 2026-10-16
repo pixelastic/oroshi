@@ -1,5 +1,5 @@
+import { assertScenarioId } from '../assertScenarioId.js';
 import { callApi } from '../callApi.js';
-import { assertPositionalScenarioId } from './assertPositionalScenarioId.js';
 
 export let __;
 
@@ -13,10 +13,7 @@ export async function scenarioBlueprint(options) {
   const { scenarioId } = options;
 
   // Check the argument before calling the API, so a typo costs no request
-  assertPositionalScenarioId(
-    scenarioId,
-    'make-scenario-blueprint <scenarioId>',
-  );
+  assertScenarioId(scenarioId, 'make-scenario-blueprint <scenarioId>');
 
   // The API wraps the blueprint in response.blueprint
   const response = await __.callApi(`scenarios/${scenarioId}/blueprint`);

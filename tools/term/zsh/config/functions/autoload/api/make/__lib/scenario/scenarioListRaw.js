@@ -1,7 +1,6 @@
 import { _ } from 'golgoth';
 import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
-import { warnMoreResults } from '@oroshi/api-shared/warnMoreResults.js';
-import { scenarioSearchPaged } from './scenarioSearchPaged.js';
+import { scenarioSearch } from './scenarioSearch.js';
 
 export let __;
 
@@ -12,12 +11,12 @@ export let __;
  */
 export async function scenarioListRaw(options) {
   // Ask search for the Scenarios, with the flags we received
-  const { scenarios, hasMore } = await __.scenarioSearchPaged(options);
+  const { results, hasMore } = await __.scenarioSearch(options);
   if (hasMore) {
-    __.warnMoreResults();
+    console.error('More results exist, raise --limit');
   }
 
-  return _.chain(scenarios)
+  return _.chain(results)
     .map((scenario) => __.toLine(scenario))
     .join('\n')
     .value();
@@ -36,6 +35,5 @@ __ = {
       .join('▮')
       .value();
   },
-  scenarioSearchPaged,
-  warnMoreResults,
+  scenarioSearch,
 };

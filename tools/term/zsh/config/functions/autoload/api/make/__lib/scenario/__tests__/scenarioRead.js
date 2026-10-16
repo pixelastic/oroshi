@@ -27,6 +27,19 @@ describe('scenarioRead', () => {
     expect(actual).toEqual({ id: 'formatted', flow: [{ id: 'flow' }] });
   });
 
+  it('throws MAKE_SCENARIO_ID_MISSING without calling the API', async () => {
+    let actual = null;
+    try {
+      await scenarioRead({});
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', 'MAKE_SCENARIO_ID_MISSING');
+    expect(actual.message).toContain('make-scenario-read <scenarioId>');
+    expect(__.callApi).not.toHaveBeenCalled();
+  });
+
   it('lets the error of callApi reach the caller', async () => {
     __.callApi.mockImplementation(() => {
       throw new Error('MAKE_REQUEST_FAILED');

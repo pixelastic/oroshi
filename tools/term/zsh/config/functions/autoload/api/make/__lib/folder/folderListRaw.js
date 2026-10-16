@@ -1,12 +1,11 @@
 import { _ } from 'golgoth';
 import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
 import { callApi } from '../callApi.js';
+import { defaultLimit } from '../defaultLimit.js';
 import { getConfig } from '../getConfig.js';
 import { formatFolder } from './formatFolder.js';
 
 export let __;
-
-const DEFAULT_LIMIT = 25;
 
 /**
  * List the top-level Folders of the Team as raw lines, one per Folder
@@ -15,7 +14,7 @@ const DEFAULT_LIMIT = 25;
  * @returns {Promise<string>} Raw lines, joined with a newline
  */
 export async function folderListRaw(options = {}) {
-  const { limit = DEFAULT_LIMIT } = options;
+  const { limit = defaultLimit } = options;
 
   const { teamId } = await __.getConfig();
   const response = await __.callApi('scenarios-folders', {

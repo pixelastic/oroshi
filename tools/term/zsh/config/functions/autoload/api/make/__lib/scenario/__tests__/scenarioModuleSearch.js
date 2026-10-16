@@ -115,7 +115,7 @@ describe('scenarioModuleSearch arguments', () => {
       input: { days: 15 },
       code: 'MAKE_SCENARIO_ID_MISSING',
       expected:
-        'Missing the Scenario ID, it is positional. Usage: make-scenario-module-list <scenarioId> --days <1-30> [--app <app>]',
+        'Missing the Scenario ID. Usage: make-scenario-module-list <scenarioId> --days <1-30> [--app <app>]',
     },
     {
       title: 'MAKE_DAYS_OUT_OF_RANGE above 30',
