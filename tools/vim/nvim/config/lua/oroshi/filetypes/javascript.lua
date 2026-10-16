@@ -1,4 +1,7 @@
 local M = {}
+
+-- JS fixing runs prettier and eslint, which is slow
+M.formatterTimeout = 10000
 local codeQuality = require("oroshi/plugins/helpers/code-quality")
 
 M.filetypeAliases = {
@@ -80,7 +83,7 @@ M.__ = {
       end)
 
       -- Format the file
-      require("conform").format({ bufnr = bufferId })
+      require("conform").format({ bufnr = bufferId, timeout_ms = M.formatterTimeout })
     end, { buffer = bufferId })
   end,
 

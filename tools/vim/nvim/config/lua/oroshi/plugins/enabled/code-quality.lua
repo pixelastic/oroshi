@@ -107,14 +107,14 @@ local config = {
       formatters = { "oroshi_js_fix" },
       configureLinter = javascriptHelper.configureLinter,
       configureFormatter = javascriptHelper.configureFormatter,
-      formatterTimeout = 10000,
+      formatterTimeout = javascriptHelper.formatterTimeout,
     },
     javascriptreact = {
       linters = { "oroshi_js_lint" },
       formatters = { "oroshi_js_fix" },
       configureLinter = javascriptHelper.configureLinter,
       configureFormatter = javascriptHelper.configureFormatter,
-      formatterTimeout = 10000,
+      formatterTimeout = javascriptHelper.formatterTimeout,
     },
     json = {
       linters = { "oroshi_json_lint" },
@@ -156,7 +156,7 @@ local config = {
       formatters = { "oroshi_js_fix" },
       configureLinter = javascriptHelper.configureLinter,
       configureFormatter = javascriptHelper.configureFormatter,
-      formatterTimeout = 10000,
+      formatterTimeout = javascriptHelper.formatterTimeout,
     },
     xml = {
       linters = { "oroshi_xml_lint" },
