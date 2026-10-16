@@ -1,5 +1,5 @@
 # Solkan: assemble the lists, evaluate a command, report the verdict
-# Needs Bash-approval.zsh (sourced here) for the session allow-list path: CLAUDE_SESSION_ID must be exported before sourcing
+# Needs lib/approval-memory.zsh (sourced here) for the session allow-list path: CLAUDE_SESSION_ID must be exported before sourcing
 # solkanEvaluate sets SOLKAN_VERDICT, SOLKAN_COMMAND and SOLKAN_REJECTED, so call it directly, never inside $(...)
 # Usage:
 # $ source lib/solkan.zsh
@@ -10,7 +10,7 @@
 
 SOLKAN_HOOKS_DIR="${${(%):-%x}:A:h:h}"
 
-source "${SOLKAN_HOOKS_DIR}/Bash-approval.zsh"
+source "${SOLKAN_HOOKS_DIR}/lib/approval-memory.zsh"
 
 # Print the path of a repo-local Solkan list, whether or not it exists
 # Usage:

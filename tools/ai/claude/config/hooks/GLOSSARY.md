@@ -88,7 +88,7 @@ _Avoid_: running subagent, active agent, live subagent
 - A post event (`PostToolUse` or `PostToolUseFailure`) for a **tool use id** means the user said Yes: `postToolUse-Bash` increments the **approval count** of every command in its **approval pending** entry, then removes that entry. When the user says No, no post event fires, so no count changes.
 - A command whose **approval count** reaches 3 joins the **session allow-list**: from then on, Solkan **allow**s it and it no longer appears in **ask with reason**.
 - The **auto allow-list** is added to the regular allow-list only while the ralph session of the session directory runs in `auto` mode.
-- Session state lives in `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json`, the **session allow-list** next to it; both owned by `Bash-approval.zsh`. Without a session id, nothing is recorded.
+- Session state lives in `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json`, the **session allow-list** next to it; both owned by `lib/approval-memory.zsh`. Without a session id, nothing is recorded.
 - A Stop with at least one **pending subagent** never notifies; any other `background_tasks` entry never blocks it.
 
 ## Flagged ambiguities

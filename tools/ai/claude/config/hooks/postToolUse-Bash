@@ -15,54 +15,72 @@
 
 local hookDir="${0:A:h}"
 
+source "${hookDir}/lib/input.zsh"
+source "${hookDir}/lib/output.zsh"
+
 # Approvals after which a command joins the session allow-list
 SESSION_ALLOW_LIST_THRESHOLD=3
 
 # Lines starting with this are written by the guarded helpers for the agent
 MARKER_PREFIX='[claude-guarded:refused]'
 
-# Parse input
-local inputJson="$(cat)"
-local toolUseId="$(json-get '.tool_use_id' <<<"$inputJson")"
+# Count the approvals of a tool use, promote often-approved commands, forget the tool use
+# Usage:
+# $ approvalPromote toolu_01
+function approvalPromote() {
+  local toolUseId="$1"
 
-# Session id: scopes approval state, must be set before sourcing Bash-approval.zsh
-export CLAUDE_SESSION_ID="$(json-get '.session_id' <<<"$inputJson")"
+  # Each pending command of this tool use was approved by the user
+  local -a approvedCommands=(${(@f)$(approvalPendingGet --tool-use-id "$toolUseId")})
 
-source "${hookDir}/Bash-approval.zsh"
+  # Nothing pending (auto-approved or unknown tool use): leave state untouched
+  [[ "${#approvedCommands}" -eq 0 ]] && return 0
 
-# Failure event: output lives in .error. Success event: in .tool_response
-# Collect every field present, skip the missing ones, one line per field
-local outputFilter='
-  [.error, .tool_response.stdout, .tool_response.stderr]
-  | map(strings)
-  | join("\n")
-'
-local commandOutput="$(jq --raw-output "$outputFilter" <<<"$inputJson")"
+  local approvedCommand
+  for approvedCommand in $approvedCommands; do
+    local approvalCount="$(approvalCountIncrement --command "$approvedCommand")"
 
-# Relay marker lines to the agent, without the marker prefix
-local -a markerLines=(${(@M)${(@f)commandOutput}:#${MARKER_PREFIX}*})
-if [[ "${#markerLines}" -gt 0 ]]; then
+    # Approved often enough: stop asking for the rest of the session
+    [[ "$approvalCount" -ge "$SESSION_ALLOW_LIST_THRESHOLD" ]] && sessionAllowListAdd --command "$approvedCommand"
+  done
+
+  # User answered: this tool use is no longer pending
+  approvalPendingRemove --tool-use-id "$toolUseId"
+}
+
+# Relay the marker lines of the command output to the agent, without the marker prefix
+# Ends the hook when there are marker lines: additionalContext exits
+# Usage:
+# $ markerRelay "$inputJson"
+function markerRelay() {
+  # Failure event: output lives in .error. Success event: in .tool_response
+  # Collect every field present, skip the missing ones, one line per field
+  local outputFilter='
+    [.error, .tool_response.stdout, .tool_response.stderr]
+    | map(strings)
+    | join("\n")
+  '
+  local commandOutput="$(jq --raw-output "$outputFilter" <<<"$1")"
+
+  local -a markerLines=(${(@M)${(@f)commandOutput}:#${MARKER_PREFIX}*})
+
+  # No marker line: nothing to relay
+  [[ "${#markerLines}" -eq 0 ]] && return 0
+
   local -a relayedLines=("${(@)${(@)markerLines#${MARKER_PREFIX}}# }")
-  local relayedContext="${(F)relayedLines}"
-  jo hookSpecificOutput="$(jo \
-    hookEventName="$(json-get '.hook_event_name' <<<"$inputJson")" \
-    additionalContext="$relayedContext")"
-fi
+  additionalContext "$(inputField "$1" '.hook_event_name')" "${(F)relayedLines}"
+}
 
-# Each pending command of this tool use was approved by the user
-local -a approvedCommands=(${(@f)$(approvalPendingGet --tool-use-id "$toolUseId")})
+# Parse input
+local inputJson="$(inputRead)"
 
-# Nothing pending (auto-approved or unknown tool use): leave state untouched
-[[ "${#approvedCommands}" -eq 0 ]] && exit 0
+# Session id: scopes approval state, must be set before sourcing approval-memory.zsh
+inputSessionExport "$inputJson"
 
-for approvedCommand in $approvedCommands; do
-  local approvalCount="$(approvalCountIncrement --command "$approvedCommand")"
+source "${hookDir}/lib/approval-memory.zsh"
 
-  # Approved often enough: stop asking for the rest of the session
-  [[ "$approvalCount" -ge "$SESSION_ALLOW_LIST_THRESHOLD" ]] && sessionAllowListAdd --command "$approvedCommand"
-done
-
-# User answered: this tool use is no longer pending
-approvalPendingRemove --tool-use-id "$toolUseId"
+# Count before relaying: additionalContext ends the hook
+approvalPromote "$(inputField "$inputJson" '.tool_use_id')"
+markerRelay "$inputJson"
 
 exit 0

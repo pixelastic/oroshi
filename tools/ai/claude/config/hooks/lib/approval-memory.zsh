@@ -1,12 +1,20 @@
-# Session state for Bash approvals, shared by preToolUse-Bash, lib/solkan.zsh and postToolUse-Bash
+# Approval memory: count the user's approvals, promote often-approved commands to the session allow-list
 # - approval pending: commands awaiting the user's answer, keyed by tool use id
 # - approval count: how many times the user approved each command
 # - session allow-list: commands Solkan allows for the rest of the session
-# Sourced by the hooks, after they export CLAUDE_SESSION_ID
+# Shared by preToolUse-Bash, lib/solkan.zsh and postToolUse-Bash
+# CLAUDE_SESSION_ID must be exported before sourcing (see inputSessionExport in lib/input.zsh)
 #
 # State lives in $(claude-session-dir)/state.json
 # Session allow-list lives in $(claude-session-dir)/allow-list.json
 # Every public function is a no-op when CLAUDE_SESSION_ID is empty
+# Usage:
+# $ source lib/approval-memory.zsh
+# $ approvalPendingAdd --tool-use-id toolu_01 --command wget   # record what the user is asked
+# $ approvalPendingGet --tool-use-id toolu_01                  # wget
+# $ approvalCountIncrement --command wget                      # 1
+# $ sessionAllowListAdd --command wget                         # Solkan allows wget from now on
+# $ approvalPendingRemove --tool-use-id toolu_01               # the user answered
 # shellcheck disable=SC2153
 
 CLAUDE_SESSION_DIR="$(claude-session-dir)"

@@ -23,7 +23,7 @@ function inputField() {
 }
 
 # Export the session id, which scopes approval state
-# Must run before sourcing Bash-approval.zsh
+# Must run before sourcing approval-memory.zsh
 # Usage:
 # $ inputSessionExport "$inputJson"  # CLAUDE_SESSION_ID=<.session_id>
 function inputSessionExport() {

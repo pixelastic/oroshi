@@ -4,7 +4,7 @@ setup() {
   bats_tmp_dir
   export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR"
   export CLAUDE_SESSION_ID="test"
-  sourcePrefix="source '${BATS_TEST_DIRNAME}/../Bash-approval.zsh'"
+  sourcePrefix="source '${BATS_TEST_DIRNAME}/../../lib/approval-memory.zsh'"
 }
 
 # approvalPendingAdd / approvalPendingGet

