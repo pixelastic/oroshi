@@ -1,4 +1,4 @@
-# Session state for Bash approvals, shared by preToolUse-Bash, preToolUse-Bash-solkan.zsh and postToolUse-Bash
+# Session state for Bash approvals, shared by preToolUse-Bash, lib/solkan.zsh and postToolUse-Bash
 # - approval pending: commands awaiting the user's answer, keyed by tool use id
 # - approval count: how many times the user approved each command
 # - session allow-list: commands Solkan allows for the rest of the session

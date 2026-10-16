@@ -210,5 +210,9 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 
-  [[ "$(ls --almost-all "$BATS_TMP_DIR")" = "" ]]
+  # bats_tmp_dir itself writes mock.zsh: only files written by the functions count
+  local file
+  for file in "$BATS_TMP_DIR"/* "$BATS_TMP_DIR"/.[!.]*; do
+    [[ ! -e "$file" || "${file##*/}" = "mock.zsh" ]]
+  done
 }

