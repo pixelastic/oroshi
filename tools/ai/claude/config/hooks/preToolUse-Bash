@@ -24,13 +24,15 @@
 local hookDir="${0:A:h}"
 local logDir="${CLAUDE_HOOKS_LOG_DIR:-/tmp/oroshi/claude/hooks}"
 
+source "${hookDir}/lib/input.zsh"
+
 # Parse input
-local inputJson="$(cat)"
-local inputCommand="$(json-get '.tool_input.command' <<<"$inputJson")"
-local inputCwd="$(json-get '.cwd' <<<"$inputJson")"
+local inputJson="$(inputRead)"
+local inputCommand="$(inputField "$inputJson" '.tool_input.command')"
+local inputCwd="$(inputField "$inputJson" '.cwd')"
 
 # Session id: scopes approval state, must be set before sourcing Bash-approval.zsh
-export CLAUDE_SESSION_ID="$(json-get '.session_id' <<<"$inputJson")"
+inputSessionExport "$inputJson"
 
 source "${hookDir}/preToolUse-Bash-solkan.zsh"
 source "${hookDir}/preToolUse-Bash-helper.zsh"
@@ -53,7 +55,7 @@ local rewrittenCommand="$(json-get '.rewrite' <<<"$solkanJson")"
 [[ "$rewrittenCommand" != "" ]] && updatedInputCommand="$rewrittenCommand"
 
 # Subagent detection: prefix with env export when agent_id is present
-local agentId="$(json-get '.agent_id' <<<"$inputJson")"
+local agentId="$(inputField "$inputJson" '.agent_id')"
 [[ "$agentId" != "" ]] && updatedInputCommand="export CLAUDE_IS_SUBAGENT=1; $updatedInputCommand"
 
 # Allowed by solkan: approve without asking
@@ -73,7 +75,7 @@ for rejectedCommand in $rejectedCommands; do
 done
 
 # Remember what the user is asked to approve, for postToolUse-Bash to count
-local toolUseId="$(json-get '.tool_use_id' <<<"$inputJson")"
+local toolUseId="$(inputField "$inputJson" '.tool_use_id')"
 approvalPendingAdd --tool-use-id "$toolUseId" "${pendingArgs[@]}"
 
 askWithReason "$(askReasonFormat "${reasonArgs[@]}")" "$updatedInputCommand"
