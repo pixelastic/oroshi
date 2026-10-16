@@ -1,0 +1,7 @@
+# Prompt for one command and add it to the Claude Code skills allowlist
+# Meant to run inside a Kitty popup (see alt+s in keybindings.conf)
+# Usage:
+# $ kitty-popup-skala    # Type a command; Enter adds it, Ctrl-C cancels
+setopt local_options err_return
+
+node "${functions_source[$0]:A:h}/__lib/bin/kitty-popup-skala.js"

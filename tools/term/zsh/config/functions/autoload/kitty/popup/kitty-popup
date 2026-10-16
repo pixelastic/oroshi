@@ -1,0 +1,19 @@
+# Open a command in a centered floating popup (60 columns by 5 lines)
+# Usage:
+# $ kitty-popup kitty-popup-skala
+# $ kitty-popup kitty-popup-autocorrect
+setopt local_options err_return
+
+# A command is required
+if [[ $# -lt 1 ]]; then
+  echoerr "Usage: kitty-popup <command> [args...]"
+  return 1
+fi
+
+kitty-remote launch \
+  --type=os-panel \
+  --os-panel edge=center-sized \
+  --os-panel columns=60 \
+  --os-panel lines=5 \
+  --os-panel focus-policy=exclusive \
+  bin-zsh "$@"

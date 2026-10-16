@@ -15,17 +15,14 @@ local wrong="$1"
 local right="$2"
 local rulesFile="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/mic2txt/__data/autocorrect.json"
 
-# Start from an empty rules object when the file is missing or empty
-local baseJson="{}"
-[[ -s "$rulesFile" ]] && baseJson="$(<"$rulesFile")"
-
-local newJson="$(jq \
-  --arg wrong "$wrong" \
-  --arg right "$right" \
-  '.[$wrong] = $right' \
-  <<<"$baseJson")"
-# jq failed (invalid existing JSON), keep the rules file as it is
-[[ "$newJson" == "" ]] && return 1
-
 mkdir --parents "${rulesFile:h}"
-print -r -- "$newJson" >"$rulesFile"
+
+# Start from an empty rules object when the file is empty
+[[ -s "$rulesFile" ]] || print -r -- "{}" >"$rulesFile"
+
+# The key is JSON-quoted so any word is a valid jq path
+local jsonKey="$(jq --raw-output --null-input --arg wrong "$wrong" '$wrong | @json')"
+
+# stdin is closed so an empty replacement is not read from the terminal
+# json-set fails on invalid existing JSON and keeps the rules file as it is
+json-set --input "$rulesFile" ".[${jsonKey}]" "$right" </dev/null

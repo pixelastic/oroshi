@@ -1,0 +1,8 @@
+# Prompt for a misheard word and its replacement, and add them to the mic2txt autocorrect rules
+# Meant to run inside a Kitty popup (see alt+shift+s in keybindings.conf)
+# An empty replacement suppresses the word.
+# Usage:
+# $ kitty-popup-autocorrect    # Type a word, Enter, type its replacement, Enter; Ctrl-C cancels
+setopt local_options err_return
+
+node "${functions_source[$0]:A:h}/__lib/bin/kitty-popup-autocorrect.js"
