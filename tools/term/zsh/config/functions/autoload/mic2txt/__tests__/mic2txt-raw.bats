@@ -272,7 +272,7 @@ setup() {
 # Run a full stop cycle (recording started 5s ago) with a fake transcription
 stop_with_transcription() {
   echo "12345" > "$TMP_FOLDER/PID"
-  local libFolder="$BATS_TMP_DIR/oroshi/tools/term/zsh/config/functions/autoload/audio/__lib"
+  local libFolder="$BATS_TMP_DIR/oroshi/tools/term/zsh/config/functions/autoload/mic2txt/__lib"
   mkdir -p "$libFolder"
   # colors-load-definitions reads the theming build from OROSHI_ROOT
   ln --symbolic --force "$OROSHI_ROOT/tools/term/zsh/config/theming" "$BATS_TMP_DIR/oroshi/tools/term/zsh/config/theming"
@@ -293,6 +293,15 @@ mock_midjourney_postprocess() {
   }
   mic2txt-paste() { echo "paste" >> "$BATS_TMP_DIR/events"; }
   bats_mock mic2txt-postprocess-mode audio-play-oroshi mic2txt-postprocess-midjourney mic2txt-paste
+}
+
+@test "saves the autocorrected transcription in transcription.txt" {
+  mic2txt-autocorrect() { sed 's/chat/chien/'; }
+  bats_mock mic2txt-autocorrect
+
+  stop_with_transcription
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$TMP_FOLDER/transcription.txt")" == "un chien roux" ]]
 }
 
 @test "none: does not call any postprocess helper" {

@@ -1,0 +1,35 @@
+# Apply the autocorrect rules to the text read on stdin
+# Usage:
+# $ echo "open the ichu" | mic2txt-autocorrect   # open the issue
+setopt local_options err_return
+
+local rulesFile="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/mic2txt/__data/autocorrect.json"
+
+# No rules file, nothing to correct
+if [[ ! -f "$rulesFile" ]]; then
+  cat
+  return 0
+fi
+
+# Case-insensitive, whole-word substitution (hyphens count as part of a word).
+# All rules go in one alternation, longest key first, so one perl process is enough.
+# An empty replacement suppresses the word.
+perl \
+  -MJSON::PP \
+  -0777 \
+-ne '
+    BEGIN {
+      open(my $fh, "<:utf8", shift) or die;
+      my $rules = JSON::PP->new->decode(do { local $/; <$fh> });
+      %right = map { lc($_) => $rules->{$_} } keys %$rules;
+      my @keys = sort { length($b) <=> length($a) } keys %$rules;
+      $pattern = join("|", map { quotemeta } @keys);
+      binmode(STDIN, ":utf8");
+      binmode(STDOUT, ":utf8");
+    }
+    if ($pattern ne "") {
+      s/(?<![a-zA-Z0-9-])($pattern)(?![a-zA-Z0-9-])/$right{lc $1}/gi;
+    }
+    print;
+  ' \
+  "$rulesFile"

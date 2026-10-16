@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  sourcePrefix="source '${OROSHI_ROOT}/tools/term/zsh/config/functions/autoload/audio/__lib/wav2txt-groq'"
+  sourcePrefix="source '${OROSHI_ROOT}/tools/term/zsh/config/functions/autoload/mic2txt/__lib/wav2txt-groq'"
 }
 
 # --- isFileTooBig ---
