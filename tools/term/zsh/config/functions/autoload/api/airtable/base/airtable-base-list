@@ -1,4 +1,5 @@
 # List the Airtable bases the token can access as a colored table, one row per base
+# For humans: a colored, aligned table. For machines and agents, use airtable-base-list-raw
 # Usage:
 # $ airtable-base-list
 # $ airtable-base-list --limit 10

@@ -68,6 +68,7 @@ the lines. It reads the columns from the raw lines, whatever their number.
 
 ```zsh
 # List the entities of <service> as a colored table, one row per entity
+# For humans: a colored, aligned table. For machines and agents, use <service>-<entity>-list-raw
 # Usage:
 # $ <service>-<entity>-list
 # $ <service>-<entity>-list --limit 10

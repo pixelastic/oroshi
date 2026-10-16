@@ -1,4 +1,5 @@
 # List the Airtable bases the token can access, one per line
+# For machines and agents: one line per item, columns separated by ▮, full values. For a table that is easy for a human to read, use airtable-base-list
 # Fields: baseId▮name
 # Usage:
 # $ airtable-base-list-raw

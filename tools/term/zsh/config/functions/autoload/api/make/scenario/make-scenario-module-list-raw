@@ -1,5 +1,5 @@
 # List the modules of a Make scenario with their operations, one per line
-# For machines. For a human-readable table, use make-scenario-module-list
+# For machines and agents: one line per item, columns separated by ▮, full values. For a table that is easy for a human to read, use make-scenario-module-list
 # Fields: moduleId▮module▮operations▮warnings▮errors
 # module is the name in the blueprint, such as airtable:ActionSearchRecords
 # The counts are over the last --days, from 1 to 30

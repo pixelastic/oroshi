@@ -91,6 +91,13 @@ _Avoid_: unused folder, clean folder
 - `read` of a **Folder** returns its main fields, its **Subfolders** and its direct **Scenarios**, never the **Scenarios** of its **Subfolders**.
 - `delete` of a **Folder** only removes an **Empty folder**, and fails with `MAKE_FOLDER_NOT_EMPTY` otherwise. The API alone would delete the **Subfolders** and move the **Scenarios** to the **Parent folder**, so the command checks first.
 
+## Flag convention
+
+- The ID of the entity read is positional. The **Anchors** and the filters are named.
+- The **Anchor** stays named when the positional argument is a text query.
+- Example: `make-execution-read <executionId> --scenarioId <id>`. The **Execution** ID is positional, and its **Anchor** `--scenarioId` is named.
+- Example: `make-scenario-list "sync" --folderId 399268`. The text query is positional, and the filter `--folderId` is named.
+
 ## Relationships
 
 - A **Team** belongs to one **Organization**, and holds zero or more **Scenarios** and **Folders**

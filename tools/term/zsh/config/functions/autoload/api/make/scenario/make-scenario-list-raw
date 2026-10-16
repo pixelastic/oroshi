@@ -1,4 +1,5 @@
 # List the Scenarios of the Make team, one per line
+# For machines and agents: one line per item, columns separated by ▮, full values. For a table that is easy for a human to read, use make-scenario-list
 # Fields: scenarioId▮name▮isActive▮folderId▮lastEdit
 # isActive is true for an enabled Scenario, folderId is empty outside a Folder
 # Without text, every Scenario matches

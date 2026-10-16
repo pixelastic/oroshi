@@ -47,6 +47,7 @@ with `toLine`.
 
 ```zsh
 # List the entities of <service>, one per line
+# For machines and agents: one line per item, columns separated by ▮, full values. For a table that is easy for a human to read, use <service>-<entity>-list
 # Fields: <entity>Id▮name▮date▮tags
 # Usage:
 # $ <service>-<entity>-list-raw

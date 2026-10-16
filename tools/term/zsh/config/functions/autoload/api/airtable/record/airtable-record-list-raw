@@ -1,4 +1,5 @@
 # List the Records of an Airtable table, one per line
+# For machines and agents: one line per item, columns separated by ▮, full values. For a table that is easy for a human to read, use airtable-record-list
 # Fields: recordId▮fields
 # The fields column holds all the Fields of the Record as one JSON object
 # Without a formula, every Record matches

@@ -45,12 +45,14 @@ _Avoid_: `auth`, `connect`, `signin`
 
 **Positional argument**:
 An argument given by its place on the command line. A command has at most one,
-for the main input: an id, a query, or the content.
+for the main input: an id, a query, or the content. The id of the entity read
+is positional, even when it has an **Anchor**.
 _Avoid_: bare argument, free argument
 
 **Named argument**:
 An argument given by a flag (`--limit 10`, `--pageId 1f3a`). Anchors are always
-named.
+named, even when the **Positional argument** is a text query. Filters are named
+too.
 _Avoid_: option, switch, parameter
 
 **Anchor**:

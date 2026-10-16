@@ -1,4 +1,5 @@
 # List the top-level Folders of the Make team, one per line
+# For machines and agents: one line per item, columns separated by ▮, full values. For a table that is easy for a human to read, use make-folder-list
 # Fields: folderId▮name▮path▮parentFolderId▮scenariosTotal
 # parentFolderId is empty for a top-level Folder, path shows the names of its parents
 # Usage:
