@@ -1,6 +1,6 @@
 # Claude Code Hooks
 
-Vocabulary for the Claude Code hooks. The Bash pipeline: `preToolUse-Bash` gates shell command execution through Solkan before producing a Claude Code response; `postToolUse-Bash` counts the approvals the user gave. `preToolUse-Monitor` gates `Monitor` commands through Solkan with guard-rail rewrites only. The Stop / SubagentStop hooks decide whether to notify when Claude Code finishes a turn.
+Vocabulary for the Claude Code hooks. The Bash pipeline: `preToolUse-Bash` gates shell command execution through Solkan before producing a Claude Code response; `postToolUse-Bash` counts the approvals the user gave. `preToolUse-Monitor` gates `Monitor` commands through Solkan with guard-rail rewrites only: it uses **allow** and **ask with reason**, without **approval pending** or **approval count**. The shared modules live in `lib/`: `input`, `log`, `output`, `solkan` and `approval-memory`. The Stop / SubagentStop hooks decide whether to notify when Claude Code finishes a turn.
 
 ## Language
 
@@ -58,7 +58,11 @@ _Avoid_: accept count, allow count, approval score
 
 **session allow-list**:
 A regular Solkan allow-list (JSON array of strings, same format as `allow-list.json`) scoped to the current session, at `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/allow-list.json`. A command enters it on its 3rd approval, keyed as Solkan reports it. Passed to Solkan as an extra `--allow-list-file` (absolute path) when it exists; a command in it is an **allow** like any other.
-_Avoid_: session whitelist, temporary allow, trusted commands
+_Avoid_: session whitelist, temporary allow
+
+**approval memory**:
+The mechanism (`lib/approval-memory.zsh`) that counts the user's approvals of rejected commands and promotes a command to the **session allow-list** on its 3rd approval. It owns the **approval pending** entries, the **approval count** and the **session allow-list**.
+_Avoid_: trusted commands, command trust, learning
 
 **auto allow-list**:
 A regular Solkan allow-list (`allow-list-auto.json`) that add additional commands, for when ralph is run in auto mode.
@@ -69,7 +73,7 @@ The `tool_use_id` field of the hook input JSON. Identical in the pre and post ev
 _Avoid_: call id, request id
 
 **subagent injection**:
-The mechanism by which the preToolUse-Bash hook detects that a command runs inside a subagent (`agent_id` present in hook input JSON) and prefixes the command with `export CLAUDE_IS_SUBAGENT=1;`. This is NOT a native Claude Code feature — it is a hook-level workaround because upstream closed requests for native subagent env vars (issues #35447, #36981, #46696).
+The mechanism by which the preToolUse-Bash hook detects that a command runs inside a subagent (`agent_id` present in hook input JSON) and prefixes the command with `export CLAUDE_IS_SUBAGENT=1;`. This is NOT a native Claude Code feature — it is a hook-level workaround because upstream closed requests for native subagent env vars (issues #35447, #36981, #46696). `preToolUse-Monitor` does not inject: a `Monitor` command is never prefixed.
 _Avoid_: subagent detection, agent env var, subagent flag
 
 **pending subagent**:
@@ -79,13 +83,15 @@ _Avoid_: running subagent, active agent, live subagent
 ## Relationships
 
 - **Solkan** has two phases: **rewrite list** (substitute command names in AST) then allowlist (**allow** or **reject**). The allowlist decision is binary — never partial.
-- The regular **rewrite list** always applies, guard-rails included. For a **single command**, the **token-saving rewrite list** is added after it and overrides it on conflict; for a **compound command**, it is not passed.
+- The regular **rewrite list** always applies, guard-rails included. For a **single command**, the **token-saving rewrite list** is added after it and overrides it on conflict; for a **compound command**, it is not passed. `preToolUse-Monitor` never passes it, even for a **single command**.
+- `preToolUse-Monitor` produces **auto-approve** on **allow** and **ask with reason** on **reject**. It writes no **approval pending** entry and keeps no **approval count**, so **approval memory** never counts a `Monitor` command. Monitor still honours the **session allow-list**.
 - Each command receives exactly one **Solkan** decision.
 - Each **allow** produces exactly one **auto-approve**; each **reject** produces exactly one **ask with reason** (a maybe — the human decides).
 - A **rewrite** produces one `updatedInput` JSON field; a command left unchanged produces none.
 - The human is the only actor who can say a final "no" — through the **ask with reason** dialog.
 - Each **ask with reason** writes one **approval pending** entry (`preToolUse-Bash`), keyed by its **tool use id** so the post event can find it; each **allow** writes none.
 - A post event (`PostToolUse` or `PostToolUseFailure`) for a **tool use id** means the user said Yes: `postToolUse-Bash` increments the **approval count** of every command in its **approval pending** entry, then removes that entry. When the user says No, no post event fires, so no count changes.
+- **Approval memory** joins the two hooks of the Bash pipeline: `preToolUse-Bash` writes the **approval pending** entry, `postToolUse-Bash` counts.
 - A command whose **approval count** reaches 3 joins the **session allow-list**: from then on, Solkan **allow**s it and it no longer appears in **ask with reason**.
 - The **auto allow-list** is added to the regular allow-list only while the ralph session of the session directory runs in `auto` mode.
 - Session state lives in `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json`, the **session allow-list** next to it; both owned by `lib/approval-memory.zsh`. Without a session id, nothing is recorded.
