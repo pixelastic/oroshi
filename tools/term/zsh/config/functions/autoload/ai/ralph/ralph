@@ -1,7 +1,7 @@
-# Run a ralph session on a plan directory
+# Run a ralph session on the plan of a worktree
 #
 # Usage:
-# $ ralph [--auto] [dir]   # dir defaults to the worktree plan directory, then cwd
+# $ ralph [--auto] [worktree]   # worktree defaults to the current directory
 setopt local_options err_return
 
 local autoFlag
@@ -10,12 +10,14 @@ zparseopts -D -E -- -auto=autoFlag
 local mode="single"
 [[ "$autoFlag" != "" ]] && mode="auto"
 
-local rawArg="${1:-}"
-# If already in a worktree with a plan, use it
-if [[ "$rawArg" == "" ]]; then
-  rawArg="$(plan-directory)" || rawArg="."
+local worktree="${1:-.}"
+local dir="$(plan-directory "${worktree:a}")"
+
+# The worktree must have a plan
+if [[ "$dir" == "" ]]; then
+  print "ralph: ❌ no plan directory for ${worktree:a}"
+  return 1
 fi
-local dir="${rawArg:a}"
 
 # Refuse if any session is already running
 if ralph-is-running "$dir"; then

@@ -4,13 +4,22 @@ setup() {
   bats_tmp_dir
   export PRD_DIR="$BATS_TMP_DIR/plans/feature"
   mkdir -p "$PRD_DIR"
+  export WORKTREE="$BATS_TMP_DIR/worktrees/feature"
+  mkdir -p "$WORKTREE"
+}
+
+# Mocks plan-directory: only the worktree of the test resolves to the plan directory
+mock_plan_directory() {
+  plan-directory() { [[ "$1" == "$WORKTREE" ]] && echo "$PRD_DIR"; }
+  bats_mock plan-directory
 }
 
 @test "refuses to run when a session is already active" {
   ralph-is-running() { return 0; }
   bats_mock ralph-is-running
 
-  bats_run_zsh "ralph '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph '$WORKTREE'"
   [[ "$status" -eq 1 ]]
 }
 
@@ -20,7 +29,8 @@ setup() {
   claude() { [[ "$(jq -c . "$PRD_DIR/ralph.json")" = '{"mode":"single"}' ]]; }
   bats_mock ralph-is-running git-directory-root claude
 
-  bats_run_zsh "ralph '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph '$WORKTREE'"
   [[ "$status" -eq 0 ]]
 }
 
@@ -30,7 +40,8 @@ setup() {
   claude() { [[ "$(jq -c . "$PRD_DIR/ralph.json")" = '{"mode":"auto"}' ]]; }
   bats_mock ralph-is-running git-directory-root claude
 
-  bats_run_zsh "ralph --auto '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph --auto '$WORKTREE'"
   [[ "$status" -eq 0 ]]
 }
 
@@ -40,7 +51,8 @@ setup() {
   claude() { echo "ARGS:$*"; }
   bats_mock ralph-is-running git-directory-root claude
 
-  bats_run_zsh "ralph '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph '$WORKTREE'"
   [[ "$status" -eq 0 ]]
   [[ "$output" == *"--permission-mode acceptEdits"* ]]
 }
@@ -51,7 +63,8 @@ setup() {
   claude() { echo "ARGS:$*"; }
   bats_mock ralph-is-running git-directory-root claude
 
-  bats_run_zsh "ralph --auto '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph --auto '$WORKTREE'"
   [[ "$status" -eq 0 ]]
   [[ "$output" == *"--permission-mode auto"* ]]
 }
@@ -62,7 +75,8 @@ setup() {
   claude() { return 0; }
   bats_mock ralph-is-running git-directory-root claude
 
-  bats_run_zsh "ralph '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph '$WORKTREE'"
   [[ "$status" -eq 0 ]]
   [[ ! -f "$PRD_DIR/ralph.json" ]]
 }
@@ -76,7 +90,8 @@ setup() {
   }
   bats_mock ralph-is-running git-directory-root claude
 
-  bats_run_zsh "ralph '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph '$WORKTREE'"
   [[ "$status" -eq 3 ]]
   [[ -f "$BATS_TMP_DIR/claude-called" ]]
   [[ ! -f "$PRD_DIR/ralph.json" ]]
@@ -88,49 +103,36 @@ setup() {
   claude() { echo "ARGS:$*"; }
   bats_mock ralph-is-running git-directory-root claude
 
-  bats_run_zsh "ralph '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph '$WORKTREE'"
   [[ "$status" -eq 0 ]]
   [[ "$output" == *"/ralph ${PRD_DIR}"* ]]
 }
 
-@test "no arg + worktree has plan → auto-detects plans dir" {
-  local planDir="$BATS_TMP_DIR/plans/feat_my-feature"
-  mkdir -p "$planDir"
+@test "no arg → uses the current worktree to find the plan directory" {
   ralph-is-running() { return 1; }
   git-directory-root() { echo "$BATS_TMP_DIR"; }
   claude() { echo "ARGS:$*"; }
-  plan-directory() { echo "$BATS_TMP_DIR/plans/feat_my-feature"; }
-  bats_mock ralph-is-running git-directory-root claude plan-directory
+  bats_mock ralph-is-running git-directory-root claude
+  bats_disable_worktree_aware
 
-  bats_run_zsh "cd $BATS_TMP_DIR && ralph"
+  mock_plan_directory
+  bats_run_zsh "cd $WORKTREE && ralph"
   [[ "$status" -eq 0 ]]
-  [[ "$output" == *"/ralph ${planDir}"* ]]
+  [[ "$output" == *"/ralph ${PRD_DIR}"* ]]
 }
 
-@test "no arg + cwd inside plan subdir → path not doubled" {
-  local planDir="$BATS_TMP_DIR/plans/feat_my-feature"
-  mkdir -p "$planDir"
+@test "fails without launching Claude when the worktree has no plan" {
   ralph-is-running() { return 1; }
   git-directory-root() { echo "$BATS_TMP_DIR"; }
-  claude() { echo "ARGS:$*"; }
-  plan-directory() { echo "$BATS_TMP_DIR/plans/feat_my-feature"; }
-  bats_mock ralph-is-running git-directory-root claude plan-directory
-
-  bats_run_zsh "cd $planDir && ralph"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" == *"/ralph ${planDir}"* ]]
-}
-
-@test "no arg + no worktree plan → fallback to cwd" {
-  ralph-is-running() { return 1; }
-  git-directory-root() { echo "$BATS_TMP_DIR"; }
-  claude() { echo "ARGS:$*"; }
+  claude() { touch "$BATS_TMP_DIR/claude-called"; }
   plan-directory() { return 1; }
   bats_mock ralph-is-running git-directory-root claude plan-directory
 
-  bats_run_zsh "cd $BATS_TMP_DIR && ralph"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" == *"/ralph ${BATS_TMP_DIR}"* ]]
+  bats_run_zsh "ralph '$WORKTREE'"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"no plan directory"* ]]
+  [[ ! -f "$BATS_TMP_DIR/claude-called" ]]
 }
 
 @test "--auto on a finished plan runs nothing and succeeds" {
@@ -140,7 +142,8 @@ setup() {
   claude() { touch "$BATS_TMP_DIR/claude-called"; }
   bats_mock ralph-is-running git-directory-root plan-progress claude
 
-  bats_run_zsh "ralph --auto '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph --auto '$WORKTREE'"
   [[ "$status" -eq 0 ]]
   [[ "$output" == *"no remaining issue"* ]]
   [[ ! -f "$BATS_TMP_DIR/claude-called" ]]
@@ -154,7 +157,8 @@ setup() {
   claude() { touch "$BATS_TMP_DIR/claude-called"; }
   bats_mock ralph-is-running git-directory-root plan-progress claude
 
-  bats_run_zsh "ralph --auto '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph --auto '$WORKTREE'"
   [[ "$status" -eq 0 ]]
   [[ -f "$BATS_TMP_DIR/claude-called" ]]
 }
@@ -168,7 +172,8 @@ setup() {
   kitty-notify() { touch "$BATS_TMP_DIR/notified"; }
   bats_mock ralph-is-running git-directory-root plan-progress claude zsh-queue-write kitty-notify
 
-  bats_run_zsh "ralph --auto '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph --auto '$WORKTREE'"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "" ]]
   [[ ! -f "$BATS_TMP_DIR/queue-written" ]]
@@ -183,7 +188,8 @@ setup() {
   claude() { touch "$BATS_TMP_DIR/claude-called"; }
   bats_mock ralph-is-running git-directory-root plan-progress claude
 
-  bats_run_zsh "ralph '$PRD_DIR'"
+  mock_plan_directory
+  bats_run_zsh "ralph '$WORKTREE'"
   [[ "$status" -eq 0 ]]
   [[ ! -f "$BATS_TMP_DIR/claude-called" ]]
 }

@@ -4,6 +4,15 @@ setup() {
   bats_tmp_dir
   mkdir -p "$BATS_TMP_DIR/prd-dir"
   export PRD_DIR="$BATS_TMP_DIR/prd-dir"
+  export WORKTREE="$BATS_TMP_DIR/worktree"
+  export CALLS="$BATS_TMP_DIR/calls"
+
+  # Safety net for every test: the real queue and the real Claude must never be reached.
+  # ralph-mode resolves through plan-directory, so it would ignore the sandbox ralph.json.
+  ralph-mode() { jq --raw-output '.mode // empty' "$1/ralph.json" 2>/dev/null; }
+  zsh-queue-write() { echo "queue: $1" >>"$CALLS"; }
+  claude-stop() { echo "stop" >>"$CALLS"; }
+  bats_mock ralph-mode zsh-queue-write claude-stop
 }
 
 @test "does nothing in single-shot mode" {
@@ -33,18 +42,15 @@ setup() {
   [[ "$status" -ne 0 ]]
 }
 
-# Mocks the collaborators of auto mode. Each one logs its call to $CALLS, in order.
+# Mocks the plan collaborators of auto mode. The queue and Claude stop log to $CALLS, in order.
 mock_auto_collaborators() {
-  export CALLS="$BATS_TMP_DIR/calls"
   jq -n '{"mode":"auto"}' >"$PRD_DIR/ralph.json"
   printf '{"branchedAt":"abc123","issues":[{"id":"1","issue":"foo.md","done":true,"blocked_by":[]}]}' >"$PRD_DIR/state.json"
 
   plan-progress() { echo "${PROGRESS:-1▮3}"; }
-  zsh-queue-write() { echo "queue: $1" >>"$CALLS"; }
-  claude-stop() { echo "stop" >>"$CALLS"; }
+  plan-worktree() { echo "$WORKTREE"; }
   bats_mock plan-progress
-  bats_mock zsh-queue-write
-  bats_mock claude-stop
+  bats_mock plan-worktree
 }
 
 @test "auto: with issues remaining, queues commit then ralph --auto" {
@@ -54,7 +60,7 @@ mock_auto_collaborators() {
   [[ "$status" -eq 0 ]]
   local queued="$(grep "queue:" "$CALLS")"
   [[ "$queued" == "queue: zsh -ic "* ]]
-  [[ "$queued" == *"git-commit-create-all-auto && ralph --auto $PRD_DIR"* ]]
+  [[ "$queued" == *"git-commit-create-all-auto && ralph --auto $WORKTREE"* ]]
   [[ "$queued" != *"/review"* ]]
 }
 

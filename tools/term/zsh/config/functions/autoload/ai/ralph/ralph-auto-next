@@ -1,0 +1,13 @@
+# Commit the current work, then start the next auto ralph session
+#
+# Usage:
+# $ ralph-auto-next [worktree]   # worktree defaults to the current directory
+setopt local_options err_return
+
+local worktree="${1:-.}"
+
+# A failed commit stops the chain (err_return)
+git-commit-create-all-auto
+
+# Never exec here: the queue hook runs inside zle, and exec kills the Kitty window
+ralph --auto "${worktree:a}"

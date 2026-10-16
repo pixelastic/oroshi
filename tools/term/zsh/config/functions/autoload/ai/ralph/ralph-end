@@ -21,7 +21,8 @@ local doneCount=$progress[1]
 local totalCount=$progress[2]
 
 # If we have more issues to tackle, open a new ralph session
-local nextCommand="ralph --auto ${(q)dir}"
+local worktree="$(plan-worktree "$dir")"
+local nextCommand="ralph --auto ${(q)worktree}"
 
 # If this was the last issue, let's review everything we did so far instead
 if [[ "$doneCount" == "$totalCount" ]]; then
