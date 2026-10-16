@@ -47,59 +47,22 @@ mock_auto_collaborators() {
   jq -n '{"mode":"auto"}' >"$PRD_DIR/ralph.json"
   printf '{"branchedAt":"abc123","issues":[{"id":"1","issue":"foo.md","done":true,"blocked_by":[]}]}' >"$PRD_DIR/state.json"
 
-  plan-progress() { echo "${PROGRESS:-1▮3}"; }
   plan-worktree() { echo "$WORKTREE"; }
-  bats_mock plan-progress
   bats_mock plan-worktree
 }
 
-@test "auto: with issues remaining, queues commit then ralph --auto" {
+@test "auto: queues exactly ralph-auto-next with the worktree" {
   mock_auto_collaborators
-  export PROGRESS="1▮3"
   bats_run_zsh "ralph-end $PRD_DIR"
   [[ "$status" -eq 0 ]]
-  local queued="$(grep "queue:" "$CALLS")"
-  [[ "$queued" == "queue: zsh -ic "* ]]
-  [[ "$queued" == *"git-commit-create-all-auto && ralph --auto $WORKTREE"* ]]
-  [[ "$queued" != *"/review"* ]]
+  [[ "$(grep "queue:" "$CALLS")" == "queue: ralph-auto-next $WORKTREE" ]]
 }
 
-@test "auto: after the last issue, queues commit then ralph-review in auto permission mode" {
+@test "auto: shell-quotes the worktree in the queued line" {
   mock_auto_collaborators
-  export PROGRESS="3▮3"
+  export WORKTREE="$BATS_TMP_DIR/work tree"
   bats_run_zsh "ralph-end $PRD_DIR"
-  [[ "$status" -eq 0 ]]
-  local queued="$(grep "queue:" "$CALLS")"
-  [[ "$queued" == *"git-commit-create-all-auto && claude --permission-mode auto "* ]]
-  [[ "$queued" == *"/ralph-review $PRD_DIR"* ]]
-  [[ "$queued" != *"ralph --auto"* ]]
-}
-
-@test "auto: after the last issue, does not queue a bare review" {
-  mock_auto_collaborators
-  export PROGRESS="3▮3"
-  bats_run_zsh "ralph-end $PRD_DIR"
-  local queued="$(grep "queue:" "$CALLS")"
-  [[ "$queued" != *"/review"* ]]
-  [[ "$queued" != *"branchedAt"* ]]
-  [[ "$queued" != *"abc123"* ]]
-}
-
-@test "auto: queued command is one SIGINT-safe group run by a child shell" {
-  mock_auto_collaborators
-  bats_run_zsh "ralph-end $PRD_DIR"
-  local queued="$(grep "queue:" "$CALLS")"
-  [[ "$queued" == "queue: zsh -ic '{ "* ]]
-  [[ "$queued" == *"; }'" ]]
-}
-
-# exec from the queue hook kills the Kitty window before the new shell runs anything
-@test "auto: queued command never execs, so the window shell stays alive" {
-  mock_auto_collaborators
-  bats_run_zsh "ralph-end $PRD_DIR"
-  local queued="$(grep "queue:" "$CALLS")"
-  [[ "$queued" != *"exec "* ]]
-  [[ "$queued" != *"9>"* ]]
+  [[ "$(grep "queue:" "$CALLS")" == "queue: ralph-auto-next $BATS_TMP_DIR/work\\ tree" ]]
 }
 
 @test "auto: queues the command before stopping Claude" {

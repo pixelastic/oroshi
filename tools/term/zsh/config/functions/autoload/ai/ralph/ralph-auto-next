@@ -1,4 +1,5 @@
-# Commit the current work, then start the next auto ralph session
+# Commit the current work, then start the next auto ralph session,
+# or the final review after the last issue
 #
 # Usage:
 # $ ralph-auto-next [worktree]   # worktree defaults to the current directory
@@ -9,5 +10,20 @@ local worktree="${1:-.}"
 # A failed commit stops the chain (err_return)
 git-commit-create-all-auto
 
-# Never exec here: the queue hook runs inside zle, and exec kills the Kitty window
+local planDirectory="$(plan-directory "${worktree:a}")"
+local planProgress="$(plan-progress "$planDirectory")"
+local progress=(${(@ps/▮/)${planProgress}})
+local doneCount=$progress[1]
+local totalCount=$progress[2]
+
+# Stop if no progress
+[[ "$doneCount" == "" ]] && return 0
+
+# After the last issue, review everything we did so far instead of starting a new session
+if [[ "$doneCount" == "$totalCount" ]]; then
+  claude --permission-mode auto "/ralph-review ${planDirectory}"
+  return $?
+fi
+
+# Otherwise, keep going with the next issue
 ralph --auto "${worktree:a}"

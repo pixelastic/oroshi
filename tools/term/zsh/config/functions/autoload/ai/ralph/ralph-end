@@ -1,41 +1,25 @@
 # Signal end of ralph session
 # In auto mode: queue the next command, then stop Claude.
 # Usage:
-# $ ralph-end <dir>
+# $ ralph-end <planDirectory>
 setopt local_options err_return
 
-local dir="$1"
-if [[ "$dir" == "" ]]; then
-  print "ralph-end: <dir> required"
+local planDirectory="$1"
+if [[ "$planDirectory" == "" ]]; then
+  print "ralph-end: <planDirectory> required"
   return 1
 fi
 
-local mode="$(ralph-mode "$dir")"
+local mode="$(ralph-mode "$planDirectory")"
 
 # If single mode, let's stop here
 [[ "$mode" == "single" ]] && return 0
 
 # If auto mode, let's enqueue the next command, then stop Claude
-local progress=(${(@ps/▮/)"$(plan-progress "$dir")"})
-local doneCount=$progress[1]
-local totalCount=$progress[2]
-
-# If we have more issues to tackle, open a new ralph session
-local worktree="$(plan-worktree "$dir")"
-local nextCommand="ralph --auto ${(q)worktree}"
-
-# If this was the last issue, let's review everything we did so far instead
-if [[ "$doneCount" == "$totalCount" ]]; then
-  local reviewPrompt="/ralph-review ${dir}"
-  nextCommand="claude --permission-mode auto ${(qq)reviewPrompt}"
-fi
+local worktree="$(plan-worktree "$planDirectory")"
 
 # Add the next command to the zsh queue
-# A child shell runs it. Never exec here: the queue hook runs inside zle, and an
-# exec from there kills the Kitty window before the new shell runs anything.
-# The child ends with the group, and the window shell takes over again
-local group="{ git-commit-create-all-auto && ${nextCommand}; }"
-zsh-queue-write "zsh -ic ${(qq)group}"
+zsh-queue-write "ralph-auto-next ${(q)worktree}"
 
 # now, stop Claude, so zsh takes over
 claude-stop

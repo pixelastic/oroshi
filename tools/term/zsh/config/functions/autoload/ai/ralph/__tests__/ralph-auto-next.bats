@@ -7,14 +7,48 @@ setup() {
   export CALLS="$BATS_TMP_DIR/calls"
 }
 
-# Mocks the collaborators. Each one logs its call to $CALLS, in order.
+# Mocks the collaborators. The commit, ralph and claude log their calls to $CALLS, in order.
 mock_collaborators() {
   git-commit-create-all-auto() {
     echo "commit" >>"$CALLS"
     return "${COMMIT_STATUS:-0}"
   }
   ralph() { echo "ralph $*" >>"$CALLS"; }
-  bats_mock git-commit-create-all-auto ralph
+  plan-directory() { echo "$PRD_DIR"; }
+  plan-progress() { echo "${PROGRESS:-1▮3}"; }
+  claude() { echo "claude $*" >>"$CALLS"; }
+  bats_mock git-commit-create-all-auto ralph plan-directory plan-progress claude
+}
+
+@test "runs the review in auto permission mode after the last issue" {
+  mock_collaborators
+  export PROGRESS="3▮3"
+  bats_run_zsh "ralph-auto-next $PRD_DIR"
+  [[ "$status" -eq 0 ]]
+  [[ "$(tail -n 1 "$CALLS")" == "claude --permission-mode auto /ralph-review $PRD_DIR" ]]
+}
+
+@test "does not run ralph --auto after the last issue" {
+  mock_collaborators
+  export PROGRESS="3▮3"
+  bats_run_zsh "ralph-auto-next $PRD_DIR"
+  [[ "$(cat "$CALLS")" != *"ralph --auto"* ]]
+}
+
+@test "stops after the commit when the plan has no progress" {
+  mock_collaborators
+  plan-progress() { return 1; }
+  bats_mock plan-progress
+  bats_run_zsh "ralph-auto-next $PRD_DIR"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$CALLS")" == "commit" ]]
+}
+
+@test "does not run the review while issues remain" {
+  mock_collaborators
+  export PROGRESS="1▮3"
+  bats_run_zsh "ralph-auto-next $PRD_DIR"
+  [[ "$(cat "$CALLS")" != *"claude"* ]]
 }
 
 @test "runs the commit, then ralph --auto with the given directory" {
