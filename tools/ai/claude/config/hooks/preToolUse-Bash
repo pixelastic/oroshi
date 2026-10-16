@@ -22,9 +22,9 @@
 # - time echo "test"                     -> accept (time is ignored)
 
 local hookDir="${0:A:h}"
-local logDir="${CLAUDE_HOOKS_LOG_DIR:-/tmp/oroshi/claude/hooks}"
 
 source "${hookDir}/lib/input.zsh"
+source "${hookDir}/lib/log.zsh"
 
 # Parse input
 local inputJson="$(inputRead)"
@@ -39,8 +39,7 @@ source "${hookDir}/preToolUse-Bash-helper.zsh"
 source "${hookDir}/Bash-approval.zsh"
 
 # Save input for debugging
-mkdir -p "$logDir"
-jq '.' <<<"$inputJson" >"${logDir}/last-bash-input.json"
+logInput bash "$inputJson"
 
 # Solkan: is the command allowed? Capture JSON output alongside exit code
 local solkanJson=""
