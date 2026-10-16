@@ -1,0 +1,31 @@
+# Add a rule to the autocorrect rules file (an existing key is overwritten)
+# An empty replacement suppresses the word.
+# Usage:
+# $ mic2txt-autocorrect-add eovim NeoVim   # "eovim" becomes "NeoVim"
+# $ mic2txt-autocorrect-add euh ""         # "euh" is removed
+setopt local_options err_return
+
+# Both arguments are required, but the replacement may be empty
+if [[ $# -lt 2 ]]; then
+  echoerr "Usage: mic2txt-autocorrect-add <wrong> <right>"
+  return 1
+fi
+
+local wrong="$1"
+local right="$2"
+local rulesFile="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/mic2txt/__data/autocorrect.json"
+
+# Start from an empty rules object when the file is missing or empty
+local baseJson="{}"
+[[ -s "$rulesFile" ]] && baseJson="$(<"$rulesFile")"
+
+local newJson="$(jq \
+  --arg wrong "$wrong" \
+  --arg right "$right" \
+  '.[$wrong] = $right' \
+  <<<"$baseJson")"
+# jq failed (invalid existing JSON), keep the rules file as it is
+[[ "$newJson" == "" ]] && return 1
+
+mkdir --parents "${rulesFile:h}"
+print -r -- "$newJson" >"$rulesFile"
