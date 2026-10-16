@@ -1,6 +1,7 @@
 import { firostError } from 'firost';
 import { assertScenarioId } from '../assertScenarioId.js';
 import { callApi } from '../callApi.js';
+import { executionTiming } from './executionTiming.js';
 import { formatExecution } from './formatExecution.js';
 
 export let __;
@@ -31,10 +32,15 @@ export async function executionRead(options) {
   const response = await __.callApi(
     `scenarios/${scenarioId}/logs/${executionId}`,
   );
-  return __.formatExecution(response.scenarioLog);
+  const execution = __.formatExecution(response.scenarioLog);
+
+  // The flow tells what happened, and how long each module took
+  const flow = await __.executionTiming({ scenarioId, execution });
+  return { ...execution, flow };
 }
 
 __ = {
   callApi,
   formatExecution,
+  executionTiming,
 };

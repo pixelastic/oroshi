@@ -4,6 +4,7 @@ describe('executionRead', () => {
   beforeEach(() => {
     vi.spyOn(__, 'callApi').mockReturnValue({ scenarioLog: { id: 'cfcf' } });
     vi.spyOn(__, 'formatExecution').mockReturnValue({ id: 'formatted' });
+    vi.spyOn(__, 'executionTiming').mockReturnValue([{ id: 1 }]);
   });
 
   it('calls the endpoint of the Scenario and Execution ids', async () => {
@@ -12,14 +13,18 @@ describe('executionRead', () => {
     expect(__.callApi).toHaveBeenCalledWith('scenarios/925/logs/cfcf');
   });
 
-  it('returns the Execution, formatted', async () => {
+  it('returns the Execution, formatted, with its timed flow', async () => {
     const actual = await executionRead({
       scenarioId: 925,
       executionId: 'cfcf',
     });
 
     expect(__.formatExecution).toHaveBeenCalledWith({ id: 'cfcf' });
-    expect(actual).toEqual({ id: 'formatted' });
+    expect(__.executionTiming).toHaveBeenCalledWith({
+      scenarioId: 925,
+      execution: { id: 'formatted' },
+    });
+    expect(actual).toEqual({ id: 'formatted', flow: [{ id: 1 }] });
   });
 });
 
@@ -27,6 +32,7 @@ describe('executionRead arguments', () => {
   beforeEach(() => {
     vi.spyOn(__, 'callApi').mockReturnValue({ scenarioLog: {} });
     vi.spyOn(__, 'formatExecution').mockReturnValue({});
+    vi.spyOn(__, 'executionTiming').mockReturnValue([]);
   });
 
   it.each([

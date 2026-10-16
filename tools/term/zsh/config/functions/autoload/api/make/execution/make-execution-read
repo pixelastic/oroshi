@@ -1,5 +1,8 @@
 # Read a Make execution by its ID, and print it as JSON
 # The scenario is the anchor
+# The output has a flow of the modules, each executed module with bundleCount, durationMs and durationPercent
+# A module without those fields did not run in this execution
+# The duration of a module is the gap to the previous entry of the execution, so parallel routes are approximate
 # Usage:
 # $ make-execution-read cfcfaf06224143df8310fb2ce8543aa3 --scenarioId 925
 # $ make-execution-read cfcfaf06224143df8310fb2ce8543aa3 --scenarioId 925 --account perso
