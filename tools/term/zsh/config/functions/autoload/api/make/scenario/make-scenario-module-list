@@ -1,0 +1,34 @@
+# List the modules of a Make scenario with their operations as a colored table, one row per module
+# For humans. For machines, use make-scenario-module-list-raw
+# Columns: moduleId, module, operations, warnings, errors
+# The counts are over the last --days, from 1 to 30
+# --app keeps only the modules of one app, such as airtable
+# Usage:
+# $ make-scenario-module-list 925 --days 15
+# $ make-scenario-module-list 925 --days 15 --app airtable
+# $ make-scenario-module-list 925 --days 15 --account perso
+setopt local_options err_return
+
+colors-load-definitions
+
+# The raw command is named like this wrapper, with a -raw suffix
+local rawCommand="${0}-raw"
+
+local rawModules="$($rawCommand "$@")"
+
+# Nothing to display if there is no module
+[[ "$rawModules" == "" ]] && return 1
+
+local rows=()
+for rawModule in ${(f)rawModules}; do
+  local fields=("${(@ps/▮/)rawModule}")
+
+  # Color the id. Keep the other columns as they are
+  local columns=("$(colorize "${fields[1]}" $COLORS[make-scenario-id])")
+  columns+=("${(@)fields[2,-1]}")
+
+  rows+=("${(j:▮:)columns}")
+done
+
+# One row per line, separated by real newlines. `table` splits the columns on ▮
+table "${(F)rows}"

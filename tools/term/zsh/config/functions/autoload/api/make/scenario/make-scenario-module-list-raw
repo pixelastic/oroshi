@@ -1,0 +1,14 @@
+# List the modules of a Make scenario with their operations, one per line
+# For machines. For a human-readable table, use make-scenario-module-list
+# Fields: moduleId▮module▮operations▮warnings▮errors
+# module is the name in the blueprint, such as airtable:ActionSearchRecords
+# The counts are over the last --days, from 1 to 30
+# --app keeps only the modules of one app, such as airtable
+# Usage:
+# $ make-scenario-module-list-raw 925 --days 15
+# $ make-scenario-module-list-raw 925 --days 15 --app airtable
+# $ make-scenario-module-list-raw 925 --days 15 --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-scenario-module-list-raw.js" "$@"

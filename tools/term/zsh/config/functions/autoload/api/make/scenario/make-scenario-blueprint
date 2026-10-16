@@ -1,0 +1,11 @@
+# Read the full blueprint of a Make scenario by its ID, and print it as JSON
+# The blueprint has every module with its mapper and parameters, so it is large
+# It is the starting point to modify a scenario and upload a new version
+# For a short view of the flow, use make-scenario-read
+# Usage:
+# $ make-scenario-blueprint 925
+# $ make-scenario-blueprint 925 --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/make-scenario-blueprint.js" "$@"
