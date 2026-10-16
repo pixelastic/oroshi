@@ -1,9 +1,10 @@
 # Hook output: emit the JSON responses a hook prints on stdout
 # Stateless: it never reads approval counts, the calling hook passes them in
-# autoApprove, askWithReason and additionalContext print one hookSpecificOutput JSON and exit 0, so the hook ends there
+# autoApprove, autoApproveAsIs, askWithReason and additionalContext print one hookSpecificOutput JSON and exit 0, so the hook ends there
 # Usage:
 # $ source lib/output.zsh
 # $ autoApprove "$command"                                  # allow, command in updatedInput
+# $ autoApproveAsIs                                         # allow, no updatedInput
 # $ askWithReason "$(askReasonFormat --command wget --count 1)" "$command"
 # $ additionalContext PostToolUse "context for Claude"      # also PostToolUseFailure
 
@@ -15,6 +16,16 @@ function autoApprove() {
     hookSpecificOutput.hookEventName="PreToolUse" \
     hookSpecificOutput.permissionDecision="allow" \
     hookSpecificOutput.updatedInput.command="$1"
+  exit 0
+}
+
+# Allow the tool call, nothing to rewrite
+# Usage:
+# $ autoApproveAsIs
+function autoApproveAsIs() {
+  jo -d. \
+    hookSpecificOutput.hookEventName="PreToolUse" \
+    hookSpecificOutput.permissionDecision="allow"
   exit 0
 }
 

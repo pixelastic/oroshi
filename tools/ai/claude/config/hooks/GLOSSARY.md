@@ -41,7 +41,7 @@ A `<command>-token-saving` function that runs the reduced-output form of `<comma
 _Avoid_: quiet wrapper, filter, compressor
 
 **auto-approve**:
-The hook output when Solkan **allow**s a command.
+The hook output when Solkan **allow**s a command, or when the Write hook finds the path in its allow-list (no command to rewrite).
 _Avoid_: auto-allow, silent-approve, bypass
 
 **ask with reason**:

@@ -14,6 +14,16 @@ setup() {
   expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
 }
 
+# autoApproveAsIs
+
+@test "autoApproveAsIs prints the allow decision without updatedInput" {
+  bats_run_zsh "${sourcePrefix}; autoApproveAsIs"
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.hookEventName' 'PreToolUse'
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput' 'null'
+}
+
 # askWithReason
 
 @test "askWithReason prints the ask decision with the reason and the command in updatedInput" {

@@ -1,31 +1,44 @@
 #!/usr/bin/env zsh
+# zsh-lint disable-file=missingSetE
+# Hook must always exit 0 — non-zero exits bypass permission logic
+#
 # PreToolUse hook for Create/Write/Edit
 # Auto-allow file operations on whitelisted paths
-set -e
+# Reads hook JSON from stdin, writes hookSpecificOutput JSON to stdout
 
-# Allowlist (glob patterns)
-local -a allowlist=(
-  "/tmp/oroshi/claude/**"
-  "*/local/tmp/oroshi/claude/**"
-  "*/local/tmp/oroshi/git-file-watch/**"
-  "*/local/www/plans/**"
-  "$HOME/.oroshi/todo.txt"
-)
+local hookDir="${0:A:h}"
 
-local inputJson="$(cat)"
-local filePath="$(json-get '.tool_input.file_path' <<<"$inputJson")"
+source "${hookDir}/lib/input.zsh"
+source "${hookDir}/lib/output.zsh"
 
+# Check the path against the allowlist (glob patterns)
+# Usage:
+# $ pathIsAllowed "/tmp/oroshi/claude/draft.md"  # exit 0
+# $ pathIsAllowed "/home/tim/project/index.js"   # exit 1
+function pathIsAllowed() {
+  local -a allowlist=(
+    "/tmp/oroshi/claude/**"
+    "*/local/tmp/oroshi/claude/**"
+    "*/local/tmp/oroshi/git-file-watch/**"
+    "*/local/www/plans/**"
+    "$HOME/.oroshi/todo.txt"
+  )
+
+  local glob
+  for glob in "${allowlist[@]}"; do
+    # shellcheck disable=SC2053
+    [[ "$1" == ${~glob} ]] && return 0
+  done
+
+  return 1
+}
+
+local inputJson="$(inputRead)"
+local filePath="$(inputField "$inputJson" '.tool_input.file_path')"
+
+# No path, no decision
 [[ "$filePath" == "" ]] && exit 0
 
-for glob in "${allowlist[@]}"; do
-  # Skip if not matching
-  # shellcheck disable=SC2053
-  [[ "$filePath" != ${~glob} ]] && continue
-
-  jo -d. \
-    hookSpecificOutput.hookEventName="PreToolUse" \
-    hookSpecificOutput.permissionDecision="allow"
-  exit 0
-done
+pathIsAllowed "$filePath" && autoApproveAsIs
 
 exit 0

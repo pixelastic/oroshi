@@ -33,6 +33,13 @@ setup() {
   [[ "$output" == "" ]]
 }
 
+@test "no decision when file_path is absent" {
+  local input='{"tool_name":"Write","tool_input":{}}'
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+}
+
 @test "no decision when file_path is empty" {
   local input='{"tool_name":"Write","tool_input":{"file_path":""}}'
   bats_run_zsh "$SCRIPT" <<<"$input"
