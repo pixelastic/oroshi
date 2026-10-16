@@ -25,6 +25,7 @@ local hookDir="${0:A:h}"
 
 source "${hookDir}/lib/input.zsh"
 source "${hookDir}/lib/log.zsh"
+source "${hookDir}/lib/output.zsh"
 
 # Parse input
 local inputJson="$(inputRead)"
@@ -35,7 +36,6 @@ local inputCwd="$(inputField "$inputJson" '.cwd')"
 inputSessionExport "$inputJson"
 
 source "${hookDir}/preToolUse-Bash-solkan.zsh"
-source "${hookDir}/preToolUse-Bash-helper.zsh"
 source "${hookDir}/Bash-approval.zsh"
 
 # Save input for debugging

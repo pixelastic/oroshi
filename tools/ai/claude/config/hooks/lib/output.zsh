@@ -1,5 +1,15 @@
-# Hook output helpers for preToolUse-Bash
+# Hook output: emit the JSON responses a hook prints on stdout
+# Stateless: it never reads approval counts, the calling hook passes them in
+# autoApprove, askWithReason and additionalContext print one hookSpecificOutput JSON and exit 0, so the hook ends there
+# Usage:
+# $ source lib/output.zsh
+# $ autoApprove "$command"                                  # allow, command in updatedInput
+# $ askWithReason "$(askReasonFormat --command wget --count 1)" "$command"
+# $ additionalContext PostToolUse "context for Claude"      # also PostToolUseFailure
 
+# Allow the tool call, the command goes back in updatedInput
+# Usage:
+# $ autoApprove "echo hello"
 function autoApprove() {
   jo -d. \
     hookSpecificOutput.hookEventName="PreToolUse" \
@@ -8,6 +18,9 @@ function autoApprove() {
   exit 0
 }
 
+# Ask the user, showing the reason, the command goes back in updatedInput
+# Usage:
+# $ askWithReason "❌ wget ❌" "wget foo"
 function askWithReason() {
   jo -d. \
     hookSpecificOutput.hookEventName="PreToolUse" \
@@ -24,6 +37,8 @@ function askWithReason() {
 # $ askReasonFormat --command /usr/bin/grep --count 2 --command wget --count 0
 # ❌ /usr/bin/grep 🌕, wget ❌
 function askReasonFormat() {
+  local -a flagCommands
+  local -a flagCounts
   zparseopts -E -D \
     -command+:=flagCommands \
     -count+:=flagCounts
@@ -42,4 +57,15 @@ function askReasonFormat() {
   done
 
   print -r -- "❌ ${(j:, :)entries} ❌"
+}
+
+# Give Claude extra context after a tool call, for the given hook event name
+# Usage:
+# $ additionalContext PostToolUse "context for Claude"
+# $ additionalContext PostToolUseFailure "context for Claude"
+function additionalContext() {
+  jo -d. \
+    hookSpecificOutput.hookEventName="$1" \
+    hookSpecificOutput.additionalContext="$2"
+  exit 0
 }
