@@ -4,7 +4,9 @@ setup() {
   bats_tmp_dir
   STOP_HOOK="$BATS_TEST_DIRNAME/../stop"
   kitty-notify() { printf '%s' "$*" > "$BATS_TMP_DIR/kitty-notify-args"; }
-  bats_mock kitty-notify
+  # No ralph session by default: the real mode would depend on the plan of the checkout
+  ralph-mode() { :; }
+  bats_mock kitty-notify ralph-mode
 }
 
 # Run the stop hook with a given env var value and stdin JSON

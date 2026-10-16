@@ -37,6 +37,15 @@
         ]
       },
       {
+        "matcher": "Monitor",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/tim/.oroshi/tools/ai/claude/config/hooks/preToolUse-Monitor"
+          }
+        ]
+      },
+      {
         "matcher": "Create|Write|Edit",
         "hooks": [
           {

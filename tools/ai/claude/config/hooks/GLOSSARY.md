@@ -1,6 +1,6 @@
 # Claude Code Hooks
 
-Vocabulary for the Claude Code hooks. The Bash pipeline: `preToolUse-Bash` gates shell command execution through Solkan before producing a Claude Code response; `postToolUse-Bash` counts the approvals the user gave. The Stop / SubagentStop hooks decide whether to notify when Claude Code finishes a turn.
+Vocabulary for the Claude Code hooks. The Bash pipeline: `preToolUse-Bash` gates shell command execution through Solkan before producing a Claude Code response; `postToolUse-Bash` counts the approvals the user gave. `preToolUse-Monitor` gates `Monitor` commands through Solkan with guard-rail rewrites only. The Stop / SubagentStop hooks decide whether to notify when Claude Code finishes a turn.
 
 ## Language
 
@@ -41,11 +41,11 @@ A `<command>-token-saving` function that runs the reduced-output form of `<comma
 _Avoid_: quiet wrapper, filter, compressor
 
 **auto-approve**:
-The hook output when Solkan **allow**s a command, or when the Write hook finds the path in its allow-list (no command to rewrite).
+The hook output when Solkan **allow**s a command, or when the Write hook finds the path in its allow-list (no command to rewrite). The Monitor hook returns the whole original tool input in `updatedInput`, with only `command` rewritten.
 _Avoid_: auto-allow, silent-approve, bypass
 
 **ask with reason**:
-The hook output when Solkan **reject**s one or more commands. All rejected binary names are displayed, every time, each followed by a moon showing its **approval count**: no symbol on the 1st prompt, `🌓` on the 2nd, `🌕` on the 3rd (e.g. `❌ /usr/bin/grep 🌕, wget ❌`). Approving a `🌕` command adds it to the **session allow-list**. The user sees a 2-option dialog (Allow / Deny). Maps to `permissionDecision: "ask"`.
+The hook output when Solkan **reject**s one or more commands. All rejected binary names are displayed, every time, each followed by a moon showing its **approval count**: no symbol on the 1st prompt, `🌓` on the 2nd, `🌕` on the 3rd (e.g. `❌ /usr/bin/grep 🌕, wget ❌`). Approving a `🌕` command adds it to the **session allow-list**. The user sees a 2-option dialog (Allow / Deny). Maps to `permissionDecision: "ask"`. The Monitor hook asks the same way, but tracks no approvals: every rejected name shows with count 0, so no moon.
 _Avoid_: ask user, escalate, warn-ask
 
 **approval pending**:

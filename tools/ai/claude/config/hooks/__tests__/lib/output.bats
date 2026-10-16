@@ -35,6 +35,31 @@ setup() {
   expect_json '.hookSpecificOutput.updatedInput.command' 'wget foo'
 }
 
+# autoApproveToolInput
+
+@test "autoApproveToolInput prints the allow decision with the whole tool input in updatedInput" {
+  bats_run_zsh "${sourcePrefix}; autoApproveToolInput '{\"command\":\"echo hello\",\"description\":\"Say hi\",\"timeout_ms\":5000}'"
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.hookEventName' 'PreToolUse'
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
+  expect_json '.hookSpecificOutput.updatedInput.description' 'Say hi'
+  expect_json '.hookSpecificOutput.updatedInput.timeout_ms' '5000'
+}
+
+# askWithReasonToolInput
+
+@test "askWithReasonToolInput prints the ask decision with the reason and the whole tool input in updatedInput" {
+  bats_run_zsh "${sourcePrefix}; askWithReasonToolInput 'not allowed' '{\"command\":\"wget foo\",\"description\":\"Fetch\",\"timeout_ms\":5000}'"
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.hookEventName' 'PreToolUse'
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.permissionDecisionReason' 'not allowed'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'wget foo'
+  expect_json '.hookSpecificOutput.updatedInput.description' 'Fetch'
+  expect_json '.hookSpecificOutput.updatedInput.timeout_ms' '5000'
+}
+
 # askReasonFormat
 
 @test "askReasonFormat shows a command with count 0 without symbol" {
