@@ -1,0 +1,51 @@
+# Prompt for a misheard word and its replacement, and add them to the mic2txt autocorrect rules
+# Meant to run inside a Kitty popup (see alt+shift+s in keybindings.conf)
+# An empty replacement suppresses the word.
+# Usage:
+# $ popup-autocorrect    # Type a word, Enter, type its replacement, Enter; Escape/Ctrl-C/Ctrl-D cancels
+setopt local_options err_return
+
+local prompts=("Misheard word: " "Replacement: ")
+local values=()
+local prompt
+local typed
+local key
+
+for prompt in "${prompts[@]}"; do
+  typed=""
+
+  while true; do
+    printf '\r\e[K%s%s' "$prompt" "$typed"
+
+    # Input closed (Ctrl-D, end of input): cancel
+    # -u0 reads stdin; plain -k insists on a terminal
+    read -rsk1 -u0 key || return 0
+
+    # Escape, Ctrl-C and Ctrl-D cancel without running anything
+    [[ "$key" == $'\e' || "$key" == $'\x03' || "$key" == $'\x04' ]] && return 0
+
+    # Enter validates the field
+    [[ "$key" == $'\n' || "$key" == $'\r' ]] && break
+
+    # Backspace removes the last character
+    if [[ "$key" == $'\x7f' || "$key" == $'\b' ]]; then
+      typed="${typed%?}"
+      continue
+    fi
+
+    typed+="$key"
+  done
+  printf '\n'
+
+  values+=("$typed")
+
+  # Empty misheard word (first field): nothing to correct
+  [[ ${#values} == 1 && "$typed" == "" ]] && return 0
+done
+
+if ! mic2txt-autocorrect-add "${values[1]}" "${values[2]}"; then
+  echoerr "Could not add autocorrect rule: ${values[1]} → ${values[2]}"
+  echoerr "Press any key to close"
+  read -rsk1 -u0 || true
+  return 1
+fi
