@@ -14,24 +14,15 @@ local hookDir="${0:A:h}"
 source "${hookDir}/lib/input.zsh"
 source "${hookDir}/lib/log.zsh"
 source "${hookDir}/lib/permission.zsh"
-
-# Ask the user, listing the rejected commands without approval count
-# Ends the hook: askWithReason exits
-# Usage:
-# $ askRejected "$updatedToolInput"
-function askRejected() {
-  askWithReason "$(rejectedCommandsFormat "${SOLKAN_REJECTED[@]}")" "$1"
-}
-
-# Parse input and set up the session: scopes approval state, must come before using approval-memory.zsh
-hookInit
-
 source "${hookDir}/lib/solkan.zsh"
+
+# Parse input and set up the session
+hookInit
 
 # Uncomment for debugging: save the input to ${OROSHI_FOLDER_CACHE}/claude/hooks
 # logInput monitor
 
-# No command (WebSocket): leave the decision to the native permission flow
+# If no command is passed (possibly websocket), we return early
 local inputCommand="$(inputKeyRead '.tool_input.command')"
 [[ "$inputCommand" == "" ]] && exit 0
 
@@ -43,4 +34,6 @@ local updatedToolInput="$(inputKeyRead '.tool_input')"
 # Allowed by solkan: approve without asking
 [[ "$SOLKAN_VERDICT" == "allow" ]] && autoApprove "$updatedToolInput"
 
-askRejected "$updatedToolInput"
+# Rejected by solkan: ask the user, listing the rejected commands without approval count
+local reason="$(rejectedCommandsFormat "${SOLKAN_REJECTED[@]}")"
+askWithReason "$reason" "$updatedToolInput"

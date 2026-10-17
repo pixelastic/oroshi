@@ -1,5 +1,5 @@
 # Approval memory: count the user's approvals, promote often-approved commands to the session allow-list
-# - approval pending: commands awaiting the user's answer, keyed by tool use id
+# - approval request: commands awaiting the user's answer, keyed by tool use id
 # - approval count: how many times the user approved each command
 # - session allow-list: commands Solkan allows for the rest of the session
 # Shared by preToolUse-Bash and postToolUse-Bash
@@ -11,12 +11,16 @@
 # Usage:
 # $ source lib/approval-memory.zsh
 # $ approvalRequestOpen --tool-use-id toolu_01 --command wget   # record what the user is asked
-# $ approvalRequestGet --tool-use-id toolu_01                  # wget
+# $ approvalCountGet --command wget                            # 0
+# $ approvalRequestClose --tool-use-id toolu_01                # the user answered: count, promote, forget
 # $ approvalCountIncrement --command wget                      # 1
 # $ sessionAllowListAdd --command wget                         # Solkan allows wget from now on
-# $ approvalRequestClose --tool-use-id toolu_01               # the user answered
 
-# Record the rejected commands the user is asked to approve for a tool use
+# Approvals after which a command joins the session allow-list
+SESSION_ALLOW_LIST_THRESHOLD=3
+
+# Open an approval request: record the rejected commands the user is asked to approve for a tool use
+# Closed by approvalRequestClose in postToolUse-Bash
 # Usage:
 # $ approvalRequestOpen --tool-use-id toolu_01 --command wget --command curl
 function approvalRequestOpen() {
@@ -36,34 +40,14 @@ function approvalRequestOpen() {
   approvalStateRead \
     | jq \
     --arg toolUseId "$toolUseId" \
-    '.preToolUse.Bash.approvalPending += [{toolUseId: $toolUseId, commands: $ARGS.positional}]' \
+    '.preToolUse.Bash.approvalRequest += [{toolUseId: $toolUseId, commands: $ARGS.positional}]' \
     --args "${commands[@]}" \
     | approvalStateWrite
 }
 
-# Print the pending commands of a tool use, one per line (nothing if unknown)
-# Usage:
-# $ approvalRequestGet --tool-use-id toolu_01  # wget\ncurl
-function approvalRequestGet() {
-  # No session: nothing tracked
-  [[ "$CLAUDE_SESSION_ID" == "" ]] && return 0
-
-  zparseopts -E -D \
-    -tool-use-id:=flagToolUseId
-
-  local toolUseId="${flagToolUseId[2]}"
-
-  # No tool use id: never matches a pending entry
-  [[ "$toolUseId" == "" ]] && return 0
-
-  approvalStateRead \
-    | jq \
-    --raw-output \
-    --arg toolUseId "$toolUseId" \
-    '.preToolUse.Bash.approvalPending[]? | select(.toolUseId == $toolUseId) | .commands[]'
-}
-
-# Forget the pending commands of a tool use, once the user has answered
+# Close the approval request of a tool use: the user said yes to each of its commands
+# Counts each approval, adds the often-approved commands to the session allow-list, forgets the request
+# Opened by approvalRequestOpen in preToolUse-Bash
 # Usage:
 # $ approvalRequestClose --tool-use-id toolu_01
 function approvalRequestClose() {
@@ -75,13 +59,35 @@ function approvalRequestClose() {
 
   local toolUseId="${flagToolUseId[2]}"
 
-  # No tool use id: never matches a pending entry
+  # No tool use id: never matches an approval request
   [[ "$toolUseId" == "" ]] && return 0
 
+  # Each command of this request was approved by the user
+  local approvedCommandsRaw="$(
+    approvalStateRead \
+      | jq \
+      --raw-output \
+      --arg toolUseId "$toolUseId" \
+      '.preToolUse.Bash.approvalRequest[]? | select(.toolUseId == $toolUseId) | .commands[]'
+  )"
+  local -a approvedCommands=(${(@f)approvedCommandsRaw})
+
+  # No request (auto-approved or unknown tool use): leave state untouched
+  [[ "${#approvedCommands}" -eq 0 ]] && return 0
+
+  local approvedCommand
+  for approvedCommand in $approvedCommands; do
+    local approvalCount="$(approvalCountIncrement --command "$approvedCommand")"
+
+    # Approved often enough: stop asking for the rest of the session
+    [[ "$approvalCount" -ge "$SESSION_ALLOW_LIST_THRESHOLD" ]] && sessionAllowListAdd --command "$approvedCommand"
+  done
+
+  # User answered: this request is closed
   approvalStateRead \
     | jq \
     --arg toolUseId "$toolUseId" \
-    '.preToolUse.Bash.approvalPending |= map(select(.toolUseId != $toolUseId))' \
+    '.preToolUse.Bash.approvalRequest |= map(select(.toolUseId != $toolUseId))' \
     | approvalStateWrite
 }
 

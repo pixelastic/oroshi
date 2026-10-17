@@ -7,7 +7,7 @@ setup() {
   sourcePrefix="source '${BATS_TEST_DIRNAME}/../../lib/approval-memory.zsh'"
 }
 
-# approvalRequestOpen / approvalRequestGet
+# approvalRequestOpen
 
 @test "approvalRequestOpen stores the commands under the tool use id" {
   bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget --command /usr/bin/grep"
@@ -15,7 +15,7 @@ setup() {
   [[ "$output" = "" ]]
 
   local stateFile="$BATS_TMP_DIR/session/state.json"
-  [[ "$(jq --compact-output '.preToolUse.Bash.approvalPending' "$stateFile")" = '[{"toolUseId":"toolu_01","commands":["wget","/usr/bin/grep"]}]' ]]
+  [[ "$(jq --compact-output '.preToolUse.Bash.approvalRequest' "$stateFile")" = '[{"toolUseId":"toolu_01","commands":["wget","/usr/bin/grep"]}]' ]]
 }
 
 @test "approvalRequestOpen appends to existing entries" {
@@ -23,36 +23,13 @@ setup() {
   bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_02 --command curl"
 
   local stateFile="$BATS_TMP_DIR/session/state.json"
-  [[ "$(jq --compact-output '.preToolUse.Bash.approvalPending | map(.toolUseId)' "$stateFile")" = '["toolu_01","toolu_02"]' ]]
-}
-
-@test "approvalRequestGet prints the stored commands one per line" {
-  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget --command /usr/bin/grep"
-  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_02 --command curl"
-
-  bats_run_zsh "${sourcePrefix}; approvalRequestGet --tool-use-id toolu_01"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = $'wget\n/usr/bin/grep' ]]
-}
-
-@test "approvalRequestGet prints nothing for an unknown tool use id" {
-  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget"
-
-  bats_run_zsh "${sourcePrefix}; approvalRequestGet --tool-use-id toolu_unknown"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
-}
-
-@test "approvalRequestGet prints nothing when no state file exists" {
-  bats_run_zsh "${sourcePrefix}; approvalRequestGet --tool-use-id toolu_01"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
+  [[ "$(jq --compact-output '.preToolUse.Bash.approvalRequest | map(.toolUseId)' "$stateFile")" = '["toolu_01","toolu_02"]' ]]
 }
 
 # approvalRequestClose
 
-@test "approvalRequestClose removes only the entry of that tool use id" {
-  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget"
+@test "approvalRequestClose counts every command of the request and forgets only that request" {
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget --command /usr/bin/grep"
   bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_02 --command curl"
 
   bats_run_zsh "${sourcePrefix}; approvalRequestClose --tool-use-id toolu_01"
@@ -60,17 +37,41 @@ setup() {
   [[ "$output" = "" ]]
 
   local stateFile="$BATS_TMP_DIR/session/state.json"
-  [[ "$(jq --compact-output '.preToolUse.Bash.approvalPending' "$stateFile")" = '[{"toolUseId":"toolu_02","commands":["curl"]}]' ]]
+  [[ "$(jq --compact-output '.postToolUse.Bash.approvalCount' "$stateFile")" = '{"wget":1,"/usr/bin/grep":1}' ]]
+  [[ "$(jq --compact-output '.preToolUse.Bash.approvalRequest' "$stateFile")" = '[{"toolUseId":"toolu_02","commands":["curl"]}]' ]]
 }
 
-@test "approvalRequestClose with an empty tool use id changes nothing" {
+@test "approvalRequestClose adds a command to the session allow-list at its third approval only" {
+  bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command wget; approvalCountIncrement --command wget; approvalCountIncrement --command telnet"
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget --command telnet"
+
+  bats_run_zsh "${sourcePrefix}; approvalRequestClose --tool-use-id toolu_01"
+  [[ "$status" -eq 0 ]]
+
+  local allowListFile="$BATS_TMP_DIR/session/allow-list.json"
+  [[ "$(jq --compact-output '.' "$allowListFile")" = '["wget"]' ]]
+}
+
+@test "approvalRequestClose changes nothing for an unknown or empty tool use id" {
   bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget"
   local stateFile="$BATS_TMP_DIR/session/state.json"
   local stateBefore="$(cat "$stateFile")"
 
+  bats_run_zsh "${sourcePrefix}; approvalRequestClose --tool-use-id toolu_unknown"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$stateFile")" = "$stateBefore" ]]
+
   bats_run_zsh "${sourcePrefix}; approvalRequestClose --tool-use-id ''"
   [[ "$status" -eq 0 ]]
   [[ "$(cat "$stateFile")" = "$stateBefore" ]]
+}
+
+@test "approvalRequestClose creates nothing when no state file exists" {
+  bats_run_zsh "${sourcePrefix}; approvalRequestClose --tool-use-id toolu_01"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
+  [[ ! -e "$BATS_TMP_DIR/session/state.json" ]]
+  [[ ! -e "$BATS_TMP_DIR/session/allow-list.json" ]]
 }
 
 # approvalCountGet / approvalCountIncrement
@@ -146,14 +147,10 @@ setup() {
 
 # Empty arguments
 
-@test "empty tool use id is neither stored nor matched" {
+@test "empty tool use id is not stored" {
   bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id '' --command wget"
   [[ "$status" -eq 0 ]]
   [[ ! -e "$BATS_TMP_DIR/session/state.json" ]]
-
-  bats_run_zsh "${sourcePrefix}; approvalRequestGet --tool-use-id ''"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
 }
 
 @test "empty command is neither counted nor stored" {
@@ -169,10 +166,6 @@ setup() {
   export CLAUDE_SESSION_ID=""
 
   bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
-
-  bats_run_zsh "${sourcePrefix}; approvalRequestGet --tool-use-id toolu_01"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 

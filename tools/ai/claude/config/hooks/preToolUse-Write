@@ -11,35 +11,27 @@ local hookDir="${0:A:h}"
 source "${hookDir}/lib/input.zsh"
 source "${hookDir}/lib/permission.zsh"
 
-# Check the path against the allowlist (glob patterns)
-# Usage:
-# $ pathIsAllowed "/tmp/oroshi/claude/draft.md"  # exit 0
-# $ pathIsAllowed "/home/tim/project/index.js"   # exit 1
-function pathIsAllowed() {
-  local -a allowlist=(
-    "/tmp/oroshi/claude/**"
-    "*/local/tmp/oroshi/claude/**"
-    "*/local/tmp/oroshi/git-file-watch/**"
-    "*/local/www/plans/**"
-    "$HOME/.oroshi/todo.txt"
-  )
-
-  local glob
-  for glob in "${allowlist[@]}"; do
-    # shellcheck disable=SC2053
-    [[ "$1" == ${~glob} ]] && return 0
-  done
-
-  return 1
-}
-
+# Parse input and set up the session
 hookInit
+
 local filePath="$(inputKeyRead '.tool_input.file_path')"
 
 # No path, no decision
 [[ "$filePath" == "" ]] && exit 0
 
-# shellcheck disable=SC2119
-pathIsAllowed "$filePath" && autoApprove
+# Check the path against the allowlist (glob patterns)
+local -a allowList=(
+  "${OROSHI_FOLDER_CACHE}/claude/**"
+  "${OROSHI_FOLDER_STATE}/claude/**"
+  "${OROSHI_FOLDER_STATE}/git-file-watch/**"
+  "${OROSHI_PLANS_DIR}/**"
+  "$HOME/.oroshi/todo.txt"
+)
+
+# Check each allowList element, and if one matches, auto-approve
+for glob in "${allowList[@]}"; do
+  # shellcheck disable=SC2053
+  [[ "$filePath" == ${~glob} ]] && autoApprove ""
+done
 
 exit 0

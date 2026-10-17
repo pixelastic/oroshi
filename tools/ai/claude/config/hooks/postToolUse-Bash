@@ -6,7 +6,7 @@
 # are returned without their prefix as additionalContext. Other lines are dropped
 #
 # Count Bash approvals: a post event means the command ran, so the user said Yes
-# to every command recorded as approval pending for that tool use id
+# to every command of the approval request opened for that tool use id
 # Registered for both PostToolUse (success) and PostToolUseFailure (non-zero exit)
 # Receives the rewritten command: never re-run Solkan here, correlate via tool_use_id
 #
@@ -16,36 +16,13 @@
 local hookDir="${0:A:h}"
 
 source "${hookDir}/lib/input.zsh"
+source "${hookDir}/lib/approval-memory.zsh"
 
-# Approvals after which a command joins the session allow-list
-SESSION_ALLOW_LIST_THRESHOLD=3
+# Parse input and set up the session
+hookInit
 
 # Lines starting with this are written by the guarded helpers for the agent
 MARKER_PREFIX='[claude-guarded:refused]'
-
-# Count the approvals of a tool use, promote often-approved commands, forget the tool use
-# Usage:
-# $ approvalPromote toolu_01
-function approvalPromote() {
-  local toolUseId="$1"
-
-  # Each pending command of this tool use was approved by the user
-  local -a approvedCommands=(${(@f)$(approvalRequestGet --tool-use-id "$toolUseId")})
-
-  # Nothing pending (auto-approved or unknown tool use): leave state untouched
-  [[ "${#approvedCommands}" -eq 0 ]] && return 0
-
-  local approvedCommand
-  for approvedCommand in $approvedCommands; do
-    local approvalCount="$(approvalCountIncrement --command "$approvedCommand")"
-
-    # Approved often enough: stop asking for the rest of the session
-    [[ "$approvalCount" -ge "$SESSION_ALLOW_LIST_THRESHOLD" ]] && sessionAllowListAdd --command "$approvedCommand"
-  done
-
-  # User answered: this tool use is no longer pending
-  approvalRequestClose --tool-use-id "$toolUseId"
-}
 
 # Give Claude extra context after a tool call, for the given hook event name
 # Ends the hook: prints the JSON and exits
@@ -82,13 +59,8 @@ function markerRelay() {
   additionalContext "$(inputKeyRead '.hook_event_name')" "${(F)relayedLines}"
 }
 
-# Parse input and set up the session: scopes approval state, must come before using approval-memory.zsh
-hookInit
-
-source "${hookDir}/lib/approval-memory.zsh"
-
-# Count before relaying: additionalContext ends the hook
-approvalPromote "$(inputKeyRead '.tool_use_id')"
+# Update the counts of the various command being asked for approval
+approvalRequestClose --tool-use-id "$(inputKeyRead '.tool_use_id')"
 markerRelay
 
 exit 0

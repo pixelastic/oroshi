@@ -6,6 +6,7 @@
 # - getTokenSavingArgs: the extra list arguments of the token-saving rewrite
 # - runSolkan: run Solkan, keep its report and exit code
 # - isSingleCommand: whether the report covers one command
+# - isTokenSavingCommand: whether the report covers one command that a token-saving list rewrites
 # - readSolkanResult: the report as public variables
 # - solkanEvaluate: the verdict, the rewritten command, the allowed and the rejected commands
 # Needs hookInit (lib/input.zsh) to have run: it sets CLAUDE_CWD (ralph mode), CLAUDE_GIT_ROOT (repo-local lists) and CLAUDE_SESSION_DIR (session allow-list)
@@ -38,9 +39,9 @@ function solkanEvaluate() {
   # Check complete command against solkan
   runSolkan "$command" "${listArgs[@]}"
 
-  # If there is only one simple command, we re-run solkan with some token saving
-  # rewrites
-  if [[ "$isSkipTokenSaving" == "0" ]] && isSingleCommand; then
+  # If there is only one simple command with a token-saving rewrite, we re-run solkan with
+  # the token-saving lists
+  if [[ "$isSkipTokenSaving" == "0" ]] && isTokenSavingCommand; then
     listArgs+=(${(@f)"$(getTokenSavingArgs)"})
     runSolkan "$command" "${listArgs[@]}"
   fi
@@ -109,6 +110,25 @@ function runSolkan() {
 function isSingleCommand() {
   local commandCount="$(jq '.allow | (.allowed + .rejected) | length' <<<"$SOLKAN_JSON" 2>/dev/null)"
   [[ "$commandCount" == "1" ]]
+}
+
+# Succeed when the last Solkan report covers one command, and a token-saving list rewrites it
+# Usage:
+# $ runSolkan "ls -la" ...; isTokenSavingCommand && print "ls has a token-saving rewrite"
+function isTokenSavingCommand() {
+  # Token-saving rewrites only apply to a single command
+  isSingleCommand || return 1
+
+  local commandName="$(jq --raw-output '(.allow.allowed + .allow.rejected)[0]' <<<"$SOLKAN_JSON")"
+  local -a tokenSavingArgs=(${(@f)"$(getTokenSavingArgs)"})
+  local -a tokenSavingLists=(${tokenSavingArgs:#--rewrite-list-file})
+
+  jq \
+    --slurp \
+    --exit-status \
+    --arg commandName "$commandName" \
+    'any(.[]; has($commandName))' \
+    "${tokenSavingLists[@]}" >/dev/null
 }
 
 # Turn the last Solkan report into the public SOLKAN_* variables
