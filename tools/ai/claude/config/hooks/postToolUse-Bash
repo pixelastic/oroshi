@@ -16,7 +16,6 @@
 local hookDir="${0:A:h}"
 
 source "${hookDir}/lib/input.zsh"
-source "${hookDir}/lib/output.zsh"
 
 # Approvals after which a command joins the session allow-list
 SESSION_ALLOW_LIST_THRESHOLD=3
@@ -31,7 +30,7 @@ function approvalPromote() {
   local toolUseId="$1"
 
   # Each pending command of this tool use was approved by the user
-  local -a approvedCommands=(${(@f)$(approvalPendingGet --tool-use-id "$toolUseId")})
+  local -a approvedCommands=(${(@f)$(approvalRequestGet --tool-use-id "$toolUseId")})
 
   # Nothing pending (auto-approved or unknown tool use): leave state untouched
   [[ "${#approvedCommands}" -eq 0 ]] && return 0
@@ -45,13 +44,25 @@ function approvalPromote() {
   done
 
   # User answered: this tool use is no longer pending
-  approvalPendingRemove --tool-use-id "$toolUseId"
+  approvalRequestClose --tool-use-id "$toolUseId"
+}
+
+# Give Claude extra context after a tool call, for the given hook event name
+# Ends the hook: prints the JSON and exits
+# Usage:
+# $ additionalContext PostToolUse "context for Claude"
+# $ additionalContext PostToolUseFailure "context for Claude"
+function additionalContext() {
+  jo -d. \
+    hookSpecificOutput.hookEventName="$1" \
+    hookSpecificOutput.additionalContext="$2"
+  exit 0
 }
 
 # Relay the marker lines of the command output to the agent, without the marker prefix
 # Ends the hook when there are marker lines: additionalContext exits
 # Usage:
-# $ markerRelay "$inputJson"
+# $ markerRelay
 function markerRelay() {
   # Failure event: output lives in .error. Success event: in .tool_response
   # Collect every field present, skip the missing ones, one line per field
@@ -60,7 +71,7 @@ function markerRelay() {
     | map(strings)
     | join("\n")
   '
-  local commandOutput="$(jq --raw-output "$outputFilter" <<<"$1")"
+  local commandOutput="$(jq --raw-output "$outputFilter" <<<"$CLAUDE_HOOK_INPUT")"
 
   local -a markerLines=(${(@M)${(@f)commandOutput}:#${MARKER_PREFIX}*})
 
@@ -68,19 +79,16 @@ function markerRelay() {
   [[ "${#markerLines}" -eq 0 ]] && return 0
 
   local -a relayedLines=("${(@)${(@)markerLines#${MARKER_PREFIX}}# }")
-  additionalContext "$(inputField "$1" '.hook_event_name')" "${(F)relayedLines}"
+  additionalContext "$(inputKeyRead '.hook_event_name')" "${(F)relayedLines}"
 }
 
-# Parse input
-local inputJson="$(inputRead)"
-
-# Session id: scopes approval state, must be set before sourcing approval-memory.zsh
-inputSessionExport "$inputJson"
+# Parse input and set up the session: scopes approval state, must come before using approval-memory.zsh
+hookInit
 
 source "${hookDir}/lib/approval-memory.zsh"
 
 # Count before relaying: additionalContext ends the hook
-approvalPromote "$(inputField "$inputJson" '.tool_use_id')"
-markerRelay "$inputJson"
+approvalPromote "$(inputKeyRead '.tool_use_id')"
+markerRelay
 
 exit 0

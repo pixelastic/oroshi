@@ -7,59 +7,40 @@
 # Reads hook JSON from stdin, writes hookSpecificOutput JSON to stdout
 #
 # Env overrides for testing:
-#   CLAUDE_HOOKS_LOG_DIR  — defaults to /tmp/oroshi/claude/hooks
 #   CLAUDE_SESSIONS_DIR   — defaults to /tmp/oroshi/claude/sessions
 
 local hookDir="${0:A:h}"
 
 source "${hookDir}/lib/input.zsh"
 source "${hookDir}/lib/log.zsh"
-source "${hookDir}/lib/output.zsh"
-
-# The original tool input, with only the command replaced
-# Usage:
-# $ toolInputWithCommand "$inputJson" "rm-guarded a"  # {"command":"rm-guarded a","description":"...","timeout_ms":...}
-function toolInputWithCommand() {
-  jq \
-    --compact-output \
-    --arg command "$2" \
-    '.tool_input | .command = $command' <<<"$1"
-}
+source "${hookDir}/lib/permission.zsh"
 
 # Ask the user, listing the rejected commands without approval count
-# Ends the hook: askWithReasonToolInput exits
+# Ends the hook: askWithReason exits
 # Usage:
 # $ askRejected "$updatedToolInput"
 function askRejected() {
-  local -a reasonArgs=()
-  local rejectedCommand
-  for rejectedCommand in $SOLKAN_REJECTED; do
-    reasonArgs+=(--command "$rejectedCommand" --count 0)
-  done
-
-  askWithReasonToolInput "$(askReasonFormat "${reasonArgs[@]}")" "$1"
+  askWithReason "$(rejectedCommandsFormat "${SOLKAN_REJECTED[@]}")" "$1"
 }
 
-# Parse input
-local inputJson="$(inputRead)"
-
-# Session id: scopes the session allow-list, must be set before sourcing solkan.zsh
-inputSessionExport "$inputJson"
+# Parse input and set up the session: scopes approval state, must come before using approval-memory.zsh
+hookInit
 
 source "${hookDir}/lib/solkan.zsh"
 
-# Save input for debugging
-logInput monitor "$inputJson"
+# Uncomment for debugging: save the input to ${OROSHI_FOLDER_CACHE}/claude/hooks
+# logInput monitor
 
 # No command (WebSocket): leave the decision to the native permission flow
-local inputCommand="$(inputField "$inputJson" '.tool_input.command')"
+local inputCommand="$(inputKeyRead '.tool_input.command')"
 [[ "$inputCommand" == "" ]] && exit 0
 
 # Solkan: guard-rail rewrites only, then allow or reject
-solkanEvaluate --skip-token-saving "$inputCommand" "$(inputField "$inputJson" '.cwd')"
-local updatedToolInput="$(toolInputWithCommand "$inputJson" "$SOLKAN_COMMAND")"
+solkanEvaluate --skip-token-saving "$inputCommand"
+inputKeyWrite '.tool_input.command' "$SOLKAN_COMMAND"
+local updatedToolInput="$(inputKeyRead '.tool_input')"
 
 # Allowed by solkan: approve without asking
-[[ "$SOLKAN_VERDICT" == "allow" ]] && autoApproveToolInput "$updatedToolInput"
+[[ "$SOLKAN_VERDICT" == "allow" ]] && autoApprove "$updatedToolInput"
 
 askRejected "$updatedToolInput"

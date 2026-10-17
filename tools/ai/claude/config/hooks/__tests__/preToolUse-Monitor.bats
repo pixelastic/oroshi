@@ -3,7 +3,6 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Monitor"
-  export CLAUDE_HOOKS_LOG_DIR="$BATS_TMP_DIR"
   # Sandbox session dir so approval state stays isolated per test
   export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR"
 }
@@ -87,10 +86,4 @@ setup() {
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Monitor","tool_input":{"command":"until git status; do sleep 2; done"},"agent_id":"sub-123"}'
   [[ "$status" -eq 0 ]]
   expect_json '.hookSpecificOutput.updatedInput.command' 'until git status; do sleep 2; done'
-}
-
-@test "logs the input to the monitor debug file" {
-  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Monitor","tool_input":{"command":"until git status; do sleep 2; done"}}'
-  [[ "$status" -eq 0 ]]
-  [[ -f "$BATS_TMP_DIR/last-monitor-input.json" ]]
 }

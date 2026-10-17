@@ -2,27 +2,24 @@
 # - approval pending: commands awaiting the user's answer, keyed by tool use id
 # - approval count: how many times the user approved each command
 # - session allow-list: commands Solkan allows for the rest of the session
-# Shared by preToolUse-Bash, lib/solkan.zsh and postToolUse-Bash
-# CLAUDE_SESSION_ID must be exported before sourcing (see inputSessionExport in lib/input.zsh)
+# Shared by preToolUse-Bash and postToolUse-Bash
+# Needs hookInit (lib/input.zsh) to have run: it sets CLAUDE_SESSION_ID and CLAUDE_SESSION_DIR
 #
-# State lives in $(claude-session-dir)/state.json
-# Session allow-list lives in $(claude-session-dir)/allow-list.json
+# State lives in $CLAUDE_SESSION_DIR/state.json
+# Session allow-list lives in $CLAUDE_SESSION_DIR/allow-list.json
 # Every public function is a no-op when CLAUDE_SESSION_ID is empty
 # Usage:
 # $ source lib/approval-memory.zsh
-# $ approvalPendingAdd --tool-use-id toolu_01 --command wget   # record what the user is asked
-# $ approvalPendingGet --tool-use-id toolu_01                  # wget
+# $ approvalRequestOpen --tool-use-id toolu_01 --command wget   # record what the user is asked
+# $ approvalRequestGet --tool-use-id toolu_01                  # wget
 # $ approvalCountIncrement --command wget                      # 1
 # $ sessionAllowListAdd --command wget                         # Solkan allows wget from now on
-# $ approvalPendingRemove --tool-use-id toolu_01               # the user answered
-# shellcheck disable=SC2153
-
-CLAUDE_SESSION_DIR="$(claude-session-dir)"
+# $ approvalRequestClose --tool-use-id toolu_01               # the user answered
 
 # Record the rejected commands the user is asked to approve for a tool use
 # Usage:
-# $ approvalPendingAdd --tool-use-id toolu_01 --command wget --command curl
-function approvalPendingAdd() {
+# $ approvalRequestOpen --tool-use-id toolu_01 --command wget --command curl
+function approvalRequestOpen() {
   # No session: nothing to track
   [[ "$CLAUDE_SESSION_ID" == "" ]] && return 0
 
@@ -46,8 +43,8 @@ function approvalPendingAdd() {
 
 # Print the pending commands of a tool use, one per line (nothing if unknown)
 # Usage:
-# $ approvalPendingGet --tool-use-id toolu_01  # wget\ncurl
-function approvalPendingGet() {
+# $ approvalRequestGet --tool-use-id toolu_01  # wget\ncurl
+function approvalRequestGet() {
   # No session: nothing tracked
   [[ "$CLAUDE_SESSION_ID" == "" ]] && return 0
 
@@ -68,8 +65,8 @@ function approvalPendingGet() {
 
 # Forget the pending commands of a tool use, once the user has answered
 # Usage:
-# $ approvalPendingRemove --tool-use-id toolu_01
-function approvalPendingRemove() {
+# $ approvalRequestClose --tool-use-id toolu_01
+function approvalRequestClose() {
   # No session: nothing tracked
   [[ "$CLAUDE_SESSION_ID" == "" ]] && return 0
 
@@ -149,17 +146,7 @@ function sessionAllowListAdd() {
   # No command: nothing to allow
   [[ "$command" == "" ]] && return 0
 
-  json-array-add --input "$(sessionAllowListFile)" --unique "$command"
-}
-
-# Print the absolute path of the session allow-list (same format as the global allow-list.json)
-# Usage:
-# $ sessionAllowListFile  # /tmp/oroshi/claude/sessions/{sessionId}/allow-list.json
-function sessionAllowListFile() {
-  # No session: no session allow-list
-  [[ "$CLAUDE_SESSION_ID" == "" ]] && return 0
-
-  print -r -- "${CLAUDE_SESSION_DIR}/allow-list.json"
+  json-array-add --input "${CLAUDE_SESSION_DIR}/allow-list.json" --unique "$command"
 }
 
 # Print the session state JSON, or an empty object when absent

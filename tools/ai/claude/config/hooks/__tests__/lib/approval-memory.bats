@@ -2,73 +2,73 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR"
+  export CLAUDE_SESSION_DIR="$BATS_TMP_DIR/session"
   export CLAUDE_SESSION_ID="test"
   sourcePrefix="source '${BATS_TEST_DIRNAME}/../../lib/approval-memory.zsh'"
 }
 
-# approvalPendingAdd / approvalPendingGet
+# approvalRequestOpen / approvalRequestGet
 
-@test "approvalPendingAdd stores the commands under the tool use id" {
-  bats_run_zsh "${sourcePrefix}; approvalPendingAdd --tool-use-id toolu_01 --command wget --command /usr/bin/grep"
+@test "approvalRequestOpen stores the commands under the tool use id" {
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget --command /usr/bin/grep"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 
-  local stateFile="$BATS_TMP_DIR/test/state.json"
+  local stateFile="$BATS_TMP_DIR/session/state.json"
   [[ "$(jq --compact-output '.preToolUse.Bash.approvalPending' "$stateFile")" = '[{"toolUseId":"toolu_01","commands":["wget","/usr/bin/grep"]}]' ]]
 }
 
-@test "approvalPendingAdd appends to existing entries" {
-  bats_run_zsh "${sourcePrefix}; approvalPendingAdd --tool-use-id toolu_01 --command wget"
-  bats_run_zsh "${sourcePrefix}; approvalPendingAdd --tool-use-id toolu_02 --command curl"
+@test "approvalRequestOpen appends to existing entries" {
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget"
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_02 --command curl"
 
-  local stateFile="$BATS_TMP_DIR/test/state.json"
+  local stateFile="$BATS_TMP_DIR/session/state.json"
   [[ "$(jq --compact-output '.preToolUse.Bash.approvalPending | map(.toolUseId)' "$stateFile")" = '["toolu_01","toolu_02"]' ]]
 }
 
-@test "approvalPendingGet prints the stored commands one per line" {
-  bats_run_zsh "${sourcePrefix}; approvalPendingAdd --tool-use-id toolu_01 --command wget --command /usr/bin/grep"
-  bats_run_zsh "${sourcePrefix}; approvalPendingAdd --tool-use-id toolu_02 --command curl"
+@test "approvalRequestGet prints the stored commands one per line" {
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget --command /usr/bin/grep"
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_02 --command curl"
 
-  bats_run_zsh "${sourcePrefix}; approvalPendingGet --tool-use-id toolu_01"
+  bats_run_zsh "${sourcePrefix}; approvalRequestGet --tool-use-id toolu_01"
   [[ "$status" -eq 0 ]]
   [[ "$output" = $'wget\n/usr/bin/grep' ]]
 }
 
-@test "approvalPendingGet prints nothing for an unknown tool use id" {
-  bats_run_zsh "${sourcePrefix}; approvalPendingAdd --tool-use-id toolu_01 --command wget"
+@test "approvalRequestGet prints nothing for an unknown tool use id" {
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget"
 
-  bats_run_zsh "${sourcePrefix}; approvalPendingGet --tool-use-id toolu_unknown"
+  bats_run_zsh "${sourcePrefix}; approvalRequestGet --tool-use-id toolu_unknown"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 }
 
-@test "approvalPendingGet prints nothing when no state file exists" {
-  bats_run_zsh "${sourcePrefix}; approvalPendingGet --tool-use-id toolu_01"
+@test "approvalRequestGet prints nothing when no state file exists" {
+  bats_run_zsh "${sourcePrefix}; approvalRequestGet --tool-use-id toolu_01"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 }
 
-# approvalPendingRemove
+# approvalRequestClose
 
-@test "approvalPendingRemove removes only the entry of that tool use id" {
-  bats_run_zsh "${sourcePrefix}; approvalPendingAdd --tool-use-id toolu_01 --command wget"
-  bats_run_zsh "${sourcePrefix}; approvalPendingAdd --tool-use-id toolu_02 --command curl"
+@test "approvalRequestClose removes only the entry of that tool use id" {
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget"
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_02 --command curl"
 
-  bats_run_zsh "${sourcePrefix}; approvalPendingRemove --tool-use-id toolu_01"
+  bats_run_zsh "${sourcePrefix}; approvalRequestClose --tool-use-id toolu_01"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 
-  local stateFile="$BATS_TMP_DIR/test/state.json"
+  local stateFile="$BATS_TMP_DIR/session/state.json"
   [[ "$(jq --compact-output '.preToolUse.Bash.approvalPending' "$stateFile")" = '[{"toolUseId":"toolu_02","commands":["curl"]}]' ]]
 }
 
-@test "approvalPendingRemove with an empty tool use id changes nothing" {
-  bats_run_zsh "${sourcePrefix}; approvalPendingAdd --tool-use-id toolu_01 --command wget"
-  local stateFile="$BATS_TMP_DIR/test/state.json"
+@test "approvalRequestClose with an empty tool use id changes nothing" {
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget"
+  local stateFile="$BATS_TMP_DIR/session/state.json"
   local stateBefore="$(cat "$stateFile")"
 
-  bats_run_zsh "${sourcePrefix}; approvalPendingRemove --tool-use-id ''"
+  bats_run_zsh "${sourcePrefix}; approvalRequestClose --tool-use-id ''"
   [[ "$status" -eq 0 ]]
   [[ "$(cat "$stateFile")" = "$stateBefore" ]]
 }
@@ -93,7 +93,7 @@ setup() {
   bats_run_zsh "${sourcePrefix}; approvalCountGet --command /usr/bin/grep"
   [[ "$output" = "2" ]]
 
-  local stateFile="$BATS_TMP_DIR/test/state.json"
+  local stateFile="$BATS_TMP_DIR/session/state.json"
   [[ "$(jq --compact-output '.postToolUse.Bash.approvalCount' "$stateFile")" = '{"/usr/bin/grep":2}' ]]
 }
 
@@ -105,14 +105,14 @@ setup() {
   [[ "$output" = "1" ]]
 }
 
-# sessionAllowListAdd / sessionAllowListFile
+# sessionAllowListAdd
 
 @test "sessionAllowListAdd creates the file with the command" {
   bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command /usr/bin/grep"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 
-  local allowListFile="$BATS_TMP_DIR/test/allow-list.json"
+  local allowListFile="$BATS_TMP_DIR/session/allow-list.json"
   [[ "$(jq --compact-output '.' "$allowListFile")" = '["/usr/bin/grep"]' ]]
 }
 
@@ -120,7 +120,7 @@ setup() {
   bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command wget"
   bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command telnet"
 
-  local allowListFile="$BATS_TMP_DIR/test/allow-list.json"
+  local allowListFile="$BATS_TMP_DIR/session/allow-list.json"
   [[ "$(jq --compact-output '.' "$allowListFile")" = '["telnet","wget"]' ]]
 }
 
@@ -129,43 +129,29 @@ setup() {
   bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command wget"
   [[ "$status" -eq 0 ]]
 
-  local allowListFile="$BATS_TMP_DIR/test/allow-list.json"
+  local allowListFile="$BATS_TMP_DIR/session/allow-list.json"
   [[ "$(jq --compact-output '.' "$allowListFile")" = '["wget"]' ]]
 }
 
 @test "sessionAllowListAdd with an empty command creates nothing" {
   bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command ''"
   [[ "$status" -eq 0 ]]
-  [[ ! -e "$BATS_TMP_DIR/test/allow-list.json" ]]
+  [[ ! -e "$BATS_TMP_DIR/session/allow-list.json" ]]
 }
 
 @test "sessionAllowListAdd leaves the session state untouched" {
   bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command wget"
-  [[ ! -e "$BATS_TMP_DIR/test/state.json" ]]
-}
-
-@test "sessionAllowListFile prints the absolute session allow-list path" {
-  bats_run_zsh "${sourcePrefix}; sessionAllowListFile"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "$BATS_TMP_DIR/test/allow-list.json" ]]
-}
-
-@test "sessionAllowListFile resolves a relative sessions dir to an absolute path" {
-  export CLAUDE_SESSIONS_DIR="relative/sessions"
-
-  bats_run_zsh "cd '$BATS_TMP_DIR'; ${sourcePrefix}; sessionAllowListFile"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "$BATS_TMP_DIR/relative/sessions/test/allow-list.json" ]]
+  [[ ! -e "$BATS_TMP_DIR/session/state.json" ]]
 }
 
 # Empty arguments
 
 @test "empty tool use id is neither stored nor matched" {
-  bats_run_zsh "${sourcePrefix}; approvalPendingAdd --tool-use-id '' --command wget"
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id '' --command wget"
   [[ "$status" -eq 0 ]]
-  [[ ! -e "$BATS_TMP_DIR/test/state.json" ]]
+  [[ ! -e "$BATS_TMP_DIR/session/state.json" ]]
 
-  bats_run_zsh "${sourcePrefix}; approvalPendingGet --tool-use-id ''"
+  bats_run_zsh "${sourcePrefix}; approvalRequestGet --tool-use-id ''"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 }
@@ -174,7 +160,7 @@ setup() {
   bats_run_zsh "${sourcePrefix}; approvalCountIncrement --command ''"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
-  [[ ! -e "$BATS_TMP_DIR/test/state.json" ]]
+  [[ ! -e "$BATS_TMP_DIR/session/state.json" ]]
 }
 
 # No session id
@@ -182,15 +168,15 @@ setup() {
 @test "every function is a no-op when CLAUDE_SESSION_ID is empty" {
   export CLAUDE_SESSION_ID=""
 
-  bats_run_zsh "${sourcePrefix}; approvalPendingAdd --tool-use-id toolu_01 --command wget"
+  bats_run_zsh "${sourcePrefix}; approvalRequestOpen --tool-use-id toolu_01 --command wget"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 
-  bats_run_zsh "${sourcePrefix}; approvalPendingGet --tool-use-id toolu_01"
+  bats_run_zsh "${sourcePrefix}; approvalRequestGet --tool-use-id toolu_01"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 
-  bats_run_zsh "${sourcePrefix}; approvalPendingRemove --tool-use-id toolu_01"
+  bats_run_zsh "${sourcePrefix}; approvalRequestClose --tool-use-id toolu_01"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 
@@ -203,10 +189,6 @@ setup() {
   [[ "$output" = "" ]]
 
   bats_run_zsh "${sourcePrefix}; sessionAllowListAdd --command wget"
-  [[ "$status" -eq 0 ]]
-  [[ "$output" = "" ]]
-
-  bats_run_zsh "${sourcePrefix}; sessionAllowListFile"
   [[ "$status" -eq 0 ]]
   [[ "$output" = "" ]]
 

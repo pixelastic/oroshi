@@ -1,7 +1,5 @@
 # Claude Code Hooks
 
-Vocabulary for the Claude Code hooks. The Bash pipeline: `preToolUse-Bash` gates shell command execution through Solkan before producing a Claude Code response; `postToolUse-Bash` counts the approvals the user gave. `preToolUse-Monitor` gates `Monitor` commands through Solkan with guard-rail rewrites only: it uses **allow** and **ask with reason**, without **approval pending** or **approval count**. The shared modules live in `lib/`: `input`, `log`, `output`, `solkan` and `approval-memory`. The Stop / SubagentStop hooks decide whether to notify when Claude Code finishes a turn.
-
 ## Language
 
 **Solkan**:
@@ -21,7 +19,7 @@ _Avoid_: deny, block, blacklist
 _Avoid_: transform, replace, substitute
 
 **rewrite list**:
-A JSON map of command names to replacements (e.g. `{"rm": "rm-guarded"}`), consumed by **Solkan** via `--rewrite-list-file`. Solkan walks the shell AST and replaces matching command names — no matter how deeply nested in pipes, conditionals, or loops — before running allowlist validation.
+A map of command names to their replacements (e.g. `{"rm": "rm-guarded"}`), applied by **Solkan** wherever the command name appears.
 _Avoid_: replace list, substitution map, rename map
 
 **single command**:
@@ -33,51 +31,51 @@ Any command string for which **Solkan** reports zero or several commands (pipe, 
 _Avoid_: complex command, chained command, pipeline
 
 **token-saving rewrite list**:
-A **rewrite list** (`rewrite-list-token-saving.json`, plus the repo-local variant under `.claude/`) layered on top of the regular **rewrite list** for a **single command** only. It holds **token-saving wrapper** mappings only (e.g. `{"zsh-test": "zsh-test-token-saving"}`); the guard-rails stay in the regular list.
+A **rewrite list** that maps commands to their **token-saving wrapper** only (e.g. `{"zsh-test": "zsh-test-token-saving"}`). It applies to a **single command** only, on top of the regular **rewrite list**.
 _Avoid_: output list, short list, quiet list
 
 **token-saving wrapper**:
-A `<command>-token-saving` function that runs the reduced-output form of `<command>`. It changes the output format only, honours `OROSHI_DISABLE_TOKEN_SAVING=1` by running the original command unchanged, and is on the allow-list.
+A `<command>-token-saving` function that runs `<command>` with reduced output. It changes the output format only.
 _Avoid_: quiet wrapper, filter, compressor
 
 **auto-approve**:
-The hook output when Solkan **allow**s a command, or when the Write hook finds the path in its allow-list (no command to rewrite). The Monitor hook returns the whole original tool input in `updatedInput`, with only `command` rewritten.
+The hook output that lets a tool call proceed without prompting the user. Maps to `permissionDecision: "allow"`.
 _Avoid_: auto-allow, silent-approve, bypass
 
 **ask with reason**:
-The hook output when Solkan **reject**s one or more commands. All rejected binary names are displayed, every time, each followed by a moon showing its **approval count**: no symbol on the 1st prompt, `🌓` on the 2nd, `🌕` on the 3rd (e.g. `❌ /usr/bin/grep 🌕, wget ❌`). Approving a `🌕` command adds it to the **session allow-list**. The user sees a 2-option dialog (Allow / Deny). Maps to `permissionDecision: "ask"`. The Monitor hook asks the same way, but tracks no approvals: every rejected name shows with count 0, so no moon.
+The hook output that hands a tool call to the user for a decision (Allow / Deny) and names every rejected command. Each name carries a moon showing its **approval count**: no symbol at count 0, `🌓` at 1, `🌕` at 2 or more (e.g. `❌ /usr/bin/grep 🌕, wget ❌`). Maps to `permissionDecision: "ask"`.
 _Avoid_: ask user, escalate, warn-ask
 
 **approval pending**:
-The rejected commands of an **ask with reason** dialog, waiting for the user's answer. Removed once the user approves; entries for prompts the user denies are never cleaned.
+The rejected commands of an **ask with reason** dialog, waiting for the user's answer.
 _Avoid_: asked commands, pending list, queue
 
 **approval count**:
-How many times, in the current session, the user approved a given rejected command. Stored in the session state under `.postToolUse.Bash.approvalCount`, keyed by the rejected command as Solkan reports it (binary name or path, e.g. `wget`, `/usr/bin/grep`).
+How many times, in the current session, the user approved a given rejected command.
 _Avoid_: accept count, allow count, approval score
 
 **session allow-list**:
-A regular Solkan allow-list (JSON array of strings, same format as `allow-list.json`) scoped to the current session, at `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/allow-list.json`. A command enters it on its 3rd approval, keyed as Solkan reports it. Passed to Solkan as an extra `--allow-list-file` (absolute path) when it exists; a command in it is an **allow** like any other.
+An allow-list scoped to the current session. A command enters it on its 3rd approval; a command in it is an **allow** like any other.
 _Avoid_: session whitelist, temporary allow
 
 **approval memory**:
-The mechanism (`lib/approval-memory.zsh`) that counts the user's approvals of rejected commands and promotes a command to the **session allow-list** on its 3rd approval. It owns the **approval pending** entries, the **approval count** and the **session allow-list**.
+What the hooks remember of the user's approvals of rejected commands. It owns the **approval pending** entries, the **approval count** and the **session allow-list**.
 _Avoid_: trusted commands, command trust, learning
 
 **auto allow-list**:
-A regular Solkan allow-list (`allow-list-auto.json`) that add additional commands, for when ralph is run in auto mode.
+An allow-list of additional commands, for when ralph runs in auto mode.
 _Avoid_: ralph allow-list, interpreter list, auto-mode whitelist
 
 **tool use id**:
-The `tool_use_id` field of the hook input JSON. Identical in the pre and post events of the same Bash call — the only reliable way to correlate them, since post events receive the rewritten command.
+The identifier of one tool call. It is the same in the pre and post events of that call, so it links them.
 _Avoid_: call id, request id
 
 **subagent injection**:
-The mechanism by which the preToolUse-Bash hook detects that a command runs inside a subagent (`agent_id` present in hook input JSON) and prefixes the command with `export CLAUDE_IS_SUBAGENT=1;`. This is NOT a native Claude Code feature — it is a hook-level workaround because upstream closed requests for native subagent env vars (issues #35447, #36981, #46696). `preToolUse-Monitor` does not inject: a `Monitor` command is never prefixed.
+Marking a command as run by a subagent, so the command can tell it apart from one run by the main agent.
 _Avoid_: subagent detection, agent env var, subagent flag
 
 **pending subagent**:
-An entry of the Stop / SubagentStop hook stdin `background_tasks` array with `type == "subagent"`, still listed when Stop fires. Its presence makes the Stop hook skip the notification. The `background_tasks` field is undocumented upstream; observed in Claude Code 2.1.280.
+A subagent still running when the Stop hook fires. Its presence makes the Stop hook skip the notification.
 _Avoid_: running subagent, active agent, live subagent
 
 ## Relationships
@@ -94,7 +92,7 @@ _Avoid_: running subagent, active agent, live subagent
 - **Approval memory** joins the two hooks of the Bash pipeline: `preToolUse-Bash` writes the **approval pending** entry, `postToolUse-Bash` counts.
 - A command whose **approval count** reaches 3 joins the **session allow-list**: from then on, Solkan **allow**s it and it no longer appears in **ask with reason**.
 - The **auto allow-list** is added to the regular allow-list only while the ralph session of the session directory runs in `auto` mode.
-- Session state lives in `$CLAUDE_SESSIONS_DIR/$CLAUDE_SESSION_ID/state.json`, the **session allow-list** next to it; both owned by `lib/approval-memory.zsh`. Without a session id, nothing is recorded.
+- Session state lives in `$CLAUDE_SESSION_DIR/state.json`, the **session allow-list** next to it; both owned by `lib/approval-memory.zsh`. Without a session id, nothing is recorded.
 - A Stop with at least one **pending subagent** never notifies; any other `background_tasks` entry never blocks it.
 
 ## Flagged ambiguities

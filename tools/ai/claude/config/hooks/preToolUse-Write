@@ -9,7 +9,7 @@
 local hookDir="${0:A:h}"
 
 source "${hookDir}/lib/input.zsh"
-source "${hookDir}/lib/output.zsh"
+source "${hookDir}/lib/permission.zsh"
 
 # Check the path against the allowlist (glob patterns)
 # Usage:
@@ -33,12 +33,13 @@ function pathIsAllowed() {
   return 1
 }
 
-local inputJson="$(inputRead)"
-local filePath="$(inputField "$inputJson" '.tool_input.file_path')"
+hookInit
+local filePath="$(inputKeyRead '.tool_input.file_path')"
 
 # No path, no decision
 [[ "$filePath" == "" ]] && exit 0
 
-pathIsAllowed "$filePath" && autoApproveAsIs
+# shellcheck disable=SC2119
+pathIsAllowed "$filePath" && autoApprove
 
 exit 0
