@@ -189,5 +189,8 @@
   "Firehose Terror": "firostError",
   "trous ou fausses": "true ou false",
   "prêt-tier": "prettier",
-  "JSFIX": "js-fix"
+  "JSFIX": "js-fix",
+  "cloud-cwd": "CLAUDE_CWD",
+  "cloud-git-route": "CLAUDE_GIT_ROOT",
+  "SkinZenessageWriter": "skill zsh-writer"
 }

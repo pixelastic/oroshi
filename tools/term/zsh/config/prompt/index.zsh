@@ -133,12 +133,12 @@ function oroshi-prompt-right() {
     $OROSHI_PROMPT_PARTS[ruby_version]
     $OROSHI_PROMPT_PARTS[node_version]
     $OROSHI_PROMPT_PARTS[git_issues_github]
-    $OROSHI_PROMPT_PARTS[git_plan_progress]
     $OROSHI_PROMPT_PARTS[git_pullrequests]
     $OROSHI_PROMPT_PARTS[git_tag]
     $OROSHI_PROMPT_PARTS[git_remote]
-    $OROSHI_PROMPT_PARTS[git_worktree_distance]
     $OROSHI_PROMPT_PARTS[git_branch]
+    $OROSHI_PROMPT_PARTS[git_plan_progress]
+    $OROSHI_PROMPT_PARTS[git_worktree_distance]
   )
   echo -n $promptRight
 }
