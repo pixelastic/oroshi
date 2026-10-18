@@ -280,12 +280,15 @@ See [Language categories](README.md#language-categories) for which steps apply.
 
 All languages:
 
-1. Install external tools — see [External tool installation](#external-tool-installation)
-2. Create [`is-{lang}`](#is-lang) — file detection function
-3. Create [`{lang}-lint`](#lang-lint) — linter with `--json` and `--fix` flags
-4. Create [`{lang}-fix`](#lang-fix) — formatter with `--stdout` and `--original-path` flags
+1. Add the commands to the [Claude allow-list](agents.md#claude-allow-list).
+   Run `skills-allowlist-add is-{lang} {lang}-lint {lang}-fix`.
+   For a programming language, add `{lang}-test` and `{lang}-test-path`.
+2. Install external tools — see [External tool installation](#external-tool-installation)
+3. Create [`is-{lang}`](#is-lang) — file detection function
+4. Create [`{lang}-lint`](#lang-lint) — linter with `--json` and `--fix` flags
+5. Create [`{lang}-fix`](#lang-fix) — formatter with `--stdout` and `--original-path` flags
 
 Programming languages only:
 
-5. Create [`{lang}-test`](#lang-test) — test runner
-6. Create [`{lang}-test-path`](#lang-test-path) — source-to-test file mapper
+6. Create [`{lang}-test`](#lang-test) — test runner
+7. Create [`{lang}-test-path`](#lang-test-path) — source-to-test file mapper

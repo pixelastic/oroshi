@@ -26,4 +26,7 @@ Each language falls into one of two categories:
 ## Adding a language
 
 Each of the following files has an "Adding a language" section. Follow them in order:
-[scripts.md](scripts.md) → [integration.md](integration.md) → [neovim.md](neovim.md) → [agents.md](agents.md).
+1. [scripts.md](scripts.md)
+2. [integration.md](integration.md)
+3. [neovim.md](neovim.md)
+4. [agents.md](agents.md)

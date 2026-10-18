@@ -73,9 +73,8 @@ Agents call the toolchain scripts on every change, directly or through
 [`git-file-test`](integration.md#git-file-test). A script
 missing from the allow-list triggers a permission prompt on each call.
 
-Each language registers `{lang}-lint` and `{lang}-fix`.
-[Programming languages](README.md#language-categories) also register
-`{lang}-test`.
+Each language registers `is-{lang}`, `{lang}-lint` and `{lang}-fix`.
+[Programming languages](README.md#language-categories) also register `{lang}-test` and `{lang}-test-path`.
 
 **Dependencies:**
 
@@ -97,13 +96,10 @@ All languages:
    appropriate workflow for the language category
 2. Add a `Linting` entry to the `## Commands` section of the root CLAUDE.md
 3. (Optional) Add a `Testing` entry to the `## Commands` section of the root CLAUDE.md
-4. Register `{lang}-lint` and `{lang}-fix` in
-   `tools/ai/claude/config/hooks/allow-list.json`
 
 Programming languages only:
 
-5. Add reference documents under `references/` for style, testing, and library
+4. Add reference documents under `references/` for style, testing, and library
    conventions, and symlink the shared ones from `code-writer/references/`
    (see [Shared references](skill-programming.md#shared-references))
-6. Add a `Testing` entry to the `## Commands` section of the root CLAUDE.md
-7. Register `{lang}-test` in `tools/ai/claude/config/hooks/allow-list.json`
+5. Add a `Testing` entry to the `## Commands` section of the root CLAUDE.md
