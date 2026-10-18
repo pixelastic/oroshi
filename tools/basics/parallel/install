@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# GNU parallel runs jobs in parallel, needed by `bats --jobs` (see zsh-test)
+set -e
+
+sudo apt-get install parallel

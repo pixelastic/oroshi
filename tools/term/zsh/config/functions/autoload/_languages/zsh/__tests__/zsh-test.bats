@@ -8,8 +8,11 @@ setup() {
   echo 'echo bar' > "$BATS_TMP_DIR/src/bar.zsh"
   echo '@test "bar" { true; }' > "$BATS_TMP_DIR/src/__tests__/bar.bats"
 
-  # Record each bats call, one argument per line
-  bats() { printf '%s\n' "$@" >> "$BATS_TMP_DIR/calls.txt"; }
+  # Record each bats call, one argument per line, without the --jobs pair (its value is the CPU count)
+  bats() {
+    [[ "$1" == "--jobs" ]] && { print -r -- "$1" > "$BATS_TMP_DIR/jobs-flag.txt"; shift 2; }
+    printf '%s\n' "$@" >> "$BATS_TMP_DIR/calls.txt"
+  }
   bats_mock bats
 }
 
@@ -63,6 +66,12 @@ setup() {
   [[ "$status" -eq 0 ]]
   local expected="$BATS_TMP_DIR/src/__tests__/foo.bats"$'\n'"$BATS_TMP_DIR/src/__tests__/bar.bats"
   [[ "$(cat "$BATS_TMP_DIR/calls.txt")" = "$expected" ]]
+}
+
+@test "runs bats with --jobs to parallelize the test files" {
+  bats_run_zsh "zsh-test $BATS_TMP_DIR/src/foo.zsh"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/jobs-flag.txt")" = "--jobs" ]]
 }
 
 # ─── DIRECTORY ────────────────────────────────────────────────────────────────

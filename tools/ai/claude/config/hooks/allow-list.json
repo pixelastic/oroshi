@@ -424,6 +424,7 @@
   "npm --version",
   "npm-is-deprecated",
   "npm-is-logged-in",
+  "nproc",
   "npx",
   "numfmt",
   "nvim",

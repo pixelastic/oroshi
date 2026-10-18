@@ -25,8 +25,15 @@ local -aU testFiles=(
 # No test files found
 [[ ${#testFiles[@]} -eq 0 ]] && return 0
 
-local batsArgs=()
-[[ $isFailFast == 1 ]] && batsArgs+=(--abort)
+# bats --jobs needs GNU parallel (installed by tools/basics/parallel/install)
+if ! command -v parallel >/dev/null; then
+  print -u2 "zsh-test: GNU parallel is required, run tools/basics/parallel/install"
+  return 1
+fi
+
+local batsArgs=(--jobs "$(nproc)")
+# --abort only stops at the first failure when the tests of a file run in series
+[[ $isFailFast == 1 ]] && batsArgs+=(--abort --no-parallelize-within-files)
 
 # Full bats output, exit code is bats's
 if [[ $isTokenSaving -eq 0 ]]; then
