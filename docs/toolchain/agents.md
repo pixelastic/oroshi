@@ -7,14 +7,14 @@ lets Claude Code run those commands without a permission prompt. Together they
 ensure agents follow the same TDD workflow and toolchain conventions as human
 developers.
 
-See [scripts.md](scripts.md) for the per-language ZSH functions these
-mechanisms invoke.
+See [scripts.md](scripts.md) for the per-language ZSH functions these mechanisms
+invoke.
 
 ---
 
 ## `{lang}-writer` skill
 
-```
+```text
 # Claude Code skill for writing or modifying files in a specific language.
 # Location: tools/ai/claude/config/skills/{lang}-writer/
 # Loaded automatically when the agent writes or modifies files
@@ -24,14 +24,14 @@ mechanisms invoke.
 Each [language category](README.md#language-categories) has its own template:
 
 - [skill-configuration.md](skill-configuration.md) — lint-on-modify workflow
-- [skill-programming.md](skill-programming.md) — TDD-driven workflow with
-  style and testing references
+- [skill-programming.md](skill-programming.md) — TDD-driven workflow with style
+  and testing references
 
 ---
 
 ## CLAUDE.md entries
 
-```
+```text
 # Project-level command entries for AI agents.
 # Location: CLAUDE.md (repository root)
 # Ensures Claude knows how to test and lint files in each language.
@@ -40,8 +40,8 @@ Each [language category](README.md#language-categories) has its own template:
 ### Entry format
 
 Each language registers a `Linting` entry in the `## Commands` section.
-[Programming languages](README.md#language-categories) also register a
-`Testing` entry.
+[Programming languages](README.md#language-categories) also register a `Testing`
+entry.
 
 ```markdown
 - **Testing {lang}:** Run `{lang}-test <filepath>`
@@ -56,13 +56,14 @@ changes.
 
 - References [`{lang}-test`](scripts.md#lang-test) and
   [`{lang}-lint`](scripts.md#lang-lint) by name
-- Complements the [`{lang}-writer` skill](#lang-writer-skill) as a lightweight alternative
+- Complements the [`{lang}-writer` skill](#lang-writer-skill) as a lightweight
+  alternative
 
 ---
 
 ## Claude allow-list
 
-```
+```text
 # Commands Claude Code can run without a permission prompt.
 # Location: tools/ai/claude/config/hooks/allow-list.json
 # Lets agents lint, fix and test files without interrupting the user.
@@ -70,17 +71,18 @@ changes.
 
 Agents call the toolchain scripts on every change, directly or through
 [`git-file-lint`](integration.md#git-file-lint) and
-[`git-file-test`](integration.md#git-file-test). A script
-missing from the allow-list triggers a permission prompt on each call.
+[`git-file-test`](integration.md#git-file-test). A script missing from the
+allow-list triggers a permission prompt on each call.
 
 Each language registers `is-{lang}`, `{lang}-lint` and `{lang}-fix`.
-[Programming languages](README.md#language-categories) also register `{lang}-test` and `{lang}-test-path`.
+[Programming languages](README.md#language-categories) also register
+`{lang}-test` and `{lang}-test-path`.
 
 **Dependencies:**
 
 - References [`{lang}-lint`](scripts.md#lang-lint),
-  [`{lang}-fix`](scripts.md#lang-fix) and
-  [`{lang}-test`](scripts.md#lang-test) by name
+  [`{lang}-fix`](scripts.md#lang-fix) and [`{lang}-test`](scripts.md#lang-test)
+  by name
 - Lets the [`{lang}-writer` skill](#lang-writer-skill) and the
   [CLAUDE.md entries](#claudemd-entries) run without prompts
 
@@ -95,11 +97,12 @@ All languages:
 1. Create `tools/ai/claude/config/skills/{lang}-writer/SKILL.md` with the
    appropriate workflow for the language category
 2. Add a `Linting` entry to the `## Commands` section of the root CLAUDE.md
-3. (Optional) Add a `Testing` entry to the `## Commands` section of the root CLAUDE.md
+3. (Optional) Add a `Testing` entry to the `## Commands` section of the root
+   CLAUDE.md
 
 Programming languages only:
 
-4. Add reference documents under `references/` for style, testing, and library
-   conventions, and symlink the shared ones from `code-writer/references/`
-   (see [Shared references](skill-programming.md#shared-references))
-5. Add a `Testing` entry to the `## Commands` section of the root CLAUDE.md
+- Add reference documents under `references/` for style, testing, and library
+  conventions, and symlink the shared ones from `code-writer/references/` (see
+  [Shared references](skill-programming.md#shared-references))
+- Add a `Testing` entry to the `## Commands` section of the root CLAUDE.md

@@ -1,8 +1,8 @@
 # Shared Dispatchers & Configuration
 
-These components sit above the per-language scripts and operate on sets of
-files at once. Each one must learn about a new language when one is added to
-the toolchain.
+These components sit above the per-language scripts and operate on sets of files
+at once. Each one must learn about a new language when one is added to the
+toolchain.
 
 See [scripts.md](scripts.md) for the per-language functions these dispatchers
 call.
@@ -29,15 +29,16 @@ Manual lint command, called by the user in the terminal or by
 time and blocks the commit on failure, `git-file-lint` is on-demand.
 
 Groups modified and added files in the working tree by language using
-[`is-{lang}`](scripts.md#is-lang), then runs [`{lang}-lint
---fix`](scripts.md#lang-lint) on each group. Reports violations grouped by
-language, or `✔ All files are clean` if none.
+[`is-{lang}`](scripts.md#is-lang), then runs
+[`{lang}-lint --fix`](scripts.md#lang-lint) on each group. Reports violations
+grouped by language, or `✔ All files are clean` if none.
 
 **Dependencies:**
 
 - Uses [`is-{lang}`](scripts.md#is-lang) to detect file language
 - Uses [`{lang}-lint --fix`](scripts.md#lang-lint) to lint each group
-- Used by [AI agent skills](agents.md) to lint modifications after implementation
+- Used by [AI agent skills](agents.md) to lint modifications after
+  implementation
 
 ---
 
@@ -62,9 +63,11 @@ Iterates all modified and added files, resolves each to a test file via
 **Dependencies:**
 
 - Uses [`is-{lang}`](scripts.md#is-lang) to detect file language
-- Uses [`{lang}-test-path`](scripts.md#lang-test-path) to resolve source files to test files
+- Uses [`{lang}-test-path`](scripts.md#lang-test-path) to resolve source files
+  to test files
 - Uses [`{lang}-test`](scripts.md#lang-test) to run tests
-- Used by [AI agent skills](agents.md) to verify modifications after implementation
+- Used by [AI agent skills](agents.md) to verify modifications after
+  implementation
 
 ---
 
@@ -81,9 +84,9 @@ Iterates all modified and added files, resolves each to a test file via
 // '**/*.json': ['yarn precommit:lint json']                         // configuration language
 ```
 
-Two generic scripts in `scripts/yarn/` handle all languages:
-`precommit-lint` calls `{lang}-lint --fix` on its arguments,
-`precommit-test` calls `{lang}-test --fail-fast` on its arguments (not used for
+Two generic scripts in `scripts/yarn/` handle all languages: `precommit-lint`
+calls `{lang}-lint --fix` on its arguments, `precommit-test` calls
+`{lang}-test --fail-fast` on its arguments (not used for
 [configuration languages](README.md#language-categories)). Both take the
 language identifier as their first argument.
 
@@ -112,8 +115,8 @@ File-type-aware tab completion, provided in two layers.
 
 **Notes:**
 
-Register `{lang}-lint` and `{lang}-fix` for all languages. Add `{lang}-test`
-for [programming languages](README.md#language-categories) only.
+Register `{lang}-lint` and `{lang}-fix` for all languages. Add `{lang}-test` for
+[programming languages](README.md#language-categories) only.
 
 ### CTRL-P FZF pickers (`ctrl-p.zsh`)
 
@@ -159,8 +162,8 @@ All languages:
 1. **`git-file-lint`** — add an `is-{lang}` check and route matched files to
    `{lang}-lint --fix`
 2. **`lintstaged.config.js`** — add a glob pattern entry mapping the language's
-   file extensions to `yarn precommit:lint {lang}` (and `yarn precommit:test
-   {lang}` for programming languages)
+   file extensions to `yarn precommit:lint {lang}` (and
+   `yarn precommit:test {lang}` for programming languages)
 3. **`compdef.zsh`** — register `{lang}-lint` and `{lang}-fix` with the
    language's file glob
 4. **`ctrl-p.zsh`** — map `{lang}-lint` and `{lang}-fix` to the
@@ -170,8 +173,8 @@ All languages:
 
 Programming languages only:
 
-6. **`git-file-test`** — add an `is-{lang}` check, use `{lang}-test-path` for
-   resolution, call `{lang}-test`
-7. **`compdef.zsh`** — register `{lang}-test` with the language's file glob
-8. **`ctrl-p.zsh`** — map `{lang}-test` to the `fzf-{lang}-tests` picker
-   (filtered to test files only) in `specialPickers`
+- **`git-file-test`** — add an `is-{lang}` check, use `{lang}-test-path` for
+  resolution, call `{lang}-test`
+- **`compdef.zsh`** — register `{lang}-test` with the language's file glob
+- **`ctrl-p.zsh`** — map `{lang}-test` to the `fzf-{lang}-tests` picker
+  (filtered to test files only) in `specialPickers`

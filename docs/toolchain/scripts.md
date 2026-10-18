@@ -10,11 +10,11 @@ They are available directly in any ZSH context and can call each other without
 spawning subprocesses. Non-ZSH callers (e.g. NeoVim) must invoke them through
 [`bin-zsh`](utilities.md#bin-zsh).
 
-They live in `tools/term/zsh/config/functions/autoload/_languages/{lang}/`,
-one directory per language.
+They live in `tools/term/zsh/config/functions/autoload/_languages/{lang}/`, one
+directory per language.
 
 Naming convention: `{lang}` is the short language identifier (e.g. `zsh`, `js`,
-`python`, `go`, `json`, `toml`, etc).
+`python`, `go`, `json`, `toml`, `markdown`, etc).
 
 ---
 
@@ -29,17 +29,17 @@ in order of preference.
 Each tool gets a directory under the language's `tools/_languages/{lang}/`
 folder with:
 
-- **`install`** *(required)* — idempotent script that installs the tool
-  globally on the machine. Run once per setup.
-- **`config/`** *(optional)* — configuration files for the tool, deployed by
+- **`install`** _(required)_ — idempotent script that installs the tool globally
+  on the machine. Run once per setup.
+- **`config/`** _(optional)_ — configuration files for the tool, deployed by
   `deploy` and referenced at runtime via `$OROSHI_ROOT`
-- **`deploy`** *(optional)* — symlinks or copies configuration files to their
+- **`deploy`** _(optional)_ — symlinks or copies configuration files to their
   expected locations on disk (e.g. `~/.config/{tool}/`).
 
 ### Fallback — language package manager
 
-When tools are available as packages in the language's ecosystem (npm, pip,
-go modules), you can declare them in the repository's root dependency file
+When tools are available as packages in the language's ecosystem (npm, pip, go
+modules), you can declare them in the repository's root dependency file
 (`package.json`, `go.mod`) and install via the package manager. The installed
 binaries are then available from within the repository.
 
@@ -47,8 +47,8 @@ binaries are then available from within the repository.
 
 ## Argument handling
 
-`{lang}-lint`, `{lang}-fix`, and `{lang}-test` share the same argument
-handling convention:
+`{lang}-lint`, `{lang}-fix`, and `{lang}-test` share the same argument handling
+convention:
 
 1. **Expand** — directory arguments are expanded recursively to all files they
    contain, as if each file had been passed individually.
@@ -79,7 +79,8 @@ Detection strategy, from most common to less common:
 
 1. File extension (e.g. `.js`, `.py`, `.go`) — covers the vast majority of cases
 2. Shebang line (e.g. `#!/usr/bin/env node`)
-3. Path convention (e.g. ZSH autoload functions with no extension under specific directories)
+3. Path convention (e.g. ZSH autoload functions with no extension under specific
+   directories)
 4. Vim modeline (e.g. `# vim: ft=zsh`)
 
 Detection is not exclusive — a file may match multiple `is-{lang}` checks, and
@@ -87,8 +88,10 @@ all matching toolchains apply.
 
 **Dependencies:**
 
-- Used by [`git-file-lint`](integration.md#git-file-lint) to dispatch files to the correct linter
-- Used by [`git-file-test`](integration.md#git-file-test) to dispatch files to the correct test runner
+- Used by [`git-file-lint`](integration.md#git-file-lint) to dispatch files to
+  the correct linter
+- Used by [`git-file-test`](integration.md#git-file-test) to dispatch files to
+  the correct test runner
 
 ---
 
@@ -115,9 +118,9 @@ Two output modes:
 - **Default (no flag)** — stylish format for terminal use. Violations are
   grouped by file, with an indented `line:column  level  message  rule-id` line
   per violation. When there are no violations, output is empty.
-- **`--json`** — unified JSON array for NeoVim.
-  See [lint-output.md](lint-output.md) for the schema. When there are no
-  violations, output is `[]`.
+- **`--json`** — unified JSON array for NeoVim. See
+  [lint-output.md](lint-output.md) for the schema. When there are no violations,
+  output is `[]`.
 
 See [fix-lint-relationship.md](fix-lint-relationship.md) for how `{lang}-lint`
 and `{lang}-fix` relate to each other.
@@ -126,13 +129,16 @@ Implementation preference ladder, simplest first:
 
 1. Use an external linter with default options
 2. Add custom options or rule exclusions
-3. Combine multiple external linters (merge their JSON outputs into a single array)
+3. Combine multiple external linters (merge their JSON outputs into a single
+   array)
 
 **Dependencies:**
 
 - Used by [`git-file-lint`](integration.md#git-file-lint) to lint changed files
-- Used by [NeoVim `filetypes/{lang}.lua`](neovim.md#configurelinterlint) to populate diagnostics
-- Used by [`lintstaged.config.js`](integration.md#lintstagedconfigjs) for pre-commit linting
+- Used by [NeoVim `filetypes/{lang}.lua`](neovim.md#configurelinterlint) to
+  populate diagnostics
+- Used by [`lintstaged.config.js`](integration.md#lintstagedconfigjs) for
+  pre-commit linting
 
 ---
 
@@ -163,10 +169,10 @@ together. The public API is the same regardless.
 Flags (only valid with a single file argument):
 
 - **`--original-path`** — the real file path on disk. Used to resolve
-    language-specific configuration files and rules that depend on the file's name
-    or location.
+  language-specific configuration files and rules that depend on the file's name
+  or location.
 - **`--stdout`** — write the fixed code to stdout instead of modifying the file
-    in-place. Intended for manual CLI usage, not used by any automated consumer.
+  in-place. Intended for manual CLI usage, not used by any automated consumer.
 
 Both flags are combinable, and both require a single file argument. If either
 flag is passed with multiple files or a directory, the script must exit 1.
@@ -176,8 +182,10 @@ and `{lang}-lint` relate to each other.
 
 **Dependencies:**
 
-- Used by [NeoVim `configureFormatter`](neovim.md#configureformatterconform) with `--original-path` (conform.nvim creates a temp file)
-- Used by [`{lang}-lint --fix`](#lang-lint) as the formatting step before linting
+- Used by [NeoVim `configureFormatter`](neovim.md#configureformatterconform)
+  with `--original-path` (conform.nvim creates a temp file)
+- Used by [`{lang}-lint --fix`](#lang-lint) as the formatting step before
+  linting
 
 ---
 
@@ -206,8 +214,8 @@ and `{lang}-lint` relate to each other.
 
 Opt-in, off by default. Stops the run at the first failing test.
 
-The script must stop at the first failing test, across all files it runs.
-When the underlying runner has a built-in option for this, the script should use it.
+The script must stop at the first failing test, across all files it runs. When
+the underlying runner has a built-in option for this, the script should use it.
 
 Only the pre-commit test script (`precommit-test`) passes this flag.
 
@@ -218,15 +226,17 @@ Each `{lang}-test` owns its own token-saving filtering.
 - Shows only failing tests and their error output
 - Prints `All tests passed.` when nothing fails
 
-How the output is reduced depends on the runner.
-Some runners have a native option for it; others need custom filtering code.
+How the output is reduced depends on the runner. Some runners have a native
+option for it; others need custom filtering code.
 
 **Dependencies:**
 
-- Uses [`{lang}-test-path`](#lang-test-path) to locate the test file when given a source file
+- Uses [`{lang}-test-path`](#lang-test-path) to locate the test file when given
+  a source file
 - Used by [`git-file-test`](integration.md#git-file-test) to test changed files
 - Used by `precommit-test` with `--fail-fast`
-- Called with `--token-saving` by [`{lang}-test-token-saving`](#token-saving-wrappers)
+- Called with `--token-saving` by
+  [`{lang}-test-token-saving`](#token-saving-wrappers)
 
 ---
 
@@ -243,11 +253,15 @@ Some runners have a native option for it; others need custom filtering code.
 
 **Notes:**
 
-Source files map to test files in a sibling `__tests__/` directory. The exact naming pattern (`test_module.ext`, `module.test.ext`, `module_test.ext`) varies by language convention. The mapping is a pure string transformation — derive the test path, then check the file exists on disk.
+Source files map to test files in a sibling `__tests__/` directory. The exact
+naming pattern (`test_module.ext`, `module.test.ext`, `module_test.ext`) varies
+by language convention. The mapping is a pure string transformation — derive the
+test path, then check the file exists on disk.
 
 **Dependencies:**
 
-- Used by [`git-file-test`](integration.md#git-file-test) to resolve source files to test files
+- Used by [`git-file-test`](integration.md#git-file-test) to resolve source
+  files to test files
 - Used by [`{lang}-test`](#lang-test) when given a source file
 
 ---
@@ -264,8 +278,8 @@ Source files map to test files in a sibling `__tests__/` directory. The exact na
 
 Wrappers live in the `ai/token-saving` autoload domain.
 
-A wrapper holds no token-saving logic.
-It only calls its underlying command with `--token-saving`.
+A wrapper holds no token-saving logic. It only calls its underlying command with
+`--token-saving`.
 
 The wrapper's honors the `OROSHI_DISABLE_TOKEN_SAVING` switch: when set, it
 calls the command as usual, otherwise it calls it with `--token-saving`.
@@ -280,15 +294,17 @@ See [Language categories](README.md#language-categories) for which steps apply.
 
 All languages:
 
-1. Add the commands to the [Claude allow-list](agents.md#claude-allow-list).
-   Run `skills-allowlist-add is-{lang} {lang}-lint {lang}-fix`.
-   For a programming language, add `{lang}-test` and `{lang}-test-path`.
-2. Install external tools — see [External tool installation](#external-tool-installation)
+1. Add the commands to the [Claude allow-list](agents.md#claude-allow-list). Run
+   `skills-allowlist-add is-{lang} {lang}-lint {lang}-fix`. For a programming
+   language, add `{lang}-test` and `{lang}-test-path`.
+2. Install external tools — see
+   [External tool installation](#external-tool-installation)
 3. Create [`is-{lang}`](#is-lang) — file detection function
 4. Create [`{lang}-lint`](#lang-lint) — linter with `--json` and `--fix` flags
-5. Create [`{lang}-fix`](#lang-fix) — formatter with `--stdout` and `--original-path` flags
+5. Create [`{lang}-fix`](#lang-fix) — formatter with `--stdout` and
+   `--original-path` flags
 
 Programming languages only:
 
-6. Create [`{lang}-test`](#lang-test) — test runner
-7. Create [`{lang}-test-path`](#lang-test-path) — source-to-test file mapper
+- Create [`{lang}-test`](#lang-test) — test runner
+- Create [`{lang}-test-path`](#lang-test-path) — source-to-test file mapper

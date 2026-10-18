@@ -10,9 +10,9 @@ See [scripts.md](scripts.md) for the per-language ZSH functions these modules
 call.
 
 Since all toolchain scripts are ZSH autoloaded functions (not standalone
-binaries), NeoVim must call them through
-[`bin-zsh`](utilities.md#bin-zsh). All commands in `configureLinter` and
-`configureFormatter` are prefixed with `bin-zsh` for this reason.
+binaries), NeoVim must call them through [`bin-zsh`](utilities.md#bin-zsh). All
+commands in `configureLinter` and `configureFormatter` are prefixed with
+`bin-zsh` for this reason.
 
 ---
 
@@ -45,20 +45,20 @@ Per-filetype table defining which linter, formatter, and LSP server to use for
 each language. Two phases work together: `configure*` functions register custom
 tools at startup, then `linters`/`formatters` lists reference them by name.
 
-
-| Key                  | Description                                                                 |
-|----------------------|-----------------------------------------------------------------------------|
-| `configureLinter`    | Registers a custom linter in nvim-lint (name, command, parser). Called once at startup. |
-| `configureLsp`       | Customizes an LSP server's settings. Called once at startup.                |
+| Key                  | Description                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------------- |
+| `configureLinter`    | Registers a custom linter in nvim-lint (name, command, parser). Called once at startup.           |
+| `configureLsp`       | Customizes an LSP server's settings. Called once at startup.                                      |
 | `configureFormatter` | Registers a custom formatter in conform.nvim (name, command, stdin mode). Called once at startup. |
-| `linters`            | List of linter names to activate — custom (registered above) or built-in    |
-| `formatters`         | List of formatter names to activate — custom (registered above) or built-in |
-| `lsp`                | LSP server name(s) for this filetype                                        |
-| `formatterTimeout`   | Timeout in milliseconds for format-on-save (for slow formatters)            |
+| `linters`            | List of linter names to activate — custom (registered above) or built-in                          |
+| `formatters`         | List of formatter names to activate — custom (registered above) or built-in                       |
+| `lsp`                | LSP server name(s) for this filetype                                                              |
+| `formatterTimeout`   | Timeout in milliseconds for format-on-save (for slow formatters)                                  |
 
 **Dependencies:**
 
-- Uses [`filetypes/{lang}.lua`](#filetypeslanglua) for per-language configuration
+- Uses [`filetypes/{lang}.lua`](#filetypeslanglua) for per-language
+  configuration
 - Manages LSP servers via Mason
 - Manages [treesitter parsers](#configdependenciestreesitter)
 
@@ -75,9 +75,9 @@ tools at startup, then `linters`/`formatters` lists reference them by name.
 
 ### `configureLinter(lint)`
 
-Registers a custom linter with nvim-lint. Specifies the command (`bin-zsh
-{lang}-lint`) and args (`--json` and the filename). The linter name
-is registered in nvim-lint's `linters` table so it can be referenced by name in
+Registers a custom linter with nvim-lint. Specifies the command
+(`bin-zsh {lang}-lint`) and args (`--json` and the filename). The linter name is
+registered in nvim-lint's `linters` table so it can be referenced by name in
 `code-quality.lua`.
 
 Since every [`{lang}-lint --json`](scripts.md#lang-lint) produces the same
@@ -99,18 +99,19 @@ args = function(_, ctx)
 end,
 ```
 
-- [`bin-zsh`](utilities.md#bin-zsh): because `{lang}-fix` is a ZSH autoloaded function
+- [`bin-zsh`](utilities.md#bin-zsh): because `{lang}-fix` is a ZSH autoloaded
+  function
 - `$FILENAME`: the temp file created by conform.nvim, modified in-place
-- `F.bufferName(ctx.buf)`: the real file path, so the script can resolve configuration
-  and rules that depend on the file's name or location
+- `F.bufferName(ctx.buf)`: the real file path, so the script can resolve
+  configuration and rules that depend on the file's name or location
 
-### `onInit()` *(optional)*
+### `onInit()` _(optional)_
 
 Filetype detection logic for files that cannot be identified by extension alone
 (e.g. extensionless ZSH autoload functions in specific directories). Runs once
 at startup.
 
-### `onFiletype()` *(optional)*
+### `onFiletype()` _(optional)_
 
 Buffer-local keymaps or settings applied when a buffer of this filetype is
 opened (e.g. indentation overrides, comment string settings).
@@ -119,7 +120,8 @@ opened (e.g. indentation overrides, comment string settings).
 
 - Calls [`{lang}-lint --json`](scripts.md#lang-lint) for diagnostics
 - Calls [`{lang}-fix --original-path`](scripts.md#lang-fix) for format-on-save
-- Referenced by [`code-quality.lua`](#code-qualitylua) to wire into the plugin system
+- Referenced by [`code-quality.lua`](#code-qualitylua) to wire into the plugin
+  system
 
 ---
 
