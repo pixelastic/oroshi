@@ -1,0 +1,54 @@
+# Fix Markdown files via prettier (prose wrapped at 80 columns by the config)
+# Usage:
+# $ markdown-fix ./path/to/file.md                          # Fix file in place
+# $ markdown-fix file1.md file2.md                          # Fix multiple files in place
+# $ markdown-fix ./docs/                                    # Expand directory, fix all Markdown files
+# $ markdown-fix --stdout ./path/to/file.md                 # Output fixed code to stdout
+# $ markdown-fix --original-path /real/path.md /tmp/file.md # Resolve config from real path
+setopt local_options err_return
+
+local scriptDirectory="${functions_source[$0]:A:h}"
+source "$scriptDirectory/../javascript/__lib/prettier-fix.zsh"
+
+zparseopts -E -D \
+  -stdout=flagStdout \
+  -original-path:=flagOriginalPath
+local isStdout=${#flagStdout}
+local originalPath="${flagOriginalPath[2]}"
+
+local hasOriginalPath=0
+[[ "$originalPath" != "" ]] && hasOriginalPath=1
+local isSingleFileOnly=$(( isStdout == 1 || hasOriginalPath == 1 ))
+local hasMultipleInputs=$(( $# != 1 ))
+local isDirectory=0
+[[ -d "$1" ]] && isDirectory=1
+
+# --stdout and --original-path only work with a single file, not directories
+[[ $isSingleFileOnly -eq 1 && $hasMultipleInputs -eq 1 ]] && return 1
+[[ $isSingleFileOnly -eq 1 && $isDirectory -eq 1 ]] && return 1
+
+# Expand directories, resolve file list
+local expanded="$(file-expand --filter is-markdown "$@")"
+local -a files=("${(@f)expanded}")
+
+# Stdout mode: swap the file for a temp copy
+# The .md suffix is needed because the prettier config only wraps prose for *.md files
+local temporaryFile=""
+if [[ $isStdout -eq 1 ]]; then
+  temporaryFile="$(mktemp --suffix=.md)"
+  cp "${files[1]}" "$temporaryFile"
+  files=("$temporaryFile")
+fi
+
+# Build --original-path args if set
+local -a originalPathArgs=()
+[[ $hasOriginalPath -eq 1 ]] && originalPathArgs=(--original-path "$originalPath")
+
+# Format with prettier. The 80-column wrap comes from the prettier config.
+prettier-fix --parser markdown "${originalPathArgs[@]}" "${files[@]}"
+
+# Stdout mode: output and cleanup
+if [[ "$temporaryFile" != "" ]]; then
+  cat "$temporaryFile"
+  rm -f "$temporaryFile"
+fi

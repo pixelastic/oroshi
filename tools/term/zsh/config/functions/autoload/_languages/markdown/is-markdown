@@ -1,0 +1,16 @@
+# Boolean: is the given file a Markdown file?
+# Usage:
+# $ is-markdown /path/to/README.md      # exit 0 (.md extension)
+# $ is-markdown /path/to/notes.markdown # exit 1 (.markdown is not matched)
+# $ is-markdown /path/to/script.js      # exit 1
+setopt local_options err_return
+
+local filepath="$1"
+
+# Directories and missing files are not Markdown files
+[[ ! -f "$filepath" ]] && return 1
+
+# .md extension → Markdown file
+[[ "$filepath" == *.md ]] && return 0
+
+return 1
