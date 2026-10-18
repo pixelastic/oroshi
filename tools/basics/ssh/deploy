@@ -5,7 +5,7 @@
 set -e
 
 CONFIG_DIR=${0:h}/config
-local LOCAL_FILES="$HOME/.oroshi/private/config/basics/ssh/local/${HOSTNAME}/*"
+local LOCAL_FILES="$HOME/.oroshi/private/config/basics/ssh/local/${HOST}/*"
 local DEST_DIR=~/.ssh
 local DEST_FILE=$DEST_DIR/config
 

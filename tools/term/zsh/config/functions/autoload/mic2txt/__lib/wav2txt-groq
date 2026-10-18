@@ -54,7 +54,7 @@ function splitAndTranscribe() {
 
 local input=$1
 
-source "$OROSHI_ROOT/private/config/term/zsh/local/${HOSTNAME}/groq.zsh"
+source "$OROSHI_ROOT/private/config/term/zsh/local/${HOST}/groq.zsh"
 
 # Main logic
 local rawTranscription=""

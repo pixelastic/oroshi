@@ -56,7 +56,7 @@ function splitAndTranscribe() {
 
 local input=$1
 
-source $OROSHI_ROOT/private/config/term/zsh/local/${HOSTNAME}/open_ai.zsh
+source $OROSHI_ROOT/private/config/term/zsh/local/${HOST}/open_ai.zsh
 
 # Main logic
 local rawTranscription=""

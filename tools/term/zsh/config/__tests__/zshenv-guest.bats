@@ -86,6 +86,7 @@ mock_command() {
 
 @test "production shells are unaffected when MOCK_OVERRIDE is unset" {
   echo 'function my-func() { echo "real"; }' > "$BATS_TMP_DIR/lib.zsh"
+  mock_env "MOCK_OVERRIDE" ""
 
   run_bare_zsh "$sourcePrefix; source $BATS_TMP_DIR/lib.zsh; my-func"
   [[ "$status" -eq 0 ]]
@@ -102,6 +103,9 @@ mock_command() {
 }
 
 @test "isolation: no DEBUG trap when MOCK_OVERRIDE is unset" {
+  # bats_tmp_dir mocks terminal-width, which exports MOCK_OVERRIDE to children
+  mock_env "MOCK_OVERRIDE" ""
+
   run_bare_zsh "$sourcePrefix; trap"
   [[ "$status" -eq 0 ]]
   [[ "$output" != *"DEBUG"* ]]

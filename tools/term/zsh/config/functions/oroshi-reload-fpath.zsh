@@ -25,8 +25,21 @@ function oroshi-reload-fpath() {
   OROSHI_AUTOLOADED_FUNCTIONS_BACKUP=(${(kv)OROSHI_AUTOLOADED_FUNCTIONS})
   OROSHI_AUTOLOADED_FUNCTIONS=()
 
+  # List everything under ./autoload, never entering __ directories
+  local -a autoloadItems=()
+  function _oroshiWalkAutoload() {
+    local entry
+    for entry in $1/*(N); do
+      [[ ${entry:t} == __* ]] && continue
+      autoloadItems+=($entry)
+      [[ -d $entry && ! -L $entry ]] && _oroshiWalkAutoload $entry
+    done
+  }
+  _oroshiWalkAutoload $configPath/functions/autoload
+  unfunction _oroshiWalkAutoload
+
   # Lazy loading all functions saved in ./autoload
-  for item in $configPath/functions/autoload/**/*(N); do
+  for item in $autoloadItems; do
     # If it's a folder, we add it to fpath, so zsh knows where to look
     if [[ -d $item ]]; then
       # Skip all directories starting with __

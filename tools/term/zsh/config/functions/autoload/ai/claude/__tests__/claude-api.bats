@@ -4,7 +4,7 @@ setup() {
   bats_tmp_dir
   # Fake OROSHI_ROOT with a fake config, so tests never load the real API key
   bats_mock_env OROSHI_ROOT "$BATS_TMP_DIR/oroshi"
-  bats_mock_env HOSTNAME "test-host"
+  bats_mock_env HOST "test-host"
   ANTHROPIC_CONFIG="$BATS_TMP_DIR/oroshi/private/config/term/zsh/local/test-host/anthropic.zsh"
   mkdir -p "$(dirname "$ANTHROPIC_CONFIG")"
   echo "export OROSHI_ANTHROPIC_API_KEY=test-key-abc" >"$ANTHROPIC_CONFIG"

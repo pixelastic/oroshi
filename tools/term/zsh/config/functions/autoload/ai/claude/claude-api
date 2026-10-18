@@ -8,7 +8,7 @@
 setopt local_options err_return
 
 # Load the API key, in case we're called from outside of an interactive shell
-local anthropicConfig="$OROSHI_ROOT/private/config/term/zsh/local/${HOSTNAME}/anthropic.zsh"
+local anthropicConfig="$OROSHI_ROOT/private/config/term/zsh/local/${HOST}/anthropic.zsh"
 if [[ ! -f $anthropicConfig ]]; then
   echoerr "Anthropic config not found: $anthropicConfig"
   return 1

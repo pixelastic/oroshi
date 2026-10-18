@@ -13,10 +13,8 @@ export OROSHI_FOLDER_STATE="$HOME/local/tmp/oroshi"
 # 30-day age cleanup. Use for throw-away runtime files (sockets, beacons, etc).
 export OROSHI_FOLDER_CACHE="/tmp/oroshi"
 
-# Also make the HOSTNAME globally available. Some tools (like Kitty) can use ENV
-# variables in their config, but can't call binaries, so having the HOSTNAME
-# available allow me to define per-host config easily.
-export HOSTNAME="$(hostname)"
+# Also export HOST to the environment. Some tools (like Kitty) will read it.
+export HOST
 
 # Define $PATH, adding all scripts from OROSHI_ROOT
 typeset -aU path

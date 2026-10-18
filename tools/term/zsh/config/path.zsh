@@ -4,7 +4,6 @@
 # $ oroshi-reload-path [root]     # Uses given root instead
 function oroshi-reload-path() {
   local root="${1:-$OROSHI_ROOT}"
-  local hostname="$(hostname)"
 
   # Build the list of subdirs in ./scripts/bin
   local localBinariesPath=()
@@ -41,7 +40,7 @@ function oroshi-reload-path() {
 
   path=(
     # Local binaries
-    $root/private/scripts/bin/local/$hostname
+    $root/private/scripts/bin/local/$HOST
 
     # Private binaries
     $root/private/scripts/bin
