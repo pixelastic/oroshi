@@ -1,0 +1,102 @@
+# Lint Markdown files via markdownlint-cli2
+# Rules that Prettier handles are disabled in the oroshi config, so lint and fix never conflict
+# A project-local markdownlint config takes precedence over the oroshi one
+# Default output is stylish format (violations grouped by file)
+# Usage:
+# $ markdown-lint file.md              # Stylish output (default)
+# $ markdown-lint --json file.md       # Unified JSON output
+# $ markdown-lint --fix file.md        # Fix then report remaining
+# $ markdown-lint docs/                # Expand directory, lint all Markdown files
+# $ markdown-lint file1.md file2.md    # Multiple files
+setopt local_options local_traps err_return
+
+local OROSHI_CONFIG="$OROSHI_ROOT/tools/_languages/markdown/markdownlint/config/markdownlint-cli2.jsonc"
+local MARKDOWNLINT_BIN="$OROSHI_ROOT/node_modules/.bin/markdownlint-cli2"
+
+zparseopts -E -D \
+  -fix=flagFix \
+  -json=flagJson
+local isFix=${#flagFix}
+local isJson=${#flagJson}
+
+# No inputs provided
+if [[ $# -eq 0 ]]; then
+  echoerr "Error: No files provided"
+  return 1
+fi
+
+# Expand directories and filter to Markdown files
+local expanded="$(file-expand --filter is-markdown "$@")"
+# No Markdown files found after expansion
+if [[ "$expanded" == "" ]]; then
+  [[ $isJson == 1 ]] && printf '[]\n'
+  return 0
+fi
+local -a files=("${(@f)expanded}")
+
+# Fix mode: fix first, then fall through to lint
+if [[ $isFix == 1 ]]; then
+  markdown-fix "${files[@]}"
+fi
+
+# The JSON formatter writes to a file, so the oroshi config gets a formatter
+# pointing at a temp file. Project-local configs still apply on top of it.
+local temporaryDirectory="$(mktemp --directory)"
+# Removed when the function returns, whatever the exit path
+local cleanupCommand="rm -rf ${(q)temporaryDirectory}"
+# shellcheck disable=SC2064
+trap "$cleanupCommand" EXIT
+local resultsFile="$temporaryDirectory/results.json"
+local configFile="$temporaryDirectory/markdownlint-cli2.jsonc"
+jq \
+  --arg resultsFile "$resultsFile" \
+  '. + {outputFormatters: [["markdownlint-cli2-formatter-json", {name: $resultsFile}]]}' \
+  "$OROSHI_CONFIG" > "$configFile"
+
+# Run from the filesystem root so reported file names are the absolute paths
+# minus their leading slash. The ":" prefix makes each path a literal, not a glob.
+# markdownlint-cli2 exits 0 when clean, 1 on violations and 2 on internal errors
+local -a absoluteFiles=("${(@)files:a}")
+local -a literalFiles=("${(@)absoluteFiles/#/:}")
+local errorFile="$temporaryDirectory/stderr"
+local exitCode=0
+(
+  cd /
+  "$MARKDOWNLINT_BIN" \
+    --config "$configFile" \
+    "${literalFiles[@]}" \
+    >/dev/null \
+    2>"$errorFile"
+) || exitCode=$?
+if [[ $exitCode -gt 1 ]]; then
+  cat "$errorFile" >&2
+  echoerr "Error: markdownlint-cli2 failed (exit $exitCode)"
+  return 1
+fi
+
+# Convert to the unified schema
+# errorRange is [column, length] when the rule knows where the violation is
+local result="$(jq '[.[] | (.errorRange[0] // 1) as $column | {
+  file: ("/" + .fileName),
+  code: (.ruleNames | join("/")),
+  level: "error",
+  line: .lineNumber,
+  endLine: .lineNumber,
+  column: $column,
+  endColumn: ($column + ((.errorRange[1] // 1) - 1)),
+  message: (.ruleDescription + (if .errorDetail then " [" + .errorDetail + "]" else "" end))
+}]' "$resultsFile")"
+
+# JSON mode: output unified JSON
+if [[ $isJson == 1 ]]; then
+  printf '%s\n' "$result"
+  [[ "$result" != "[]" ]] && return 1
+  return 0
+fi
+
+# Stylish mode (default): pipe to json2stylish
+# Paths relative to git root (or $PWD outside a repo)
+[[ "$result" == "[]" ]] && return 0
+local projectRoot="$(git-directory-root)"
+printf '%s' "$result" | json2stylish --root "$projectRoot/"
+return 1

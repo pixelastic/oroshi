@@ -25,6 +25,8 @@
     "golgoth": "3.1.0",
     "imoen": "3.0.0",
     "jsonc-parser": "3.3.1",
+    "markdownlint-cli2": "0.23.3",
+    "markdownlint-cli2-formatter-json": "0.0.10",
     "pietro": "0.6.1",
     "prettier": "3.6.2",
     "solkan": "0.14.0"
