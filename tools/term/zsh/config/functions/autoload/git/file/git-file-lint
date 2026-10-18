@@ -1,4 +1,4 @@
-# Lint all dirty ZSH, BATS, JS, Python, Go, JSON, SVG and XML files in the working tree, grouped by type
+# Lint all dirty ZSH, BATS, JS, Python, Go, JSON, Markdown, SVG, TOML and XML files in the working tree, grouped by type
 # Prints "✔ All files are clean" when no violations remain.
 # Usage:
 # $ git-file-lint
@@ -20,6 +20,7 @@ local -A results=(
   go-files ""
   js-files ""
   json-files ""
+  markdown-files ""
   python-files ""
   svg-files ""
   toml-files ""
@@ -62,6 +63,11 @@ for rawLine in ${(f)rawFiles}; do
 
   if is-json "$fullPath"; then
     results[json-files]+="${fullPath} "
+    continue
+  fi
+
+  if is-markdown "$fullPath"; then
+    results[markdown-files]+="${fullPath} "
     continue
   fi
 
@@ -137,6 +143,10 @@ fi
 
 if [[ "$results[json-files]" != "" ]]; then
   displayLint --header "JSON" -- json-lint --fix ${=results[json-files]}
+fi
+
+if [[ "$results[markdown-files]" != "" ]]; then
+  displayLint --header "Markdown" -- markdown-lint --fix ${=results[markdown-files]}
 fi
 
 if [[ "$results[svg-files]" != "" ]]; then

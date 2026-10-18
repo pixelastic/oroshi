@@ -432,6 +432,86 @@ setup() {
   grep -q -- '--fix' "$BATS_TMP_DIR/.svg-lint-args"
 }
 
+# ─── MARKDOWN ─────────────────────────────────────────────────────────────────
+
+@test "exits 0 when is-markdown true and markdown-lint has no output" {
+  echo '# Title' > "$BATS_GIT_DIR/README.md"
+  bats_git add README.md
+  bats_git commit --quiet -m "add README.md"
+  echo 'changed' >> "$BATS_GIT_DIR/README.md"
+
+  is-markdown() { return 0; }
+  markdown-lint() { printf ''; }
+  bats_mock is-markdown markdown-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "✔ All files are clean" ]]
+}
+
+@test "shows Markdown header and errors when is-markdown true and markdown-lint has output" {
+  echo '# Title' > "$BATS_GIT_DIR/README.md"
+  bats_git add README.md
+  bats_git commit --quiet -m "add README.md"
+  echo 'changed' >> "$BATS_GIT_DIR/README.md"
+
+  is-markdown() { return 0; }
+  markdown-lint() {
+    printf 'README.md\n  3:1  error  Multiple top-level headings  MD025\n'
+    return 1
+  }
+  bats_mock is-markdown markdown-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" =~ "── Markdown ──" ]]
+  [[ "$output" == *"3:1  error  Multiple top-level headings  MD025"* ]]
+}
+
+@test "exits 0 when is-markdown is false for all dirty files" {
+  echo '# Title' > "$BATS_GIT_DIR/README.md"
+  bats_git add README.md
+  bats_git commit --quiet -m "add README.md"
+  echo 'changed' >> "$BATS_GIT_DIR/README.md"
+
+  is-markdown() { return 1; }
+  bats_mock is-markdown
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "✔ All files are clean" ]]
+}
+
+@test "calls markdown-lint with --fix flag when dirty markdown files are found" {
+  echo '# Title' > "$BATS_GIT_DIR/README.md"
+  bats_git add README.md
+  bats_git commit --quiet -m "add README.md"
+  echo 'changed' >> "$BATS_GIT_DIR/README.md"
+
+  is-markdown() { return 0; }
+  markdown-lint() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/.markdown-lint-args"
+    printf ''
+  }
+  bats_mock is-markdown markdown-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  grep -q -- '--fix' "$BATS_TMP_DIR/.markdown-lint-args"
+}
+
+@test "formats a dirty markdown file in place with the real markdown-lint" {
+  printf '# Title\n' > "$BATS_GIT_DIR/README.md"
+  bats_git add README.md
+  bats_git commit --quiet -m "add README.md"
+  printf '# Title\n\n*   item one\n*   item two\n' > "$BATS_GIT_DIR/README.md"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "✔ All files are clean" ]]
+  [[ "$(< "$BATS_GIT_DIR/README.md")" == *"- item one"* ]]
+}
+
 # ─── LINTER FAILURE ───────────────────────────────────────────────────────────
 
 @test "exits 0 when a linter prints output but exits 0" {

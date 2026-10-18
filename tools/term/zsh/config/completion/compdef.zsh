@@ -280,6 +280,8 @@ compdef "_files -g '*.html'" \
 # }}}
 # Markdown {{{
 compdef "_files -g '*.md'" \
+  markdown-fix \
+  markdown-lint \
   md2html
 # }}}
 

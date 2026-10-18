@@ -27,6 +27,8 @@ function oroshi-ctrl-p-widget() {
     python-test fzf-python-tests
     json-lint fzf-json-files
     json-fix fzf-json-files
+    markdown-lint fzf-markdown-files
+    markdown-fix fzf-markdown-files
     svg-lint fzf-svg-files
     svg-fix fzf-svg-files
     toml-lint fzf-toml-files
