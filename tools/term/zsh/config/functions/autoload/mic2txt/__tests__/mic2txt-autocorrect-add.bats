@@ -1,12 +1,12 @@
 bats_load_library 'helper'
 
-# Rules live in a sandbox OROSHI_ROOT, so each test controls its own rules file
+# Rules live under a sandbox HOME, so each test controls its own rules file
 setup() {
   bats_tmp_dir
-  DATA_DIR="$BATS_TMP_DIR/oroshi/tools/term/zsh/config/functions/autoload/mic2txt/__data"
+  DATA_DIR="$BATS_TMP_DIR/.oroshi/tools/term/zsh/config/functions/autoload/mic2txt/__data"
   mkdir -p "$DATA_DIR"
   RULES_FILE="$DATA_DIR/autocorrect.json"
-  bats_mock_env OROSHI_ROOT "$BATS_TMP_DIR/oroshi"
+  bats_mock_env HOME "$BATS_TMP_DIR"
 }
 
 @test "adds a new pair to the rules file" {

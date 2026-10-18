@@ -192,5 +192,7 @@
   "JSFIX": "js-fix",
   "cloud-cwd": "CLAUDE_CWD",
   "cloud-git-route": "CLAUDE_GIT_ROOT",
-  "SkinZenessageWriter": "skill zsh-writer"
+  "SkinZenessageWriter": "skill zsh-writer",
+  "Maridorm": "Markdown",
+  "Rufy en route": "OROSHI_ROOT"
 }

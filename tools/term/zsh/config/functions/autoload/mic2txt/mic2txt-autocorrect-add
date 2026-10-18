@@ -13,7 +13,7 @@ fi
 
 local wrong="$1"
 local right="$2"
-local rulesFile="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/mic2txt/__data/autocorrect.json"
+local rulesFile=~/.oroshi/tools/term/zsh/config/functions/autoload/mic2txt/__data/autocorrect.json
 
 mkdir --parents "${rulesFile:h}"
 
