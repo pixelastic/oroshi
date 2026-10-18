@@ -1,4 +1,25 @@
 local M = {}
+local codeQuality = require("oroshi/plugins/helpers/code-quality")
+
+M.configureLinter = function(lint)
+  lint.linters.oroshi_markdown_lint = {
+    cmd = "bin-zsh",
+    args = { "markdown-lint", "--json" },
+    stdin = false,
+    ignore_exitcode = true,
+    parser = codeQuality.lintParser,
+  }
+end
+
+M.configureFormatter = function(conform)
+  conform.formatters.oroshi_markdown_fix = {
+    command = "bin-zsh",
+    stdin = false,
+    args = function(_, ctx)
+      return { "markdown-fix", "$FILENAME", "--original-path", F.bufferName(ctx.buf) }
+    end,
+  }
+end
 
 M.onFiletype = function()
   local bufferId = F.bufferId()

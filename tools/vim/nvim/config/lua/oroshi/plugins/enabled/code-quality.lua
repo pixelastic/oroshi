@@ -9,6 +9,7 @@ local htmlHelper = O_require("oroshi/filetypes/html")
 local javascriptHelper = O_require("oroshi/filetypes/javascript")
 local jsonHelper = O_require("oroshi/filetypes/json")
 local luaHelper = O_require("oroshi/filetypes/lua")
+local markdownHelper = O_require("oroshi/filetypes/markdown")
 local pythonHelper = O_require("oroshi/filetypes/python")
 local svgHelper = O_require("oroshi/filetypes/svg")
 local tomlHelper = O_require("oroshi/filetypes/toml")
@@ -128,6 +129,13 @@ local config = {
       configureLsp = luaHelper.configureLsp,
       formatters = { "stylua" },
       configureFormatter = luaHelper.configureFormatter,
+    },
+    markdown = {
+      linters = { "oroshi_markdown_lint" },
+      formatters = { "oroshi_markdown_fix" },
+      configureLinter = markdownHelper.configureLinter,
+      configureFormatter = markdownHelper.configureFormatter,
+      formatterTimeout = 10000,
     },
     python = {
       linters = { "oroshi_python_lint" },
