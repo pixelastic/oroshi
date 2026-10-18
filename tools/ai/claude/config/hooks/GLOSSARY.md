@@ -62,6 +62,26 @@ _Avoid_: session whitelist, temporary allow
 What the hooks remember of the user's approvals of rejected commands. It owns the **approval request** entries, the **approval count** and the **session allow-list**.
 _Avoid_: trusted commands, command trust, learning
 
+**guarded**:
+A command from the **rewrite list** that checks what it is asked to do (e.g. `rm-guarded`). It may refuse to act.
+_Avoid_: safe command, wrapped command, protected command
+
+**guarded refusal**:
+A **guarded** command declining to act. It says so with a **refusal line** in its output, and `postToolUse-Bash` reports it to Claude.
+_Avoid_: guarded block, guarded error, guarded rejection
+
+**refusal line**:
+A line of a command output that starts with the **refusal prefix**. The rest of the line is the message for Claude.
+_Avoid_: marker, marker line, refusal message
+
+**refusal prefix**:
+The text `[claude-guarded:refused]` that starts every **refusal line**.
+_Avoid_: marker prefix, guard tag
+
+**report**:
+Giving the messages of the **refusal lines** to Claude, as the `additionalContext` of the post event.
+_Avoid_: relay, forward, surface
+
 **auto allow-list**:
 An allow-list of additional commands, for when ralph runs in auto mode.
 _Avoid_: ralph allow-list, interpreter list, auto-mode whitelist
@@ -91,6 +111,7 @@ _Avoid_: running subagent, active agent, live subagent
 - A post event (`PostToolUse` or `PostToolUseFailure`) for a **tool use id** means the user said Yes: `postToolUse-Bash` increments the **approval count** of every command in its **approval request**, then closes that request. When the user says No, no post event fires, so no count changes.
 - **Approval memory** joins the two hooks of the Bash pipeline: `preToolUse-Bash` opens the **approval request**, `postToolUse-Bash` counts.
 - A command whose **approval count** reaches 3 joins the **session allow-list**: from then on, Solkan **allow**s it and it no longer appears in **ask with reason**.
+- A **guarded refusal** is not a **reject**: Solkan already allowed the command, and the **guarded** command itself declined to act. `lib/guarded.zsh` owns the **refusal prefix** and the **report**; the hook decides when to **report**.
 - The **auto allow-list** is added to the regular allow-list only while the ralph session of the session directory runs in `auto` mode.
 - Session state lives in `$CLAUDE_SESSION_DIR/state.json`, the **session allow-list** next to it; both owned by `lib/approval-memory.zsh`. Without a session id, nothing is recorded.
 - A Stop with at least one **pending subagent** never notifies; any other `background_tasks` entry never blocks it.

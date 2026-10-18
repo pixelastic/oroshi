@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
 # zsh-lint disable-file=missingSetE
-# Hook must always exit 0, and print nothing unless relaying marker lines
+# Hook must always exit 0, and print nothing unless a guarded command refused
 #
-# Relay: lines starting with the guarded marker, in the output of either event,
-# are returned without their prefix as additionalContext. Other lines are dropped
+# Guarded refusal: refusal lines, in the output of either event, are returned
+# without their prefix as additionalContext. Other lines are dropped (see lib/guarded.zsh)
 #
 # Count Bash approvals: a post event means the command ran, so the user said Yes
 # to every command of the approval request opened for that tool use id
@@ -17,50 +17,19 @@ local hookDir="${0:A:h}"
 
 source "${hookDir}/lib/input.zsh"
 source "${hookDir}/lib/approval-memory.zsh"
+source "${hookDir}/lib/guarded.zsh"
 
 # Parse input and set up the session
 hookInit
 
-# Lines starting with this are written by the guarded helpers for the agent
-MARKER_PREFIX='[claude-guarded:refused]'
-
-# Give Claude extra context after a tool call, for the given hook event name
-# Ends the hook: prints the JSON and exits
-# Usage:
-# $ additionalContext PostToolUse "context for Claude"
-# $ additionalContext PostToolUseFailure "context for Claude"
-function additionalContext() {
-  jo -d. \
-    hookSpecificOutput.hookEventName="$1" \
-    hookSpecificOutput.additionalContext="$2"
-  exit 0
-}
-
-# Relay the marker lines of the command output to the agent, without the marker prefix
-# Ends the hook when there are marker lines: additionalContext exits
-# Usage:
-# $ markerRelay
-function markerRelay() {
-  # Failure event: output lives in .error. Success event: in .tool_response
-  # Collect every field present, skip the missing ones, one line per field
-  local outputFilter='
-    [.error, .tool_response.stdout, .tool_response.stderr]
-    | map(strings)
-    | join("\n")
-  '
-  local commandOutput="$(jq --raw-output "$outputFilter" <<<"$CLAUDE_HOOK_INPUT")"
-
-  local -a markerLines=(${(@M)${(@f)commandOutput}:#${MARKER_PREFIX}*})
-
-  # No marker line: nothing to relay
-  [[ "${#markerLines}" -eq 0 ]] && return 0
-
-  local -a relayedLines=("${(@)${(@)markerLines#${MARKER_PREFIX}}# }")
-  additionalContext "$(inputKeyRead '.hook_event_name')" "${(F)relayedLines}"
-}
-
 # Update the counts of the various command being asked for approval
-approvalRequestClose --tool-use-id "$(inputKeyRead '.tool_use_id')"
-markerRelay
+local toolUseId="$(inputKeyRead '.tool_use_id')"
+approvalRequestClose --tool-use-id "$toolUseId"
+
+# If a guarded command was rejected, let the agent know
+local refusalMessages="$(guardedRefusalRead)"
+if [[ "$refusalMessages" != "" ]]; then
+  guardedRefusalReport "$refusalMessages"
+fi
 
 exit 0
