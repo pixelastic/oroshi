@@ -194,5 +194,7 @@
   "cloud-git-route": "CLAUDE_GIT_ROOT",
   "SkinZenessageWriter": "skill zsh-writer",
   "Maridorm": "Markdown",
-  "Rufy en route": "OROSHI_ROOT"
+  "Rufy en route": "OROSHI_ROOT",
+  "ETC host": "/etc/hosts",
+  "XMODEMAP": "xmodmap"
 }
