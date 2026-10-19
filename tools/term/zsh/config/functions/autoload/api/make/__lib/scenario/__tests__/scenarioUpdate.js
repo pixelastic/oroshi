@@ -13,9 +13,26 @@ describe('scenarioUpdate', () => {
     return body;
   }
 
+  /**
+   * Make getJsonFromOptions return the given contents by key
+   * @param {object} contents - The JSON values, by key
+   */
+  function mockContents(contents) {
+    __.getJsonFromOptions.mockImplementation((_options, key) => contents[key]);
+  }
+
   beforeEach(() => {
-    vi.spyOn(__, 'callApi').mockReturnValue({ scenario: { id: 925 } });
-    vi.spyOn(__, 'formatScenario').mockReturnValue({ id: 'formatted' });
+    vi.spyOn(__, 'callApi').mockImplementation((path) => {
+      if (path === 'scenarios/925/blueprint') {
+        return { response: { blueprint: { flow: [{ id: 2 }] } } };
+      }
+      return { scenario: { id: 925 } };
+    });
+    vi.spyOn(__, 'formatScenario').mockReturnValue({
+      id: 'formatted',
+      isinvalid: false,
+    });
+    vi.spyOn(__, 'buildFlow').mockReturnValue([{ id: 'flow' }]);
     vi.spyOn(__, 'getJsonFromOptions').mockReturnValue(undefined);
   });
 
@@ -51,8 +68,7 @@ describe('scenarioUpdate', () => {
   });
 
   it('serializes the blueprint and the scheduling as JSON strings', async () => {
-    const contents = { blueprint, scheduling };
-    __.getJsonFromOptions.mockImplementation((_options, key) => contents[key]);
+    mockContents({ blueprint, scheduling });
 
     await scenarioUpdate({ scenarioId: 925 });
 
@@ -71,12 +87,34 @@ describe('scenarioUpdate', () => {
     expect(__.getJsonFromOptions).toHaveBeenCalledWith(options, 'scheduling');
   });
 
-  it('returns the updated scenario, formatted', async () => {
-    const expected = { id: 'formatted' };
+  it('returns the updated scenario, formatted, with the flow it sent', async () => {
+    mockContents({ blueprint: { flow: [{ id: 1 }] } });
+
+    const actual = await scenarioUpdate({ scenarioId: 925 });
+
+    expect(__.formatScenario).toHaveBeenCalledWith({ id: 925 });
+    expect(__.buildFlow).toHaveBeenCalledWith([{ id: 1 }]);
+    expect(__.callApi).toHaveBeenCalledTimes(1);
+    expect(actual).toEqual({
+      id: 'formatted',
+      isinvalid: false,
+      flow: [{ id: 'flow' }],
+    });
+  });
+
+  it('prints isinvalid of the updated scenario', async () => {
+    __.formatScenario.mockReturnValue({ id: 'formatted', isinvalid: true });
 
     const actual = await scenarioUpdate({ scenarioId: 925, name: 'a' });
 
-    expect(__.formatScenario).toHaveBeenCalledWith({ id: 925 });
-    expect(actual).toEqual(expected);
+    expect(actual).toHaveProperty('isinvalid', true);
+  });
+
+  it('reads the blueprint of the scenario when only the name changes', async () => {
+    const actual = await scenarioUpdate({ scenarioId: 925, name: 'a' });
+
+    expect(__.callApi).toHaveBeenCalledWith('scenarios/925/blueprint');
+    expect(__.buildFlow).toHaveBeenCalledWith([{ id: 2 }]);
+    expect(actual).toHaveProperty('flow', [{ id: 'flow' }]);
   });
 });

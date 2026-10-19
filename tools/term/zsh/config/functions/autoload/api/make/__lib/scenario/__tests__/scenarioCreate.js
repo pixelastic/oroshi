@@ -20,7 +20,11 @@ describe('scenarioCreate', () => {
   beforeEach(() => {
     vi.spyOn(__, 'getConfig').mockReturnValue({ teamId: '215' });
     vi.spyOn(__, 'callApi').mockReturnValue({ scenario: { id: 925 } });
-    vi.spyOn(__, 'formatScenario').mockReturnValue({ id: 'formatted' });
+    vi.spyOn(__, 'formatScenario').mockReturnValue({
+      id: 'formatted',
+      isinvalid: false,
+    });
+    vi.spyOn(__, 'buildFlow').mockReturnValue([{ id: 'flow' }]);
     // The helper gets each JSON value from the options by its key
     const contents = { blueprint, scheduling };
     vi.spyOn(__, 'getJsonFromOptions').mockImplementation(
@@ -72,12 +76,30 @@ describe('scenarioCreate', () => {
     });
   });
 
-  it('returns the created scenario, formatted', async () => {
-    const actual = await scenarioCreate({
-      blueprint: JSON.stringify(blueprint),
-    });
+  it('returns the created scenario, formatted, with its flow', async () => {
+    const flowBlueprint = { flow: [{ id: 1 }] };
+    __.getJsonFromOptions.mockImplementation((_options, key) =>
+      key === 'blueprint' ? flowBlueprint : scheduling,
+    );
+
+    const actual = await scenarioCreate({ blueprint: 'a' });
 
     expect(__.formatScenario).toHaveBeenCalledWith({ id: 925 });
-    expect(actual).toEqual({ id: 'formatted' });
+    // The flow comes from the blueprint that was sent, with no second call
+    expect(__.buildFlow).toHaveBeenCalledWith([{ id: 1 }]);
+    expect(__.callApi).toHaveBeenCalledTimes(1);
+    expect(actual).toEqual({
+      id: 'formatted',
+      isinvalid: false,
+      flow: [{ id: 'flow' }],
+    });
+  });
+
+  it('prints isinvalid of the created scenario', async () => {
+    __.formatScenario.mockReturnValue({ id: 'formatted', isinvalid: true });
+
+    const actual = await scenarioCreate({ blueprint: 'a' });
+
+    expect(actual).toHaveProperty('isinvalid', true);
   });
 });

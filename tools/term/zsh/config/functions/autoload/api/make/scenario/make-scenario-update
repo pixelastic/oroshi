@@ -1,4 +1,4 @@
-# Update some fields of a Make scenario, and print it as JSON
+# Update some fields of a Make scenario, and print it as JSON, with isinvalid and its flow
 # Only the given fields change
 # The Blueprint and the Scheduling are JSON, inline or from a file. The file wins
 # Usage:

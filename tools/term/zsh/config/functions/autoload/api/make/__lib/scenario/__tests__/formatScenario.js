@@ -19,6 +19,7 @@ describe('formatScenario', () => {
     updatedByUser: { id: 1, name: 'Tim', email: 'tim@example.com' },
     nextExec: null,
     isActive: true,
+    isinvalid: false,
     type: 'scenario',
   };
 
@@ -30,10 +31,17 @@ describe('formatScenario', () => {
       name: 'triggerCheck',
       folderId: 131246,
       isActive: true,
+      isinvalid: false,
       scheduling: { type: 'immediately' },
       lastEdit: '2026-02-26T14:24:01.044Z',
       nextExec: null,
     });
+  });
+
+  it('keeps isinvalid when the Scenario is invalid', () => {
+    const actual = formatScenario({ ...input, isinvalid: true });
+
+    expect(actual).toHaveProperty('isinvalid', true);
   });
 
   it('drops the email of the users', () => {

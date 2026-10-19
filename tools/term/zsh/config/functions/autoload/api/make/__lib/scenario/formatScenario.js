@@ -11,6 +11,7 @@ export function formatScenario(response) {
     'name',
     'folderId',
     'isActive',
+    'isinvalid',
     'scheduling',
     'lastEdit',
     'nextExec',

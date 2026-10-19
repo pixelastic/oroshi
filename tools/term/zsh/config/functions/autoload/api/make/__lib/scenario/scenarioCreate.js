@@ -1,6 +1,7 @@
 import { getJsonFromOptions } from '@oroshi/api-shared/getJsonFromOptions.js';
 import { callApi } from '../callApi.js';
 import { getConfig } from '../getConfig.js';
+import { buildFlow } from './buildFlow.js';
 import { formatScenario } from './formatScenario.js';
 
 export let __;
@@ -14,7 +15,7 @@ export let __;
  * @param {string|object} [options.scheduling] - Scheduling as a JSON string, or the object itself. on-demand by default
  * @param {string} [options.schedulingFile] - Path to a JSON file of the Scheduling. Wins over scheduling
  * @param {number|string} [options.folderId] - Folder ID
- * @returns {Promise<object>} The new Scenario, formatted
+ * @returns {Promise<object>} The new Scenario, formatted, with its flow
  */
 export async function scenarioCreate(options) {
   const { name, folderId } = options;
@@ -45,12 +46,17 @@ export async function scenarioCreate(options) {
       scheduling: JSON.stringify(schedulingContent),
     },
   });
-  return __.formatScenario(response.scenario);
+  // The flow comes from the Blueprint that was sent, to avoid a second call
+  return {
+    ...__.formatScenario(response.scenario),
+    flow: __.buildFlow(namedBlueprint.flow),
+  };
 }
 
 __ = {
   callApi,
   getJsonFromOptions,
+  buildFlow,
   formatScenario,
   getConfig,
 };

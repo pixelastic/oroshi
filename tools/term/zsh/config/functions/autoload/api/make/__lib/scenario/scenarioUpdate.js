@@ -1,6 +1,7 @@
 import { _ } from 'golgoth';
 import { getJsonFromOptions } from '@oroshi/api-shared/getJsonFromOptions.js';
 import { callApi } from '../callApi.js';
+import { buildFlow } from './buildFlow.js';
 import { formatScenario } from './formatScenario.js';
 
 export let __;
@@ -15,7 +16,7 @@ export let __;
  * @param {string|object} [options.scheduling] - Scheduling as a JSON string, or the object itself
  * @param {string} [options.schedulingFile] - Path to a JSON file of the Scheduling. Wins over scheduling
  * @param {number|string} [options.folderId] - Folder ID
- * @returns {Promise<object>} The updated Scenario, formatted
+ * @returns {Promise<object>} The updated Scenario, formatted, with its flow
  */
 export async function scenarioUpdate(options) {
   const { scenarioId, name, folderId } = options;
@@ -39,11 +40,23 @@ export async function scenarioUpdate(options) {
     method: 'PATCH',
     body,
   });
-  return __.formatScenario(response.scenario);
+
+  // Use the Blueprint that was sent to avoid a second call. Without one, read
+  // it like scenarioRead does
+  const flow = blueprintContent
+    ? blueprintContent.flow
+    : (await __.callApi(`scenarios/${scenarioId}/blueprint`)).response.blueprint
+        .flow;
+
+  return {
+    ...__.formatScenario(response.scenario),
+    flow: __.buildFlow(flow),
+  };
 }
 
 __ = {
   callApi,
   getJsonFromOptions,
+  buildFlow,
   formatScenario,
 };
