@@ -17,5 +17,8 @@ export async function openSession() {
   return await chromium.launchPersistentContext(PROFILE_DIRECTORY, {
     channel: 'chrome',
     headless: false,
+    // Google refuses to sign in a browser that announces it is automated
+    ignoreDefaultArgs: ['--enable-automation'],
+    args: ['--disable-blink-features=AutomationControlled'],
   });
 }
