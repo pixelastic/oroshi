@@ -70,6 +70,12 @@ __ = {
       },
       { name: 'isbn', expected: 'a text', isValid: __.isText },
       {
+        name: 'language',
+        expected: 'a text',
+        isValid: __.isText,
+        isOptional: true,
+      },
+      {
         name: 'condition',
         expected: `one of ${CONDITIONS.join(', ')}`,
         isValid: (value) => CONDITIONS.includes(value),
@@ -118,8 +124,11 @@ __ = {
    * @param {string} listingPath - Path of the listing, for the error message
    */
   validateFields(listing, listingPath) {
-    __.fields().forEach(({ name, expected, isValid }) => {
+    __.fields().forEach(({ name, expected, isValid, isOptional }) => {
       const value = listing?.[name];
+      if (value === undefined && isOptional) {
+        return;
+      }
       if (value === undefined) {
         throw firostError(
           'VINTED_LISTING_INVALID',

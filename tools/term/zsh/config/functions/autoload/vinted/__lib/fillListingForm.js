@@ -29,10 +29,13 @@ export async function fillListingForm(page, listing) {
   await __.acceptCookies(page);
 
   await __.setPhotos(page, listing.photos);
-  await __.typeIn(page, 'title--input', listing.title);
+  await __.pasteIn(page, 'title--input', listing.title);
   await __.pasteIn(page, 'description--input', listing.description);
   await __.pickCategory(page, listing.category);
-  await __.typeIn(page, 'isbn--input', listing.isbn);
+  await __.pasteIn(page, 'isbn--input', listing.isbn);
+  if (listing.language) {
+    await __.pickLanguage(page, listing.language);
+  }
   await __.pickCondition(page, listing.condition);
   await __.typeIn(page, 'price-input--input', __.formatPrice(listing.price));
 }
@@ -141,6 +144,31 @@ __ = {
       `Category "${label}" not found in the category picker`,
     );
     await item.click();
+    await __.pause(page);
+  },
+
+  /**
+   * Select the book language, once the ISBN field makes it appear
+   * @param {object} page - Playwright page
+   * @param {string} language - Language label, in English (e.g. "French")
+   */
+  async pickLanguage(page, language) {
+    const picker = await findField(
+      page,
+      'isbn-language_book-single-list_search-input',
+    );
+    await picker.click();
+    await __.pause(page);
+
+    const list = await findField(
+      page,
+      'isbn-language_book-single-list_search-content',
+    );
+    const option = await waitForLocator(
+      list.getByText(language, { exact: true }),
+      `Language "${language}" not found in the language picker`,
+    );
+    await option.click();
     await __.pause(page);
   },
 

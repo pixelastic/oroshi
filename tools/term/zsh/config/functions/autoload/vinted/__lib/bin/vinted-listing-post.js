@@ -21,6 +21,7 @@ const listingPath = args.find((arg) => !arg.startsWith('--'));
 // Parse first, so an invalid listing fails before any browser opens
 const listing = await parseListing(listingPath);
 
+let published = null;
 const context = await openSession();
 try {
   const page = context.pages()[0] ?? (await context.newPage());
@@ -36,9 +37,14 @@ try {
   consoleSuccess(`Screenshot saved to ${screenshotPath}`);
 
   if (!dryRun) {
-    const listingUrl = await publishListing(page);
-    consoleSuccess(`Listing published: ${listingUrl}`);
+    published = await publishListing(page, listing);
+    consoleSuccess(`Listing published: ${published.url}`);
   }
 } finally {
   await context.close();
+}
+
+// Last line of the output, for the callers that need to read it
+if (published) {
+  console.log(JSON.stringify({ url: published.url }));
 }

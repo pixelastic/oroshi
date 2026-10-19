@@ -80,6 +80,42 @@ describe('parseListing', () => {
     });
   });
 
+  describe('language', () => {
+    it('accepts a listing without language', async () => {
+      const listingPath = await writeListing(validListing);
+
+      const actual = await parseListing(listingPath);
+
+      expect(actual).not.toHaveProperty('language');
+    });
+
+    it('keeps the language of the listing', async () => {
+      const listingPath = await writeListing({
+        ...validListing,
+        language: 'French',
+      });
+
+      const actual = await parseListing(listingPath);
+
+      expect(actual).toHaveProperty('language', 'French');
+    });
+
+    it('names the language when it is not a text', async () => {
+      const listingPath = await writeListing({
+        ...validListing,
+        language: 42,
+      });
+
+      const actual = await parseError(listingPath);
+
+      expect(actual).toHaveProperty('code', 'VINTED_LISTING_INVALID');
+      expect(actual).toHaveProperty(
+        'message',
+        `${listingPath}: field "language" must be a text`,
+      );
+    });
+  });
+
   describe('invalid listing', () => {
     it.each([
       { input: 'photos' },

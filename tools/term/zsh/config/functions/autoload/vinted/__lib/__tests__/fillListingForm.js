@@ -62,8 +62,43 @@ describe('fillListingForm', () => {
     });
   });
 
+  describe('pickLanguage', () => {
+    it('opens the language picker, then clicks the option with the label', async () => {
+      const calls = [];
+      const option = { click: () => calls.push(['click option']) };
+      const list = {
+        getByText: (label, options) => {
+          calls.push(['getByText', label, options]);
+          return { first: () => ({ waitFor: vi.fn(), ...option }) };
+        },
+      };
+      const fields = {
+        'isbn-language_book-single-list_search-input': {
+          waitFor: vi.fn(),
+          click: () => calls.push(['click picker']),
+        },
+        'isbn-language_book-single-list_search-content': {
+          waitFor: vi.fn(),
+          ...list,
+        },
+      };
+      const page = {
+        getByTestId: (testId) => ({ first: () => fields[testId] }),
+      };
+      vi.spyOn(__, 'pause').mockReturnValue();
+
+      await __.pickLanguage(page, 'French');
+
+      expect(calls).toEqual([
+        ['click picker'],
+        ['getByText', 'French', { exact: true }],
+        ['click option'],
+      ]);
+    });
+  });
+
   describe('fillListingForm', () => {
-    it('pastes the description and types the other fields', async () => {
+    it('pastes the title, the description and the isbn, and types the price', async () => {
       vi.spyOn(__, 'acceptCookies').mockReturnValue();
       vi.spyOn(__, 'setPhotos').mockReturnValue();
       vi.spyOn(__, 'pickCategory').mockReturnValue();
@@ -82,17 +117,48 @@ describe('fillListingForm', () => {
 
       await fillListingForm({}, listing);
 
-      expect(__.pasteIn).toHaveBeenCalledTimes(1);
-      expect(__.pasteIn).toHaveBeenCalledWith(
-        {},
-        'description--input',
-        'Line one\nLine two',
-      );
+      expect(__).toHaveProperty('pasteIn.mock.calls', [
+        [{}, 'title--input', 'Title'],
+        [{}, 'description--input', 'Line one\nLine two'],
+        [{}, 'isbn--input', '978'],
+      ]);
       expect(__.typeIn.mock.calls.map(([, testId]) => testId)).toEqual([
-        'title--input',
-        'isbn--input',
         'price-input--input',
       ]);
+    });
+  });
+
+  describe('fillListingForm language', () => {
+    let listing;
+    beforeEach(() => {
+      vi.spyOn(__, 'acceptCookies').mockReturnValue();
+      vi.spyOn(__, 'setPhotos').mockReturnValue();
+      vi.spyOn(__, 'pickCategory').mockReturnValue();
+      vi.spyOn(__, 'pickLanguage').mockReturnValue();
+      vi.spyOn(__, 'pickCondition').mockReturnValue();
+      vi.spyOn(__, 'typeIn').mockReturnValue();
+      vi.spyOn(__, 'pasteIn').mockReturnValue();
+      listing = {
+        photos: ['/a.jpg'],
+        title: 'Title',
+        description: 'Text',
+        category: ['Books'],
+        isbn: '0000000000000',
+        condition: 'Good',
+        price: 5,
+      };
+    });
+
+    it('picks the language when the listing has one', async () => {
+      await fillListingForm({}, { ...listing, language: 'French' });
+
+      expect(__.pickLanguage).toHaveBeenCalledWith({}, 'French');
+    });
+
+    it('does not pick a language when the listing has none', async () => {
+      await fillListingForm({}, listing);
+
+      expect(__.pickLanguage).not.toHaveBeenCalled();
     });
   });
 
