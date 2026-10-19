@@ -71,7 +71,6 @@ type Model struct {
 	remoteName     string
 	branchColor    int
 	remoteColor    int
-	icon           string
 	fromRef        string
 	toRef          string
 	remoteMessages []string
@@ -88,6 +87,15 @@ func (m Model) ExitCode() int {
 // Errors returns accumulated error lines for the caller to print to stderr.
 func (m Model) Errors() []string {
 	return m.errors
+}
+
+// FailureOutput returns the raw stderr when the subprocess failed without any
+// classified error, so the caller can print what git actually said.
+func (m Model) FailureOutput() string {
+	if m.exitCode == 0 || len(m.errors) > 0 {
+		return ""
+	}
+	return strings.Join(m.rawLines, "\n")
 }
 
 // RawPanel returns the raw output panel content if the panel was open, empty string otherwise.

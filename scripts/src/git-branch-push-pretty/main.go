@@ -106,6 +106,9 @@ func main() {
 	for _, line := range m.Errors() {
 		fmt.Fprintln(os.Stderr, line)
 	}
+	if failure := m.FailureOutput(); failure != "" {
+		fmt.Fprintln(os.Stderr, failure)
+	}
 	if rawPanel := m.RawPanel(); rawPanel != "" {
 		fmt.Println(rawPanel)
 	}

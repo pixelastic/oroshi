@@ -344,3 +344,25 @@ func TestBarWidthHasMinimum(t *testing.T) {
 	m1, _ := m.Update(tea.WindowSizeMsg{Width: 20, Height: 10})
 	assert.GreaterOrEqual(t, m1.(Model).barWidth(), 10)
 }
+
+func TestFailureOutputReturnsRawLinesOnUnclassifiedFailure(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(RawLineMsg{Line: "fatal: something unexpected"})
+	m2, _ := m1.Update(DoneMsg{ExitCode: 1})
+	assert.Equal(t, "fatal: something unexpected", m2.(Model).FailureOutput())
+}
+
+func TestFailureOutputEmptyOnSuccess(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(RawLineMsg{Line: "Everything up-to-date"})
+	m2, _ := m1.Update(DoneMsg{ExitCode: 0})
+	assert.Empty(t, m2.(Model).FailureOutput())
+}
+
+func TestFailureOutputEmptyWhenErrorsAlreadyClassified(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(RawLineMsg{Line: "! [rejected] main -> main"})
+	m2, _ := m1.Update(ErrorMsg{Raw: "! [rejected] main -> main"})
+	m3, _ := m2.Update(DoneMsg{ExitCode: 1})
+	assert.Empty(t, m3.(Model).FailureOutput())
+}
