@@ -1,5 +1,8 @@
 bats_load_library 'helper'
 
+# The many-connections test fills the container's sessions, so the tests of this file run in order
+export BATS_NO_PARALLELIZE_WITHIN_FILE=true
+
 # Start the Docker SSH container once for all tests (idempotent)
 setup_file() {
   bats_ssh_mock_start

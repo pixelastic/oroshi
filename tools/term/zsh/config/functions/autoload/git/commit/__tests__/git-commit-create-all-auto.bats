@@ -2,6 +2,10 @@ bats_load_library 'helper'
 
 setup() {
 	bats_tmp_dir
+
+	# The current repo has submodules: default to none, so tests never reach the real submodule commands
+	git-directory-has-submodules() { return 1; }
+	bats_mock git-directory-has-submodules
 }
 
 @test "captures git-commit-message output and passes it as commit message to git-commit-create" {

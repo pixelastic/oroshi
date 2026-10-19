@@ -196,5 +196,6 @@
   "Maridorm": "Markdown",
   "Rufy en route": "OROSHI_ROOT",
   "ETC host": "/etc/hosts",
-  "XMODEMAP": "xmodmap"
+  "XMODEMAP": "xmodmap",
+  "Roche et Root": "OROSHI_ROOT"
 }

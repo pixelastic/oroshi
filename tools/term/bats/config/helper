@@ -17,16 +17,22 @@ bats_debug() {
 
 # bats_tmp_dir
 # Creates an isolated sandbox for the current test, sets BATS_TMP_DIR.
-# Path: /tmp/sandbox/bats/<test-file>/<slug>
+# Path: /tmp/sandbox/bats/<test-file>-<path-hash>/<slug>-<test-number>
+# The path hash keeps test files with the same name apart, and the test number keeps
+# tests with the same slug apart (accepts 's' and accepts 'S'), so tests can run in parallel
 # Usage: bats_tmp_dir
 bats_tmp_dir() {
   local file="${BATS_TEST_FILENAME##*/}"
   file="${file%.bats}"
 
+  local pathHash
+  pathHash="$(cksum <<<"$BATS_TEST_FILENAME")"
+  pathHash="${pathHash%% *}"
+
   local slug
   slug="$(bats_slugify "$BATS_TEST_DESCRIPTION")"
 
-  local dir="/tmp/sandbox/bats/${file}/${slug}"
+  local dir="/tmp/sandbox/bats/${file}-${pathHash}/${slug}-${BATS_SUITE_TEST_NUMBER}"
   rm -rf "$dir"
   mkdir -p "$dir"
 

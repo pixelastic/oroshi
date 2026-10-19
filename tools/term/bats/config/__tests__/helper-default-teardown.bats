@@ -11,6 +11,9 @@ bats_load_library 'helper'
 # teardown). The second test reads that path and asserts the directory
 # no longer exists — proving the default teardown ran between tests.
 
+# The second test reads what the first one wrote, so they must run in order
+export BATS_NO_PARALLELIZE_WITHIN_FILE=true
+
 setup() {
   COORDINATION="/tmp/sandbox/bats/default-teardown-coordination"
   bats_tmp_dir
