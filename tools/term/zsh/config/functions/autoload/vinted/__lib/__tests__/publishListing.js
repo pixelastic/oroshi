@@ -51,8 +51,20 @@ describe('publishListing', () => {
         input: 'https://www.vinted.fr/member/register/select_type',
         expected: false,
       },
-    ])('$title', ({ input, expected }) => {
-      const actual = __.hasLeftForm(input);
+      {
+        title: 'still on the edit form',
+        input: 'https://www.vinted.fr/items/42/edit',
+        formPath: '/items/42/edit',
+        expected: false,
+      },
+      {
+        title: 'listing page after the edit form',
+        input: 'https://www.vinted.fr/items/42-mon-livre',
+        formPath: '/items/42/edit',
+        expected: true,
+      },
+    ])('$title', ({ input, formPath = '/items/new', expected }) => {
+      const actual = __.hasLeftForm(input, formPath);
       expect(actual).toEqual(expected);
     });
   });

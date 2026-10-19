@@ -28,16 +28,33 @@ const CONDITION_RADIOS = {
 export async function fillListingForm(page, listing) {
   await __.acceptCookies(page);
 
-  await __.setPhotos(page, listing.photos);
-  await __.pasteIn(page, 'title--input', listing.title);
-  await __.pasteIn(page, 'description--input', listing.description);
-  await __.pickCategory(page, listing.category);
-  await __.pasteIn(page, 'isbn--input', listing.isbn);
-  if (listing.language) {
-    await __.pickLanguage(page, listing.language);
+  // A partial listing, like an update, only fills the fields it has
+  const { photos, title, description, category, isbn, language } = listing;
+  const { condition, price } = listing;
+  if (photos) {
+    await __.setPhotos(page, photos);
   }
-  await __.pickCondition(page, listing.condition);
-  await __.typeIn(page, 'price-input--input', __.formatPrice(listing.price));
+  if (title) {
+    await __.pasteIn(page, 'title--input', title);
+  }
+  if (description) {
+    await __.pasteIn(page, 'description--input', description);
+  }
+  if (category) {
+    await __.pickCategory(page, category);
+  }
+  if (isbn) {
+    await __.pasteIn(page, 'isbn--input', isbn);
+  }
+  if (language) {
+    await __.pickLanguage(page, language);
+  }
+  if (condition) {
+    await __.pickCondition(page, condition);
+  }
+  if (price !== undefined) {
+    await __.typeIn(page, 'price-input--input', __.formatPrice(price));
+  }
 }
 
 __ = {

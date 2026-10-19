@@ -1,0 +1,19 @@
+# Update a Vinted listing from a partial JSON file, and save it
+# Usage:
+# $ vinted-listing-update 123456 update.json             # Change the fields in the file and save
+# $ vinted-listing-update <url> update.json --dry-run    # Fill the form, save a screenshot, do not save
+setopt local_options err_return
+
+zparseopts -E -D -dry-run=flagDryRun
+
+local listingId="$1"
+local updatePath="$2"
+
+# A listing and an update file are required
+if [[ "$listingId" == "" || "$updatePath" == "" ]]; then
+  echoerr "Usage: vinted-listing-update <id|url> <update.json> [--dry-run]"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/vinted-listing-update.js" "$listingId" "$updatePath" "${flagDryRun[@]}"

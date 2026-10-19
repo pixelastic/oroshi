@@ -128,6 +128,28 @@ describe('fillListingForm', () => {
     });
   });
 
+  describe('fillListingForm partial listing', () => {
+    beforeEach(() => {
+      vi.spyOn(__, 'acceptCookies').mockReturnValue();
+      vi.spyOn(__, 'setPhotos').mockReturnValue();
+      vi.spyOn(__, 'pickCategory').mockReturnValue();
+      vi.spyOn(__, 'pickLanguage').mockReturnValue();
+      vi.spyOn(__, 'pickCondition').mockReturnValue();
+      vi.spyOn(__, 'typeIn').mockReturnValue();
+      vi.spyOn(__, 'pasteIn').mockReturnValue();
+    });
+
+    it('fills only the fields the listing has', async () => {
+      await fillListingForm({}, { price: 8, condition: 'Good' });
+
+      expect(__.typeIn).toHaveBeenCalledWith({}, 'price-input--input', '8');
+      expect(__.pickCondition).toHaveBeenCalledWith({}, 'Good');
+      expect(__.setPhotos).not.toHaveBeenCalled();
+      expect(__.pasteIn).not.toHaveBeenCalled();
+      expect(__.pickCategory).not.toHaveBeenCalled();
+    });
+  });
+
   describe('fillListingForm language', () => {
     let listing;
     beforeEach(() => {

@@ -9,7 +9,6 @@ export let __;
 
 const CONFIRMATION_TIMEOUT_IN_MS = 30000;
 const LISTING_PATH_PATTERN = /^\/items\/\d+/;
-const FORM_PATH = '/items/new';
 const LOGIN_PATH_PATTERN = /^\/member\/(register|login)/;
 const UPLOAD_PATH_PATTERN = /\/item_upload\/items/;
 const ITEM_BASE_URL = 'https://www.vinted.fr/items';
@@ -30,6 +29,8 @@ const PAGES_DIRECTORY = path.join(
  */
 export async function publishListing(page, listing) {
   const publishButton = await findField(page, 'upload-form-save-button');
+  // The creation and the edit forms live on different paths
+  const formPath = new URL(page.url()).pathname;
 
   // Remember every POST, to help understand an unconfirmed publication
   const postedUrls = [];
@@ -52,7 +53,9 @@ export async function publishListing(page, listing) {
         ),
       ))(),
     (async () => {
-      await page.waitForURL((url) => __.hasLeftForm(url.href), { timeout });
+      await page.waitForURL((url) => __.hasLeftForm(url.href, formPath), {
+        timeout,
+      });
       return null;
     })(),
   ]);
@@ -122,11 +125,12 @@ __ = {
   /**
    * Check if a URL shows that the page moved on from the listing form
    * @param {string} url - Page URL
+   * @param {string} formPath - Path of the form being submitted
    * @returns {boolean} False for the form itself and for the login pages
    */
-  hasLeftForm(url) {
+  hasLeftForm(url, formPath) {
     const { pathname } = new URL(url);
-    return pathname !== FORM_PATH && !LOGIN_PATH_PATTERN.test(pathname);
+    return pathname !== formPath && !LOGIN_PATH_PATTERN.test(pathname);
   },
 
   /**
