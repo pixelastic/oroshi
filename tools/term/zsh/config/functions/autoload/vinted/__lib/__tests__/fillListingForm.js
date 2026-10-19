@@ -150,6 +150,37 @@ describe('fillListingForm', () => {
     });
   });
 
+  describe('fillListingForm timings', () => {
+    beforeEach(() => {
+      vi.spyOn(__, 'acceptCookies').mockReturnValue();
+      vi.spyOn(__, 'setPhotos').mockReturnValue();
+      vi.spyOn(__, 'pickCategory').mockReturnValue();
+      vi.spyOn(__, 'pickCondition').mockReturnValue();
+      vi.spyOn(__, 'typeIn').mockReturnValue();
+      vi.spyOn(__, 'pasteIn').mockReturnValue();
+    });
+
+    it('returns the duration of each step it ran, in order', async () => {
+      const listing = {
+        photos: ['/a.jpg'],
+        title: 'Title',
+        price: 8,
+      };
+
+      const actual = await fillListingForm({}, listing);
+
+      expect(actual.map(({ step }) => step)).toEqual([
+        'cookies',
+        'photos',
+        'title',
+        'price',
+      ]);
+      actual.forEach(({ durationInMs }) => {
+        expect(durationInMs).toBeGreaterThanOrEqual(0);
+      });
+    });
+  });
+
   describe('fillListingForm language', () => {
     let listing;
     beforeEach(() => {

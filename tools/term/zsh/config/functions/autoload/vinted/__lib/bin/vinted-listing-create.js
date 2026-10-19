@@ -1,7 +1,7 @@
 import os from 'node:os';
 import path from 'node:path';
 import { dayjs } from 'golgoth';
-import { consoleSuccess } from 'firost';
+import { consoleInfo, consoleSuccess } from 'firost';
 import { ensureLoggedIn } from '../ensureLoggedIn.js';
 import { fillListingForm } from '../fillListingForm.js';
 import { openSession } from '../openSession.js';
@@ -27,7 +27,10 @@ try {
   const page = context.pages()[0] ?? (await context.newPage());
   await page.goto(FORM_URL);
   await ensureLoggedIn(page);
-  await fillListingForm(page, listing);
+  const timings = await fillListingForm(page, listing);
+  timings.forEach(({ step, durationInMs }) => {
+    consoleInfo(`${step}: ${durationInMs}ms`);
+  });
 
   const screenshotPath = path.join(
     SCREENSHOT_DIRECTORY,

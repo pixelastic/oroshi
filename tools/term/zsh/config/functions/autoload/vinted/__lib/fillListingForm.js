@@ -24,40 +24,61 @@ const CONDITION_RADIOS = {
  * with an error as soon as a form field is missing.
  * @param {object} page - Playwright page showing the listing form
  * @param {object} listing - Listing returned by parseListing
+ * @returns {Promise<object[]>} Duration of each step, as { step, durationInMs }
  */
 export async function fillListingForm(page, listing) {
-  await __.acceptCookies(page);
+  const timings = [];
+  const run = (step, action) => __.timed(timings, step, action);
+
+  await run('cookies', () => __.acceptCookies(page));
 
   // A partial listing, like an update, only fills the fields it has
   const { photos, title, description, category, isbn, language } = listing;
   const { condition, price } = listing;
   if (photos) {
-    await __.setPhotos(page, photos);
+    await run('photos', () => __.setPhotos(page, photos));
   }
   if (title) {
-    await __.pasteIn(page, 'title--input', title);
+    await run('title', () => __.pasteIn(page, 'title--input', title));
   }
   if (description) {
-    await __.pasteIn(page, 'description--input', description);
+    await run('description', () =>
+      __.pasteIn(page, 'description--input', description),
+    );
   }
   if (category) {
-    await __.pickCategory(page, category);
+    await run('category', () => __.pickCategory(page, category));
   }
   if (isbn) {
-    await __.pasteIn(page, 'isbn--input', isbn);
+    await run('isbn', () => __.pasteIn(page, 'isbn--input', isbn));
   }
   if (language) {
-    await __.pickLanguage(page, language);
+    await run('language', () => __.pickLanguage(page, language));
   }
   if (condition) {
-    await __.pickCondition(page, condition);
+    await run('condition', () => __.pickCondition(page, condition));
   }
   if (price !== undefined) {
-    await __.typeIn(page, 'price-input--input', __.formatPrice(price));
+    await run('price', () =>
+      __.typeIn(page, 'price-input--input', __.formatPrice(price)),
+    );
   }
+  return timings;
 }
 
 __ = {
+  /**
+   * Run an action and record how long it took
+   * @param {object[]} timings - List to add { step, durationInMs } to
+   * @param {string} step - Name of the step
+   * @param {Function} action - Async action to run
+   */
+  async timed(timings, step, action) {
+    const start = performance.now();
+    await action();
+    timings.push({ step, durationInMs: Math.round(performance.now() - start) });
+  },
+
   /**
    * Wait a random human-like delay
    * @param {object} page - Playwright page
