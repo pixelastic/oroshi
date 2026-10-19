@@ -1,6 +1,7 @@
 # Update some fields of a Make scenario, and print it as JSON, with isinvalid and its flow
 # Only the given fields change
 # The Blueprint and the Scheduling are JSON, inline or from a file. The file wins
+# A Blueprint that is sent is aligned: modules on one baseline, 300 apart, left to right. No option skips it
 # Usage:
 # $ make-scenario-update 925 --name "Paris Meetup 2026"
 # $ make-scenario-update 925 --blueprint '{"flow":[]}'

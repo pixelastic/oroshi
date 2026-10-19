@@ -25,6 +25,10 @@ describe('scenarioCreate', () => {
       isinvalid: false,
     });
     vi.spyOn(__, 'buildFlow').mockReturnValue([{ id: 'flow' }]);
+    vi.spyOn(__, 'blueprintAlign').mockImplementation((input) => ({
+      ...input,
+      aligned: true,
+    }));
     // The helper gets each JSON value from the options by its key
     const contents = { blueprint, scheduling };
     vi.spyOn(__, 'getJsonFromOptions').mockImplementation(
@@ -47,6 +51,7 @@ describe('scenarioCreate', () => {
     expect(sentBody().blueprint).toEqual({
       ...blueprint,
       name: 'oroshi-test-a',
+      aligned: true,
     });
   });
 
@@ -57,8 +62,21 @@ describe('scenarioCreate', () => {
     });
 
     const { body } = __.callApi.mock.calls[0][1];
-    expect(body).toHaveProperty('blueprint', JSON.stringify(blueprint));
+    expect(body).toHaveProperty(
+      'blueprint',
+      JSON.stringify({ ...blueprint, aligned: true }),
+    );
     expect(body).toHaveProperty('scheduling', JSON.stringify(scheduling));
+  });
+
+  it('sends an aligned blueprint', async () => {
+    await scenarioCreate({ name: 'oroshi-test-a', blueprint: 'a' });
+
+    expect(__.blueprintAlign).toHaveBeenCalledWith({
+      ...blueprint,
+      name: 'oroshi-test-a',
+    });
+    expect(sentBody().blueprint).toHaveProperty('aligned', true);
   });
 
   it('gets the blueprint and the scheduling from the options', async () => {

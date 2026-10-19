@@ -1,6 +1,7 @@
 # Create a Make scenario, and print it as JSON, with isinvalid and its flow
 # The Blueprint and the Scheduling are JSON, inline or from a file. The file wins
 # Scheduling is on-demand by default
+# The modules of the Blueprint are aligned on one baseline, 300 apart, left to right. No option skips it
 # Usage:
 # $ make-scenario-create --name "Paris Meetup" --blueprint-file ./blueprint.json
 # $ make-scenario-create --name "Paris Meetup" --blueprint '{"flow":[]}' --scheduling '{"type":"on-demand"}'

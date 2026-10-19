@@ -1,13 +1,15 @@
 import { getJsonFromOptions } from '@oroshi/api-shared/getJsonFromOptions.js';
 import { callApi } from '../callApi.js';
 import { getConfig } from '../getConfig.js';
+import { blueprintAlign } from './blueprintAlign.js';
 import { buildFlow } from './buildFlow.js';
 import { formatScenario } from './formatScenario.js';
 
 export let __;
 
 /**
- * Create one Scenario in the Team
+ * Create one Scenario in the Team. The modules of its Blueprint are aligned on
+ * one baseline, left to right, with no way to skip it
  * @param {object} options - Content of the Scenario
  * @param {string} [options.name] - Name of the Scenario
  * @param {string|object} [options.blueprint] - Blueprint as a JSON string, or the object itself
@@ -32,9 +34,9 @@ export async function scenarioCreate(options) {
   });
 
   // Make reads the name of the Scenario from its Blueprint, and ignores the body
-  const namedBlueprint = name
-    ? { ...blueprintContent, name }
-    : blueprintContent;
+  const namedBlueprint = __.blueprintAlign(
+    name ? { ...blueprintContent, name } : blueprintContent,
+  );
 
   // Make expects the Blueprint and the Scheduling as JSON strings
   const response = await __.callApi('scenarios', {
@@ -56,6 +58,7 @@ export async function scenarioCreate(options) {
 __ = {
   callApi,
   getJsonFromOptions,
+  blueprintAlign,
   buildFlow,
   formatScenario,
   getConfig,

@@ -1,6 +1,7 @@
 import { _ } from 'golgoth';
 import { getJsonFromOptions } from '@oroshi/api-shared/getJsonFromOptions.js';
 import { callApi } from '../callApi.js';
+import { blueprintAlign } from './blueprintAlign.js';
 import { buildFlow } from './buildFlow.js';
 import { formatScenario } from './formatScenario.js';
 
@@ -8,6 +9,8 @@ export let __;
 
 /**
  * Update some fields of one Scenario. The other fields keep their value
+ * A Blueprint that is sent is aligned on one baseline, left to right, with no
+ * way to skip it
  * @param {object} options - Id of the Scenario, and the fields to change
  * @param {number|string} options.scenarioId - Scenario ID
  * @param {string} [options.name] - New name of the Scenario
@@ -21,7 +24,11 @@ export let __;
 export async function scenarioUpdate(options) {
   const { scenarioId, name, folderId } = options;
 
-  const blueprintContent = await __.getJsonFromOptions(options, 'blueprint');
+  const givenBlueprint = await __.getJsonFromOptions(options, 'blueprint');
+  // The alignment applies to every Blueprint that is sent, and only to those
+  const blueprintContent = givenBlueprint
+    ? __.blueprintAlign(givenBlueprint)
+    : undefined;
   const schedulingContent = await __.getJsonFromOptions(options, 'scheduling');
 
   // PATCH leaves the fields that are not given untouched
@@ -57,6 +64,7 @@ export async function scenarioUpdate(options) {
 __ = {
   callApi,
   getJsonFromOptions,
+  blueprintAlign,
   buildFlow,
   formatScenario,
 };

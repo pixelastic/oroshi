@@ -33,6 +33,10 @@ describe('scenarioUpdate', () => {
       isinvalid: false,
     });
     vi.spyOn(__, 'buildFlow').mockReturnValue([{ id: 'flow' }]);
+    vi.spyOn(__, 'blueprintAlign').mockImplementation((input) => ({
+      ...input,
+      aligned: true,
+    }));
     vi.spyOn(__, 'getJsonFromOptions').mockReturnValue(undefined);
   });
 
@@ -73,9 +77,25 @@ describe('scenarioUpdate', () => {
     await scenarioUpdate({ scenarioId: 925 });
 
     expect(sentBody()).toEqual({
-      blueprint: JSON.stringify(blueprint),
+      blueprint: JSON.stringify({ ...blueprint, aligned: true }),
       scheduling: JSON.stringify(scheduling),
     });
+  });
+
+  it('sends an aligned blueprint', async () => {
+    mockContents({ blueprint });
+
+    await scenarioUpdate({ scenarioId: 925 });
+
+    expect(__.blueprintAlign).toHaveBeenCalledWith(blueprint);
+    expect(JSON.parse(sentBody().blueprint)).toHaveProperty('aligned', true);
+  });
+
+  it('skips the alignment when it sends no blueprint', async () => {
+    await scenarioUpdate({ scenarioId: 925, name: 'a' });
+
+    expect(__.blueprintAlign).not.toHaveBeenCalled();
+    expect(sentBody()).toEqual({ name: 'a' });
   });
 
   it('gets the blueprint and the scheduling from the options', async () => {
