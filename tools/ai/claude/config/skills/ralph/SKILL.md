@@ -9,10 +9,11 @@ effort: high
 
 ## Overview
 
-One issue, TDD, documented, reviewed, fixed, stopped. Do not commit. Do not continue to the next issue.
+One issue, TDD, documented, reviewed, fixed, stopped. Do not commit. Do not
+continue to the next issue.
 
-Working directory: **`$ARGUMENTS`**
-If `$ARGUMENTS` is empty, `"this"`, `"."`, or `"here"` → use current working directory.
+Working directory: **`$ARGUMENTS`** If `$ARGUMENTS` is empty, `"this"`, `"."`,
+or `"here"` → use current working directory.
 
 ---
 
@@ -26,9 +27,11 @@ Run `ralph-start $ARGUMENTS` and parse the JSON output:
 
 - `status: "finished"` → display "All issues complete." and stop.
 - `status: "deadlocked"` → display the `message` field and stop.
-- `status: "ready"` → continue. Keep `currentIssueCount` and `totalIssueCount` for the recap.
+- `status: "ready"` → continue. Keep `currentIssueCount` and `totalIssueCount`
+  for the recap.
 
-Read the file at the `guidance` path — accumulated knowledge from prior sessions.
+Read the file at the `guidance` path — accumulated knowledge from prior
+sessions.
 
 Read the file at the `issue` path — the spec for this session.
 
@@ -43,14 +46,17 @@ or because they demonstrate a bug.
 
 **Exit criterion:** Test runs and fails.
 
-If a dedicated skill for your language exists, load it (`zsh-writer`, `js-writer`, `python-writer`, etc)
-It defines how to run tests for that language.
+If a dedicated skill for your language exists, load it (`zsh-writer`,
+`js-writer`, `python-writer`, etc) It defines how to run tests for that
+language.
 
 If you have any `## Behavioral Tests` from the issue:
+
 - Read the **behavioral tests** reference from the `/tdd` skill
 - Write tests in `__tests__` folder, next to the file being tested.
 
 If you have any `## Scaffolding Tests` from the issue:
+
 - Read the **scaffolding tests** reference from the `/tdd` skill
 - Write tests in `plans/<slug>/scaffold/<issue-filename>.bats`
 
@@ -69,9 +75,12 @@ If you have any `## Scaffolding Tests` from the issue:
 1. Apply the `/{lang}-writer` skill's style patterns.
 2. Edit files inside the current git root (`git-directory-root`)
 3. Write the simplest code that makes the tests pass. No more.
-4. Refactor: apply the `/{lang}-writer` skill's style patterns. Don't add behavior.
-5. Lint all modified files with `git-file-lint`. Fix **every** violation, including pre-existing ones.
-6. Run tests for all modified files using `git-file-test`. Fix **every** failing test, including pre-existing ones.
+4. Refactor: apply the `/{lang}-writer` skill's style patterns. Don't add
+   behavior.
+5. Lint all modified files with `git-file-lint`. Fix **every** violation,
+   including pre-existing ones.
+6. Run tests for all modified files using `git-file-test`. Fix **every** failing
+   test, including pre-existing ones.
 
 ---
 
@@ -82,15 +91,17 @@ If you have any `## Scaffolding Tests` from the issue:
 **Exit criterion:** Findings categorized and displayed.
 
 1. Run the **/review skill** using the **Skill tool** (not Bash tool)
-    - Skill name: `review`
-    - Args: `ref:dirty` and `spec:<issue_path>`
-    - DO NOT use the Bash tool to run `review`
-    - DO NOT stop when the review skill completes
-2. Categorize ALL findings (from both Code Review and Spec Review) into two buckets:
+   - Skill name: `review`
+   - Args: `ref:dirty` and `spec:<issue_path>`
+   - DO NOT use the Bash tool to run `review`
+   - DO NOT stop when the review skill completes
+2. Categorize ALL findings (from both Code Review and Spec Review) into two
+   buckets:
    - **skipped** — out of scope or not relevant, with one-line reason per item
    - **fixable** — actionable and in scope
 3. Display the two buckets as a summary.
-4. **Immediately** move to Step 5 (FIX) in the same response. Do not stop, do not wait for user input, do not end your turn.
+4. **Immediately** move to Step 5 (FIX) in the same response. Do not stop, do
+   not wait for user input, do not end your turn.
 
 ---
 
@@ -101,9 +112,12 @@ If you have any `## Scaffolding Tests` from the issue:
 **Exit criterion:** All fixable items addressed, linter clean, tests green.
 
 1. Consume the **fixable** bucket, fix every item.
-2. Refactor: apply the `/{lang}-writer` skill's style patterns. Don't add behavior.
-3. Lint all modified files with `git-file-lint`. Fix **every** violation, including pre-existing ones.
-4. Run tests for all modified files using `git-file-test`. Fix **every** failing test, including pre-existing ones.
+2. Refactor: apply the `/{lang}-writer` skill's style patterns. Don't add
+   behavior.
+3. Lint all modified files with `git-file-lint`. Fix **every** violation,
+   including pre-existing ones.
+4. Run tests for all modified files using `git-file-test`. Fix **every** failing
+   test, including pre-existing ones.
 
 ---
 
@@ -111,19 +125,21 @@ If you have any `## Scaffolding Tests` from the issue:
 
 **Goal:** Persist session state for future sessions.
 
-**Exit criterion:** `state.json`, `GUIDANCE.md` (optional), and `review-log.md` (optional) updated.
+**Exit criterion:** `state.json`, `GUIDANCE.md` (optional), and `review-log.md`
+(optional) updated.
 
 All paths of the following files are from `ralph-start` output.
 
-1. **Update `state.json`**: find the entry in `.issues[]`
-   by `id`, set `done: true`, add `recap` — a short one-sentence summary
-   of what was done.
+1. **Update `state.json`**: find the entry in `.issues[]` by `id`, set
+   `done: true`, add `recap` — a short one-sentence summary of what was done.
 
 2. **Append to `GUIDANCE.md`** under `## Discoveries`:
-   ```
+
+   ```markdown
    ### Issue XX — <title>
    - <non-trivial finding>
    ```
+
    Skip if there are no non-trivial findings.
 
 3. If the **skipped** bucket is non-empty, create or append to `review-log.md`.
@@ -145,12 +161,14 @@ Load [commit-hint.md](references/commit-hint.md) for the format and rules.
 
 ## Step 8 — HANDOFF
 
-**Goal:** End the session with a recap, then hand off to the user or to the next queued command.
+**Goal:** End the session with a recap, then hand off to the user or to the next
+queued command.
 
 **Exit criterion:** Session recap displayed, `ralph-end` called.
 
 Print the recap first:
-```
+
+```markdown
 Issue {currentIssueCount}/{totalIssueCount}
 
 **Problem solved:** {the problem this issue addressed}
@@ -160,15 +178,13 @@ Issue {currentIssueCount}/{totalIssueCount}
 **Worth checking:** {see below}
 ```
 
-Do not mention test files, scaffold tests, or test and lint results.
-Tests and lint always pass at this step.
+Do not mention test files, scaffold tests, or test and lint results. Tests and
+lint always pass at this step.
 
 **Worth checking:** the user does not read `GUIDANCE.md` or `review-log.md`.
-Surface their notable content.
-Also surface items that need the user's attention.
-Include only items that the diff does not show.
-When in doubt, include.
-Write `None.` if there is nothing.
+Surface their notable content. Also surface items that need the user's
+attention. Include only items that the diff does not show. When in doubt,
+include. Write `None.` if there is nothing.
 
 Then run `ralph-end $ARGUMENTS`.
 
@@ -182,30 +198,34 @@ Then run `ralph-end $ARGUMENTS`.
 
 **Exit criterion:** User is satisfied (commits, moves on, or ends conversation).
 
-This step is a loop — the user reviews the recap or the diff and requests changes. For each requested change:
+This step is a loop — the user reviews the recap or the diff and requests
+changes. For each requested change:
 
 1. Apply the requested modification.
-2. Refactor: apply the `/{lang}-writer` skill's style patterns. Don't add behavior.
-3. Lint all modified files with `git-file-lint`. Fix **every** violation, including pre-existing ones.
-4. Run tests for all modified files using `git-file-test`. Fix **every** failing test, including pre-existing ones.
+2. Refactor: apply the `/{lang}-writer` skill's style patterns. Don't add
+   behavior.
+3. Lint all modified files with `git-file-lint`. Fix **every** violation,
+   including pre-existing ones.
+4. Run tests for all modified files using `git-file-test`. Fix **every** failing
+   test, including pre-existing ones.
 5. Present what changed. Wait for user's next feedback.
 
 ---
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
-| "I don't need a specific skill, I know that language" | You don't know my style. Follow the standards of the skill. |
-| "I'll write the test after to go faster" | Tests-after prove nothing. Delete the code. Start with RED. |
-| "I'll do one more issue while I'm at it" | One issue. Full stop. |
-| "Review feedback is minor, not worth it" | Minor feedback ignored = minor bugs shipped. Fix it. |
-| "I don't need to read the guidance and issue files, I can start implementing" | You can't. Read both — guidance has prior discoveries; the issue has the acceptance criteria. |
-| "I should commit so the review has something to diff" | Do not commit. That's the user's job. |
-| "I should run `review` via the Bash tool" | Use the `/review` skill instead, Bash will go to the background and we need to wait for the review. |
-| "I mentioned an issue COMMIT_HINT.md to be specific" | Issue are ephemeral and internal. Describe what was built, not which issue was closed. |
-| "I should present review findings and wait for user input" | Steps 4→5 are continuous. Categorize, display, fix. No pause between REVIEW and FIX. |
-| "Fixes are small, no need to refactor" | Post-fix code is still code. Refactor every time you touch code. |
+| Rationalization                                                               | Reality                                                                                             |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| "I don't need a specific skill, I know that language"                         | You don't know my style. Follow the standards of the skill.                                         |
+| "I'll write the test after to go faster"                                      | Tests-after prove nothing. Delete the code. Start with RED.                                         |
+| "I'll do one more issue while I'm at it"                                      | One issue. Full stop.                                                                               |
+| "Review feedback is minor, not worth it"                                      | Minor feedback ignored = minor bugs shipped. Fix it.                                                |
+| "I don't need to read the guidance and issue files, I can start implementing" | You can't. Read both — guidance has prior discoveries; the issue has the acceptance criteria.       |
+| "I should commit so the review has something to diff"                         | Do not commit. That's the user's job.                                                               |
+| "I should run `review` via the Bash tool"                                     | Use the `/review` skill instead, Bash will go to the background and we need to wait for the review. |
+| "I mentioned an issue COMMIT_HINT.md to be specific"                          | Issue are ephemeral and internal. Describe what was built, not which issue was closed.              |
+| "I should present review findings and wait for user input"                    | Steps 4→5 are continuous. Categorize, display, fix. No pause between REVIEW and FIX.                |
+| "Fixes are small, no need to refactor"                                        | Post-fix code is still code. Refactor every time you touch code.                                    |
 
 ## Checklist
 
@@ -214,18 +234,16 @@ This step is a loop — the user reviews the recap or the diff and requests chan
 - [ ] Language skill loaded before writing tests
 - [ ] Declared test strategy before writing any test
 - [ ] Behavioral tests written to `__tests__/`
-- [ ] Scaffolding tests written to plans/<slug>/scaffold/, not __tests__/
+- [ ] Scaffolding tests written to plans/<slug>/scaffold/, not `__tests__/`
 - [ ] RED: wrote failing tests, ran them, confirmed they fail
 - [ ] IMPLEMENT: minimal code, all behaviors covered
 - [ ] Code written following the language skill's standards
 - [ ] Linter clean on modified files
-- [ ] Tests green for modified files
-REVIEW:
+- [ ] Tests green for modified files REVIEW:
 - [ ] Ran `/review` via Skill tool and received output
 - [ ] Pass `ref:dirty` and `spec:<path>` to the review skill
 - [ ] Findings categorized into **fixable** and **skipped** buckets
-- [ ] Summary of both buckets displayed
-FIX:
+- [ ] Summary of both buckets displayed FIX:
 - [ ] All **fixable** items fixed
 - [ ] Refactored after fixes: applied `/{lang}-writer` style patterns
 - [ ] Linter + tests green for modified files after fixes
@@ -233,12 +251,13 @@ FIX:
 - [ ] GUIDANCE.md discoveries appended (or skipped if none)
 - [ ] review-log.md updated if **skipped** bucket is non-empty
 - [ ] COMMIT_HINT.md describes outcomes, not issue numbers or plan status
-HANDOFF:
-- [ ] Report has only **Problem solved**, **What changed** and **Worth checking**
+      HANDOFF:
+- [ ] Report has only **Problem solved**, **What changed** and **Worth
+      checking**
 - [ ] Report omits test files, scaffold tests, and test and lint results
-- [ ] **Worth checking** surfaces notable `GUIDANCE.md` and `review-log.md` content, or says `None.`
+- [ ] **Worth checking** surfaces notable `GUIDANCE.md` and `review-log.md`
+      content, or says `None.`
 - [ ] Printed the report, then ran `ralph-end`
-- [ ] **Stopped — waiting for user to commit**
-USER REVIEW:
+- [ ] **Stopped — waiting for user to commit** USER REVIEW:
 - [ ] Each user-requested change followed by refactor → lint → test
 - [ ] Presented what changed after each modification

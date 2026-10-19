@@ -1,6 +1,7 @@
 # Final Checkpoint Template
 
-Use this template to write the checkpoint issue for the `restructure` wave (final wave).
+Use this template to write the checkpoint issue for the `restructure` wave
+(final wave).
 
 ## Issue content
 

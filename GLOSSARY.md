@@ -5,32 +5,58 @@
 Terms that apply across all modules in this repository.
 
 **Reload**:
-Re-read source data from disk and rebuild in-memory state. A heavyweight operation that often triggers a Redraw.
-Examples: `colors-reload`, `oroshi-reload-fpath`, `kitty-reload`
+
+Re-read source data from disk and rebuild in-memory state. A heavyweight
+operation that often triggers a Redraw. Examples: `colors-reload`,
+`oroshi-reload-fpath`, `kitty-reload`
+
 _Avoid_: refresh
 
 **Redraw**:
-Update the visual display from existing in-memory state, without touching the disk. A lightweight operation.
-Examples: `prompt-redraw`, `kitty-redraw`
+
+Update the visual display from existing in-memory state, without touching the
+disk. A lightweight operation. Examples: `prompt-redraw`, `kitty-redraw`
+
 _Avoid_: refresh, repaint
 
 > "refresh" conflates both meanings and is banned — always use the precise term.
 
 ## Modules
 
-- [BATS Helper](tools/term/bats/GLOSSARY.md) — Worktree-aware, Deep Mocking, Root Override — the 3 guarantees of the test helper
-- [preToolUse Bash Hook](tools/ai/claude/config/hooks/GLOSSARY.md) — Solkan rewrite and allow/reject, auto-approve vs ask-user, session allow-list
-- [Git Worktree Toolbox](tools/term/zsh/config/functions/autoload/git/worktree/__docs/GLOSSARY.md) — Worktrees, branch slugs, worktrees store, dirty state, and design decisions
-- [Project Display](tools/term/zsh/config/functions/autoload/project/__docs/GLOSSARY.md) — Projects, Contexts, Context Badges, Project Badges, Worktree Badges
-- [FZF](tools/term/zsh/config/functions/autoload/fzf/__docs/GLOSSARY.md) — FZF Scripts, Lifecycle Functions, FZF Helpers, Neovim API, and the ctrl-h history search
-- [Kitty Tab Bar](tools/term/kitty/config/GLOSSARY.md) — Tab Bar, Statusbar, Redraw, Reload, Notify, Markers (Notification, Fullscreen, Status)
-- [npm](tools/term/zsh/config/functions/autoload/npm/__docs/GLOSSARY.md) — Published, Deprecated — registry states and their relationship
-- [Meetup Announce](tools/ai/claude/config/skills/meetup-announce/GLOSSARY.md) — Windows, Messages, Drafts, State — the multi-channel, multi-invocation announcement lifecycle
-- [Blog Writer](tools/ai/claude/config/skills/blog-writer/GLOSSARY.md) — Reader, Voice, Structure, Style, Brief, Reviewer, Lint — vocabulary for turning real work into a technical article
-- [Prose Linting](tools/prose/GLOSSARY.md) — Error, Warning, Suggestion — severity levels for agent-driven prose correction
-- [rm](tools/term/zsh/config/functions/autoload/misc/rm/__docs/GLOSSARY.md) — Safe deletion, Recoverable — safety vocabulary for CLI and Claude rm/rmdir variants
-- [Language Toolchain](docs/toolchain/README.md) — Per-language scripts, shared dispatchers, NeoVim integration, AI integration
-- [Airtable](tools/term/zsh/config/functions/autoload/api/airtable/__docs/GLOSSARY.md) — Bases, Tables, Records, Fields, Attachments, Token
-- [Make](tools/term/zsh/config/functions/autoload/api/make/__docs/GLOSSARY.md) — Scenarios, Folders, Executions, Blueprint, Scheduling, Team, Zone
-- [Notion](tools/term/zsh/config/functions/autoload/api/notion/__docs/GLOSSARY.md) — Pages, Databases, Icons, Properties, Content, Parent, Trash, Filter, Sort, Token
-- [Lunii](tools/term/zsh/config/functions/autoload/worktools/lunii/__docs/GLOSSARY.md) — Packs, Podcasts, Episodes, Thumbnails — RSS-to-Lunii conversion vocabulary
+- [BATS Helper](tools/term/bats/GLOSSARY.md) — Worktree-aware, Deep Mocking,
+  Root Override — the 3 guarantees of the test helper
+- [preToolUse Bash Hook](tools/ai/claude/config/hooks/GLOSSARY.md) — Solkan
+  rewrite and allow/reject, auto-approve vs ask-user, session allow-list
+- [Git Worktree Toolbox](tools/term/zsh/config/functions/autoload/git/worktree/__docs/GLOSSARY.md)
+  — Worktrees, branch slugs, worktrees store, dirty state, and design decisions
+- [Project Display](tools/term/zsh/config/functions/autoload/project/__docs/GLOSSARY.md)
+  — Projects, Contexts, Context Badges, Project Badges, Worktree Badges
+- [FZF](tools/term/zsh/config/functions/autoload/fzf/__docs/GLOSSARY.md) — FZF
+  Scripts, Lifecycle Functions, FZF Helpers, Neovim API, and the ctrl-h history
+  search
+- [Kitty Tab Bar](tools/term/kitty/config/GLOSSARY.md) — Tab Bar, Statusbar,
+  Redraw, Reload, Notify, Markers (Notification, Fullscreen, Status)
+- [npm](tools/term/zsh/config/functions/autoload/npm/__docs/GLOSSARY.md) —
+  Published, Deprecated — registry states and their relationship
+- [Meetup Announce](tools/ai/claude/config/skills/meetup-announce/GLOSSARY.md) —
+  Windows, Messages, Drafts, State — the multi-channel, multi-invocation
+  announcement lifecycle
+- [Blog Writer](tools/ai/claude/config/skills/blog-writer/GLOSSARY.md) — Reader,
+  Voice, Structure, Style, Brief, Reviewer, Lint — vocabulary for turning real
+  work into a technical article
+- [Prose Linting](tools/prose/GLOSSARY.md) — Error, Warning, Suggestion —
+  severity levels for agent-driven prose correction
+- [rm](tools/term/zsh/config/functions/autoload/misc/rm/__docs/GLOSSARY.md) —
+  Safe deletion, Recoverable — safety vocabulary for CLI and Claude rm/rmdir
+  variants
+- [Language Toolchain](docs/toolchain/README.md) — Per-language scripts, shared
+  dispatchers, NeoVim integration, AI integration
+- [Airtable](tools/term/zsh/config/functions/autoload/api/airtable/__docs/GLOSSARY.md)
+  — Bases, Tables, Records, Fields, Attachments, Token
+- [Make](tools/term/zsh/config/functions/autoload/api/make/__docs/GLOSSARY.md) —
+  Scenarios, Folders, Executions, Blueprint, Scheduling, Team, Zone
+- [Notion](tools/term/zsh/config/functions/autoload/api/notion/__docs/GLOSSARY.md)
+  — Pages, Databases, Icons, Properties, Content, Parent, Trash, Filter, Sort,
+  Token
+- [Lunii](tools/term/zsh/config/functions/autoload/worktools/lunii/__docs/GLOSSARY.md)
+  — Packs, Podcasts, Episodes, Thumbnails — RSS-to-Lunii conversion vocabulary

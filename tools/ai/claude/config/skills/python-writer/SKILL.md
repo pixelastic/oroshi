@@ -17,9 +17,11 @@ Write Python code consistent with my conventions.
 
 **Exit criterion:** Python is unavoidable for this task.
 
-I prefer zsh (through `/zsh-writer`) for simple scripts or JavaScript (through `/js-writer`) for more complex modules.
+I prefer zsh (through `/zsh-writer`) for simple scripts or JavaScript (through
+`/js-writer`) for more complex modules.
 
-Python is warranted only when a library or runtime has no ZSH/JS equivalent (e.g. kitty config)
+Python is warranted only when a library or runtime has no ZSH/JS equivalent
+(e.g. kitty config)
 
 If you can solve the problem in ZSH or JS — do that instead, and stop here.
 
@@ -57,8 +59,8 @@ def test_returns_slugified_name():
 
 **Exit criterion:** Test passes.
 
-Write the simplest code that makes the test pass.
-No patterns yet — just correct behavior.
+Write the simplest code that makes the test pass. No patterns yet — just correct
+behavior.
 
 Run `python-test <filepath>` to confirm.
 
@@ -70,9 +72,9 @@ Run `python-test <filepath>` to confirm.
 
 Apply patterns from [Style](./references/style.md):
 
-| Pattern | Rule |
-|---|---|
-| Return early | No avoidable nesting |
+| Pattern       | Rule                                            |
+| ------------- | ----------------------------------------------- |
+| Return early  | No avoidable nesting                            |
 | Function docs | `#` comment above the function, not a docstring |
 
 Run `python-test <filepath>` to confirm tests still pass.
@@ -90,10 +92,10 @@ Run `python-test <filepath>` to confirm tests still pass.
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
+| Rationalization                                      | Reality                                                                  |
+| ---------------------------------------------------- | ------------------------------------------------------------------------ |
 | "Python is fine for this, it's just a small script." | Prefer ZSH or JS first. Python only when a library or runtime forces it. |
-| "It's only two levels of if/else, it's ok." | No it's not. Return early, always. |
+| "It's only two levels of if/else, it's ok."          | No it's not. Return early, always.                                       |
 
 ## Checklist
 

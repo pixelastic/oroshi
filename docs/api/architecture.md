@@ -88,7 +88,8 @@ change.
 every service needs. Services import from it, for example
 `import { rawColumn } from '@oroshi/api-shared/rawColumn.js'`.
 
-- `rawColumn.js` formats one value as a column of [`list-raw`](reference/commands/list-raw.md#role).
+- `rawColumn.js` formats one value as a column of
+  [`list-raw`](reference/commands/list-raw.md#role).
 - `queryString.js` turns an object of query parameters into a query string. It
   sends a list as `key[]`, and a list of objects as `key[index][property]`.
 - `getJsonFromOptions.js` gets a JSON value from the options of a command.
@@ -109,7 +110,8 @@ Each service has a glossary that defines its own vocabulary. See
 - `__` is always allowed as an extra export. It holds the internals that tests
   mock.
 - All services have a [`getConfig.js`](reference/lib/getConfig.md), a
-  [`setAccount.js`](reference/lib/setAccount.md) and a [`callApi.js`](reference/lib/callApi.md). Each entity has a
+  [`setAccount.js`](reference/lib/setAccount.md) and a
+  [`callApi.js`](reference/lib/callApi.md). Each entity has a
   [`format<Entity>.js`](reference/lib/formatEntity.md).
 - Other files carry the entity in their name (e.g. `record/recordListRaw.js`).
 - Modules take one options object, return data and print nothing. The bin
@@ -117,9 +119,8 @@ Each service has a glossary that defines its own vocabulary. See
   are the `<entity>Id`, the anchors and the filters.
 - Bins are in kebab-case and named like their wrapper
   (`bin/<service>-<entity>-list-raw.js`).
-- Bins parse arguments with the shared
-  [`parseBinArgs`](#shared-package), call the module and print the result with
-  `console.log`. They have no `try/catch`.
+- Bins parse arguments with the shared [`parseBinArgs`](#shared-package), call
+  the module and print the result with `console.log`. They have no `try/catch`.
 
 ## Accounts
 
@@ -131,7 +132,8 @@ $ <service>-<entity>-list-raw
 $ <service>-<entity>-list-raw --account perso
 ```
 
-- A **Key API** would read from `<SERVICE>_TOKEN_PERSO` instead of `<SERVICE>_TOKEN`.
+- A **Key API** would read from `<SERVICE>_TOKEN_PERSO` instead of
+  `<SERVICE>_TOKEN`.
 - An **OAuth API** would read from `tokens-perso.json` instead of `tokens.json`.
 
 The account never travels through the modules. Every service has a

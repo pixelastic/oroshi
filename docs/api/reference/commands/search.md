@@ -1,8 +1,8 @@
 # `search`
 
-`search` finds entities of one type and prints them as a JSON array.
-It is the low-level entry point: it accepts many filters and returns the full
-data of each entity.
+`search` finds entities of one type and prints them as a JSON array. It is the
+low-level entry point: it accepts many filters and returns the full data of each
+entity.
 
 ## Example
 
@@ -41,8 +41,8 @@ argument is the whole search query, written in that language.
 
 If the service API doesn't have a custom query language, or if said language is
 limited, then additional options (like `--limit`, or `--min-date`) can be added
-to cover all use-cases. In that case, the positional argument is usually simply the
-text to look for.
+to cover all use-cases. In that case, the positional argument is usually simply
+the text to look for.
 
 ```text
 # Example #1: Gmail has a query language, but still needs an option to limit the
@@ -53,7 +53,6 @@ $ gmail-mail-search "from:alice label:work after:2026/01/01 before:2026/03/31" -
 # text to search, and additional named arguments configure the search further
 $ notion-page-search "meetup" --limit 10
 ```
-
 
 ## Template
 
@@ -132,11 +131,12 @@ __ = {
 
 The test lives in `<service>/__lib/<entity>/__tests__/<entity>Search.js`.
 
-The vitest test covers the module only. It mocks `callApi` through `__` and has two
-parts:
+The vitest test covers the module only. It mocks `callApi` through `__` and has
+two parts:
 
-- Assert that the options passed are correctly transformed into the right API call
+- Assert that the options passed are correctly transformed into the right API
+  call
 - Assert that each entity returned by the API is correctly formatted and
-returned by the function.
+  returned by the function.
 
 The zsh wrapper and the bin are so thin that they need no test.

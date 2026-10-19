@@ -7,7 +7,8 @@ description: Use when planning a feature end-to-end — explores codebase, write
 
 ## Overview
 
-Understand the problem, explore the codebase, write a PRD, break it into vertical-slice issues, and commit the plan artifacts.
+Understand the problem, explore the codebase, write a PRD, break it into
+vertical-slice issues, and commit the plan artifacts.
 
 ---
 
@@ -29,7 +30,8 @@ Read [02-prd.md](./references/02-prd.md) and follow all sub-steps.
 
 ## Step 3 — Write issues
 
-Split the work into vertical slices, build the dependency graph, and write them on disk.
+Split the work into vertical slices, build the dependency graph, and write them
+on disk.
 
 Read [03-issues.md](./references/03-issues.md) and follow all sub-steps.
 
@@ -43,11 +45,12 @@ Read [03-issues.md](./references/03-issues.md) and follow all sub-steps.
 
 Make sure all PRD, issues and other plan files are saved.
 
-Then run `plan-end` alone, from the current directory, in its own Bash call.
-It will:
+Then run `plan-end` alone, from the current directory, in its own Bash call. It
+will:
+
 - Commit all plan files
-- Launches `/ralph <planDir>` in a fresh Claude session: same window if
-  already in the Worktree, otherwise a new Kitty tab
+- Launches `/ralph <planDir>` in a fresh Claude session: same window if already
+  in the Worktree, otherwise a new Kitty tab
 - stops Claude
 
 Do NOT manually commit or ask for commit permission — `plan-end` handles staging
@@ -57,17 +60,18 @@ and committing. Just run it.
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
-| "I know this codebase, no need to explore" | Domain terms may have changed. Explore first. |
-| "The modules are obvious, no need to check with the user" | Module scope and test scope are separate decisions. Confirm both. |
-| "I will write the PRD in the current repo" | Always use `plan-start` — it handles worktree creation. |
-| "I'll call git-worktree-create myself" | Always use `plan-start` — it handles worktree creation. |
+| Rationalization                                            | Reality                                                               |
+| ---------------------------------------------------------- | --------------------------------------------------------------------- |
+| "I know this codebase, no need to explore"                 | Domain terms may have changed. Explore first.                         |
+| "The modules are obvious, no need to check with the user"  | Module scope and test scope are separate decisions. Confirm both.     |
+| "I will write the PRD in the current repo"                 | Always use `plan-start` — it handles worktree creation.               |
+| "I'll call git-worktree-create myself"                     | Always use `plan-start` — it handles worktree creation.               |
 | "These features belong together, I'll do them all at once" | Tracer bullets end-to-end. Thin verticals, not fat horizontal slices. |
 
 ## Checklist
 
-- [ ] Step 1 checklist complete (see [01-understand.md](./references/01-understand.md))
+- [ ] Step 1 checklist complete (see
+      [01-understand.md](./references/01-understand.md))
 - [ ] Step 2 checklist complete (see [02-prd.md](./references/02-prd.md))
 - [ ] Step 3 checklist complete (see [03-issues.md](./references/03-issues.md))
 - [ ] `plan-end <planDir>` called

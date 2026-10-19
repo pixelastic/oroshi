@@ -7,7 +7,8 @@
 
 ## Assertions with testify
 
-Use `assert` for independent checks (test continues on failure) and `require` for guards (test stops on failure).
+Use `assert` for independent checks (test continues on failure) and `require`
+for guards (test stops on failure).
 
 ```go
 import (
@@ -28,7 +29,8 @@ func TestReadsConfig(t *testing.T) {
 }
 ```
 
-**Rule of thumb:** `require` when a failure makes the rest of the test meaningless (nil checks, error checks), `assert` for everything else.
+**Rule of thumb:** `require` when a failure makes the rest of the test
+meaningless (nil checks, error checks), `assert` for everything else.
 
 ## Table-driven tests
 
@@ -88,7 +90,8 @@ func TestReturnsErrorForEmptyInput(t *testing.T) { ... }
 
 ## Temporary directories
 
-Use `t.TempDir()` for tests that need filesystem access — automatically cleaned up.
+Use `t.TempDir()` for tests that need filesystem access — automatically cleaned
+up.
 
 ```go
 func TestReadsConfig(t *testing.T) {
@@ -102,7 +105,8 @@ func TestReadsConfig(t *testing.T) {
 
 ## Dependency injection
 
-Pass dependencies as function arguments or struct fields, not globals. Use function types for external commands:
+Pass dependencies as function arguments or struct fields, not globals. Use
+function types for external commands:
 
 ```go
 type CommandRunner func(name string, args ...string) (string, error)

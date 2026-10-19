@@ -17,7 +17,7 @@ format as [`read`](read.md).
 ## Role
 
 - `create` adds one entity and prints the entity that was created, as `read`
-would have returned it.
+  would have returned it.
 
 ## Arguments
 
@@ -110,6 +110,7 @@ The test lives in `<service>/__lib/<entity>/__tests__/<entity>Create.js`.
 
 The vitest test covers the module only. It mocks `callApi` through `__` and
 mostly checks three behaviors:
+
 - Given the content, the module calls `callApi` with the right method, path and
   body.
 - Given a `-file` flag, the file content wins over the inline value.

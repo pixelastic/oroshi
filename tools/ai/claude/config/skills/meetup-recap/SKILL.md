@@ -7,7 +7,9 @@ description: Use when user wants to write a post-meetup recap — transforming r
 
 ## Overview
 
-Transform raw post-meetup notes (often speech-to-text) into a structured, honest recap. Score the event, categorize observations, and produce a scannable summary ready for sharing.
+Transform raw post-meetup notes (often speech-to-text) into a structured, honest
+recap. Score the event, categorize observations, and produce a scannable summary
+ready for sharing.
 
 ## Core Workflow
 
@@ -25,12 +27,15 @@ Run `meetup-recap-start` and parse the JSON output to get the `draftPath`.
 
 **Exit criterion:** Event name, date, and attendance ratio are known.
 
-Read the user's input (brain dump, file, conversation context). Identify mandatory fields:
+Read the user's input (brain dump, file, conversation context). Identify
+mandatory fields:
+
 - **Event name** — the meetup/event title
 - **Date** — when it happened
 - **Attendance** — ratio or count (e.g., "12/15", "~20 people")
 
-If any mandatory fields are missing, ask for all missing ones in a single batched message. Do not ask one at a time.
+If any mandatory fields are missing, ask for all missing ones in a single
+batched message. Do not ask one at a time.
 
 ### Step 3 — Score
 
@@ -38,7 +43,8 @@ If any mandatory fields are missing, ask for all missing ones in a single batche
 
 **Exit criterion:** Score computed with emoji threshold.
 
-Read [references/scoring.md](references/scoring.md) for criteria, defaults, and thresholds. Score the dump accordingly.
+Read [references/scoring.md](references/scoring.md) for criteria, defaults, and
+thresholds. Score the dump accordingly.
 
 ### Step 4 — Language
 
@@ -46,9 +52,8 @@ Read [references/scoring.md](references/scoring.md) for criteria, defaults, and 
 
 **Exit criterion:** Language stated (e.g., "Language: English").
 
-Default to English.
-Switch to french only if user explicitly request it.
-Input language is not a signal.
+Default to English. Switch to french only if user explicitly request it. Input
+language is not a signal.
 
 ### Step 5 — Write draft
 
@@ -56,7 +61,9 @@ Input language is not a signal.
 
 **Exit criterion:** Draft file written to disk.
 
-Write the draft following the [writing principles](references/writing-principles.md) and the [recap template](references/templates/recap.template.md).
+Write the draft following the
+[writing principles](references/writing-principles.md) and the
+[recap template](references/templates/recap.template.md).
 
 Write the draft to `draftPath`.
 
@@ -66,9 +73,11 @@ Write the draft to `draftPath`.
 
 **Exit criterion:** Zero errors.
 
-Run `prose-lint --profile meetup-recap <draftPath>` to get a JSON array of violations.
+Run `prose-lint --profile meetup-recap <draftPath>` to get a JSON array of
+violations.
 
-Loop: fix `draftPath` (using the Edit tool), re-lint. Repeat until zero errors remain. Warnings may stay if justified.
+Loop: fix `draftPath` (using the Edit tool), re-lint. Repeat until zero errors
+remain. Warnings may stay if justified.
 
 ### Step 7 — Tick
 
@@ -82,15 +91,16 @@ Loop: fix `draftPath` (using the Edit tool), re-lint. Repeat until zero errors r
 
 If edits requested, loop back to Step 5.
 
-If approved, ask: "Summarize talks too, or stop here?" — if yes, invoke `/talk-recap`.
+If approved, ask: "Summarize talks too, or stop here?" — if yes, invoke
+`/talk-recap`.
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
-| "The user prompted in French so I'll write in French" | Default to English. Switch only on explicit request. |
-| "The event was bad so I'll soften the language" | State problems as facts. Honest > comfortable. |
-| "I'll add bold and headers to make it pop" | Scannable means bullets and whitespace, not formatting soup. |
+| Rationalization                                       | Reality                                                      |
+| ----------------------------------------------------- | ------------------------------------------------------------ |
+| "The user prompted in French so I'll write in French" | Default to English. Switch only on explicit request.         |
+| "The event was bad so I'll soften the language"       | State problems as facts. Honest > comfortable.               |
+| "I'll add bold and headers to make it pop"            | Scannable means bullets and whitespace, not formatting soup. |
 
 ## Checklist
 

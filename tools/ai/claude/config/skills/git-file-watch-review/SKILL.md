@@ -39,9 +39,12 @@ For each comment in the array:
 
 1. **Read context** — read the file to understand the surrounding code.
 2. **Interpret the comment:**
-   - **Action request** (e.g. "rename this", "extract to function", "fix bug") → apply the code change.
-   - **Question** (e.g. "why is this here?", "what does this do?") → answer it in a short message to the user.
-3. **Remove the comment** — run `git-file-watch-review-end <id>` so it disappears from git-file-watch immediately.
+   - **Action request** (e.g. "rename this", "extract to function", "fix bug") →
+     apply the code change.
+   - **Question** (e.g. "why is this here?", "what does this do?") → answer it
+     in a short message to the user.
+3. **Remove the comment** — run `git-file-watch-review-end <id>` so it
+   disappears from git-file-watch immediately.
 
 Move to the next comment only after the current one is fully handled.
 
@@ -49,8 +52,8 @@ Move to the next comment only after the current one is fully handled.
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
+| Rationalization                        | Reality                                             |
+| -------------------------------------- | --------------------------------------------------- |
 | "The comment is unclear, I'll skip it" | Ask the user for clarification instead of skipping. |
 
 ## Checklist

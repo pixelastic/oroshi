@@ -1,9 +1,8 @@
 # issues/XX-slug.md
 
-Files live at `issues/XX-slug.md`.
-Replace `XX` with the 2-digit issue number (01, 02...).
-Number issues in dependency order (blockers first).
-Generate `slug` from the issue title.
+Files live at `issues/XX-slug.md`. Replace `XX` with the 2-digit issue number
+(01, 02...). Number issues in dependency order (blockers first). Generate `slug`
+from the issue title.
 
 ## Template
 

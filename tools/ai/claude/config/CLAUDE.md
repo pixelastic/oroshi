@@ -1,5 +1,3 @@
-# Instructions
-
 ## Commands
 
 - **Testing go:** Run `go-test <filepath>`

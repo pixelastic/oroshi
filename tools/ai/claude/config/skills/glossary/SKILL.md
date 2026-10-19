@@ -7,7 +7,8 @@ description: Use when the user wants to nail down domain terms, resolve terminol
 
 ## Overview
 
-Drills domain vocabulary one question at a time, then writes to the project GLOSSARY.md.
+Drills domain vocabulary one question at a time, then writes to the project
+GLOSSARY.md.
 
 ## Core Workflow
 
@@ -19,11 +20,14 @@ Drills domain vocabulary one question at a time, then writes to the project GLOS
 
 Infer from context:
 
-- Conversation about a specific module → `<module>/GLOSSARY.md` (preferred) or `<module>/__docs/GLOSSARY.md` (if the module dir is in PATH and docs live there)
+- Conversation about a specific module → `<module>/GLOSSARY.md` (preferred) or
+  `<module>/__docs/GLOSSARY.md` (if the module dir is in PATH and docs live
+  there)
 - Repo-wide → root `GLOSSARY.md`
-- Unclear → ask once: *"Which module is this glossary for? Or is it repo-wide?"*
+- Unclear → ask once: _"Which module is this glossary for? Or is it repo-wide?"_
 
-If the file already exists at either location, read it before drilling — don't duplicate or contradict existing terms.
+If the file already exists at either location, read it before drilling — don't
+duplicate or contradict existing terms.
 
 ---
 
@@ -31,37 +35,42 @@ If the file already exists at either location, read it before drilling — don't
 
 **Goal:** Resolve every term one at a time.
 
-**Exit criterion:** All terms are settled and the user confirms the glossary is ready to write.
+**Exit criterion:** All terms are settled and the user confirms the glossary is
+ready to write.
 
 #### How to ask
 
-Interview me relentlessly about every term of this plan until we reach a shared understanding.
-Walk down each branch of the design tree, resolving dependencies between decisions one-by-one.
-For each question, provide your recommended answer.
+Interview me relentlessly about every term of this plan until we reach a shared
+understanding. Walk down each branch of the design tree, resolving dependencies
+between decisions one-by-one. For each question, provide your recommended
+answer.
 
-Ask the questions one at a time, waiting for feedback on each question before continuing.
+Ask the questions one at a time, waiting for feedback on each question before
+continuing.
 
 Wait for an answer before moving to the next question.
 
-Once all terms are resolved, present a summary and ask: *"Ready to write the glossary?"*
+Once all terms are resolved, present a summary and ask: _"Ready to write the
+glossary?"_
 
 #### What to ask
 
-**Challenge against the glossary:**
-When I uses a term that conflicts with the existing language in `GLOSSARY.md`, call it out immediately.
-Example: "Your glossary defines 'cancellation' as X, but you seem to mean Y — which is it?"
+**Challenge against the glossary:** When I uses a term that conflicts with the
+existing language in `GLOSSARY.md`, call it out immediately. Example: "Your
+glossary defines 'cancellation' as X, but you seem to mean Y — which is it?"
 
-**Sharpen fuzzy language:**
-When I uses vague or overloaded terms, propose a precise canonical term.
-Example: "You're saying 'account' — do you mean the Customer or the User? Those are different things."
+**Sharpen fuzzy language:** When I uses vague or overloaded terms, propose a
+precise canonical term. Example: "You're saying 'account' — do you mean the
+Customer or the User? Those are different things."
 
-**Discuss concrete scenarios**:
-When domain relationships are being discussed, stress-test them with specific scenarios.
-Invent scenarios that probe edge cases and force the user to be precise about the boundaries between concepts.
+**Discuss concrete scenarios**: When domain relationships are being discussed,
+stress-test them with specific scenarios. Invent scenarios that probe edge cases
+and force the user to be precise about the boundaries between concepts.
 
-**Cross-reference with code:**
-When I state how something works, check whether the code agrees.
-If you find a contradiction, surface it: "Your code cancels entire Orders, but you just said partial cancellation is possible — which is right"
+**Cross-reference with code:** When I state how something works, check whether
+the code agrees. If you find a contradiction, surface it: "Your code cancels
+entire Orders, but you just said partial cancellation is possible — which is
+right"
 
 ---
 
@@ -71,7 +80,8 @@ If you find a contradiction, surface it: "Your code cancels entire Orders, but y
 
 **Exit criterion:** File written and confirmed.
 
-Update the glossary — all terms, relationships, flagged ambiguities, and example dialogue.
+Update the glossary — all terms, relationships, flagged ambiguities, and example
+dialogue.
 
 Use the format in [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md).
 
@@ -79,9 +89,11 @@ Use the format in [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md).
 
 ### Step 4 — Update root index
 
-**Goal:** Keep the root `GLOSSARY.md` as an accurate index of all sub-module glossaries.
+**Goal:** Keep the root `GLOSSARY.md` as an accurate index of all sub-module
+glossaries.
 
-**Exit criterion:** Root file lists this sub-module glossary with a current one-line description.
+**Exit criterion:** Root file lists this sub-module glossary with a current
+one-line description.
 
 **Skip if:** Skip this step if the target file IS the root `GLOSSARY.md`.
 
@@ -93,11 +105,11 @@ Use the format in [GLOSSARY-INDEX-FORMAT.md](./GLOSSARY-INDEX-FORMAT.md).
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
+| Rationalization                         | Reality                                               |
+| --------------------------------------- | ----------------------------------------------------- |
 | "I'll write each term as it's resolved" | Relationships need all terms. Write once, at the end. |
-| "Target is obvious from context" | One question beats writing to the wrong file. |
-| "I know this term from prior context" | Prior context isn't canonical. Drill it. |
+| "Target is obvious from context"        | One question beats writing to the wrong file.         |
+| "I know this term from prior context"   | Prior context isn't canonical. Drill it.              |
 
 ## Checklist
 

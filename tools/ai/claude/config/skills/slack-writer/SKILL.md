@@ -7,7 +7,9 @@ description: Use when user needs to write a Slack message — replying to a coll
 
 ## Overview
 
-Transform a brain dump (often speech-to-text) into a clear, concise Slack message. Two modes: **reply** (answering a colleague) and **announce** (posting to a channel). Same principles, different emphasis.
+Transform a brain dump (often speech-to-text) into a clear, concise Slack
+message. Two modes: **reply** (answering a colleague) and **announce** (posting
+to a channel). Same principles, different emphasis.
 
 ## Core Workflow
 
@@ -23,15 +25,21 @@ Run `slack-writer-start` and parse the JSON output to get the `draftPath`.
 
 **Goal:** Determine if you have enough information to write the message.
 
-**Exit criterion:** You have all critical info, OR you've asked your clarifying questions.
+**Exit criterion:** You have all critical info, OR you've asked your clarifying
+questions.
 
-Read the user's input (brain dump, file, conversation context). Identify the mode:
+Read the user's input (brain dump, file, conversation context). Identify the
+mode:
+
 - **Reply** — answering a colleague's question or sharing info in DM/thread
 - **Announce** — posting an event, project, or news to a channel
 
-If critical info is missing (who's the audience, what's the key message, a date for an event), ask 1-2 targeted questions. If the input is complete, move directly to Step 3.
+If critical info is missing (who's the audience, what's the key message, a date
+for an event), ask 1-2 targeted questions. If the input is complete, move
+directly to Step 3.
 
-Bias: ask rather than guess. A wrong draft wastes more time than a quick question.
+Bias: ask rather than guess. A wrong draft wastes more time than a quick
+question.
 
 ### Step 3 — Language
 
@@ -39,28 +47,40 @@ Bias: ask rather than guess. A wrong draft wastes more time than a quick questio
 
 **Exit criterion:** Language stated (e.g., "Language: English").
 
-Default to English.
-Switch only on explicit user request.
-Input language is not a valid signal to change output language.
+Default to English. Switch only on explicit user request. Input language is not
+a valid signal to change output language.
 
 ### Step 4 — Write draft
 
-**Goal:** Produce a single Slack-ready message in the chosen language, saved to `draftPath`.
+**Goal:** Produce a single Slack-ready message in the chosen language, saved to
+`draftPath`.
 
 **Exit criterion:** Draft file written to disk.
 
 Apply these principles, by priority:
 
-1. **Respect their attention.** The reader's time > your thoroughness. Every word must earn its place. No repetitions — say it once. Stop writing when the point is made.
+1. **Respect their attention.** The reader's time > your thoroughness. Every
+   word must earn its place. No repetitions — say it once. Stop writing when the
+   point is made.
 
-2. **Important thing first.** Inverted pyramid: lead with the answer or key info, never build up to a conclusion. If the reader stops after the first sentence, they have the essential. The more they read, the more detail they get. If the answer is yes or no, say it first, then explain.
+2. **Important thing first.** Inverted pyramid: lead with the answer or key
+   info, never build up to a conclusion. If the reader stops after the first
+   sentence, they have the essential. The more they read, the more detail they
+   get. If the answer is yes or no, say it first, then explain.
 
-3. **Scannable.** People scan, they don't read. Structure should guide the eye so the reader gets the gist without reading every word.
-Formatting allowlist: bullets, numbered lists, `code` backticks. Nothing else — no bold, no links, no headers. Let whitespace breathe.
+3. **Scannable.** People scan, they don't read. Structure should guide the eye
+   so the reader gets the gist without reading every word. Formatting allowlist:
+   bullets, numbered lists, `code` backticks. Nothing else — no bold, no links,
+   no headers. Let whitespace breathe.
 
-4. **Complete in one message.** Don't make them pull information out of you — give the answer, the why, and a reference if useful, all upfront. But stay open: inform, don't close the conversation.
+4. **Complete in one message.** Don't make them pull information out of you —
+   give the answer, the why, and a reference if useful, all upfront. But stay
+   open: inform, don't close the conversation.
 
-5. **Sound human.** Write like a colleague, not a report. Softeners are fine ("I think", "not sure", "..."). Light emoji is OK when it takes the edge off. Avoid categorical phrasing that sounds robotic ("I have zero context." → "No idea what these are about...").
+5. **Sound human.** Write like a colleague, not a report. Softeners are fine ("I
+   think", "not sure", "..."). Light emoji is OK when it takes the edge off.
+   Avoid categorical phrasing that sounds robotic ("I have zero context." → "No
+   idea what these are about...").
 
 Write the draft to `draftPath` using the **Create** tool.
 
@@ -68,11 +88,14 @@ Write the draft to `draftPath` using the **Create** tool.
 
 **Goal:** Ensure the draft passes prose linting.
 
-**Exit criterion:** Zero errors. Warnings and suggestions addressed as best effort.
+**Exit criterion:** Zero errors. Warnings and suggestions addressed as best
+effort.
 
-Run `prose-lint --profile slack-writer <draftPath>` to get a JSON array of violations with `line`, `rule`, `severity`, `match`, and `message` fields.
+Run `prose-lint --profile slack-writer <draftPath>` to get a JSON array of
+violations with `line`, `rule`, `severity`, `match`, and `message` fields.
 
-Loop: fix `draftPath` (using the Edit tool), re-lint. Repeat until zero errors remain. Warnings may stay if justified.
+Loop: fix `draftPath` (using the Edit tool), re-lint. Repeat until zero errors
+remain. Warnings may stay if justified.
 
 ### Step 6 — Finalize
 
@@ -88,8 +111,8 @@ Loop: fix `draftPath` (using the Edit tool), re-lint. Repeat until zero errors r
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
+| Rationalization                                       | Reality                                                  |
+| ----------------------------------------------------- | -------------------------------------------------------- |
 | "The user prompted in French so I'll write in French" | Default to English. French only if explicitly requested. |
 
 ## Checklist

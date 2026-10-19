@@ -1,7 +1,7 @@
 # GUIDANCE.md
 
-A file that bridges context windows across sessions.
-Split into two sections with different ownership rules.
+A file that bridges context windows across sessions. Split into two sections
+with different ownership rules.
 
 ```markdown
 ## Guidance

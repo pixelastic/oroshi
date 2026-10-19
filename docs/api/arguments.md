@@ -5,9 +5,9 @@ This file defines how a command receives its arguments.
 ## Parsing
 
 The JavaScript bin parses the arguments with the shared `parseBinArgs` helper
-and unpacks them into one options object for the module. The positional
-argument and the named flags become its keys: `<entity>Id`, the anchors and the
-filters. The wrapper is described in
+and unpacks them into one options object for the module. The positional argument
+and the named flags become its keys: `<entity>Id`, the anchors and the filters.
+The wrapper is described in
 [architecture.md](architecture.md#zsh-and-javascript).
 
 The bin handles `--account` itself, as defined in
@@ -23,8 +23,8 @@ guided the choices:
 
 - The main input of a command is positional: the query of `search`, the id of
   `read`, the content of `create` and `update`.
-- Everything else is named: anchors (a table, a space), the id of an entity
-  when the content takes the positional slot, filters and options.
+- Everything else is named: anchors (a table, a space), the id of an entity when
+  the content takes the positional slot, filters and options.
 
 ```text
 $ <service>-<entity>-read recA
@@ -74,8 +74,8 @@ $ airtable-record-create --baseId appA --tableId Meetups --data-file ./entity.js
 
 ## `--limit`
 
-Commands that return several entities (`list-raw`, `search`) accept
-`--limit`. The default is 25.
+Commands that return several entities (`list-raw`, `search`) accept `--limit`.
+The default is 25.
 
 ## `--account`
 

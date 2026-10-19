@@ -8,6 +8,7 @@ description: Use when writing or modifying code in any programming language. App
 ## Disclaimer
 
 If a specific skill for a language exists, use that one instead:
+
 - **JavaScript**: Use `js-writer` skill for JavaScript/Node.js code
 - **ZSH**: Use `zsh-writer` skill for ZSH functions in .oroshi repository
 - **Python**: Use `python-writer` skill for Python code
@@ -40,6 +41,7 @@ Comments explain **why**, not **what** (we rely on properly named functions and
 variables for that).
 
 Comments are appreciated when they:
+
 - Document a function goal and parameters
 - Give an overview of a complex piece of code
 - Explain why a return early happens
@@ -49,6 +51,7 @@ Comments are appreciated when they:
 - Document hacks or known limitations
 
 Comments are useless if:
+
 - They duplicate what the code already says through variable and function names
 
 See [Comments](./references/comments.md) for how to write them.
@@ -61,10 +64,12 @@ supersedes those rules.
 I don't need the code to output what it does, unless specifically asked to.
 
 Output is allowed for:
+
 - Display functions, whose purpose IS to output data
 - Error messages, to help diagnose an error
 
 Output is not allowed for:
+
 - Progress messages (`"Processing..."`, `"Starting..."`, `"Done"`)
 - Status summaries (`"Found X items"`, `"Total: Y"`)
 - Empty lines (`console.log("")`)

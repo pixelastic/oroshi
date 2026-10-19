@@ -1,7 +1,7 @@
 # Programming-Language Skill Template
 
-Programming languages share a five-step TDD workflow:
-place the file, write a failing test, make it pass, refactor, lint.
+Programming languages share a five-step TDD workflow: place the file, write a
+failing test, make it pass, refactor, lint.
 
 Each language fills in its own conventions, test framework, lint tool, and style
 patterns.
@@ -108,6 +108,6 @@ Each programming-language skill must include:
   from `code-writer/references/style.md`
 - `references/testing.md` — test framework conventions, examples, best practices
 - `references/comments.md` — a relative symlink to the shared comment rules:
-  `ln -s ../../code-writer/references/comments.md references/comments.md`.
-  Add a `## Comments` section to `style.md` that points to it and names the
-  comment marker and the function doc format of the language.
+  `ln -s ../../code-writer/references/comments.md references/comments.md`. Add a
+  `## Comments` section to `style.md` that points to it and names the comment
+  marker and the function doc format of the language.

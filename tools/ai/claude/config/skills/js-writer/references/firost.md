@@ -1,11 +1,12 @@
 # Firost
 
-File I/O and system operations.
-Import what you need: `import { read, write } from 'firost'`
+File I/O and system operations. Import what you need:
+`import { read, write } from 'firost'`
 
 Source code is available at `/home/tim/local/www/projects/firost`.
 
 ## Paths
+
 - `absolute(path)`
 - `gitRoot()`
 - `packageRoot()`
@@ -16,6 +17,7 @@ Source code is available at `/home/tim/local/www/projects/firost`.
 - `tmpDirectory(name)`
 
 ## File Operations
+
 - `read(path)`
 - `write(path, content)`
 - `readJson(path)`
@@ -34,6 +36,7 @@ Source code is available at `/home/tim/local/www/projects/firost`.
 - `symlink(target, path)`
 
 ## Process
+
 - `run(command)`
 - `which(command)`
 - `exit(code)`
@@ -41,6 +44,7 @@ Source code is available at `/home/tim/local/www/projects/firost`.
 - `captureOutput(fn)`
 
 ## Utilities
+
 - `download(url, dest)`
 - `hash(content)`
 - `uuid()`
@@ -56,6 +60,7 @@ Source code is available at `/home/tim/local/www/projects/firost`.
 - `firostImport(path)`
 
 ## Console
+
 - `consoleInfo(msg)`
 - `consoleSuccess(msg)`
 - `consoleWarn(msg)`

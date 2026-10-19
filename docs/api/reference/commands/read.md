@@ -17,17 +17,17 @@ fields.
 
 ## Role
 
-- `read` takes an id returned by [`list-raw`](list-raw.md) (first column) or found in the output of [`search`](search.md).
+- `read` takes an id returned by [`list-raw`](list-raw.md) (first column) or
+  found in the output of [`search`](search.md).
 - It prints one entity as JSON, formatted per `format<Entity>`.
 
 ## Arguments
 
-The id is always a positional argument.
-Example: `gmail-mail-read {id}`
+The id is always a positional argument. Example: `gmail-mail-read {id}`
 
 If the entity needs an anchor (a folder, a workspace, a table, etc), `read`
-requires it as a named argument.
-Example: `airtable-record-read recXXX --baseId appXXX --tableId Meetups`
+requires it as a named argument. Example:
+`airtable-record-read recXXX --baseId appXXX --tableId Meetups`
 
 ## Template
 
@@ -101,8 +101,9 @@ __ = {
 
 The test lives in `<service>/__lib/<entity>/__tests__/<entity>Read.js`.
 
-The vitest test covers the module only. It mocks `callApi` through `__` and mostly
-checks two behaviors:
+The vitest test covers the module only. It mocks `callApi` through `__` and
+mostly checks two behaviors:
+
 - Given an id, the module calls `callApi` with the right path.
 - The returned value is the response of the API, passed through `formatEntity`.
 

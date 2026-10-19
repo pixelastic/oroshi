@@ -7,8 +7,9 @@ description: Use when user says "phone pickup", "pick up the conversation from t
 
 ## Overview
 
-Retrieve a mobile vocal session from Notion and resume the conversation in Claude Code.
-This skill is read-only: it never creates, updates, or deletes Notion pages.
+Retrieve a mobile vocal session from Notion and resume the conversation in
+Claude Code. This skill is read-only: it never creates, updates, or deletes
+Notion pages.
 
 ---
 
@@ -20,19 +21,23 @@ Call `phone-pickup-list` to fetch all entries from the Notion database.
 
 ### Step 2 — Match
 
-Match the user's description against title, date, and tags to identify the best candidate.
+Match the user's description against title, date, and tags to identify the best
+candidate.
 
 **If the match is unambiguous:** proceed to Step 3.
 
-**If the match is ambiguous:** present the shortlist (title + date) and ask the user to choose before continuing.
+**If the match is ambiguous:** present the shortlist (title + date) and ask the
+user to choose before continuing.
 
 ### Step 3 — Read
 
-Call `phone-pickup-read {page_id}` with the identified page ID to fetch the page content.
+Call `phone-pickup-read {page_id}` with the identified page ID to fetch the page
+content.
 
 ### Step 4 — Present
 
-Read the markdown content, then continue the conversation as if it had started here.
+Read the markdown content, then continue the conversation as if it had started
+here.
 
 ---
 

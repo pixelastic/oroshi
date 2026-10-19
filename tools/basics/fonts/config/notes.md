@@ -2,9 +2,9 @@
 
 Put the fonts in `~/.fonts`, then run `fc-cache -f -v`.
 
-To get the list of all fonts, run 
+To get the list of all fonts, run
 
-```
+```bash
 fc-list -f '%{family}\n' | awk '!x[$0]++' | sort
 ```
 

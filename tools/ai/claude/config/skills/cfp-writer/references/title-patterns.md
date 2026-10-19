@@ -2,7 +2,8 @@
 
 ## Proven patterns
 
-1. **Question Format**: "Why Is My [X] So [Problem]?" or "How Do You [Achieve Y]?"
+1. **Question Format**: "Why Is My [X] So [Problem]?" or "How Do You [Achieve
+   Y]?"
 2. **Problem-Solution**: "[Solving/Taming/Fixing] [Problem]: [Approach/Benefit]"
 3. **Provocative/Contrarian**: "Stop [Common Practice]: [Better Alternative]"
 4. **Learning-Focused**: "How to [Achieve Goal] with/without [Technology]"

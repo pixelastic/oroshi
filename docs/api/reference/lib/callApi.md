@@ -1,7 +1,6 @@
 # `callApi`
 
-`callApi` sends one request to the service and returns what the service
-answers.
+`callApi` sends one request to the service and returns what the service answers.
 
 ## Role
 
@@ -31,8 +30,8 @@ answers.
 - Output: the parsed JSON response of the API.
 - An empty response body is returned as it is. A successful delete does not
   throw.
-- Error: a `firostError` coded `<SERVICE>_REQUEST_FAILED`, for every failure:
-  no network, a non-2xx status, or a 2xx body that is not JSON.
+- Error: a `firostError` coded `<SERVICE>_REQUEST_FAILED`, for every failure: no
+  network, a non-2xx status, or a 2xx body that is not JSON.
 
 ## Template
 
@@ -117,8 +116,9 @@ __ = { fetch, getConfig };
 
 The test lives in `<service>/__lib/__tests__/callApi.js`.
 
-The vitest test covers the function only. It mocks `__.getConfig` and `__.fetch`, and
-checks these behaviors:
+The vitest test covers the function only. It mocks `__.getConfig` and
+`__.fetch`, and checks these behaviors:
+
 - Given a successful response, the function returns its JSON body.
 - Given an empty body, the function returns it without throwing.
 - Given `query` and `headers`, the request holds them merged over the defaults.

@@ -10,12 +10,14 @@ Crystallize the plan into a PRD and persist it in a dedicated worktree.
 ## Create worktree
 
 Run `plan-start <branchName>` and parse the JSON output:
+
 - `branch` — current branch name
 - `planDir` — directory for all plan artifacts
 
 ## Write PRD
 
-Write `PRD.md` to `<planDir>/PRD.md`, following [the PRD template](./templates/PRD.template.md).
+Write `PRD.md` to `<planDir>/PRD.md`, following
+[the PRD template](./templates/PRD.template.md).
 
 ## Checklist
 

@@ -1,6 +1,7 @@
 # Write issues
 
-Split the PRD into independently-grabbable vertical slices and persist them to disk.
+Split the PRD into independently-grabbable vertical slices and persist them to
+disk.
 
 1. Draft vertical slices — thin tracer bullets through all layers
 2. Confirm slices with user — validate granularity and order
@@ -19,17 +20,17 @@ Break the plan into **tracer bullet** issues. Each issue is a thin vertical
 slice that cuts through ALL integration layers end-to-end, NOT a horizontal
 slice of one layer.
 
-Slices may be 'HITL' or 'AFK'. HITL slices require human interaction (architectural
-decision, design review). AFK slices can be implemented and merged without human
-interaction. Prefer AFK over HITL where possible.
+Slices may be 'HITL' or 'AFK'. HITL slices require human interaction
+(architectural decision, design review). AFK slices can be implemented and
+merged without human interaction. Prefer AFK over HITL where possible.
 
 - Each slice delivers a narrow but COMPLETE path through every layer
 - A completed slice is demoable or verifiable on its own
 - Prefer many thin slices over few thick ones
 - Do NOT re-explore the codebase — use prior context
 
-For each issue, identify any **behavioral tests** or **scaffolding tests**
-as defined in the `/tdd` skill.
+For each issue, identify any **behavioral tests** or **scaffolding tests** as
+defined in the `/tdd` skill.
 
 ---
 
@@ -44,9 +45,11 @@ Present the proposed breakdown as a numbered list. For each slice, show:
 - **Title**: short descriptive name
 - **Type**: HITL / AFK
 - **Blocked by**: which other slices (if any) must complete first
-- **User stories covered**: which user stories this addresses (if the source material has them)
+- **User stories covered**: which user stories this addresses (if the source
+  material has them)
 - **Behavioral Tests**: what behavior should be tested (skip if empty)
-- **Scaffolding Tests**: what structural transformation should be tested (skip if empty)
+- **Scaffolding Tests**: what structural transformation should be tested (skip
+  if empty)
 
 Ask the user:
 
@@ -64,20 +67,25 @@ writing issue files once the user approves the breakdown.
 
 **Goal:** Persist issues and metadata to disk.
 
-**Exit criterion:** All issue files, `state.json`, and `GUIDANCE.md` created in `<planDir>`.
+**Exit criterion:** All issue files, `state.json`, and `GUIDANCE.md` created in
+`<planDir>`.
 
-- Create one issue per slice following [the issue template](./templates/issues-XX-slug.template.md)
-- Fill the `.issues[]` array of `state.json` (created by `plan-start`) following [state.json](./templates/state-json.template.md), with all issues and their dependencies
-- Create a [GUIDANCE.md](./templates/GUIDANCE.template.md) to guide subsequent agents
+- Create one issue per slice following
+  [the issue template](./templates/issues-XX-slug.template.md)
+- Fill the `.issues[]` array of `state.json` (created by `plan-start`) following
+  [state.json](./templates/state-json.template.md), with all issues and their
+  dependencies
+- Create a [GUIDANCE.md](./templates/GUIDANCE.template.md) to guide subsequent
+  agents
 
 ---
 
 ## Write COMMIT_HINT.md
 
-Write `COMMIT_HINT.md` to `<planDir>/COMMIT_HINT.md`.
-Load the **commit hint** reference from the `/ralph` skill for format and rules.
-Derive Goal from the PRD's Problem Statement.
-Suggested type is `plan(<slug>)` where slug is the plan directory name.
+Write `COMMIT_HINT.md` to `<planDir>/COMMIT_HINT.md`. Load the **commit hint**
+reference from the `/ralph` skill for format and rules. Derive Goal from the
+PRD's Problem Statement. Suggested type is `plan(<slug>)` where slug is the plan
+directory name.
 
 ## Checklist
 
@@ -88,6 +96,7 @@ Suggested type is `plan(<slug>)` where slug is the plan directory name.
 - [ ] Each issue contains "What to build" and "Acceptance criteria"
 - [ ] Each issue has considered its Behavioral Tests
 - [ ] Each issue has considered its Scaffolding Tests
-- [ ] `state.json` `.issues[]` filled — all issues with `done: false`, `branchedAt` untouched
+- [ ] `state.json` `.issues[]` filled — all issues with `done: false`,
+      `branchedAt` untouched
 - [ ] `GUIDANCE.md` written — Guidance + Discoveries sections present
 - [ ] `COMMIT_HINT.md` written with `plan(<slug>)` type

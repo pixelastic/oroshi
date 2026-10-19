@@ -27,14 +27,13 @@ precompiled bytecode of each module.
 
 1. Each table is replaced in place by one of the exact same length (padded with
    spaces), so no offset in the binary moves
-2. The bytecode of the patched modules is removed, so Bun compiles them from
-   the patched source instead of running the original bytecode
+2. The bytecode of the patched modules is removed, so Bun compiles them from the
+   patched source instead of running the original bytecode
 3. The result is written to a temporary file then renamed over the binary: it
-   can't be written while Claude is running, and yarn hardlinks it to its
-   global cache
+   can't be written while Claude is running, and yarn hardlinks it to its global
+   cache
 
 It is re-run by `colors-reload`, when saving the patch source in Neovim, and
-when committing it. It must be run manually after each Claude
-Code update, as `yarn install` restores the original binary. It fails if the
-patched code can't be found, which likely means a Claude Code update changed
-it.
+when committing it. It must be run manually after each Claude Code update, as
+`yarn install` restores the original binary. It fails if the patched code can't
+be found, which likely means a Claude Code update changed it.

@@ -46,5 +46,7 @@ Goal in 1-2 sentences.
 
 ## References
 
-- `references/claude-frontmatter-docs.md` — Quick syntax lookup: frontmatter fields, string substitutions, dynamic context injection, invocation control.
-- `references/claude-full-docs.md` — Full official documentation: skill lifecycle, advanced patterns, troubleshooting, subagents, permissions.
+- `references/claude-frontmatter-docs.md` — Quick syntax lookup: frontmatter
+  fields, string substitutions, dynamic context injection, invocation control.
+- `references/claude-full-docs.md` — Full official documentation: skill
+  lifecycle, advanced patterns, troubleshooting, subagents, permissions.

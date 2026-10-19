@@ -6,23 +6,23 @@
 
 - `getConfig` is the only way to read the credentials and the configuration of
   the service.
-- Other modules call it through `__` (`await __.getConfig()`), so tests mock it and
-  never touch the environment.
+- Other modules call it through `__` (`await __.getConfig()`), so tests mock it
+  and never touch the environment.
 - Env variables are prefixed with the name of the service: `<SERVICE>_TOKEN`,
   `<SERVICE>_BASE_URL`.
 - Each service owns one, in `<service>/__lib/getConfig.js`.
 
 ## Inputs/Outputs
 
-- `getConfig` is always `async`, whether the service reads environment
-  variables or a file. Callers `await` it.
-- Input: none. `getConfig` holds a private `account`, `null` by default. While it
-  is `null`, `getConfig` returns the credentials of the default account.
+- `getConfig` is always `async`, whether the service reads environment variables
+  or a file. Callers `await` it.
+- Input: none. `getConfig` holds a private `account`, `null` by default. While
+  it is `null`, `getConfig` returns the credentials of the default account.
   [`setAccount`](setAccount.md) changes it, and `getConfig` then returns the
   credentials of that account
   ([architecture.md](../../architecture.md#accounts)).
-- Output: a promise of an object with the configuration of the service. Its keys depend on
-  the service (`token`, `baseUrl`, …).
+- Output: a promise of an object with the configuration of the service. Its keys
+  depend on the service (`token`, `baseUrl`, …).
 - Error: `<SERVICE>_CREDENTIALS_MISSING` when a required variable is empty.
 
 ## Template
@@ -63,6 +63,7 @@ __ = {
 
 The test lives in `<service>/__lib/__tests__/getConfig.js`.
 
-The vitest test covers the function only. It sets the environment variables and checks
-the returned object, for the default account and for another one (by setting
-`__.account`). It also checks that an empty variable throws the typed error.
+The vitest test covers the function only. It sets the environment variables and
+checks the returned object, for the default account and for another one (by
+setting `__.account`). It also checks that an empty variable throws the typed
+error.

@@ -13,6 +13,7 @@ I plan on migrating off Gnome in the future, but this is a big project so I
 haven't committed yet. Sway or Hyperland seem nice alternatives.
 
 The issues with Gnome are:
+
 - Adding/updating extensions is a laborious process
 - Stuff breaks from one version to the next
 - The notify-send default system is buggy and chokes on queue messages and can't

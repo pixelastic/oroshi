@@ -10,7 +10,7 @@ terminal use, and a `--json` format for machine consumers (NeoVim, agents).
 Violations are grouped by file. Each file appears as a header line, followed by
 indented violations with aligned columns.
 
-```
+```text
 path/to/file.zsh
   3:10  error  Missing double quotes around variable    SC2086
   7:1   warn   Variable is referenced but not assigned  SC2154
@@ -44,17 +44,16 @@ When there are no violations, output is empty (no output, exit 0).
 
 ### Fields
 
-| Field | Type | Description |
-|---|---|---|
-| `file` | string | Absolute path to the file containing the violation |
-| `code` | string (optional) | Rule identifier from the underlying linter |
-| `level` | string | Severity: `error`, `warn`, `info`, or `hint` |
-| `line` | number | Start line of the violation (1-based) |
-| `endLine` | number | End line of the violation (1-based). Falls back to `line` when the underlying linter has no range info |
-| `column` | number | Start column of the violation (1-based) |
-| `endColumn` | number | End column of the violation (1-based). Falls back to `column` when the underlying linter has no range info |
-| `message` | string | Human-readable description of the violation |
-
+| Field       | Type              | Description                                                                                                |
+| ----------- | ----------------- | ---------------------------------------------------------------------------------------------------------- |
+| `file`      | string            | Absolute path to the file containing the violation                                                         |
+| `code`      | string (optional) | Rule identifier from the underlying linter                                                                 |
+| `level`     | string            | Severity: `error`, `warn`, `info`, or `hint`                                                               |
+| `line`      | number            | Start line of the violation (1-based)                                                                      |
+| `endLine`   | number            | End line of the violation (1-based). Falls back to `line` when the underlying linter has no range info     |
+| `column`    | number            | Start column of the violation (1-based)                                                                    |
+| `endColumn` | number            | End column of the violation (1-based). Falls back to `column` when the underlying linter has no range info |
+| `message`   | string            | Human-readable description of the violation                                                                |
 
 The four `level` values map directly to NeoVim's `vim.diagnostic.severity`
 constants (`ERROR`, `WARN`, `INFO`, `HINT`) — no conversion needed.

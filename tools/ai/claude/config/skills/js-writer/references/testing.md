@@ -2,14 +2,17 @@
 
 ## Test file naming
 
-- Test files are stored as `__tests__/basename.js` (example: test for `pull.js` → `__tests__/pull.js`)
+- Test files are stored as `__tests__/basename.js` (example: test for `pull.js`
+  → `__tests__/pull.js`)
 
 ## Test conventions
 
-- Use variable names: `input` (passed), `actual` (result), `expected` (assertion)
+- Use variable names: `input` (passed), `actual` (result), `expected`
+  (assertion)
 - `describeName` and `testName` are available in each test
 - `dedent` is available for multiline strings
-- Use `vi.spyOn(__, 'method').mockReturnValue(...)` to spy/mock private functions
+- Use `vi.spyOn(__, 'method').mockReturnValue(...)` to spy/mock private
+  functions
 
 ```javascript
 import { __, getOrders } from '../getOrders.js';
@@ -31,9 +34,9 @@ describe('getOrders', () => {
 
 ## Setup design
 
-Prefer building a single rich context shared across tests that covers many
-edge cases rather than designing a specific context per test.
-Each test observes a different facet of that same context.
+Prefer building a single rich context shared across tests that covers many edge
+cases rather than designing a specific context per test. Each test observes a
+different facet of that same context.
 
 ```javascript
 import { __, getOrders } from '../getOrders.js';
@@ -71,8 +74,12 @@ describe('getOrders', () => {
 ## `it.each` vs standalone `it`
 
 - Prefer one `it.each` with many rows over many standalone `it` blocks
-- Use `input` and `expected` keys in `it.each`. If multiple inputs, use one named key per input. Use a `title` key if input is too long
-- Reserve standalone `it` for tests whose **body code differs** — e.g., one uses `toEqual`, another uses `toHaveBeenCalled`, another uses try/catch. If only the inputs and expected values change but the test code is the same, use `it.each`
+- Use `input` and `expected` keys in `it.each`. If multiple inputs, use one
+  named key per input. Use a `title` key if input is too long
+- Reserve standalone `it` for tests whose **body code differs** — e.g., one uses
+  `toEqual`, another uses `toHaveBeenCalled`, another uses try/catch. If only
+  the inputs and expected values change but the test code is the same, use
+  `it.each`
 
 ```javascript
 import { __, getOrders } from '../getOrders.js';
@@ -150,8 +157,8 @@ it('throws on invalid status', async () => {
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
-| "`arrayContaining` + `toHaveLength` is safer because order doesn't matter" | If full content is known, use `toEqual` with the exact array. Sort if order is non-deterministic. `arrayContaining` is for genuine subset checks only. |
-| "`toContain` is more resilient to future changes" | If the full value is known in the test context, assert it exactly. Partial checks hide regressions. `toContain` is for genuine substring/subset checks where the full value is unknown or irrelevant. |
-| "The shared mock should be minimal so tests are self-contained" | If most tests override the setup, the setup is wrong. |
+| Rationalization                                                            | Reality                                                                                                                                                                                               |
+| -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "`arrayContaining` + `toHaveLength` is safer because order doesn't matter" | If full content is known, use `toEqual` with the exact array. Sort if order is non-deterministic. `arrayContaining` is for genuine subset checks only.                                                |
+| "`toContain` is more resilient to future changes"                          | If the full value is known in the test context, assert it exactly. Partial checks hide regressions. `toContain` is for genuine substring/subset checks where the full value is unknown or irrelevant. |
+| "The shared mock should be minimal so tests are self-contained"            | If most tests override the setup, the setup is wrong.                                                                                                                                                 |

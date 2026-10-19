@@ -5,7 +5,7 @@ Template for the `{lang}-writer` skill when the language is a
 
 ## Directory structure
 
-```
+```text
 {lang}-writer/
   SKILL.md            # Main skill file — defines the TDD-driven workflow
   references/         # Supplementary docs referenced by SKILL.md
@@ -27,9 +27,9 @@ Three files are expected:
 
 ## Shared references
 
-Rules that apply to every language live once in `code-writer/references/`.
-Each `{lang}-writer` links to them with a relative symlink, so SKILL.md keeps a
-plain `./references/<file>.md` path:
+Rules that apply to every language live once in `code-writer/references/`. Each
+`{lang}-writer` links to them with a relative symlink, so SKILL.md keeps a plain
+`./references/<file>.md` path:
 
 ```sh
 ln -s ../../code-writer/references/comments.md {lang}-writer/references/comments.md
@@ -49,13 +49,14 @@ The skill enforces a TDD-driven sequence:
    conventions and naming rules
 2. **Test first** — write a failing test before any production code
 3. **Make it pass** with minimal code
-4. **Refactor** applying the style conventions defined in [`style.md`](#directory-structure)
+4. **Refactor** applying the style conventions defined in
+   [`style.md`](#directory-structure)
 5. **Lint** with [`{lang}-lint --fix`](scripts.md#lang-lint)
 
 ## What SKILL.md defines
 
-- The language's test framework and test file naming convention
-  (e.g. `__tests__/module.js`, `__tests__/test_module.py`)
+- The language's test framework and test file naming convention (e.g.
+  `__tests__/module.js`, `__tests__/test_module.py`)
 - How to run tests via [`{lang}-test`](scripts.md#lang-test)
 - How to lint via [`{lang}-lint`](scripts.md#lang-lint)
 - Project structure conventions

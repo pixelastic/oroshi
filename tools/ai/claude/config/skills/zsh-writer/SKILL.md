@@ -17,9 +17,11 @@ Write ZSH code that is consistent with my conventions.
 
 **Exit criterion:** File exists at correct path with correct name.
 
-- Autoloaded function: `tools/term/zsh/config/functions/autoload/{domain}/{subdomain?}/{name}`
+- Autoloaded function:
+  `tools/term/zsh/config/functions/autoload/{domain}/{subdomain?}/{name}`
 - Name: `{domain}-{subdomain?}-{action}` — e.g. `git-branch-list`, `json-lint`
-- `-raw` suffix → machine-readable `▮`-separated output, consumed by other scripts
+- `-raw` suffix → machine-readable `▮`-separated output, consumed by other
+  scripts
 
 ### Step 2 — TDD: Write a failing test
 
@@ -60,8 +62,8 @@ setup() {
 
 **Exit criterion:** Test is green.
 
-Write the simplest code that makes the test pass.
-No patterns yet — just correct behavior.
+Write the simplest code that makes the test pass. No patterns yet — just correct
+behavior.
 
 - Run `zsh-test <test_filepath>` to run the tests
 
@@ -73,17 +75,17 @@ No patterns yet — just correct behavior.
 
 Apply patterns from [Style](./references/style.md):
 
-| Pattern | Rule |
-|---|---|
-| Return early | No avoidable nesting |
-| Naming | Name carries a contract: `is-*`, `*-exists`, `*-list-raw`, `*-list` |
-| [Headers](./references/header.md) | Top of the file: what the script does, how to call it and error protection |
-| [Args parsing](./references/args-parsing.md) | Use `zparseopts` to parse --named arguments |
-| [Variables](./references/variables.md) | `local myVar="$(myCommand)"` on one line |
-| [Splitting](./references/splitting.md) | Use `▮` as separator and `${(@ps/▮/)line}` to split |
-| [Conditions](./references/conditions.md) | `[[ simpleCondition ]] && state=value`. No nested if/else, return early |
-| [Calling Commands](./references/calling-commands.md) | Use existing helpers (`git-branch-current`), not raw calls. Use `--long-form`, not `-l`. |
-| [Folders](./references/folders.md) | Write runtime files under `$OROSHI_FOLDER_STATE` (persistent) or `$OROSHI_FOLDER_CACHE` (discardable). |
+| Pattern                                              | Rule                                                                                                   |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Return early                                         | No avoidable nesting                                                                                   |
+| Naming                                               | Name carries a contract: `is-*`, `*-exists`, `*-list-raw`, `*-list`                                    |
+| [Headers](./references/header.md)                    | Top of the file: what the script does, how to call it and error protection                             |
+| [Args parsing](./references/args-parsing.md)         | Use `zparseopts` to parse --named arguments                                                            |
+| [Variables](./references/variables.md)               | `local myVar="$(myCommand)"` on one line                                                               |
+| [Splitting](./references/splitting.md)               | Use `▮` as separator and `${(@ps/▮/)line}` to split                                                    |
+| [Conditions](./references/conditions.md)             | `[[ simpleCondition ]] && state=value`. No nested if/else, return early                                |
+| [Calling Commands](./references/calling-commands.md) | Use existing helpers (`git-branch-current`), not raw calls. Use `--long-form`, not `-l`.               |
+| [Folders](./references/folders.md)                   | Write runtime files under `$OROSHI_FOLDER_STATE` (persistent) or `$OROSHI_FOLDER_CACHE` (discardable). |
 
 ```zsh
 # Show changed files with syntax-aware coloring
@@ -136,16 +138,16 @@ table $output
 
 ### Step 5 — Lint the file
 
-Run `zsh-lint --fix <file>` on any modified `.zsh` files.
-Run `bats-lint <test_file>` on any modified `.bats` test files.
-Fix **every** violation, including pre-existing ones.
+Run `zsh-lint --fix <file>` on any modified `.zsh` files. Run
+`bats-lint <test_file>` on any modified `.bats` test files. Fix **every**
+violation, including pre-existing ones.
 
 ---
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
+| Rationalization                             | Reality                            |
+| ------------------------------------------- | ---------------------------------- |
 | "It's only two levels of if/else, it's ok." | No it's not. Return early, always. |
 
 ## Checklist
@@ -156,7 +158,8 @@ Fix **every** violation, including pre-existing ones.
 - [ ] Comments follow [Comments](./references/comments.md)
 - [ ] All function vars `local`; script constants UPPER_CASE
 - [ ] External commands use long-form args, one per line
-- [ ] Use existing helpers over porcelain (e.g. `git-branch-list-raw` not `git branch`)
+- [ ] Use existing helpers over porcelain (e.g. `git-branch-list-raw` not
+      `git branch`)
 - [ ] Use `zparseopts` for --named arguments
 - [ ] Tests still pass after refactor
 - [ ] Tests use the dedicated helpers

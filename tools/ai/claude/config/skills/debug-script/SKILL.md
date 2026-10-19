@@ -7,7 +7,8 @@ description: Use when writing throw-away debug or exploration scripts.
 
 ## When to Use
 
-Write a throw-away script when a Bash command is syntactically complex — multi-line, uses subshells, or involves non-trivial pipes.
+Write a throw-away script when a Bash command is syntactically complex —
+multi-line, uses subshells, or involves non-trivial pipes.
 
 ## JSON
 
@@ -17,7 +18,8 @@ Write a throw-away script when a Bash command is syntactically complex — multi
 ## Pattern
 
 - **Target folder:** `/tmp/oroshi/claude/scripts/`
-- **Naming:** descriptive name, no file extension (e.g. `inspect-hooks`, `dump-state`)
+- **Naming:** descriptive name, no file extension (e.g. `inspect-hooks`,
+  `dump-state`)
 - **Shebang:** first line must be a shebang like `#!/usr/bin/env zsh`
 - **Permissions:** `chmod +x` before executing
 - **Execution:** call by full path — never `zsh path/to/file`

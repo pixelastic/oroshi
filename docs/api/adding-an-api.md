@@ -34,13 +34,13 @@ real API.
 
 **Goal:** Know which commands each entity gets.
 
-**Exit criterion:** The list of commands is written down, one command per
-verb and per entity.
+**Exit criterion:** The list of commands is written down, one command per verb
+and per entity.
 
 - For each entity, list every verb that the API allows
   ([reference/commands/README.md](reference/commands/README.md)).
-- List a [custom verb](reference/commands/custom.md) for each action that is
-  not CRUD.
+- List a [custom verb](reference/commands/custom.md) for each action that is not
+  CRUD.
 
 ## Step 4 — Validate the arguments
 
@@ -56,8 +56,8 @@ Choose the arguments of each command with
 
 **Goal:** Have the scaffolding that every command needs.
 
-**Exit criterion:** The workspace has its `package.json`, its `getConfig.js`
-and its `callApi.js`.
+**Exit criterion:** The workspace has its `package.json`, its `getConfig.js` and
+its `callApi.js`.
 
 - Create the `package.json` of the service ([architecture.md](architecture.md)).
 - Create its [`getConfig.js`](reference/lib/getConfig.md).

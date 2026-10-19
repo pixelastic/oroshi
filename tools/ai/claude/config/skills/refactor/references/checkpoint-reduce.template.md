@@ -1,6 +1,7 @@
 # Wave Checkpoint Template
 
-Use this template to write the checkpoint issue for `reduce` and `rewrite` waves.
+Use this template to write the checkpoint issue for `reduce` and `rewrite`
+waves.
 
 ## Issue content
 
@@ -19,4 +20,5 @@ Wave checkpoint — triage bugs, then launch the next wave.
 3. Once all bugs are triaged, run `/refactor <next-wave>` to launch the next wave. The next wave appends its issues after the bug-fix issues.
 ```
 
-Replace `<next-wave>` with `rewrite` (after reduce) or `restructure` (after rewrite).
+Replace `<next-wave>` with `rewrite` (after reduce) or `restructure` (after
+rewrite).

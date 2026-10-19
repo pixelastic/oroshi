@@ -1,10 +1,34 @@
 {
   "config": {
+    // MD004 ul-style: bullet marker (-, *, +). Prettier normalizes it.
     "MD004": false,
+    // MD007 ul-indent: indentation of nested bullets. Prettier sets it.
     "MD007": false,
+    // MD013 line-length: Prettier wraps prose at 80 columns. Long URLs, tables and code cannot wrap.
     "MD013": false,
+    // MD014 commands-show-output: "$ " before a command with no output. We use it to mark command lines.
+    "MD014": false,
+    // MD024 no-duplicate-heading: two headings with the same text. We accept them.
+    "MD024": false,
+    // MD028 no-blanks-blockquote: blank line between two quotes. It means two separate quotes.
+    "MD028": false,
+    // MD030 list-marker-space: spaces after the bullet. Prettier sets it.
     "MD030": false,
+    // MD031 blanks-around-fences: Prettier keeps fenced blocks tight inside list items.
     "MD031": false,
-    "MD032": false
+    // MD032 blanks-around-lists: blank lines around lists. Prettier sets them.
+    "MD032": false,
+    // MD033 no-inline-html: HTML tags in Markdown. It is valid Markdown, and some docs rely on it.
+    "MD033": false,
+    // MD034 no-bare-urls: URL without <> or [](). GitHub and Neovim turn it into a link anyway.
+    "MD034": false,
+    // MD036 no-emphasis-as-heading: a bold line alone looks like a heading. It is often a list label.
+    "MD036": false,
+    // MD041 first-line-heading: first line must be an H1. The title often comes from the frontmatter.
+    "MD041": false,
+    // MD046 code-block-style: fenced or indented. We want fenced everywhere, and Prettier keeps them.
+    "MD046": false,
+    // MD049 emphasis-style: * or _ for italics. Prettier writes _, and it is the source of truth.
+    "MD049": false
   }
 }

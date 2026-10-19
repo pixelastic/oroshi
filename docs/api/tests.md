@@ -19,12 +19,13 @@ Plain wrappers only pass their arguments on. Bins only parse the arguments with
 neither has a test. Their behavior is covered through the module they call.
 
 `list` is the only wrapper with logic: it calls `list-raw` and builds a table.
-It is the only command with a bats test. See [`list`](reference/commands/list.md#test).
+It is the only command with a bats test. See
+[`list`](reference/commands/list.md#test).
 
 ## vitest
 
-vitest covers every JavaScript file except the bins. Tests run with `js-test`.
-A test mocks a collaborator through `__`, with `vi.spyOn(__, 'name')`. The
+vitest covers every JavaScript file except the bins. Tests run with `js-test`. A
+test mocks a collaborator through `__`, with `vi.spyOn(__, 'name')`. The
 `js-writer` skill defines this convention
 ([architecture.md](architecture.md#javascript-conventions)).
 
@@ -42,7 +43,8 @@ vi.spyOn(__, 'getConfig').mockResolvedValue({ token: 'secret-token' });
 `callApi` is the only module that talks to the network, and it has its own
 tests. They mock the HTTP call (`__.fetch`) to return a response with a status
 and a body, and assert on the request it received (url, method, headers, body).
-The behaviors to cover are listed in [`callApi`](reference/lib/callApi.md#template).
+The behaviors to cover are listed in
+[`callApi`](reference/lib/callApi.md#template).
 
 Every other module mocks `callApi` whenever it needs an API response. Their
 tests never mock `fetch`.
@@ -87,8 +89,8 @@ template above. A command whose test needs more says so in its own file.
 ## bats
 
 Only one file requires a `bats` test: `list`. `list` reads data from `list-raw`,
-colors the id, and passes it to `table` for a nicer display in columns. An empty `list-raw` makes `list` stop with a
-non-zero status.
+colors the id, and passes it to `table` for a nicer display in columns. An empty
+`list-raw` makes `list` stop with a non-zero status.
 
 Its test mocks `list-raw` and asserts the final output based on various inputs.
 Both `list-raw` and `table` are themselves tested, so the tests of `list` only

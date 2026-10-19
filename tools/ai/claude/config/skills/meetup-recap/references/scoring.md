@@ -1,7 +1,7 @@
 # Scoring
 
-The following are expected outcomes for a meetup.
-Each one that went well scores +1.
+The following are expected outcomes for a meetup. Each one that went well scores
++1.
 
 - [ ] Badging was working correctly
 - [ ] Enough seats for everyone
@@ -17,13 +17,13 @@ Each one that went well scores +1.
 - [ ] Talks were interesting
 - [ ] We had no troublemakers
 
-**Default assumption:**
-if the user's dump says nothing about a criterion, assume it went well (+1).
-Only mark 0 if the dump explicitly mentions a problem.
+**Default assumption:** if the user's dump says nothing about a criterion,
+assume it went well (+1). Only mark 0 if the dump explicitly mentions a problem.
 
 **Compute:** count passed criteria / total criteria → percentage.
 
 **Thresholds:**
+
 - 🔴 below 60%
 - 🟢 60–89%
 - 🏅 90%+

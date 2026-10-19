@@ -3,10 +3,12 @@
 ## Essentials
 
 - Remove duplication by extracting helpers
-- Improve readability with clear names. Avoid abbreviations (`absolutePath` not `absPath`)
+- Improve readability with clear names. Avoid abbreviations (`absolutePath` not
+  `absPath`)
 - Return early to avoid `if/else` nesting
 - Only `try/catch` when acting on the error before rethrowing
-- Write comments that say only what the code shows, and link facts with because, so, but
+- Write comments that say only what the code shows, and link facts with because,
+  so, but
 
 ## Return early
 
@@ -59,7 +61,8 @@ _.each(items, (item) => {
 
 ## Comments
 
-Follow [Comments](./comments.md). Write inline comments with `//`, and function docs as JSDoc blocks.
+Follow [Comments](./comments.md). Write inline comments with `//`, and function
+docs as JSDoc blocks.
 
 ## Error Handling
 

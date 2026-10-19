@@ -5,12 +5,10 @@ https://who-t.blogspot.com/2020/09/user-specific-xkb-configuration-putting.html
 
 https://codeaffen.org/2023/09/16/custom-keyboard-layouts-with-xkb/
 
-https://www.vinc17.net/unix/xkb.fr.html
-https://www.vinc17.net/unix/xkb-symbols
+https://www.vinc17.net/unix/xkb.fr.html https://www.vinc17.net/unix/xkb-symbols
 https://www.vinc17.net/unix/xkb-types
 
 https://niklasfasching.de/posts/custom-keyboard-layout/
-
 
 https://github.com/elias19r/xkb-layouts?tab=readme-ov-file
 

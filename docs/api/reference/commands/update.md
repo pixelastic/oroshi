@@ -115,6 +115,7 @@ The test lives in `<service>/__lib/<entity>/__tests__/<entity>Update.js`.
 
 The vitest test covers the module only. It mocks `callApi` through `__` and
 mostly checks three behaviors:
+
 - Given an id and some fields, the module calls `callApi` with the right method,
   path and body.
 - The body holds only the given fields, and never the id.

@@ -35,9 +35,8 @@ The wrapper, the bin and the module of `login` follow the template of
 environment variable: `$OROSHI_FOLDER_STATE/<service>/tokens.json`, the file
 that `login` writes.
 
-When the tokens file is
-missing, it fails early with a `firostError`
-coded `<SERVICE>_LOGIN_REQUIRED`. The message tells the user what to run:
+When the tokens file is missing, it fails early with a `firostError` coded
+`<SERVICE>_LOGIN_REQUIRED`. The message tells the user what to run:
 `run <service>-login`.
 
 The test points `OROSHI_FOLDER_STATE` to a temporary folder. It checks that a
@@ -45,10 +44,11 @@ missing tokens file throws the typed error.
 
 ## `callApi`
 
-The `callApi` of an OAuth API follows
-[callApi.md](reference/lib/callApi.md), with three differences:
+The `callApi` of an OAuth API follows [callApi.md](reference/lib/callApi.md),
+with three differences:
 
-- It reads the tokens through `await __.getConfig()`, and authenticates with them.
+- It reads the tokens through `await __.getConfig()`, and authenticates with
+  them.
 - It tries to keep the tokens fresh, on a best-effort basis. When they are about
   to expire, it asks the service for new ones (`__.refreshTokens`), and rewrites
   the tokens file. A failed refresh does not stop the call: it goes on with the
@@ -60,6 +60,7 @@ The `callApi` of an OAuth API follows
 
 The test mocks `__.getConfig`, `__.refreshTokens` and `__.fetch`, and checks
 these behaviors:
+
 - Given a successful response, the function returns its JSON body, and the
   request holds the tokens returned by `__.refreshTokens`.
 - Given a failed refresh, the function still calls the API with the current

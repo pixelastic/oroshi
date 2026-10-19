@@ -28,8 +28,8 @@ comma.
 `list` accepts the same flags as [`list-raw`](list-raw.md), and passes them
 through.
 
-If the entity has an anchor (like `--baseId` and `--tableId` for an Airtable record), `list-raw`
-requires it, and `list` requires it too.
+If the entity has an anchor (like `--baseId` and `--tableId` for an Airtable
+record), `list-raw` requires it, and `list` requires it too.
 
 ## Colors
 
@@ -49,9 +49,8 @@ colors can come later. Then they run `colors-build`.
 ### Suggestions
 
 The id is always colored. The other columns depend on the entity, so their
-colors are optional. To color a column, the developer adds one token for it,
-and the wrapper colors that column with it. For example, to dim the name
-column:
+colors are optional. To color a column, the developer adds one token for it, and
+the wrapper colors that column with it. For example, to dim the name column:
 
 ```jsonc
 "<entity>-name": "gray-3"
@@ -105,10 +104,11 @@ table "${(F)rows}"
 
 The test lives in `<service>/<entity>/__tests__/<service>-<entity>-list.bats`.
 
-`list` has a bats test, because `table` aligns the columns
-and the colors depend on the terminal.
+`list` has a bats test, because `table` aligns the columns and the colors depend
+on the terminal.
 
 The test mocks `list-raw` with canned lines, and covers:
+
 - The flags are passed to `list-raw` as received.
 - The rows match the raw lines, with aligned columns.
 - Only the id is colored by default.

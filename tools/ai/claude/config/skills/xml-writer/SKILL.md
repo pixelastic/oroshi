@@ -30,10 +30,10 @@ XML is a configuration language — no test workflow, no TDD.
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
+| Rationalization                       | Reality                                                                          |
+| ------------------------------------- | -------------------------------------------------------------------------------- |
 | "The XML looks fine, no need to lint" | `xml-lint --fix` catches formatting issues you won't spot visually. Always lint. |
-| "I'll fix the lint errors later" | Lint after every modification. Later never comes. |
+| "I'll fix the lint errors later"      | Lint after every modification. Later never comes.                                |
 
 ## Checklist
 

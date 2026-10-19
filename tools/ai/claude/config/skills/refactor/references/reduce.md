@@ -16,11 +16,15 @@ Surface-level cleanup: remove what's dead, rename what's drifted.
 
 ### 2. Naming drift
 
-- Functions whose name no longer matches what they do (function grew beyond its original purpose)
-- Variables with generic names that could be specific (`data`, `result`, `temp`, `info`)
-- Inconsistent naming conventions within the same module (camelCase mixed with snake_case, abbreviations mixed with full words)
+- Functions whose name no longer matches what they do (function grew beyond its
+  original purpose)
+- Variables with generic names that could be specific (`data`, `result`, `temp`,
+  `info`)
+- Inconsistent naming conventions within the same module (camelCase mixed with
+  snake_case, abbreviations mixed with full words)
 - Magic literals (numbers, strings) that should be named constants
-- Boolean variables/parameters that read backwards (`disabled` when `enabled` would be clearer)
+- Boolean variables/parameters that read backwards (`disabled` when `enabled`
+  would be clearer)
 
 ---
 
@@ -37,13 +41,17 @@ Surface-level cleanup: remove what's dead, rename what's drifted.
 
 1. List all files in scope
 2. For each file, scan for dead code signals (unused exports, unreachable paths)
-3. For each file, scan for naming issues (read function names vs bodies, look for magic literals)
-4. Record each finding with: file path, line range, category (dead-code or naming), description, confidence (high/medium/low)
-5. If a bug is discovered, add it to the bugs list — do not create a refactoring issue for it
+3. For each file, scan for naming issues (read function names vs bodies, look
+   for magic literals)
+4. Record each finding with: file path, line range, category (dead-code or
+   naming), description, confidence (high/medium/low)
+5. If a bug is discovered, add it to the bugs list — do not create a refactoring
+   issue for it
 
 ---
 
 ## Ordering findings
 
-Rank by safety (high confidence first) then by impact (most code removed/clarified first).
-Dead code removal before naming fixes — removing code first reduces the surface area for renaming.
+Rank by safety (high confidence first) then by impact (most code
+removed/clarified first). Dead code removal before naming fixes — removing code
+first reduces the surface area for renaming.

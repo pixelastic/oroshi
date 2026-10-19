@@ -1,22 +1,24 @@
 # GLOSSARY.md
 
 - **Be opinionated.** When multiple words exist for the same concept, pick the
-best one and list the others under `_Avoid_`.
+  best one and list the others under `_Avoid_`.
 - **One sentence per term.** Define what the term IS. Do not describe what it
-does or how it works.
+  does or how it works.
+- **Three paragraphs per term.** The term, its definition and its `_Avoid_` list
+  are separate paragraphs. Prettier joins consecutive lines into one.
 - **Bold term names everywhere.** In definitions, relationships, ambiguities,
-and decisions.
+  and decisions.
 - **Every term has an `_Avoid_` list.** Even if empty, listing common bad
-aliases prevents drift.
+  aliases prevents drift.
 - **Domain-specific terms only.** General programming concepts (timeouts, error
-types, retry logic) do not belong. Before adding a term, ask: is this concept
-unique to this context, or a general programming concept? Only the former
-belongs.
+  types, retry logic) do not belong. Before adding a term, ask: is this concept
+  unique to this context, or a general programming concept? Only the former
+  belongs.
 - **Cardinality in Relationships.** Express one-to-one, one-to-many,
-zero-or-more explicitly.
-
+  zero-or-more explicitly.
 
 ---
+
 ## Template
 
 ```md
@@ -27,15 +29,21 @@ zero-or-more explicitly.
 ## Language
 
 **Order**:
+
 {A concise description of the term}
+
 _Avoid_: Purchase, transaction
 
 **Invoice**:
+
 A request for payment sent to a customer after delivery.
+
 _Avoid_: Bill, payment request
 
 **Customer**:
+
 A person or organization that places orders.
+
 _Avoid_: Client, buyer, account
 
 ## Relationships
@@ -53,4 +61,5 @@ _Avoid_: Client, buyer, account
 > **Domain expert:** "No — an **Invoice** is only generated once a **Fulfillment** is confirmed."
 
 ```
+
 ---

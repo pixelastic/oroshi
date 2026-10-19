@@ -26,7 +26,9 @@ whatever the user asked to see — title only, abstract only, or full submission
 **Exit criterion:** Mode stated to user.
 
 Read the user's input. Two modes:
-- **Review** — user has an existing CFP draft (theirs or a colleague's) that needs improvement
+
+- **Review** — user has an existing CFP draft (theirs or a colleague's) that
+  needs improvement
 - **Create** — user has materials (slides, outline, idea) and needs a new CFP
 
 State the detected mode: "Mode: **create**" or "Mode: **review**".
@@ -37,17 +39,20 @@ State the detected mode: "Mode: **create**" or "Mode: **review**".
 
 **Exit criterion:** Talk essence extracted, constraints known.
 
-1. **Ask what the user has** — slides, outline, idea, existing draft, colleague's draft. If file path provided, read it directly.
+1. **Ask what the user has** — slides, outline, idea, existing draft,
+   colleague's draft. If file path provided, read it directly.
 
-2. **Ask for CFP constraints** — target conference, language (French or English), word limits, specific themes.
+2. **Ask for CFP constraints** — target conference, language (French or
+   English), word limits, specific themes.
 
-3. **Extract talk essence** — main problem, key technical concepts, audience level, unique angle, real examples or outcomes.
+3. **Extract talk essence** — main problem, key technical concepts, audience
+   level, unique angle, real examples or outcomes.
 
 4. **Read `EXAMPLES.md`** for inspiration on structure, tone, and specificity.
 
 5. **If review mode:** Analyze the existing draft critically — hook strength,
    structure clarity, concrete examples, named technologies, buzzwords, value
-proposition.
+   proposition.
 
 ### Step 3 — Title
 
@@ -79,10 +84,13 @@ reorder freely, but do not rewrite sentences that already work.
 1. **Write draft to `draftPath`.**
 
 2. **Run prose linting:**
-   ```
+
+   ```bash
    prose-lint --profile cfp-writer <draftPath>
    ```
-   Zero errors required. Warnings addressed as best effort. Fix `draftPath`, re-lint, repeat until clean.
+
+   Zero errors required. Warnings addressed as best effort. Fix `draftPath`,
+   re-lint, repeat until clean.
 
 3. **Run verification checklist:**
    - [ ] Title is under word limit and uses a proven pattern
@@ -103,20 +111,23 @@ reorder freely, but do not rewrite sentences that already work.
 
 **Exit criterion:** User asked, examples updated or skipped.
 
-Reflect on the session. If a strong pattern emerged (effective hook, novel structure, compelling before/after transformation):
+Reflect on the session. If a strong pattern emerged (effective hook, novel
+structure, compelling before/after transformation):
 
-Ask the user whether to add it to `EXAMPLES.md`. Do not append without explicit approval.
+Ask the user whether to add it to `EXAMPLES.md`. Do not append without explicit
+approval.
 
 If approved, add to the appropriate section:
+
 - **Standalone** — for new reference examples
 - **Before / After** — for transformation pairs from review sessions
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
+| Rationalization                                              | Reality                                                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
 | "I don't need to follow Hook → Context → Content → Takeaway" | This structure is validated across thousands of successful CFPs. Skipping it gets rejected. |
-| "I'll rewrite this sentence to sound better" | In review mode, preserve the speaker's phrasing. Don't rewrite sentences that already work. |
+| "I'll rewrite this sentence to sound better"                 | In review mode, preserve the speaker's phrasing. Don't rewrite sentences that already work. |
 
 ## Checklist
 

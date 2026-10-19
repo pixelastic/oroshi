@@ -16,7 +16,8 @@ A file either exports functions or is executable. Never both.
 The exported function is the only top-level function in a module.
 
 - Local helpers always go in `__`, mocked or not.
-- Imports go in `__` only when a test mocks them to block a side effect (for example `run`, `exit`).
+- Imports go in `__` only when a test mocks them to block a side effect (for
+  example `run`, `exit`).
 - If nothing mocks an import, import and call it directly.
 
 ```javascript

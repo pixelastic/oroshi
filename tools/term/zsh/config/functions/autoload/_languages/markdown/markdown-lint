@@ -51,7 +51,7 @@ local configFile="$temporaryDirectory/markdownlint-cli2.jsonc"
 jq \
   --arg resultsFile "$resultsFile" \
   '. + {outputFormatters: [["markdownlint-cli2-formatter-json", {name: $resultsFile}]]}' \
-  "$OROSHI_CONFIG" > "$configFile"
+  <(jsonc2json "$OROSHI_CONFIG") > "$configFile"
 
 # Run from the filesystem root so reported file names are the absolute paths
 # minus their leading slash. The ":" prefix makes each path a literal, not a glob.

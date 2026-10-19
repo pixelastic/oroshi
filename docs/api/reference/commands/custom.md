@@ -1,8 +1,8 @@
 # Custom verbs
 
-A custom verb is a verb that is not in the [closed vocabulary](README.md#vocabulary).
-It is an extra verb, specific to a service or to one of its entities:
-`activate`, `run`, `enable`.
+A custom verb is a verb that is not in the
+[closed vocabulary](README.md#vocabulary). It is an extra verb, specific to a
+service or to one of its entities: `activate`, `run`, `enable`.
 
 ## Example
 
@@ -24,7 +24,8 @@ guidelines keep custom verbs close to the other commands, so that their input
 and output work well with them:
 
 - The id of the entity is a positional argument, as in [`read`](read.md).
-- The other arguments are named, as defined in [arguments.md](../../arguments.md).
+- The other arguments are named, as defined in
+  [arguments.md](../../arguments.md).
 - The output is the entity as JSON, as in [`read`](read.md), when the action
   returns one. Otherwise it is the id, as in [`delete`](delete.md).
 - A verb that does not fit these guidelines may break them.

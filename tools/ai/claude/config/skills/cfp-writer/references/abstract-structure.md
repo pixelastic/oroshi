@@ -2,7 +2,7 @@
 
 ## Four-part structure
 
-```
+```text
 [HOOK - 1-2 sentences]
 Why should attendees care? What problem or question does this address?
 
@@ -35,13 +35,15 @@ Generate 3-5 specific, actionable learning outcomes.
 **Format:** "After this talk, you will be able to..."
 
 **Requirements:**
-- Start with an action verb (deploy, implement, identify, understand, build, debug, configure)
+
+- Start with an action verb (deploy, implement, identify, understand, build,
+  debug, configure)
 - Be specific (mention the actual technology/pattern/technique)
 - Be scoped realistically for a 30-45min talk
 - Be testable (could you verify someone learned this?)
 
-Good: "Implement the Circuit Breaker pattern in your microservices using Resilience4j"
-Bad: "Understand microservices better"
+Good: "Implement the Circuit Breaker pattern in your microservices using
+Resilience4j" Bad: "Understand microservices better"
 
 ## Red flags
 

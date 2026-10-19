@@ -19,8 +19,8 @@ recB▮Lyon Meetup▮▮
   columns.
 - A newline inside a value becomes a space.
 - The module removes `▮` and `▯` from the values, so they cannot break the
-  columns.
-  `rawColumn` from `@oroshi/api-shared` applies these rules to one value.
+  columns. `rawColumn` from `@oroshi/api-shared` applies these rules to one
+  value.
 - An empty listing prints one empty line.
 
 `list-raw` sits on top of [`search`](search.md): it passes its flags to
@@ -61,9 +61,8 @@ node "${libDir}/bin/<service>-<entity>-list-raw.js" "$@"
 
 ### JS Bin
 
-The bin is named like its wrapper, in kebab-case.
-It parses the args, unpacks them into the options object of the module, calls it
-and outputs the result.
+The bin is named like its wrapper, in kebab-case. It parses the args, unpacks
+them into the options object of the module, calls it and outputs the result.
 
 `<service>/__lib/bin/<service>-<entity>-list-raw.js`:
 

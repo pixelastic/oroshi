@@ -2,12 +2,13 @@
 
 You are the **Grouping** axis of a multi-axis slide design review.
 
-Your job: evaluate how well the slide groups related elements and separates unrelated ones.
+Your job: evaluate how well the slide groups related elements and separates
+unrelated ones.
 
 ## Step 1 — Read the slide
 
-Read the screenshot at `<image-path>` using the Read tool.
-Study the layout before evaluating.
+Read the screenshot at `<image-path>` using the Read tool. Study the layout
+before evaluating.
 
 ## Step 2 — Evaluate
 
@@ -16,33 +17,39 @@ Check the slide against these 3 principles:
 ### Proximity
 
 Related elements must be close together; unrelated elements must be far apart.
-Spacing must reflect semantic relationship — tighter within groups, wider between them.
+Spacing must reflect semantic relationship — tighter within groups, wider
+between them.
 
-**Look for:** bullet points drifting from their title, labels far from their data, unrelated elements touching or overlapping.
+**Look for:** bullet points drifting from their title, labels far from their
+data, unrelated elements touching or overlapping.
 
 ### Similarity
 
-Elements with the same role must have the same visual treatment — size, color, shape, font.
-Inconsistency without a semantic reason is noise.
-If two items are peers (e.g. two bullet points, two section titles), they should look identical.
+Elements with the same role must have the same visual treatment — size, color,
+shape, font. Inconsistency without a semantic reason is noise. If two items are
+peers (e.g. two bullet points, two section titles), they should look identical.
 
-**Look for:** inconsistent font sizes among peers, mixed alignment within a group, color differences between same-role elements.
+**Look for:** inconsistent font sizes among peers, mixed alignment within a
+group, color differences between same-role elements.
 
 ### Grid alignment
 
-Element edges should align on consistent vertical and horizontal lines.
-A small accidental offset (~15px) is a mistake; a large intentional offset (~200px) is a design choice.
-The in-between zone creates visual tension.
+Element edges should align on consistent vertical and horizontal lines. A small
+accidental offset (~15px) is a mistake; a large intentional offset (~200px) is a
+design choice. The in-between zone creates visual tension.
 
-**Look for:** elements nearly-but-not-quite aligned, text blocks with different left margins, images offset from the grid.
+**Look for:** elements nearly-but-not-quite aligned, text blocks with different
+left margins, images offset from the grid.
 
 ## Step 3 — Report
 
 One line per finding, ≤25 words:
 
-**Principle** (severity) — what's wrong, citing the slide area. Fix: concrete action.
+**Principle** (severity) — what's wrong, citing the slide area. Fix: concrete
+action.
 
 Severities:
+
 - `improvement` — noticeable quality issue, should fix
 - `nitpick` — minor polish, fix if time allows
 

@@ -4,7 +4,7 @@ Practical tools and strategies for managing ADHD executive function challenges.
 
 ## The Executive Functions
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                    EXECUTIVE FUNCTIONS                          │
 ├─────────────────────────────────────────────────────────────────┤
@@ -35,7 +35,8 @@ Practical tools and strategies for managing ADHD executive function challenges.
 ## Task Initiation Strategies
 
 ### The 2-Minute Start Protocol
-```
+
+```text
 I will work on [task] for exactly 2 minutes.
 After 2 minutes, I can stop with no guilt.
 
@@ -51,21 +52,23 @@ STEPS:
 ```
 
 ### Task Initiation Menu
+
 When you can't start, pick ONE:
 
-| Strategy | When to Use | How |
-|----------|-------------|-----|
-| **Body Double** | Need accountability | Focusmate, friend on video, café |
-| **Temptation Bundle** | Task is boring | Pair with podcast/music/snack |
-| **Reduce Friction** | Setup feels overwhelming | Pre-stage materials night before |
-| **Change Location** | Stuck in one spot | New room, café, library |
-| **Time Box** | Task feels endless | "25 min only, then done for today" |
-| **Gamify** | Need dopamine | Points, streaks, rewards |
-| **Worst First** | Anxiety about task | Do hardest thing first, rest is easy |
-| **Eat the Frog Adjacent** | Can't face hardest | Do second-hardest to build momentum |
+| Strategy                  | When to Use              | How                                  |
+| ------------------------- | ------------------------ | ------------------------------------ |
+| **Body Double**           | Need accountability      | Focusmate, friend on video, café     |
+| **Temptation Bundle**     | Task is boring           | Pair with podcast/music/snack        |
+| **Reduce Friction**       | Setup feels overwhelming | Pre-stage materials night before     |
+| **Change Location**       | Stuck in one spot        | New room, café, library              |
+| **Time Box**              | Task feels endless       | "25 min only, then done for today"   |
+| **Gamify**                | Need dopamine            | Points, streaks, rewards             |
+| **Worst First**           | Anxiety about task       | Do hardest thing first, rest is easy |
+| **Eat the Frog Adjacent** | Can't face hardest       | Do second-hardest to build momentum  |
 
 ### The 5-4-3-2-1 Launch
-```
+
+```text
 5 - Acknowledge: "I need to start [task]"
 4 - Locate: Find what you need
 3 - Prepare: Open/arrange materials
@@ -79,9 +82,10 @@ Then MOVE. Don't wait for motivation.
 ## Working Memory Supports
 
 ### The Capture System
+
 Every thought gets captured IMMEDIATELY in ONE of these:
 
-```
+```text
 PHYSICAL                    DIGITAL
 ┌─────────────────┐        ┌─────────────────┐
 │ Pocket notebook │        │ Notes app       │
@@ -102,7 +106,8 @@ PHYSICAL                    DIGITAL
 ### External Memory Systems
 
 **For Tasks:**
-```
+
+```text
 TODAY (visible - whiteboard/sticky note)
 ├── THE Thing: [Most important]
 ├── Would Be Nice: [Important but not critical]
@@ -119,7 +124,8 @@ SOMEDAY (digital - separate list)
 ```
 
 **For Information:**
-```
+
+```text
 BRAIN DUMP FILE (one document, append only)
 ├── Meeting notes
 ├── Random thoughts
@@ -133,9 +139,10 @@ REFERENCE SYSTEM (folders by project/topic)
 ```
 
 ### The "If-Then" Implementation
+
 Pre-decide responses to reduce working memory load:
 
-```
+```text
 IF [trigger]              THEN [action]
 ──────────────────────────────────────────
 I finish a meeting      → Write 3 bullet summary immediately
@@ -149,7 +156,8 @@ Email arrives           → Process at 10am/2pm/4pm ONLY
 ## Time Management Tools
 
 ### Time Blocking for ADHD
-```
+
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │ MORNING (Protect for deep work if that's your peak)        │
 ├─────────────────────────────────────────────────────────────┤
@@ -174,7 +182,8 @@ Email arrives           → Process at 10am/2pm/4pm ONLY
 ```
 
 ### Time Estimation Worksheet
-```
+
+```text
 TASK: ________________________________
 
 My gut estimate: _____________ minutes/hours
@@ -201,13 +210,15 @@ FINAL ESTIMATE: _____________
 ### Visual Timers
 
 **Recommended Tools:**
+
 - **Time Timer** (physical) - Visual countdown, no math
 - **Forest App** - Phone lockout with gamification
 - **Toggl Track** - See where time actually goes
 - **Pomodoro apps** - 25/5 minute cycles
 
 **Timer Strategies:**
-```
+
+```text
 FOR STARTING: "I'll work for 10 minutes only"
 FOR STOPPING: "Alarm means STOP, no exceptions"
 FOR AWARENESS: "Timer shows time PASSING, not just ending"
@@ -217,7 +228,8 @@ FOR TRANSITIONS: "5 minute warning before all transitions"
 ## Organization Systems
 
 ### The One-Touch Rule
-```
+
+```text
 ITEM ARRIVES → DECIDE NOW → ONE DESTINATION
 
 Paper:     Read → Action/File/Trash (never "pile")
@@ -227,8 +239,10 @@ Idea:      Capture → Process location (not brain)
 ```
 
 ### The Launch Pad
+
 One spot by the door containing EVERYTHING you need to leave:
-```
+
+```text
 ┌──────────────────────────┐
 │      LAUNCH PAD          │
 ├──────────────────────────┤
@@ -246,8 +260,10 @@ RULE: Nothing leaves. Nothing else goes here.
 ```
 
 ### The "Home" System
+
 Every object has ONE home. Label if needed.
-```
+
+```text
 COMMON ADHD TROUBLE ITEMS AND SUGGESTED HOMES:
 
 Keys:           Hook by door (never pocket/purse)
@@ -261,7 +277,8 @@ Important docs: ONE folder, fireproof box
 ## Emotional Regulation
 
 ### The STOP Technique
-```
+
+```text
 S - STOP what you're doing
 T - TAKE a breath (count to 4)
 O - OBSERVE (what am I feeling? what triggered it?)
@@ -269,7 +286,8 @@ P - PROCEED mindfully (what's the wise response?)
 ```
 
 ### Rejection Sensitivity Toolkit
-```
+
+```text
 WHEN YOU FEEL REJECTED:
 
 1. PAUSE - Don't respond for at least 10 minutes
@@ -283,9 +301,10 @@ WHEN YOU FEEL REJECTED:
 ```
 
 ### Frustration Scripts
+
 Pre-written responses for when executive function fails:
 
-```
+```text
 WHEN OVERWHELMED:
 "I need a few minutes to think about this."
 
@@ -308,7 +327,8 @@ WHEN OVERSTIMULATED:
 ## Daily Routines
 
 ### Morning Routine Template
-```
+
+```text
 □ Wake (same time daily, even weekends)
 □ NO PHONE for first 30 min
 □ Water + medication (if applicable)
@@ -320,7 +340,8 @@ WHEN OVERSTIMULATED:
 ```
 
 ### Evening Routine Template
-```
+
+```text
 □ Shutdown ritual at work (5 min)
 □ Brain dump anything still in head
 □ Tomorrow's THE Thing identified
@@ -331,7 +352,8 @@ WHEN OVERSTIMULATED:
 ```
 
 ### Weekly Reset (30 min Sunday)
-```
+
+```text
 □ Calendar review for upcoming week
 □ Identify THE Thing for each day
 □ Process capture notes/voice memos
@@ -343,7 +365,8 @@ WHEN OVERSTIMULATED:
 ## Medication Management
 
 ### Tracking Template
-```
+
+```text
 DATE: _______  MEDICATION: _______ DOSE: _______
 
 Morning:
@@ -370,7 +393,8 @@ What: _________________________
 ```
 
 ### Medication Reminder Systems
-```
+
+```text
 OPTION 1: Pair with existing habit
 "Medication lives WITH coffee maker"
 
@@ -387,7 +411,8 @@ Text buddy when taken
 ## Crisis Protocols
 
 ### When Everything Is On Fire
-```
+
+```text
 STOP. You will not solve this while panicking.
 
 1. BREATHE - 4-7-8 breathing x 3
@@ -400,8 +425,10 @@ STOP. You will not solve this while panicking.
 ```
 
 ### The "Minimum Viable Day"
+
 When you can't do a full day, do this:
-```
+
+```text
 □ Take medication (if applicable)
 □ Eat something
 □ Shower OR change clothes

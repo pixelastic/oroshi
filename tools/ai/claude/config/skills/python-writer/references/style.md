@@ -3,9 +3,11 @@
 ## Essentials
 
 - Remove duplication by extracting helpers
-- Improve readability with clear names. Avoid abbreviations (`absolute_path` not `abs_path`)
+- Improve readability with clear names. Avoid abbreviations (`absolute_path` not
+  `abs_path`)
 - Return early to avoid `if/else` nesting
-- Write comments that say only what the code shows, and link facts with because, so, but
+- Write comments that say only what the code shows, and link facts with because,
+  so, but
 
 ## Return early
 
@@ -38,7 +40,8 @@ def process(value):
 
 Follow [Comments](./comments.md). Write comments with `#`.
 
-Write function docs as `#` comments above the function. Do not write them as a docstring inside the function.
+Write function docs as `#` comments above the function. Do not write them as a
+docstring inside the function.
 
 ```python
 # Convert an ANSI color index (0-256, as defined in colors.conf) to Kitty's

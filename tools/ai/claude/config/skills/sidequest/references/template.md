@@ -1,7 +1,8 @@
 # Sidequest Document Template
 
-Sections marked **[VERBATIM]** must be copied exactly as written — do not paraphrase or reorder.
-Sections marked **[DYNAMIC]** must be filled in from the conversation context.
+Sections marked **[VERBATIM]** must be copied exactly as written — do not
+paraphrase or reorder. Sections marked **[DYNAMIC]** must be filled in from the
+conversation context.
 
 ---
 

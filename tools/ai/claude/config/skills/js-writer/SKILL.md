@@ -11,8 +11,10 @@ Write JavaScript code consistent with my conventions.
 
 Use my preferred libraries — the references explain when and why:
 
-- **[firost](./references/firost.md)** — file I/O, paths, process, HTTP, console, and system utilities
-- **[golgoth](./references/golgoth.md)** — common dependencies: `_` (lodash), `pMap`, `dayjs`, `yoctocolors`, `pProps`, and more
+- **[firost](./references/firost.md)** — file I/O, paths, process, HTTP,
+  console, and system utilities
+- **[golgoth](./references/golgoth.md)** — common dependencies: `_` (lodash),
+  `pMap`, `dayjs`, `yoctocolors`, `pProps`, and more
 
 ## Core Workflow
 
@@ -24,12 +26,14 @@ Use my preferred libraries — the references explain when and why:
 
 - `lib/main.js` as the single top-level entry point for public modules
 - One public named function per file (e.g. `lib/myFunction.js`)
-- Subdomain folders group related functions; each has an `index.js` barrel re-exporting them
-- All tests are located in a `__tests__` folder, sibling of the file it's testing
+- Subdomain folders group related functions; each has an `index.js` barrel
+  re-exporting them
+- All tests are located in a `__tests__` folder, sibling of the file it's
+  testing
 
 #### Structure example
 
-```
+```text
 lib/
   pull/
     __tests__/
@@ -85,8 +89,8 @@ it.each([
 
 **Exit criterion:** Test is green.
 
-Write the simplest code that makes the test pass.
-No patterns yet — just correct behavior.
+Write the simplest code that makes the test pass. No patterns yet — just correct
+behavior.
 
 - Use `js-test <filepath>` to run the tests
 
@@ -96,13 +100,13 @@ No patterns yet — just correct behavior.
 
 **Exit criterion:** Tests still pass after refactor.
 
-| Pattern | Rule |
-|---|---|
-| [Modules](./references/modules.md) | ES6 `import`/`export`; named exports; `.js` extension; `__` for private methods |
-| [Style](./references/style.md) | `async/await`; camelCase; minimal `try/catch`; lodash chains for 2+ ops; JSDoc on all fns |
-| [Comments](./references/comments.md) | How to write inline comments and JSDoc blocks |
-| [firost](./references/firost.md) | File I/O and system operations |
-| [golgoth](./references/golgoth.md) | Data transformation, dates, async utilities |
+| Pattern                              | Rule                                                                                      |
+| ------------------------------------ | ----------------------------------------------------------------------------------------- |
+| [Modules](./references/modules.md)   | ES6 `import`/`export`; named exports; `.js` extension; `__` for private methods           |
+| [Style](./references/style.md)       | `async/await`; camelCase; minimal `try/catch`; lodash chains for 2+ ops; JSDoc on all fns |
+| [Comments](./references/comments.md) | How to write inline comments and JSDoc blocks                                             |
+| [firost](./references/firost.md)     | File I/O and system operations                                                            |
+| [golgoth](./references/golgoth.md)   | Data transformation, dates, async utilities                                               |
 
 ```javascript
 import { formatEntry } from './formatEntry.js';
@@ -144,26 +148,28 @@ __ = {
 
 Write code that passes automated lint.
 
-- Use `js-lint --fix <filepath>` to automatically fix common issues and see remaining ones
+- Use `js-lint --fix <filepath>` to automatically fix common issues and see
+  remaining ones
 - Fix **every** violation, including pre-existing ones.
 
 ---
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
-| "These comments are clutter, I'll clean them up" | Never remove existing comments |
-| "mockResolvedValue is more idiomatic Vitest" | Always `mockReturnValue(value)` — abstract away sync/async |
-| "expect().rejects.toThrow() is cleaner" | Use `let actual = null` + try/catch pattern |
-| "This helper is too small for `__`" | All local helpers go in `__`. Only imports are conditional. |
+| Rationalization                                  | Reality                                                     |
+| ------------------------------------------------ | ----------------------------------------------------------- |
+| "These comments are clutter, I'll clean them up" | Never remove existing comments                              |
+| "mockResolvedValue is more idiomatic Vitest"     | Always `mockReturnValue(value)` — abstract away sync/async  |
+| "expect().rejects.toThrow() is cleaner"          | Use `let actual = null` + try/catch pattern                 |
+| "This helper is too small for `__`"              | All local helpers go in `__`. Only imports are conditional. |
 
 ## Checklist
 
 - [ ] One public named function per file
 - [ ] Subdomain folders have an `index.js` barrel re-exporting all functions
 - [ ] `main.js` used only as top-level package entry point, not as a barrel
-- [ ] Test files in `__tests__/` use plain module name (e.g. `fetch.js`), no `.test.` or `.spec.` suffix
+- [ ] Test files in `__tests__/` use plain module name (e.g. `fetch.js`), no
+      `.test.` or `.spec.` suffix
 - [ ] No `for` loop; `_.each`/`_.map`/`pMap` used instead
 - [ ] ES6 modules — named exports, `.js` extension on local imports
 - [ ] No top-level function except the exported one

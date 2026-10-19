@@ -2,16 +2,17 @@
 
 ## Standalone
 
-Good abstracts for inspiration. Use as reference for structure, tone, and specificity.
+Good abstracts for inspiration. Use as reference for structure, tone, and
+specificity.
 
 ### Empathetic Questions Format
 
 **Title:** Stop! Strategy Time! (...or are we really stopping?)
 
-**Abstract:**
-You may have heard your boss say it: "You need to be more strategic!". Maybe it
-came up in your latest performance review. Or you just want to work more
-strategically in order to fill all parts of your role as a leader.
+**Abstract:** You may have heard your boss say it: "You need to be more
+strategic!". Maybe it came up in your latest performance review. Or you just
+want to work more strategically in order to fill all parts of your role as a
+leader.
 
 But what does it actually mean to really think and act strategically? How can
 you know that you are on the right path to becoming a more strategic leader?
@@ -26,6 +27,7 @@ that you can put to work immediately, and hear real examples from engineering
 leaders who have worked through these challenges.
 
 **Why this works:**
+
 - Hook is immediately relatable ("You need to be more strategic!")
 - Series of concrete questions frames the content clearly
 - Shows empathy ("it can be really hard to do so")
@@ -36,13 +38,13 @@ leaders who have worked through these challenges.
 
 ### Concrete Problem → Actionable Solution
 
-**Title:** Taming the Monolith: How We Migrated to Microservices Without Downtime
+**Title:** Taming the Monolith: How We Migrated to Microservices Without
+Downtime
 
-**Abstract:**
-Our e-commerce platform handled 10M daily requests through a single Rails
-monolith that had become impossible to scale. Every deploy was a white-knuckle
-event. Teams couldn't move independently. Database migrations locked the entire
-system for hours.
+**Abstract:** Our e-commerce platform handled 10M daily requests through a
+single Rails monolith that had become impossible to scale. Every deploy was a
+white-knuckle event. Teams couldn't move independently. Database migrations
+locked the entire system for hours.
 
 This talk chronicles our 18-month journey to microservices, focusing on the
 practical patterns that made it possible: the Strangler Fig pattern for gradual
@@ -57,6 +59,7 @@ reality behind the success stories, you'll leave with concrete strategies you
 can apply tomorrow.
 
 **Why this works:**
+
 - Opens with concrete numbers (10M daily requests)
 - Lists relatable pain points (white-knuckle deploys, locked migrations)
 - Names specific technical patterns (Strangler Fig, dual-write, feature flags)
@@ -70,9 +73,8 @@ can apply tomorrow.
 
 **Title:** Why Is My React App So Slow? A Performance Debugging Deep Dive
 
-**Abstract:**
-Your React dashboard loads in 8 seconds. Your users are frustrated. Your
-Lighthouse scores are abysmal. But where do you even start?
+**Abstract:** Your React dashboard loads in 8 seconds. Your users are
+frustrated. Your Lighthouse scores are abysmal. But where do you even start?
 
 In this talk, we'll debug a real production performance problem from first
 principles. You'll learn how to use Chrome DevTools to identify expensive
@@ -88,6 +90,7 @@ that goes beyond cargo-cult optimization and helps you fix the issues that
 actually matter.
 
 **Why this works:**
+
 - Title is a question everyone asks
 - Hook starts with concrete pain (8 seconds, frustrated users)
 - Promises hands-on approach ("debug a real production problem")

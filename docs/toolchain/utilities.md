@@ -18,10 +18,10 @@ needs it.
 
 All toolchain scripts are ZSH autoloaded functions — they are sourced
 automatically by ZSH and available as commands in any ZSH shell. However,
-callers that run outside ZSH (NeoVim's Lua runtime) cannot access them
-directly. `bin-zsh` bridges this gap: it is a ZSH script on the PATH that
-receives a function name and arguments, and executes them in a ZSH context
-where autoloaded functions are available.
+callers that run outside ZSH (NeoVim's Lua runtime) cannot access them directly.
+`bin-zsh` bridges this gap: it is a ZSH script on the PATH that receives a
+function name and arguments, and executes them in a ZSH context where autoloaded
+functions are available.
 
 Used by:
 
@@ -38,10 +38,10 @@ Used by:
 // Config: lintstaged.config.js (repository root)
 ```
 
-lint-staged is invoked automatically at pre-commit time via a git hook. It
-reads [`lintstaged.config.js`](integration.md#lintstagedconfigjs), matches
-staged files against glob patterns, and runs the configured lint and test
-commands on them. If any command exits non-zero, the commit is blocked.
+lint-staged is invoked automatically at pre-commit time via a git hook. It reads
+[`lintstaged.config.js`](integration.md#lintstagedconfigjs), matches staged
+files against glob patterns, and runs the configured lint and test commands on
+them. If any command exits non-zero, the commit is blocked.
 
 Used by:
 
@@ -66,8 +66,8 @@ Used by:
 Shared helper used by [`{lang}-lint`](scripts.md#lang-lint),
 [`{lang}-fix`](scripts.md#lang-fix), and [`{lang}-test`](scripts.md#lang-test)
 for [argument handling](scripts.md#argument-handling). Accepts files and
-directories as positional arguments. Directories are expanded recursively
-using `fd --type file` (respects `.gitignore`).
+directories as positional arguments. Directories are expanded recursively using
+`fd --type file` (respects `.gitignore`).
 
 Optional flags:
 

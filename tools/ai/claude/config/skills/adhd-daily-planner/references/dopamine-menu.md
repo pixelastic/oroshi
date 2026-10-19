@@ -1,10 +1,12 @@
 # The Dopamine Menu
 
-A personalized toolkit of activities organized by effort level and dopamine payoff, designed for ADHD brains that need quick wins and sustainable motivation.
+A personalized toolkit of activities organized by effort level and dopamine
+payoff, designed for ADHD brains that need quick wins and sustainable
+motivation.
 
 ## Understanding Dopamine and ADHD
 
-```
+```text
 NEUROTYPICAL DOPAMINE:
 Task → Steady dopamine → Sustained motivation → Completion → Reward
 
@@ -22,7 +24,7 @@ not against it.
 
 Create a personalized menu of activities across effort levels:
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                     YOUR DOPAMINE MENU                       │
 ├──────────────────────────────────────────────────────────────┤
@@ -48,9 +50,11 @@ Create a personalized menu of activities across effort levels:
 ## Sample Dopamine Menu
 
 ### 🍬 APPETIZERS (0-5 minutes)
-*For: Quick reset between tasks, micro-breaks, motivation boost*
+
+_For: Quick reset between tasks, micro-breaks, motivation boost_
 
 **Physical:**
+
 - [ ] Stretch arms overhead
 - [ ] Walk to window, look outside
 - [ ] 10 jumping jacks
@@ -59,6 +63,7 @@ Create a personalized menu of activities across effort levels:
 - [ ] Pet an animal
 
 **Sensory:**
+
 - [ ] Smell essential oil/candle
 - [ ] Eat something crunchy
 - [ ] Hold ice cube
@@ -67,6 +72,7 @@ Create a personalized menu of activities across effort levels:
 - [ ] Listen to favorite song clip
 
 **Quick wins:**
+
 - [ ] Delete 5 emails
 - [ ] Wipe down desk surface
 - [ ] Water one plant
@@ -75,9 +81,11 @@ Create a personalized menu of activities across effort levels:
 - [ ] Unsubscribe from one newsletter
 
 ### 🥗 STARTERS (10-20 minutes)
-*For: Transition periods, building momentum, recovery breaks*
+
+_For: Transition periods, building momentum, recovery breaks_
 
 **Movement:**
+
 - [ ] Short walk around block
 - [ ] YouTube yoga/stretch video
 - [ ] Dance to a playlist
@@ -85,6 +93,7 @@ Create a personalized menu of activities across effort levels:
 - [ ] Jump rope intervals
 
 **Creative:**
+
 - [ ] Doodle/sketch
 - [ ] Play instrument (badly is fine)
 - [ ] Take photos of something
@@ -92,12 +101,14 @@ Create a personalized menu of activities across effort levels:
 - [ ] Color one page
 
 **Social:**
+
 - [ ] Voice memo to friend
 - [ ] Call family member
 - [ ] Comment on friend's post thoughtfully
 - [ ] Play online game with friend
 
 **Productive:**
+
 - [ ] Organize one drawer
 - [ ] Clear phone photos
 - [ ] Update playlist
@@ -105,9 +116,11 @@ Create a personalized menu of activities across effort levels:
 - [ ] Do one small errand
 
 ### 🍝 MAIN COURSES (30-60 minutes)
-*For: Scheduled breaks, reward after hard work, weekend activities*
+
+_For: Scheduled breaks, reward after hard work, weekend activities_
 
 **Physical:**
+
 - [ ] Full workout
 - [ ] Bike ride
 - [ ] Swimming
@@ -116,6 +129,7 @@ Create a personalized menu of activities across effort levels:
 - [ ] Rock climbing
 
 **Creative:**
+
 - [ ] Art project
 - [ ] Write something
 - [ ] Music practice
@@ -124,6 +138,7 @@ Create a personalized menu of activities across effort levels:
 - [ ] Cook something new
 
 **Social:**
+
 - [ ] Coffee with friend
 - [ ] Video call catch-up
 - [ ] Group activity
@@ -131,6 +146,7 @@ Create a personalized menu of activities across effort levels:
 - [ ] Volunteering
 
 **Learning:**
+
 - [ ] Documentary
 - [ ] Podcast deep dive
 - [ ] Online course segment
@@ -138,15 +154,18 @@ Create a personalized menu of activities across effort levels:
 - [ ] Language practice
 
 **Gaming/Media:**
+
 - [ ] Video game session
 - [ ] Board game
 - [ ] TV episode
 - [ ] Movie (yes, full movie counts)
 
 ### 🍰 DESSERTS (60+ minutes)
-*For: Major rewards, special occasions, weekend highlights*
+
+_For: Major rewards, special occasions, weekend highlights_
 
 **Adventure:**
+
 - [ ] Day trip somewhere new
 - [ ] Concert/show
 - [ ] Museum/gallery
@@ -155,6 +174,7 @@ Create a personalized menu of activities across effort levels:
 - [ ] Beach/lake day
 
 **Social events:**
+
 - [ ] Dinner party (hosting or attending)
 - [ ] Game night
 - [ ] Party
@@ -162,6 +182,7 @@ Create a personalized menu of activities across effort levels:
 - [ ] Family gathering
 
 **Immersive hobbies:**
+
 - [ ] Full art project
 - [ ] Gaming marathon (scheduled!)
 - [ ] Binge session (planned, not impulsive)
@@ -169,9 +190,11 @@ Create a personalized menu of activities across effort levels:
 - [ ] Major organizing project
 
 ### 🌟 SPECIALS (Dopamine Investments)
-*For: Long-term wellbeing, sustainable happiness*
+
+_For: Long-term wellbeing, sustainable happiness_
 
 **Daily investments:**
+
 - [ ] Morning sunlight (10 min)
 - [ ] Exercise
 - [ ] Good sleep hygiene
@@ -179,6 +202,7 @@ Create a personalized menu of activities across effort levels:
 - [ ] Medication management
 
 **Weekly investments:**
+
 - [ ] Social connection
 - [ ] Nature time
 - [ ] Creative expression
@@ -186,6 +210,7 @@ Create a personalized menu of activities across effort levels:
 - [ ] Accomplishing a goal
 
 **Ongoing:**
+
 - [ ] Therapy
 - [ ] Building skills
 - [ ] Maintaining relationships
@@ -195,7 +220,8 @@ Create a personalized menu of activities across effort levels:
 ## How to Use the Menu
 
 ### Building Your Personal Menu
-```
+
+```text
 1. BRAINSTORM: List activities that give YOU dopamine
    (Not what "should" - what actually works)
 
@@ -218,22 +244,27 @@ Create a personalized menu of activities across effort levels:
 ### Using the Menu Day-to-Day
 
 **Morning:**
+
 - Start with an appetizer to wake up brain
 - Use a starter to build momentum before hard work
 
 **Work blocks:**
+
 - Appetizer between tasks
 - Starter after completing something hard
 
 **Afternoon slump:**
+
 - Main course break if possible
 - Multiple appetizers if not
 
 **Evening:**
+
 - Main course as reward for day
 - Dessert for special accomplishments
 
 **Weekend:**
+
 - Plan one dessert activity
 - Sprinkle main courses throughout
 - Don't just binge junk dopamine
@@ -241,7 +272,8 @@ Create a personalized menu of activities across effort levels:
 ## Dopamine Don'ts
 
 ### The Dopamine Traps
-```
+
+```text
 TRAP: Endless scrolling
 WHY IT DOESN'T WORK: Variable reward = addiction pattern, not satisfaction
 
@@ -259,21 +291,25 @@ WHY IT DOESN'T WORK: Feels good now, anxiety/consequences later
 ```
 
 ### Harm Reduction for Junk Dopamine
+
 You're going to do these sometimes. Make them less harmful:
 
 **Scrolling:**
+
 - Set timer before starting
 - Use app limits (Screen Time, etc.)
 - Make feed useful (follow inspiring accounts)
 - Scroll standing up (you'll stop sooner)
 
 **Binge watching:**
+
 - Schedule it (Friday night = binge time)
 - Watch WITH someone
 - Do something physical during
 - Stop at natural breakpoints
 
 **Gaming:**
+
 - Scheduled sessions, not reactive
 - Social games over solo isolation
 - Hard stop when timer goes
@@ -283,7 +319,7 @@ You're going to do these sometimes. Make them less harmful:
 
 Pair unpleasant tasks with dopamine sources:
 
-```
+```text
 BORING TASK          +    DOPAMINE SOURCE
 ─────────────────────────────────────────
 Data entry           +    Favorite podcast
@@ -297,6 +333,7 @@ Waiting rooms        +    Downloaded game
 ```
 
 ### Rules for Temptation Bundling
+
 1. Dopamine source ONLY available during boring task
 2. Task must be something you'd do anyway (not excuse to avoid)
 3. Dopamine source can't distract from task quality
@@ -305,7 +342,8 @@ Waiting rooms        +    Downloaded game
 ## Tracking What Works
 
 ### Dopamine Activity Log
-```
+
+```text
 DATE: _______
 
 ACTIVITY: _______________________
@@ -329,6 +367,7 @@ VERDICT: Keep on menu / Remove / Move to different category
 ```
 
 ### Weekly Review Questions
+
 1. Which appetizers did I actually use?
 2. Did I get at least one main course this week?
 3. What dopamine traps did I fall into?
@@ -339,7 +378,7 @@ VERDICT: Keep on menu / Remove / Move to different category
 
 When you're completely depleted:
 
-```
+```text
 1. STOP trying to be productive
 2. ACKNOWLEDGE: "My brain needs dopamine RIGHT NOW"
 3. PICK: One appetizer, do it
@@ -350,4 +389,5 @@ When you're completely depleted:
 8. DO MINIMUM: Then celebrate it
 ```
 
-Remember: Dopamine isn't a reward you earn. It's fuel you need. Fill your tank regularly, not just when empty.
+Remember: Dopamine isn't a reward you earn. It's fuel you need. Fill your tank
+regularly, not just when empty.

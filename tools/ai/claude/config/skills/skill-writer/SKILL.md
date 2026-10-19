@@ -9,7 +9,8 @@ description: Use when creating or updating skills.
 
 Creates and updates skills that make agents follow a process.
 
-Skills are tracked inside the git root at `tools/ai/claude/config/skills/<name>/SKILL.md`.
+Skills are tracked inside the git root at
+`tools/ai/claude/config/skills/<name>/SKILL.md`.
 
 ## Core Workflow
 
@@ -17,9 +18,10 @@ Skills are tracked inside the git root at `tools/ai/claude/config/skills/<name>/
 
 **Goal:** Reach shared understanding of what the skill should enforce.
 
-**Exit criterion:** You can answer: what behavior should the agent follow, and in what situations?
+**Exit criterion:** You can answer: what behavior should the agent follow, and
+in what situations?
 
-Use the `/grill-me` skill to ask one question at a time, about *what* the skill
+Use the `/grill-me` skill to ask one question at a time, about _what_ the skill
 should enforce (not how to encode it).
 
 ---
@@ -30,34 +32,34 @@ should enforce (not how to encode it).
 
 **Exit criterion:** Skill file written at the canonical location.
 
-Create or update the skill file at the canonical location: `tools/ai/claude/config/skills/<name>/SKILL.md`.
+Create or update the skill file at the canonical location:
+`tools/ai/claude/config/skills/<name>/SKILL.md`.
 
 Pick the right template for the skill type:
 
-- **Config-language writer** (JSON, XML, YAML, TOML, etc.):
-  Read `references/config-writer.template.md`.
-- **Programming-language writer** (Go, Rust, JS, etc.):
-  Read `references/programming-writer.template.md`.
-- **Any other skill:**
-  Read `references/skill.template.md`.
+- **Config-language writer** (JSON, XML, YAML, TOML, etc.): Read
+  `references/config-writer.template.md`.
+- **Programming-language writer** (Go, Rust, JS, etc.): Read
+  `references/programming-writer.template.md`.
+- **Any other skill:** Read `references/skill.template.md`.
 
 ---
 
 ### Step 3 — DONE
 
-Skill is written.
-Let the user commit.
+Skill is written. Let the user commit.
 
 ---
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
+| Rationalization                                                                   | Reality                                                                                        |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | "`~/.claude/skills/<name>/SKILL.md` is where the skill lives, I'll edit it there" | That path is a symlink to the main branch, not the current worktree. Edit inside the git root. |
 
 ## Checklist
 
 - [ ] User confirmed the skill captures their intent
-- [ ] Skill file at correct location (`tools/ai/claude/config/skills/<name>/SKILL.md`)
+- [ ] Skill file at correct location
+      (`tools/ai/claude/config/skills/<name>/SKILL.md`)
 - [ ] Skill structure matches the template selected in Step 2

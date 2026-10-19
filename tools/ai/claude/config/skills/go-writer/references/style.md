@@ -3,13 +3,16 @@
 ## Essentials
 
 - Remove duplication by extracting helpers
-- Improve readability with clear names. Avoid abbreviations (`absolutePath` not `absPath`)
+- Improve readability with clear names. Avoid abbreviations (`absolutePath` not
+  `absPath`)
 - Return early to avoid `if/else` nesting
-- Named return values only when they clarify the signature, not for naked returns
+- Named return values only when they clarify the signature, not for naked
+  returns
 - Return errors early, wrap with `%w` for context, no bare `panic`
 - Extract short functions — one responsibility each
 - Prefer standalone functions over methods when there is no state to carry
-- Write comments that say only what the code shows, and link facts with because, so, but
+- Write comments that say only what the code shows, and link facts with because,
+  so, but
 
 ## Return early
 
@@ -45,7 +48,8 @@ func process(value *int) (int, error) {
 
 ## Comments
 
-Follow [Comments](./comments.md). Write comments with `//`. Function docs are Go doc comments.
+Follow [Comments](./comments.md). Write comments with `//`. Function docs are Go
+doc comments.
 
 ## Error handling
 

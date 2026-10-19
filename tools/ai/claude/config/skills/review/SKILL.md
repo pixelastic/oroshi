@@ -7,7 +7,9 @@ description: Use when the user wants to review a branch, a PR, work-in-progress 
 
 ## Overview
 
-Two-axis review of the diff between `HEAD` and a fixed point. Both axes run as parallel sub-agents so they don't pollute each other's context, then this skill aggregates their findings.
+Two-axis review of the diff between `HEAD` and a fixed point. Both axes run as
+parallel sub-agents so they don't pollute each other's context, then this skill
+aggregates their findings.
 
 ## Core Workflow
 
@@ -17,33 +19,33 @@ Two-axis review of the diff between `HEAD` and a fixed point. Both axes run as p
 
 **Exit criterion:** `ref:` and `spec:` resolved; ready to pass to sub-agents.
 
-
-| Param | Meaning |
-|---|---|
-| `ref:<ref>` | Diff base; passed to `review-diff` |
+| Param         | Meaning                                                               |
+| ------------- | --------------------------------------------------------------------- |
+| `ref:<ref>`   | Diff base; passed to `review-diff`                                    |
 | `spec:<path>` | Path to the spec file (issue or PRD); passed to the Spec Review agent |
-
 
 **`ref:` values:**
 
-| Value | `review-diff` args |
-|---|---|
-| `ref:dirty` | All dirty files in repo |
-| `ref:worktree` | All changed files since start of worktree |
-| `ref:<branch>` | All changed files since start of `<branch>` |
-| `ref:<commit>` | All changed files in `<commit>` |
+| Value                | `review-diff` args                              |
+| -------------------- | ----------------------------------------------- |
+| `ref:dirty`          | All dirty files in repo                         |
+| `ref:worktree`       | All changed files since start of worktree       |
+| `ref:<branch>`       | All changed files since start of `<branch>`     |
+| `ref:<commit>`       | All changed files in `<commit>`                 |
 | `ref:<start>..<end>` | All changed files between `<start>` and `<end>` |
 
-
-If `spec:` or `ref:` is absent and cannot be inferred from context, ask the user — do not silently infer.
+If `spec:` or `ref:` is absent and cannot be inferred from context, ask the user
+— do not silently infer.
 
 ### Step 2 — Spawn sub-agents
 
-**Goal:** Run Code Review and Spec Review in parallel without polluting each other's context.
+**Goal:** Run Code Review and Spec Review in parallel without polluting each
+other's context.
 
 **Exit criterion:** Both sub-agents have returned their reports.
 
-Send a single message with two `Agent` tool calls. Use the `general-purpose` subagent for both.
+Send a single message with two `Agent` tool calls. Use the `general-purpose`
+subagent for both.
 
 - **Code Review agent:** read `references/code-agent.md` for the full brief;
 - **Spec Review agent:** read `references/spec-agent.md` for the full brief;
@@ -54,9 +56,12 @@ Send a single message with two `Agent` tool calls. Use the `general-purpose` sub
 
 **Exit criterion:** Both reports displayed; one-line summary given.
 
-Present the two reports under `## Code Review` and `## Spec Review` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings — the two axes are deliberately separate.
+Present the two reports under `## Code Review` and `## Spec Review` headings,
+verbatim or lightly cleaned. Do **not** merge or rerank findings — the two axes
+are deliberately separate.
 
-End with a one-line summary: total findings per axis, and the worst single issue (if any) flagged.
+End with a one-line summary: total findings per axis, and the worst single issue
+(if any) flagged.
 
 ### Step 4 — Handback
 
@@ -65,22 +70,23 @@ End with a one-line summary: total findings per axis, and the worst single issue
 **Exit criterion:** Caller workflow resumed, or session ended.
 
 - If this skill was invoked by another skill (e.g. `/ralph`):
-    - Resume the calling skill's workflow immediately
-    - Do not stop, do not wait for user input, do not end your turn.
+  - Resume the calling skill's workflow immediately
+  - Do not stop, do not wait for user input, do not end your turn.
 - If this review was the only task requested:
-    - Stop here and wait for user input.
+  - Stop here and wait for user input.
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
+| Rationalization                                             | Reality                                                                  |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------ |
 | "The two findings overlap, I'll merge them into one report" | Merged reports hide which axis a finding belongs to. Keep them separate. |
-| "Spec findings are minor, not worth reporting" | Spec drift compounds. Report everything; let the user dismiss. |
+| "Spec findings are minor, not worth reporting"              | Spec drift compounds. Report everything; let the user dismiss.           |
 
 ## Checklist
 
 - [ ] Args determined from user intent
 - [ ] Both sub-agents spawned in a single parallel message
 - [ ] Each sub-agent ran `review-diff` itself — no diff pasted inline
-- [ ] Reports presented under separate `## Code Review` and `## Spec Review` headings
+- [ ] Reports presented under separate `## Code Review` and `## Spec Review`
+      headings
 - [ ] One-line summary at the end

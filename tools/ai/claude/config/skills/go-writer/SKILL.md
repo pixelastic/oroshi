@@ -17,7 +17,8 @@ Write Go code consistent with my conventions.
 
 **Exit criterion:** Source file and tests are colocated in the right package.
 
-- One package (directory) per domain — multiple `.go` files per package is normal
+- One package (directory) per domain — multiple `.go` files per package is
+  normal
 - Tests: `*_test.go` in the same package (standard Go convention)
 - Build script at the project root, outputs binary to a `dist/` folder
 
@@ -46,8 +47,8 @@ func TestReturnsSlugifiedName(t *testing.T) {
 
 **Exit criterion:** Test passes.
 
-Write the simplest code that makes the test pass.
-No patterns yet — just correct behavior.
+Write the simplest code that makes the test pass. No patterns yet — just correct
+behavior.
 
 Run `go-test <filepath>` to confirm.
 
@@ -59,10 +60,10 @@ Run `go-test <filepath>` to confirm.
 
 Apply patterns from [Style](./references/style.md):
 
-| Pattern | Rule |
-|---|---|
-| Return early | No avoidable nesting |
-| Error handling | Early return on error, wrap with `%w` |
+| Pattern         | Rule                                             |
+| --------------- | ------------------------------------------------ |
+| Return early    | No avoidable nesting                             |
+| Error handling  | Early return on error, wrap with `%w`            |
 | Short functions | Extract when a function does more than one thing |
 
 Run `go-test <filepath>` to confirm tests still pass.
@@ -80,13 +81,13 @@ Run `go-test <filepath>` to confirm tests still pass.
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
-| "It's only two levels of if/else, it's ok." | No it's not. Return early, always. |
-| "I'll add a bare panic for now." | No bare panics. Return an error. |
-| "I don't need testify, stdlib is fine." | Use testify — `assert`/`require` are more readable than `if/t.Errorf`. |
-| "I'll use `assert` for this error check." | Error/nil guards need `require` — test must stop, not limp along. |
-| "I'll put everything in package main." | Split into packages by domain — but multiple files per package is normal. |
+| Rationalization                             | Reality                                                                   |
+| ------------------------------------------- | ------------------------------------------------------------------------- |
+| "It's only two levels of if/else, it's ok." | No it's not. Return early, always.                                        |
+| "I'll add a bare panic for now."            | No bare panics. Return an error.                                          |
+| "I don't need testify, stdlib is fine."     | Use testify — `assert`/`require` are more readable than `if/t.Errorf`.    |
+| "I'll use `assert` for this error check."   | Error/nil guards need `require` — test must stop, not limp along.         |
+| "I'll put everything in package main."      | Split into packages by domain — but multiple files per package is normal. |
 
 ## Checklist
 

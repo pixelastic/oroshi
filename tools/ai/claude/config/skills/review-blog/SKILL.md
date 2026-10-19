@@ -8,7 +8,8 @@ argument-hint: <file.md or Google Docs URL>
 
 ## Overview
 
-End-to-end blog review: upload to Google Docs, wait for annotations, synthesize feedback, publish as a shareable doc.
+End-to-end blog review: upload to Google Docs, wait for annotations, synthesize
+feedback, publish as a shareable doc.
 
 ---
 
@@ -20,9 +21,11 @@ End-to-end blog review: upload to Google Docs, wait for annotations, synthesize 
 
 **Exit criterion:** Google Docs URL presented to the user.
 
-Extract the file path or URL from the skill argument. If no argument, ask the user.
+Extract the file path or URL from the skill argument. If no argument, ask the
+user.
 
-Run `review-blog-start <input>` and parse the JSON output. The `url` field contains the Google Docs URL.
+Run `review-blog-start <input>` and parse the JSON output. The `url` field
+contains the Google Docs URL.
 
 Present the URL to the user:
 
@@ -40,7 +43,8 @@ Stop and wait for the user.
 
 **Exit criterion:** User said they're done (or equivalent).
 
-Do nothing until the user comes back. Any indication that comments are ready counts: "done", "finished", "go", "comments are in", etc.
+Do nothing until the user comes back. Any indication that comments are ready
+counts: "done", "finished", "go", "comments are in", etc.
 
 ---
 
@@ -52,14 +56,17 @@ Do nothing until the user comes back. Any indication that comments are ready cou
 
 Run both commands, capturing their output:
 
-1. `gdoc2md <url>` — outputs a directory path. Read `{outputDir}/index.md` for the article markdown.
-2. `gdoc-comments-json <url>` — outputs a JSON array of `{ anchor, comment }` objects.
+1. `gdoc2md <url>` — outputs a directory path. Read `{outputDir}/index.md` for
+   the article markdown.
+2. `gdoc-comments-json <url>` — outputs a JSON array of `{ anchor, comment }`
+   objects.
 
 ---
 
 ### Step 4 — Synthesize
 
-**Goal:** Cross-reference comments against the full article and produce structured feedback.
+**Goal:** Cross-reference comments against the full article and produce
+structured feedback.
 
 **Exit criterion:** Feedback markdown written to a temp file.
 
@@ -68,10 +75,15 @@ Run both commands, capturing their output:
 3. Auto-detect the article's language (default to English).
 4. For each comment:
    - Match its `anchor` to the corresponding passage in the article.
-   - If the issue raised by the comment is addressed later in the article, discard it (auto-resolve).
-   - If the comment is in French but the article is in another language, translate the feedback.
-5. Group remaining comments by thematic axis (Narration, Content, Clarity/Style, Diagrams, etc. — axes adapt to the article). Within each axis, order from most impactful to least.
-6. Write the feedback following the output format reference: TL;DR, Strengths, Improvements grouped by axis.
+   - If the issue raised by the comment is addressed later in the article,
+     discard it (auto-resolve).
+   - If the comment is in French but the article is in another language,
+     translate the feedback.
+5. Group remaining comments by thematic axis (Narration, Content, Clarity/Style,
+   Diagrams, etc. — axes adapt to the article). Within each axis, order from
+   most impactful to least.
+6. Write the feedback following the output format reference: TL;DR, Strengths,
+   Improvements grouped by axis.
 7. Write the feedback markdown to `/tmp/oroshi/review-blog/feedback.md`.
 
 ---
@@ -82,7 +94,9 @@ Run both commands, capturing their output:
 
 **Exit criterion:** Shareable URL returned to the user.
 
-Run `md2gdoc --title "<Article Title> (review)" --no-open /tmp/oroshi/review-blog/feedback.md`. The command outputs the Google Docs URL.
+Run
+`md2gdoc --title "<Article Title> (review)" --no-open /tmp/oroshi/review-blog/feedback.md`.
+The command outputs the Google Docs URL.
 
 Present the URL to the user:
 
@@ -92,12 +106,12 @@ Present the URL to the user:
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
-| "I can synthesize feedback without fetching the full article" | You need the full article to auto-resolve comments and produce anchor quotes. Fetch it. |
-| "I'll skip auto-resolving, the user can filter" | Auto-resolving is the whole point of synthesizing vs. forwarding raw comments. |
-| "I'll publish the feedback as a message instead of a Google Doc" | The deliverable is a shareable Google Doc. Always publish via `md2gdoc`. |
-| "Comments are in French, I'll keep them in French" | Feedback language matches the article's language. Translate. |
+| Rationalization                                                  | Reality                                                                                 |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| "I can synthesize feedback without fetching the full article"    | You need the full article to auto-resolve comments and produce anchor quotes. Fetch it. |
+| "I'll skip auto-resolving, the user can filter"                  | Auto-resolving is the whole point of synthesizing vs. forwarding raw comments.          |
+| "I'll publish the feedback as a message instead of a Google Doc" | The deliverable is a shareable Google Doc. Always publish via `md2gdoc`.                |
+| "Comments are in French, I'll keep them in French"               | Feedback language matches the article's language. Translate.                            |
 
 ## Checklist
 

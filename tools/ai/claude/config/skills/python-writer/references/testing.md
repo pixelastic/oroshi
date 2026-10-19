@@ -4,7 +4,8 @@
 
 - Test files: `test_<module>.py` in a `__tests__/` sibling directory
 - Test functions: `test_<behavior>`
-- Run with: `python-test <filepath>`. The path can be a test file, a source file with a matching test, or a directory
+- Run with: `python-test <filepath>`. The path can be a test file, a source file
+  with a matching test, or a directory
 
 ## Writing a test
 
@@ -16,15 +17,18 @@ def test_<behavior>():
 
 ## conftest.py
 
-Place at the **project root** (same level as `pyproject.toml`), not inside `__tests__/`.
+Place at the **project root** (same level as `pyproject.toml`), not inside
+`__tests__/`.
 
 Use it for:
+
 - Shared fixtures available across all tests
 - Stubbing unavailable imports via `sys.modules`
 
 ## Stubbing unavailable imports
 
-Some modules are not importable outside their runtime. Stub them in `conftest.py`:
+Some modules are not importable outside their runtime. Stub them in
+`conftest.py`:
 
 ```python
 import sys
@@ -58,7 +62,8 @@ def test_slugify(text, expected):
 
 ## Mocking
 
-Use the `mocker` fixture (pytest-mock). It undoes every patch when the test ends.
+Use the `mocker` fixture (pytest-mock). It undoes every patch when the test
+ends.
 
 ```python
 import lib.helper as helper
@@ -72,7 +77,8 @@ def test_ansi_to_kitty_returns_as_rgb_result(mocker):
 
 ## Temporary directories
 
-Use the `tmp_path` fixture for tests that need the filesystem. pytest cleans it up.
+Use the `tmp_path` fixture for tests that need the filesystem. pytest cleans it
+up.
 
 ```python
 def test_reads_config(tmp_path):
