@@ -1,4 +1,5 @@
 import { _ } from 'golgoth';
+import { listModules } from './listModules.js';
 
 // Gap between two modules, horizontally and vertically, and the main baseline
 const STEP_X = 300;
@@ -26,7 +27,7 @@ export function blueprintAlign(blueprint) {
   }
 
   const orphansY =
-    _.chain(__.listModules(flow)).map(__.getY).max().value() + STEP_Y;
+    _.chain(listModules(flow)).map(__.getY).max().value() + STEP_Y;
   return _.merge({}, blueprint, {
     flow,
     metadata: { designer: { orphans: __.alignFlow(orphans, 0, orphansY) } },
@@ -110,19 +111,6 @@ __ = {
       return own + errors;
     });
     return _.max([1, ...heights]);
-  },
-
-  /**
-   * List every module of a flow, including routes and error handlers
-   * @param {object[]} flow - Modules to list
-   * @returns {object[]} Flat list of modules
-   */
-  listModules(flow) {
-    return _.flatMap(flow, (blueprintModule) => [
-      blueprintModule,
-      ...__.listModules(_.flatMap(blueprintModule.routes, 'flow')),
-      ...__.listModules(blueprintModule.onerror),
-    ]);
   },
 
   /**

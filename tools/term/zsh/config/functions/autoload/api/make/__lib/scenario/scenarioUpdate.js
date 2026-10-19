@@ -1,7 +1,9 @@
 import { _ } from 'golgoth';
+import { firostError } from 'firost';
 import { getJsonFromOptions } from '@oroshi/api-shared/getJsonFromOptions.js';
 import { callApi } from '../callApi.js';
 import { blueprintAlign } from './blueprintAlign.js';
+import { blueprintValidate } from './blueprintValidate.js';
 import { buildFlow } from './buildFlow.js';
 import { formatScenario } from './formatScenario.js';
 
@@ -9,8 +11,12 @@ export let __;
 
 /**
  * Update some fields of one Scenario. The other fields keep their value
- * A Blueprint that is sent is aligned on one baseline, left to right, with no
- * way to skip it
+ * A Blueprint that is sent is validated locally first, and the command stops
+ * before any request when it has problems. Then the Blueprint is aligned on one baseline,
+ * left to right. Neither step can be skipped
+ * The validation checks unique module IDs, a module and a version on every
+ * module, and the required fields of metadata.expect. It cannot detect an
+ * unsupported expression, such as a regex literal in replace
  * @param {object} options - Id of the Scenario, and the fields to change
  * @param {number|string} options.scenarioId - Scenario ID
  * @param {string} [options.name] - New name of the Scenario
@@ -25,6 +31,11 @@ export async function scenarioUpdate(options) {
   const { scenarioId, name, folderId } = options;
 
   const givenBlueprint = await __.getJsonFromOptions(options, 'blueprint');
+  const problems = givenBlueprint ? __.blueprintValidate(givenBlueprint) : [];
+  if (!_.isEmpty(problems)) {
+    throw firostError('MAKE_BLUEPRINT_INVALID', problems.join('\n'));
+  }
+
   // The alignment applies to every Blueprint that is sent, and only to those
   const blueprintContent = givenBlueprint
     ? __.blueprintAlign(givenBlueprint)
@@ -65,6 +76,7 @@ __ = {
   callApi,
   getJsonFromOptions,
   blueprintAlign,
+  blueprintValidate,
   buildFlow,
   formatScenario,
 };

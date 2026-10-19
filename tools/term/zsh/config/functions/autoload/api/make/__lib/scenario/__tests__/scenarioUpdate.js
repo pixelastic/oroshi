@@ -37,6 +37,7 @@ describe('scenarioUpdate', () => {
       ...input,
       aligned: true,
     }));
+    vi.spyOn(__, 'blueprintValidate').mockReturnValue([]);
     vi.spyOn(__, 'getJsonFromOptions').mockReturnValue(undefined);
   });
 
@@ -96,6 +97,46 @@ describe('scenarioUpdate', () => {
 
     expect(__.blueprintAlign).not.toHaveBeenCalled();
     expect(sentBody()).toEqual({ name: 'a' });
+  });
+
+  it('validates the blueprint before it aligns it', async () => {
+    mockContents({ blueprint });
+
+    await scenarioUpdate({ scenarioId: 925 });
+
+    expect(__.blueprintValidate).toHaveBeenCalledWith(blueprint);
+    expect(__.blueprintValidate.mock.invocationCallOrder[0]).toBeLessThan(
+      __.blueprintAlign.mock.invocationCallOrder[0],
+    );
+  });
+
+  it('throws the list of problems and sends no request when the blueprint is invalid', async () => {
+    mockContents({ blueprint });
+    __.blueprintValidate.mockReturnValue([
+      'Module 1 has no version',
+      'Module ID 2 is used more than once',
+    ]);
+
+    let actual = null;
+    try {
+      await scenarioUpdate({ scenarioId: 925, name: 'a' });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', 'MAKE_BLUEPRINT_INVALID');
+    expect(actual).toHaveProperty(
+      'message',
+      'Module 1 has no version\nModule ID 2 is used more than once',
+    );
+    expect(__.blueprintAlign).not.toHaveBeenCalled();
+    expect(__.callApi).not.toHaveBeenCalled();
+  });
+
+  it('skips the validation when it sends no blueprint', async () => {
+    await scenarioUpdate({ scenarioId: 925, name: 'a' });
+
+    expect(__.blueprintValidate).not.toHaveBeenCalled();
   });
 
   it('gets the blueprint and the scheduling from the options', async () => {

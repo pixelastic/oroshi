@@ -102,6 +102,15 @@ The JSON that describes the modules and the flow of a **Scenario**, given with
 
 _Avoid_: definition, flow, template
 
+**Validation**:
+
+The local check of a **Blueprint** that `create` and `update` run before any
+request. It lists every problem at once, and fails with
+`MAKE_BLUEPRINT_INVALID`. It has no bypass. Make has no validate endpoint, and
+its `isinvalid` field is only known after the request.
+
+_Avoid_: lint, verification, dry run
+
 **Scheduling**:
 
 The JSON that says when Make runs an **Enabled** **Scenario**, given with

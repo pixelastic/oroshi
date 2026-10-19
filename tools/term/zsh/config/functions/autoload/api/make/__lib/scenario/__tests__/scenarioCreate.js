@@ -29,6 +29,7 @@ describe('scenarioCreate', () => {
       ...input,
       aligned: true,
     }));
+    vi.spyOn(__, 'blueprintValidate').mockReturnValue([]);
     // The helper gets each JSON value from the options by its key
     const contents = { blueprint, scheduling };
     vi.spyOn(__, 'getJsonFromOptions').mockImplementation(
@@ -77,6 +78,37 @@ describe('scenarioCreate', () => {
       name: 'oroshi-test-a',
     });
     expect(sentBody().blueprint).toHaveProperty('aligned', true);
+  });
+
+  it('validates the blueprint before it aligns it', async () => {
+    await scenarioCreate({ name: 'oroshi-test-a', blueprint: 'a' });
+
+    expect(__.blueprintValidate).toHaveBeenCalledWith(blueprint);
+    expect(__.blueprintValidate.mock.invocationCallOrder[0]).toBeLessThan(
+      __.blueprintAlign.mock.invocationCallOrder[0],
+    );
+  });
+
+  it('throws the list of problems and sends no request when the blueprint is invalid', async () => {
+    __.blueprintValidate.mockReturnValue([
+      'Module 1 has no version',
+      'Module ID 2 is used more than once',
+    ]);
+
+    let actual = null;
+    try {
+      await scenarioCreate({ blueprint: 'a' });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', 'MAKE_BLUEPRINT_INVALID');
+    expect(actual).toHaveProperty(
+      'message',
+      'Module 1 has no version\nModule ID 2 is used more than once',
+    );
+    expect(__.blueprintAlign).not.toHaveBeenCalled();
+    expect(__.callApi).not.toHaveBeenCalled();
   });
 
   it('gets the blueprint and the scheduling from the options', async () => {

@@ -1,15 +1,23 @@
+import { _ } from 'golgoth';
+import { firostError } from 'firost';
 import { getJsonFromOptions } from '@oroshi/api-shared/getJsonFromOptions.js';
 import { callApi } from '../callApi.js';
 import { getConfig } from '../getConfig.js';
 import { blueprintAlign } from './blueprintAlign.js';
+import { blueprintValidate } from './blueprintValidate.js';
 import { buildFlow } from './buildFlow.js';
 import { formatScenario } from './formatScenario.js';
 
 export let __;
 
 /**
- * Create one Scenario in the Team. The modules of its Blueprint are aligned on
- * one baseline, left to right, with no way to skip it
+ * Create one Scenario in the Team. The Blueprint is validated locally first,
+ * and the command stops before any request when it has problems. Then the
+ * modules of the Blueprint are aligned on one baseline, left to right. Neither
+ * step can be skipped
+ * The validation checks unique module IDs, a module and a version on every
+ * module, and the required fields of metadata.expect. It cannot detect an
+ * unsupported expression, such as a regex literal in replace
  * @param {object} options - Content of the Scenario
  * @param {string} [options.name] - Name of the Scenario
  * @param {string|object} [options.blueprint] - Blueprint as a JSON string, or the object itself
@@ -32,6 +40,11 @@ export async function scenarioCreate(options) {
   const schedulingContent = await __.getJsonFromOptions(options, 'scheduling', {
     type: 'on-demand',
   });
+
+  const problems = __.blueprintValidate(blueprintContent);
+  if (!_.isEmpty(problems)) {
+    throw firostError('MAKE_BLUEPRINT_INVALID', problems.join('\n'));
+  }
 
   // Make reads the name of the Scenario from its Blueprint, and ignores the body
   const namedBlueprint = __.blueprintAlign(
@@ -59,6 +72,7 @@ __ = {
   callApi,
   getJsonFromOptions,
   blueprintAlign,
+  blueprintValidate,
   buildFlow,
   formatScenario,
   getConfig,

@@ -1,7 +1,9 @@
 # Update some fields of a Make scenario, and print it as JSON, with isinvalid and its flow
 # Only the given fields change
 # The Blueprint and the Scheduling are JSON, inline or from a file. The file wins
-# A Blueprint that is sent is aligned: modules on one baseline, 300 apart, left to right. No option skips it
+# A Blueprint that is sent is validated first: unique module IDs, a module and a version on every module, and the required fields of metadata.expect
+# The command fails with the list of problems, and sends no request. It cannot detect an unsupported expression, such as a regex literal in replace
+# Then the Blueprint is aligned: modules on one baseline, 300 apart, left to right. No option skips the validation or the alignment
 # Usage:
 # $ make-scenario-update 925 --name "Paris Meetup 2026"
 # $ make-scenario-update 925 --blueprint '{"flow":[]}'

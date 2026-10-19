@@ -1,7 +1,9 @@
 # Create a Make scenario, and print it as JSON, with isinvalid and its flow
 # The Blueprint and the Scheduling are JSON, inline or from a file. The file wins
 # Scheduling is on-demand by default
-# The modules of the Blueprint are aligned on one baseline, 300 apart, left to right. No option skips it
+# The Blueprint is validated first: unique module IDs, a module and a version on every module, and the required fields of metadata.expect
+# The command fails with the list of problems, and sends no request. It cannot detect an unsupported expression, such as a regex literal in replace
+# Then the modules of the Blueprint are aligned on one baseline, 300 apart, left to right. No option skips the validation or the alignment
 # Usage:
 # $ make-scenario-create --name "Paris Meetup" --blueprint-file ./blueprint.json
 # $ make-scenario-create --name "Paris Meetup" --blueprint '{"flow":[]}' --scheduling '{"type":"on-demand"}'
