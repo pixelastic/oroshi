@@ -1,6 +1,8 @@
 import { _, pMap } from 'golgoth';
+import { firostError } from 'firost';
 import { findField } from './findField.js';
 import { waitForLocator } from './waitForLocator.js';
+import { writeClipboard } from './writeClipboard.js';
 
 export let __;
 
@@ -28,7 +30,7 @@ export async function fillListingForm(page, listing) {
 
   await __.setPhotos(page, listing.photos);
   await __.typeIn(page, 'title--input', listing.title);
-  await __.typeIn(page, 'description--input', listing.description);
+  await __.pasteIn(page, 'description--input', listing.description);
   await __.pickCategory(page, listing.category);
   await __.typeIn(page, 'isbn--input', listing.isbn);
   await __.pickCondition(page, listing.condition);
@@ -83,6 +85,30 @@ __ = {
     await input.click();
     await input.pressSequentially(text, { delay: TYPING_DELAY_IN_MS });
     await __.pause(page);
+  },
+
+  /**
+   * Paste a text in a form field, through the clipboard
+   * Fails when the field does not hold the text afterwards. There is no typing
+   * fallback.
+   * @param {object} page - Playwright page
+   * @param {string} testId - data-testid of the field
+   * @param {string} text - Text to paste
+   */
+  async pasteIn(page, testId, text) {
+    const input = await findField(page, testId);
+    await __.writeClipboard(text);
+    await input.click();
+    await page.keyboard.press('Control+V');
+    await __.pause(page);
+
+    const value = await input.inputValue();
+    if (value !== text) {
+      throw firostError(
+        'VINTED_PASTE_FAILED',
+        `Pasting in "${testId}" failed, the field does not hold the expected text`,
+      );
+    }
   },
 
   /**
@@ -147,4 +173,6 @@ __ = {
   formatPrice(price) {
     return String(price).replace('.', ',');
   },
+
+  writeClipboard,
 };
