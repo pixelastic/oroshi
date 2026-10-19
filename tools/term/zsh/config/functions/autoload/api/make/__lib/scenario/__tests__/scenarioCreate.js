@@ -145,11 +145,57 @@ describe('scenarioCreate', () => {
     });
   });
 
-  it('prints isinvalid of the created scenario', async () => {
-    __.formatScenario.mockReturnValue({ id: 'formatted', isinvalid: true });
+  describe('when Make marks the created scenario as invalid', () => {
+    let actual = null;
+    beforeEach(async () => {
+      __.callApi.mockReturnValue({ scenario: { id: 925, isinvalid: true } });
+
+      actual = null;
+      try {
+        await scenarioCreate({ blueprint: 'a' });
+      } catch (error) {
+        actual = error;
+      }
+    });
+
+    it('throws MAKE_BLUEPRINT_INVALID with the ID of the new scenario', () => {
+      expect(actual).toHaveProperty('code', 'MAKE_BLUEPRINT_INVALID');
+      expect(actual).toHaveProperty(
+        'message',
+        'Make marked the new Scenario 925 as invalid',
+      );
+    });
+
+    it('sends no other request, no delete and no repair', () => {
+      expect(__.callApi).toHaveBeenCalledTimes(1);
+      expect(__.callApi).toHaveBeenCalledWith('scenarios', expect.any(Object));
+      expect(__.callApi.mock.calls[0][1]).toHaveProperty('method', 'POST');
+    });
+  });
+
+  it('lets an error of Make on the request pass through unchanged', async () => {
+    const makeError = new Error('400 {"code":"IM007"}');
+    makeError.code = 'MAKE_REQUEST_FAILED';
+    __.callApi.mockImplementation(() => {
+      throw makeError;
+    });
+
+    let actual = null;
+    try {
+      await scenarioCreate({ blueprint: 'a' });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toBe(makeError);
+  });
+
+  it('prints the created scenario when it is valid', async () => {
+    __.callApi.mockReturnValue({ scenario: { id: 925, isinvalid: false } });
 
     const actual = await scenarioCreate({ blueprint: 'a' });
 
-    expect(actual).toHaveProperty('isinvalid', true);
+    expect(actual).toHaveProperty('id', 'formatted');
+    expect(actual).toHaveProperty('isinvalid', false);
   });
 });

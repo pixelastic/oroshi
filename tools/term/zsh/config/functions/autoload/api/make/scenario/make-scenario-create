@@ -4,6 +4,7 @@
 # The Blueprint is validated first: unique module IDs, a module and a version on every module, and the required fields of metadata.expect
 # The command fails with the list of problems, and sends no request. It cannot detect an unsupported expression, such as a regex literal in replace
 # Then the modules of the Blueprint are aligned on one baseline, 300 apart, left to right. No option skips the validation or the alignment
+# When Make marks the new Scenario as invalid, the command fails with its ID and keeps the Scenario: no delete, no repair
 # Usage:
 # $ make-scenario-create --name "Paris Meetup" --blueprint-file ./blueprint.json
 # $ make-scenario-create --name "Paris Meetup" --blueprint '{"flow":[]}' --scheduling '{"type":"on-demand"}'

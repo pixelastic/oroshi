@@ -18,6 +18,8 @@ export let __;
  * The validation checks unique module IDs, a module and a version on every
  * module, and the required fields of metadata.expect. It cannot detect an
  * unsupported expression, such as a regex literal in replace
+ * When Make marks the new Scenario as invalid, it throws MAKE_BLUEPRINT_INVALID
+ * with the ID of the Scenario. The Scenario is kept: no delete, no repair
  * @param {object} options - Content of the Scenario
  * @param {string} [options.name] - Name of the Scenario
  * @param {string|object} [options.blueprint] - Blueprint as a JSON string, or the object itself
@@ -61,6 +63,16 @@ export async function scenarioCreate(options) {
       scheduling: JSON.stringify(schedulingContent),
     },
   });
+
+  // When Make marks the new Scenario as invalid, it already exists.
+  // So throw its ID and keep it, instead of deleting it
+  if (response.scenario.isinvalid) {
+    throw firostError(
+      'MAKE_BLUEPRINT_INVALID',
+      `Make marked the new Scenario ${response.scenario.id} as invalid`,
+    );
+  }
+
   // The flow comes from the Blueprint that was sent, to avoid a second call
   return {
     ...__.formatScenario(response.scenario),
