@@ -12,6 +12,7 @@ const CONDITIONS = [
   'Satisfactory',
 ];
 const MINIMUM_PRICE = 1;
+const ZERO_ISBN = '0'.repeat(13);
 
 /**
  * Read a listing JSON file, validate it, and resolve its photo paths
@@ -20,7 +21,7 @@ const MINIMUM_PRICE = 1;
  * @returns {Promise<object>} The listing, with absolute photo paths
  */
 export async function parseListing(listingPath) {
-  const listing = await __.readListing(listingPath);
+  const listing = __.withDefaultIsbn(await __.readListing(listingPath));
   __.validateFields(listing, listingPath);
 
   const directory = path.dirname(path.resolve(listingPath));
@@ -96,6 +97,19 @@ __ = {
         `${listingPath} is not a valid JSON file`,
       );
     }
+  },
+
+  /**
+   * Replace a missing, empty or blank isbn with the zero ISBN
+   * Vinted requires an ISBN, but accepts a string of zeros.
+   * @param {object} listing - Parsed listing
+   * @returns {object} The listing, with a usable isbn
+   */
+  withDefaultIsbn(listing) {
+    const { isbn } = listing ?? {};
+    const isBlank =
+      isbn === undefined || (_.isString(isbn) && !__.isText(isbn));
+    return isBlank ? { ...listing, isbn: ZERO_ISBN } : listing;
   },
 
   /**

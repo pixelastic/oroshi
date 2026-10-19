@@ -65,13 +65,27 @@ describe('parseListing', () => {
     });
   });
 
+  describe('isbn', () => {
+    it.each([
+      { input: undefined, expected: '0000000000000' },
+      { input: '', expected: '0000000000000' },
+      { input: '   ', expected: '0000000000000' },
+      { input: '978-2-266-28274-3', expected: '978-2-266-28274-3' },
+    ])('resolves the isbn $input to $expected', async ({ input, expected }) => {
+      const listingPath = await writeListing({ ...validListing, isbn: input });
+
+      const actual = await parseListing(listingPath);
+
+      expect(actual).toHaveProperty('isbn', expected);
+    });
+  });
+
   describe('invalid listing', () => {
     it.each([
       { input: 'photos' },
       { input: 'title' },
       { input: 'description' },
       { input: 'category' },
-      { input: 'isbn' },
       { input: 'condition' },
       { input: 'price' },
     ])('names the missing field $input', async ({ input }) => {

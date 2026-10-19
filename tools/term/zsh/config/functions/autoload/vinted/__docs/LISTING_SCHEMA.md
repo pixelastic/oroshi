@@ -10,13 +10,14 @@ One listing per JSON file. Explored on the live form (vinted.fr, English UI) on 
 | `title`       | Title       | text     | string   | yes      | `title--input`                           |
 | `description` | Description | textarea | string   | yes      | `description--input`                     |
 | `category`    | Category    | picker   | string[] | yes      | `catalog-select-dropdown-input`          |
-| `isbn`        | ISBN        | text     | string   | yes      | `isbn--input`                            |
+| `isbn`        | ISBN        | text     | string   | no       | `isbn--input`                            |
 | `condition`   | Condition   | radio    | enum     | yes      | `category-condition-single-list-input`   |
 | `price`       | Price       | text     | number   | yes      | `price-input--input` (minimum 1 EUR)     |
 
 - `photos`: paths, resolved relative to the JSON file.
 - `category`: the labels to click, from the root to the leaf, as shown in the English UI.
 - `condition`: one of `New with tags`, `New without tags`, `Very good`, `Good`, `Satisfactory`.
+- `isbn`: optional. Vinted requires one, so a missing, empty or blank value defaults to `0000000000000` (13 zeros).
 - `price`: asking price in euros.
 
 ## Category-dependent fields
