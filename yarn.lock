@@ -1420,6 +1420,7 @@ __metadata:
   resolution: "@oroshi/vinted@workspace:tools/term/zsh/config/functions/autoload/vinted/__lib"
   dependencies:
     firost: "npm:5.11.0"
+    golgoth: "npm:3.1.0"
     playwright: "npm:1.64.1"
   languageName: unknown
   linkType: soft
