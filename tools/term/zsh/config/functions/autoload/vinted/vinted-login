@@ -1,0 +1,7 @@
+# Open Chrome on the dedicated Vinted profile, so you can log in by hand
+# Usage:
+# $ vinted-login   # Close the browser or press Enter once logged in
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/vinted-login.js" "$@"
