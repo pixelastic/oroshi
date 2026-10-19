@@ -162,7 +162,7 @@ _mock_record_args() {
 
 	# --cmd value follows the --cmd flag
 	local tabCommand="$(grep --after-context=1 "^--cmd$" "$BATS_TMP_DIR/tab-args.txt" | tail -n 1)"
-	[[ "$tabCommand" == "zsh -ic 'ralph; exec zsh'" ]]
+	[[ "$tabCommand" == "zsh -ic 'ralph --auto; exec zsh'" ]]
 }
 
 @test "in main: calls claude-stop with --next and a message naming the tab" {

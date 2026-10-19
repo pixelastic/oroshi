@@ -36,6 +36,6 @@ kitty-tab-create \
   "$tabTitle" \
   --focus \
   --cwd "$worktreePath" \
-  --cmd "zsh -ic 'ralph; exec zsh'"
+  --cmd "zsh -ic 'ralph --auto; exec zsh'"
 
 claude-stop --next "print ${(qq):-Plan lancé dans l'onglet $tabTitle}"
