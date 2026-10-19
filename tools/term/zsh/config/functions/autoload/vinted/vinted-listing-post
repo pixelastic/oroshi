@@ -1,0 +1,18 @@
+# Fill the Vinted listing form from a JSON file, and publish it
+# Usage:
+# $ vinted-listing-post listing.json             # Fill the form and publish
+# $ vinted-listing-post listing.json --dry-run   # Fill the form, save a screenshot, do not publish
+setopt local_options err_return
+
+zparseopts -E -D -dry-run=flagDryRun
+
+local listingPath="$1"
+
+# A listing file is required
+if [[ "$listingPath" == "" ]]; then
+  echoerr "Usage: vinted-listing-post <listing.json> [--dry-run]"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/vinted-listing-post.js" "$listingPath" "${flagDryRun[@]}"
