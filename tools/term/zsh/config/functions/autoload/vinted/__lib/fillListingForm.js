@@ -17,14 +17,13 @@ const CONDITION_RADIOS = {
 };
 
 /**
- * Fill the Vinted listing form, and publish it unless in dry-run mode
+ * Fill the Vinted listing form, without publishing it
  * The page must already show the listing form of a logged-in session. Stops
  * with an error as soon as a form field is missing.
  * @param {object} page - Playwright page showing the listing form
  * @param {object} listing - Listing returned by parseListing
- * @param {boolean} dryRun - True to leave the form unpublished
  */
-export async function fillListingForm(page, listing, dryRun) {
+export async function fillListingForm(page, listing) {
   await __.acceptCookies(page);
 
   await __.setPhotos(page, listing.photos);
@@ -34,12 +33,6 @@ export async function fillListingForm(page, listing, dryRun) {
   await __.typeIn(page, 'isbn--input', listing.isbn);
   await __.pickCondition(page, listing.condition);
   await __.typeIn(page, 'price-input--input', __.formatPrice(listing.price));
-
-  if (dryRun) {
-    return;
-  }
-  const publishButton = await __.field(page, 'upload-form-save-button');
-  await publishButton.click();
 }
 
 __ = {
