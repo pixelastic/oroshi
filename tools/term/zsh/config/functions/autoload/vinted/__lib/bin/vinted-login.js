@@ -1,4 +1,3 @@
-// vinted-login.js
 import readline from 'node:readline';
 import { consoleInfo } from 'firost';
 import { openSession } from '../openSession.js';

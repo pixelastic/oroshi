@@ -1,9 +1,9 @@
 import { _, pMap } from 'golgoth';
-import { firostError } from 'firost';
+import { findField } from './findField.js';
+import { waitForLocator } from './waitForLocator.js';
 
 export let __;
 
-const FIELD_TIMEOUT_IN_MS = 10000;
 const COOKIE_TIMEOUT_IN_MS = 3000;
 const PAUSE_RANGE_IN_MS = [400, 1200];
 const TYPING_DELAY_IN_MS = 25;
@@ -61,45 +61,13 @@ __ = {
   },
 
   /**
-   * Wait for a locator, or fail loudly with a given message
-   * @param {object} locator - Playwright locator
-   * @param {string} message - Error message when the locator never shows up
-   * @param {string} state - Playwright state to wait for
-   * @returns {Promise<object>} The first matching locator
-   */
-  async waitFor(locator, message, state = 'visible') {
-    const first = locator.first();
-    try {
-      await first.waitFor({ state, timeout: FIELD_TIMEOUT_IN_MS });
-    } catch {
-      throw firostError('VINTED_FORM_FIELD_MISSING', message);
-    }
-    return first;
-  },
-
-  /**
-   * Find a form field by its test id, or fail loudly when it is missing
-   * @param {object} page - Playwright page
-   * @param {string} testId - data-testid of the field
-   * @param {string} state - Playwright state to wait for
-   * @returns {Promise<object>} Playwright locator of the field
-   */
-  field(page, testId, state) {
-    return __.waitFor(
-      page.getByTestId(testId),
-      `Form field "${testId}" not found, the Vinted form may have changed`,
-      state,
-    );
-  },
-
-  /**
    * Upload the photos
    * @param {object} page - Playwright page
    * @param {string[]} photos - Absolute photo paths
    */
   async setPhotos(page, photos) {
     // The file input is hidden, so it only needs to be attached
-    const input = await __.field(page, 'add-photos-input', 'attached');
+    const input = await findField(page, 'add-photos-input', 'attached');
     await input.setInputFiles(photos);
     await __.pause(page);
   },
@@ -111,7 +79,7 @@ __ = {
    * @param {string} text - Text to type
    */
   async typeIn(page, testId, text) {
-    const input = await __.field(page, testId);
+    const input = await findField(page, testId);
     await input.click();
     await input.pressSequentially(text, { delay: TYPING_DELAY_IN_MS });
     await __.pause(page);
@@ -123,7 +91,7 @@ __ = {
    * @param {string[]} labels - Category labels, from the root to the leaf
    */
   async pickCategory(page, labels) {
-    const picker = await __.field(page, 'catalog-select-dropdown-input');
+    const picker = await findField(page, 'catalog-select-dropdown-input');
     await picker.click();
     await __.pause(page);
 
@@ -139,8 +107,8 @@ __ = {
    * @param {string} label - Label to click
    */
   async pickCategoryLevel(page, label) {
-    const list = await __.field(page, 'category-list');
-    const item = await __.waitFor(
+    const list = await findField(page, 'category-list');
+    const item = await waitForLocator(
       list
         .locator('li')
         .filter({ has: page.getByText(label, { exact: true }) }),
@@ -156,14 +124,14 @@ __ = {
    * @param {string} condition - One of the five English condition labels
    */
   async pickCondition(page, condition) {
-    const container = await __.field(
+    const container = await findField(
       page,
       'category-condition-single-list-input',
     );
     await container.click();
     await __.pause(page);
 
-    const radio = await __.field(
+    const radio = await findField(
       page,
       `condition-radio-${CONDITION_RADIOS[condition]}`,
     );

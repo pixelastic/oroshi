@@ -1,4 +1,3 @@
-// vinted-post.js
 import os from 'node:os';
 import path from 'node:path';
 import { dayjs } from 'golgoth';

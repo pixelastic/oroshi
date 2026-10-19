@@ -1,5 +1,5 @@
 import { firostError } from 'firost';
-import { __ as form } from './fillListingForm.js';
+import { findField } from './findField.js';
 
 export let __;
 
@@ -14,7 +14,7 @@ const LISTING_PATH_PATTERN = /^\/items\/\d+/;
  * @returns {Promise<string>} URL of the published listing
  */
 export async function publishListing(page) {
-  const publishButton = await form.field(page, 'upload-form-save-button');
+  const publishButton = await findField(page, 'upload-form-save-button');
   await publishButton.click();
 
   try {
