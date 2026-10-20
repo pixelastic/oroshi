@@ -1,0 +1,25 @@
+# Print the price to ask for a listing, from the kept search rows on stdin
+# Price is max(2, round(0.8 × median)) of the asking prices of the rows.
+# Usage:
+# $ vinted-price-search "dune herbert" | vinted-listing-price --basis title
+# $ jq 'map(select(.price > 3))' rows.json | vinted-listing-price --basis isbn
+# Options:
+# --basis <isbn|title|few>   Where the rows came from. Required.
+# Output:
+# { "price": 8, "median": 10, "count": 4, "basis": "isbn", "isUncertain": false }
+# isUncertain is true with fewer than 3 rows, or with the "few" basis.
+# Fails with no price when the array is empty.
+setopt local_options err_return
+
+zparseopts -E -D -basis:=flagBasis
+
+local basis=${flagBasis[2]}
+
+# The basis is required
+if [[ "$basis" == "" ]]; then
+  echoerr "Usage: vinted-listing-price --basis <isbn|title|few> < rows.json"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/vinted-listing-price.js" --basis "$basis"
