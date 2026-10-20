@@ -1,0 +1,22 @@
+# Merge the groups returned for each batch into one list, from stdin
+# Groups that share a photo are the same item. The largest group gives the
+# identification, and the photos and rotations of all of them are kept.
+# Usage:
+# $ jq -s '.' group-batch-*.json | vinted-photo-merge
+# Input:
+# An array with one entry per batch, each entry an array of groups.
+# Output:
+# The merged array of groups, with rotations and unsure always set.
+# Group shape:
+# {
+#   "series": "Strange",            Series or title. Names the folder.
+#   "number": "175",                Optional. Number in the series.
+#   "photos": ["IMG_1.jpg", ...],   File names, relative to the folder.
+#   "rotations": { "IMG_2.jpg": "left" },
+#                                   Optional. "left" or "right", by photo.
+#   "unsure": false                 Optional. True moves the group to Misc/.
+# }
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/vinted-photo-merge.js"

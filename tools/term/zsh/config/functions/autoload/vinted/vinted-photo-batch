@@ -1,0 +1,22 @@
+# Split the photos of a folder into overlapping batches, as JSON
+# Photos are ordered by capture date (EXIF), then by file name. A batch holds
+# 16 photos and overlaps the next one by 3, so an item of up to 4 photos is
+# whole in at least one batch.
+# Usage:
+# $ vinted-photo-batch folder
+# Output:
+# [["IMG_1.jpg", "IMG_2.jpg", ...], ["IMG_14.jpg", ...]]
+# File names are relative to the folder. Only photos at its root are listed.
+# Each batch goes to a sub-agent that returns groups, see vinted-photo-merge.
+setopt local_options err_return
+
+local folder="$1"
+
+# The folder is required
+if [[ "$folder" == "" ]]; then
+  echoerr "Usage: vinted-photo-batch <folder>"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/vinted-photo-batch.js" "$folder"

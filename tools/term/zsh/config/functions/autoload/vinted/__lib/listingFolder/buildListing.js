@@ -1,11 +1,11 @@
 import path from 'node:path';
 import { _ } from 'golgoth';
 import { firostError, glob, writeJson } from 'firost';
+import { PHOTO_EXTENSIONS } from '../photoExtensions.js';
 import { listingFilePath } from './listingFilePath.js';
 
 export let __;
 
-const PHOTO_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.heic'];
 const ZERO_ISBN = '0'.repeat(13);
 const DEFAULT_CATEGORY = ['Books & Media', 'Books', 'Fiction'];
 

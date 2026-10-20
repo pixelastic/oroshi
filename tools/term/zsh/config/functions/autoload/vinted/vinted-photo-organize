@@ -1,0 +1,32 @@
+# Organize the photos of a folder into one folder per item, from groups on stdin
+# Each group becomes a folder named after its series and number, like
+# "Strange - 175". Photos are renamed 01, 02... in the order of the group.
+# Groups marked unsure go into Misc/. A group of one photo is valid.
+# Usage:
+# $ vinted-photo-merge < batches.json | vinted-photo-organize folder
+# Input:
+# The merged array of groups, from vinted-photo-merge:
+# {
+#   "series": "Strange",            Series or title. Names the folder.
+#   "number": "175",                Optional. Number in the series.
+#   "photos": ["IMG_1.jpg", ...],   File names, relative to the folder.
+#   "rotations": { "IMG_2.jpg": "left" },
+#                                   Optional. "left" or "right", by photo.
+#   "unsure": false                 Optional. True moves the group to Misc/.
+# }
+# Output:
+# [{ "folder": "/path/Strange - 175", "photos": ["01.jpg", "02.jpg"] }]
+# Rotations "left" and "right" turn a photo by 90 degrees, with magick.
+# Fails before moving anything on an unknown rotation.
+setopt local_options err_return
+
+local folder="$1"
+
+# The folder is required
+if [[ "$folder" == "" ]]; then
+  echoerr "Usage: vinted-photo-organize <folder> < groups.json"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/vinted-photo-organize.js" "$folder"
