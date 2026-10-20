@@ -1,10 +1,7 @@
 import { _, pMap } from 'golgoth';
-import { consoleInfo } from 'firost';
-import { formatPrice } from '../formatPrice.js';
 import { mergeListings } from '../mergeListings.js';
 import { openSession } from '../openSession.js';
 import { searchPrices } from '../searchPrices.js';
-import { summarizePrices } from '../summarizePrices.js';
 
 const PAUSE_RANGE_IN_MS = [1000, 3000];
 
@@ -25,14 +22,8 @@ try {
   );
 
   const listings = mergeListings(searches);
-  const summary = summarizePrices(listings.map((listing) => listing.price));
 
-  consoleInfo(`Median asking price: ${formatPrice(summary.median)}`);
-  consoleInfo(`Based on ${summary.count} listings`);
-  consoleInfo(
-    `Range: ${formatPrice(summary.min)} - ${formatPrice(summary.max)} (quartiles ${formatPrice(summary.firstQuartile)} - ${formatPrice(summary.thirdQuartile)})`,
-  );
-  consoleInfo('These are asking prices, not sale prices');
+  process.stdout.write(`${JSON.stringify(listings, null, 2)}\n`);
 } finally {
   await context.close();
 }

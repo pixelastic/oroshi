@@ -2,7 +2,7 @@ import { _ } from 'golgoth';
 
 /**
  * Merge the listings of several searches, keeping each listing once
- * @param {object[][]} searches - Listings of each search, as { id, price }
+ * @param {object[][]} searches - Listings of each search, as { id, url, title, condition, price }
  * @returns {object[]} Unique listings, in order of first appearance
  */
 export function mergeListings(searches) {

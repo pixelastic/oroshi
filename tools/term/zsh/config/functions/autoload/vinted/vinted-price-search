@@ -1,7 +1,12 @@
-# Print the median asking price of Vinted listings matching keywords
+# Print the Vinted listings matching keywords, as a JSON array on stdout
+# Each entry holds: id, url, title, condition, price (asking price, in euros)
+# Several searches are merged, with no duplicate id. No median is computed.
 # Usage:
 # $ vinted-price-search "dune frank herbert"                  # One search
 # $ vinted-price-search "dune herbert" "dune poche herbert"   # Several searches, merged
+# $ vinted-price-search "dune herbert" | jq 'map(.price)'     # Pipe to jq
+# Output:
+# [{ "id": "123", "url": "https://www.vinted.fr/items/123", "title": "Dune", "condition": "Good", "price": 5 }]
 # Prices are asking prices, not sale prices.
 setopt local_options err_return
 

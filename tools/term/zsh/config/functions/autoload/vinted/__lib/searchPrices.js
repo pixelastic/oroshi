@@ -7,13 +7,15 @@ const SEARCH_URL = 'https://www.vinted.fr/catalog';
 const ITEM_LINK_SELECTOR = 'a[href*="/items/"][data-testid$="--overlay-link"]';
 const PRICE_SELECTOR_SUFFIX = '--price-text';
 const ITEM_PATH_PATTERN = /\/items\/(\d+)/;
+const ITEM_URL = 'https://www.vinted.fr/items';
+const TITLE_PATTERN = /^(.*), Condition: ([^,]+),/;
 
 /**
  * Search Vinted by keywords and extract the asking price of each result
  * Prices are what sellers ask, not what buyers paid.
  * @param {object} page - Playwright page, logged in
  * @param {string} keywords - Search keywords
- * @returns {Promise<object[]>} Listings as { id, price }
+ * @returns {Promise<object[]>} Listings as { id, url, title, condition, price }
  */
 export async function searchPrices(page, keywords) {
   const searchUrl = `${SEARCH_URL}?${new URLSearchParams({ search_text: keywords })}`;
@@ -31,22 +33,45 @@ export async function searchPrices(page, keywords) {
         );
         return {
           href: link.getAttribute('href'),
+          title: link.getAttribute('title') ?? '',
           priceText: priceElement?.textContent ?? '',
         };
       }),
     PRICE_SELECTOR_SUFFIX,
   );
 
-  return _.chain(cards)
-    .map((card) => ({
-      id: __.parseId(card.href),
-      price: __.parsePrice(card.priceText),
-    }))
-    .filter(({ id, price }) => id && _.isFinite(price))
-    .value();
+  return _.chain(cards).map(__.parseCard).compact().value();
 }
 
 __ = {
+  /**
+   * Read a search result card
+   * @param {object} card - Raw card as { href, title, priceText }
+   * @returns {object|null} Listing as { id, url, title, condition, price }, or null when the card has no id or no price
+   */
+  parseCard(card) {
+    const { href, title, priceText } = card;
+    const id = __.parseId(href);
+    const price = __.parsePrice(priceText);
+    if (!id || !_.isFinite(price)) {
+      return null;
+    }
+    return {
+      id,
+      url: `${ITEM_URL}/${id}`,
+      ...__.parseTitle(title),
+      price,
+    };
+  },
+  /**
+   * Split a card title into the item title and its condition
+   * @param {string} text - Card title like "Dune, Condition: Good, 5.00 €, 5.70 €"
+   * @returns {object} Title and condition, as { title, condition }
+   */
+  parseTitle(text) {
+    const [, title = text, condition = ''] = TITLE_PATTERN.exec(text) ?? [];
+    return { title, condition };
+  },
   /**
    * Extract the listing id from a listing link
    * @param {string} href - Link like /items/123-some-title
