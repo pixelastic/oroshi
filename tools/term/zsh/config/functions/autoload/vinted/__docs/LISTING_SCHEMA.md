@@ -32,14 +32,17 @@ A listing lives in its own folder, with its photos and a `listing.json`.
 are not form fields: the form fill ignores them, and `parseListing` accepts
 them.
 
-| Field      | Type           | Values                      |
-| ---------- | -------------- | --------------------------- |
-| `status`   | string         | `draft`, `online` or `sold` |
-| `url`      | string or null | URL of the published item   |
-| `postedAt` | string or null | Publication date, ISO 8601  |
-| `soldAt`   | string or null | Sale date, ISO 8601         |
+| Field              | Type           | Values                           |
+| ------------------ | -------------- | -------------------------------- |
+| `status`           | string         | `draft`, `online` or `sold`      |
+| `url`              | string or null | URL of the published item        |
+| `postedAt`         | string or null | Publication date, ISO 8601       |
+| `soldAt`           | string or null | Sale date, ISO 8601              |
+| `isPriceUncertain` | boolean        | `true` when the price is a guess |
 
 - A new listing is a `draft`, with `url`, `postedAt` and `soldAt` set to `null`.
+- `isPriceUncertain` defaults to `false`. `vinted-listing-build --uncertain`
+  sets it from the price step, and `vinted-listing-recap` lists those listings.
 - `vinted-listing-build` fills `language` with `French` and `condition` with
   `Good`.
 

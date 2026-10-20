@@ -10,6 +10,7 @@
 # --isbn <text>        ISBN. Falls back to 0000000000000 when blank.
 # --price <number>     Asking price in euros. Required.
 # --category <text>    Labels from root to leaf, separated by " > ".
+# --uncertain          Flag the price as a guess, for the recap.
 # Output:
 # The path of the written listing.json
 setopt local_options err_return
@@ -20,7 +21,8 @@ zparseopts -E -D \
   -publisher:=flagPublisher \
   -isbn:=flagIsbn \
   -price:=flagPrice \
-  -category:=flagCategory
+  -category:=flagCategory \
+  -uncertain=flagUncertain
 
 local folder="$1"
 local series=${flagSeries[2]}
@@ -29,7 +31,7 @@ local price=${flagPrice[2]}
 # The folder, series and price are required
 if [[ "$folder" == "" || "$series" == "" || "$price" == "" ]]; then
   echoerr "Usage: vinted-listing-build <folder> --series <text> --price <number>" \
-    "[--number <text>] [--publisher <text>] [--isbn <text>] [--category <text>]"
+    "[--number <text>] [--publisher <text>] [--isbn <text>] [--category <text>] [--uncertain]"
   return 1
 fi
 
@@ -40,4 +42,5 @@ node "${libDir}/bin/vinted-listing-build.js" "$folder" \
   "${flagPublisher[@]}" \
   "${flagIsbn[@]}" \
   "${flagPrice[@]}" \
-  "${flagCategory[@]}"
+  "${flagCategory[@]}" \
+  "${flagUncertain[@]}"

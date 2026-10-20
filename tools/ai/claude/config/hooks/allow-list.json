@@ -591,6 +591,7 @@
   "vinted-listing-build",
   "vinted-listing-create",
   "vinted-listing-price",
+  "vinted-listing-recap",
   "vinted-listing-update",
   "vinted-photo-batch",
   "vinted-photo-merge",

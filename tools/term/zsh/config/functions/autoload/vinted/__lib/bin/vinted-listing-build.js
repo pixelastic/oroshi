@@ -13,6 +13,7 @@ const { positionals, values } = parseArgs({
     isbn: { type: 'string' },
     price: { type: 'string' },
     category: { type: 'string' },
+    uncertain: { type: 'boolean' },
   },
 });
 
@@ -21,6 +22,7 @@ try {
     ...values,
     price: Number(values.price),
     category: values.category?.split(CATEGORY_SEPARATOR),
+    isPriceUncertain: values.uncertain,
   });
   console.log(filepath);
 } catch (error) {

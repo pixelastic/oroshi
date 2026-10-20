@@ -29,6 +29,7 @@ describe('readTracking', () => {
       url: null,
       postedAt: null,
       soldAt: null,
+      isPriceUncertain: false,
     });
   });
 });

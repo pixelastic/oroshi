@@ -20,10 +20,12 @@ const DEFAULT_CATEGORY = ['Books & Media', 'Books', 'Fiction'];
  * @param {string} [identification.isbn] - ISBN, or the zero ISBN if blank
  * @param {number} identification.price - Asking price in euros
  * @param {string[]} [identification.category] - Category labels, root to leaf
+ * @param {boolean} [identification.isPriceUncertain] - True if the price is a guess
  * @returns {Promise<string>} Path of the written listing.json
  */
 export async function buildListing(folder, identification) {
-  const { series, number, publisher, isbn, price, category } = identification;
+  const { series, number, publisher, isbn, price, category, isPriceUncertain } =
+    identification;
   const title = __.title(series, number);
 
   const listing = {
@@ -39,6 +41,7 @@ export async function buildListing(folder, identification) {
     url: null,
     postedAt: null,
     soldAt: null,
+    isPriceUncertain: isPriceUncertain ?? false,
   };
 
   const filepath = listingFilePath(folder);

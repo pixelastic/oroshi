@@ -49,6 +49,7 @@ describe('buildListing', () => {
         url: null,
         postedAt: null,
         soldAt: null,
+        isPriceUncertain: false,
       });
     });
 
@@ -119,6 +120,14 @@ describe('buildListing', () => {
       const actual = await buildAndRead({ number: undefined });
 
       expect(actual).toHaveProperty('title', 'Le Seigneur des Anneaux');
+    });
+  });
+
+  describe('price uncertainty', () => {
+    it('stores the uncertainty of the price', async () => {
+      const actual = await buildAndRead({ isPriceUncertain: true });
+
+      expect(actual).toHaveProperty('isPriceUncertain', true);
     });
   });
 

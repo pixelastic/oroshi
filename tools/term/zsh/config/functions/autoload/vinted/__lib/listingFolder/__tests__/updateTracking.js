@@ -37,6 +37,7 @@ describe('updateTracking', () => {
       url: 'https://www.vinted.fr/items/123',
       postedAt: '2026-10-20T10:00:00.000Z',
       soldAt: null,
+      isPriceUncertain: false,
     });
   });
 

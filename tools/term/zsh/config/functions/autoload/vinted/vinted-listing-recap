@@ -1,0 +1,20 @@
+# Print what is about to be published, from the draft listings under a root
+# Only listings with a draft status count. The Misc folder is ignored.
+# Usage:
+# $ vinted-listing-recap ~/books
+# Output:
+# The uncertain prices first, one per line with title and price, then the
+# number of listings and the total asked price.
+# Prints a message when the root holds no draft listing. Writes no file.
+setopt local_options err_return
+
+local root="$1"
+
+# The root is required
+if [[ "$root" == "" ]]; then
+  echoerr "Usage: vinted-listing-recap <root>"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/vinted-listing-recap.js" "$root"
