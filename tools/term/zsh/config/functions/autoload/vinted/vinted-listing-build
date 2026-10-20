@@ -1,0 +1,43 @@
+# Write the listing.json of a folder of photos, from identification data
+# The listing starts as a draft, with empty tracking fields.
+# Usage:
+# $ vinted-listing-build folder --series "Dune" --number 2 --publisher "Pocket" --isbn 9782266320481 --price 4
+# $ vinted-listing-build folder --series "Dune" --price 4 --category "Books & Media > Books > Non-fiction"
+# Options:
+# --series <text>      Series or title of the book. Required.
+# --number <text>      Number in the series.
+# --publisher <text>   Publisher.
+# --isbn <text>        ISBN. Falls back to 0000000000000 when blank.
+# --price <number>     Asking price in euros. Required.
+# --category <text>    Labels from root to leaf, separated by " > ".
+# Output:
+# The path of the written listing.json
+setopt local_options err_return
+
+zparseopts -E -D \
+  -series:=flagSeries \
+  -number:=flagNumber \
+  -publisher:=flagPublisher \
+  -isbn:=flagIsbn \
+  -price:=flagPrice \
+  -category:=flagCategory
+
+local folder="$1"
+local series=${flagSeries[2]}
+local price=${flagPrice[2]}
+
+# The folder, series and price are required
+if [[ "$folder" == "" || "$series" == "" || "$price" == "" ]]; then
+  echoerr "Usage: vinted-listing-build <folder> --series <text> --price <number>" \
+    "[--number <text>] [--publisher <text>] [--isbn <text>] [--category <text>]"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/vinted-listing-build.js" "$folder" \
+  "${flagSeries[@]}" \
+  "${flagNumber[@]}" \
+  "${flagPublisher[@]}" \
+  "${flagIsbn[@]}" \
+  "${flagPrice[@]}" \
+  "${flagCategory[@]}"
