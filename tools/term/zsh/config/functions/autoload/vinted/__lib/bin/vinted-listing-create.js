@@ -7,6 +7,7 @@ import { fillListingForm } from '../fillListingForm.js';
 import { openSession } from '../openSession.js';
 import { parseListing } from '../parseListing.js';
 import { publishListing } from '../publishListing.js';
+import { snapshotOnFailure } from '../snapshotOnFailure.js';
 
 const FORM_URL = 'https://www.vinted.fr/items/new';
 const SCREENSHOT_DIRECTORY = path.join(
@@ -27,7 +28,9 @@ try {
   const page = context.pages()[0] ?? (await context.newPage());
   await page.goto(FORM_URL);
   await ensureLoggedIn(page);
-  const timings = await fillListingForm(page, listing);
+  const timings = await snapshotOnFailure(page, () =>
+    fillListingForm(page, listing),
+  );
   timings.forEach(({ step, durationInMs }) => {
     consoleInfo(`${step}: ${durationInMs}ms`);
   });
@@ -40,7 +43,9 @@ try {
   consoleSuccess(`Screenshot saved to ${screenshotPath}`);
 
   if (!dryRun) {
-    published = await publishListing(page, listing);
+    published = await snapshotOnFailure(page, () =>
+      publishListing(page, listing),
+    );
     consoleSuccess(`Listing published: ${published.url}`);
   }
 } finally {

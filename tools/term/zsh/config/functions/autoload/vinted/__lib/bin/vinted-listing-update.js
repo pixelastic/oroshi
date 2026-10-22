@@ -8,6 +8,7 @@ import { openSession } from '../openSession.js';
 import { parseListingUpdate } from '../parseListingUpdate.js';
 import { publishListing } from '../publishListing.js';
 import { resolveEditUrl } from '../resolveEditUrl.js';
+import { snapshotOnFailure } from '../snapshotOnFailure.js';
 
 const SCREENSHOT_DIRECTORY = path.join(
   os.homedir(),
@@ -28,7 +29,9 @@ try {
   const page = context.pages()[0] ?? (await context.newPage());
   await page.goto(editUrl);
   await ensureLoggedIn(page);
-  const timings = await fillListingForm(page, update);
+  const timings = await snapshotOnFailure(page, () =>
+    fillListingForm(page, update),
+  );
   timings.forEach(({ step, durationInMs }) => {
     consoleInfo(`${step}: ${durationInMs}ms`);
   });
@@ -41,7 +44,9 @@ try {
   consoleSuccess(`Screenshot saved to ${screenshotPath}`);
 
   if (!dryRun) {
-    published = await publishListing(page, update);
+    published = await snapshotOnFailure(page, () =>
+      publishListing(page, update),
+    );
     consoleSuccess(`Listing updated: ${published.url}`);
   }
 } finally {

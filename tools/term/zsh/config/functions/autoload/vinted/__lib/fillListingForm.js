@@ -17,6 +17,11 @@ const CONDITION_RADIOS = {
   Good: 3,
   Satisfactory: 4,
 };
+const PARCEL_SIZE_CELLS = {
+  Small: 1,
+  Medium: 2,
+  Large: 3,
+};
 
 /**
  * Fill the Vinted listing form, without publishing it
@@ -34,7 +39,8 @@ export async function fillListingForm(page, listing) {
 
   // A partial listing, like an update, only fills the fields it has
   const { photos, title, description, category, isbn, language } = listing;
-  const { condition, price } = listing;
+  const { condition, price, parcelSize, colours, brand } = listing;
+  const { platform, rating } = listing;
   if (photos) {
     await run('photos', () => __.setPhotos(page, photos));
   }
@@ -49,19 +55,37 @@ export async function fillListingForm(page, listing) {
   if (category) {
     await run('category', () => __.pickCategory(page, category));
   }
-  if (isbn) {
+  // Only the Books categories have an ISBN and a language. An update without
+  // category keeps them, as it edits a listing that already has them.
+  const hasBookFields = !category || _.includes(category, 'Books');
+  if (isbn && hasBookFields) {
     await run('isbn', () => __.pasteIn(page, 'isbn--input', isbn));
   }
-  if (language) {
+  if (language && hasBookFields) {
     await run('language', () => __.pickLanguage(page, language));
   }
   if (condition) {
     await run('condition', () => __.pickCondition(page, condition));
   }
+  if (platform) {
+    await run('platform', () => __.pickPlatform(page, platform));
+  }
+  if (rating) {
+    await run('rating', () => __.pickRating(page, rating));
+  }
+  if (brand) {
+    await run('brand', () => __.pickBrand(page, brand));
+  }
+  if (colours) {
+    await run('colours', () => __.pickColours(page, colours));
+  }
   if (price !== undefined) {
     await run('price', () =>
       __.typeIn(page, 'price-input--input', __.formatPrice(price)),
     );
+  }
+  if (parcelSize) {
+    await run('parcelSize', () => __.pickParcelSize(page, parcelSize));
   }
   return timings;
 }
@@ -124,6 +148,8 @@ __ = {
   async typeIn(page, testId, text) {
     const input = await findField(page, testId);
     await input.click();
+    // Replace what the field already holds, as an update does
+    await page.keyboard.press('Control+A');
     await input.pressSequentially(text, { delay: TYPING_DELAY_IN_MS });
     await __.pause(page);
   },
@@ -140,6 +166,8 @@ __ = {
     const input = await findField(page, testId);
     await __.writeClipboard(text);
     await input.click();
+    // Replace what the field already holds, as an update does
+    await page.keyboard.press('Control+A');
     await page.keyboard.press('Control+V');
     await __.pause(page);
 
@@ -158,14 +186,64 @@ __ = {
    * @param {string[]} labels - Category labels, from the root to the leaf
    */
   async pickCategory(page, labels) {
+    const leaf = _.last(labels);
+
+    // Vinted suggests a category from the title and description, and may have
+    // set it already
+    if ((await __.readCategory(page)) === leaf) {
+      return;
+    }
+
+    await __.openCategoryPicker(page);
+
+    // Each level opens only after the previous click, so one at a time. Vinted
+    // can set the category by itself in the middle of the walk, which closes
+    // the picker.
+    await pMap(
+      labels,
+      async (label) => {
+        if ((await __.readCategory(page)) === leaf) {
+          return;
+        }
+        await __.pickCategoryLevel(page, label);
+      },
+      { concurrency: 1 },
+    );
+    await __.closeCategoryPicker(page);
+  },
+
+  /**
+   * Close the category picker when it is still open
+   * Vinted can set the category itself while the picker is open, and leaves it
+   * covering the fields below.
+   * @param {object} page - Playwright page
+   */
+  async closeCategoryPicker(page) {
+    const content = page.getByTestId('catalog-select-dropdown-content').first();
+    if (await content.isVisible()) {
+      await page.keyboard.press('Escape');
+      await __.pause(page);
+    }
+  },
+
+  /**
+   * Open the category picker
+   * @param {object} page - Playwright page
+   */
+  async openCategoryPicker(page) {
     const picker = await findField(page, 'catalog-select-dropdown-input');
     await picker.click();
     await __.pause(page);
+  },
 
-    // Each level opens only after the previous click, so one at a time
-    await pMap(labels, (label) => __.pickCategoryLevel(page, label), {
-      concurrency: 1,
-    });
+  /**
+   * Read the category currently shown in the category field
+   * @param {object} page - Playwright page
+   * @returns {Promise<string>} Label of the category, empty when none is set
+   */
+  async readCategory(page) {
+    const picker = await findField(page, 'catalog-select-dropdown-input');
+    return await picker.inputValue();
   },
 
   /**
@@ -228,6 +306,121 @@ __ = {
       `condition-radio-${CONDITION_RADIOS[condition]}`,
     );
     await radio.click();
+    await __.pause(page);
+  },
+
+  /**
+   * Select the video game platform, unless Vinted already suggested it
+   * @param {object} page - Playwright page
+   * @param {string} platform - Platform label (e.g. "Sega Dreamcast")
+   */
+  async pickPlatform(page, platform) {
+    const picker = await findField(
+      page,
+      'category-video_game_platform-single-list_search-input',
+    );
+    if ((await picker.inputValue()) === platform) {
+      return;
+    }
+    await picker.click();
+    await __.pause(page);
+
+    const list = await findField(
+      page,
+      'category-video_game_platform-single-list_search-content',
+    );
+    const option = await waitForLocator(
+      list.getByText(platform, { exact: true }),
+      `Platform "${platform}" not found in the platform picker`,
+    );
+    await option.click();
+    await __.pause(page);
+  },
+
+  /**
+   * Select the content rating of a video game
+   * @param {object} page - Playwright page
+   * @param {string} rating - Rating label (e.g. "PEGI 12", "Unspecified")
+   */
+  async pickRating(page, rating) {
+    const picker = await findField(
+      page,
+      'category-video_game_ratings-single-list-input',
+    );
+    await picker.click();
+    await __.pause(page);
+
+    const list = await findField(
+      page,
+      'category-video_game_ratings-single-list-content',
+    );
+    const option = await waitForLocator(
+      list.getByText(rating, { exact: true }),
+      `Rating "${rating}" not found in the rating picker`,
+    );
+    await option.click();
+    await __.pause(page);
+  },
+
+  /**
+   * Select the brand, for the categories that ask for it
+   * @param {object} page - Playwright page
+   * @param {string} brand - Brand label (e.g. "Inconnu" when it has none)
+   */
+  async pickBrand(page, brand) {
+    const picker = await findField(page, 'brand-select-dropdown-input');
+    await picker.click();
+    await __.pause(page);
+
+    const option = await waitForLocator(
+      page.getByText(brand, { exact: true }),
+      `Brand "${brand}" not found in the brand picker`,
+    );
+    await option.click();
+    await __.pause(page);
+  },
+
+  /**
+   * Select the colours, for the categories that ask for them
+   * @param {object} page - Playwright page
+   * @param {string[]} colours - Colour labels in English (e.g. "Multi"), at most two
+   */
+  async pickColours(page, colours) {
+    const picker = await findField(page, 'color-select-dropdown-input');
+    await picker.click();
+    await __.pause(page);
+
+    // One at a time, the list may re-render after each click
+    await pMap(
+      colours,
+      async (colour) => {
+        const option = await waitForLocator(
+          page
+            .locator('[data-testid^="color-"]')
+            .filter({ hasText: new RegExp(`^${colour}$`) }),
+          `Colour "${colour}" not found in the colour picker`,
+        );
+        await option.click();
+        await __.pause(page);
+      },
+      { concurrency: 1 },
+    );
+    await page.keyboard.press('Escape');
+    await __.pause(page);
+  },
+
+  /**
+   * Select the parcel size
+   * The size cells only show once the category is set, so this runs after it.
+   * @param {object} page - Playwright page
+   * @param {string} parcelSize - One of Small, Medium or Large
+   */
+  async pickParcelSize(page, parcelSize) {
+    const cell = await findField(
+      page,
+      `${PARCEL_SIZE_CELLS[parcelSize]}-package-size--cell`,
+    );
+    await cell.click();
     await __.pause(page);
   },
 

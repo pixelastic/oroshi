@@ -11,6 +11,7 @@ const CONDITIONS = [
   'Good',
   'Satisfactory',
 ];
+const PARCEL_SIZES = ['Small', 'Medium', 'Large'];
 const MINIMUM_PRICE = 1;
 const ZERO_ISBN = '0'.repeat(13);
 
@@ -79,6 +80,36 @@ __ = {
         name: 'condition',
         expected: `one of ${CONDITIONS.join(', ')}`,
         isValid: (value) => CONDITIONS.includes(value),
+      },
+      {
+        name: 'brand',
+        expected: 'a text',
+        isValid: __.isText,
+        isOptional: true,
+      },
+      {
+        name: 'platform',
+        expected: 'a text',
+        isValid: __.isText,
+        isOptional: true,
+      },
+      {
+        name: 'rating',
+        expected: 'a text',
+        isValid: __.isText,
+        isOptional: true,
+      },
+      {
+        name: 'colours',
+        expected: 'a list of labels',
+        isValid: __.isTextList,
+        isOptional: true,
+      },
+      {
+        name: 'parcelSize',
+        expected: `one of ${PARCEL_SIZES.join(', ')}`,
+        isValid: (value) => PARCEL_SIZES.includes(value),
+        isOptional: true,
       },
       {
         name: 'price',

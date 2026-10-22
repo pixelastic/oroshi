@@ -80,6 +80,132 @@ describe('parseListing', () => {
     });
   });
 
+  describe('parcelSize', () => {
+    it('accepts a listing without parcel size', async () => {
+      const listingPath = await writeListing(validListing);
+
+      const actual = await parseListing(listingPath);
+
+      expect(actual).not.toHaveProperty('parcelSize');
+    });
+
+    it.each([{ input: 'Small' }, { input: 'Medium' }, { input: 'Large' }])(
+      'keeps the parcel size $input',
+      async ({ input }) => {
+        const listingPath = await writeListing({
+          ...validListing,
+          parcelSize: input,
+        });
+
+        const actual = await parseListing(listingPath);
+
+        expect(actual).toHaveProperty('parcelSize', input);
+      },
+    );
+
+    it('names the parcel size when it is not a known size', async () => {
+      const listingPath = await writeListing({
+        ...validListing,
+        parcelSize: 'Huge',
+      });
+
+      const actual = await parseError(listingPath);
+
+      expect(actual).toHaveProperty('code', 'VINTED_LISTING_INVALID');
+      expect(actual).toHaveProperty(
+        'message',
+        `${listingPath}: field "parcelSize" must be one of Small, Medium, Large`,
+      );
+    });
+  });
+
+  describe('colours', () => {
+    it('accepts a listing without colours', async () => {
+      const listingPath = await writeListing(validListing);
+
+      const actual = await parseListing(listingPath);
+
+      expect(actual).not.toHaveProperty('colours');
+    });
+
+    it('keeps the colours', async () => {
+      const listingPath = await writeListing({
+        ...validListing,
+        colours: ['Multi', 'Gold'],
+      });
+
+      const actual = await parseListing(listingPath);
+
+      expect(actual).toHaveProperty('colours', ['Multi', 'Gold']);
+    });
+
+    it('names the colours when they are not a list of labels', async () => {
+      const listingPath = await writeListing({
+        ...validListing,
+        colours: 'Multi',
+      });
+
+      const actual = await parseError(listingPath);
+
+      expect(actual).toHaveProperty('code', 'VINTED_LISTING_INVALID');
+      expect(actual).toHaveProperty(
+        'message',
+        `${listingPath}: field "colours" must be a list of labels`,
+      );
+    });
+  });
+
+  describe('platform and rating', () => {
+    it('keeps the platform and the rating', async () => {
+      const listingPath = await writeListing({
+        ...validListing,
+        platform: 'Sega Dreamcast',
+        rating: 'Unspecified',
+      });
+
+      const actual = await parseListing(listingPath);
+
+      expect(actual).toHaveProperty('platform', 'Sega Dreamcast');
+      expect(actual).toHaveProperty('rating', 'Unspecified');
+    });
+
+    it('names the platform when it is not a text', async () => {
+      const listingPath = await writeListing({ ...validListing, platform: 3 });
+
+      const actual = await parseError(listingPath);
+
+      expect(actual).toHaveProperty(
+        'message',
+        `${listingPath}: field "platform" must be a text`,
+      );
+    });
+  });
+
+  describe('brand', () => {
+    it('keeps the brand', async () => {
+      const listingPath = await writeListing({
+        ...validListing,
+        brand: 'Inconnu',
+      });
+
+      const actual = await parseListing(listingPath);
+
+      expect(actual).toHaveProperty('brand', 'Inconnu');
+    });
+
+    it('names the brand when it is not a text', async () => {
+      const listingPath = await writeListing({ ...validListing, brand: 12 });
+
+      const actual = await parseError(listingPath);
+
+      expect(actual).toHaveProperty('code', 'VINTED_LISTING_INVALID');
+      expect(actual).toHaveProperty(
+        'message',
+        `${listingPath}: field "brand" must be a text`,
+      );
+    });
+  });
+
   describe('language', () => {
     it('accepts a listing without language', async () => {
       const listingPath = await writeListing(validListing);

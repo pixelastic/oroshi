@@ -159,6 +159,46 @@
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/armory"
   },
+  "auctioneer": {
+    "background": {
+      "ansi": 77,
+      "hex": "#155e75",
+      "name": "cyan-7"
+    },
+    "backgroundInactive": {
+      "ansi": 70,
+      "hex": "#0f1a1a",
+      "name": "cyan-dark"
+    },
+    "foreground": {
+      "ansi": 71,
+      "hex": "#a5f3fc",
+      "name": "cyan-1"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/auctioneer"
+  },
+  "auctioneer-data": {
+    "background": {
+      "ansi": 75,
+      "hex": "#0891b2",
+      "name": "cyan-5"
+    },
+    "backgroundInactive": {
+      "ansi": 70,
+      "hex": "#0f1a1a",
+      "name": "cyan-dark"
+    },
+    "foreground": {
+      "ansi": 71,
+      "hex": "#a5f3fc",
+      "name": "cyan-1"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/auctioneer-data"
+  },
   "bg": {
     "background": {
       "ansi": 105,

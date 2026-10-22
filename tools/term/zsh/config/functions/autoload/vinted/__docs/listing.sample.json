@@ -5,5 +5,6 @@
   "category": ["Books & Media", "Books", "Fiction"],
   "isbn": "978-2-266-28274-3",
   "condition": "Good",
+  "parcelSize": "Small",
   "price": 6.5
 }

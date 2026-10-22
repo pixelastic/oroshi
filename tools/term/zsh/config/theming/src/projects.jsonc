@@ -46,6 +46,18 @@
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/armory"
   },
+  "auctioneer": {
+    "background": "cyan-7",
+    "foreground": "cyan-1",
+    "icon": " ",
+    "path": "~/local/www/projects/auctioneer"
+  },
+  "auctioneer-data": {
+    "background": "cyan-5",
+    "foreground": "cyan-1",
+    "icon": " ",
+    "path": "~/local/www/projects/auctioneer-data"
+  },
   "bg": {
     "background": "orange",
     "foreground": "white",
