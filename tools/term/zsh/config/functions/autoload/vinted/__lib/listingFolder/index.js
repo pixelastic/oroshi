@@ -5,3 +5,5 @@ export { formatRecap } from './formatRecap.js';
 export { recapListings } from './recapListings.js';
 export { parsePostedUrl } from './parsePostedUrl.js';
 export { publishListings } from './publishListings.js';
+export { syncSales } from './syncSales.js';
+export { listStaleListings } from './listStaleListings.js';
