@@ -7,6 +7,8 @@
 #   EOF
 #   grep -n 'Force every tab' kitty-session-save
 #
+# The fallback after || is `true` or `echo` with one word or one quoted string
+#
 # Example: a python3 -c 1 between two commands
 #   sed -i 's/a/b/' file
 #   python3 -c 1 2>/dev/null
@@ -21,7 +23,8 @@ function hacksRemovePythonNoOp() {
   fi
 
   print -r -- "$command" | perl -0pe '
-    my $suffix = qr/(?:[ \t]+2>\/dev\/null)?(?:[ \t]+\|\|[ \t]+(?:echo[ \t]+nopython|true))?/;
+    my $word = qr/(?:[\w.-]+|"[^"\n]*"|\x27[^\x27\n]*\x27)/;
+    my $suffix = qr/(?:[ \t]+2>\/dev\/null)?(?:[ \t]+\|\|[ \t]+(?:echo[ \t]+$word|true))?/;
     my $inline = qr/-c[ \t]+(?:1|pass)(?![^\s;&|])$suffix(?=[ \t]*(?:&&|;|\n|\z))/;
     my $quote = qr/(?<quote>["\x27]?)/;
     my $heredoc = qr/-[ \t]+<{2}-?$quote(?<delimiter>\w+)\k<quote>$suffix\n\k<delimiter>(?![^\n])/;

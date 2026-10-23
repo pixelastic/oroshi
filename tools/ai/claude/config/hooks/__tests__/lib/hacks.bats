@@ -57,7 +57,49 @@ runRemove() {
   [[ "$output" = "cd /tmp" ]]
 }
 
+@test "removes an empty python3 heredoc followed by || echo nopy, after a cd prefix with ;" {
+  runRemove $'cd /home/tim/worktree; python3 - <<\'E\' 2>/dev/null || echo nopy\nE\nsed -n 1p file'
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = $'cd /home/tim/worktree\nsed -n 1p file' ]]
+}
+
+@test "removes an empty python3 heredoc followed by || echo with a quoted message" {
+  runRemove $'python3 - <<\'EOF\' 2>/dev/null || echo "no python"\nEOF\nls'
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "ls" ]]
+}
+
+@test "removes an empty python3 heredoc followed by || echo nopy, without the redirect" {
+  runRemove $'python3 - <<\'EOF\' || echo nopy\nEOF\nls'
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "ls" ]]
+}
+
+@test "removes python3 -c 1 followed by || echo nopy" {
+  runRemove 'python3 -c 1 || echo nopy && ls'
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "ls" ]]
+}
+
 # hacksRemovePythonNoOp: preservation
+
+@test "keeps the command that follows a python3 call with an || echo fallback" {
+  runRemove $'python3 -c 1 || echo nopy; rm file'
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "rm file" ]]
+}
+
+@test "keeps a python3 call whose fallback is not echo or true" {
+  runRemove $'python3 - <<\'EOF\' || rm file\nEOF\nls'
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = $'python3 - <<\'EOF\' || rm file\nEOF\nls' ]]
+}
+
+@test "keeps a python3 call whose echo fallback has several unquoted words" {
+  runRemove 'python3 -c 1 || echo no python here'
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "python3 -c 1 || echo no python here" ]]
+}
 
 @test "keeps a python3 heredoc that has a body" {
   runRemove $'python3 - <<\'EOF\' 2>/dev/null || echo nopython\nprint(1)\nEOF\necho done'
