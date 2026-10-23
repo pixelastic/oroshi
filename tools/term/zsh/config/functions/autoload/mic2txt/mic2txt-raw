@@ -18,6 +18,7 @@ local tmpFolder=${MOCK_MIC2TXT_TMP_FOLDER:-/dev/shm/oroshi/mic2txt}
 local pidFile=${tmpFolder}/PID
 local startTimeFile=${tmpFolder}/START_TIME
 local recordFile=${tmpFolder}/record.wav
+local stderrFile=${tmpFolder}/stderr.txt
 mkdir -p $tmpFolder
 local postprocess="$(mic2txt-postprocess-mode)"
 colors-load-definitions
@@ -101,7 +102,8 @@ function stopRecording() {
   local sentSound="mic2txt-before.mp3"
   [[ "$postprocess" != "none" ]] && sentSound="mic2txt-${postprocess}-sent.mp3"
   audio-play-oroshi "$sentSound"
-  local transcription="$(${wav2TxtBinary} $recordFile)"
+  # Keep the last stderr next to the recording, to debug empty transcriptions
+  local transcription="$(${wav2TxtBinary} $recordFile 2>$stderrFile)"
 
   # Apply autocorrect rules (case-insensitive, whole-word substitution)
   transcription="$(mic2txt-autocorrect <<<"$transcription")"

@@ -18,6 +18,8 @@ function transcribeFile() {
   local fileToTranscribe=$1
   curl \
     --silent \
+    --show-error \
+    --fail-with-body \
     --request POST \
     https://api.groq.com/openai/v1/audio/transcriptions \
     --header "Authorization: Bearer $GROQ_WAV2TXT_API_KEY" \

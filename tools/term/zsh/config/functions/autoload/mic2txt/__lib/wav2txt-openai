@@ -17,6 +17,8 @@ function transcribeFile() {
   local fileToTranscribe=$1
   curl \
     --silent \
+    --show-error \
+    --fail-with-body \
     -X POST \
     https://eu.api.openai.com/v1/audio/transcriptions \
     -H "Authorization: Bearer $OPENAI_WHISPER_API_KEY" \

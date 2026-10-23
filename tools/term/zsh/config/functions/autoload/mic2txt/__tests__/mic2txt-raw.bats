@@ -271,12 +271,14 @@ setup() {
 
 # Run a full stop cycle (recording started 5s ago) with a fake transcription
 stop_with_transcription() {
+  # Optional $1: extra shell line run by the fake wav2txt (e.g. to write stderr)
   echo "12345" > "$TMP_FOLDER/PID"
   local libFolder="$BATS_TMP_DIR/oroshi/tools/term/zsh/config/functions/autoload/mic2txt/__lib"
   mkdir -p "$libFolder"
   # colors-load-definitions reads the theming build from OROSHI_ROOT
   ln --symbolic --force "$OROSHI_ROOT/tools/term/zsh/config/theming" "$BATS_TMP_DIR/oroshi/tools/term/zsh/config/theming"
   echo "#!/bin/sh" > "$libFolder/fake-wav2txt"
+  echo "$1" >> "$libFolder/fake-wav2txt"
   echo "echo 'un chat roux'" >> "$libFolder/fake-wav2txt"
   chmod +x "$libFolder/fake-wav2txt"
   bats_mock_env OROSHI_ROOT "$BATS_TMP_DIR/oroshi"
@@ -452,4 +454,20 @@ mock_failing_postprocess() {
   [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/events")" == *paste ]]
   [[ "$(cat "$TMP_FOLDER/transcription.txt")" == "a red cat" ]]
+}
+
+# --- Saving the wav2txt stderr ---
+
+@test "saves the wav2txt stderr in stderr.txt" {
+  stop_with_transcription "echo 'curl: (28) SSL connection timeout' >&2"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$TMP_FOLDER/stderr.txt")" == "curl: (28) SSL connection timeout" ]]
+}
+
+@test "overwrites the previous stderr.txt on a new transcription" {
+  echo "old error" > "$TMP_FOLDER/stderr.txt"
+
+  stop_with_transcription
+  [[ "$status" -eq 0 ]]
+  [[ ! -s "$TMP_FOLDER/stderr.txt" ]]
 }
