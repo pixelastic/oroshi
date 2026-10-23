@@ -1,0 +1,30 @@
+# Get the shipping labels of the recent Vinted orders, from the inbox
+# Usage:
+# $ vinted-label-fetch ~/labels                 # Orders of the last 5 days
+# $ vinted-label-fetch ~/labels --since 12h     # Orders of the last 12 hours
+# $ vinted-label-fetch ~/labels --since 2026-10-20T08:00:00Z
+# Opens the logged-in Vinted session (run vinted-login first) and walks the
+# inbox conversation by conversation, with a pause between two, like a person.
+# - Print shipping label: saves <first item id>.pdf in the folder, unless it is
+#   already there.
+# - Get shipping label: clicks it. The label arrives later in a new message, so
+#   run the command again then.
+# - Anything else is skipped.
+# --since takes a duration (30m, 12h, 5d) or a date, and defaults to 5d. The
+# folder also gets an index.json, which vinted-label-sheet reads.
+setopt local_options err_return
+
+zparseopts -E -D -since:=flagSince
+
+local labelsDirectory="$1"
+local since=${flagSince[2]:-5d}
+
+# The folder is required
+if [[ "$labelsDirectory" == "" ]]; then
+  echoerr "Usage: vinted-label-fetch <labels-folder> [--since <duration|date>]"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+mkdir --parents "${labelsDirectory:A}"
+node "${libDir}/bin/vinted-label-fetch.js" "${labelsDirectory:A}" "$since"

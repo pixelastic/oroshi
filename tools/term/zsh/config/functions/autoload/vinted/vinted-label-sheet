@@ -1,0 +1,30 @@
+# Build one printable sheet per parcel: the shipping label and what goes in it
+# Usage:
+# $ vinted-label-sheet ~/labels ~/vinted
+# $ vinted-label-sheet ~/labels ~/vinted --output ~/to-print
+# The labels folder is the one filled by vinted-label-fetch. The second
+# argument is the folder holding the listing JSON files (annonces folders),
+# which link an item id to its title and photo.
+# Each sheet holds the label at its real size, then a checklist of the items,
+# with their photo. A long list continues on a second page. The sheets go in a
+# Sheets folder next to the labels, unless --output is given.
+# Lists the labels with no listing, and the PDFs the index does not know.
+setopt local_options err_return
+
+zparseopts -E -D -output:=flagOutput
+
+local labelsDirectory="$1"
+local listingsRoot="$2"
+local outputDirectory=${flagOutput[2]:-${labelsDirectory}/Sheets}
+
+# Both folders are required
+if [[ "$labelsDirectory" == "" || "$listingsRoot" == "" ]]; then
+  echoerr "Usage: vinted-label-sheet <labels-folder> <listings-root> [--output <folder>]"
+  return 1
+fi
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/vinted-label-sheet.js" \
+  "${labelsDirectory:A}" \
+  "${listingsRoot:A}" \
+  "${outputDirectory:A}"

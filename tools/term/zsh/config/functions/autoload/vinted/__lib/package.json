@@ -8,6 +8,7 @@
   "dependencies": {
     "firost": "5.11.0",
     "golgoth": "3.1.0",
+    "pdf-lib": "1.17.1",
     "playwright": "1.64.1"
   }
 }
