@@ -4,6 +4,7 @@
   // Semantic UI colors.
   "ai":           "amber-6",
   "boolean":      "amber-4",
+  "code":         "indigo-4",
   "comment":      "gray",
   "constant":     "orange",
   "date":         "sky-6",

@@ -456,7 +456,7 @@
       "color": "string"
     },
     "@markup.raw.markdown_inline": {
-      "color": "string"
+      "color": "code"
     },
     "@markup.strong.markdown_inline": {
       "bold": true,

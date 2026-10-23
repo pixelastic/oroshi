@@ -7,8 +7,10 @@ setopt local_options err_return
 
 local worktree="${1:-.}"
 
+# Nothing to commit when the session changed no code, skip the commit
 # A failed commit stops the chain (err_return)
-git-commit-create-all-auto
+local dirtyCount="$(git-directory-dirty-count "${worktree:a}")"
+[[ "$dirtyCount" != "0" ]] && git-commit-create-all-auto
 
 local planDirectory="$(plan-directory "${worktree:a}")"
 local planProgress="$(plan-progress "$planDirectory")"

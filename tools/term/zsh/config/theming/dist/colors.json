@@ -179,6 +179,10 @@
     "ansi": 201,
     "hex": "#ffffff"
   },
+  "code": {
+    "ansi": 114,
+    "hex": "#a5b4fc"
+  },
   "comment": {
     "ansi": 205,
     "hex": "#6b7280"

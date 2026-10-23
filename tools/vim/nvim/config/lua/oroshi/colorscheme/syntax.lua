@@ -172,12 +172,12 @@ hl("@markup.link.markdown_inline", "punctuation") -- []()
 hl("RenderMarkdownLink", "link") -- 	Image & hyperlink icons
 hl("markdownUrl", "link") -- 	Image & hyperlink icons
 -- inline code
-hl("@markup.raw.markdown_inline", "string") -- `code`
+hl("@markup.raw.markdown_inline", "code") -- `code`
 hl("RenderMarkdownCode", "string", { bg = "gray-8" }) -- 	Code block background
 -- block code
 hl("@markup.raw.block.markdown", "string") -- ```multiline code```
 hl("@label.markdown", "blue-4")
-hl("RenderMarkdownCodeInline", "string") -- 	Inline code background
+hl("RenderMarkdownCodeInline", "code") -- 	Inline code background
 hl("RenderMarkdownCodeBorder", "none", { bg = "gray-8" }) -- 	Code border background
 hl("RenderMarkdownCodeFallback", "XXX") -- 	Fallback for code language
 -- quotes
