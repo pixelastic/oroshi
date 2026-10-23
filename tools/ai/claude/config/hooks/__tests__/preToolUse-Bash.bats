@@ -31,6 +31,22 @@ setup() {
   expect_json '.hookSpecificOutput.updatedInput.timeout' '5000'
 }
 
+@test "integration: allows a command whose only rejected part was a no-op python3, and writes back the cleaned command" {
+  local input="$(jq --null-input --compact-output --arg command $'python3 - <<\'EOF\' 2>/dev/null || echo nopython\nEOF\necho hello' '{tool_name:"Bash",tool_input:{command:$command}}')"
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
+}
+
+@test "integration: still asks for permission when a real python3 call remains" {
+  local input="$(jq --null-input --compact-output --arg command $'python3 - <<\'EOF\' 2>/dev/null || echo nopython\nEOF\npython3 script.py' '{tool_name:"Bash",tool_input:{command:$command}}')"
+  bats_run_zsh "$SCRIPT" <<<"$input"
+  [[ "$status" -eq 0 ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'python3 script.py'
+}
+
 # --- Mocked tests ---
 
 @test "allow: auto-approves the command as is, sets CLAUDE_CWD before solkan and records no approval request" {

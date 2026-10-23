@@ -27,6 +27,7 @@ source "${hookDir}/lib/log.zsh"
 source "${hookDir}/lib/permission.zsh"
 source "${hookDir}/lib/solkan.zsh"
 source "${hookDir}/lib/approval-memory.zsh"
+source "${hookDir}/lib/hacks.zsh"
 
 # Parse input and set up the session
 hookInit
@@ -34,8 +35,8 @@ hookInit
 # Uncomment for debugging: save the input to ${OROSHI_FOLDER_CACHE}/claude/hooks
 # logInput bash
 
-# Parse the command with solkan
-local inputCommand="$(inputKeyRead '.tool_input.command')"
+# Remove the no-op python3 calls, then parse the command with solkan
+local inputCommand="$(hacksRemovePythonNoOp "$(inputKeyRead '.tool_input.command')")"
 solkanEvaluate "$inputCommand"
 
 # If running in a subagent, update the command
