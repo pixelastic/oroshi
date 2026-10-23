@@ -28,6 +28,14 @@ fi
 # Atomic save
 kitty-remote action save_as_session \
   --save-only "$tmpPath"
+
+# Force every tab to the splits layout.
+sed \
+  --in-place \
+  --expression 's/^layout .*/layout splits/' \
+  --expression '/^set_layout_state /{/"class": "Splits"/!d}' \
+  "$tmpPath"
+
 mv "$tmpPath" "$dumpPath"
 
 # Reset colors

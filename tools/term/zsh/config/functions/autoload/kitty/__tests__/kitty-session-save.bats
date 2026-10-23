@@ -57,6 +57,41 @@ setup() {
 	[[ "$(cat "$BATS_TMP_DIR/kitty/session.kitty-session")" == "PREVIOUS" ]]
 }
 
+@test "forces every tab to the splits layout" {
+	kitty-remote() {
+		[[ "$*" == *save_as_session* ]] && cat > "${@[-1]}" <<-'EOF'
+			new_tab one
+			layout stack
+			enabled_layouts splits,stack
+			set_layout_state {"class": "Stack"}
+			launch zsh
+			new_tab two
+			layout tall
+			enabled_layouts splits,tall
+			set_layout_state {"class": "Tall"}
+			launch zsh
+			new_tab three
+			layout splits
+			enabled_layouts splits,stack
+			set_layout_state {"class": "Splits"}
+			launch zsh
+		EOF
+		return 0
+	}
+	bats_mock kitty-remote
+
+	bats_run_zsh "kitty-session-save"
+
+	[[ "$status" -eq 0 ]]
+	local dump="$BATS_TMP_DIR/kitty/session.kitty-session"
+	[[ "$(grep --count '^layout splits$' "$dump")" -eq 3 ]]
+	[[ "$(grep --count '^layout \(stack\|tall\)$' "$dump")" -eq 0 ]]
+	# Only the state of the tab already in splits survives
+	[[ "$(grep --count '^set_layout_state' "$dump")" -eq 1 ]]
+	[[ "$(grep '^set_layout_state' "$dump")" == *Splits* ]]
+	[[ "$(grep --count '^launch zsh$' "$dump")" -eq 3 ]]
+}
+
 @test "default run does not flash" {
 	bats_run_zsh "kitty-session-save"
 
