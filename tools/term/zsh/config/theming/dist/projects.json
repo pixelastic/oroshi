@@ -754,6 +754,26 @@
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/grimoire.pixelastic.com"
   },
+  "haerdalis": {
+    "background": {
+      "ansi": 67,
+      "hex": "#553c9a",
+      "name": "purple-7"
+    },
+    "backgroundInactive": {
+      "ansi": 60,
+      "hex": "#201325",
+      "name": "purple-dark"
+    },
+    "foreground": {
+      "ansi": 61,
+      "hex": "#e9d8fd",
+      "name": "purple-1"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/haerdalis"
+  },
   "home": {
     "background": {
       "ansi": 35,

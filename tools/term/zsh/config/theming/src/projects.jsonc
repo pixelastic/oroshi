@@ -226,6 +226,12 @@
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/grimoire.pixelastic.com"
   },
+  "haerdalis": {
+    "background": "purple-7",
+    "foreground": "purple-1",
+    "icon": " ",
+    "path": "~/local/www/projects/haerdalis"
+  },
   "home": {
     "background": "green",
     "foreground": "white",

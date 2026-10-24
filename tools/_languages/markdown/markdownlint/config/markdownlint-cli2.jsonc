@@ -10,6 +10,8 @@
     "MD014": false,
     // MD024 no-duplicate-heading: two headings with the same text. We accept them.
     "MD024": false,
+    // MD026 no-trailing-punctuation: heading ending with . , ; : !. Headings are often sentences or labels ("Edit:", "Finally!").
+    "MD026": false,
     // MD028 no-blanks-blockquote: blank line between two quotes. It means two separate quotes.
     "MD028": false,
     // MD030 list-marker-space: spaces after the bullet. Prettier sets it.
@@ -29,6 +31,8 @@
     // MD046 code-block-style: fenced or indented. We want fenced everywhere, and Prettier keeps them.
     "MD046": false,
     // MD049 emphasis-style: * or _ for italics. Prettier writes _, and it is the source of truth.
-    "MD049": false
+    "MD049": false,
+    // MD059 descriptive-link-text: link text like "here". It is a style choice, and often the sentence already says what the link is.
+    "MD059": false
   }
 }
