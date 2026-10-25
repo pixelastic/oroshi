@@ -39,6 +39,12 @@ runRemove() {
   [[ "$output" = $'sed -i \'s/a/b/\' file\nsed -i \'s/c/d/\' file' ]]
 }
 
+@test "removes a bare python3 - with its redirect and ;, after a cd prefix" {
+  runRemove $'cd /tmp/work; S=/tmp/s; python3 - 2>/dev/null; sed -i \'s/a/b/\' file'
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = $'cd /tmp/work; S=/tmp/s; sed -i \'s/a/b/\' file' ]]
+}
+
 @test "removes python3 -c pass" {
   runRemove 'python3 -c pass'
   [[ "$status" -eq 0 ]]

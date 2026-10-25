@@ -7,6 +7,8 @@
 #   EOF
 #   grep -n 'Force every tab' kitty-session-save
 #
+# A bare `python3 -` (reads an empty stdin) is also removed
+#
 # The fallback after || is `true` or `echo` with one word or one quoted string
 #
 # Example: a python3 -c 1 between two commands
@@ -28,7 +30,8 @@ function hacksRemovePythonNoOp() {
     my $inline = qr/-c[ \t]+(?:1|pass)(?![^\s;&|])$suffix(?=[ \t]*(?:&&|;|\n|\z))/;
     my $quote = qr/(?<quote>["\x27]?)/;
     my $heredoc = qr/-[ \t]+<{2}-?$quote(?<delimiter>\w+)\k<quote>$suffix\n\k<delimiter>(?![^\n])/;
-    my $call = qr/python3[ \t]+(?:$inline|$heredoc)/;
+    my $stdin = qr/-(?![^\s;&|])$suffix(?=[ \t]*(?:&&|;|\n|\z))/;
+    my $call = qr/python3[ \t]+(?:$inline|$heredoc|$stdin)/;
     my $link = qr/(?:&&|;)/;
 
     # A call followed by a link: drop both
