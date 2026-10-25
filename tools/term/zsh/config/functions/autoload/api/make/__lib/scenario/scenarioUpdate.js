@@ -17,6 +17,9 @@ export let __;
  * The validation checks unique module IDs, a module and a version on every
  * module, and the required fields of metadata.expect. It cannot detect an
  * unsupported expression, such as a regex literal in replace
+ * A Blueprint is saved with the version that was read just before, as baseVersion.
+ * When someone else saved the Scenario since, Make answers 409 and the command
+ * fails, without overwriting their edit
  * @param {object} options - Id of the Scenario, and the fields to change
  * @param {number|string} options.scenarioId - Scenario ID
  * @param {string} [options.name] - New name of the Scenario
@@ -42,6 +45,12 @@ export async function scenarioUpdate(options) {
     : undefined;
   const schedulingContent = await __.getJsonFromOptions(options, 'scheduling');
 
+  // Read the current version so Make rejects the save (409) if the Scenario
+  // changes in between. A save without a Blueprint cannot lose an edit
+  const baseVersion = blueprintContent
+    ? (await __.callApi(`scenarios/${scenarioId}/blueprint`)).response.version
+    : undefined;
+
   // PATCH leaves the fields that are not given untouched
   const body = _.omitBy(
     {
@@ -51,6 +60,7 @@ export async function scenarioUpdate(options) {
       // JSON.stringify(undefined) is undefined, so a missing one is not sent
       blueprint: JSON.stringify(blueprintContent),
       scheduling: JSON.stringify(schedulingContent),
+      baseVersion,
     },
     _.isUndefined,
   );

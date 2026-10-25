@@ -5,11 +5,13 @@ describe('scenarioUpdate', () => {
   const scheduling = { type: 'indefinitely', interval: 900 };
 
   /**
-   * Get the body of the first call to the API
+   * Get the body of the PATCH call to the API
    * @returns {object} The body
    */
   function sentBody() {
-    const [, { body }] = __.callApi.mock.calls[0];
+    const [, { body }] = __.callApi.mock.calls.find(
+      ([, options]) => options?.method === 'PATCH',
+    );
     return body;
   }
 
@@ -24,7 +26,7 @@ describe('scenarioUpdate', () => {
   beforeEach(() => {
     vi.spyOn(__, 'callApi').mockImplementation((path) => {
       if (path === 'scenarios/925/blueprint') {
-        return { response: { blueprint: { flow: [{ id: 2 }] } } };
+        return { response: { blueprint: { flow: [{ id: 2 }] }, version: 7 } };
       }
       return { scenario: { id: 925 } };
     });
@@ -80,6 +82,7 @@ describe('scenarioUpdate', () => {
     expect(sentBody()).toEqual({
       blueprint: JSON.stringify({ ...blueprint, aligned: true }),
       scheduling: JSON.stringify(scheduling),
+      baseVersion: 7,
     });
   });
 
@@ -139,6 +142,52 @@ describe('scenarioUpdate', () => {
     expect(__.blueprintValidate).not.toHaveBeenCalled();
   });
 
+  it('reads the version before it saves, and sends it as baseVersion', async () => {
+    mockContents({ blueprint });
+
+    await scenarioUpdate({ scenarioId: 925 });
+
+    expect(__.callApi).toHaveBeenNthCalledWith(1, 'scenarios/925/blueprint');
+    expect(__.callApi).toHaveBeenNthCalledWith(2, 'scenarios/925', {
+      method: 'PATCH',
+      body: {
+        blueprint: JSON.stringify({ ...blueprint, aligned: true }),
+        baseVersion: 7,
+      },
+    });
+  });
+
+  it('reports a 409 and sends nothing more', async () => {
+    mockContents({ blueprint });
+    const conflict = new Error('409 SC409');
+    __.callApi.mockImplementation((path, options) => {
+      if (options?.method === 'PATCH') {
+        throw conflict;
+      }
+      return { response: { blueprint: { flow: [] }, version: 7 } };
+    });
+
+    let actual = null;
+    try {
+      await scenarioUpdate({ scenarioId: 925 });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toBe(conflict);
+    expect(__.callApi).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends no baseVersion and reads no version when no blueprint is given', async () => {
+    await scenarioUpdate({ scenarioId: 925, name: 'a' });
+
+    expect(sentBody()).toEqual({ name: 'a' });
+    expect(__.callApi).not.toHaveBeenCalledWith(
+      'scenarios/925/blueprint',
+      expect.anything(),
+    );
+  });
+
   it('gets the blueprint and the scheduling from the options', async () => {
     const options = { scenarioId: 925, blueprintFile: 'a', scheduling: 'b' };
 
@@ -155,7 +204,7 @@ describe('scenarioUpdate', () => {
 
     expect(__.formatScenario).toHaveBeenCalledWith({ id: 925 });
     expect(__.buildFlow).toHaveBeenCalledWith([{ id: 1 }]);
-    expect(__.callApi).toHaveBeenCalledTimes(1);
+    expect(__.callApi).toHaveBeenCalledTimes(2);
     expect(actual).toEqual({
       id: 'formatted',
       isinvalid: false,
