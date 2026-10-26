@@ -9,6 +9,16 @@ describe('draftCreate', () => {
       id: 'd1',
       message: { id: 'm1', threadId: 't1' },
     });
+    vi.spyOn(__, 'getAliases').mockReturnValue([
+      'me@example.com',
+      'work@example.com',
+    ]);
+  });
+
+  it('does not read the aliases without --messageId', async () => {
+    await draftCreate(options);
+
+    expect(__.getAliases).not.toHaveBeenCalled();
   });
 
   it('builds the raw mail from the options', async () => {
@@ -45,6 +55,11 @@ describe('draftCreate', () => {
           payload: {
             headers: [
               { name: 'From', value: 'Bob <bob@example.com>' },
+              {
+                name: 'To',
+                value: 'Carol <carol@example.com>, work@example.com',
+              },
+              { name: 'Cc', value: 'dave@example.com, me@example.com' },
               { name: 'Subject', value: 'Re: Hello' },
               { name: 'Message-ID', value: '<m2@example.com>' },
               { name: 'References', value: '<m1@example.com>' },
@@ -73,6 +88,21 @@ describe('draftCreate', () => {
         });
     });
 
+    it('reads the aliases of the account', async () => {
+      await draftCreate({ ...replyOptions, account: 'perso' });
+
+      expect(__.getAliases).toHaveBeenCalledWith('perso');
+    });
+
+    it('reads the To and Cc headers of the thread', async () => {
+      await draftCreate(replyOptions);
+
+      expect(__.callApi).toHaveBeenNthCalledWith(
+        1,
+        expect.stringMatching(/metadataHeaders=To&.*metadataHeaders=Cc/),
+      );
+    });
+
     it('reads the thread with the metadata format', async () => {
       await draftCreate(replyOptions);
 
@@ -86,7 +116,9 @@ describe('draftCreate', () => {
       await draftCreate(replyOptions);
 
       expect(__.buildRaw).toHaveBeenCalledWith({
+        from: 'work@example.com',
         to: 'Bob <bob@example.com>',
+        cc: 'Carol <carol@example.com>, dave@example.com',
         subject: 'Re: Hello',
         body: 'hi',
         inReplyTo: '<m2@example.com>',
@@ -111,7 +143,9 @@ describe('draftCreate', () => {
       });
 
       expect(__.buildRaw).toHaveBeenCalledWith({
+        from: 'work@example.com',
         to: 'c@example.com',
+        cc: 'Carol <carol@example.com>, dave@example.com',
         subject: 'Other',
         body: 'hi',
         inReplyTo: '<m2@example.com>',

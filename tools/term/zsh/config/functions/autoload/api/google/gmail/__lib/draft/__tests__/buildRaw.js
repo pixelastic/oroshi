@@ -50,4 +50,33 @@ describe('buildRaw', () => {
     expect(actual).toHaveProperty('subject', 'AI First × Algolia');
     expect(Buffer.from(raw, 'base64url').toString('utf8')).not.toContain('×');
   });
+
+  it('sets the sender and the copies', async () => {
+    const raw = await buildRaw({
+      from: 'me@example.com',
+      to: 'a@example.com',
+      cc: 'b@example.com, Carol <c@example.com>',
+      subject: 'Hello',
+      body: 'hi',
+    });
+
+    const actual = await parse(raw);
+
+    expect(actual).toHaveProperty('from.text', 'me@example.com');
+    expect(actual).toHaveProperty('cc.value.length', 2);
+    expect(actual).toHaveProperty('cc.value.1.address', 'c@example.com');
+  });
+
+  it('sets no Cc header when cc is empty', async () => {
+    const raw = await buildRaw({
+      to: 'a@example.com',
+      cc: '',
+      subject: 'Hello',
+      body: 'hi',
+    });
+
+    const actual = await parse(raw);
+
+    expect(actual.cc).toBeUndefined();
+  });
 });
