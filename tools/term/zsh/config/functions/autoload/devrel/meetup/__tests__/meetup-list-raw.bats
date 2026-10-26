@@ -250,3 +250,59 @@ stub_period_records() {
   [[ "$output" == *"--min-date"* ]]
   [[ "$output" == *"--max-date"* ]]
 }
+
+@test "fails on a month 13 and names the value" {
+  bats_run_zsh "meetup-list-raw --min-date 2024-13"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"2024-13"* ]]
+}
+
+@test "fails on a word such as nov" {
+  bats_run_zsh "meetup-list-raw --min-date nov"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"nov"* ]]
+}
+
+@test "fails on a day that does not exist" {
+  bats_run_zsh "meetup-list-raw --min-date 2026-02-30"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"2026-02-30"* ]]
+}
+
+@test "fails on the 29th of February of a common year" {
+  bats_run_zsh "meetup-list-raw --min-date 2025-02-29"
+  [[ "$status" -eq 1 ]]
+}
+
+@test "accepts the 29th of February of a leap year" {
+  bats_run_zsh "meetup-list-raw --min-date 2024-02-29"
+  [[ "$status" -eq 0 ]]
+}
+
+@test "fails on an invalid --max-date too" {
+  bats_run_zsh "meetup-list-raw --max-date 2024-13"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"2024-13"* ]]
+}
+
+@test "fails when --min-date is later than --max-date" {
+  bats_run_zsh "meetup-list-raw --min-date 2024-12 --max-date 2024-11"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *"2024-12"* ]]
+  [[ "$output" == *"2024-11"* ]]
+}
+
+@test "accepts a --min-date equal to --max-date" {
+  bats_run_zsh "meetup-list-raw --min-date 2024-11-15 --max-date 2024-11-15"
+  [[ "$status" -eq 0 ]]
+}
+
+@test "sends no request when a date is invalid" {
+  bats_run_zsh "meetup-list-raw --min-date 2024-13"
+  [[ ! -f "$BATS_TMP_DIR/raw-args" ]]
+}
+
+@test "sends no request when --min-date is later than --max-date" {
+  bats_run_zsh "meetup-list-raw --min-date 2024-12 --max-date 2024-11"
+  [[ ! -f "$BATS_TMP_DIR/raw-args" ]]
+}

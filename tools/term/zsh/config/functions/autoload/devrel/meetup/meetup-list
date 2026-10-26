@@ -5,6 +5,7 @@
 # --min-date starts the list at a date, inclusive (default: today)
 # --max-date stops the list at a date, inclusive (default: none)
 # A date is YYYY, YYYY-MM or YYYY-MM-DD: a partial date is its first day as a minimum, its last day as a maximum
+# An invalid date, or a minimum later than the maximum, exits with code 1
 # --limit keeps only the first meetups (default: 10)
 # Usage:
 # $ meetup-list
@@ -31,8 +32,12 @@ local rawArgs=(--limit "$limit")
 [[ "$minDate" != "" ]] && rawArgs+=(--min-date "$minDate")
 [[ "$maxDate" != "" ]] && rawArgs+=(--max-date "$maxDate")
 
+# An invalid argument fails the raw list: exit with its error
+# zsh-lint disable=noSplitLocal
+local rawMeetups
+rawMeetups="$(meetup-list-raw "${rawArgs[@]}")"
+
 # Nothing to display if there is no meetup
-local rawMeetups="$(meetup-list-raw "${rawArgs[@]}")"
 [[ "$rawMeetups" == "" ]] && return 0
 
 local output=""

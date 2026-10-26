@@ -68,6 +68,18 @@ setup() {
   [[ "$output" != *"rec"* ]]
 }
 
+@test "exits non-zero when the raw list fails" {
+  meetup-list-raw() {
+    echo "Invalid date: 2024-13" >&2
+    return 1
+  }
+  bats_mock meetup-list-raw
+
+  bats_run_zsh "meetup-list --min-date 2024-13"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"Invalid date: 2024-13"* ]]
+}
+
 @test "combines the status and the limit" {
   bats_run_zsh "meetup-list --status pending --limit 5"
   [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--limit 5 --status pending" ]]
