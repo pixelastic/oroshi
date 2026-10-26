@@ -1,7 +1,9 @@
 # Create a draft in Gmail, and print its ids and URL as JSON
 # --body is sent as text/plain. A reply also quotes the last Mail, as HTML and text
+# --body-file reads the body from a file. A .md file is also sent as HTML
 # Usage:
 # $ gmail-draft-create --to a@b.c --subject "Hello" --body "Hi there"
+# $ gmail-draft-create --to a@b.c --subject "Hello" --body-file ./body.md
 # $ gmail-draft-create --to a@b.c --subject "Hello" --body "Hi" --account perso
 # $ gmail-draft-create --messageId <id> --body "Thanks"  # Threaded reply
 # --to and --subject override the reply, and are required without --messageId

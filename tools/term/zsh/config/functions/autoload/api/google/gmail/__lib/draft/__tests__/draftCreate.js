@@ -27,6 +27,42 @@ describe('draftCreate', () => {
     expect(__.buildRaw).toHaveBeenCalledWith(options);
   });
 
+  describe('with --bodyFile', () => {
+    const fileOptions = { to: 'a@example.com', subject: 'Hello' };
+
+    beforeEach(() => {
+      vi.spyOn(__, 'read').mockReturnValue('- one');
+      vi.spyOn(__, 'renderBody').mockReturnValue({
+        text: '- one',
+        html: '<ul>HTML</ul>',
+      });
+    });
+
+    it('renders the content of the file', async () => {
+      await draftCreate({ ...fileOptions, bodyFile: '/tmp/body.md' });
+
+      expect(__.read).toHaveBeenCalledWith('/tmp/body.md');
+      expect(__.renderBody).toHaveBeenCalledWith({
+        body: undefined,
+        file: { path: '/tmp/body.md', content: '- one' },
+      });
+    });
+
+    it('builds the raw mail with the text and the HTML', async () => {
+      await draftCreate({ ...fileOptions, bodyFile: '/tmp/body.md' });
+
+      expect(__.buildRaw).toHaveBeenCalledWith(
+        expect.objectContaining({ body: '- one', html: '<ul>HTML</ul>' }),
+      );
+    });
+
+    it('does not read a file without --bodyFile', async () => {
+      await draftCreate(options);
+
+      expect(__.read).not.toHaveBeenCalled();
+    });
+  });
+
   it('posts the raw mail to drafts.create', async () => {
     await draftCreate(options);
 

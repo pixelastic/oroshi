@@ -13,7 +13,7 @@ await runBin(async () => {
       account = name;
       setAccount(name);
     },
-    minimist: { string: ['messageId', 'to', 'subject', 'body'] },
+    minimist: { string: ['messageId', 'to', 'subject', 'body', 'body-file'] },
   });
   const draft = await draftCreate({ ...named, account });
   console.log(JSON.stringify(draft, null, 2));

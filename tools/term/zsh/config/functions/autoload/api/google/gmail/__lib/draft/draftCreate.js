@@ -1,5 +1,5 @@
 import { _ } from 'golgoth';
-import { firostError } from 'firost';
+import { firostError, read } from 'firost';
 import { callApi } from '../callApi.js';
 import { extractBodies } from '../extractBodies.js';
 import { header } from '../header.js';
@@ -7,6 +7,7 @@ import { buildQuote } from './buildQuote.js';
 import { buildRaw } from './buildRaw.js';
 import { buildReply } from './buildReply.js';
 import { getAliases } from './getAliases.js';
+import { renderBody } from './renderBody.js';
 
 export let __;
 
@@ -17,11 +18,12 @@ export let __;
  * @param {string} [options.messageId] - Id of the Message to reply to. The reply goes to its last Mail, in its thread
  * @param {string} [options.to] - Recipient. Overrides the reply. Throws GMAIL_TO_MISSING if empty without messageId
  * @param {string} [options.subject] - Subject. Overrides the reply. Throws GMAIL_SUBJECT_MISSING if empty without messageId
- * @param {string} options.body - Body, sent as text/plain, and as HTML when it is a reply. Throws GMAIL_BODY_MISSING if empty
+ * @param {string} [options.body] - Body, sent as text/plain, and as HTML when it is a reply. Excludes bodyFile
+ * @param {string} [options.bodyFile] - Path of a file holding the body. A .md file is also sent as HTML. Excludes body. Throws GMAIL_BODY_CONFLICT if both are given, GMAIL_BODY_MISSING if none is
  * @returns {Promise<object>} { draftId, threadId, url }, the url opening the draft in Gmail
  */
 export async function draftCreate(options) {
-  const { messageId, body, account } = options;
+  const { messageId, bodyFile, account } = options;
 
   const reply = messageId ? await __.readReply(messageId, account) : {};
   const to = options.to || reply.to;
@@ -34,16 +36,20 @@ export async function draftCreate(options) {
   if (!subject) {
     throw firostError('GMAIL_SUBJECT_MISSING', 'Pass the --subject');
   }
-  if (!body) {
-    throw firostError('GMAIL_BODY_MISSING', 'Pass the --body');
-  }
+
+  const file = bodyFile && {
+    path: bodyFile,
+    content: await __.read(bodyFile),
+  };
+  const { text, html } = __.renderBody({ body: options.body, file });
 
   const raw = await __.buildRaw({
     from,
     to,
     cc,
     subject,
-    body,
+    body: text,
+    html,
     quote,
     inReplyTo,
     references,
@@ -97,4 +103,6 @@ __ = {
   callApi,
   extractBodies,
   getAliases,
+  read,
+  renderBody,
 };

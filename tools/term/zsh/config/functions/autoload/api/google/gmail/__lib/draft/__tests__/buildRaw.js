@@ -43,6 +43,44 @@ describe('buildRaw', () => {
     );
   });
 
+  it('sends the HTML of the body next to its text', async () => {
+    const raw = await buildRaw({
+      to: 'a@example.com',
+      subject: 'Hello',
+      body: '- one',
+      html: '<ul>\n<li>one</li>\n</ul>',
+    });
+
+    const actual = await parse(raw);
+
+    expect(actual.text.trim()).toEqual('- one');
+    expect(actual).toHaveProperty(
+      'html',
+      '<div dir="ltr"><ul>\n<li>one</li>\n</ul></div>',
+    );
+  });
+
+  it('puts the HTML of the body before the quote', async () => {
+    const raw = await buildRaw({
+      to: 'a@example.com',
+      subject: 'Re: Hello',
+      body: '- one',
+      html: '<ul>\n<li>one</li>\n</ul>',
+      quote: {
+        html: '<div class="gmail_quote">orig</div>',
+        text: 'Bob wrote:\n> orig',
+      },
+    });
+
+    const actual = await parse(raw);
+
+    expect(actual.text.trim()).toEqual('- one\n\nBob wrote:\n> orig');
+    expect(actual).toHaveProperty(
+      'html',
+      '<div dir="ltr"><ul>\n<li>one</li>\n</ul></div><br><div class="gmail_quote">orig</div>',
+    );
+  });
+
   it('sets the threading headers', async () => {
     const raw = await buildRaw({
       to: 'a@example.com',

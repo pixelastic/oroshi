@@ -1402,6 +1402,7 @@ __metadata:
     golgoth: "npm:3.1.0"
     html-to-text: "npm:10.0.1"
     mailparser: "npm:3.12.4"
+    marked: "npm:18.1.2"
     nodemailer: "npm:10.2.1"
   languageName: unknown
   linkType: soft
@@ -8426,6 +8427,15 @@ __metadata:
   bin:
     marked: bin/marked.js
   checksum: 10c0/d04f58c0dee158a8069dad88de549b0039f2af7e1f0fd078aa783f360655e39296662f6c722dc6dd94c1c9ce9ba7ca9355ee1d8d77dd7b9a2f8162ebac6d9bbd
+  languageName: node
+  linkType: hard
+
+"marked@npm:18.1.2":
+  version: 18.1.2
+  resolution: "marked@npm:18.1.2"
+  bin:
+    marked: bin/marked.js
+  checksum: 10c0/0e7312138d6cf866f59a28d2d97ab332ef1b6d1d09263306375a8e9c0e5a4ee892ff1e6ecb668a4959fab0c5f1008c3ddec16c861396fe7cce8f7810521484c9
   languageName: node
   linkType: hard
 
