@@ -50,6 +50,16 @@ headings, lists, links, tables and images.
 
 _Avoid_: text, content, export
 
+### Custom verbs
+
+**download**:
+
+Saves the **Markdown** of a **Document** in a folder of the current directory,
+named after its title, with the images of the **Document** next to it as
+`image-N.png`. It prints the path of the folder.
+
+_Avoid_: export, fetch, save
+
 ## Relationships
 
 - A **Document** contains one or more **Tabs**, which can be nested

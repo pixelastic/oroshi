@@ -1,0 +1,10 @@
+# Download a Google Doc as a folder with its Markdown and its images
+# The folder is named after the title and created in the current directory
+# Usage:
+# $ gdoc-document-download https://docs.google.com/document/d/docA/edit
+# $ gdoc-document-download docA
+# $ gdoc-document-download docA --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gdoc-document-download.js" "$@"

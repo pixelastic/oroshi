@@ -135,6 +135,7 @@
   "gdoc2md",
   "gdoc-comments-json",
   "gdoc-comment-list-raw",
+  "gdoc-document-download",
   "gdoc-document-read",
   "gdoc-read",
   "gext list",
