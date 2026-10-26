@@ -56,10 +56,10 @@ counts: "done", "finished", "go", "comments are in", etc.
 
 Run both commands, capturing their output:
 
-1. `gdoc2md <url>` — outputs a directory path. Read `{outputDir}/index.md` for
-   the article markdown.
-2. `gdoc-comments-json <url>` — outputs a JSON array of `{ anchor, comment }`
-   objects.
+1. `gdoc-document-download <url>` — outputs a directory path. Read
+   `{outputDir}/index.md` for the article markdown.
+2. `gdoc-comment-list-raw <url>` — outputs one line per comment, with the fields
+   `commentId▮anchor▮comment▮author▮isMe▮replies`. Replies are separated by `▯`.
 
 ---
 
@@ -95,8 +95,8 @@ structured feedback.
 **Exit criterion:** Shareable URL returned to the user.
 
 Run
-`md2gdoc --title "<Article Title> (review)" --no-open /tmp/oroshi/review-blog/feedback.md`.
-The command outputs the Google Docs URL.
+`gdoc-document-create --title "<Article Title> (review)" /tmp/oroshi/review-blog/feedback.md`.
+The command outputs the Document as JSON. Read its `url` field.
 
 Present the URL to the user:
 
@@ -110,7 +110,7 @@ Present the URL to the user:
 | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | "I can synthesize feedback without fetching the full article"    | You need the full article to auto-resolve comments and produce anchor quotes. Fetch it. |
 | "I'll skip auto-resolving, the user can filter"                  | Auto-resolving is the whole point of synthesizing vs. forwarding raw comments.          |
-| "I'll publish the feedback as a message instead of a Google Doc" | The deliverable is a shareable Google Doc. Always publish via `md2gdoc`.                |
+| "I'll publish the feedback as a message instead of a Google Doc" | The deliverable is a shareable Google Doc. Always publish via `gdoc-document-create`.   |
 | "Comments are in French, I'll keep them in French"               | Feedback language matches the article's language. Translate.                            |
 
 ## Checklist
@@ -118,12 +118,12 @@ Present the URL to the user:
 - [ ] Input resolved (file path or URL)
 - [ ] `review-blog-start` called and URL presented
 - [ ] Waited for user confirmation
-- [ ] `gdoc2md` called and article markdown read
-- [ ] `gdoc-comments-json` called and JSON parsed
+- [ ] `gdoc-document-download` called and article markdown read
+- [ ] `gdoc-comment-list-raw` called and comments parsed
 - [ ] Output format reference read
 - [ ] Article language detected
 - [ ] Comments cross-referenced against full article
 - [ ] Addressed comments auto-resolved
 - [ ] French comments translated to article language
 - [ ] Feedback written following output format (TL;DR, Strengths, Improvements)
-- [ ] Feedback published via `md2gdoc --title` and URL returned
+- [ ] Feedback published via `gdoc-document-create --title` and URL returned

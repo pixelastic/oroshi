@@ -22,7 +22,7 @@ setup() {
 }
 
 @test "ignores the flags it receives" {
-  bats_run_zsh "google-login-guarded --perso 2>&1"
+  bats_run_zsh "google-login-guarded --account perso 2>&1"
   [[ "$status" -eq 1 ]]
   [[ "$output" == *"google-login is interactive"* ]]
 }
@@ -33,7 +33,7 @@ setup() {
     google-login() { touch '$marker'; }
     xdg-open() { touch '$marker'; }
     open() { touch '$marker'; }
-    google-login-guarded --perso
+    google-login-guarded --account perso
   "
   [[ "$status" -eq 1 ]]
   [[ ! -e "$marker" ]]

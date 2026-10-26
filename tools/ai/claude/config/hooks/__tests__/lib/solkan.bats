@@ -146,8 +146,8 @@ rewriteOf 'grep -c x f'
 rewriteOf 'cat hooks/stop'
 rewriteOf 'rmdir emptydir'
 rewriteOf 'google-login'
-rewriteOf 'google-login --perso'
-rewriteOf 'google-login --perso | cat && google-login || echo failed'
+rewriteOf 'google-login --account perso'
+rewriteOf 'google-login --account perso | cat && google-login || echo failed'
 ZSH
   [[ "$status" -eq 0 ]]
   [[ "$output" == "allow: ls-token-saving -la dir
@@ -155,8 +155,8 @@ allow: grep -c x f
 allow: cat hooks/stop
 allow: rmdir-guarded emptydir
 allow: google-login-guarded
-allow: google-login-guarded --perso
-allow: google-login-guarded --perso | cat && google-login-guarded || echo failed" ]]
+allow: google-login-guarded --account perso
+allow: google-login-guarded --account perso | cat && google-login-guarded || echo failed" ]]
 }
 
 @test "solkanEvaluate gives only a single command the token-saving rewrite, unless it is skipped" {

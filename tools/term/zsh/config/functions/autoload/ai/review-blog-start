@@ -19,6 +19,6 @@ if [[ ! -f "$input" ]]; then
 fi
 
 # Convert to Google Doc and capture URL
-local url="$(md2gdoc --no-open "$input")"
+local url="$(gdoc-document-create "$input" | jq --raw-output '.url')"
 
 jo url="$url"
