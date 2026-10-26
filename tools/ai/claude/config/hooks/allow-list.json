@@ -133,6 +133,7 @@
   "gdbus call",
   "gdbus",
   "gdoc2md",
+  "gdoc-comment-list-raw",
   "gdoc-comments-json",
   "gdoc-comment-list-raw",
   "gdoc-document-download",

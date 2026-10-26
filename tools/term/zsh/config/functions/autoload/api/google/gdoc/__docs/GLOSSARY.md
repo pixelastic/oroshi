@@ -34,6 +34,10 @@ A remark that a reader leaves on a **Document**, with its replies. Its
 
 _Avoid_: note, annotation, thread
 
+`list-raw` prints the unresolved **Comments**, oldest first, as `▮` lines:
+`commentId▮anchor▮comment▮author▮isMe▮replies`. Each reply reads `author: text`,
+and the replies are separated by `▯`.
+
 ### Service terms
 
 **Tab**:

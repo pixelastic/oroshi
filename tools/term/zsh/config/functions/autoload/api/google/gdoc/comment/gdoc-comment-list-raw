@@ -1,0 +1,12 @@
+# List the unresolved comments of a Google Doc, oldest first, for machine consumption
+# Replies are separated by ▯, and written as "author: text"
+# Fields: commentId▮anchor▮comment▮author▮isMe▮replies
+# Usage:
+# $ gdoc-comment-list-raw https://docs.google.com/document/d/docA/edit
+# $ gdoc-comment-list-raw docA
+# $ gdoc-comment-list-raw docA --limit 10
+# $ gdoc-comment-list-raw docA --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gdoc-comment-list-raw.js" "$@"
