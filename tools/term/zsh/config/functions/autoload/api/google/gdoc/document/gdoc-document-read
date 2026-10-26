@@ -1,0 +1,11 @@
+# Read a Google Doc by its URL or ID, and print it as JSON with its Markdown
+# A ?tab= in the URL selects the tab. The first tab is read otherwise
+# Usage:
+# $ gdoc-document-read https://docs.google.com/document/d/docA/edit
+# $ gdoc-document-read https://docs.google.com/document/d/docA/edit?tab=t.tabA
+# $ gdoc-document-read docA
+# $ gdoc-document-read docA --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gdoc-document-read.js" "$@"
