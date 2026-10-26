@@ -2,6 +2,7 @@
 # If called from inside a Worktree being deleted, cds to Git Repo Main first
 # Blocks if branch has unmerged commits ahead of main (bypass with --force/-f)
 # Blocks if a ralph session is active in the branch worktree (not bypassed by --force)
+# Removes the sidequest document named after the branch, if any
 # Defaults to current branch when called with no argument
 # Usage:
 # $ git-worktree-delete fix/bug
@@ -45,6 +46,13 @@ for branch in "${branches[@]}"; do
   # Archive the worktree plan and commits, for potential later use
   git-worktree-archive "$worktreePath"
 
+  # Remove worktree and branch
   git worktree remove --force "$worktreePath"
   git-branch-remove "$branch"
+
+  # Remove the initial sidequest document, if any
+  local sidequestDocument="${OROSHI_FOLDER_STATE}/claude/sidequests/${branch}.md"
+  if [[ -f "$sidequestDocument" ]]; then
+    rm -f "$sidequestDocument"
+  fi
 done

@@ -134,6 +134,7 @@
   "gdbus",
   "gdoc2md",
   "gdoc-comments-json",
+  "gdoc-comment-list-raw",
   "gdoc-read",
   "gext list",
   "gext search",

@@ -145,3 +145,15 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ ! -d "${BATS_GIT_WORKTREES}my-repo--feature" ]]
 }
+
+@test "removes the sidequest document named after the branch" {
+  export OROSHI_FOLDER_STATE="$BATS_TMP_DIR/state"
+  bats_mock_env OROSHI_FOLDER_STATE "$OROSHI_FOLDER_STATE"
+  mkdir -p "$OROSHI_FOLDER_STATE/claude/sidequests"
+  touch "$OROSHI_FOLDER_STATE/claude/sidequests/feature.md"
+  touch "$OROSHI_FOLDER_STATE/claude/sidequests/other.md"
+  bats_run_zsh "cd '$BATS_GIT_DIR' && git-worktree-delete feature"
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$OROSHI_FOLDER_STATE/claude/sidequests/feature.md" ]]
+  [[ -f "$OROSHI_FOLDER_STATE/claude/sidequests/other.md" ]]
+}
