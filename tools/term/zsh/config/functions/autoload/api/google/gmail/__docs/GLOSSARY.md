@@ -1,8 +1,8 @@
 # Gmail
 
 The commands that let a shell or an agent read Gmail. It follows the
-[API glossary](../../../../../../../../../../docs/api/GLOSSARY.md), and defines
-only the words of this service.
+[API glossary](/docs/api/GLOSSARY.md), and defines only the words of this
+service.
 
 ## Language
 
