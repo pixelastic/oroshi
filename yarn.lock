@@ -1400,6 +1400,7 @@ __metadata:
     "@oroshi/google": "workspace:*"
     firost: "npm:5.11.0"
     golgoth: "npm:3.1.0"
+    html-to-text: "npm:10.0.1"
   languageName: unknown
   linkType: soft
 

@@ -28,7 +28,9 @@ _Avoid_: thread, conversation, email
 **Mail**:
 
 One exchange inside a **Message**, sent or received. A **Mail** is not an
-**Entity** of its own, and no command lists it.
+**Entity** of its own, and no command lists it. A **Message** is read as a
+whole: `read` prints all its **Mails**, and no command targets a single
+**Mail**.
 
 _Avoid_: message, email
 

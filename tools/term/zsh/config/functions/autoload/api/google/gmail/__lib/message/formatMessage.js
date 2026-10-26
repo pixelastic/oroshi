@@ -1,4 +1,5 @@
 import { _, dayjs } from 'golgoth';
+import { header } from '../header.js';
 import { senderName } from '../senderName.js';
 
 export let __;
@@ -42,26 +43,13 @@ __ = {
    */
   formatMail(mail) {
     return {
-      from: __.header(mail, 'From'),
-      subject: __.header(mail, 'Subject'),
-      date: __.header(mail, 'Date'),
+      from: header(mail, 'From'),
+      subject: header(mail, 'Subject'),
+      date: header(mail, 'Date'),
       snippet: mail.snippet || '',
       unread: _.includes(mail.labelIds, 'UNREAD'),
       inbox: _.includes(mail.labelIds, 'INBOX'),
     };
-  },
-
-  /**
-   * Read one header of a mail, case-insensitively
-   * @param {object} mail - Gmail message resource
-   * @param {string} name - Header name
-   * @returns {string} Header value, or an empty string
-   */
-  header(mail, name) {
-    return _.chain(mail.payload?.headers)
-      .find((item) => _.toLower(item.name) === _.toLower(name))
-      .get('value', '')
-      .value();
   },
 
   /**

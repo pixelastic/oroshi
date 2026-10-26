@@ -9,6 +9,7 @@
     "@oroshi/api-shared": "workspace:*",
     "@oroshi/google": "workspace:*",
     "firost": "5.11.0",
-    "golgoth": "3.1.0"
+    "golgoth": "3.1.0",
+    "html-to-text": "10.0.1"
   }
 }
