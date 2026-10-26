@@ -32,12 +32,30 @@ setup() {
 @test "passes the status to the raw list" {
   bats_run_zsh "meetup-list --status confirmed"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--limit 10 --status confirmed" ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--status confirmed" ]]
 }
 
-@test "limits the raw list to 10 Meetups by default" {
+@test "passes no limit to the raw list by default" {
   bats_run_zsh "meetup-list"
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--limit 10" ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "" ]]
+}
+
+@test "shows the warning of the raw list" {
+  meetup-list-raw() {
+    echo "More meetups exist, raise --limit" >&2
+    echo "recB▮2026-09-15▮confirmed▮Paris Meetup▮"
+  }
+  bats_mock meetup-list-raw
+
+  bats_run_zsh "meetup-list"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"More meetups exist, raise --limit"* ]]
+}
+
+@test "documents the limit rules" {
+  bats_run_zsh "cat \${^fpath}/meetup-list(N)"
+  [[ "$output" == *"default: 25"* ]]
+  [[ "$output" != *"default: 10"* ]]
 }
 
 @test "passes the limit given to --limit to the raw list" {
@@ -94,12 +112,12 @@ setup() {
 @test "passes --min-date and --max-date to the raw list" {
   bats_run_zsh "meetup-list --min-date 2024-11 --max-date 2024-11"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--limit 10 --min-date 2024-11 --max-date 2024-11" ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--min-date 2024-11 --max-date 2024-11" ]]
 }
 
 @test "passes only the dates given" {
   bats_run_zsh "meetup-list --max-date 2024"
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--limit 10 --max-date 2024" ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--max-date 2024" ]]
 }
 
 @test "documents --min-date and --max-date" {

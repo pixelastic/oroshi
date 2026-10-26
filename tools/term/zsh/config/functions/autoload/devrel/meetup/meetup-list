@@ -6,7 +6,9 @@
 # --max-date stops the list at a date, inclusive (default: none)
 # A date is YYYY, YYYY-MM or YYYY-MM-DD: a partial date is its first day as a minimum, its last day as a maximum
 # An invalid date, or a minimum later than the maximum, exits with code 1
-# --limit keeps only the first meetups (default: 10)
+# --limit keeps only the first meetups (default: 25)
+# A date flag removes the default limit: every match is listed. An explicit --limit always wins
+# When the default limit hides meetups, stderr shows "More meetups exist, raise --limit"
 # Usage:
 # $ meetup-list
 # $ meetup-list --status pending
@@ -23,11 +25,13 @@ zparseopts -E -D \
 local statusFilter=${flagStatus[2]}
 local minDate=${flagMinDate[2]}
 local maxDate=${flagMaxDate[2]}
-local limit=${flagLimit[2]:-10}
+local limit=${flagLimit[2]}
 
 colors-load-definitions
 
-local rawArgs=(--limit "$limit")
+# The raw list owns the default limit
+local rawArgs=()
+[[ "$limit" != "" ]] && rawArgs+=(--limit "$limit")
 [[ "$statusFilter" != "" ]] && rawArgs+=(--status "$statusFilter")
 [[ "$minDate" != "" ]] && rawArgs+=(--min-date "$minDate")
 [[ "$maxDate" != "" ]] && rawArgs+=(--max-date "$maxDate")

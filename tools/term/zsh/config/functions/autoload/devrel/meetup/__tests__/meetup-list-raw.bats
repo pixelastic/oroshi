@@ -306,3 +306,109 @@ stub_period_records() {
   bats_run_zsh "meetup-list-raw --min-date 2024-12 --max-date 2024-11"
   [[ ! -f "$BATS_TMP_DIR/raw-args" ]]
 }
+
+# Replace the canned records with 2027 Meetups, the first 3 cancelled, the others confirmed
+# Usage: stub_many_records 30
+stub_many_records() {
+  airtable-record-list-raw() {
+    local label
+    for meetupNumber in $(seq 1 "$STUB_COUNT"); do
+      label="✅ Confirmed"
+      [[ "$meetupNumber" -le 3 ]] && label="🛑 Cancelled"
+      printf 'rec%02d▮{"date":"2027-01-%02d","status":"%s","name":"M%02d"}\n' "$meetupNumber" "$meetupNumber" "$label" "$meetupNumber"
+    done
+  }
+  bats_mock airtable-record-list-raw
+  bats_mock_env "STUB_COUNT" "$1"
+}
+
+@test "keeps the first 25 Meetups without any flag" {
+  stub_many_records 30
+
+  bats_run_zsh "meetup-list-raw 2>/dev/null"
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 25 ]]
+  [[ "${lines[0]}" == "rec01▮"* ]]
+  [[ "${lines[24]}" == "rec25▮"* ]]
+}
+
+@test "applies the default limit after the status filter" {
+  stub_many_records 30
+
+  bats_run_zsh "meetup-list-raw --status confirmed 2>/dev/null"
+  [[ "${#lines[@]}" -eq 25 ]]
+  [[ "${lines[0]}" == "rec04▮"* ]]
+  [[ "${lines[24]}" == "rec28▮"* ]]
+}
+
+@test "lists every match with --min-date" {
+  stub_many_records 30
+
+  bats_run_zsh "meetup-list-raw --min-date 2027"
+  [[ "${#lines[@]}" -eq 30 ]]
+}
+
+@test "lists every match with --max-date" {
+  stub_many_records 30
+
+  bats_run_zsh "meetup-list-raw --max-date 2027"
+  [[ "${#lines[@]}" -eq 30 ]]
+}
+
+@test "keeps the first 3 Meetups with --limit 3" {
+  stub_many_records 30
+
+  bats_run_zsh "meetup-list-raw --limit 3"
+  [[ "${#lines[@]}" -eq 3 ]]
+  [[ "${lines[2]}" == "rec03▮"* ]]
+}
+
+@test "applies an explicit limit together with a date flag" {
+  stub_many_records 30
+
+  bats_run_zsh "meetup-list-raw --min-date 2027 --limit 4"
+  [[ "${#lines[@]}" -eq 4 ]]
+  [[ "${lines[3]}" == "rec04▮"* ]]
+}
+
+@test "warns on stderr when the default limit hides Meetups" {
+  stub_many_records 30
+
+  bats_run_zsh "meetup-list-raw >/dev/null"
+  [[ "$output" == *"More meetups exist, raise --limit"* ]]
+}
+
+@test "keeps stdout free of the warning" {
+  stub_many_records 30
+
+  bats_run_zsh "meetup-list-raw 2>/dev/null"
+  [[ "$output" != *"More meetups"* ]]
+}
+
+@test "does not warn when exactly 25 Meetups match" {
+  stub_many_records 25
+
+  bats_run_zsh "meetup-list-raw"
+  [[ "${#lines[@]}" -eq 25 ]]
+  [[ "$output" != *"More meetups"* ]]
+}
+
+@test "does not warn with an explicit limit" {
+  stub_many_records 30
+
+  bats_run_zsh "meetup-list-raw --limit 3"
+  [[ "$output" != *"More meetups"* ]]
+}
+
+@test "does not warn with a date flag" {
+  stub_many_records 30
+
+  bats_run_zsh "meetup-list-raw --min-date 2027"
+  [[ "$output" != *"More meetups"* ]]
+}
+
+@test "documents the limit rules" {
+  bats_run_zsh "cat \${^fpath}/meetup-list-raw(N)"
+  [[ "$output" == *"default: 25"* ]]
+  [[ "$output" == *"More meetups exist"* ]]
+}

@@ -7,7 +7,9 @@
 # --max-date stops the list at a date, inclusive (default: none)
 # A date is YYYY, YYYY-MM or YYYY-MM-DD: a partial date is its first day as a minimum, its last day as a maximum
 # An invalid date, or a minimum later than the maximum, exits with code 1 before any request
-# --limit keeps only the first meetups, once the other filters are applied (default: all)
+# --limit keeps only the first meetups, once the other filters are applied (default: 25)
+# A date flag removes the default limit: every match is listed. An explicit --limit always wins
+# When the default limit hides meetups, stderr gets "More meetups exist, raise --limit"
 # At most 1000 meetups are listed
 # Usage:
 # $ meetup-list-raw
@@ -26,6 +28,13 @@ local statusFilter=${flagStatus[2]}
 local minDate=${flagMinDate[2]}
 local maxDate=${flagMaxDate[2]}
 local limit=${flagLimit[2]}
+
+# Without --limit or a date flag, the list is capped and warns if more meetups match
+local isDefaultLimit=0
+if [[ "$limit" == "" && "$minDate" == "" && "$maxDate" == "" ]]; then
+  limit=25
+  isDefaultLimit=1
+fi
 
 # Expand a partial date to its first (min) or last (max) day
 # Usage: expandDate 2024-02 max
@@ -130,9 +139,6 @@ local lastDate=""
 
 local printedCount=0
 for rawRecord in ${(f)rawRecords}; do
-  # Stop once the limit is reached
-  [[ "$limit" != "" && $printedCount -ge $limit ]] && break
-
   local fields=("${(@ps/▮/)rawRecord}")
 
   # Skip the meetups before the period (ISO dates sort like text)
@@ -146,6 +152,12 @@ for rawRecord in ${(f)rawRecords}; do
 
   # Skip the meetups of another status
   [[ "$statusFilter" != "" && "$label" != "$statusFilter" ]] && continue
+
+  # Stop at the first match past the limit, and say so if the limit was the default
+  if [[ "$limit" != "" && $printedCount -ge $limit ]]; then
+    [[ $isDefaultLimit == 1 ]] && echoerr "More meetups exist, raise --limit"
+    break
+  fi
 
   fields[3]="$label"
   echo "${(j/▮/)fields}"
