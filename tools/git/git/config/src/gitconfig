@@ -30,6 +30,9 @@
   enabled = true
 [status]
   showUntrackedFiles = all
+[merge "jsonlist"]
+  name = Merge JSON arrays, keeping both sides
+  driver = bin-zsh git-merge-json %O %A %B
 [filter "lfs"]
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f

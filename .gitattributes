@@ -1,3 +1,6 @@
 # Yarn
 /.yarn/releases/** binary
 /.yarn/plugins/** binary
+
+# Merge both sides of a conflict
+/tools/ai/claude/config/hooks/allow-list.json merge=jsonlist

@@ -1,0 +1,58 @@
+# Three-way merge of JSON arrays of strings, keeping both sides
+# An entry is kept if either side added it, and dropped if either side removed it
+# The result is deduplicated and sorted like json-array-sort
+# Usage:
+# $ git-merge-json base.json ours.json theirs.json            # Write the result in ours.json
+# $ git-merge-json ours.json theirs.json                      # No base: union of both files
+# $ git-merge-json --stdout base.json ours.json theirs.json   # Print the result, leave the files untouched
+#
+# Used by git as the "jsonlist" merge driver (see .gitattributes)
+setopt local_options err_return
+
+zparseopts -E -D \
+  -stdout=flagStdout
+
+local isStdout=${#flagStdout}
+
+# Unsupported number of arguments
+if [[ $# -lt 2 || $# -gt 3 ]]; then
+  echoerr "Usage: git-merge-json [--stdout] [base.json] ours.json theirs.json"
+  return 1
+fi
+
+# Two files means no base, three files means a base
+local baseFile=""
+[[ $# == 3 ]] && baseFile="$1"
+local oursFile="${@[-2]}"
+local theirsFile="${@[-1]}"
+
+local baseJson="[]"
+[[ "$baseFile" != "" ]] && baseJson="$(cat -- "$baseFile")"
+
+# Add everything, then remove what either side deleted from the base
+local mergedJson="$(
+  jq \
+    --null-input \
+    --argjson base "$baseJson" \
+    --argjson ours "$(cat -- "$oursFile")" \
+    --argjson theirs "$(cat -- "$theirsFile")" \
+    '
+      if ([$base, $ours, $theirs] | all(type == "array") | not) then
+        error("git-merge-json only merges JSON arrays")
+      else
+        (($ours + $theirs) - ($base - $ours) - ($base - $theirs)) | unique
+      end
+    '
+)"
+
+# Not mergeable (invalid JSON, or not an array)
+[[ "$mergedJson" == "" ]] && return 1
+
+local sortedJson="$(print -r -- "$mergedJson" | json-array-sort)"
+
+if [[ $isStdout == 1 ]]; then
+  print -r -- "$sortedJson"
+  return 0
+fi
+
+print -r -- "$sortedJson" >"$oursFile"
