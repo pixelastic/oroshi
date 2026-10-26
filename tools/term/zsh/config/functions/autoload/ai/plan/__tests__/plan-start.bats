@@ -2,13 +2,11 @@ bats_load_library 'helper'
 
 # Mock immediate collaborators; plan-directory returns a path in $BATS_TMP_DIR
 _mock_defaults() {
-  export MOCK_COMMIT="abc1234"
   git-directory-is-worktree() { return 0; }
   git-directory-root() { echo "$BATS_TMP_DIR"; }
-  git-commit-current() { [[ "$1" == "$BATS_TMP_DIR" ]] && echo "abc1234"; }
   git-branch-current() { echo "feature/my-feature"; }
   plan-directory() { echo "$MOCK_OROSHI_PLANS_DIR/repo--feature_my-feature"; }
-  bats_mock git-directory-is-worktree git-directory-root git-commit-current git-branch-current plan-directory
+  bats_mock git-directory-is-worktree git-directory-root git-branch-current plan-directory
 }
 
 setup() {
@@ -65,14 +63,13 @@ setup() {
   [[ "$output" == *"branch name required"* ]]
 }
 
-@test "creates state.json with branchedAt and an empty issues array" {
+@test "creates state.json with an empty issues array" {
   _mock_defaults
   local planDir="$MOCK_OROSHI_PLANS_DIR/repo--feature_my-feature"
 
   bats_run_zsh "plan-start"
   [[ "$status" -eq 0 ]]
 
-  [[ "$(jq --raw-output '.branchedAt' "$planDir/state.json")" == "$MOCK_COMMIT" ]]
   [[ "$(jq --compact-output '.issues' "$planDir/state.json")" == "[]" ]]
 }
 
@@ -80,11 +77,10 @@ setup() {
   _mock_defaults
   local planDir="$MOCK_OROSHI_PLANS_DIR/repo--feature_my-feature"
   mkdir -p "$planDir"
-  echo '{"branchedAt":"abc","issues":[{"id":"01"}]}' > "$planDir/state.json"
+  echo '{"issues":[{"id":"01"}]}' > "$planDir/state.json"
 
   bats_run_zsh "plan-start"
   [[ "$status" -eq 0 ]]
 
-  [[ "$(jq --raw-output '.branchedAt' "$planDir/state.json")" == "abc" ]]
   [[ "$(jq '.issues | length' "$planDir/state.json")" -eq 1 ]]
 }

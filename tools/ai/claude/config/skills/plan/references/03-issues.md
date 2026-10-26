@@ -96,7 +96,6 @@ directory name.
 - [ ] Each issue contains "What to build" and "Acceptance criteria"
 - [ ] Each issue has considered its Behavioral Tests
 - [ ] Each issue has considered its Scaffolding Tests
-- [ ] `state.json` `.issues[]` filled — all issues with `done: false`,
-      `branchedAt` untouched
+- [ ] `state.json` `.issues[]` filled — all issues with `done: false`
 - [ ] `GUIDANCE.md` written — Guidance + Discoveries sections present
 - [ ] `COMMIT_HINT.md` written with `plan(<slug>)` type

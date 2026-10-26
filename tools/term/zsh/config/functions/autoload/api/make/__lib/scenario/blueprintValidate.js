@@ -4,12 +4,12 @@ import { listModules } from './listModules.js';
 export let __;
 
 /**
- * Check a blueprint locally, with no request. Make has no validate endpoint
+ * Check a blueprint locally, with no request. Make has no validate endpoint.
  * It checks that module IDs are unique across the whole flow, that every
  * module has a module and a version, and that every field required by
  * metadata.expect has its key in mapper or parameters. The value of a key is
- * not checked, and neither is the type of a connection
- * It cannot detect an unsupported expression, such as a regex literal in replace
+ * not checked, and neither is the type of a connection.
+ * It cannot detect an unsupported expression, such as a regex literal in replace.
  * @param {object} blueprint - The blueprint to check
  * @returns {string[]} The problems, empty when the blueprint is valid
  */

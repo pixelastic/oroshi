@@ -7,7 +7,7 @@ setup() {
 }
 
 @test "outputs status:ready with first eligible issue" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
   ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
@@ -17,7 +17,7 @@ setup() {
 }
 
 @test "picks lowest id when multiple eligible" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":true, "blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]},
     {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]}
@@ -28,7 +28,7 @@ setup() {
 }
 
 @test "skips issues with unresolved blockers" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":["01"]}
   ]}' >"$PLAN_DIR/state.json"
@@ -38,7 +38,7 @@ setup() {
 }
 
 @test "all paths in output are absolute" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
   ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
@@ -51,7 +51,7 @@ setup() {
 }
 
 @test "issue resolves relative path from plan dir" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
   ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
@@ -60,7 +60,7 @@ setup() {
 }
 
 @test "outputs status:finished when all issues complete" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":true,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":true,"blocked_by":[]}
   ]}' >"$PLAN_DIR/state.json"
@@ -70,7 +70,7 @@ setup() {
 }
 
 @test "outputs status:deadlocked when all issues are blocked" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":["02"]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":["01"]}
   ]}' >"$PLAN_DIR/state.json"
@@ -91,7 +91,7 @@ setup() {
 }
 
 @test "picks lowest id even when state.json is out of order" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]},
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]}
@@ -102,7 +102,7 @@ setup() {
 }
 
 @test "outputs currentIssueCount 1 when no issue is done" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]}
   ]}' >"$PLAN_DIR/state.json"
@@ -112,7 +112,7 @@ setup() {
 }
 
 @test "outputs currentIssueCount as done count plus one when some issues are done" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":true, "blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":true, "blocked_by":[]},
     {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]}
@@ -123,7 +123,7 @@ setup() {
 }
 
 @test "outputs totalIssueCount as the number of issues in state.json" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":true, "blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]},
     {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]}
@@ -134,7 +134,7 @@ setup() {
 }
 
 @test "outputs correct counts when state.json is out of order" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]},
     {"id":"01","issue":"issues/01-foo.md","done":true, "blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]}
@@ -146,7 +146,7 @@ setup() {
 }
 
 @test "finished output has no count fields" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":true,"blocked_by":[]}
   ]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
@@ -156,7 +156,7 @@ setup() {
 }
 
 @test "deadlocked output has no count fields" {
-  printf '{"branchedAt":"abc","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":["02"]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":["01"]}
   ]}' >"$PLAN_DIR/state.json"

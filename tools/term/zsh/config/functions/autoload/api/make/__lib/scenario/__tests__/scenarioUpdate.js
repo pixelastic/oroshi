@@ -41,6 +41,9 @@ describe('scenarioUpdate', () => {
     }));
     vi.spyOn(__, 'blueprintValidate').mockReturnValue([]);
     vi.spyOn(__, 'getJsonFromOptions').mockReturnValue(undefined);
+    vi.spyOn(__, 'scenarioMessages').mockReturnValue([]);
+    vi.spyOn(__, 'tmpDirectory').mockReturnValue('/tmp/abc');
+    vi.spyOn(__, 'writeJson').mockReturnValue(undefined);
   });
 
   it.each([
@@ -154,6 +157,79 @@ describe('scenarioUpdate', () => {
         blueprint: JSON.stringify({ ...blueprint, aligned: true }),
         baseVersion: 7,
       },
+    });
+  });
+
+  it('writes the previous blueprint to a backup file before it saves', async () => {
+    mockContents({ blueprint });
+
+    await scenarioUpdate({ scenarioId: 925 });
+
+    expect(__.writeJson).toHaveBeenCalledWith(
+      { flow: [{ id: 2 }] },
+      '/tmp/abc/925.json',
+    );
+    expect(__.writeJson.mock.invocationCallOrder[0]).toBeLessThan(
+      __.callApi.mock.invocationCallOrder[1],
+    );
+  });
+
+  it('writes no backup when it sends no blueprint', async () => {
+    await scenarioUpdate({ scenarioId: 925, name: 'a' });
+
+    expect(__.writeJson).not.toHaveBeenCalled();
+  });
+
+  describe('when Make marks the new blueprint as invalid', () => {
+    beforeEach(() => {
+      mockContents({ blueprint });
+      __.scenarioMessages.mockReturnValue(['Module 1 is broken']);
+      __.callApi.mockImplementation((path, options) => {
+        if (path === 'scenarios/925/blueprint') {
+          return { response: { blueprint: { flow: [{ id: 2 }] }, version: 7 } };
+        }
+        return {
+          scenario: { id: 925, isinvalid: options?.body?.baseVersion === 7 },
+        };
+      });
+    });
+
+    it('sends the previous blueprint back and throws with the messages', async () => {
+      let actual = null;
+      try {
+        await scenarioUpdate({ scenarioId: 925 });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(__.callApi).toHaveBeenLastCalledWith('scenarios/925', {
+        method: 'PATCH',
+        body: { blueprint: JSON.stringify({ flow: [{ id: 2 }] }) },
+      });
+      expect(actual).toHaveProperty('code', 'MAKE_BLUEPRINT_INVALID');
+      expect(actual.message).toContain('Module 1 is broken');
+    });
+
+    it('names the backup file when the restore fails', async () => {
+      const failure = new Error('500 down');
+      const callApi = __.callApi.getMockImplementation();
+      __.callApi.mockImplementation((path, options) => {
+        if (options?.method === 'PATCH' && !options.body.baseVersion) {
+          throw failure;
+        }
+        return callApi(path, options);
+      });
+
+      let actual = null;
+      try {
+        await scenarioUpdate({ scenarioId: 925 });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'MAKE_BLUEPRINT_RESTORE_FAILED');
+      expect(actual.message).toContain('/tmp/abc/925.json');
+      expect(actual.message).toContain('500 down');
     });
   });
 

@@ -109,6 +109,23 @@ request. It lists every problem at once, and fails with
 `MAKE_BLUEPRINT_INVALID`. It has no bypass. Make has no validate endpoint, and
 its `isinvalid` field is only known after the request.
 
+**Alignment**:
+
+The layout that `create` and `update` give to the modules of a **Blueprint**
+before the save: one baseline, left to right, with routes stacked around their
+router. It has no bypass.
+
+**Backup**:
+
+The file where `update` writes the previous **Blueprint** in a temporary
+directory before it saves a new one.
+
+**Rollback**:
+
+The step where `update` sends the **Backup** back when Make marks the new
+**Blueprint** as `isinvalid`. The command then fails with
+`MAKE_BLUEPRINT_INVALID`, or names the **Backup** when the rollback fails.
+
 _Avoid_: lint, verification, dry run
 
 **Scheduling**:

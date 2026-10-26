@@ -29,13 +29,8 @@ if [[ ! -d "$planDir/.git" ]]; then
     --message "init"
 fi
 
-# Init state.json at the worktree's current commit, never overwrite
-if [[ ! -f "$planDir/state.json" ]]; then
-  local branchedAt="$(git-commit-current "$root")"
-  jq --null-input \
-    --arg branchedAt "$branchedAt" \
-    '{branchedAt: $branchedAt, issues: []}' > "$planDir/state.json"
-fi
+# Init state.json, never overwrite
+[[ ! -f "$planDir/state.json" ]] && print '{"issues":[]}' > "$planDir/state.json"
 
 jo \
   worktreePath="$root" \

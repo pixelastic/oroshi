@@ -1,0 +1,29 @@
+# Append the commits of a worktree that are ahead of main to commits.json, in its plan directory
+# The list survives a rebase and a push, so git-worktree-archive can still name them
+# Usage:
+# $ git-worktree-commits-record           # current worktree
+# $ git-worktree-commits-record /path/to/worktree
+setopt local_options err_return
+
+local worktreePath="${1:-$PWD}"
+local branch="$(git-branch-current "$worktreePath")"
+local planDir="$(plan-directory "$worktreePath" 2>/dev/null)"
+
+# No plan directory to write to
+[[ "$planDir" == "" ]] && return 0
+
+# Nothing to record when no commit is ahead of main
+local aheadCommits="$(git -C "$worktreePath" rev-list --reverse "main..${branch}")"
+[[ "$aheadCommits" == "" ]] && return 0
+
+local commitsFile="$planDir/commits.json"
+mkdir -p "$planDir"
+[[ ! -f "$commitsFile" ]] && print '[]' > "$commitsFile"
+
+# Keep the order, oldest first, and skip the commits that are already recorded
+local recordedCommits="$(jq \
+  --arg aheadCommits "$aheadCommits" \
+'. + ($aheadCommits | split("\n"))
+    | reduce .[] as $commit ([]; if any(.[]; . == $commit) then . else . + [$commit] end)' \
+"$commitsFile")"
+print -- "$recordedCommits" > "$commitsFile"

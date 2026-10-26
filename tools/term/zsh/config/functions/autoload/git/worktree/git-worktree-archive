@@ -1,33 +1,32 @@
 # Save worktree artifacts (plan dir + commit log) to archives before deletion
-# Skips silently when branch has no commits ahead of main
+# Skips silently when no commit of the worktree was pushed (see git-worktree-commits-record)
 # Usage:
 # $ git-worktree-archive /path/to/worktree
 setopt local_options err_return
 
 local worktreePath="$1"
-local branch="$(git-branch-current "$worktreePath")"
 local planDir="$(plan-directory "$worktreePath" 2>/dev/null)"
 
-local startCommit="$(git-worktree-start "$worktreePath" 2>/dev/null)"
+# No plan directory, so no record of the pushed commits
+[[ "$planDir" == "" ]] && return 0
 
-# Nothing to archive if branch has no commits ahead of main
-[[ "$startCommit" == "" ]] && return 0
+# Nothing to archive if no commit of the worktree was pushed
+local commitsFile="$planDir/commits.json"
+[[ ! -f "$commitsFile" ]] && return 0
+local commits=(${(f)"$(jq --raw-output '.[]' "$commitsFile")"})
+[[ ${#commits} -eq 0 ]] && return 0
 
 local slug="${worktreePath:t}"
 local timestamp="$(date '+%Y-%m-%d_%H-%M')"
 local archiveDir="$OROSHI_WORKTREE_ARCHIVES_DIR/${timestamp}_${slug}"
 
-# Move plan dir or create empty archive entry
-if [[ "$planDir" != "" ]] && [[ -d "$planDir" ]]; then
-  mkdir -p "${archiveDir:h}"
-  mv "$planDir" "$archiveDir"
-else
-  mkdir -p "$archiveDir"
-fi
+# Move the plan dir, which holds the pushed commits, to the archive
+mkdir -p "${archiveDir:h}"
+mv "$planDir" "$archiveDir"
 
-# Generate commit log
+# Generate commit log, from the commits that were pushed (oldest first)
 local logFormat='%h %as%n%n%s%n%n%b%n---'
-git log \
-  --reverse \
+git -C "$worktreePath" log \
+  --no-walk=unsorted \
   --format="$logFormat" \
-  "${startCommit}..${branch}" > "$archiveDir/COMMITS.md"
+  "${commits[@]}" > "$archiveDir/COMMITS.md"

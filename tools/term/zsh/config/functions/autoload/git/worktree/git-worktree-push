@@ -25,6 +25,9 @@ for rawLine in ${(f)submoduleList}; do
   git-branch-push-pretty --repo "$PWD/$submoduleName"
 done
 
+# Record the commits that are about to leave the worktree, for the archive
+git-worktree-commits-record
+
 # Push the worktree to main
 echo
 echo "Merging into main..."

@@ -20,6 +20,7 @@ describe('scenarioCreate', () => {
   beforeEach(() => {
     vi.spyOn(__, 'getConfig').mockReturnValue({ teamId: '215' });
     vi.spyOn(__, 'callApi').mockReturnValue({ scenario: { id: 925 } });
+    vi.spyOn(__, 'scenarioMessages').mockReturnValue([]);
     vi.spyOn(__, 'formatScenario').mockReturnValue({
       id: 'formatted',
       isinvalid: false,
@@ -163,6 +164,23 @@ describe('scenarioCreate', () => {
       expect(actual).toHaveProperty(
         'message',
         'Make marked the new Scenario 925 as invalid',
+      );
+    });
+
+    it('adds the messages of Make to the error', async () => {
+      __.scenarioMessages.mockReturnValue(['Module 1 is broken']);
+
+      let error = null;
+      try {
+        await scenarioCreate({ blueprint: 'a' });
+      } catch (caught) {
+        error = caught;
+      }
+
+      expect(__.scenarioMessages).toHaveBeenCalledWith(925);
+      expect(error).toHaveProperty(
+        'message',
+        'Make marked the new Scenario 925 as invalid\nModule 1 is broken',
       );
     });
 

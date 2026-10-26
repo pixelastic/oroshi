@@ -4,7 +4,8 @@
 # A Blueprint that is sent is validated first: unique module IDs, a module and a version on every module, and the required fields of metadata.expect
 # The command fails with the list of problems, and sends no request. It cannot detect an unsupported expression, such as a regex literal in replace
 # Then the Blueprint is aligned: modules on one baseline, 300 apart, left to right. No option skips the validation or the alignment
-# A Blueprint is saved with the version read just before. If someone saved the Scenario in between, Make answers 409, the command fails, and their edit stays
+# A Blueprint is saved with the version read just before, and the previous Blueprint is written to a backup file first. If someone saved the Scenario in between, Make answers 409, the command fails, and their edit stays
+# When Make marks the new Blueprint as invalid, the previous Blueprint is sent back and the command exits non-zero with the messages of Make. If the restore fails, the error names the backup file
 # Make rejects a Blueprint without a name (500), so give it one
 # Usage:
 # $ make-scenario-update 925 --name "Paris Meetup 2026"

@@ -4,10 +4,15 @@ setup() {
   bats_tmp_dir
   mkdir -p "$BATS_TMP_DIR/plan-dir/issues"
   export PLAN_DIR="$BATS_TMP_DIR/plan-dir"
+
+  # The review range starts where the worktree leaves main
+  git-worktree-start() { echo "abc123"; }
+  bats_mock git-worktree-start
+  bats_disable_worktree_aware
 }
 
-@test "outputs status:ready with ref from branchedAt to HEAD" {
-  printf '{"branchedAt":"abc123","issues":[]}' >"$PLAN_DIR/state.json"
+@test "outputs status:ready with ref from the start of the worktree to HEAD" {
+  printf '{"issues":[]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-review-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.status' 'ready'
@@ -15,14 +20,14 @@ setup() {
 }
 
 @test "spec is the absolute path of PRD.md in the plan dir" {
-  printf '{"branchedAt":"abc123","issues":[]}' >"$PLAN_DIR/state.json"
+  printf '{"issues":[]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-review-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
   expect_json '.spec' "$PLAN_DIR/PRD.md"
 }
 
 @test "outputs ready even when some issues are not done" {
-  printf '{"branchedAt":"abc123","issues":[
+  printf '{"issues":[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":["01"]}
   ]}' >"$PLAN_DIR/state.json"
@@ -37,22 +42,18 @@ setup() {
   [[ "$output" == *"state.json not found"* ]]
 }
 
-@test "returns 1 with an error when branchedAt is missing" {
+@test "returns 1 with an error when the worktree has no commit ahead of main" {
   printf '{"issues":[]}' >"$PLAN_DIR/state.json"
-  bats_run_zsh "ralph-review-start $PLAN_DIR"
-  [[ "$status" -eq 1 ]]
-  [[ "$output" == *"no branchedAt"* ]]
-}
+  git-worktree-start() { return 1; }
+  bats_mock git-worktree-start
 
-@test "returns 1 with an error when branchedAt is empty" {
-  printf '{"branchedAt":"","issues":[]}' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-review-start $PLAN_DIR"
   [[ "$status" -eq 1 ]]
-  [[ "$output" == *"no branchedAt"* ]]
+  [[ "$output" == *"no commit ahead of main"* ]]
 }
 
 @test "dir without state.json → deduces the plan dir via plan-directory" {
-  printf '{"branchedAt":"abc123","issues":[]}' >"$PLAN_DIR/state.json"
+  printf '{"issues":[]}' >"$PLAN_DIR/state.json"
   mkdir -p "$BATS_TMP_DIR/worktree"
   plan-directory() { echo "$PLAN_DIR"; }
   bats_mock plan-directory
@@ -64,7 +65,7 @@ setup() {
 }
 
 @test "no arg → deduces the plan dir from the current directory" {
-  printf '{"branchedAt":"abc123","issues":[]}' >"$PLAN_DIR/state.json"
+  printf '{"issues":[]}' >"$PLAN_DIR/state.json"
   mkdir -p "$BATS_TMP_DIR/worktree"
   plan-directory() { echo "$PLAN_DIR"; }
   bats_mock plan-directory

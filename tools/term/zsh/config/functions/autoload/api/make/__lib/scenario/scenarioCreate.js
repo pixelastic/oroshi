@@ -7,19 +7,18 @@ import { blueprintAlign } from './blueprintAlign.js';
 import { blueprintValidate } from './blueprintValidate.js';
 import { buildFlow } from './buildFlow.js';
 import { formatScenario } from './formatScenario.js';
+import { scenarioMessages } from './scenarioMessages.js';
 
 export let __;
 
 /**
- * Create one Scenario in the Team. The Blueprint is validated locally first,
- * and the command stops before any request when it has problems. Then the
- * modules of the Blueprint are aligned on one baseline, left to right. Neither
- * step can be skipped
- * The validation checks unique module IDs, a module and a version on every
- * module, and the required fields of metadata.expect. It cannot detect an
- * unsupported expression, such as a regex literal in replace
+ * Create one Scenario in the Team. The Blueprint is validated locally first
+ * (see blueprintValidate), and the command stops before any request when it
+ * has problems. Then the modules of the Blueprint are aligned on one baseline,
+ * left to right. Neither step can be skipped.
  * When Make marks the new Scenario as invalid, it throws MAKE_BLUEPRINT_INVALID
- * with the ID of the Scenario. The Scenario is kept: no delete, no repair
+ * with the ID of the Scenario and the messages of Make. The Scenario is kept:
+ * no delete, no repair.
  * @param {object} options - Content of the Scenario
  * @param {string} [options.name] - Name of the Scenario
  * @param {string|object} [options.blueprint] - Blueprint as a JSON string, or the object itself
@@ -67,9 +66,13 @@ export async function scenarioCreate(options) {
   // When Make marks the new Scenario as invalid, it already exists.
   // So throw its ID and keep it, instead of deleting it
   if (response.scenario.isinvalid) {
+    const messages = await __.scenarioMessages(response.scenario.id);
     throw firostError(
       'MAKE_BLUEPRINT_INVALID',
-      `Make marked the new Scenario ${response.scenario.id} as invalid`,
+      [
+        `Make marked the new Scenario ${response.scenario.id} as invalid`,
+        ...messages,
+      ].join('\n'),
     );
   }
 
@@ -88,4 +91,5 @@ __ = {
   buildFlow,
   formatScenario,
   getConfig,
+  scenarioMessages,
 };

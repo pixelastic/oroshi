@@ -11,9 +11,10 @@ export let __;
 /**
  * Align the modules of a blueprint on a grid: the flow on one baseline,
  * routes stacked around their router, error handlers under their module and
- * orphans in a row under everything else
+ * orphans in a row under everything else.
  * @param {object} blueprint - The blueprint to align. It is not changed
- * @returns {object} A copy of the blueprint, with metadata.designer x and y set on every module
+ * @returns {object} A copy of the blueprint, with metadata.designer x and y
+ *   set on every module
  */
 export function blueprintAlign(blueprint) {
   if (!blueprint.flow) {

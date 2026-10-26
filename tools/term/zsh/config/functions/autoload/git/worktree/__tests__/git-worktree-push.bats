@@ -3,6 +3,8 @@ bats_load_library 'helper'
 setup() {
   bats_git_dir 'my-repo'
   bats_git_worktree 'fix/bug'
+  # Keep the recorded commits out of the real plans directory
+  bats_plans_dir
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug" || return 1
   git commit --allow-empty --quiet -m "fix work"
 }
@@ -14,6 +16,20 @@ setup() {
   [[ "$status" -eq 0 ]]
   run bats_git rev-parse main
   [[ "$output" = "$fixHead" ]]
+}
+
+@test "records the commits before it merges into main" {
+  git-worktree-commits-record() {
+    git -C "$BATS_GIT_DIR" rev-parse HEAD > "$BATS_TMP_DIR/main-at-record"
+  }
+  git-dependencies-update() { :; }
+  bats_mock git-worktree-commits-record git-dependencies-update
+  bats_disable_worktree_aware
+
+  local preMergeHead="$(git -C "$BATS_GIT_DIR" rev-parse HEAD)"
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-push"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/main-at-record")" = "$preMergeHead" ]]
 }
 
 @test "calls git-dependencies-update with --repo mainPath and pre-merge HEAD" {

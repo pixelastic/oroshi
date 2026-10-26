@@ -19,19 +19,19 @@ if [[ ! -f "$dir/state.json" ]]; then
   return 1
 fi
 
-# branchedAt must be set
-local branchedAt="$(jq --raw-output '.branchedAt // ""' "$dir/state.json" 2>/dev/null)"
-if [[ "$branchedAt" == "" ]]; then
-  print "ralph-review-start: no branchedAt (starting commit) in $dir/state.json" >&2
+# The review range starts where the worktree leaves main
+local startCommit="$(git-worktree-start)"
+if [[ "$startCommit" == "" ]]; then
+  print "ralph-review-start: no commit ahead of main" >&2
   return 1
 fi
 
 local absoluteDirectory="${dir:A}"
 jq -n \
-  --arg branchedAt "$branchedAt" \
+  --arg startCommit "$startCommit" \
   --arg dir "$absoluteDirectory" \
 '{
     status: "ready",
-    ref: ($branchedAt+"..HEAD"),
+    ref: ($startCommit+"..HEAD"),
     spec: ($dir+"/PRD.md")
   }'

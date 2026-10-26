@@ -45,7 +45,7 @@ setup() {
 # Mocks the plan collaborators of auto mode. The queue and Claude stop log to $CALLS, in order.
 mock_auto_collaborators() {
   jq -n '{"mode":"auto"}' >"$PRD_DIR/ralph.json"
-  printf '{"branchedAt":"abc123","issues":[{"id":"1","issue":"foo.md","done":true,"blocked_by":[]}]}' >"$PRD_DIR/state.json"
+  printf '{"issues":[{"id":"1","issue":"foo.md","done":true,"blocked_by":[]}]}' >"$PRD_DIR/state.json"
 
   plan-worktree() { echo "$WORKTREE"; }
   bats_mock plan-worktree

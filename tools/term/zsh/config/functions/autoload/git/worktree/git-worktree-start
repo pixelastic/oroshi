@@ -1,5 +1,5 @@
-# Commit where this worktree's branch was created (from the branch reflog)
-# Works before and after merge into main
+# Commit where this worktree's branch leaves main (merge-base with main)
+# It follows a rebase onto main. Once the branch is merged into main, it fails
 # Usage:
 # $ git-worktree-start           # → a3c72604
 # $ git-worktree-start /path/to/worktree
@@ -11,10 +11,11 @@ local branch="$(git-branch-current "$worktreePath")"
 # Not in a git repo or detached HEAD
 [[ "$branch" == "" || "$branch" == "HEAD" ]] && return 1
 
-# Oldest reflog entry = commit the branch pointed to when created
-local forkPoint="$(git -C "$worktreePath" reflog show "$branch" --format='%H' | tail -1)"
+# Last commit shared with main
+local forkPoint="$(git -C "$worktreePath" merge-base main "$branch")"
+[[ "$forkPoint" == "" ]] && return 1
 
-# No commits since branch creation
+# No commits ahead of main
 local distance="$(git -C "$worktreePath" rev-list --count "${forkPoint}..${branch}")"
 [[ "$distance" == "0" ]] && return 1
 
