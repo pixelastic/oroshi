@@ -1,5 +1,6 @@
 import { exists, firostError, readJson } from 'firost';
 import { getClientCredentials } from './getClientCredentials.js';
+import { loginCommand } from './loginCommand.js';
 import { tokensPath } from './tokensPath.js';
 
 export let __;
@@ -18,10 +19,7 @@ export async function getConfig() {
 
   // Fail early when the user never logged in
   if (!(await exists(path))) {
-    const command = account
-      ? `run google-login --account ${account}`
-      : 'run google-login';
-    throw firostError('GOOGLE_LOGIN_REQUIRED', command);
+    throw firostError('GOOGLE_LOGIN_REQUIRED', loginCommand(account));
   }
 
   const tokens = await readJson(path);

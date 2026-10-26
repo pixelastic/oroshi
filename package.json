@@ -5,6 +5,7 @@
   "type": "module",
   "workspaces": [
     "tools/term/zsh/config/functions/autoload/api/*/__lib",
+    "tools/term/zsh/config/functions/autoload/api/google/*/__lib",
     "tools/term/zsh/config/functions/autoload/google/__lib",
     "tools/term/zsh/config/functions/autoload/vinted/__lib"
   ],
