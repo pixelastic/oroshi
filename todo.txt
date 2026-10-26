@@ -58,3 +58,5 @@
 2026-10-03 Status bar: show running background shells next to running sub-agents, with a different icon and color domain:Claude size:medium id:statusbar-shells
 2026-10-03 Investigate pulsing running sub-agents in the status line (opacity or color fade, like Claude's blinking dot); depends on status bar refresh rate domain:Claude size:medium id:agent-pulse p:statusbar-shells
 2026-10-07 Refactor all Claude hooks (preToolUse and postToolUse): split mixed concerns into single-concern functions or separate hooks, no behavior change domain:Claude size:large id:hooks-split
+2026-10-26 Add gmail-draft-create helper to create a draft reply to a given mail, so it can be edited instead of copied from the clipboard. Wait for the Google scripts migration worktree to finish first. domain:Google size:medium id:gmail-draft
+2026-10-26 Migrate meetup-create into the DevRel meetup domain and add a meetup read helper, following the API documentation conventions. Wait for the DevRel meetup worktree to finish first. domain:Misc size:medium id:meetup-crud
