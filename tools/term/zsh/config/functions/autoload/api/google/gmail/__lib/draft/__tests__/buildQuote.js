@@ -1,0 +1,66 @@
+import { buildQuote } from '../buildQuote.js';
+
+describe('buildQuote', () => {
+  const mail = {
+    // Local time, so that the test does not depend on the time zone
+    date: new Date(2026, 9, 26, 10, 5).toString(),
+    from: 'Bob <bob@example.com>',
+    html: '<p>Hi</p>',
+    text: 'Hi',
+  };
+
+  it('builds the attribution line with the date and the sender', () => {
+    const actual = buildQuote(mail);
+
+    expect(actual.text).toMatch(
+      /^Le lun\. 26 oct\. 2026 à 10:05, Bob <bob@example\.com> a écrit :\n/,
+    );
+    expect(actual.html).toContain(
+      'Le lun. 26 oct. 2026 à 10:05, Bob &lt;<a href="mailto:bob@example.com">bob@example.com</a>&gt; a écrit :',
+    );
+  });
+
+  it('wraps the original HTML in a blockquote of a gmail_quote container', () => {
+    const actual = buildQuote(mail);
+
+    expect(actual.html).toMatch(/^<div class="gmail_quote[^"]*">/);
+    expect(actual.html).toMatch(
+      /<blockquote class="gmail_quote"[^>]*><p>Hi<\/p><\/blockquote><\/div>$/,
+    );
+  });
+
+  it('falls back to the original text when there is no HTML', () => {
+    const actual = buildQuote({
+      ...mail,
+      html: '',
+      text: 'a < b\nsecond line',
+    });
+
+    expect(actual.html).toContain('>a &lt; b<br>second line</blockquote>');
+  });
+
+  it('prefixes every line of the text quote with "> "', () => {
+    const actual = buildQuote({ ...mail, text: 'one\n\nthree' });
+
+    expect(actual.text).toMatch(/ a écrit :\n> one\n> \n> three$/);
+  });
+
+  it('quotes the HTML converted to text when there is no text', () => {
+    const actual = buildQuote({
+      ...mail,
+      text: '',
+      html: '<p>Hi <b>you</b></p>',
+    });
+
+    expect(actual.text).toMatch(/ a écrit :\n> Hi you$/);
+  });
+
+  it('keeps a bare address as the sender', () => {
+    const actual = buildQuote({ ...mail, from: 'bob@example.com' });
+
+    expect(actual.text).toContain(', bob@example.com a écrit :');
+    expect(actual.html).toContain(
+      ', <a href="mailto:bob@example.com">bob@example.com</a> a écrit :',
+    );
+  });
+});

@@ -60,6 +60,7 @@ describe('draftCreate', () => {
                 value: 'Carol <carol@example.com>, work@example.com',
               },
               { name: 'Cc', value: 'dave@example.com, me@example.com' },
+              { name: 'Date', value: 'Mon, 26 Oct 2026 10:05:00 +0100' },
               { name: 'Subject', value: 'Re: Hello' },
               { name: 'Message-ID', value: '<m2@example.com>' },
               { name: 'References', value: '<m1@example.com>' },
@@ -80,6 +81,14 @@ describe('draftCreate', () => {
     };
 
     beforeEach(() => {
+      vi.spyOn(__, 'extractBodies').mockReturnValue({
+        text: 'orig',
+        html: '<p>orig</p>',
+      });
+      vi.spyOn(__, 'buildQuote').mockReturnValue({
+        html: 'QUOTE_HTML',
+        text: 'QUOTE_TEXT',
+      });
       vi.spyOn(__, 'callApi')
         .mockReturnValueOnce(thread)
         .mockReturnValueOnce({
@@ -94,22 +103,24 @@ describe('draftCreate', () => {
       expect(__.getAliases).toHaveBeenCalledWith('perso');
     });
 
-    it('reads the To and Cc headers of the thread', async () => {
+    it('reads the thread with the full format', async () => {
       await draftCreate(replyOptions);
 
-      expect(__.callApi).toHaveBeenNthCalledWith(
-        1,
-        expect.stringMatching(/metadataHeaders=To&.*metadataHeaders=Cc/),
-      );
+      expect(__.callApi).toHaveBeenNthCalledWith(1, 'threads/t1', {
+        query: { format: 'full' },
+      });
     });
 
-    it('reads the thread with the metadata format', async () => {
+    it('quotes the date, the sender and the bodies of the last Mail', async () => {
       await draftCreate(replyOptions);
 
-      expect(__.callApi).toHaveBeenNthCalledWith(
-        1,
-        expect.stringMatching(/^threads\/t1\?format=metadata&.*Message-ID/),
-      );
+      expect(__.extractBodies).toHaveBeenCalledWith(thread.messages[0].payload);
+      expect(__.buildQuote).toHaveBeenCalledWith({
+        date: 'Mon, 26 Oct 2026 10:05:00 +0100',
+        from: 'Bob <bob@example.com>',
+        text: 'orig',
+        html: '<p>orig</p>',
+      });
     });
 
     it('builds the raw mail from the last Mail', async () => {
@@ -121,6 +132,7 @@ describe('draftCreate', () => {
         cc: 'Carol <carol@example.com>, dave@example.com',
         subject: 'Re: Hello',
         body: 'hi',
+        quote: { html: 'QUOTE_HTML', text: 'QUOTE_TEXT' },
         inReplyTo: '<m2@example.com>',
         references: '<m1@example.com> <m2@example.com>',
       });
@@ -148,6 +160,7 @@ describe('draftCreate', () => {
         cc: 'Carol <carol@example.com>, dave@example.com',
         subject: 'Other',
         body: 'hi',
+        quote: { html: 'QUOTE_HTML', text: 'QUOTE_TEXT' },
         inReplyTo: '<m2@example.com>',
         references: '<m1@example.com> <m2@example.com>',
       });

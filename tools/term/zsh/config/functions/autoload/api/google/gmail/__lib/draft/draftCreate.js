@@ -1,33 +1,23 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
 import { callApi } from '../callApi.js';
+import { extractBodies } from '../extractBodies.js';
 import { header } from '../header.js';
+import { buildQuote } from './buildQuote.js';
 import { buildRaw } from './buildRaw.js';
 import { buildReply } from './buildReply.js';
 import { getAliases } from './getAliases.js';
 
 export let __;
 
-const METADATA_QUERY = `format=metadata&${[
-  'From',
-  'Reply-To',
-  'To',
-  'Cc',
-  'Subject',
-  'Message-ID',
-  'References',
-]
-  .map((name) => `metadataHeaders=${name}`)
-  .join('&')}`;
-
 /**
- * Create a plain-text draft in Gmail
+ * Create a draft in Gmail, with the last Mail quoted when it is a reply
  * @param {object} options - Draft options
  * @param {string} [options.account] - Name of the account, to read its aliases
  * @param {string} [options.messageId] - Id of the Message to reply to. The reply goes to its last Mail, in its thread
  * @param {string} [options.to] - Recipient. Overrides the reply. Throws GMAIL_TO_MISSING if empty without messageId
  * @param {string} [options.subject] - Subject. Overrides the reply. Throws GMAIL_SUBJECT_MISSING if empty without messageId
- * @param {string} options.body - Body, sent as is as text/plain. Throws GMAIL_BODY_MISSING if empty
+ * @param {string} options.body - Body, sent as text/plain, and as HTML when it is a reply. Throws GMAIL_BODY_MISSING if empty
  * @returns {Promise<object>} { draftId, threadId, url }, the url opening the draft in Gmail
  */
 export async function draftCreate(options) {
@@ -36,7 +26,7 @@ export async function draftCreate(options) {
   const reply = messageId ? await __.readReply(messageId, account) : {};
   const to = options.to || reply.to;
   const subject = options.subject || reply.subject;
-  const { from, cc, inReplyTo, references } = reply;
+  const { from, cc, quote, inReplyTo, references } = reply;
 
   if (!to) {
     throw firostError('GMAIL_TO_MISSING', 'Pass the recipient with --to');
@@ -54,6 +44,7 @@ export async function draftCreate(options) {
     cc,
     subject,
     body,
+    quote,
     inReplyTo,
     references,
   });
@@ -74,15 +65,15 @@ __ = {
    * Compute the reply to the last Mail of a Message
    * @param {string} messageId - Id of the Message
    * @param {string} [account] - Name of the account, to read its aliases
-   * @returns {Promise<object>} { from, to, cc, subject, inReplyTo, references }
+   * @returns {Promise<object>} { from, to, cc, subject, quote, inReplyTo, references }
    */
   async readReply(messageId, account) {
     const aliases = __.getAliases(account);
-    // The query string is part of the path, because callApi cannot repeat a
-    // parameter
-    const thread = await __.callApi(`threads/${messageId}?${METADATA_QUERY}`);
+    const thread = await __.callApi(`threads/${messageId}`, {
+      query: { format: 'full' },
+    });
     const last = _.maxBy(thread.messages, (mail) => Number(mail.internalDate));
-    return buildReply(
+    const reply = buildReply(
       {
         from: header(last, 'From'),
         replyTo: header(last, 'Reply-To'),
@@ -94,8 +85,16 @@ __ = {
       },
       aliases,
     );
+    const quote = __.buildQuote({
+      date: header(last, 'Date'),
+      from: header(last, 'From'),
+      ...__.extractBodies(last.payload),
+    });
+    return { ...reply, quote };
   },
+  buildQuote,
   buildRaw,
   callApi,
+  extractBodies,
   getAliases,
 };
