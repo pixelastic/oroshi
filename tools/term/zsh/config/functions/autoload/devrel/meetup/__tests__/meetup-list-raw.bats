@@ -138,3 +138,115 @@ setup() {
   [[ "$output" == *"Fields: recordId"* ]]
   [[ "$output" != *"--upcoming"* ]]
 }
+
+# Replace the canned records with Meetups around the edges of 2024, a leap year
+stub_period_records() {
+  airtable-record-list-raw() {
+    echo 'rec01▮{"date":"2023-12-31","status":"✅ Confirmed","name":"A"}'
+    echo 'rec02▮{"date":"2024-01-01","status":"✅ Confirmed","name":"B"}'
+    echo 'rec03▮{"date":"2024-02-01","status":"✅ Confirmed","name":"C"}'
+    echo 'rec04▮{"date":"2024-02-29","status":"✅ Confirmed","name":"D"}'
+    echo 'rec05▮{"date":"2024-03-01","status":"✅ Confirmed","name":"E"}'
+    echo 'rec06▮{"date":"2024-11-01","status":"✅ Confirmed","name":"F"}'
+    echo 'rec07▮{"date":"2024-11-30","status":"⏳️ Pending","name":"G"}'
+    echo 'rec08▮{"date":"2024-12-31","status":"✅ Confirmed","name":"H"}'
+    echo 'rec09▮{"date":"2025-01-01","status":"✅ Confirmed","name":"I"}'
+  }
+  bats_mock airtable-record-list-raw
+}
+
+@test "starts the list at the full date given to --min-date" {
+  stub_period_records
+
+  bats_run_zsh "meetup-list-raw --min-date 2024-02-29 --max-date 2024-03-01"
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 2 ]]
+  [[ "${lines[0]}" == "rec04▮"* ]]
+}
+
+@test "expands a month given to --min-date to its first day" {
+  stub_period_records
+
+  bats_run_zsh "meetup-list-raw --min-date 2024-02 --max-date 2024-02-29"
+  [[ "${#lines[@]}" -eq 2 ]]
+  [[ "${lines[0]}" == "rec03▮"* ]]
+}
+
+@test "expands a year given to --min-date to January 1st" {
+  stub_period_records
+
+  bats_run_zsh "meetup-list-raw --min-date 2024 --max-date 2024-01-31"
+  [[ "${#lines[@]}" -eq 1 ]]
+  [[ "${lines[0]}" == "rec02▮"* ]]
+}
+
+@test "lists past Meetups when --min-date is in the past" {
+  stub_period_records
+
+  bats_run_zsh "meetup-list-raw --min-date 2024-11"
+  [[ "${lines[0]}" == "rec06▮"* ]]
+  [[ "${lines[1]}" == "rec07▮"* ]]
+  [[ "${lines[2]}" == "rec08▮"* ]]
+  [[ "${lines[3]}" == "rec09▮"* ]]
+}
+
+@test "stops the list at the full date given to --max-date, inclusive" {
+  stub_period_records
+
+  bats_run_zsh "meetup-list-raw --min-date 2024 --max-date 2024-02-29"
+  [[ "${#lines[@]}" -eq 3 ]]
+  [[ "${lines[2]}" == "rec04▮"* ]]
+}
+
+@test "expands a month given to --max-date to its last day, even in February of a leap year" {
+  stub_period_records
+
+  bats_run_zsh "meetup-list-raw --min-date 2024 --max-date 2024-02"
+  [[ "${#lines[@]}" -eq 3 ]]
+  [[ "${lines[2]}" == "rec04▮"* ]]
+}
+
+@test "expands a month given to --max-date to its last day, for a month of 30 days" {
+  stub_period_records
+
+  bats_run_zsh "meetup-list-raw --min-date 2024-11 --max-date 2024-11"
+  [[ "${lines[1]}" == "rec07▮"* ]]
+}
+
+@test "expands a year given to --max-date to December 31st" {
+  stub_period_records
+
+  bats_run_zsh "meetup-list-raw --min-date 2024 --max-date 2024"
+  [[ "${#lines[@]}" -eq 7 ]]
+  [[ "${lines[6]}" == "rec08▮"* ]]
+}
+
+@test "lists a whole month with the same month as minimum and maximum" {
+  stub_period_records
+
+  bats_run_zsh "meetup-list-raw --min-date 2024-11 --max-date 2024-11"
+  [[ "${#lines[@]}" -eq 2 ]]
+  [[ "${lines[0]}" == "rec06▮"* ]]
+  [[ "${lines[1]}" == "rec07▮"* ]]
+}
+
+@test "combines the period with --status" {
+  stub_period_records
+
+  bats_run_zsh "meetup-list-raw --min-date 2024-11 --max-date 2024-11 --status pending"
+  [[ "${#lines[@]}" -eq 1 ]]
+  [[ "${lines[0]}" == "rec07▮"* ]]
+}
+
+@test "has no maximum without --max-date" {
+  bats_run_zsh "meetup-list-raw --min-date 2026"
+  [[ "${#lines[@]}" -eq 4 ]]
+  [[ "${lines[0]}" == "recD▮"* ]]
+  [[ "${lines[3]}" == "recA▮"* ]]
+}
+
+@test "documents --min-date and --max-date" {
+  bats_run_zsh "cat \${^fpath}/meetup-list-raw(N)"
+  [[ "$output" == *"--min-date"* ]]
+  [[ "$output" == *"--max-date"* ]]
+}

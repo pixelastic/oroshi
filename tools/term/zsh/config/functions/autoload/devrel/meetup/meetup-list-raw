@@ -3,20 +3,54 @@
 # The status is its label: pending, confirmed or cancelled
 # An empty Field leaves an empty column
 # --status keeps only the meetups with that status
+# --min-date starts the list at a date, inclusive (default: today)
+# --max-date stops the list at a date, inclusive (default: none)
+# A date is YYYY, YYYY-MM or YYYY-MM-DD: a partial date is its first day as a minimum, its last day as a maximum
 # --limit keeps only the first meetups, once the other filters are applied (default: all)
 # At most 1000 meetups are listed
 # Usage:
 # $ meetup-list-raw
 # $ meetup-list-raw --status pending
 # $ meetup-list-raw --limit 10
+# $ meetup-list-raw --min-date 2024-11 --max-date 2024-11
 setopt local_options err_return
 
 zparseopts -E -D \
   -status:=flagStatus \
+  -min-date:=flagMinDate \
+  -max-date:=flagMaxDate \
   -limit:=flagLimit
 
 local statusFilter=${flagStatus[2]}
+local minDate=${flagMinDate[2]}
+local maxDate=${flagMaxDate[2]}
 local limit=${flagLimit[2]}
+
+# Expand a partial date to its first (min) or last (max) day
+# Usage: expandDate 2024-02 max
+function expandDate() {
+  local parts=("${(@s/-/)1}")
+  local year=${parts[1]}
+  local month=${parts[2]}
+  local day=${parts[3]}
+
+  # A full date needs no expansion
+  if [[ "$day" != "" ]]; then
+    echo "$1"
+    return 0
+  fi
+
+  if [[ "$2" == "min" ]]; then
+    printf "%s-%02d-01\n" "$year" $(( 10#${month:-1} ))
+    return 0
+  fi
+
+  # A year ends in December
+  local lastMonth=$(( 10#${month:-12} ))
+  local monthLengths=(31 28 31 30 31 30 31 31 30 31 30 31)
+  (( year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) )) && monthLengths[2]=29
+  printf "%s-%02d-%02d\n" "$year" "$lastMonth" "${monthLengths[lastMonth]}"
+}
 
 # Only the statuses stored in Airtable can filter
 if [[ "$statusFilter" != "" && ! "$statusFilter" =~ ^(pending|confirmed|cancelled)$ ]]; then
@@ -52,6 +86,14 @@ rawRecords="$(jq \
 
 local today="$(date +%Y-%m-%d)"
 
+# The period starts today unless --min-date says otherwise
+local firstDate="$today"
+[[ "$minDate" != "" ]] && firstDate="$(expandDate "$minDate" min)"
+
+# The period has no end unless --max-date says otherwise
+local lastDate=""
+[[ "$maxDate" != "" ]] && lastDate="$(expandDate "$maxDate" max)"
+
 local printedCount=0
 for rawRecord in ${(f)rawRecords}; do
   # Stop once the limit is reached
@@ -59,8 +101,11 @@ for rawRecord in ${(f)rawRecords}; do
 
   local fields=("${(@ps/▮/)rawRecord}")
 
-  # Skip the meetups already past (ISO dates sort like text)
-  [[ "${fields[2]}" < "$today" ]] && continue
+  # Skip the meetups before the period (ISO dates sort like text)
+  [[ "${fields[2]}" < "$firstDate" ]] && continue
+
+  # Skip the meetups after the period
+  [[ "$lastDate" != "" && "${fields[2]}" > "$lastDate" ]] && continue
 
   # Airtable stores a label such as "⏳️ Pending": the last word, in lowercase, is the status
   local label="${${(L)fields[3]}##* }"

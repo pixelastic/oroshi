@@ -2,24 +2,34 @@
 # Columns: date, status, name, URL
 # Columns share the terminal width like any table, so the longest Field comes last
 # --status keeps only the meetups with that status (pending, confirmed or cancelled)
+# --min-date starts the list at a date, inclusive (default: today)
+# --max-date stops the list at a date, inclusive (default: none)
+# A date is YYYY, YYYY-MM or YYYY-MM-DD: a partial date is its first day as a minimum, its last day as a maximum
 # --limit keeps only the first meetups (default: 10)
 # Usage:
 # $ meetup-list
 # $ meetup-list --status pending
 # $ meetup-list --limit 25
+# $ meetup-list --min-date 2024-11 --max-date 2024-11
 setopt local_options err_return
 
 zparseopts -E -D \
   -status:=flagStatus \
+  -min-date:=flagMinDate \
+  -max-date:=flagMaxDate \
   -limit:=flagLimit
 
 local statusFilter=${flagStatus[2]}
+local minDate=${flagMinDate[2]}
+local maxDate=${flagMaxDate[2]}
 local limit=${flagLimit[2]:-10}
 
 colors-load-definitions
 
 local rawArgs=(--limit "$limit")
 [[ "$statusFilter" != "" ]] && rawArgs+=(--status "$statusFilter")
+[[ "$minDate" != "" ]] && rawArgs+=(--min-date "$minDate")
+[[ "$maxDate" != "" ]] && rawArgs+=(--max-date "$maxDate")
 
 # Nothing to display if there is no meetup
 local rawMeetups="$(meetup-list-raw "${rawArgs[@]}")"

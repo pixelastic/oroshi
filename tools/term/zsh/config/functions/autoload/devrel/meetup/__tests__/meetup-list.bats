@@ -78,3 +78,20 @@ setup() {
   [[ "$output" == *"Columns: date"* ]]
   [[ "$output" != *"--upcoming"* ]]
 }
+
+@test "passes --min-date and --max-date to the raw list" {
+  bats_run_zsh "meetup-list --min-date 2024-11 --max-date 2024-11"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--limit 10 --min-date 2024-11 --max-date 2024-11" ]]
+}
+
+@test "passes only the dates given" {
+  bats_run_zsh "meetup-list --max-date 2024"
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--limit 10 --max-date 2024" ]]
+}
+
+@test "documents --min-date and --max-date" {
+  bats_run_zsh "cat \${^fpath}/meetup-list(N)"
+  [[ "$output" == *"--min-date"* ]]
+  [[ "$output" == *"--max-date"* ]]
+}
