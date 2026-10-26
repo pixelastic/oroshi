@@ -195,8 +195,9 @@ bats_run_zsh() {
   # Stop if no command provided
   [[ "$zshCommand" == "" ]] && return 1
 
+  # Detach stdin so a pipe inherited from the caller (hooks, CI) can't leak into the command
   # bats-lint disable=noRunZsh
-  run zsh -c "$zshCommand"
+  run zsh -c "$zshCommand" </dev/null
   return
 }
 

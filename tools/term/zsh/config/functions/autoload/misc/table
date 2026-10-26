@@ -4,9 +4,9 @@
 # $ table "foo▮bar"                # foo  bar
 setopt local_options err_return
 
-# Read from arg or from pipe
+# Read from arg or from pipe, the arg wins over an inherited pipe
 local input="$1"
-[[ -p /dev/stdin ]] && input="$(cat -)"
+[[ $# -eq 0 && -p /dev/stdin ]] && input="$(cat -)"
 
 local rawOutput="$(echo $input | column --table-noheadings --table --separator "▮")"
 

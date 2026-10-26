@@ -9,8 +9,8 @@ zparseopts -E -D \
   -reply=flagReply
 
 local input="$1"
-# Read from pipe
-[[ -p /dev/stdin ]] && input="$(/usr/bin/cat -)"
+# Read from pipe, the arg wins over an inherited pipe
+[[ $# -eq 0 && -p /dev/stdin ]] && input="$(/usr/bin/cat -)"
 
 local result="${input//$'\033'\[[0-9;]#[A-Za-z]/}"
 

@@ -73,3 +73,9 @@ cd▮A much longer name▮'"
   [[ "${lines[0]}" == "ab  Framer" ]]
   [[ "${lines[1]}" == *"…" ]]
 }
+
+@test "prefers the argument over an inherited pipe" {
+  bats_run_zsh "echo 'ignored▮input' | table 'foo▮bar'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "foo  bar" ]]
+}

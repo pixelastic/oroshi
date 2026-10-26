@@ -1,0 +1,70 @@
+# List the Messages (Gmail conversations) of the inbox as a colored table, one row per Message
+# Unread Messages come first, then the most recent ones
+# Columns: unread marker (●), date (MM/DD HH:mm), mail count (blank for one mail), authors, subject
+# For machine consumption, use gmail-message-list-raw
+# Usage:
+# $ gmail-message-list
+# $ gmail-message-list --limit 10
+# $ gmail-message-list --account perso
+setopt local_options err_return
+
+zmodload zsh/datetime
+colors-load-definitions
+icons-load-definitions
+
+local AUTHORS_WIDTH=28
+
+# The raw command is named like this wrapper, with a -raw suffix
+local rawCommand="${0}-raw"
+
+local rawMessages="$($rawCommand "$@")"
+
+# Nothing to display if there is no Message
+[[ "$rawMessages" == "" ]] && return 1
+
+# Width of the widest mail count, to right-align the column
+local countWidth=1
+for rawMessage in ${(f)rawMessages}; do
+  local rawCount="${${(@ps/▮/)rawMessage}[3]}"
+  [[ ${#rawCount} -gt $countWidth ]] && countWidth=${#rawCount}
+done
+
+local rows=()
+local epoch
+for rawMessage in ${(f)rawMessages}; do
+  local fields=("${(@ps/▮/)rawMessage}")
+  local isoDate="${fields[2]}"
+  local mailCount="${fields[3]}"
+  local authors="${fields[4]//▯/, }"
+  local subject="${fields[5]}"
+  local isUnread="${fields[7]}"
+
+  # Cells are never empty, or `table` would collapse the columns
+  local marker=" "
+  [[ "$isUnread" == "true" ]] && marker="$ICONS[gmail-unread]"
+
+  # The raw date is UTC, show it in the local timezone
+  epoch=""
+  TZ=UTC strftime -rs epoch '%Y-%m-%dT%H:%M:%S' "${isoDate[1,19]}" 2>/dev/null || epoch=""
+  local date=" "
+  [[ "$epoch" != "" ]] && date="$(strftime '%m/%d %H:%M' "$epoch")"
+
+  local count=""
+  [[ "$mailCount" -gt 1 ]] && count="$mailCount"
+  count="${(l:$countWidth:)count}"
+
+  text-truncate --reply --width $AUTHORS_WIDTH "$authors"
+  authors="$REPLY"
+
+  local columns=(
+    "$marker"
+    "$(colorize "$date" $COLORS[gmail-date])"
+    "$(colorize "$count" $COLORS[gmail-count])"
+    "$(colorize "$authors" $COLORS[gmail-author])"
+    "$(colorize "${subject//$'\n'/ }" $COLORS[gmail-subject])"
+  )
+  rows+=("${(j:▮:)columns}")
+done
+
+# One row per line, separated by real newlines. `table` splits the columns on ▮
+table "${(F)rows}"

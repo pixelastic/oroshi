@@ -29,3 +29,9 @@ bats_load_library 'helper'
   [[ "$status" -eq 0 ]]
   [[ "$output" = "hello" ]]
 }
+
+@test "prefers the argument over an inherited pipe" {
+  bats_run_zsh "echo ignored | text-ansi-remove $'\033[31mhello\033[0m'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "hello" ]]
+}
