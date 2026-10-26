@@ -1,0 +1,14 @@
+{
+  "name": "@oroshi/gmail",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Helpers to read Gmail",
+  "license": "MIT",
+  "dependencies": {
+    "@oroshi/api-shared": "workspace:*",
+    "@oroshi/google": "workspace:*",
+    "firost": "5.11.0",
+    "golgoth": "3.1.0"
+  }
+}

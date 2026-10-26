@@ -1,0 +1,13 @@
+# List the Messages (Gmail conversations) of the inbox, one per line, for machine consumption
+# Unread Messages come first, then the Messages by the date of their last mail, newest first
+# The id is the id of the conversation
+# Fields: messageId▮date▮count▮authors▮subject▮snippet▮unread
+# date is ISO 8601 (last mail), count is the number of mails, authors are separated by ▯ (unread authors first), unread is true or false
+# Usage:
+# $ gmail-message-list-raw
+# $ gmail-message-list-raw --limit 10
+# $ gmail-message-list-raw --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-message-list-raw.js" "$@"

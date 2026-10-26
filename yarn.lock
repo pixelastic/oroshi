@@ -1392,6 +1392,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@oroshi/gmail@workspace:tools/term/zsh/config/functions/autoload/api/google/gmail/__lib":
+  version: 0.0.0-use.local
+  resolution: "@oroshi/gmail@workspace:tools/term/zsh/config/functions/autoload/api/google/gmail/__lib"
+  dependencies:
+    "@oroshi/api-shared": "workspace:*"
+    "@oroshi/google": "workspace:*"
+    firost: "npm:5.11.0"
+    golgoth: "npm:3.1.0"
+  languageName: unknown
+  linkType: soft
+
 "@oroshi/google-legacy@workspace:tools/term/zsh/config/functions/autoload/google/__lib":
   version: 0.0.0-use.local
   resolution: "@oroshi/google-legacy@workspace:tools/term/zsh/config/functions/autoload/google/__lib"

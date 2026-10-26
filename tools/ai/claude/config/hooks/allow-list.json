@@ -229,6 +229,7 @@
   "gmail-inbox",
   "gmail-inbox-raw",
   "gmail-message-list",
+  "gmail-message-list-raw",
   "gmail-read",
   "gmail-search",
   "gnome-extensions disable",
