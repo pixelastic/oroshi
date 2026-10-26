@@ -1,0 +1,8 @@
+# Log in to Google, and save the OAuth tokens
+# Usage:
+# $ google-login
+# $ google-login --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/google-login.js" "$@"
