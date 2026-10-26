@@ -1,0 +1,12 @@
+# Download one attachment of a Mail, and print the path of the saved file
+# The mailId and the partId are listed by gmail-message-read (id and attachments)
+# --out is an existing directory (keeps the remote filename) or a file path
+# Usage:
+# $ gmail-attachment-download mailId --partId 1.2                    # saved in the current directory
+# $ gmail-attachment-download mailId --partId 1.2 --out ~/docs       # existing directory: remote filename
+# $ gmail-attachment-download mailId --partId 1.2 --out ./a.pdf      # exact file path
+# $ gmail-attachment-download mailId --partId 1.2 --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-attachment-download.js" "$@"

@@ -226,6 +226,7 @@
   "git-worktree-submodule-pointer-differs",
   "git-worktree-submodule-preflight",
   "gmail-attachment",
+  "gmail-attachment-download",
   "gmail-inbox",
   "gmail-inbox-raw",
   "gmail-message-list",

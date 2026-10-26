@@ -1,5 +1,6 @@
 import { _ } from 'golgoth';
 import { convert } from 'html-to-text';
+import { extractAttachments } from '../extractAttachments.js';
 import { header } from '../header.js';
 
 export let __;
@@ -18,7 +19,7 @@ export function formatMail(mail) {
     date: header(mail, 'Date'),
     snippet: mail.snippet || '',
     body: __.extractBody(mail.payload),
-    attachments: _.map(__.extractAttachments(mail.payload), (attachment) =>
+    attachments: _.map(extractAttachments(mail.payload), (attachment) =>
       _.omit(attachment, 'attachmentId'),
     ),
   };
@@ -44,31 +45,6 @@ __ = {
       });
     }
     return '';
-  },
-
-  /**
-   * List the attachments of a mail payload, walking nested multiparts
-   * @param {object} part - Gmail mail part
-   * @returns {object[]} Array of { partId, attachmentId, filename, mimeType, size }
-   */
-  extractAttachments(part) {
-    if (!part) {
-      return [];
-    }
-    const children = _.flatMap(part.parts, __.extractAttachments);
-    if (!part.filename || !part.body?.attachmentId) {
-      return children;
-    }
-    return [
-      {
-        partId: part.partId,
-        attachmentId: part.body.attachmentId,
-        filename: part.filename,
-        mimeType: part.mimeType,
-        size: part.body.size,
-      },
-      ...children,
-    ];
   },
 
   /**

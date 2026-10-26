@@ -39,6 +39,24 @@ _Avoid_: message, email
 last **Mail**, `count` the number of **Mails**, and the authors are separated by
 `▯`. Unread **Messages** come first, then the newest first.
 
+**Attachment**:
+
+A file carried by a **Mail**. It is not an **Entity** of its own: `read` lists
+the attachments of each **Mail** (`partId`, `filename`, `mimeType`, `size`), and
+`download` saves one of them. A part id is only unique inside its **Mail**, so
+`download` takes the id of the **Mail**, not the id of the **Message**.
+
+_Avoid_: file, document
+
+### Verbs
+
+**`download`**:
+
+A **Custom verb** of the `attachment` entity:
+`gmail-attachment-download mailId --partId <id>` saves one **Attachment** and
+prints the path of the saved file. `--out` is an existing directory (the file
+keeps its remote filename), a file path, or nothing (the current directory).
+
 ### Service terms
 
 **Inbox**:
