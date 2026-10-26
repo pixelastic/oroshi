@@ -6,11 +6,19 @@ import MailComposer from 'nodemailer/lib/mail-composer/index.js';
  * @param {string} options.to - Recipient
  * @param {string} options.subject - Subject, encoded when it is not ASCII
  * @param {string} options.body - Body, sent as is as text/plain
+ * @param {string} [options.inReplyTo] - Message-ID of the Mail replied to
+ * @param {string} [options.references] - References header of a reply
  * @returns {Promise<string>} The mail, encoded in base64url
  */
 export async function buildRaw(options) {
-  const { to, subject, body } = options;
-  const mail = await new MailComposer({ to, subject, text: body })
+  const { to, subject, body, inReplyTo, references } = options;
+  const mail = await new MailComposer({
+    to,
+    subject,
+    text: body,
+    inReplyTo,
+    references,
+  })
     .compile()
     .build();
   return mail.toString('base64url');

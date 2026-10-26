@@ -1,19 +1,38 @@
+import { _ } from 'golgoth';
 import { firostError } from 'firost';
 import { callApi } from '../callApi.js';
+import { header } from '../header.js';
 import { buildRaw } from './buildRaw.js';
+import { buildReply } from './buildReply.js';
 
 export let __;
+
+const METADATA_QUERY = `format=metadata&${[
+  'From',
+  'Reply-To',
+  'Subject',
+  'Message-ID',
+  'References',
+]
+  .map((name) => `metadataHeaders=${name}`)
+  .join('&')}`;
 
 /**
  * Create a plain-text draft in Gmail
  * @param {object} options - Draft options
- * @param {string} options.to - Recipient. Throws GMAIL_TO_MISSING if empty
- * @param {string} options.subject - Subject. Throws GMAIL_SUBJECT_MISSING if empty
+ * @param {string} [options.messageId] - Id of the Message to reply to. The reply goes to its last Mail, in its thread
+ * @param {string} [options.to] - Recipient. Overrides the reply. Throws GMAIL_TO_MISSING if empty without messageId
+ * @param {string} [options.subject] - Subject. Overrides the reply. Throws GMAIL_SUBJECT_MISSING if empty without messageId
  * @param {string} options.body - Body, sent as is as text/plain. Throws GMAIL_BODY_MISSING if empty
  * @returns {Promise<object>} { draftId, threadId, url }, the url opening the draft in Gmail
  */
 export async function draftCreate(options) {
-  const { to, subject, body } = options;
+  const { messageId, body } = options;
+
+  const reply = messageId ? await __.readReply(messageId) : {};
+  const to = options.to || reply.to;
+  const subject = options.subject || reply.subject;
+  const { inReplyTo, references } = reply;
 
   if (!to) {
     throw firostError('GMAIL_TO_MISSING', 'Pass the recipient with --to');
@@ -25,10 +44,10 @@ export async function draftCreate(options) {
     throw firostError('GMAIL_BODY_MISSING', 'Pass the --body');
   }
 
-  const raw = await __.buildRaw({ to, subject, body });
+  const raw = await __.buildRaw({ to, subject, body, inReplyTo, references });
   const draft = await __.callApi('drafts', {
     method: 'POST',
-    body: { message: { raw } },
+    body: { message: { raw, ...(messageId && { threadId: messageId }) } },
   });
 
   return {
@@ -39,6 +58,24 @@ export async function draftCreate(options) {
 }
 
 __ = {
+  /**
+   * Compute the reply to the last Mail of a Message
+   * @param {string} messageId - Id of the Message
+   * @returns {Promise<object>} { to, subject, inReplyTo, references }
+   */
+  async readReply(messageId) {
+    // The query string is part of the path, because callApi cannot repeat a
+    // parameter
+    const thread = await __.callApi(`threads/${messageId}?${METADATA_QUERY}`);
+    const last = _.maxBy(thread.messages, (mail) => Number(mail.internalDate));
+    return buildReply({
+      from: header(last, 'From'),
+      replyTo: header(last, 'Reply-To'),
+      subject: header(last, 'Subject'),
+      messageId: header(last, 'Message-ID'),
+      references: header(last, 'References'),
+    });
+  },
   buildRaw,
   callApi,
 };

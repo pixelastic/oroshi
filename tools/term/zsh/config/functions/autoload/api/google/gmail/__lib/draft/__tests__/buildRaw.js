@@ -20,6 +20,24 @@ describe('buildRaw', () => {
     expect(actual).toHaveProperty('html', false);
   });
 
+  it('sets the threading headers', async () => {
+    const raw = await buildRaw({
+      to: 'a@example.com',
+      subject: 'Re: Hello',
+      body: 'hi',
+      inReplyTo: '<m2@example.com>',
+      references: '<m1@example.com> <m2@example.com>',
+    });
+
+    const actual = await parse(raw);
+
+    expect(actual).toHaveProperty('inReplyTo', '<m2@example.com>');
+    expect(actual).toHaveProperty('references', [
+      '<m1@example.com>',
+      '<m2@example.com>',
+    ]);
+  });
+
   it('encodes a non-ASCII subject', async () => {
     const raw = await buildRaw({
       to: 'a@example.com',

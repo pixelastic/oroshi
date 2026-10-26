@@ -3,6 +3,8 @@
 # Usage:
 # $ gmail-draft-create --to a@b.c --subject "Hello" --body "Hi there"
 # $ gmail-draft-create --to a@b.c --subject "Hello" --body "Hi" --account perso
+# $ gmail-draft-create --messageId <id> --body "Thanks"  # Threaded reply
+# --to and --subject override the reply, and are required without --messageId
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h:h}/__lib"
