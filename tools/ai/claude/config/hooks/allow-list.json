@@ -230,6 +230,7 @@
   "gmail-inbox-raw",
   "gmail-message-list",
   "gmail-message-list-raw",
+  "gmail-message-search",
   "gmail-read",
   "gmail-search",
   "gnome-extensions disable",

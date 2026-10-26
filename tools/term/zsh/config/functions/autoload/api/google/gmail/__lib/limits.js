@@ -4,5 +4,5 @@
  */
 export const limits = {
   inbox: 25,
-  search: 50,
+  search: 25,
 };
