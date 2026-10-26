@@ -5,9 +5,9 @@ import { _ } from 'golgoth';
  * @param {object} input - The Document, as read from the API
  * @param {string} input.documentId - Document ID
  * @param {string} [input.title] - Title of the Document
- * @param {string} input.markdown - Markdown of the tab
- * @param {object[]} input.images - Images of the tab, as { contentUri }
- * @returns {object} The Document as { id, title, url, markdown, images }
+ * @param {string} [input.markdown] - Markdown of the tab, absent for a Document that was not read
+ * @param {object[]} [input.images] - Images of the tab, as { contentUri }, absent for a Document that was not read
+ * @returns {object} The Document as { id, title, url, markdown, images }, without markdown and images when it was not read
  */
 export function formatDocument(input) {
   const { documentId, title, markdown, images } = input;
@@ -16,6 +16,7 @@ export function formatDocument(input) {
     title: title || 'untitled',
     url: `https://docs.google.com/document/d/${documentId}/edit`,
     markdown,
-    images: _.map(images, 'contentUri'),
+    // A Document that was not read has no images
+    images: images && _.map(images, 'contentUri'),
   };
 }

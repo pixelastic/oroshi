@@ -1,0 +1,14 @@
+# Create a Google Doc from a Markdown or docx file, and print it as JSON
+# A .md file is converted with pandoc and the reference style, a .docx is used as is
+# Usage:
+# $ gdoc-document-create article.md
+# $ gdoc-document-create article.docx
+# $ gdoc-document-create article.md --title "Paris Meetup"
+# $ gdoc-document-create article.md --directory https://drive.google.com/drive/folders/folderA
+# $ gdoc-document-create article.md --open
+# $ gdoc-document-create article.md --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+local referenceDoc="${libDir:h}/__config/reference.docx"
+OROSHI_MD2GDOC_REFERENCE_DOC="$referenceDoc" node "${libDir}/bin/gdoc-document-create.js" "$@"

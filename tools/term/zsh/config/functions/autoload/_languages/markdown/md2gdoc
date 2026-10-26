@@ -6,5 +6,5 @@
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h}/__lib"
-local referenceDoc="${libDir:h}/__config/reference.docx"
+local referenceDoc="${libDir:h:h:h}/api/google/gdoc/__config/reference.docx"
 OROSHI_MD2GDOC_REFERENCE_DOC="$referenceDoc" node "${libDir}/bin/md2gdoc.js" "$@"

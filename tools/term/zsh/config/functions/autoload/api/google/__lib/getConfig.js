@@ -1,4 +1,4 @@
-import { exists, firostError, readJson } from 'firost';
+import { env, exists, firostError, readJson } from 'firost';
 import { getClientCredentials } from './getClientCredentials.js';
 import { loginCommand } from './loginCommand.js';
 import { tokensPath } from './tokensPath.js';
@@ -7,7 +7,7 @@ export let __;
 
 /**
  * Read the OAuth tokens and the OAuth client of Google
- * @returns {Promise<object>} The tokens of the selected account, with the client id and secret
+ * @returns {Promise<object>} The tokens of the selected account, the client id and secret, the Drive folder of new Documents and the pandoc reference document
  */
 export async function getConfig() {
   const { account } = __;
@@ -24,7 +24,12 @@ export async function getConfig() {
 
   const tokens = await readJson(path);
 
-  return { tokens, clientId, clientSecret };
+  // Both are optional: a new Document lands at the root of the Drive without a
+  // folder
+  const docsFolderId = env('OROSHI_GOOGLE_DRIVE_DOCS_FOLDER_ID');
+  const referenceDoc = env('OROSHI_MD2GDOC_REFERENCE_DOC');
+
+  return { tokens, clientId, clientSecret, docsFolderId, referenceDoc };
 }
 
 // The account that setAccount changes. Null is the default account

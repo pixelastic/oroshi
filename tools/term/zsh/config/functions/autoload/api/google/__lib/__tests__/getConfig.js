@@ -8,6 +8,8 @@ describe('getConfig', () => {
     vi.stubEnv('OROSHI_FOLDER_STATE', testDirectory);
     vi.stubEnv('OROSHI_GOOGLE_CLIENT_ID', 'client-id');
     vi.stubEnv('OROSHI_GOOGLE_CLIENT_SECRET', 'client-secret');
+    vi.stubEnv('OROSHI_GOOGLE_DRIVE_DOCS_FOLDER_ID', 'folder-id');
+    vi.stubEnv('OROSHI_MD2GDOC_REFERENCE_DOC', '/config/reference.docx');
     await writeJson(
       { refresh_token: 'default-refresh' },
       `${testDirectory}/google/tokens.json`,
@@ -37,6 +39,8 @@ describe('getConfig', () => {
         tokens: { refresh_token: expected },
         clientId: 'client-id',
         clientSecret: 'client-secret',
+        docsFolderId: 'folder-id',
+        referenceDoc: '/config/reference.docx',
       });
     },
   );

@@ -23,6 +23,16 @@ describe('formatDocument', () => {
     });
   });
 
+  it('returns neither markdown nor images for a Document that was not read', () => {
+    const actual = formatDocument({ documentId: 'abc123', title: 'Created' });
+
+    expect(actual).toEqual({
+      id: 'abc123',
+      title: 'Created',
+      url: 'https://docs.google.com/document/d/abc123/edit',
+    });
+  });
+
   it('falls back to "untitled" without a title', () => {
     const actual = formatDocument({ ...input, title: undefined });
 
