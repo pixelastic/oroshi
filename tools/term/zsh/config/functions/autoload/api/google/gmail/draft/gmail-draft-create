@@ -1,0 +1,9 @@
+# Create a plain-text draft in Gmail, and print its ids and URL as JSON
+# --body is sent as is, as text/plain
+# Usage:
+# $ gmail-draft-create --to a@b.c --subject "Hello" --body "Hi there"
+# $ gmail-draft-create --to a@b.c --subject "Hello" --body "Hi" --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-draft-create.js" "$@"

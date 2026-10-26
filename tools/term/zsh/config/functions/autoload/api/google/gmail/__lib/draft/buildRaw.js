@@ -1,0 +1,17 @@
+import MailComposer from 'nodemailer/lib/mail-composer/index.js';
+
+/**
+ * Build the raw mail of a draft, ready for the Gmail API
+ * @param {object} options - Mail options
+ * @param {string} options.to - Recipient
+ * @param {string} options.subject - Subject, encoded when it is not ASCII
+ * @param {string} options.body - Body, sent as is as text/plain
+ * @returns {Promise<string>} The mail, encoded in base64url
+ */
+export async function buildRaw(options) {
+  const { to, subject, body } = options;
+  const mail = await new MailComposer({ to, subject, text: body })
+    .compile()
+    .build();
+  return mail.toString('base64url');
+}
