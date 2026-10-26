@@ -89,14 +89,14 @@ _mock_side_effects() {
 
 # In-worktree case
 
-@test "in worktree: calls claude-stop with --next ralph" {
+@test "in worktree: calls claude-stop with --next ralph --auto" {
 	local planDirectory="$(_mock_plan_repo)"
 	_mock_in_worktree
 	_mock_side_effects
 
 	bats_run_zsh "plan-end $planDirectory"
 	[[ "$status" -eq 0 ]]
-	[[ "$(cat "$BATS_TMP_DIR/calls.txt")" == "claude-stop --next ralph" ]]
+	[[ "$(cat "$BATS_TMP_DIR/calls.txt")" == "claude-stop --next ralph --auto" ]]
 }
 
 @test "in worktree: does not create a Kitty tab" {

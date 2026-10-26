@@ -1,25 +1,21 @@
-# List the DevRel meetups, one per line, most recent first
+# List the upcoming DevRel meetups (today or later), one per line, closest first
 # Fields: recordId▮date▮status▮name▮URL
 # The status is its label: pending, confirmed or cancelled
 # An empty Field leaves an empty column
 # --status keeps only the meetups with that status
-# --upcoming keeps only the meetups of today or later
 # --limit keeps only the first meetups, once the other filters are applied (default: all)
 # At most 1000 meetups are listed
 # Usage:
 # $ meetup-list-raw
 # $ meetup-list-raw --status pending
-# $ meetup-list-raw --upcoming
 # $ meetup-list-raw --limit 10
 setopt local_options err_return
 
 zparseopts -E -D \
   -status:=flagStatus \
-  -upcoming=flagUpcoming \
   -limit:=flagLimit
 
 local statusFilter=${flagStatus[2]}
-local isUpcoming=${#flagUpcoming}
 local limit=${flagLimit[2]}
 
 # Only the statuses stored in Airtable can filter
@@ -49,7 +45,6 @@ rawRecords="$(jq \
   split("\n")
   | map(select(. != "") | split("▮") | {id: .[0], fields: (.[1] | fromjson)})
   | sort_by(.fields.date // "")
-  | reverse
   | .[]
   | [.id, (.fields.date // ""), (.fields.status // ""), (.fields.name // ""), (.fields.URL // "")]
   | join("▮")
@@ -65,7 +60,7 @@ for rawRecord in ${(f)rawRecords}; do
   local fields=("${(@ps/▮/)rawRecord}")
 
   # Skip the meetups already past (ISO dates sort like text)
-  [[ $isUpcoming == 1 && "${fields[2]}" < "$today" ]] && continue
+  [[ "${fields[2]}" < "$today" ]] && continue
 
   # Airtable stores a label such as "⏳️ Pending": the last word, in lowercase, is the status
   local label="${${(L)fields[3]}##* }"

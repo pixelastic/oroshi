@@ -5,8 +5,8 @@ setup() {
   # Stub the raw list to record its arguments, then print canned lines
   meetup-list-raw() {
     print -r -- "$@" >"$BATS_TMP_DIR/raw-args"
-    echo "recA▮2026-12-01▮pending▮Datadog▮https://dd.example"
     echo "recB▮2026-09-15▮confirmed▮Paris Meetup▮"
+    echo "recA▮2026-12-01▮pending▮Datadog▮https://dd.example"
   }
   # Stub table to record its input, so the width of the terminal never truncates a row
   table() {
@@ -19,14 +19,14 @@ setup() {
 @test "gives the rows of the raw list to table, without the record ID" {
   bats_run_zsh "meetup-list; cat \"\$BATS_TMP_DIR/table-input\" | text-ansi-remove"
   [[ "$status" -eq 0 ]]
-  [[ "${lines[0]}" == "2026-12-01▮pending▮Datadog▮https://dd.example" ]]
-  [[ "${lines[1]}" == "2026-09-15▮confirmed▮Paris Meetup▮" ]]
+  [[ "${lines[0]}" == "2026-09-15▮confirmed▮Paris Meetup▮" ]]
+  [[ "${lines[1]}" == "2026-12-01▮pending▮Datadog▮https://dd.example" ]]
 }
 
 @test "colors the date and the status" {
   bats_run_zsh "meetup-list; cat \"\$BATS_TMP_DIR/table-input\""
-  [[ "${lines[0]}" == *$'\e['*"2026-12-01"* ]]
-  [[ "${lines[0]}" == *$'\e['*"pending"* ]]
+  [[ "${lines[0]}" == *$'\e['*"2026-09-15"* ]]
+  [[ "${lines[0]}" == *$'\e['*"confirmed"* ]]
 }
 
 @test "passes the status to the raw list" {
@@ -68,13 +68,13 @@ setup() {
   [[ "$output" != *"rec"* ]]
 }
 
-@test "passes --upcoming to the raw list" {
-  bats_run_zsh "meetup-list --upcoming"
-  [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--limit 10 --upcoming" ]]
+@test "combines the status and the limit" {
+  bats_run_zsh "meetup-list --status pending --limit 5"
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--limit 5 --status pending" ]]
 }
 
-@test "combines --upcoming with the status and the limit" {
-  bats_run_zsh "meetup-list --upcoming --status pending --limit 5"
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--limit 5 --status pending --upcoming" ]]
+@test "no longer documents --upcoming" {
+  bats_run_zsh "cat \${^fpath}/meetup-list(N)"
+  [[ "$output" == *"Columns: date"* ]]
+  [[ "$output" != *"--upcoming"* ]]
 }

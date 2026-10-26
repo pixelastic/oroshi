@@ -5,11 +5,14 @@ setup() {
   # Stub the raw record list to record its arguments, then print canned lines
   airtable-record-list-raw() {
     print -r -- "$@" >"$BATS_TMP_DIR/raw-args"
-    echo 'recC▮{"date":"2026-06-01","status":"🛑 Cancelled","name":"Lyon Meetup","URL":"https://lyon.example"}'
+    echo 'recC▮{"date":"2026-10-20","status":"🛑 Cancelled","name":"Lyon Meetup","URL":"https://lyon.example"}'
     echo 'recA▮{"date":"2026-12-01","status":"⏳️ Pending","name":"Datadog User Group Paris","URL":"https://datadog.example"}'
     echo 'recB▮{"date":"2026-09-15","status":"✅ Confirmed","name":"Paris Meetup"}'
+    echo 'recD▮{"date":"2026-03-01","status":"✅ Confirmed","name":"Past Meetup"}'
   }
-  bats_mock airtable-record-list-raw
+  # Today is 2026-09-15, after the past Meetup and before the upcoming ones
+  date() { echo "2026-09-15"; }
+  bats_mock airtable-record-list-raw date
   bats_mock_env "BATS_TMP_DIR" "$BATS_TMP_DIR"
   bats_mock_env "AIRTABLE_BASE_DEVREL" "appDEV"
 }
@@ -22,13 +25,13 @@ setup() {
 
 @test "prints record ID, date, status, name and URL, in that order" {
   bats_run_zsh "meetup-list-raw"
-  [[ "${lines[0]}" == "recA▮2026-12-01▮pending▮Datadog User Group Paris▮https://datadog.example" ]]
+  [[ "${lines[2]}" == "recA▮2026-12-01▮pending▮Datadog User Group Paris▮https://datadog.example" ]]
 }
 
 @test "shows each status as its label" {
   bats_run_zsh "meetup-list-raw"
-  [[ "${lines[1]}" == "recB▮2026-09-15▮confirmed▮Paris Meetup▮" ]]
-  [[ "${lines[2]}" == "recC▮2026-06-01▮cancelled▮Lyon Meetup▮https://lyon.example" ]]
+  [[ "${lines[0]}" == "recB▮2026-09-15▮confirmed▮Paris Meetup▮" ]]
+  [[ "${lines[1]}" == "recC▮2026-10-20▮cancelled▮Lyon Meetup▮https://lyon.example" ]]
 }
 
 @test "keeps only the Meetups with the status given to --status" {
@@ -42,7 +45,7 @@ setup() {
   bats_run_zsh "meetup-list-raw --limit 2"
   [[ "$status" -eq 0 ]]
   [[ "${#lines[@]}" -eq 2 ]]
-  [[ "${lines[1]}" == "recB▮"* ]]
+  [[ "${lines[1]}" == "recC▮"* ]]
 }
 
 @test "applies --limit after the status filter" {
@@ -90,47 +93,48 @@ setup() {
   [[ "$output" != *"recA"* ]]
 }
 
-@test "keeps only the Meetups of today or later with --upcoming" {
-  date() { echo "2026-09-15"; }
-  bats_mock date
-
-  bats_run_zsh "meetup-list-raw --upcoming"
+@test "drops the Meetups before today without any flag" {
+  bats_run_zsh "meetup-list-raw"
   [[ "$status" -eq 0 ]]
-  [[ "${#lines[@]}" -eq 2 ]]
-  [[ "${lines[0]}" == "recA▮"* ]]
-  [[ "${lines[1]}" == "recB▮"* ]]
+  [[ "${#lines[@]}" -eq 3 ]]
+  [[ "$output" != *"recD"* ]]
+}
+
+@test "keeps the Meetup of today" {
+  bats_run_zsh "meetup-list-raw"
+  [[ "$output" == *"recB▮2026-09-15▮"* ]]
 }
 
 @test "prints nothing when no Meetup is upcoming" {
   date() { echo "2027-01-01"; }
   bats_mock date
 
-  bats_run_zsh "meetup-list-raw --upcoming"
+  bats_run_zsh "meetup-list-raw"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "" ]]
 }
 
-@test "applies --limit after --upcoming" {
-  date() { echo "2026-09-15"; }
-  bats_mock date
-
-  bats_run_zsh "meetup-list-raw --upcoming --limit 1"
-  [[ "${#lines[@]}" -eq 1 ]]
-  [[ "${lines[0]}" == "recA▮"* ]]
-}
-
-@test "combines --upcoming with --status" {
-  date() { echo "2026-09-15"; }
-  bats_mock date
-
-  bats_run_zsh "meetup-list-raw --upcoming --status confirmed"
+@test "applies --limit after the default period" {
+  bats_run_zsh "meetup-list-raw --limit 1"
   [[ "${#lines[@]}" -eq 1 ]]
   [[ "${lines[0]}" == "recB▮"* ]]
 }
 
-@test "sorts the Meetups by date, most recent first" {
+@test "combines the default period with --status" {
+  bats_run_zsh "meetup-list-raw --status confirmed"
+  [[ "${#lines[@]}" -eq 1 ]]
+  [[ "${lines[0]}" == "recB▮"* ]]
+}
+
+@test "sorts the Meetups by date, closest to today first" {
   bats_run_zsh "meetup-list-raw"
-  [[ "${lines[0]}" == "recA▮"* ]]
-  [[ "${lines[1]}" == "recB▮"* ]]
-  [[ "${lines[2]}" == "recC▮"* ]]
+  [[ "${lines[0]}" == "recB▮"* ]]
+  [[ "${lines[1]}" == "recC▮"* ]]
+  [[ "${lines[2]}" == "recA▮"* ]]
+}
+
+@test "no longer documents --upcoming" {
+  bats_run_zsh "cat \${^fpath}/meetup-list-raw(N)"
+  [[ "$output" == *"Fields: recordId"* ]]
+  [[ "$output" != *"--upcoming"* ]]
 }

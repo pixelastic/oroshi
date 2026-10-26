@@ -25,7 +25,7 @@ local contextRoot="$(context-root)"
 
 # Planning inside the Worktree: hand off to ralph in the same window
 if [[ "$contextRoot" == "$worktreePath" ]]; then
-  claude-stop --next "ralph"
+  claude-stop --next "ralph --auto"
   return 0
 fi
 
