@@ -1,8 +1,8 @@
 # Gmail
 
-The commands that let a shell or an agent read Gmail. It follows the
-[API glossary](/docs/api/GLOSSARY.md), and defines only the words of this
-service.
+The commands that let a shell or an agent read Gmail, and write **Drafts**. No
+command sends a **Mail**. It follows the [API glossary](/docs/api/GLOSSARY.md),
+and defines only the words of this service.
 
 ## Language
 
@@ -12,7 +12,9 @@ service.
 
 The Google account whose OAuth tokens a command uses. This is an **OAuth API**,
 and its **Login** is `google-login`, shared with Google Docs. `--account`
-selects the account, and the default account is used otherwise.
+selects the account, and the default account is used otherwise. The login asks
+for the scopes `gmail.readonly` and `gmail.compose`. After a new scope, run
+`google-login` again for each **Account**.
 
 _Avoid_: profile, user
 
@@ -48,7 +50,30 @@ the attachments of each **Mail** (`partId`, `filename`, `mimeType`, `size`), and
 
 _Avoid_: file, document
 
+**Draft**:
+
+A **Mail** that is written and not sent, saved in Gmail. It has a **Fixed
+schema** and no **Anchor**. A **Draft** is created as new, or as a reply to the
+last **Mail** of a **Message**, in the same thread. A reply goes to all
+recipients except the **Aliases**, and quotes the last **Mail**. No command
+reads, changes, lists or sends a **Draft**: the user does it in Gmail, from the
+`url` that `create` prints.
+
+_Avoid_: unsent mail, reply
+
 ### Verbs
+
+**`create`**:
+
+The standard [`create`](/docs/api/reference/commands/create.md) verb of the
+`draft` entity:
+`gmail-draft-create --to <address> --subject <text> --body <text>` makes one
+**Draft**, and prints `draftId`, `threadId` and `url` as JSON. `--body-file`
+reads the body from a file, and sends a `.md` file as HTML too.
+`--messageId <id>` replies to a **Message**. `--to` and `--subject` are then
+optional, and override the reply.
+
+_Avoid_: `add`, `new`, `write`, `reply`
 
 **`download`**:
 
@@ -65,14 +90,31 @@ The Gmail label `INBOX`. The default list of **Messages** is the **Inbox**.
 
 _Avoid_: mailbox, folder
 
+**Alias**:
+
+An address of an **Account** that can send **Mails**. The user lists them in an
+environment variable: `OROSHI_GMAIL_ALIASES` for the default **Account**, and
+`OROSHI_GMAIL_ALIASES_<ACCOUNT>` for `--account <account>`
+(`OROSHI_GMAIL_ALIASES_PERSO` for `perso`). Both are comma-separated lists, and
+a reply fails with `GMAIL_ALIASES_MISSING` when the list is empty. A reply to
+all removes the **Aliases** from its recipients. It is sent from the **Alias**
+that received the last **Mail**, or from the first **Alias** of the list when
+none did.
+
+_Avoid_: identity, sender, address
+
 ## Relationships
 
 - A **Message** contains one or more **Mails**
 - The **Inbox** holds zero or more **Messages**
 - Every command uses the tokens of one **Account**
+- An **Account** has one or more **Aliases**
+- A **Draft** replies to the last **Mail** of one **Message**, or to none
+- A reply **Draft** is sent from one **Alias** of the **Account**
 
 ## Flagged ambiguities
 
 - "message" is the word of the Gmail API for one mail, and "thread" its word for
   a conversation — resolved: a **Message** is a conversation, and a **Mail** is
-  one exchange. There is no `thread` entity.
+  one exchange. There is no `thread` entity. `--messageId` follows this rule: it
+  takes the id of a **Message**, which Gmail calls a thread id.
