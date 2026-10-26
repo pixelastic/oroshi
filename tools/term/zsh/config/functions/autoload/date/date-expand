@@ -1,0 +1,33 @@
+# Expand a partial date (YYYY, YYYY-MM) to its first day, or its last with --last
+# A full date is returned as is
+# Usage:
+# $ date-expand 2024-02          # 2024-02-01
+# $ date-expand --last 2024-02   # 2024-02-29
+# $ date-expand --last 2024      # 2024-12-31
+# $ date-expand 2024-02-15       # 2024-02-15
+setopt local_options err_return
+
+zparseopts -E -D -last=flagLast
+
+local isLast=${#flagLast}
+local date="$1"
+
+local parts=("${(@s/-/)date}")
+local year=${parts[1]}
+local month=${parts[2]}
+local day=${parts[3]}
+
+# A full date needs no expansion
+if [[ "$day" != "" ]]; then
+  echo "$date"
+  return 0
+fi
+
+if [[ $isLast == 0 ]]; then
+  printf "%s-%02d-01\n" "$year" $(( 10#${month:-1} ))
+  return 0
+fi
+
+# A year ends in December
+local lastMonth=$(printf "%02d" $(( 10#${month:-12} )))
+echo "$year-$lastMonth-$(date-month-length "$year-$lastMonth")"

@@ -1,0 +1,14 @@
+# Number of days in a month, February included in a leap year
+# Usage:
+# $ date-month-length 2024-02   # 29
+# $ date-month-length 2023-02   # 28
+# $ date-month-length 2024-04   # 30
+setopt local_options err_return
+
+local parts=("${(@s/-/)1}")
+local year=${parts[1]}
+local month=$(( 10#${parts[2]} ))
+
+local monthLengths=(31 28 31 30 31 30 31 31 30 31 30 31)
+(( year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) )) && monthLengths[2]=29
+echo "${monthLengths[$month]}"
