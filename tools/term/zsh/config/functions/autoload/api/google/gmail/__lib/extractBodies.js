@@ -3,9 +3,9 @@ import { _ } from 'golgoth';
 export let __;
 
 /**
- * Extract the decoded text and HTML bodies of a mail payload
- * @param {object} payload - Gmail mail payload
- * @returns {object} { text, html }, each an empty string if the mail has no such part
+ * Extract the decoded text and HTML bodies of a Message payload
+ * @param {object} payload - Gmail Message payload
+ * @returns {object} { text, html }, each an empty string if the Message has no such part
  */
 export function extractBodies(payload) {
   return {
@@ -17,7 +17,7 @@ export function extractBodies(payload) {
 __ = {
   /**
    * Read the first part with the given mime type, walking nested multiparts
-   * @param {object} part - Gmail mail part
+   * @param {object} part - Gmail Message part
    * @param {string} mimeType - Mime type to read
    * @returns {string} Decoded content, or an empty string if no part has inline data
    */

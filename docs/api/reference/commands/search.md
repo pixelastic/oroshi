@@ -47,7 +47,7 @@ the text to look for.
 ```text
 # Example #1: Gmail has a query language, but still needs an option to limit the
 # number of results
-$ gmail-mail-search "from:alice label:work after:2026/01/01 before:2026/03/31" --limit 10
+$ gmail-thread-search "from:alice label:work after:2026/01/01 before:2026/03/31" --limit 10
 
 # Example #2: Notion has no query language, so the positional argument is the
 # text to search, and additional named arguments configure the search further

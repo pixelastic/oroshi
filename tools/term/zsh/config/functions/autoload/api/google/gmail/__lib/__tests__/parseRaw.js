@@ -14,7 +14,7 @@ describe('parseRaw', () => {
     {
       title: 'gives back the fields of a row',
       summary: {
-        id: 'c1',
+        threadId: 'c1',
         date: '2026-10-03T19:26:59.000Z',
         count: 3,
         authors: ['Bob', 'Alice Martin'],
@@ -26,7 +26,7 @@ describe('parseRaw', () => {
     {
       title: 'gives back a read summary without authors',
       summary: {
-        id: 'c2',
+        threadId: 'c2',
         date: '',
         count: 1,
         authors: [],

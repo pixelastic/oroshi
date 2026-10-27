@@ -22,7 +22,7 @@ const METADATA_QUERY =
 export async function threadSearch(options) {
   const { query, limit = limits.search } = options;
 
-  // An empty query would list the whole mailbox
+  // An empty query would list the whole account
   if (!query) {
     throw firostError('GMAIL_QUERY_MISSING', 'Pass a Gmail query');
   }

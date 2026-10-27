@@ -1,8 +1,8 @@
 import { _ } from 'golgoth';
 
 /**
- * List the attachments of a mail payload, walking nested multiparts
- * @param {object} part - Gmail mail part
+ * List the attachments of a Message payload, walking nested multiparts
+ * @param {object} part - Gmail Message part
  * @returns {object[]} Array of { partId, attachmentId, filename, mimeType, size }
  */
 export function extractAttachments(part) {

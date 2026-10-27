@@ -35,7 +35,7 @@ $ <service>-<entity>-update --<entity>Id recA '{"name":"Paris"}'
 ## Flag names
 
 - A flag that holds an identifier is camelCase, built from the `<entity>` and
-  `Id`: `--pageId`, `--recordId`, `--mailId`.
+  `Id`: `--pageId`, `--recordId`, `--messageId`.
 - Every other flag is lowercase kebab-case: `--limit`, `--account`,
   `--data-file`, `--min-date`.
 

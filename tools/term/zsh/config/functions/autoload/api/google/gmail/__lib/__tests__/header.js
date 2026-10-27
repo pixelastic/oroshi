@@ -1,7 +1,7 @@
 import { header } from '../header.js';
 
 describe('header', () => {
-  const mail = {
+  const message = {
     payload: { headers: [{ name: 'Subject', value: 'Hello' }] },
   };
 
@@ -10,12 +10,12 @@ describe('header', () => {
     { title: 'ignores the case', name: 'SUBJECT', expected: 'Hello' },
     { title: 'returns an empty string if missing', name: 'To', expected: '' },
   ])('$title', ({ name, expected }) => {
-    const actual = header(mail, name);
+    const actual = header(message, name);
 
     expect(actual).toEqual(expected);
   });
 
-  it('returns an empty string for a mail without payload', () => {
+  it('returns an empty string for a Message without payload', () => {
     const actual = header({}, 'Subject');
 
     expect(actual).toEqual('');
