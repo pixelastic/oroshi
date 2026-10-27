@@ -50,7 +50,10 @@ export async function attachmentRemove(options) {
     html: draft.html,
     inReplyTo: draft.inReplyTo,
     references: draft.references,
-    attachments: _.filter(draft.attachments, (_item, i) => i !== index),
+    attachments: _.filter(
+      draft.attachments,
+      (_item, attachmentIndex) => attachmentIndex !== index,
+    ),
   });
   const saved = await __.saveDraft({
     draftId,

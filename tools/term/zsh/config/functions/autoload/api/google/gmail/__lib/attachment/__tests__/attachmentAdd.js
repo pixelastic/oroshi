@@ -132,32 +132,30 @@ describe('attachmentAdd', () => {
   });
 
   it.each([
-    { title: 'an empty list', files: [] },
-    { title: 'no list', files: undefined },
-  ])(
-    'fails with GMAIL_ATTACHMENT_FILES_MISSING with $title',
-    async ({ files }) => {
-      let actual = null;
-      try {
-        await attachmentAdd({ draftId: 'd1', files });
-      } catch (error) {
-        actual = error;
-      }
-
-      expect(actual).toHaveProperty('code', 'GMAIL_ATTACHMENT_FILES_MISSING');
-      expect(__.loadDraft).not.toHaveBeenCalled();
+    {
+      title: 'an empty list',
+      options: { draftId: 'd1', files: [] },
+      expected: 'GMAIL_ATTACHMENT_FILES_MISSING',
     },
-  );
-
-  it('fails with GMAIL_DRAFT_ID_MISSING when the draftId is missing', async () => {
+    {
+      title: 'no list',
+      options: { draftId: 'd1', files: undefined },
+      expected: 'GMAIL_ATTACHMENT_FILES_MISSING',
+    },
+    {
+      title: 'no draftId',
+      options: { files: ['/tmp/a.png'] },
+      expected: 'GMAIL_DRAFT_ID_MISSING',
+    },
+  ])('fails with $expected with $title', async ({ options, expected }) => {
     let actual = null;
     try {
-      await attachmentAdd({ files: ['/tmp/a.png'] });
+      await attachmentAdd(options);
     } catch (error) {
       actual = error;
     }
 
-    expect(actual).toHaveProperty('code', 'GMAIL_DRAFT_ID_MISSING');
+    expect(actual).toHaveProperty('code', expected);
     expect(__.loadDraft).not.toHaveBeenCalled();
   });
 

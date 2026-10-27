@@ -60,7 +60,11 @@ export async function callApi(path, options) {
   // Read the body as text, so that an empty body does not throw
   const text = await response.text();
 
-  if (response.status === 401) {
+  // A token granted before a scope was added is rejected with a 403
+  const isScopeMissing =
+    response.status === 403 &&
+    _.includes(text, 'ACCESS_TOKEN_SCOPE_INSUFFICIENT');
+  if (response.status === 401 || isScopeMissing) {
     throw firostError(
       'GOOGLE_LOGIN_REQUIRED',
       loginCommand(configInternals.account),

@@ -83,8 +83,20 @@ describe('callApi', () => {
       return actual;
     };
 
-    it('asks for a login on a 401', async () => {
-      __.fetch.mockReturnValue(response(401, '{"error":"UNAUTHENTICATED"}'));
+    it.each([
+      {
+        title: 'a 401',
+        input: response(401, '{"error":"UNAUTHENTICATED"}'),
+      },
+      {
+        title: 'a 403 for an insufficient scope',
+        input: response(
+          403,
+          '{"error":{"details":[{"reason":"ACCESS_TOKEN_SCOPE_INSUFFICIENT"}]}}',
+        ),
+      },
+    ])('asks for a login on $title', async ({ input }) => {
+      __.fetch.mockReturnValue(input);
 
       const actual = await call();
 
