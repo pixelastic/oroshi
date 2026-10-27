@@ -53,7 +53,8 @@ _Avoid_: file, document
 **Draft**:
 
 A **Message** that is written and not sent yet, saved in Gmail. It is either
-new, or a reply to the last **Message** of a **Thread**.
+new, or a reply to the last **Message** of a **Thread**. A reply **Draft** holds
+only the text of the user, and no copy of the previous **Message**.
 
 _Avoid_: unsent mail, unsent email, reply
 

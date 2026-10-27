@@ -20,29 +20,6 @@ describe('buildRaw', () => {
     expect(actual).toHaveProperty('html', false);
   });
 
-  it('appends the quote to the body in a multipart/alternative mail', async () => {
-    const raw = await buildRaw({
-      to: 'a@example.com',
-      subject: 'Re: Hello',
-      body: 'thanks <3\nbye',
-      quote: {
-        html: '<div class="gmail_quote"><blockquote>orig</blockquote></div>',
-        text: 'Bob wrote:\n> orig',
-      },
-    });
-
-    const actual = await parse(raw);
-
-    expect(Buffer.from(raw, 'base64url').toString('utf8')).toContain(
-      'multipart/alternative',
-    );
-    expect(actual.text.trim()).toEqual('thanks <3\nbye\n\nBob wrote:\n> orig');
-    expect(actual).toHaveProperty(
-      'html',
-      '<div dir="ltr">thanks &lt;3<br>bye</div><br><div class="gmail_quote"><blockquote>orig</blockquote></div>',
-    );
-  });
-
   it('sends the HTML of the body next to its text', async () => {
     const raw = await buildRaw({
       to: 'a@example.com',
@@ -57,27 +34,6 @@ describe('buildRaw', () => {
     expect(actual).toHaveProperty(
       'html',
       '<div dir="ltr"><ul>\n<li>one</li>\n</ul></div>',
-    );
-  });
-
-  it('puts the HTML of the body before the quote', async () => {
-    const raw = await buildRaw({
-      to: 'a@example.com',
-      subject: 'Re: Hello',
-      body: '- one',
-      html: '<ul>\n<li>one</li>\n</ul>',
-      quote: {
-        html: '<div class="gmail_quote">orig</div>',
-        text: 'Bob wrote:\n> orig',
-      },
-    });
-
-    const actual = await parse(raw);
-
-    expect(actual.text.trim()).toEqual('- one\n\nBob wrote:\n> orig');
-    expect(actual).toHaveProperty(
-      'html',
-      '<div dir="ltr"><ul>\n<li>one</li>\n</ul></div><br><div class="gmail_quote">orig</div>',
     );
   });
 

@@ -99,7 +99,6 @@ describe('draftCreate', () => {
                 value: 'Carol <carol@example.com>, work@example.com',
               },
               { name: 'Cc', value: 'dave@example.com, me@example.com' },
-              { name: 'Date', value: 'Mon, 26 Oct 2026 10:05:00 +0100' },
               { name: 'Subject', value: 'Re: Hello' },
               { name: 'Message-ID', value: '<m2@example.com>' },
               { name: 'References', value: '<m1@example.com>' },
@@ -132,14 +131,6 @@ describe('draftCreate', () => {
     };
 
     beforeEach(() => {
-      vi.spyOn(__, 'extractBodies').mockReturnValue({
-        text: 'orig',
-        html: '<p>orig</p>',
-      });
-      vi.spyOn(__, 'buildQuote').mockReturnValue({
-        html: 'QUOTE_HTML',
-        text: 'QUOTE_TEXT',
-      });
       vi.spyOn(__, 'getThread').mockReturnValue(thread);
     });
 
@@ -158,18 +149,6 @@ describe('draftCreate', () => {
       });
     });
 
-    it('quotes the date, the sender and the bodies of the last Message', async () => {
-      await draftCreate(replyOptions);
-
-      expect(__.extractBodies).toHaveBeenCalledWith(thread.messages[0].payload);
-      expect(__.buildQuote).toHaveBeenCalledWith({
-        date: 'Mon, 26 Oct 2026 10:05:00 +0100',
-        from: 'Bob <bob@example.com>',
-        text: 'orig',
-        html: '<p>orig</p>',
-      });
-    });
-
     it('builds the raw mail from the last Message', async () => {
       await draftCreate(replyOptions);
 
@@ -179,7 +158,6 @@ describe('draftCreate', () => {
         cc: 'Carol <carol@example.com>, dave@example.com',
         subject: 'Re: Hello',
         body: 'hi',
-        quote: { html: 'QUOTE_HTML', text: 'QUOTE_TEXT' },
         inReplyTo: '<m2@example.com>',
         references: '<m1@example.com> <m2@example.com>',
       });
@@ -224,7 +202,6 @@ describe('draftCreate', () => {
         cc: 'Carol <carol@example.com>, dave@example.com',
         subject: 'Other',
         body: 'hi',
-        quote: { html: 'QUOTE_HTML', text: 'QUOTE_TEXT' },
         inReplyTo: '<m2@example.com>',
         references: '<m1@example.com> <m2@example.com>',
       });

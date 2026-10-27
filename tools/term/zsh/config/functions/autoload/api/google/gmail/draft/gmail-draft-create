@@ -3,13 +3,13 @@
 # Flags:
 # --to <address>       Recipient. Required without --threadId
 # --subject <text>     Subject. Required without --threadId
-# --body <text>        Body, sent as text/plain. A reply also sends HTML, to quote
+# --body <text>        Body, sent as text/plain
 # --body-file <path>   Body read from a file. A .md file is also sent as HTML
 #                      Pass one of --body or --body-file, never both
 # --threadId <id>      Id of the Thread (as printed by gmail-thread-read,
 #                      gmail-thread-search and gmail-thread-list-raw) to reply
 #                      to. The draft replies to all, in the Thread, from
-#                      the alias that received the last Message, and quotes it
+#                      the alias that received the last Message
 #                      --to and --subject override the reply
 # --account <name>     Account of the draft. The default account if empty
 # A reply reads the aliases of the account in OROSHI_GMAIL_ALIASES (default
