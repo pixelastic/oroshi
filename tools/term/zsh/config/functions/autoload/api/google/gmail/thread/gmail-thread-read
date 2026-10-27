@@ -1,7 +1,9 @@
 # Read a Thread as a whole, and print it as a JSON envelope, with its Messages oldest first
 # The threadId is printed by gmail-thread-list-raw and gmail-thread-search
 # Envelope: threadId, subject, unread, messages
-# Each Message has messageId, from, to, subject, date, snippet, body, attachments
+# Each Message has messageId, from, to, subject, date, snippet, body, attachments, isDraft
+# A Draft Message (isDraft: true) also has its draftId
+# Reading a Thread that holds a Draft lists the Drafts of the Account once
 # Usage:
 # $ gmail-thread-read threadId
 # $ gmail-thread-read threadId --account perso
