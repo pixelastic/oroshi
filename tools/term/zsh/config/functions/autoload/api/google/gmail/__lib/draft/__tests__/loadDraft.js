@@ -49,6 +49,14 @@ describe('loadDraft', () => {
     expect(actual.text.trim()).toEqual('hi there');
   });
 
+  it('returns a single reference as it is', async () => {
+    await mockDraft({ ...baseMail, references: '<m1@example.com>' });
+
+    const actual = await loadDraft('d1');
+
+    expect(actual).toHaveProperty('references', '<m1@example.com>');
+  });
+
   it('returns empty strings for the missing address headers', async () => {
     await mockDraft({ to: 'you@example.com', subject: 'Hello', text: 'hi' });
 

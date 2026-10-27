@@ -28,9 +28,10 @@ export async function loadDraft(draftId) {
     cc: _.get(mail, 'cc.text', ''),
     subject: mail.subject,
     inReplyTo: mail.inReplyTo,
+    // A single reference is parsed as a string, several as an array
     references: _.isEmpty(mail.references)
       ? undefined
-      : mail.references.join(' '),
+      : _.chain(mail.references).castArray().join(' ').value(),
     text: mail.text,
     html: mail.html ? mail.html.replace(HTML_WRAPPER, '$1') : undefined,
     attachments: _.map(mail.attachments, (attachment) =>
