@@ -8,7 +8,7 @@ await runBin(async () => {
   // The flags stay strings, so that a missing value is reported by the module
   const { named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['messageId', 'to', 'subject', 'body', 'body-file'] },
+    minimist: { string: ['threadId', 'to', 'subject', 'body', 'body-file'] },
   });
   const draft = await draftCreate(named);
   console.log(JSON.stringify(draft, null, 2));

@@ -2,13 +2,13 @@ import { buildReply } from '../buildReply.js';
 
 describe('buildReply', () => {
   const aliases = ['me@example.com', 'work@example.com'];
-  const mail = {
+  const message = {
     from: 'Alice <alice@example.com>',
     replyTo: '',
     to: 'me@example.com',
     cc: '',
     subject: 'Hello',
-    messageId: '<m2@example.com>',
+    rfcMessageId: '<m2@example.com>',
     references: '',
   };
 
@@ -16,7 +16,7 @@ describe('buildReply', () => {
     { title: 'adds the prefix', subject: 'Hello', expected: 'Re: Hello' },
     { title: 'keeps the prefix', subject: 'Re: Hello', expected: 'Re: Hello' },
   ])('$title to the subject', ({ subject, expected }) => {
-    const actual = buildReply({ ...mail, subject }, aliases);
+    const actual = buildReply({ ...message, subject }, aliases);
 
     expect(actual).toHaveProperty('subject', expected);
   });
@@ -33,13 +33,13 @@ describe('buildReply', () => {
       expected: 'support@example.com',
     },
   ])('$title', ({ replyTo, expected }) => {
-    const actual = buildReply({ ...mail, replyTo }, aliases);
+    const actual = buildReply({ ...message, replyTo }, aliases);
 
     expect(actual).toHaveProperty('to', expected);
   });
 
   it('sets In-Reply-To to the last Message-ID', () => {
-    const actual = buildReply(mail, aliases);
+    const actual = buildReply(message, aliases);
 
     expect(actual).toHaveProperty('inReplyTo', '<m2@example.com>');
   });
@@ -56,15 +56,15 @@ describe('buildReply', () => {
       expected: '<m2@example.com>',
     },
   ])('$title', ({ references, expected }) => {
-    const actual = buildReply({ ...mail, references }, aliases);
+    const actual = buildReply({ ...message, references }, aliases);
 
     expect(actual).toHaveProperty('references', expected);
   });
 
   it.each([
     {
-      title: 'puts the other recipients of the last Mail in Cc',
-      mail: {
+      title: 'puts the other recipients of the last Message in Cc',
+      message: {
         to: 'me@example.com, Carol <carol@example.com>',
         cc: 'dave@example.com',
       },
@@ -73,7 +73,7 @@ describe('buildReply', () => {
     },
     {
       title: 'removes every alias from To and Cc',
-      mail: {
+      message: {
         from: 'work@example.com',
         replyTo: 'Me <me@example.com>',
         to: 'work@example.com, carol@example.com',
@@ -84,7 +84,7 @@ describe('buildReply', () => {
     },
     {
       title: 'does not duplicate a To recipient in Cc',
-      mail: {
+      message: {
         to: 'me@example.com',
         cc: 'Alice <alice@example.com>, carol@example.com',
       },
@@ -93,8 +93,8 @@ describe('buildReply', () => {
     },
     {
       title:
-        'replies to the recipients of the last Mail when the user wrote it',
-      mail: {
+        'replies to the recipients of the last Message when the user wrote it',
+      message: {
         from: 'Me <me@example.com>',
         to: 'Alice <alice@example.com>, work@example.com',
         cc: 'carol@example.com',
@@ -104,7 +104,7 @@ describe('buildReply', () => {
     },
     {
       title: 'compares addresses case-insensitively',
-      mail: {
+      message: {
         from: 'ALICE@example.com',
         to: 'Me <ME@Example.com>, alice@EXAMPLE.com, carol@example.com',
       },
@@ -113,12 +113,12 @@ describe('buildReply', () => {
     },
     {
       title: 'keeps an empty Cc empty',
-      mail: {},
+      message: {},
       expectedTo: 'Alice <alice@example.com>',
       expectedCc: '',
     },
-  ])('$title', ({ mail: overrides, expectedTo, expectedCc }) => {
-    const actual = buildReply({ ...mail, ...overrides }, aliases);
+  ])('$title', ({ message: overrides, expectedTo, expectedCc }) => {
+    const actual = buildReply({ ...message, ...overrides }, aliases);
 
     expect(actual).toHaveProperty('to', expectedTo);
     expect(actual).toHaveProperty('cc', expectedCc);
@@ -127,7 +127,7 @@ describe('buildReply', () => {
   describe('from', () => {
     it.each([
       {
-        title: 'picks the alias that received the last Mail',
+        title: 'picks the alias that received the last Message',
         to: 'Carol <carol@example.com>',
         cc: 'Work <WORK@example.com>',
         expected: 'work@example.com',
@@ -151,7 +151,7 @@ describe('buildReply', () => {
         expected: 'me@example.com',
       },
     ])('$title', ({ to, cc, expected }) => {
-      const actual = buildReply({ ...mail, to, cc }, aliases);
+      const actual = buildReply({ ...message, to, cc }, aliases);
 
       expect(actual).toHaveProperty('from', expected);
     });

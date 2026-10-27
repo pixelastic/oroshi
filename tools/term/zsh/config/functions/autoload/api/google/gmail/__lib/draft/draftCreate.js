@@ -3,6 +3,7 @@ import { firostError, read } from 'firost';
 import { callApi } from '../callApi.js';
 import { extractBodies } from '../extractBodies.js';
 import { header } from '../header.js';
+import { getThread } from '../thread/getThread.js';
 import { buildQuote } from './buildQuote.js';
 import { buildRaw } from './buildRaw.js';
 import { buildReply } from './buildReply.js';
@@ -12,19 +13,19 @@ import { renderBody } from './renderBody.js';
 export let __;
 
 /**
- * Create a draft in Gmail, with the last Mail quoted when it is a reply
+ * Create a draft in Gmail, with the last Message quoted when it is a reply
  * @param {object} options - Draft options
- * @param {string} [options.messageId] - Id of the Message to reply to. The reply goes to its last Mail, in its thread
- * @param {string} [options.to] - Recipient. Overrides the reply. Throws GMAIL_TO_MISSING if empty without messageId
- * @param {string} [options.subject] - Subject. Overrides the reply. Throws GMAIL_SUBJECT_MISSING if empty without messageId
+ * @param {string} [options.threadId] - Id of the Thread to reply to. The reply goes to its last Message
+ * @param {string} [options.to] - Recipient. Overrides the reply. Throws GMAIL_TO_MISSING if empty without threadId
+ * @param {string} [options.subject] - Subject. Overrides the reply. Throws GMAIL_SUBJECT_MISSING if empty without threadId
  * @param {string} [options.body] - Body, sent as text/plain, and as HTML when it is a reply. Excludes bodyFile
  * @param {string} [options.bodyFile] - Path of a file holding the body. A .md file is also sent as HTML. Excludes body. Throws GMAIL_BODY_CONFLICT if both are given, GMAIL_BODY_MISSING if none is
  * @returns {Promise<object>} { draftId, threadId, url }, the url opening the draft in Gmail
  */
 export async function draftCreate(options) {
-  const { messageId, bodyFile } = options;
+  const { threadId, bodyFile } = options;
 
-  const reply = messageId ? await __.readReply(messageId) : {};
+  const reply = threadId ? await __.readReply(threadId) : {};
   const to = options.to || reply.to;
   const subject = options.subject || reply.subject;
   const { from, cc, quote, inReplyTo, references } = reply;
@@ -55,7 +56,7 @@ export async function draftCreate(options) {
   });
   const draft = await __.callApi('drafts', {
     method: 'POST',
-    body: { message: { raw, ...(messageId && { threadId: messageId }) } },
+    body: { message: { raw, ...(threadId && { threadId }) } },
   });
 
   return {
@@ -67,16 +68,18 @@ export async function draftCreate(options) {
 
 __ = {
   /**
-   * Compute the reply to the last Mail of a Message
-   * @param {string} messageId - Id of the Message
+   * Compute the reply to the last Message of a Thread
+   * @param {string} threadId - Id of the Thread
    * @returns {Promise<object>} { from, to, cc, subject, quote, inReplyTo, references }
    */
-  async readReply(messageId) {
+  async readReply(threadId) {
     const aliases = __.getAliases();
-    const thread = await __.callApi(`threads/${messageId}`, {
+    const thread = await __.getThread(threadId, {
       query: { format: 'full' },
     });
-    const last = _.maxBy(thread.messages, (mail) => Number(mail.internalDate));
+    const last = _.maxBy(thread.messages, (message) =>
+      Number(message.internalDate),
+    );
     const reply = buildReply(
       {
         from: header(last, 'From'),
@@ -84,7 +87,7 @@ __ = {
         to: header(last, 'To'),
         cc: header(last, 'Cc'),
         subject: header(last, 'Subject'),
-        messageId: header(last, 'Message-ID'),
+        rfcMessageId: header(last, 'Message-ID'),
         references: header(last, 'References'),
       },
       aliases,
@@ -101,6 +104,7 @@ __ = {
   callApi,
   extractBodies,
   getAliases,
+  getThread,
   read,
   renderBody,
 };

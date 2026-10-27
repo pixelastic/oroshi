@@ -1,3 +1,4 @@
+import { firostError } from 'firost';
 import { __, draftCreate } from '../draftCreate.js';
 
 describe('draftCreate', () => {
@@ -15,7 +16,7 @@ describe('draftCreate', () => {
     ]);
   });
 
-  it('does not read the aliases without --messageId', async () => {
+  it('does not read the aliases without --threadId', async () => {
     await draftCreate(options);
 
     expect(__.getAliases).not.toHaveBeenCalled();
@@ -82,12 +83,14 @@ describe('draftCreate', () => {
     });
   });
 
-  describe('with --messageId', () => {
-    const replyOptions = { messageId: 't1', body: 'hi' };
+  describe('with --threadId', () => {
+    const replyOptions = { threadId: 't1', body: 'hi' };
     const thread = {
+      id: 't1',
       messages: [
         {
-          internalDate: '2000',
+          id: 'm2',
+          internalDate: '3000',
           payload: {
             headers: [
               { name: 'From', value: 'Bob <bob@example.com>' },
@@ -104,6 +107,18 @@ describe('draftCreate', () => {
           },
         },
         {
+          id: 'm1',
+          internalDate: '2000',
+          payload: {
+            headers: [
+              { name: 'From', value: 'Carol <carol@example.com>' },
+              { name: 'Subject', value: 'Re: Hello' },
+              { name: 'Message-ID', value: '<m1b@example.com>' },
+            ],
+          },
+        },
+        {
+          id: 'm0',
           internalDate: '1000',
           payload: {
             headers: [
@@ -125,12 +140,7 @@ describe('draftCreate', () => {
         html: 'QUOTE_HTML',
         text: 'QUOTE_TEXT',
       });
-      vi.spyOn(__, 'callApi')
-        .mockReturnValueOnce(thread)
-        .mockReturnValueOnce({
-          id: 'd1',
-          message: { id: 'm1', threadId: 't1' },
-        });
+      vi.spyOn(__, 'getThread').mockReturnValue(thread);
     });
 
     it('reads the aliases of the account', async () => {
@@ -139,15 +149,16 @@ describe('draftCreate', () => {
       expect(__.getAliases).toHaveBeenCalled();
     });
 
-    it('reads the thread with the full format', async () => {
+    it('reads the Thread by its id with the full format', async () => {
       await draftCreate(replyOptions);
 
-      expect(__.callApi).toHaveBeenNthCalledWith(1, 'threads/t1', {
+      expect(__.getThread).toHaveBeenCalledTimes(1);
+      expect(__.getThread).toHaveBeenCalledWith('t1', {
         query: { format: 'full' },
       });
     });
 
-    it('quotes the date, the sender and the bodies of the last Mail', async () => {
+    it('quotes the date, the sender and the bodies of the last Message', async () => {
       await draftCreate(replyOptions);
 
       expect(__.extractBodies).toHaveBeenCalledWith(thread.messages[0].payload);
@@ -159,7 +170,7 @@ describe('draftCreate', () => {
       });
     });
 
-    it('builds the raw mail from the last Mail', async () => {
+    it('builds the raw mail from the last Message', async () => {
       await draftCreate(replyOptions);
 
       expect(__.buildRaw).toHaveBeenCalledWith({
@@ -174,13 +185,30 @@ describe('draftCreate', () => {
       });
     });
 
-    it('posts the draft with the thread id', async () => {
+    it('posts the draft with the Thread id', async () => {
       await draftCreate(replyOptions);
 
-      expect(__.callApi).toHaveBeenNthCalledWith(2, 'drafts', {
+      expect(__.callApi).toHaveBeenCalledTimes(1);
+      expect(__.callApi).toHaveBeenCalledWith('drafts', {
         method: 'POST',
         body: { message: { raw: 'RAW', threadId: 't1' } },
       });
+    });
+
+    it('throws GMAIL_THREAD_NOT_FOUND when the Thread does not exist', async () => {
+      vi.spyOn(__, 'getThread').mockImplementation(() => {
+        throw firostError('GMAIL_THREAD_NOT_FOUND', 'Thread t1 not found');
+      });
+
+      let actual = null;
+      try {
+        await draftCreate(replyOptions);
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'GMAIL_THREAD_NOT_FOUND');
+      expect(__.callApi).not.toHaveBeenCalled();
     });
 
     it('lets --to and --subject override the computed values', async () => {

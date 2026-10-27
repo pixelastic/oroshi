@@ -8,16 +8,16 @@ const BLOCKQUOTE_STYLE =
   'margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex';
 
 /**
- * Build the quote of a Mail, like the Gmail web interface does in a reply
- * @param {object} mail - The Mail to quote
- * @param {string} mail.date - Date header
- * @param {string} mail.from - From header
- * @param {string} mail.html - HTML body, or an empty string
- * @param {string} mail.text - Text body, or an empty string
+ * Build the quote of a Message, like the Gmail web interface does in a reply
+ * @param {object} message - The Message to quote
+ * @param {string} message.date - Date header
+ * @param {string} message.from - From header
+ * @param {string} message.html - HTML body, or an empty string
+ * @param {string} message.text - Text body, or an empty string
  * @returns {object} { html, text }, the quote for each part of the reply
  */
-export function buildQuote(mail) {
-  const { date, from, html, text } = mail;
+export function buildQuote(message) {
+  const { date, from, html, text } = message;
   const [sender] = addressparser(from);
   const when = __.formatDate(date);
 

@@ -1,7 +1,7 @@
 import { buildQuote } from '../buildQuote.js';
 
 describe('buildQuote', () => {
-  const mail = {
+  const message = {
     // Local time, so that the test does not depend on the time zone
     date: new Date(2026, 9, 26, 10, 5).toString(),
     from: 'Bob <bob@example.com>',
@@ -10,7 +10,7 @@ describe('buildQuote', () => {
   };
 
   it('builds the attribution line with the date and the sender', () => {
-    const actual = buildQuote(mail);
+    const actual = buildQuote(message);
 
     expect(actual.text).toMatch(
       /^On Mon, Oct 26, 2026 at 10:05, Bob <bob@example\.com> wrote:\n/,
@@ -21,7 +21,7 @@ describe('buildQuote', () => {
   });
 
   it('wraps the original HTML in a blockquote of a gmail_quote container', () => {
-    const actual = buildQuote(mail);
+    const actual = buildQuote(message);
 
     expect(actual.html).toMatch(/^<div class="gmail_quote[^"]*">/);
     expect(actual.html).toMatch(
@@ -31,7 +31,7 @@ describe('buildQuote', () => {
 
   it('falls back to the original text when there is no HTML', () => {
     const actual = buildQuote({
-      ...mail,
+      ...message,
       html: '',
       text: 'a < b\nsecond line',
     });
@@ -40,14 +40,14 @@ describe('buildQuote', () => {
   });
 
   it('prefixes every line of the text quote with "> "', () => {
-    const actual = buildQuote({ ...mail, text: 'one\n\nthree' });
+    const actual = buildQuote({ ...message, text: 'one\n\nthree' });
 
     expect(actual.text).toMatch(/ wrote:\n> one\n> \n> three$/);
   });
 
   it('quotes the HTML converted to text when there is no text', () => {
     const actual = buildQuote({
-      ...mail,
+      ...message,
       text: '',
       html: '<p>Hi <b>you</b></p>',
     });
@@ -56,7 +56,7 @@ describe('buildQuote', () => {
   });
 
   it('keeps a bare address as the sender', () => {
-    const actual = buildQuote({ ...mail, from: 'bob@example.com' });
+    const actual = buildQuote({ ...message, from: 'bob@example.com' });
 
     expect(actual.text).toContain(', bob@example.com wrote:');
     expect(actual.html).toContain(

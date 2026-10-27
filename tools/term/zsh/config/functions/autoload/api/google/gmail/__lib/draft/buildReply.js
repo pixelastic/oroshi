@@ -4,27 +4,27 @@ import addressparser from 'nodemailer/lib/addressparser/index.js';
 export let __;
 
 /**
- * Compute the addressing and the threading headers of a reply to a Mail
- * @param {object} mail - The Mail to reply to
- * @param {string} mail.from - From header
- * @param {string} mail.replyTo - Reply-To header, or an empty string
- * @param {string} mail.to - To header, or an empty string
- * @param {string} mail.cc - Cc header, or an empty string
- * @param {string} mail.subject - Subject header
- * @param {string} mail.messageId - Message-ID header
- * @param {string} mail.references - References header, or an empty string
+ * Compute the addressing and the threading headers of a reply to a Message
+ * @param {object} message - The Message to reply to
+ * @param {string} message.from - From header
+ * @param {string} message.replyTo - Reply-To header, or an empty string
+ * @param {string} message.to - To header, or an empty string
+ * @param {string} message.cc - Cc header, or an empty string
+ * @param {string} message.subject - Subject header
+ * @param {string} message.rfcMessageId - Message-ID header
+ * @param {string} message.references - References header, or an empty string
  * @param {string[]} aliases - Addresses of the user, removed from the recipients
  * @returns {object} { from, to, cc, subject, inReplyTo, references }
  */
-export function buildReply(mail, aliases) {
-  const { from, replyTo, subject, messageId, references } = mail;
+export function buildReply(message, aliases) {
+  const { from, replyTo, subject, rfcMessageId, references } = message;
   const ownAddresses = _.map(aliases, _.toLower);
   const isOwn = ({ address }) => _.includes(ownAddresses, address);
 
   const [sender] = __.parse(from);
-  const toOrigin = isOwn(sender) ? mail.to : replyTo || from;
+  const toOrigin = isOwn(sender) ? message.to : replyTo || from;
   const to = _.reject(__.parse(toOrigin), isOwn);
-  const received = __.parse(mail.to, mail.cc);
+  const received = __.parse(message.to, message.cc);
   const cc = _.chain(received)
     .reject(isOwn)
     .differenceBy(to, 'address')
@@ -40,8 +40,8 @@ export function buildReply(mail, aliases) {
     to: __.format(to),
     cc: __.format(cc),
     subject: /^re:/i.test(subject) ? subject : `Re: ${subject}`,
-    inReplyTo: messageId,
-    references: _.chain([references, messageId]).compact().join(' ').value(),
+    inReplyTo: rfcMessageId,
+    references: _.chain([references, rfcMessageId]).compact().join(' ').value(),
   };
 }
 

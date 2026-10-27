@@ -1,14 +1,15 @@
 # Create a draft in Gmail, and print its draftId, threadId and url as JSON
 # The draft is never sent. The url opens it in Gmail
 # Flags:
-# --to <address>       Recipient. Required without --messageId
-# --subject <text>     Subject. Required without --messageId
+# --to <address>       Recipient. Required without --threadId
+# --subject <text>     Subject. Required without --threadId
 # --body <text>        Body, sent as text/plain. A reply also sends HTML, to quote
 # --body-file <path>   Body read from a file. A .md file is also sent as HTML
 #                      Pass one of --body or --body-file, never both
-# --messageId <id>     Id of the Message (as printed by gmail-thread-read) to
-#                      reply to. The draft replies to all, in the thread, from
-#                      the alias that received the last Mail, and quotes it
+# --threadId <id>      Id of the Thread (as printed by gmail-thread-read,
+#                      gmail-thread-search and gmail-thread-list-raw) to reply
+#                      to. The draft replies to all, in the Thread, from
+#                      the alias that received the last Message, and quotes it
 #                      --to and --subject override the reply
 # --account <name>     Account of the draft. The default account if empty
 # A reply reads the aliases of the account in OROSHI_GMAIL_ALIASES (default
@@ -18,8 +19,8 @@
 # $ gmail-draft-create --to a@b.c --subject "Hello" --body "Hi there"
 # $ gmail-draft-create --to a@b.c --subject "Hello" --body-file ./body.md
 # $ gmail-draft-create --to a@b.c --subject "Hello" --body "Hi" --account perso
-# $ gmail-draft-create --messageId <id> --body "Thanks"  # Threaded reply
-# $ gmail-draft-create --messageId <id> --body-file ./reply.md --subject "Re: New"  # New subject
+# $ gmail-draft-create --threadId <id> --body "Thanks"  # Threaded reply
+# $ gmail-draft-create --threadId <id> --body-file ./reply.md --subject "Re: New"  # New subject
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h:h}/__lib"
