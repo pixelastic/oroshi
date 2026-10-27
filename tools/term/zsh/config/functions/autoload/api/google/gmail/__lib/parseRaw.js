@@ -3,7 +3,7 @@ import { separators } from './separators.js';
 
 /**
  * Parse a raw row back into a Message
- * @param {string} line - Raw row, as printed by gmail-message-list-raw
+ * @param {string} line - Raw row, as printed by gmail-thread-list-raw
  * @returns {Promise<object>} { id, date, count, authors, subject, snippet, unread }, with date in ISO 8601
  */
 export async function parseRaw(line) {

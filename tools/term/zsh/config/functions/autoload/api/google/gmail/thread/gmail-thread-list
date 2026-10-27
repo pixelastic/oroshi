@@ -1,11 +1,11 @@
-# List the Messages (Gmail conversations) of the inbox as a colored table, one row per Message
-# Unread Messages come first, then the most recent ones
-# Columns: unread marker (●), date (MM/DD HH:mm), mail count (blank for one mail), authors, subject
-# For machine consumption, use gmail-message-list-raw
+# List the Threads of the inbox as a colored table, one row per Thread
+# Unread Threads come first, then the most recent ones
+# Columns: unread marker (●), date (MM/DD HH:mm), Message count (blank for one Message), authors, subject
+# For machine consumption, use gmail-thread-list-raw
 # Usage:
-# $ gmail-message-list
-# $ gmail-message-list --limit 10
-# $ gmail-message-list --account perso
+# $ gmail-thread-list
+# $ gmail-thread-list --limit 10
+# $ gmail-thread-list --account perso
 setopt local_options err_return
 
 zmodload zsh/datetime
@@ -17,24 +17,24 @@ local AUTHORS_WIDTH=28
 # The raw command is named like this wrapper, with a -raw suffix
 local rawCommand="${0}-raw"
 
-local rawMessages="$($rawCommand "$@")"
+local rawThreads="$($rawCommand "$@")"
 
-# Nothing to display if there is no Message
-[[ "$rawMessages" == "" ]] && return 1
+# Nothing to display if there is no Thread
+[[ "$rawThreads" == "" ]] && return 1
 
-# Width of the widest mail count, to right-align the column
+# Width of the widest Message count, to right-align the column
 local countWidth=1
-for rawMessage in ${(f)rawMessages}; do
-  local rawCount="${${(@ps/▮/)rawMessage}[3]}"
+for rawThread in ${(f)rawThreads}; do
+  local rawCount="${${(@ps/▮/)rawThread}[3]}"
   [[ ${#rawCount} -gt $countWidth ]] && countWidth=${#rawCount}
 done
 
 local rows=()
 local epoch
-for rawMessage in ${(f)rawMessages}; do
-  local fields=("${(@ps/▮/)rawMessage}")
+for rawThread in ${(f)rawThreads}; do
+  local fields=("${(@ps/▮/)rawThread}")
   local isoDate="${fields[2]}"
-  local mailCount="${fields[3]}"
+  local messageCount="${fields[3]}"
   local authors="${fields[4]//▯/, }"
   local subject="${fields[5]}"
   local isUnread="${fields[7]}"
@@ -50,7 +50,7 @@ for rawMessage in ${(f)rawMessages}; do
   [[ "$epoch" != "" ]] && date="$(strftime '%m/%d %H:%M' "$epoch")"
 
   local count=""
-  [[ "$mailCount" -gt 1 ]] && count="$mailCount"
+  [[ "$messageCount" -gt 1 ]] && count="$messageCount"
   count="${(l:$countWidth:)count}"
 
   text-truncate --reply --width $AUTHORS_WIDTH "$authors"

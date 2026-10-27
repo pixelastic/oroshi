@@ -2,7 +2,7 @@ import { _, dayjs, pMap } from 'golgoth';
 import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
 import { callApi } from '../callApi.js';
 import { limits } from '../limits.js';
-import { formatMessage } from './formatMessage.js';
+import { formatSummary } from './formatSummary.js';
 
 export let __;
 
@@ -13,33 +13,32 @@ const METADATA_QUERY =
   'format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date';
 
 /**
- * List the Messages (Gmail conversations) of the inbox as raw lines, one per
- * Message. Unread Messages come first, then the Messages by the date of their
- * last mail, newest first
+ * List the Threads of the inbox as raw lines, one per Thread. Unread Threads
+ * come first, then the Threads by the date of their last Message, newest first
  * @param {object} options - Options of the listing
- * @param {number} [options.limit] - Maximum number of Messages
+ * @param {number} [options.limit] - Maximum number of Threads
  * @returns {Promise<string>} Raw lines, joined with a newline
  */
-export async function messageListRaw(options) {
+export async function threadListRaw(options) {
   const { limit = limits.inbox } = options;
 
   const response = await __.callApi('threads', {
     query: { labelIds: 'INBOX', maxResults: limit },
   });
 
-  // The listing holds ids only, each conversation needs its own call
-  const messages = await pMap(
+  // The listing holds ids only, each Thread needs its own call
+  const threads = await pMap(
     _.get(response, 'threads', []),
     async ({ id }) => await __.callApi(`threads/${id}?${METADATA_QUERY}`),
     { concurrency: CONCURRENCY },
   );
 
-  return _.chain(messages)
-    .map(__.formatMessage)
+  return _.chain(threads)
+    .map(formatSummary)
     .orderBy(
       [
-        (message) => message.unread,
-        (message) => dayjs(message.date).valueOf() || 0,
+        (summary) => summary.unread,
+        (summary) => dayjs(summary.date).valueOf() || 0,
       ],
       ['desc', 'desc'],
     )
@@ -50,19 +49,19 @@ export async function messageListRaw(options) {
 
 __ = {
   /**
-   * Turn one Message into a raw line
-   * @param {object} message - Message, as returned by formatMessage
-   * @returns {string} The Message fields, separated by ▮
+   * Turn one Thread summary into a raw line
+   * @param {object} summary - Thread summary, as returned by formatSummary
+   * @returns {string} The summary fields, separated by ▮
    */
-  toLine(message) {
+  toLine(summary) {
     return _.chain([
-      message.id,
-      message.date,
-      message.count,
-      message.authors,
-      message.subject,
-      message.snippet,
-      message.unread,
+      summary.id,
+      summary.date,
+      summary.count,
+      summary.authors,
+      summary.subject,
+      summary.snippet,
+      summary.unread,
     ])
       .map((value) => rawColumn(value))
       .join('▮')
@@ -70,5 +69,4 @@ __ = {
   },
 
   callApi,
-  formatMessage,
 };

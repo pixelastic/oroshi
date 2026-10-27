@@ -1,5 +1,5 @@
 # Download one attachment of a Mail, and print the path of the saved file
-# The mailId and the partId are listed by gmail-message-read (id and attachments)
+# The mailId and the partId are listed by gmail-thread-read (id and attachments)
 # --out is an existing directory (keeps the remote filename) or a file path
 # Usage:
 # $ gmail-attachment-download mailId --partId 1.2                    # saved in the current directory

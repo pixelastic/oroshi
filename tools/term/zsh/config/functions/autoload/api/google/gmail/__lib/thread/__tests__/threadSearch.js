@@ -1,13 +1,13 @@
-import { __, messageSearch } from '../messageSearch.js';
+import { __, threadSearch } from '../threadSearch.js';
 
-describe('messageSearch', () => {
+describe('threadSearch', () => {
   /**
-   * Build a Gmail Message, as returned with the metadata format
-   * @param {string} id - Message id
-   * @param {object} fields - Fields of the Message
+   * Build a Gmail Thread, as returned with the metadata format
+   * @param {string} id - Thread id
+   * @param {object} fields - Fields of the Thread
    * @returns {object} Gmail thread resource
    */
-  function message(id, fields = {}) {
+  function thread(id, fields = {}) {
     const { authors = ['Alice'] } = fields;
     return {
       id,
@@ -28,33 +28,33 @@ describe('messageSearch', () => {
   }
 
   /**
-   * Make callApi answer with the given messages
-   * @param {object[]} messages - Gmail thread resources
+   * Make callApi answer with the given Threads
+   * @param {object[]} threads - Gmail thread resources
    */
-  function mockMessages(messages) {
+  function mockThreads(threads) {
     vi.spyOn(__, 'callApi').mockImplementation((path) => {
       if (path === 'threads') {
-        return { threads: messages.map(({ id }) => ({ id })) };
+        return { threads: threads.map(({ id }) => ({ id })) };
       }
       const id = path.replace(/^threads\/([^?]+).*/, '$1');
-      return messages.find((item) => item.id === id);
+      return threads.find((item) => item.id === id);
     });
   }
 
   beforeEach(() => {
-    mockMessages([message('c1'), message('c2'), message('c3')]);
+    mockThreads([thread('c1'), thread('c2'), thread('c3')]);
   });
 
   it('sends the query as q', async () => {
-    await messageSearch({ query: 'from:bob is:unread' });
+    await threadSearch({ query: 'from:bob is:unread' });
 
     expect(__.callApi).toHaveBeenCalledWith('threads', {
       query: { q: 'from:bob is:unread', maxResults: 25 },
     });
   });
 
-  it('returns one formatted item per Message, with its id', async () => {
-    const actual = await messageSearch({ query: 'from:bob' });
+  it('returns one formatted item per Thread, with its id', async () => {
+    const actual = await threadSearch({ query: 'from:bob' });
 
     expect(actual).toEqual(
       ['c1', 'c2', 'c3'].map((id) => ({
@@ -69,10 +69,10 @@ describe('messageSearch', () => {
     );
   });
 
-  it('returns the number of mails and the authors of a Message', async () => {
-    mockMessages([message('c1', { authors: ['Alice', 'Bob'] })]);
+  it('returns the number of Messages and the authors of a Thread', async () => {
+    mockThreads([thread('c1', { authors: ['Alice', 'Bob'] })]);
 
-    const actual = await messageSearch({ query: 'from:bob' });
+    const actual = await threadSearch({ query: 'from:bob' });
 
     expect(actual[0]).toHaveProperty('count', 2);
     expect(actual[0]).toHaveProperty('authors', ['Alice', 'Bob']);
@@ -81,15 +81,15 @@ describe('messageSearch', () => {
   it('returns an empty list when nothing matches', async () => {
     vi.spyOn(__, 'callApi').mockReturnValue({});
 
-    const actual = await messageSearch({ query: 'from:nobody' });
+    const actual = await threadSearch({ query: 'from:nobody' });
 
     expect(actual).toEqual([]);
   });
 
-  it('asks for at most --limit Messages', async () => {
-    mockMessages([message('c1'), message('c2')]);
+  it('asks for at most --limit Threads', async () => {
+    mockThreads([thread('c1'), thread('c2')]);
 
-    const actual = await messageSearch({ query: 'from:bob', limit: 2 });
+    const actual = await threadSearch({ query: 'from:bob', limit: 2 });
 
     expect(__.callApi).toHaveBeenCalledWith('threads', {
       query: { q: 'from:bob', maxResults: 2 },
@@ -100,7 +100,7 @@ describe('messageSearch', () => {
   it('fails when the query is missing', async () => {
     let actual = null;
     try {
-      await messageSearch({});
+      await threadSearch({});
     } catch (error) {
       actual = error;
     }

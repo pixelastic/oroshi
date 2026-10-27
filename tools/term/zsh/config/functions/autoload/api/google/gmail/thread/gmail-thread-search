@@ -1,0 +1,10 @@
+# Search the Threads with a native Gmail query, and print them as JSON
+# The id is the threadId
+# Usage:
+# $ gmail-thread-search 'from:bob is:unread'
+# $ gmail-thread-search 'in:inbox newer_than:3m' --limit 10
+# $ gmail-thread-search 'from:bob' --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-thread-search.js" "$@"

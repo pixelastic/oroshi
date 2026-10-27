@@ -1,6 +1,6 @@
-import { __ as messageListRaw } from '../message/messageListRaw.js';
 import { parseRaw } from '../parseRaw.js';
 import { __ as separatorsInternals } from '../separators.js';
+import { __ as threadListRaw } from '../thread/threadListRaw.js';
 
 describe('parseRaw', () => {
   beforeEach(() => {
@@ -13,7 +13,7 @@ describe('parseRaw', () => {
   it.each([
     {
       title: 'gives back the fields of a row',
-      message: {
+      summary: {
         id: 'c1',
         date: '2026-10-03T19:26:59.000Z',
         count: 3,
@@ -24,8 +24,8 @@ describe('parseRaw', () => {
       },
     },
     {
-      title: 'gives back a read message without authors',
-      message: {
+      title: 'gives back a read summary without authors',
+      summary: {
         id: 'c2',
         date: '',
         count: 1,
@@ -35,9 +35,9 @@ describe('parseRaw', () => {
         unread: false,
       },
     },
-  ])('$title', async ({ message }) => {
-    const actual = await parseRaw(messageListRaw.toLine(message));
+  ])('$title', async ({ summary }) => {
+    const actual = await parseRaw(threadListRaw.toLine(summary));
 
-    expect(actual).toEqual(message);
+    expect(actual).toEqual(summary);
   });
 });

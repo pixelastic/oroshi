@@ -1,6 +1,6 @@
-import { formatMail } from '../formatMail.js';
+import { formatMessage } from '../formatMessage.js';
 
-describe('formatMail', () => {
+describe('formatMessage', () => {
   const encode = (text) => Buffer.from(text, 'utf8').toString('base64url');
   const headers = [
     { name: 'From', value: 'alice@example.com' },
@@ -9,21 +9,21 @@ describe('formatMail', () => {
     { name: 'Date', value: 'Mon, 1 Jan 2026 10:00:00 +0000' },
   ];
   /**
-   * Build a Gmail mail, as returned with the full format
-   * @param {object} payload - Payload of the mail, merged with its headers
+   * Build a Gmail message, as returned with the full format
+   * @param {object} payload - Payload of the Message, merged with its headers
    * @returns {object} Gmail message resource
    */
-  function mail(payload) {
+  function message(payload) {
     return { id: 'a1', snippet: 'snip', payload: { headers, ...payload } };
   }
 
-  it('returns the headers and the id', () => {
-    const actual = formatMail(
-      mail({ mimeType: 'text/plain', body: { data: encode('Hi') } }),
+  it('returns the headers and the messageId', () => {
+    const actual = formatMessage(
+      message({ mimeType: 'text/plain', body: { data: encode('Hi') } }),
     );
 
     expect(actual).toEqual({
-      id: 'a1',
+      messageId: 'a1',
       from: 'alice@example.com',
       to: 'bob@example.com',
       subject: 'Hello',
@@ -36,7 +36,7 @@ describe('formatMail', () => {
 
   it.each([
     {
-      title: 'returns the text/plain part of a multipart mail',
+      title: 'returns the text/plain part of a multipart Message',
       payload: {
         mimeType: 'multipart/alternative',
         parts: [
@@ -74,7 +74,7 @@ describe('formatMail', () => {
       expected: 'Nested plain',
     },
     {
-      title: 'converts an HTML-only mail to plain text',
+      title: 'converts an HTML-only Message to plain text',
       payload: {
         mimeType: 'multipart/alternative',
         parts: [
@@ -95,19 +95,19 @@ describe('formatMail', () => {
       expected: 'Café ?>> naïve — 日本語 🎉',
     },
     {
-      title: 'returns an empty body when the mail has no text part',
+      title: 'returns an empty body when the Message has no text part',
       payload: { mimeType: 'application/pdf', body: { attachmentId: 'x' } },
       expected: '',
     },
   ])('$title', ({ payload, expected }) => {
-    const actual = formatMail(mail(payload));
+    const actual = formatMessage(message(payload));
 
     expect(actual).toHaveProperty('body', expected);
   });
 
   it('lists the attachments, including nested ones, without their Gmail id', () => {
-    const actual = formatMail(
-      mail({
+    const actual = formatMessage(
+      message({
         mimeType: 'multipart/mixed',
         parts: [
           {

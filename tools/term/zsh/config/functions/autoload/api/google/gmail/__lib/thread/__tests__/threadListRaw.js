@@ -1,13 +1,13 @@
-import { __, messageListRaw } from '../messageListRaw.js';
+import { __, threadListRaw } from '../threadListRaw.js';
 
-describe('messageListRaw', () => {
+describe('threadListRaw', () => {
   /**
-   * Build a Gmail Message, as returned with the metadata format
-   * @param {string} id - Message id
-   * @param {object} fields - Fields of the Message
+   * Build a Gmail Thread, as returned with the metadata format
+   * @param {string} id - Thread id
+   * @param {object} fields - Fields of the Thread
    * @returns {object} Gmail thread resource
    */
-  function message(id, fields = {}) {
+  function thread(id, fields = {}) {
     const {
       authors = ['Alice'],
       unread = false,
@@ -32,16 +32,16 @@ describe('messageListRaw', () => {
   }
 
   /**
-   * Make callApi answer with the given messages
-   * @param {object[]} messages - Gmail thread resources
+   * Make callApi answer with the given Threads
+   * @param {object[]} threads - Gmail thread resources
    */
-  function mockMessages(messages) {
+  function mockThreads(threads) {
     vi.spyOn(__, 'callApi').mockImplementation((path) => {
       if (path === 'threads') {
-        return { threads: messages.map(({ id }) => ({ id })) };
+        return { threads: threads.map(({ id }) => ({ id })) };
       }
       const id = path.replace(/^threads\/([^?]+).*/, '$1');
-      return messages.find((item) => item.id === id);
+      return threads.find((item) => item.id === id);
     });
   }
 
@@ -55,27 +55,27 @@ describe('messageListRaw', () => {
   }
 
   beforeEach(() => {
-    mockMessages([message('c1'), message('c2'), message('c3')]);
+    mockThreads([thread('c1'), thread('c2'), thread('c3')]);
   });
 
-  it('prints one row per Message, with the Message id first', async () => {
-    const actual = await messageListRaw({});
+  it('prints one row per Thread, with the Thread id first', async () => {
+    const actual = await threadListRaw({});
 
     expect(ids(actual)).toEqual(['c1', 'c2', 'c3']);
   });
 
-  it('lists the inbox, 25 messages by default', async () => {
-    await messageListRaw({});
+  it('lists the inbox, 25 Threads by default', async () => {
+    await threadListRaw({});
 
     expect(__.callApi).toHaveBeenCalledWith('threads', {
       query: { labelIds: 'INBOX', maxResults: 25 },
     });
   });
 
-  it('asks for the number of messages of --limit', async () => {
-    mockMessages([message('c1'), message('c2')]);
+  it('asks for the number of Threads of --limit', async () => {
+    mockThreads([thread('c1'), thread('c2')]);
 
-    const actual = await messageListRaw({ limit: 2 });
+    const actual = await threadListRaw({ limit: 2 });
 
     expect(__.callApi).toHaveBeenCalledWith('threads', {
       query: { labelIds: 'INBOX', maxResults: 2 },
@@ -83,10 +83,10 @@ describe('messageListRaw', () => {
     expect(ids(actual)).toEqual(['c1', 'c2']);
   });
 
-  it('prints the count and all the authors of a Message', async () => {
-    mockMessages([message('c1', { authors: ['Alice', 'Bob', 'Alice'] })]);
+  it('prints the count and all the authors of a Thread', async () => {
+    mockThreads([thread('c1', { authors: ['Alice', 'Bob', 'Alice'] })]);
 
-    const actual = await messageListRaw({});
+    const actual = await threadListRaw({});
 
     expect(actual).toEqual(
       'c1▮2026-10-03T19:26:59.000Z▮3▮Alice▯Bob▮Subject c1▮Snippet c1▮false',
@@ -96,34 +96,34 @@ describe('messageListRaw', () => {
   it('prints an empty line when the inbox is empty', async () => {
     vi.spyOn(__, 'callApi').mockReturnValue({});
 
-    const actual = await messageListRaw({});
+    const actual = await threadListRaw({});
 
     expect(actual).toEqual('');
   });
 
-  it('puts the unread messages first, then the newest first', async () => {
-    mockMessages([
-      message('c1', { date: 'Mon, 05 Oct 2026 10:00:00 +0200' }),
-      message('c2', {
+  it('puts the unread Threads first, then the newest first', async () => {
+    mockThreads([
+      thread('c1', { date: 'Mon, 05 Oct 2026 10:00:00 +0200' }),
+      thread('c2', {
         unread: true,
         date: 'Mon, 05 Oct 2026 08:00:00 +0200',
       }),
-      message('c3', { date: 'Sun, 04 Oct 2026 10:00:00 +0200' }),
-      message('c4', {
+      thread('c3', { date: 'Sun, 04 Oct 2026 10:00:00 +0200' }),
+      thread('c4', {
         unread: true,
         date: 'Mon, 05 Oct 2026 09:00:00 +0200',
       }),
-      message('c5', { date: 'Mon, 05 Oct 2026 11:00:00 +0200' }),
+      thread('c5', { date: 'Mon, 05 Oct 2026 11:00:00 +0200' }),
     ]);
 
-    const actual = await messageListRaw({});
+    const actual = await threadListRaw({});
 
     expect(ids(actual)).toEqual(['c4', 'c2', 'c5', 'c1', 'c3']);
   });
 
-  it('fetches at most 10 messages at a time', async () => {
+  it('fetches at most 10 Threads at a time', async () => {
     const all = Array.from({ length: 25 }, (_value, index) =>
-      message(`c${index}`),
+      thread(`c${index}`),
     );
     let running = 0;
     let peak = 0;
@@ -138,7 +138,7 @@ describe('messageListRaw', () => {
       return all.find(({ id }) => path.includes(`threads/${id}?`));
     });
 
-    await messageListRaw({});
+    await threadListRaw({});
 
     expect(peak).toBeLessThanOrEqual(10);
     expect(peak).toBeGreaterThan(1);
@@ -147,7 +147,7 @@ describe('messageListRaw', () => {
   describe('toLine', () => {
     it.each([
       {
-        title: 'a read Message',
+        title: 'a read Thread',
         entry: {
           id: 'c1',
           date: '2026-10-03T19:26:59.000Z',
@@ -161,7 +161,7 @@ describe('messageListRaw', () => {
           'c1▮2026-10-03T19:26:59.000Z▮2▮Bob▯Alice Martin▮Quarterly report▮Please find the report▮false',
       },
       {
-        title: 'an unread Message with newlines and separators',
+        title: 'an unread Thread with newlines and separators',
         entry: {
           id: 'c2',
           date: '',

@@ -7,20 +7,20 @@ import { header } from '../header.js';
 export let __;
 
 /**
- * Format one Mail of a Message, with its decoded body
- * @param {object} mail - Gmail message resource, fetched with the full format
- * @returns {object} The Mail as { id, from, to, subject, date, snippet, body, attachments }
+ * Format one Message, with its decoded body
+ * @param {object} message - Gmail message resource, fetched with the full format
+ * @returns {object} The Message as { messageId, from, to, subject, date, snippet, body, attachments }
  */
-export function formatMail(mail) {
+export function formatMessage(message) {
   return {
-    id: mail.id,
-    from: header(mail, 'From'),
-    to: header(mail, 'To'),
-    subject: header(mail, 'Subject'),
-    date: header(mail, 'Date'),
-    snippet: mail.snippet || '',
-    body: __.extractBody(mail.payload),
-    attachments: _.map(extractAttachments(mail.payload), (attachment) =>
+    messageId: message.id,
+    from: header(message, 'From'),
+    to: header(message, 'To'),
+    subject: header(message, 'Subject'),
+    date: header(message, 'Date'),
+    snippet: message.snippet || '',
+    body: __.extractBody(message.payload),
+    attachments: _.map(extractAttachments(message.payload), (attachment) =>
       _.omit(attachment, 'attachmentId'),
     ),
   };
@@ -28,9 +28,9 @@ export function formatMail(mail) {
 
 __ = {
   /**
-   * Extract the readable body of a mail payload. Prefers text/plain and
+   * Extract the readable body of a Message payload. Prefers text/plain and
    * falls back to HTML converted to text
-   * @param {object} payload - Gmail mail payload
+   * @param {object} payload - Gmail message payload
    * @returns {string} Body text, or an empty string if there is none
    */
   extractBody(payload) {

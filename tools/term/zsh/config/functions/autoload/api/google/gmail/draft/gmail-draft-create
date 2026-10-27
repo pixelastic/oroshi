@@ -6,7 +6,7 @@
 # --body <text>        Body, sent as text/plain. A reply also sends HTML, to quote
 # --body-file <path>   Body read from a file. A .md file is also sent as HTML
 #                      Pass one of --body or --body-file, never both
-# --messageId <id>     Id of the Message (as printed by gmail-message-read) to
+# --messageId <id>     Id of the Message (as printed by gmail-thread-read) to
 #                      reply to. The draft replies to all, in the thread, from
 #                      the alias that received the last Mail, and quotes it
 #                      --to and --subject override the reply

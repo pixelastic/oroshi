@@ -1,0 +1,13 @@
+# List the Threads of the inbox, one per line, for machine consumption
+# Unread Threads come first, then the Threads by the date of their last Message, newest first
+# The id is the threadId
+# Fields: threadId▮date▮count▮authors▮subject▮snippet▮unread
+# date is ISO 8601 (last Message), count is the number of Messages, authors are separated by ▯ (unread authors first), unread is true or false
+# Usage:
+# $ gmail-thread-list-raw
+# $ gmail-thread-list-raw --limit 10
+# $ gmail-thread-list-raw --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-thread-list-raw.js" "$@"
