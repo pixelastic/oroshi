@@ -72,6 +72,11 @@ gives new `partId` values to its **Attachments**.
 the current `partId` values. All the **Attachments** weigh at most 25 MB,
 counted in base64 (about 4/3 of the bytes), or it fails before any save.
 
+`gmail-attachment-remove draftId --partId <id>` removes one **Attachment** of a
+**Draft** and keeps the others. It prints `draftId`, `threadId`, `url` and
+`attachments`, with the current `partId` values. An unknown `partId` fails
+before any save.
+
 _Avoid_: unsent mail, unsent email, reply
 
 ### Verbs
