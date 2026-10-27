@@ -67,6 +67,11 @@ that is absent keeps the current value. It prints `draftId`, `threadId`, `url`
 and `attachments`. It replaces the **Draft** through the upload endpoint, which
 gives new `partId` values to its **Attachments**.
 
+`gmail-attachment-add draftId file...` adds files to a **Draft** and keeps its
+**Attachments**. It prints `draftId`, `threadId`, `url` and `attachments`, with
+the current `partId` values. All the **Attachments** weigh at most 25 MB,
+counted in base64 (about 4/3 of the bytes), or it fails before any save.
+
 _Avoid_: unsent mail, unsent email, reply
 
 ### Verbs

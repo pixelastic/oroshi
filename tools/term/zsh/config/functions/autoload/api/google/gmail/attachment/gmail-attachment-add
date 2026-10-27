@@ -1,0 +1,16 @@
+# Add files to a Draft, and print its draftId, threadId, url and attachments as JSON
+# The Draft keeps its attachments, and is never sent. The url opens it in Gmail
+# The draftId is printed by gmail-draft-create, gmail-draft-read and gmail-thread-read
+# The first argument is the draftId, all the others are file paths
+# The attachments weigh at most 25 MB once in base64, existing ones included
+# Flags:
+# --account <name>     Account of the Draft. The default account if empty
+# Each attachment has partId, filename, mimeType and size, never its bytes
+# Usage:
+# $ gmail-attachment-add draftId ./report.pdf
+# $ gmail-attachment-add draftId ./a.png ./b.png ./notes.txt
+# $ gmail-attachment-add draftId ./report.pdf --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-attachment-add.js" "$@"
