@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Xvfb: Virtual X server, with no physical display
+# Used to run headful browsers without any window on the real screen
+set -e
+
+sudo apt-get install xvfb
