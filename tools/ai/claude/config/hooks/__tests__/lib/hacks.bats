@@ -45,6 +45,18 @@ runRemove() {
   [[ "$output" = $'cd /tmp/work; S=/tmp/s; sed -i \'s/a/b/\' file' ]]
 }
 
+@test "removes python3 --version with its output sent to /dev/null, and its ;" {
+  runRemove $'cd /tmp/work && python3 --version >/dev/null 2>&1;\nsed -n 1p file'
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = $'cd /tmp/work && \nsed -n 1p file' ]]
+}
+
+@test "keeps python3 --version whose output is shown" {
+  runRemove 'python3 --version'
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "python3 --version" ]]
+}
+
 @test "removes python3 -c pass" {
   runRemove 'python3 -c pass'
   [[ "$status" -eq 0 ]]

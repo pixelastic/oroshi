@@ -21,6 +21,8 @@
 
 - DO: Prefer ZSH or JS for scripts; use Python only when there is no other
   choice.
+- DO NOT: Run `python3` in Bash commands, not even for no-op checks
+  (`--version`, `-c 1`, empty heredoc), unless the task itself is Python
 - DO: Use `jq`/`jo` for JSON parsing in shell, never Python
 - DO: Use dedicated `/{lang}-writer` skill if one exists
 - DO: Fetch up-to-date documentation (using Context7 MCP) before writing code
