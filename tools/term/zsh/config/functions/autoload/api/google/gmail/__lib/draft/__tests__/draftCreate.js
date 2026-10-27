@@ -134,9 +134,9 @@ describe('draftCreate', () => {
     });
 
     it('reads the aliases of the account', async () => {
-      await draftCreate({ ...replyOptions, account: 'perso' });
+      await draftCreate(replyOptions);
 
-      expect(__.getAliases).toHaveBeenCalledWith('perso');
+      expect(__.getAliases).toHaveBeenCalled();
     });
 
     it('reads the thread with the full format', async () => {

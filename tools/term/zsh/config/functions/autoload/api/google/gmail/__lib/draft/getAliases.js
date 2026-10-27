@@ -1,12 +1,13 @@
 import { _ } from 'golgoth';
 import { env, firostError } from 'firost';
+import { getAccount } from '@oroshi/google/getAccount.js';
 
 /**
- * Read the aliases of the user from the environment
- * @param {string} [account] - Name of the account. Default account if empty
+ * Read the aliases of the current account from the environment
  * @returns {string[]} The addresses of the aliases. Throws GMAIL_ALIASES_MISSING if the variable is empty
  */
-export function getAliases(account) {
+export function getAliases() {
+  const account = getAccount();
   const name = account
     ? `OROSHI_GMAIL_ALIASES_${_.toUpper(account)}`
     : 'OROSHI_GMAIL_ALIASES';

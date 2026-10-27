@@ -1,3 +1,4 @@
+import { setAccount } from '@oroshi/google/setAccount.js';
 import { getAliases } from '../getAliases.js';
 
 describe('getAliases', () => {
@@ -6,6 +7,7 @@ describe('getAliases', () => {
     vi.stubEnv('OROSHI_GMAIL_ALIASES_PERSO', 'perso@example.com');
   });
   afterEach(() => {
+    setAccount();
     vi.unstubAllEnvs();
   });
 
@@ -21,7 +23,9 @@ describe('getAliases', () => {
       expected: ['perso@example.com'],
     },
   ])('$title', ({ account, expected }) => {
-    const actual = getAliases(account);
+    setAccount(account);
+
+    const actual = getAliases();
 
     expect(actual).toEqual(expected);
   });
@@ -40,10 +44,11 @@ describe('getAliases', () => {
   ])(
     'throws an error naming the variable when $title is missing',
     ({ account, name }) => {
+      setAccount(account);
       vi.stubEnv(name, '');
       let actual = null;
       try {
-        getAliases(account);
+        getAliases();
       } catch (error) {
         actual = error;
       }

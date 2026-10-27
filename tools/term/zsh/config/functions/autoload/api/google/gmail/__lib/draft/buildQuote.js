@@ -55,26 +55,27 @@ __ = {
    * @returns {string} The line
    */
   attribution(when, sender) {
-    return `Le ${when}, ${sender} a écrit :`;
+    return `On ${when}, ${sender} wrote:`;
   },
   /**
-   * Format a date like the French Gmail web interface
+   * Format a date like the English Gmail web interface
    * @param {string} date - Date header
-   * @returns {string} Like `lun. 26 oct. 2026 à 10:05`, in local time
+   * @returns {string} Like `Mon, Oct 26, 2026 at 10:05`, in local time
    */
   formatDate(date) {
-    const day = new Intl.DateTimeFormat('fr-FR', {
+    const day = new Intl.DateTimeFormat('en-US', {
       weekday: 'short',
       day: 'numeric',
       month: 'short',
       year: 'numeric',
     });
-    const time = new Intl.DateTimeFormat('fr-FR', {
+    const time = new Intl.DateTimeFormat('en-US', {
       hour: '2-digit',
       minute: '2-digit',
+      hourCycle: 'h23',
     });
     const parsed = new Date(date);
-    return `${day.format(parsed)} à ${time.format(parsed)}`;
+    return `${day.format(parsed)} at ${time.format(parsed)}`;
   },
   /**
    * Format a sender as plain text

@@ -14,7 +14,6 @@ export let __;
 /**
  * Create a draft in Gmail, with the last Mail quoted when it is a reply
  * @param {object} options - Draft options
- * @param {string} [options.account] - Name of the account, to read its aliases
  * @param {string} [options.messageId] - Id of the Message to reply to. The reply goes to its last Mail, in its thread
  * @param {string} [options.to] - Recipient. Overrides the reply. Throws GMAIL_TO_MISSING if empty without messageId
  * @param {string} [options.subject] - Subject. Overrides the reply. Throws GMAIL_SUBJECT_MISSING if empty without messageId
@@ -23,9 +22,9 @@ export let __;
  * @returns {Promise<object>} { draftId, threadId, url }, the url opening the draft in Gmail
  */
 export async function draftCreate(options) {
-  const { messageId, bodyFile, account } = options;
+  const { messageId, bodyFile } = options;
 
-  const reply = messageId ? await __.readReply(messageId, account) : {};
+  const reply = messageId ? await __.readReply(messageId) : {};
   const to = options.to || reply.to;
   const subject = options.subject || reply.subject;
   const { from, cc, quote, inReplyTo, references } = reply;
@@ -70,11 +69,10 @@ __ = {
   /**
    * Compute the reply to the last Mail of a Message
    * @param {string} messageId - Id of the Message
-   * @param {string} [account] - Name of the account, to read its aliases
    * @returns {Promise<object>} { from, to, cc, subject, quote, inReplyTo, references }
    */
-  async readReply(messageId, account) {
-    const aliases = __.getAliases(account);
+  async readReply(messageId) {
+    const aliases = __.getAliases();
     const thread = await __.callApi(`threads/${messageId}`, {
       query: { format: 'full' },
     });

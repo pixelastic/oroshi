@@ -13,10 +13,10 @@ describe('buildQuote', () => {
     const actual = buildQuote(mail);
 
     expect(actual.text).toMatch(
-      /^Le lun\. 26 oct\. 2026 à 10:05, Bob <bob@example\.com> a écrit :\n/,
+      /^On Mon, Oct 26, 2026 at 10:05, Bob <bob@example\.com> wrote:\n/,
     );
     expect(actual.html).toContain(
-      'Le lun. 26 oct. 2026 à 10:05, Bob &lt;<a href="mailto:bob@example.com">bob@example.com</a>&gt; a écrit :',
+      'On Mon, Oct 26, 2026 at 10:05, Bob &lt;<a href="mailto:bob@example.com">bob@example.com</a>&gt; wrote:',
     );
   });
 
@@ -42,7 +42,7 @@ describe('buildQuote', () => {
   it('prefixes every line of the text quote with "> "', () => {
     const actual = buildQuote({ ...mail, text: 'one\n\nthree' });
 
-    expect(actual.text).toMatch(/ a écrit :\n> one\n> \n> three$/);
+    expect(actual.text).toMatch(/ wrote:\n> one\n> \n> three$/);
   });
 
   it('quotes the HTML converted to text when there is no text', () => {
@@ -52,15 +52,15 @@ describe('buildQuote', () => {
       html: '<p>Hi <b>you</b></p>',
     });
 
-    expect(actual.text).toMatch(/ a écrit :\n> Hi you$/);
+    expect(actual.text).toMatch(/ wrote:\n> Hi you$/);
   });
 
   it('keeps a bare address as the sender', () => {
     const actual = buildQuote({ ...mail, from: 'bob@example.com' });
 
-    expect(actual.text).toContain(', bob@example.com a écrit :');
+    expect(actual.text).toContain(', bob@example.com wrote:');
     expect(actual.html).toContain(
-      ', <a href="mailto:bob@example.com">bob@example.com</a> a écrit :',
+      ', <a href="mailto:bob@example.com">bob@example.com</a> wrote:',
     );
   });
 });

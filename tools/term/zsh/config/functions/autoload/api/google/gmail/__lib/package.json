@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Helpers to read Gmail",
+  "description": "Helpers to read and draft Gmail",
   "license": "MIT",
   "devDependencies": {
     "mailparser": "3.12.4"
