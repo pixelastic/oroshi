@@ -5,8 +5,8 @@ setup() {
   # Stub the raw list to record its arguments, then print canned lines
   gmail-thread-list-raw() {
     print -r -- "$@" >"$BATS_TMP_DIR/raw-args"
-    echo "msgA▮2026-03-12T10:05:00.000Z▮3▮Alice▯Bob▮Hello▮Hi there▮true"
-    echo "msgB▮2026-03-11T08:00:00.000Z▮1▮Carol▮Lunch▮Noon?▮false"
+    echo "thrA▮2026-03-12T10:05:00.000Z▮3▮Alice▯Bob▮Hello▮Hi there▮true"
+    echo "thrB▮2026-03-11T08:00:00.000Z▮1▮Carol▮Lunch▮Noon?▮false"
   }
   bats_mock gmail-thread-list-raw
   bats_mock_env "BATS_TMP_DIR" "$BATS_TMP_DIR"
@@ -57,7 +57,7 @@ setup() {
 
 @test "truncates long authors so the subject keeps its room" {
   gmail-thread-list-raw() {
-    echo "msgA▮2026-03-12T10:05:00.000Z▮2▮Alexandria Ocasio-Cortez▯Bartholomew Featherstonehaugh▮Hello▮Hi▮false"
+    echo "thrA▮2026-03-12T10:05:00.000Z▮2▮Alexandria Ocasio-Cortez▯Bartholomew Featherstonehaugh▮Hello▮Hi▮false"
   }
   bats_mock gmail-thread-list-raw
 
@@ -68,8 +68,8 @@ setup() {
 
 @test "right-aligns the Message count" {
   gmail-thread-list-raw() {
-    echo "msgA▮2026-03-12T10:05:00.000Z▮12▮Alice▮Hello▮Hi▮false"
-    echo "msgB▮2026-03-11T08:00:00.000Z▮3▮Carol▮Lunch▮Noon?▮false"
+    echo "thrA▮2026-03-12T10:05:00.000Z▮12▮Alice▮Hello▮Hi▮false"
+    echo "thrB▮2026-03-11T08:00:00.000Z▮3▮Carol▮Lunch▮Noon?▮false"
   }
   bats_mock gmail-thread-list-raw
 
@@ -80,8 +80,8 @@ setup() {
 
 @test "shows a blank date instead of failing on an invalid date" {
   gmail-thread-list-raw() {
-    echo "msgA▮▮1▮Alice▮Hello▮Hi▮false"
-    echo "msgB▮2026-03-11T08:00:00.000Z▮1▮Carol▮Lunch▮Noon?▮false"
+    echo "thrA▮▮1▮Alice▮Hello▮Hi▮false"
+    echo "thrB▮2026-03-11T08:00:00.000Z▮1▮Carol▮Lunch▮Noon?▮false"
   }
   bats_mock gmail-thread-list-raw
 

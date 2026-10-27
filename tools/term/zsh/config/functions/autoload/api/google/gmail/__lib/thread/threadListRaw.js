@@ -2,7 +2,7 @@ import { _, dayjs, pMap } from 'golgoth';
 import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
 import { callApi } from '../callApi.js';
 import { limits } from '../limits.js';
-import { formatSummary } from './formatSummary.js';
+import { formatThread } from './formatThread.js';
 
 export let __;
 
@@ -34,11 +34,11 @@ export async function threadListRaw(options) {
   );
 
   return _.chain(threads)
-    .map(formatSummary)
+    .map(formatThread)
     .orderBy(
       [
-        (summary) => summary.unread,
-        (summary) => dayjs(summary.date).valueOf() || 0,
+        (thread) => thread.unread,
+        (thread) => dayjs(thread.date).valueOf() || 0,
       ],
       ['desc', 'desc'],
     )
@@ -49,19 +49,19 @@ export async function threadListRaw(options) {
 
 __ = {
   /**
-   * Turn one Thread summary into a raw line
-   * @param {object} summary - Thread summary, as returned by formatSummary
-   * @returns {string} The summary fields, separated by ▮
+   * Turn one formatted Thread into a raw line
+   * @param {object} thread - Formatted Thread, as returned by formatThread
+   * @returns {string} The Thread fields, separated by ▮
    */
-  toLine(summary) {
+  toLine(thread) {
     return _.chain([
-      summary.id,
-      summary.date,
-      summary.count,
-      summary.authors,
-      summary.subject,
-      summary.snippet,
-      summary.unread,
+      thread.threadId,
+      thread.date,
+      thread.count,
+      thread.authors,
+      thread.subject,
+      thread.snippet,
+      thread.unread,
     ])
       .map((value) => rawColumn(value))
       .join('▮')

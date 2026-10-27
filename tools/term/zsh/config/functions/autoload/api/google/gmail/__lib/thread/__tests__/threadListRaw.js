@@ -93,6 +93,64 @@ describe('threadListRaw', () => {
     );
   });
 
+  it('prints the date of the last Message of the Thread', async () => {
+    mockThreads([
+      {
+        id: 'c1',
+        messages: [
+          {
+            id: 'c1-1',
+            internalDate: '2',
+            labelIds: ['INBOX'],
+            snippet: 'Later',
+            payload: {
+              headers: [
+                { name: 'From', value: 'Bob <bob@example.com>' },
+                { name: 'Subject', value: 'Subject c1' },
+                { name: 'Date', value: 'Mon, 05 Oct 2026 10:00:00 +0200' },
+              ],
+            },
+          },
+          {
+            id: 'c1-0',
+            internalDate: '1',
+            labelIds: ['INBOX'],
+            snippet: 'Earlier',
+            payload: {
+              headers: [
+                { name: 'From', value: 'Alice <alice@example.com>' },
+                { name: 'Subject', value: 'Subject c1' },
+                { name: 'Date', value: 'Fri, 02 Oct 2026 10:00:00 +0200' },
+              ],
+            },
+          },
+        ],
+      },
+    ]);
+
+    const actual = await threadListRaw({});
+
+    expect(actual.split('▮')[1]).toEqual('2026-10-05T08:00:00.000Z');
+  });
+
+  it('prints the unread authors first', async () => {
+    const unreadBob = thread('c1', { authors: ['Bob'], unread: true });
+    const readAlice = thread('c1', { authors: ['Alice'] });
+    mockThreads([
+      {
+        id: 'c1',
+        messages: [
+          { ...readAlice.messages[0], id: 'c1-0', internalDate: '1' },
+          { ...unreadBob.messages[0], id: 'c1-1', internalDate: '2' },
+        ],
+      },
+    ]);
+
+    const actual = await threadListRaw({});
+
+    expect(actual.split('▮')[3]).toEqual('Bob▯Alice');
+  });
+
   it('prints an empty line when the inbox is empty', async () => {
     vi.spyOn(__, 'callApi').mockReturnValue({});
 
@@ -149,7 +207,7 @@ describe('threadListRaw', () => {
       {
         title: 'a read Thread',
         entry: {
-          id: 'c1',
+          threadId: 'c1',
           date: '2026-10-03T19:26:59.000Z',
           count: 2,
           authors: ['Bob', 'Alice Martin'],
@@ -163,7 +221,7 @@ describe('threadListRaw', () => {
       {
         title: 'an unread Thread with newlines and separators',
         entry: {
-          id: 'c2',
+          threadId: 'c2',
           date: '',
           count: 1,
           authors: [],
