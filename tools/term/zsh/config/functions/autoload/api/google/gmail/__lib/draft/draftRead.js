@@ -1,7 +1,7 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
-import { callApi } from '../callApi.js';
 import { formatMessage } from '../thread/formatMessage.js';
+import { getDraft } from './getDraft.js';
 
 export let __;
 
@@ -18,7 +18,7 @@ export async function draftRead(options) {
     throw firostError('GMAIL_DRAFT_ID_MISSING', 'Pass the id of a Draft');
   }
 
-  const draft = await __.getDraft(draftId);
+  const draft = await __.getDraft(draftId, 'full');
   const message = formatMessage(draft.message);
 
   return {
@@ -29,27 +29,5 @@ export async function draftRead(options) {
 }
 
 __ = {
-  /**
-   * Fetch one Draft from the Gmail API, in full format
-   * @param {string} draftId - Id of the Draft
-   * @returns {Promise<object>} The Draft, as returned by the Gmail API
-   */
-  async getDraft(draftId) {
-    try {
-      return await __.callApi(`drafts/${draftId}`, {
-        query: { format: 'full' },
-      });
-    } catch (error) {
-      // callApi starts the message of a failed request with the HTTP status
-      const isNotFound =
-        error.code === 'GMAIL_REQUEST_FAILED' &&
-        error.message.startsWith('404');
-      if (!isNotFound) {
-        throw error;
-      }
-      throw firostError('GMAIL_DRAFT_NOT_FOUND', `Draft ${draftId} not found`);
-    }
-  },
-
-  callApi,
+  getDraft,
 };

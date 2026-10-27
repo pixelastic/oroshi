@@ -2,8 +2,7 @@ import { simpleParser } from 'mailparser';
 import { buildRaw } from '../buildRaw.js';
 
 describe('buildRaw', () => {
-  const parse = async (raw) =>
-    await simpleParser(Buffer.from(raw, 'base64url'));
+  const parse = async (raw) => await simpleParser(raw);
 
   it('sets the recipient, the subject and a plain-text body', async () => {
     const raw = await buildRaw({
@@ -65,7 +64,7 @@ describe('buildRaw', () => {
     const actual = await parse(raw);
 
     expect(actual).toHaveProperty('subject', 'AI First × Algolia');
-    expect(Buffer.from(raw, 'base64url').toString('utf8')).not.toContain('×');
+    expect(raw.toString('utf8')).not.toContain('×');
   });
 
   it('sets the sender and the copies', async () => {
@@ -82,6 +81,75 @@ describe('buildRaw', () => {
     expect(actual).toHaveProperty('from.text', 'me@example.com');
     expect(actual).toHaveProperty('cc.value.length', 2);
     expect(actual).toHaveProperty('cc.value.1.address', 'c@example.com');
+  });
+
+  it('returns the mail as a Buffer', async () => {
+    const actual = await buildRaw({
+      to: 'a@example.com',
+      subject: 'Hello',
+      body: 'hi',
+    });
+
+    expect(Buffer.isBuffer(actual)).toEqual(true);
+  });
+
+  it('attaches the files', async () => {
+    const raw = await buildRaw({
+      to: 'a@example.com',
+      subject: 'Hello',
+      body: 'hi',
+      attachments: [
+        {
+          filename: 'report.pdf',
+          contentType: 'application/pdf',
+          content: Buffer.from('PDF-BYTES'),
+        },
+      ],
+    });
+
+    const actual = await parse(raw);
+
+    expect(actual.text.trim()).toEqual('hi');
+    expect(actual).toHaveProperty('attachments.length', 1);
+    expect(actual).toHaveProperty('attachments.0.filename', 'report.pdf');
+    expect(actual).toHaveProperty(
+      'attachments.0.contentType',
+      'application/pdf',
+    );
+    expect(actual.attachments[0].content.toString()).toEqual('PDF-BYTES');
+  });
+
+  it('keeps the cid of an inline attachment', async () => {
+    const raw = await buildRaw({
+      to: 'a@example.com',
+      subject: 'Hello',
+      body: 'hi',
+      html: '<img src="cid:logo">',
+      attachments: [
+        {
+          filename: 'logo.png',
+          contentType: 'image/png',
+          content: Buffer.from('PNG'),
+          cid: 'logo',
+        },
+      ],
+    });
+
+    const actual = await parse(raw);
+
+    expect(actual).toHaveProperty('attachments.0.cid', 'logo');
+  });
+
+  it('adds no attachment by default', async () => {
+    const raw = await buildRaw({
+      to: 'a@example.com',
+      subject: 'Hello',
+      body: 'hi',
+    });
+
+    const actual = await parse(raw);
+
+    expect(actual).toHaveProperty('attachments', []);
   });
 
   it('sets no Cc header when cc is empty', async () => {

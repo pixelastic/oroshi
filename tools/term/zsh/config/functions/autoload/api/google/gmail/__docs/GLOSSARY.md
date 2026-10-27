@@ -61,6 +61,12 @@ only the text of the user, and no copy of the previous **Message**.
 **Attachment** has a `partId`, a `filename`, a `mimeType` and a `size`, never
 its bytes.
 
+`gmail-draft-update draftId` changes the core of a **Draft** (`--to`,
+`--subject`, `--body` or `--body-file`) and keeps its **Attachments**. A flag
+that is absent keeps the current value. It prints `draftId`, `threadId`, `url`
+and `attachments`. It replaces the **Draft** through the upload endpoint, which
+gives new `partId` values to its **Attachments**.
+
 _Avoid_: unsent mail, unsent email, reply
 
 ### Verbs

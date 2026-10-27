@@ -41,7 +41,7 @@ export async function draftCreate(options) {
   };
   const { text, html } = __.renderBody({ body: options.body, file });
 
-  const raw = await __.buildRaw({
+  const mime = await __.buildRaw({
     from,
     to,
     cc,
@@ -53,7 +53,12 @@ export async function draftCreate(options) {
   });
   const draft = await __.callApi('drafts', {
     method: 'POST',
-    body: { message: { raw, ...(threadId && { threadId }) } },
+    body: {
+      message: {
+        raw: mime.toString('base64url'),
+        ...(threadId && { threadId }),
+      },
+    },
   });
 
   return {

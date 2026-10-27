@@ -1,4 +1,3 @@
-import { firostError } from 'firost';
 import { __, draftRead } from '../draftRead.js';
 
 describe('draftRead', () => {
@@ -36,15 +35,13 @@ describe('draftRead', () => {
   };
 
   beforeEach(() => {
-    vi.spyOn(__, 'callApi').mockReturnValue(draft);
+    vi.spyOn(__, 'getDraft').mockReturnValue(draft);
   });
 
   it('reads the Draft in full format', async () => {
     await draftRead({ draftId: 'd1' });
 
-    expect(__.callApi).toHaveBeenCalledWith('drafts/d1', {
-      query: { format: 'full' },
-    });
+    expect(__.getDraft).toHaveBeenCalledWith('d1', 'full');
   });
 
   it('prints the Draft with its ids, headers and body', async () => {
@@ -84,40 +81,6 @@ describe('draftRead', () => {
     }
 
     expect(actual).toHaveProperty('code', 'GMAIL_DRAFT_ID_MISSING');
-    expect(__.callApi).not.toHaveBeenCalled();
-  });
-
-  it('fails with GMAIL_DRAFT_NOT_FOUND on a 404', async () => {
-    vi.spyOn(__, 'callApi').mockImplementation(() => {
-      throw firostError(
-        'GMAIL_REQUEST_FAILED',
-        '404 {"error":{"message":"Requested entity was not found."}}',
-      );
-    });
-
-    let actual = null;
-    try {
-      await draftRead({ draftId: 'unknown' });
-    } catch (error) {
-      actual = error;
-    }
-
-    expect(actual).toHaveProperty('code', 'GMAIL_DRAFT_NOT_FOUND');
-    expect(actual).toHaveProperty('message', 'Draft unknown not found');
-  });
-
-  it('lets other errors through', async () => {
-    vi.spyOn(__, 'callApi').mockImplementation(() => {
-      throw firostError('GMAIL_REQUEST_FAILED', '500 Backend error');
-    });
-
-    let actual = null;
-    try {
-      await draftRead({ draftId: 'd1' });
-    } catch (error) {
-      actual = error;
-    }
-
-    expect(actual).toHaveProperty('code', 'GMAIL_REQUEST_FAILED');
+    expect(__.getDraft).not.toHaveBeenCalled();
   });
 });

@@ -1,0 +1,21 @@
+# Update the core of a Draft, and print its draftId, threadId, url and attachments as JSON
+# The Draft keeps its attachments, and is never sent. The url opens it in Gmail
+# The draftId is printed by gmail-draft-create, gmail-draft-read and gmail-thread-read
+# A flag that is absent keeps the current value. Pass at least one flag
+# Flags:
+# --to <address>       New recipient
+# --subject <text>     New subject
+# --body <text>        New body, sent as text/plain
+# --body-file <path>   New body read from a file. A .md file is also sent as HTML
+#                      Pass one of --body or --body-file, never both
+# --account <name>     Account of the Draft. The default account if empty
+# Each attachment has partId, filename, mimeType and size, never its bytes
+# Run google-login again after a new scope (gmail.compose) is added
+# Usage:
+# $ gmail-draft-update draftId --subject "New subject"
+# $ gmail-draft-update draftId --to a@b.c --body "New body"
+# $ gmail-draft-update draftId --body-file ./body.md --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-draft-update.js" "$@"

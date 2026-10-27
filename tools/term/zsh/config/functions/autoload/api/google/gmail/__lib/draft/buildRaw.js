@@ -11,11 +11,22 @@ import MailComposer from 'nodemailer/lib/mail-composer/index.js';
  * @param {string} [options.html] - HTML of the body. Makes the mail multipart/alternative
  * @param {string} [options.inReplyTo] - Message-ID of the Message replied to
  * @param {string} [options.references] - References header of a reply
- * @returns {Promise<string>} The mail, encoded in base64url
+ * @param {object[]} [options.attachments] - Files to attach, as { filename, contentType, content, cid?, contentDisposition? }. content is a Buffer
+ * @returns {Promise<Buffer>} The mail, as a MIME Buffer
  */
 export async function buildRaw(options) {
-  const { from, to, cc, subject, body, html, inReplyTo, references } = options;
-  const mail = await new MailComposer({
+  const {
+    from,
+    to,
+    cc,
+    subject,
+    body,
+    html,
+    inReplyTo,
+    references,
+    attachments,
+  } = options;
+  return await new MailComposer({
     from,
     to,
     cc: cc || undefined,
@@ -24,8 +35,8 @@ export async function buildRaw(options) {
     html: html && `<div dir="ltr">${html}</div>`,
     inReplyTo,
     references,
+    attachments,
   })
     .compile()
     .build();
-  return mail.toString('base64url');
 }

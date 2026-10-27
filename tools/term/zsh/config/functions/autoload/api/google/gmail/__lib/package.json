@@ -5,15 +5,13 @@
   "type": "module",
   "description": "Helpers to read and draft Gmail",
   "license": "MIT",
-  "devDependencies": {
-    "mailparser": "3.12.4"
-  },
   "dependencies": {
     "@oroshi/api-shared": "workspace:*",
     "@oroshi/google": "workspace:*",
     "firost": "5.11.0",
     "golgoth": "3.1.0",
     "html-to-text": "10.0.1",
+    "mailparser": "3.12.4",
     "marked": "18.1.2",
     "nodemailer": "10.2.1"
   }

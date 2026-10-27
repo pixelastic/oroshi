@@ -5,7 +5,7 @@ describe('draftCreate', () => {
   const options = { to: 'a@example.com', subject: 'Hello', body: 'hi' };
 
   beforeEach(() => {
-    vi.spyOn(__, 'buildRaw').mockReturnValue('RAW');
+    vi.spyOn(__, 'buildRaw').mockReturnValue(Buffer.from('RAW'));
     vi.spyOn(__, 'callApi').mockReturnValue({
       id: 'd1',
       message: { id: 'm1', threadId: 't1' },
@@ -64,12 +64,12 @@ describe('draftCreate', () => {
     });
   });
 
-  it('posts the raw mail to drafts.create', async () => {
+  it('posts the raw mail, in base64url, to drafts.create', async () => {
     await draftCreate(options);
 
     expect(__.callApi).toHaveBeenCalledWith('drafts', {
       method: 'POST',
-      body: { message: { raw: 'RAW' } },
+      body: { message: { raw: Buffer.from('RAW').toString('base64url') } },
     });
   });
 
@@ -169,7 +169,12 @@ describe('draftCreate', () => {
       expect(__.callApi).toHaveBeenCalledTimes(1);
       expect(__.callApi).toHaveBeenCalledWith('drafts', {
         method: 'POST',
-        body: { message: { raw: 'RAW', threadId: 't1' } },
+        body: {
+          message: {
+            raw: Buffer.from('RAW').toString('base64url'),
+            threadId: 't1',
+          },
+        },
       });
     });
 
