@@ -191,9 +191,9 @@
       "name": "cyan-dark"
     },
     "foreground": {
-      "ansi": 71,
-      "hex": "#a5f3fc",
-      "name": "cyan-1"
+      "ansi": 201,
+      "hex": "#ffffff",
+      "name": "gray-1"
     },
     "hideNameInPrompt": false,
     "icon": " ",

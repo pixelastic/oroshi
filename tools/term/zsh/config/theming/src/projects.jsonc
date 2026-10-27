@@ -54,7 +54,7 @@
   },
   "auctioneer-data": {
     "background": "cyan-5",
-    "foreground": "cyan-1",
+    "foreground": "gray-1",
     "icon": " ",
     "path": "~/local/www/projects/auctioneer/auctioneer-data"
   },
