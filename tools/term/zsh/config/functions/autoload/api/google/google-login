@@ -1,7 +1,8 @@
 # Log in to Google, and save the OAuth tokens
 # Usage:
-# $ google-login
+# $ google-login                     # Asks which account
 # $ google-login --account perso
+# $ google-login --account default   # The account without a suffix
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h}/__lib"
