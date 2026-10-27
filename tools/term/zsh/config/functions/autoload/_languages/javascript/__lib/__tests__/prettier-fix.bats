@@ -209,7 +209,7 @@ SCRIPT
   [[ "$args" == *"--config $OROSHI_ROOT/prettier.config.js"* ]]
 }
 
-@test "errors when --parser not provided" {
+@test "accepts a call without --parser and exits 0" {
   local file="$BATS_TMP_DIR/test.json"
   printf '{"a":1}\n' > "$file"
 
@@ -219,7 +219,24 @@ exit 0
 SCRIPT
 
   bats_run_zsh "source $LIB_DIR/prettier-fix.zsh && prettier-fix $file"
-  [[ "$status" -ne 0 ]]
+  [[ "$status" -eq 0 ]]
+}
+
+@test "gives prettier no --parser argument when none is given" {
+  local file="$BATS_TMP_DIR/test.json"
+  printf '{"a":1}\n' > "$file"
+
+  mock_prettier <<SCRIPT
+#!/bin/bash
+printf '%s\n' "\$*" > "$BATS_TMP_DIR/prettier_args"
+exit 0
+SCRIPT
+
+  bats_run_zsh "source $LIB_DIR/prettier-fix.zsh && prettier-fix $file"
+  [[ "$status" -eq 0 ]]
+  local args="$(cat "$BATS_TMP_DIR/prettier_args")"
+  [[ "$args" != *"--parser"* ]]
+  [[ "$args" == *"$file"* ]]
 }
 
 @test "formats a file when yarn-root finds no project and exits 1" {

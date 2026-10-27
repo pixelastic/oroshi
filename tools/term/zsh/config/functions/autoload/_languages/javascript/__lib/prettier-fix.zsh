@@ -1,5 +1,6 @@
 # Fix files via prettier --write
 # Usage:
+# $ prettier-fix file.vue                                             # Prettier infers the parser
 # $ prettier-fix --parser json file.json                              # Fix in-place
 # $ prettier-fix --parser json file.json --original-path /real/path   # Config from real path
 # $ prettier-fix --global --parser xml file.xml                       # Force the oroshi install + config
@@ -16,12 +17,6 @@ function prettier-fix() {
   local parser=${flagParser[2]}
   local originalPath=${flagOriginalPath[2]}
   local isGlobal=${#flagGlobal}
-
-  # --parser is required
-  if [[ $parser == "" ]]; then
-    echoerr "Error: --parser is required"
-    return 1
-  fi
 
   # --original-path is single-file only
   if [[ $originalPath != "" && $# -gt 1 ]]; then
@@ -47,9 +42,11 @@ function prettier-fix() {
   local prettierArgs=(
     --config "$configFile"
     --ignore-path=
-    --parser "$parser"
     --write
   )
+
+  # Without --parser, prettier infers it from the file extension and config
+  [[ $parser != "" ]] && prettierArgs+=(--parser "$parser")
 
   # Hide the list of formatted files, but keep errors visible
   $prettierBin ${prettierArgs[@]} "$@" >/dev/null
