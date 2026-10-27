@@ -2,7 +2,7 @@ import { _, pMap } from 'golgoth';
 import { firostError } from 'firost';
 import { callApi } from '../callApi.js';
 import { limits } from '../limits.js';
-import { formatSummary } from './formatSummary.js';
+import { formatThread } from './formatThread.js';
 
 export let __;
 
@@ -17,7 +17,7 @@ const METADATA_QUERY =
  * @param {object} options - Search options
  * @param {string} options.query - Gmail query (from:bob is:unread). Throws GMAIL_QUERY_MISSING if empty
  * @param {number} [options.limit] - Maximum number of Threads
- * @returns {Promise<object[]>} The Threads, formatted, in the order Gmail returns them
+ * @returns {Promise<object[]>} The Thread envelopes, in the order Gmail returns them. Their Messages carry metadata only
  */
 export async function threadSearch(options) {
   const { query, limit = limits.search } = options;
@@ -38,9 +38,27 @@ export async function threadSearch(options) {
     { concurrency: CONCURRENCY },
   );
 
-  return _.map(threads, formatSummary);
+  return _.map(threads, __.toEnvelope);
 }
 
 __ = {
+  /**
+   * Format one Thread as an envelope. The metadata format gives no recipient,
+   * body or attachment, so the Messages keep only the keys it provides
+   * @param {object} response - The Thread, as returned by the Gmail API with the metadata format
+   * @returns {object} The Thread as { threadId, subject, unread, messages }
+   */
+  toEnvelope(response) {
+    const { threadId, subject, unread, messages } = formatThread(response);
+    return {
+      threadId,
+      subject,
+      unread,
+      messages: _.map(messages, (message) =>
+        _.pick(message, ['messageId', 'from', 'subject', 'date', 'snippet']),
+      ),
+    };
+  },
+
   callApi,
 };

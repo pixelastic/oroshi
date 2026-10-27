@@ -53,29 +53,72 @@ describe('threadSearch', () => {
     });
   });
 
-  it('returns one formatted item per Thread, with its id', async () => {
+  it('returns one envelope per Thread, with its threadId', async () => {
     const actual = await threadSearch({ query: 'from:bob' });
 
     expect(actual).toEqual(
       ['c1', 'c2', 'c3'].map((id) => ({
-        id,
-        date: '2026-10-03T19:26:59.000Z',
-        count: 1,
-        authors: ['Alice'],
+        threadId: id,
         subject: `Subject ${id}`,
-        snippet: `Snippet ${id}`,
         unread: false,
+        messages: [
+          {
+            messageId: `${id}-0`,
+            from: 'Alice <Alice@example.com>',
+            subject: `Subject ${id}`,
+            date: 'Fri, 03 Oct 2026 21:26:59 +0200',
+            snippet: `Snippet ${id}`,
+          },
+        ],
       })),
     );
   });
 
-  it('returns the number of Messages and the authors of a Thread', async () => {
+  it('returns the metadata of every Message of a Thread', async () => {
     mockThreads([thread('c1', { authors: ['Alice', 'Bob'] })]);
 
     const actual = await threadSearch({ query: 'from:bob' });
 
-    expect(actual[0]).toHaveProperty('count', 2);
-    expect(actual[0]).toHaveProperty('authors', ['Alice', 'Bob']);
+    expect(actual[0].messages.map((item) => item.messageId)).toEqual([
+      'c1-0',
+      'c1-1',
+    ]);
+    expect(actual[0].messages.map((item) => item.from)).toEqual([
+      'Alice <Alice@example.com>',
+      'Bob <Bob@example.com>',
+    ]);
+  });
+
+  it.each(['to', 'body', 'attachments'])(
+    'omits %s from each Message',
+    async (key) => {
+      mockThreads([thread('c1', { authors: ['Alice', 'Bob'] })]);
+
+      const actual = await threadSearch({ query: 'from:bob' });
+
+      actual[0].messages.forEach((item) => {
+        expect(item).not.toHaveProperty(key);
+      });
+    },
+  );
+
+  it.each(['count', 'date', 'authors', 'snippet'])(
+    'does not return %s on the Thread',
+    async (key) => {
+      const actual = await threadSearch({ query: 'from:bob' });
+
+      expect(actual[0]).not.toHaveProperty(key);
+    },
+  );
+
+  it('makes one API call per Thread, in the metadata format', async () => {
+    await threadSearch({ query: 'from:bob' });
+
+    const paths = __.callApi.mock.calls.map(([path]) => path);
+    expect(paths).toHaveLength(4);
+    paths.slice(1).forEach((path, index) => {
+      expect(path).toMatch(`threads/c${index + 1}?format=metadata`);
+    });
   });
 
   it('returns an empty list when nothing matches', async () => {

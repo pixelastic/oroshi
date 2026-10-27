@@ -1,5 +1,7 @@
 # Search the Threads with a native Gmail query, and print them as JSON
-# The id is the threadId
+# Envelope: threadId, subject, unread, messages
+# Each Message has messageId, from, subject, date, snippet (no recipient, body or attachments)
+# Use gmail-thread-read with the threadId for the full content
 # Usage:
 # $ gmail-thread-search 'from:bob is:unread'
 # $ gmail-thread-search 'in:inbox newer_than:3m' --limit 10
