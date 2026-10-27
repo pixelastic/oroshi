@@ -118,6 +118,9 @@ The closed vocabulary of commands. A service implements only the verbs it needs.
 See [reference/commands/README.md](reference/commands/README.md) for the table
 with links.
 
+The glossary of a service does not define these verbs again. It defines only its
+**Custom verbs**.
+
 **[`list`](reference/commands/list.md)**:
 
 Print the entities as a colored table, for humans.

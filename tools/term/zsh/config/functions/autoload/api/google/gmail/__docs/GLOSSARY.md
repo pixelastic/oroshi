@@ -4,6 +4,12 @@ The commands that let a shell or an agent read and interact with Gmail. It
 follows the [API glossary](/docs/api/GLOSSARY.md), and defines only the words of
 this service. Its words are the words of the Gmail API.
 
+This glossary defines only what is custom to Gmail. The base verbs (`list`,
+`list-raw`, `search`, `read`, `create`, `update` and `delete`) are defined in
+the API glossary and are not defined again here. Do not add an entry for a base
+verb, even for a new command. The behavior of a command belongs in the header of
+its wrapper.
+
 ## Language
 
 ### Authentication
@@ -64,22 +70,7 @@ only the text of the user, and no copy of the previous **Message**.
 
 _Avoid_: unsent mail, unsent email, reply
 
-### Verbs
-
-**`read`**:
-
-`gmail-draft-read draftId` prints one **Draft** as JSON: `draftId`, `threadId`,
-`messageId`, `from`, `to`, `subject`, `body` and `attachments`. Each
-**Attachment** has a `partId`, a `filename`, a `mimeType` and a `size`, never
-its bytes.
-
-**`update`**:
-
-`gmail-draft-update draftId` changes the core of a **Draft** (`--to`,
-`--subject`, `--body` or `--body-file`) and keeps its **Attachments**. A flag
-that is absent keeps the current value. It prints `draftId`, `threadId`, `url`
-and `attachments`. It replaces the **Draft** through the upload endpoint, which
-gives new `partId` values to its **Attachments**.
+### Custom verbs
 
 **`add`**:
 

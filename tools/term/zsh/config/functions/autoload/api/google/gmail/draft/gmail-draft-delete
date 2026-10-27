@@ -1,0 +1,12 @@
+# Delete a Draft for good, and print its draftId as JSON
+# The Draft does not go to the trash, and it cannot be restored
+# The draftId is printed by gmail-draft-create, gmail-draft-read and gmail-thread-read
+# Flags:
+# --account <name>     Account of the Draft. The default account if empty
+# Usage:
+# $ gmail-draft-delete draftId
+# $ gmail-draft-delete draftId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-draft-delete.js" "$@"
