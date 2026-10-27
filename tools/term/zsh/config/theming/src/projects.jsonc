@@ -50,13 +50,13 @@
     "background": "cyan-7",
     "foreground": "cyan-1",
     "icon": " ",
-    "path": "~/local/www/projects/auctioneer"
+    "path": "~/local/www/projects/auctioneer/auctioneer"
   },
   "auctioneer-data": {
     "background": "cyan-5",
     "foreground": "cyan-1",
     "icon": " ",
-    "path": "~/local/www/projects/auctioneer-data"
+    "path": "~/local/www/projects/auctioneer/auctioneer-data"
   },
   "bg": {
     "background": "orange",

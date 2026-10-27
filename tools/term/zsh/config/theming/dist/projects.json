@@ -177,7 +177,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/auctioneer"
+    "path": "~/local/www/projects/auctioneer/auctioneer"
   },
   "auctioneer-data": {
     "background": {
@@ -197,7 +197,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/auctioneer-data"
+    "path": "~/local/www/projects/auctioneer/auctioneer-data"
   },
   "bg": {
     "background": {
