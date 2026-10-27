@@ -56,6 +56,11 @@ A **Message** that is written and not sent yet, saved in Gmail. It is either
 new, or a reply to the last **Message** of a **Thread**. A reply **Draft** holds
 only the text of the user, and no copy of the previous **Message**.
 
+`gmail-draft-read draftId` prints one **Draft** as JSON: `draftId`, `threadId`,
+`messageId`, `from`, `to`, `subject`, `body` and `attachments`. Each
+**Attachment** has a `partId`, a `filename`, a `mimeType` and a `size`, never
+its bytes.
+
 _Avoid_: unsent mail, unsent email, reply
 
 ### Verbs

@@ -229,6 +229,7 @@
   "gmail-attachment-remove",
   "gmail-draft-create",
   "gmail-draft-delete",
+  "gmail-draft-read",
   "gmail-draft-update",
   "gmail-thread-list",
   "gmail-thread-list-raw",

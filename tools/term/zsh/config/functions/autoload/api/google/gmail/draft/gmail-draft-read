@@ -1,0 +1,11 @@
+# Read a Draft, and print it as JSON, with its attachments
+# The draftId is printed by gmail-draft-create and gmail-thread-read (draftId of a Draft Message)
+# Output: draftId, threadId, messageId, from, to, subject, body, attachments
+# Each attachment has partId, filename, mimeType and size, never its bytes
+# Usage:
+# $ gmail-draft-read draftId
+# $ gmail-draft-read draftId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-draft-read.js" "$@"
