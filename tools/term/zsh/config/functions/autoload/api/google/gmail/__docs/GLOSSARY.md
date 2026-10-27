@@ -56,10 +56,24 @@ A **Message** that is written and not sent yet, saved in Gmail. It is either
 new, or a reply to the last **Message** of a **Thread**. A reply **Draft** holds
 only the text of the user, and no copy of the previous **Message**.
 
+`draftId` is the id of a **Draft**. It differs from the `messageId` of the
+**Message** that the **Draft** holds. `read` of a **Thread** marks each
+**Message** with `isDraft` (`true` for a **Draft**) and, for a **Draft** only,
+`draftId` (the id of the **Draft**). A sent or received **Message** has no
+`draftId` key.
+
+_Avoid_: unsent mail, unsent email, reply
+
+### Verbs
+
+**`read`**:
+
 `gmail-draft-read draftId` prints one **Draft** as JSON: `draftId`, `threadId`,
 `messageId`, `from`, `to`, `subject`, `body` and `attachments`. Each
 **Attachment** has a `partId`, a `filename`, a `mimeType` and a `size`, never
 its bytes.
+
+**`update`**:
 
 `gmail-draft-update draftId` changes the core of a **Draft** (`--to`,
 `--subject`, `--body` or `--body-file`) and keeps its **Attachments**. A flag
@@ -67,19 +81,21 @@ that is absent keeps the current value. It prints `draftId`, `threadId`, `url`
 and `attachments`. It replaces the **Draft** through the upload endpoint, which
 gives new `partId` values to its **Attachments**.
 
+**`add`**:
+
+A **Custom verb** of the `attachment` entity:
 `gmail-attachment-add draftId file...` adds files to a **Draft** and keeps its
 **Attachments**. It prints `draftId`, `threadId`, `url` and `attachments`, with
 the current `partId` values. All the **Attachments** weigh at most 25 MB,
 counted in base64 (about 4/3 of the bytes), or it fails before any save.
 
+**`remove`**:
+
+A **Custom verb** of the `attachment` entity:
 `gmail-attachment-remove draftId --partId <id>` removes one **Attachment** of a
 **Draft** and keeps the others. It prints `draftId`, `threadId`, `url` and
 `attachments`, with the current `partId` values. An unknown `partId` fails
 before any save.
-
-_Avoid_: unsent mail, unsent email, reply
-
-### Verbs
 
 **`download`**:
 
