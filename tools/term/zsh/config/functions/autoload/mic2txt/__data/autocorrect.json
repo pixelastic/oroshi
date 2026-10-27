@@ -197,5 +197,6 @@
   "Rufy en route": "OROSHI_ROOT",
   "ETC host": "/etc/hosts",
   "XMODEMAP": "xmodmap",
-  "Roche et Root": "OROSHI_ROOT"
+  "Roche et Root": "OROSHI_ROOT",
+  "paquet route": "packageRoot"
 }

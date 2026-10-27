@@ -51,3 +51,19 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" = "$BATS_GIT_DIR" ]]
 }
+
+@test "returns a normalized Git Repo Main path from a subdirectory" {
+  mkdir -p "$BATS_GIT_DIR/src/deep"
+  cd "$BATS_GIT_DIR/src/deep"
+  bats_run_zsh "git-worktree-main"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$BATS_GIT_DIR" ]]
+}
+
+@test "--reply sets a normalized Git Repo Main path from a subdirectory" {
+  mkdir -p "$BATS_GIT_DIR/src/deep"
+  cd "$BATS_GIT_DIR/src/deep"
+  bats_run_zsh "git-worktree-main --reply && echo \"\$REPLY\""
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$BATS_GIT_DIR" ]]
+}

@@ -17,7 +17,7 @@ local commonDir="$(git -C "$refDir" rev-parse --git-common-dir 2>/dev/null)"
 [[ "$commonDir" == "" ]] && return 1
 
 # --git-common-dir returns a relative path from refDir (or "." in main repo)
-# Resolve to absolute then take parent
+# Resolve to absolute, normalize any "..", then take parent
 local absCommonDir
 if [[ "$commonDir" == /* ]]; then
   absCommonDir="$commonDir"
@@ -26,7 +26,7 @@ else
 fi
 
 if [[ ${#flagReply} == "1" ]]; then
-  REPLY="${absCommonDir:h}"
+  REPLY="${absCommonDir:a:h}"
 else
-  echo "${absCommonDir:h}"
+  echo "${absCommonDir:a:h}"
 fi
