@@ -49,15 +49,10 @@ __ = {
    * @returns {object} The Thread as { threadId, subject, unread, messages }
    */
   toEnvelope(response) {
-    const { threadId, subject, unread, messages } = formatThread(response);
-    return {
-      threadId,
-      subject,
-      unread,
-      messages: _.map(messages, (message) =>
-        _.pick(message, ['messageId', 'from', 'subject', 'date', 'snippet']),
-      ),
-    };
+    const { threadId, subject, unread, messages } = formatThread(response, {
+      format: 'metadata',
+    });
+    return { threadId, subject, unread, messages };
   },
 
   callApi,

@@ -7,12 +7,13 @@ export let __;
 /**
  * Format one Thread, to give every command the same output
  * @param {object} response - The Thread, as returned by the Gmail API
+ * @param {object} [options] - Format options, passed to formatMessage
  * @returns {object} The Thread as { threadId, subject, unread, messages }, plus the fields of the flat list format: { date, count, authors, snippet }
  */
-export function formatThread(response) {
+export function formatThread(response, options) {
   const entries = _.chain(response.messages)
     .sortBy((message) => Number(message.internalDate))
-    .map(__.toEntry)
+    .map((message) => __.toEntry(message, options))
     .value();
   // Like the Gmail inbox, show the last Message received in the inbox, not the
   // replies sent from it
@@ -39,11 +40,12 @@ __ = {
   /**
    * Pair a formatted Message with its labels
    * @param {object} message - Gmail message resource
+   * @param {object} [options] - Format options, passed to formatMessage
    * @returns {object} { message, unread, inbox }, message being the formatted Message
    */
-  toEntry(message) {
+  toEntry(message, options) {
     return {
-      message: formatMessage(message),
+      message: formatMessage(message, options),
       unread: _.includes(message.labelIds, 'UNREAD'),
       inbox: _.includes(message.labelIds, 'INBOX'),
     };

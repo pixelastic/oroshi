@@ -8,17 +8,27 @@ export let __;
 
 /**
  * Format one Message, with its decoded body
- * @param {object} message - Gmail message resource, fetched with the full format
- * @returns {object} The Message as { messageId, from, to, subject, date, snippet, body, attachments }
+ * @param {object} message - Gmail message resource
+ * @param {object} [options] - Format options
+ * @param {string} [options.format] - Format the Message was fetched with: full (default) or metadata
+ * @returns {object} The Message as { messageId, from, to, subject, date, snippet, body, attachments }. The metadata format provides no recipient, body or attachment, so those keys are absent
  */
-export function formatMessage(message) {
-  return {
+export function formatMessage(message, options = {}) {
+  const { format = 'full' } = options;
+  const metadata = {
     messageId: message.id,
     from: header(message, 'From'),
-    to: header(message, 'To'),
     subject: header(message, 'Subject'),
     date: header(message, 'Date'),
     snippet: message.snippet || '',
+  };
+  if (format === 'metadata') {
+    return metadata;
+  }
+
+  return {
+    ...metadata,
+    to: header(message, 'To'),
     body: __.extractBody(message.payload),
     attachments: _.map(extractAttachments(message.payload), (attachment) =>
       _.omit(attachment, 'attachmentId'),

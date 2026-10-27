@@ -4,7 +4,7 @@ import { _ } from 'golgoth';
 import { firostError, isDirectory, mkdirp } from 'firost';
 import { callApi } from '../callApi.js';
 import { extractAttachments } from '../extractAttachments.js';
-import { getMessage } from '../message/getMessage.js';
+import { getMessage } from '../thread/getMessage.js';
 
 export let __;
 

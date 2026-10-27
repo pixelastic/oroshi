@@ -13,16 +13,16 @@ export async function getMessage(messageId, options) {
   try {
     return await __.callApi(`messages/${messageId}`, options);
   } catch (error) {
+    const { code, message } = error;
     // callApi starts the message of a failed request with the HTTP status
-    const isNotFound =
-      error.code === 'GMAIL_REQUEST_FAILED' && error.message.startsWith('404');
-    if (!isNotFound) {
-      throw error;
+    if (code === 'GMAIL_REQUEST_FAILED' && message.startsWith('404')) {
+      throw firostError(
+        'GMAIL_MESSAGE_NOT_FOUND',
+        `Message ${messageId} not found`,
+      );
     }
-    throw firostError(
-      'GMAIL_MESSAGE_NOT_FOUND',
-      `Message ${messageId} not found`,
-    );
+
+    throw error;
   }
 }
 

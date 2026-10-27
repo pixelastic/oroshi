@@ -34,6 +34,20 @@ describe('formatMessage', () => {
     });
   });
 
+  it('returns only the keys of the metadata format with the metadata option', () => {
+    const actual = formatMessage(message({ mimeType: 'text/plain' }), {
+      format: 'metadata',
+    });
+
+    expect(actual).toEqual({
+      messageId: 'a1',
+      from: 'alice@example.com',
+      subject: 'Hello',
+      date: 'Mon, 1 Jan 2026 10:00:00 +0000',
+      snippet: 'snip',
+    });
+  });
+
   it.each([
     {
       title: 'returns the text/plain part of a multipart Message',
