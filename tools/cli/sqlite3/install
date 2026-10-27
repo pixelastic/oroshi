@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# sqlite3: Command line shell for SQLite databases
+set -e
+
+sudo apt-get install sqlite3
