@@ -223,6 +223,7 @@
   "git-worktree-submodule-pointer-differs",
   "git-worktree-submodule-preflight",
   "gmail-attachment-download",
+  "gmail-draft-create",
   "gmail-message-list",
   "gmail-message-list-raw",
   "gmail-message-read",
