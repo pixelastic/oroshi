@@ -39,17 +39,15 @@ local ssid="$(
 )"
 ssid="${ssid#yes:}"
 
-local knownSsids="${(kj:, :)PRINTER_BY_SSID}"
-
 # Stop when no wifi is active
 if [[ "$ssid" == "" ]]; then
-  echoerr "printer-send: no active wifi. Known networks: $knownSsids"
+  echoerr "printer-send: no active wifi"
   return 1
 fi
 
 # Stop when the active network has no known printer
 if [[ "$PRINTER_BY_SSID[$ssid]" == "" ]]; then
-  echoerr "printer-send: no printer for wifi '$ssid'. Known networks: $knownSsids"
+  echoerr "printer-send: no printer for wifi"
   return 1
 fi
 

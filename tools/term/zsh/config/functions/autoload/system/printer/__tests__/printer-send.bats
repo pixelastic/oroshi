@@ -70,14 +70,14 @@ mock_lp() {
   [[ ! -e "$BATS_TMP_DIR/lp-args" ]]
 }
 
-@test "shows the detected SSID and the known SSIDs in the error" {
+@test "states in the error that no printer matches the wifi" {
   mock_ssid "Coffeeshop"
   mock_lp
 
   bats_run_zsh "printer-send '$BATS_TMP_DIR/report.pdf' 2>&1 >/dev/null"
-  [[ "$output" == *"Coffeeshop"* ]]
-  [[ "$output" == *"Waterfront"* ]]
-  [[ "$output" == *"algolia"* ]]
+  [[ "$output" == *"no printer for wifi"* ]]
+  [[ "$output" != *"Coffeeshop"* ]]
+  [[ "$output" != *"Waterfront"* ]]
 }
 
 # Mock nmcli to report no active wifi network
