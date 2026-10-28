@@ -19,6 +19,7 @@ This is written once, and never modified by agents.
 This is append-only, updated by agents after each issue.
 
 ### Issue XX — short title
+
 - Non-trivial finding 1
 - Non-trivial finding 2
 ```

@@ -39,5 +39,4 @@ What structural transformation the scaffolding test must verify.
 - [ ] Criterion 1
 - [ ] Criterion 2
 - [ ] Criterion 3
-
 ```

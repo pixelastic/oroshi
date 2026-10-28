@@ -4,16 +4,20 @@
 
 ```markdown
 ## Goal
+
 <One sentence: the problem being solved or objective being pursued (the Why).>
 
 ## Done
+
 <What was concretely built or changed to achieve that goal (the How). Note any deviations from the goal.>
 
 ## Key files
+
 - `path/to/file` — one-line reason this file matters
 - `path/to/file` — one-line reason this file matters
 
 ## Suggested type(scope)
+
 `type(scope)` — e.g. `feat(git-commit-message)`, `chore(gitignore)`, `plan(commit-quality)`
 ```
 

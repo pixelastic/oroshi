@@ -65,10 +65,10 @@ No patterns yet — just correct behavior.
 
 Apply patterns from [Style](./references/style.md):
 
-| Pattern | Rule |
-|---|---|
-| Return early | No avoidable nesting |
-| [language-specific] | [language-specific] |
+| Pattern             | Rule                 |
+| ------------------- | -------------------- |
+| Return early        | No avoidable nesting |
+| [language-specific] | [language-specific]  |
 
 [Optional: short refactored code example.]
 
@@ -85,10 +85,10 @@ Apply patterns from [Style](./references/style.md):
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
+| Rationalization                             | Reality                            |
+| ------------------------------------------- | ---------------------------------- |
 | "It's only two levels of if/else, it's ok." | No it's not. Return early, always. |
-| [language-specific] | [language-specific] |
+| [language-specific]                         | [language-specific]                |
 
 ## Checklist
 

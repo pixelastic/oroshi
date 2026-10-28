@@ -59,7 +59,6 @@ _Avoid_: Client, buyer, account
 
 > **Dev:** "When a **Customer** places an **Order**, do we create the **Invoice** immediately?"
 > **Domain expert:** "No — an **Invoice** is only generated once a **Fulfillment** is confirmed."
-
 ```
 
 ---

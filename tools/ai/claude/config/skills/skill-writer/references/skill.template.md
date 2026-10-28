@@ -15,6 +15,7 @@ description: Use when <triggering conditions>. Third person, max 1024 chars.
 # Skill Name
 
 ## Overview
+
 Goal in 1-2 sentences.
 
 ## Core Workflow
@@ -36,11 +37,13 @@ Goal in 1-2 sentences.
 [Instructions, similar to Step 1.]
 
 ## Common Rationalizations
-| Rationalization | Reality |
-|---|---|
-| Excuse agents use to skip steps | Why the excuse is wrong |
+
+| Rationalization                 | Reality                  |
+| ------------------------------- | ------------------------ |
+| Excuse agents use to skip steps | Why the excuse is wrong  |
 
 ## Checklist
+
 - [ ] Verifiable exit criterion with required evidence
 ```
 

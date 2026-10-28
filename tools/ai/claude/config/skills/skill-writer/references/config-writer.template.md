@@ -36,10 +36,10 @@ Write and lint {LANG} files consistent with my conventions.
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
-| "The {LANG} looks fine, no need to lint" | `{lang}-lint --fix` catches formatting issues you won't spot visually. Always lint. |
-| "I'll fix the lint errors later" | Lint after every modification. Later never comes. |
+| Rationalization                          | Reality                                                                              |
+| ---------------------------------------- | ------------------------------------------------------------------------------------ |
+| "The {LANG} looks fine, no need to lint" | `{lang}-lint --fix` catches formatting issues you won't spot visually. Always lint.  |
+| "I'll fix the lint errors later"         | Lint after every modification. Later never comes.                                    |
 
 ## Checklist
 
