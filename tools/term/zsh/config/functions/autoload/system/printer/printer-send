@@ -1,0 +1,24 @@
+# Print a file on the printer of the current wifi network
+# Usage:
+# $ printer-send ./file.pdf    # Print on the printer matching the active SSID
+setopt local_options err_return
+
+# Printer queue to use for each known wifi network
+local -A PRINTER_BY_SSID=(
+  Waterfront HLL2375DW
+)
+
+local file="$1"
+
+local ssid="$(
+  nmcli \
+    --terse \
+    --fields active,ssid \
+    dev wifi \
+    | grep \
+      --max-count=1 \
+      '^yes:'
+)"
+ssid="${ssid#yes:}"
+
+lp -d "$PRINTER_BY_SSID[$ssid]" "$file"
