@@ -8,14 +8,18 @@ export let __;
  * @param {object} options - Update options
  * @param {string} options.threadId - Id of the Thread, as printed by the other thread commands
  * @param {boolean} [options.read] - Mark every Message of the Thread as read
+ * @param {boolean} [options.unread] - Mark the Thread as unread
  * @returns {Promise<object>} The state of the Thread, as { threadId, unread }
  */
 export async function threadUpdate(options) {
-  const { threadId, read } = options;
+  const { threadId, read, unread } = options;
 
+  const labelChange = unread
+    ? { addLabelIds: ['UNREAD'] }
+    : { removeLabelIds: ['UNREAD'] };
   const response = await __.callApi(`threads/${threadId}/modify`, {
     method: 'POST',
-    body: { removeLabelIds: ['UNREAD'] },
+    body: labelChange,
   });
 
   return { threadId, unread: __.isUnread(response, !read) };

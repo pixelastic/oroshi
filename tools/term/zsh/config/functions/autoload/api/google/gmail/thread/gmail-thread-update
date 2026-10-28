@@ -4,9 +4,11 @@
 # readonly and compose scopes
 # Flags:
 # --read               Mark every Message of the Thread as read
+# --unread             Mark the Thread as unread
 # --account <name>     Account of the Thread. The default account if empty
 # Usage:
 # $ gmail-thread-update threadId --read
+# $ gmail-thread-update threadId --unread
 # $ gmail-thread-update threadId --read --account perso
 setopt local_options err_return
 
