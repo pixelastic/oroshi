@@ -4,6 +4,14 @@ setup() {
   bats_tmp_dir
 }
 
+# Write a messy .vue file and print its path
+# The name has several words and the prop has a default: no unfixable eslint violation
+create_messy_vue_file() {
+  local file="$BATS_TMP_DIR/MyComponent.vue"
+  printf '<script setup>\nconst   config   =   {b:1}\ndefineProps({label:{type:String,default:"x"}})\n</script>\n\n<template>\n<div   :title="config.b">{{ label }}</div>\n</template>\n' > "$file"
+  printf '%s' "$file"
+}
+
 @test "rewrites a badly formatted file in place" {
   local file="$BATS_TMP_DIR/messy.js"
   printf 'const   a   =   {b:1}\nexport {a}\n' > "$file"
@@ -150,4 +158,31 @@ setup() {
   [[ "$status" -eq 0 ]]
   local leftovers=("$BATS_TMP_DIR"/.js-fix-*)
   [[ ! -e "${leftovers[0]}" ]]
+}
+
+@test "formats a .vue file with a script setup and a template" {
+  local file="$(create_messy_vue_file)"
+
+  bats_run_zsh "js-fix $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+  [[ "$(cat "$file")" == *"const config = { b: 1 };"* ]]
+  [[ "$(cat "$file")" == *"<div :title=\"config.b\">{{ label }}</div>"* ]]
+}
+
+@test "leaves no eslint violation on the formatted .vue file" {
+  local file="$(create_messy_vue_file)"
+
+  bats_run_zsh "js-fix $file"
+  bats_run_zsh "js-lint $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+}
+
+@test "js-lint --fix succeeds on a .vue file" {
+  local file="$(create_messy_vue_file)"
+
+  bats_run_zsh "js-lint --fix $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
 }

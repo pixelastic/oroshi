@@ -45,13 +45,13 @@ local -a originalPathArgs=()
 [[ "$originalPath" != "" ]] && originalPathArgs=(--original-path "$originalPath")
 
 # Step 1: Format with prettier
-prettier-fix --parser babel "${originalPathArgs[@]}" "${files[@]}"
+prettier-fix "${originalPathArgs[@]}" "${files[@]}"
 
 # Step 2: Fix the content with ESLint
 eslint-fix "${originalPathArgs[@]}" "${files[@]}"
 
 # Step 3: Format with prettier again, to normalize what ESLint changed
-prettier-fix --parser babel "${originalPathArgs[@]}" "${files[@]}"
+prettier-fix "${originalPathArgs[@]}" "${files[@]}"
 
 # Stdout mode: output and cleanup
 if [[ "$temporaryFile" != "" ]]; then
