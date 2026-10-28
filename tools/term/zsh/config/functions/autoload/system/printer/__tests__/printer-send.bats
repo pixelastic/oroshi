@@ -35,3 +35,21 @@ mock_lp() {
   [[ "$status" -eq 0 ]]
   [[ "$(sed -n 3p "$BATS_TMP_DIR/lp-args")" = "/tmp/my report.pdf" ]]
 }
+
+@test "sends the file to Ricoh-IM-C300 when the SSID is algolia" {
+  mock_ssid "algolia"
+  mock_lp
+
+  bats_run_zsh "printer-send /tmp/report.pdf"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/lp-args")" = $'-d\nRicoh-IM-C300\n/tmp/report.pdf' ]]
+}
+
+@test "does not use the home printer when the SSID is algolia" {
+  mock_ssid "algolia"
+  mock_lp
+
+  bats_run_zsh "printer-send /tmp/report.pdf"
+  [[ "$(sed -n 2p "$BATS_TMP_DIR/lp-args")" != "HLL2375DW" ]]
+  [[ "$(sed -n 2p "$BATS_TMP_DIR/lp-args")" != "" ]]
+}

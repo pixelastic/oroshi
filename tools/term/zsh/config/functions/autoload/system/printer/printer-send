@@ -6,6 +6,7 @@ setopt local_options err_return
 # Printer queue to use for each known wifi network
 local -A PRINTER_BY_SSID=(
   Waterfront HLL2375DW
+  algolia Ricoh-IM-C300
 )
 
 local file="$1"
