@@ -47,12 +47,22 @@ describe('login', () => {
       scope: [
         'https://www.googleapis.com/auth/documents',
         'https://www.googleapis.com/auth/drive',
-        'https://www.googleapis.com/auth/gmail.readonly',
-        'https://www.googleapis.com/auth/gmail.compose',
+        'https://www.googleapis.com/auth/gmail.modify',
       ].join(' '),
     });
     expect(port).toEqual(48912);
   });
+
+  it.each([{ input: 'gmail.readonly' }, { input: 'gmail.compose' }])(
+    'does not ask for the $input scope',
+    async ({ input }) => {
+      await login();
+
+      const { authorizeUrl } = __.waitForCode.mock.calls[0][0];
+      const actual = new URL(authorizeUrl).searchParams.get('scope').split(' ');
+      expect(actual).not.toContain(`https://www.googleapis.com/auth/${input}`);
+    },
+  );
 
   it('exchanges the code of the grant for tokens', async () => {
     await login();

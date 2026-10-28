@@ -10,8 +10,8 @@
 #                      Pass one of --body or --body-file, never both
 # --account <name>     Account of the Draft. The default account if empty
 # Each attachment has partId, filename, mimeType and size, never its bytes
-Gmail gives new partId values to the attachments, so read them in the output
-# Run google-login again after a new scope (gmail.compose) is added
+# Gmail gives new partId values to the attachments, so read them in the output
+# Run google-login again after a new scope (gmail.modify) is added
 # Usage:
 # $ gmail-draft-update draftId --subject "New subject"
 # $ gmail-draft-update draftId --to a@b.c --body "New body"

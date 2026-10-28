@@ -14,7 +14,7 @@
 # --account <name>     Account of the draft. The default account if empty
 # A reply reads the aliases of the account in OROSHI_GMAIL_ALIASES (default
 # account) or OROSHI_GMAIL_ALIASES_<ACCOUNT> (--account), comma-separated
-# Run google-login again after a new scope (gmail.compose) is added
+# Run google-login again after a new scope (gmail.modify) is added
 # Usage:
 # $ gmail-draft-create --to a@b.c --subject "Hello" --body "Hi there"
 # $ gmail-draft-create --to a@b.c --subject "Hello" --body-file ./body.md
