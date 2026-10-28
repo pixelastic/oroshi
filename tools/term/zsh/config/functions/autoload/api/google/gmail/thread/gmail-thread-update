@@ -1,7 +1,5 @@
 # Update the state of a Thread, and print its threadId and unread as JSON
 # The threadId is printed by the other gmail-thread commands
-# Needs the gmail.modify scope. Run google-login again after an upgrade from the
-# readonly and compose scopes
 # Pass exactly one of --read and --unread
 # Errors:
 # GMAIL_THREAD_ID_MISSING        The threadId is empty
