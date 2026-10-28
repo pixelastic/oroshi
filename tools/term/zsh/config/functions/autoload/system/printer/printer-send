@@ -1,6 +1,8 @@
-# Print a file on the printer of the current wifi network
+# Print files on the printer of the current wifi network
 # Usage:
-# $ printer-send ./file.pdf    # Print on the printer matching the active SSID
+# $ printer-send ./file.pdf              # Print on the printer matching the active SSID
+# $ printer-send ./a.pdf ./b.pdf         # Print several files in one job
+# Sends nothing and fails when no file is given or when any file is missing.
 setopt local_options err_return
 
 # Printer queue to use for each known wifi network
@@ -9,7 +11,22 @@ local -A PRINTER_BY_SSID=(
   algolia Ricoh-IM-C300
 )
 
-local file="$1"
+local files=("$@")
+
+# Stop when no file is given
+if [[ ${#files} -eq 0 ]]; then
+  echoerr "Usage: printer-send file [file ...]"
+  return 1
+fi
+
+# Stop before any send when a file is missing
+local file
+for file in "${files[@]}"; do
+  if [[ ! -e "$file" ]]; then
+    echoerr "printer-send: file not found: $file"
+    return 1
+  fi
+done
 
 local ssid="$(
   nmcli \
@@ -36,4 +53,4 @@ if [[ "$PRINTER_BY_SSID[$ssid]" == "" ]]; then
   return 1
 fi
 
-lp -d "$PRINTER_BY_SSID[$ssid]" "$file"
+lp -d "$PRINTER_BY_SSID[$ssid]" "${files[@]}"
