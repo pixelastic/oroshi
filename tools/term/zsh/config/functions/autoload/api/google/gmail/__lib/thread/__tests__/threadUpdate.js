@@ -1,3 +1,4 @@
+import { firostError } from 'firost';
 import { __, threadUpdate } from '../threadUpdate.js';
 
 describe('threadUpdate', () => {
@@ -6,6 +7,66 @@ describe('threadUpdate', () => {
       id: 't1',
       messages: [{ id: 'm1', labelIds: ['INBOX'] }],
     });
+  });
+
+  it.each([
+    {
+      title: 'the threadId is missing',
+      options: { read: true },
+      expected: 'GMAIL_THREAD_ID_MISSING',
+    },
+    {
+      title: 'no flag is given',
+      options: { threadId: 't1' },
+      expected: 'GMAIL_THREAD_UPDATE_EMPTY',
+    },
+    {
+      title: 'both flags are given',
+      options: { threadId: 't1', read: true, unread: true },
+      expected: 'GMAIL_THREAD_UPDATE_CONFLICT',
+    },
+  ])(
+    'fails with $expected when $title, with no API call',
+    async ({ options, expected }) => {
+      let actual = null;
+      try {
+        await threadUpdate(options);
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', expected);
+      expect(__.callApi).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each([
+    {
+      title: 'the API answers 404',
+      apiError: firostError(
+        'GMAIL_REQUEST_FAILED',
+        '404 {"error":"NOT_FOUND"}',
+      ),
+      expected: 'GMAIL_THREAD_NOT_FOUND',
+    },
+    {
+      title: 'the API answers any other error',
+      apiError: firostError('GMAIL_REQUEST_FAILED', '500 oops'),
+      expected: 'GMAIL_REQUEST_FAILED',
+    },
+  ])('fails with $expected when $title', async ({ apiError, expected }) => {
+    __.callApi.mockImplementation(() => {
+      throw apiError;
+    });
+
+    let actual = null;
+    try {
+      await threadUpdate({ threadId: 't1', read: true });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', expected);
   });
 
   it.each([

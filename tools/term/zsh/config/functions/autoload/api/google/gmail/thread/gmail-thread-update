@@ -2,6 +2,12 @@
 # The threadId is printed by the other gmail-thread commands
 # Needs the gmail.modify scope. Run google-login again after an upgrade from the
 # readonly and compose scopes
+# Pass exactly one of --read and --unread
+# Errors:
+# GMAIL_THREAD_ID_MISSING        The threadId is empty
+# GMAIL_THREAD_UPDATE_EMPTY      Neither --read nor --unread is given
+# GMAIL_THREAD_UPDATE_CONFLICT   Both --read and --unread are given
+# GMAIL_THREAD_NOT_FOUND         The Thread does not exist
 # Flags:
 # --read               Mark every Message of the Thread as read
 # --unread             Mark the Thread as unread
