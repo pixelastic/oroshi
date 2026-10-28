@@ -1,0 +1,14 @@
+# Update the state of a Thread, and print its threadId and unread as JSON
+# The threadId is printed by the other gmail-thread commands
+# Needs the gmail.modify scope. Run google-login again after an upgrade from the
+# readonly and compose scopes
+# Flags:
+# --read               Mark every Message of the Thread as read
+# --account <name>     Account of the Thread. The default account if empty
+# Usage:
+# $ gmail-thread-update threadId --read
+# $ gmail-thread-update threadId --read --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-thread-update.js" "$@"
