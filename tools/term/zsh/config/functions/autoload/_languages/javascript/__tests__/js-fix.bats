@@ -179,6 +179,45 @@ create_messy_vue_file() {
   [[ "$output" == "" ]]
 }
 
+@test "--stdout prints the formatted code of a .vue file and leaves the file untouched" {
+  local file="$(create_messy_vue_file)"
+  local original="$(cat "$file")"
+
+  bats_run_zsh "js-fix --stdout $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"const config = { b: 1 };"* ]]
+  [[ "$output" == *"<div :title=\"config.b\">{{ label }}</div>"* ]]
+  [[ "$(cat "$file")" == "$original" ]]
+  local leftovers=("$BATS_TMP_DIR"/.js-fix-*)
+  [[ ! -e "${leftovers[0]}" ]]
+}
+
+@test "--original-path resolves the config from the real path of a .vue file" {
+  local project="$BATS_TMP_DIR/project"
+  mkdir -p "$project"
+  # Project-local prettier config: 4 spaces indentation
+  printf 'export default { tabWidth: 4 };\n' > "$project/prettier.config.js"
+  printf '{"name":"project"}\n' > "$project/package.json"
+  local realPath="$project/MyComponent.vue"
+  local scratchFile="$(create_messy_vue_file)"
+
+  bats_run_zsh "js-fix --stdout --original-path $realPath $scratchFile"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *$'\n    <div :title="config.b">'* ]]
+  local leftovers=("$project"/.js-fix-*)
+  [[ ! -e "${leftovers[0]}" ]]
+}
+
+@test "formats a .jsx file as before" {
+  local file="$BATS_TMP_DIR/messy.jsx"
+  printf 'const   a   =   <div   className="x">hi</div>\nexport {a}\n' > "$file"
+
+  bats_run_zsh "js-fix $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+  [[ "$(cat "$file")" == $'const a = <div className="x">hi</div>;\nexport { a };' ]]
+}
+
 @test "js-lint --fix succeeds on a .vue file" {
   local file="$(create_messy_vue_file)"
 
