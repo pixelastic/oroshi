@@ -79,10 +79,37 @@ describe('buildLabelSheets', () => {
 
     expect(actual).toEqual({
       written: ['1.pdf', '3.pdf'],
+      skipped: [],
       withoutListing: [{ label: '1.pdf', itemIds: ['2'] }],
       withoutIndex: ['orphan.pdf'],
       withoutLabel: ['4.pdf'],
     });
+  });
+
+  it('skips the labels that already have a sheet', async () => {
+    await buildLabelSheets({ labelsDirectory, listingsRoot, outputDirectory });
+    await remove(path.join(outputDirectory, '3.pdf'));
+
+    const actual = await buildLabelSheets({
+      labelsDirectory,
+      listingsRoot,
+      outputDirectory,
+    });
+
+    expect(actual).toMatchObject({ written: ['3.pdf'], skipped: ['1.pdf'] });
+  });
+
+  it('rebuilds every sheet when overwrite is set', async () => {
+    await buildLabelSheets({ labelsDirectory, listingsRoot, outputDirectory });
+
+    const actual = await buildLabelSheets({
+      labelsDirectory,
+      listingsRoot,
+      outputDirectory,
+      overwrite: true,
+    });
+
+    expect(actual).toMatchObject({ written: ['1.pdf', '3.pdf'], skipped: [] });
   });
 
   it('keeps the label page and adds the list', async () => {

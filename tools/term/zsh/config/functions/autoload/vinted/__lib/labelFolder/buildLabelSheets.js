@@ -10,22 +10,26 @@ import { writeBinary } from './writeBinary.js';
 /**
  * Build the sheet of every indexed label, from the label and the listings
  * An item with no listing keeps its title from the inbox, and is reported.
+ * A label that already has a sheet is skipped, unless overwrite is set.
  * @param {object} input - Input
  * @param {string} input.labelsDirectory - Folder holding the label PDFs and index.json
  * @param {string} input.listingsRoot - Folder holding the listing JSON files
  * @param {string} input.outputDirectory - Folder to write the sheets in
- * @returns {Promise<object>} What was done: written, withoutListing,
+ * @param {boolean} [input.overwrite] - Rebuild the sheets that already exist
+ * @returns {Promise<object>} What was done: written, skipped, withoutListing,
  * withoutIndex and withoutLabel
  */
 export async function buildLabelSheets({
   labelsDirectory,
   listingsRoot,
   outputDirectory,
+  overwrite = false,
 }) {
   const index = await readLabelIndex(labelsDirectory);
   const listings = await findListings(listingsRoot);
   const report = {
     written: [],
+    skipped: [],
     withoutListing: [],
     withoutIndex: [],
     withoutLabel: [],
@@ -39,6 +43,11 @@ export async function buildLabelSheets({
       const labelPath = path.join(labelsDirectory, name);
       if (!(await exists(labelPath))) {
         report.withoutLabel.push(name);
+        return;
+      }
+      const sheetPath = path.join(outputDirectory, name);
+      if (!overwrite && (await exists(sheetPath))) {
+        report.skipped.push(name);
         return;
       }
 
@@ -59,7 +68,7 @@ export async function buildLabelSheets({
         labelPath,
         items,
       });
-      await writeBinary(sheet, path.join(outputDirectory, name));
+      await writeBinary(sheet, sheetPath);
       report.written.push(name);
     }, Promise.resolve())
     .value();

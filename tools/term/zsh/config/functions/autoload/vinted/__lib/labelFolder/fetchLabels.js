@@ -7,7 +7,7 @@ import { writeBinary } from './writeBinary.js';
 
 const INBOX_URL = 'https://www.vinted.fr/inbox';
 const INBOX_API_PATTERN = /api\.vinted\.fr\/messaging\/main\/inbox/;
-const BUTTON_NAME = /^(Print|Get) shipping label$/;
+const BUTTON_NAME = /^((Print|Get) shipping label|Download)$/;
 const BLOCKED_TITLE = /blocked|captcha|datadome/i;
 const BUTTON_WAIT_IN_MS = 8000;
 const OPEN_WAIT_IN_MS = 5000;
@@ -22,7 +22,7 @@ export let __;
 
 /**
  * Walk the inbox like a person, order after order, and get the shipping labels
- * - A "Print shipping label" button: the label is saved as <first item id>.pdf
+ * - A "Print shipping label" or "Download" button: the label is saved as <first item id>.pdf
  *   in the labels folder, unless that file exists already.
  * - A "Get shipping label" button: it is clicked, so the label arrives later
  *   as a new message.
