@@ -131,6 +131,8 @@
   "fzf",
   "fzf-plans",
   "fzf-postprocess",
+  "gcal-calendar-list",
+  "gcal-calendar-list-raw",
   "gdbus call",
   "gdbus",
   "gdoc-comment-list-raw",

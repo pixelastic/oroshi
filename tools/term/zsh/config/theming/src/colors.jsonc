@@ -121,6 +121,13 @@
     "app-suspended": "gray"
   },
 
+  // Google Calendar
+  "gcal": {
+    "calendar-id":      "orange",
+    "calendar-name":    "gray-3",
+    "calendar-primary": "green"
+  },
+
   // Gmail
   "gmail": {
     "author":  "gray-4",

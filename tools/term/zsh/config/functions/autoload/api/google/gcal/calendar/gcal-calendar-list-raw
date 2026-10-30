@@ -1,0 +1,13 @@
+# List the Calendars of the Account, one per line, for machine consumption
+# The Primary comes first, then the others by name
+# For human consumption, use gcal-calendar-list
+# Fields: calendarId▮name▮primary▮timeZone
+# primary is true for the Primary, false for the others
+# Usage:
+# $ gcal-calendar-list-raw
+# $ gcal-calendar-list-raw --limit 10
+# $ gcal-calendar-list-raw --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gcal-calendar-list-raw.js" "$@"

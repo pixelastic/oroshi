@@ -427,6 +427,18 @@
     "ansi": 45,
     "hex": "#d69e2e"
   },
+  "gcal-calendar-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "gcal-calendar-name": {
+    "ansi": 203,
+    "hex": "#d1d5db"
+  },
+  "gcal-calendar-primary": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
   "git-added": {
     "ansi": 35,
     "hex": "#38a169"
