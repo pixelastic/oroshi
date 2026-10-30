@@ -17,8 +17,8 @@ the header of its wrapper.
 **Account**:
 
 The Google account whose OAuth tokens a command uses. This is an **OAuth API**,
-and its **Login** is `google-login`, shared with Gmail. `--account` selects the
-account, and the default account is used otherwise.
+and its **Login** is `google-login`, shared with Gmail and Google Calendar.
+`--account` selects the account, and the default account is used otherwise.
 
 _Avoid_: profile, user
 

@@ -58,5 +58,7 @@ _Avoid_: refresh, repaint
 - [Notion](tools/term/zsh/config/functions/autoload/api/notion/__docs/GLOSSARY.md)
   — Pages, Databases, Icons, Properties, Content, Parent, Trash, Filter, Sort,
   Token
+- [Google Calendar](tools/term/zsh/config/functions/autoload/api/google/gcal/__docs/GLOSSARY.md)
+  — Calendars, Primary, Events, All-day Events, Attendees
 - [Lunii](tools/term/zsh/config/functions/autoload/worktools/lunii/__docs/GLOSSARY.md)
   — Packs, Podcasts, Episodes, Thumbnails — RSS-to-Lunii conversion vocabulary
