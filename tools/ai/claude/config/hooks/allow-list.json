@@ -135,6 +135,7 @@
   "gcal-calendar-list-raw",
   "gcal-event-list",
   "gcal-event-list-raw",
+  "gcal-event-read",
   "gdbus call",
   "gdbus",
   "gdoc-comment-list-raw",

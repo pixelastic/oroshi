@@ -35,7 +35,11 @@ export async function eventListRaw(options) {
     timeMax: dayjs(dateMax).add(1, 'day').startOf('day').format(),
   });
 
-  return _.chain(events).map(__.formatEvent).map(__.toLine).join('\n').value();
+  return _.chain(events)
+    .map((event) => __.formatEvent(event, calendarId))
+    .map(__.toLine)
+    .join('\n')
+    .value();
 }
 
 __ = {
@@ -85,11 +89,11 @@ __ = {
    */
   toLine(event) {
     return _.chain([
-      event.id,
-      event.summary,
+      event.eventId,
+      event.title,
       event.status,
-      event.start.dateTime || event.start.date,
-      event.end.dateTime || event.end.date,
+      event.dateStart,
+      event.dateEnd,
       event.isAllDay,
       _.size(event.attendees),
       event.location,
