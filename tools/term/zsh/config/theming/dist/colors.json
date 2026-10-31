@@ -439,6 +439,22 @@
     "ansi": 35,
     "hex": "#38a169"
   },
+  "gcal-event-all-day": {
+    "ansi": 65,
+    "hex": "#805ad5"
+  },
+  "gcal-event-date": {
+    "ansi": 166,
+    "hex": "#0369a1"
+  },
+  "gcal-event-status": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  },
+  "gcal-event-title": {
+    "ansi": 203,
+    "hex": "#d1d5db"
+  },
   "git-added": {
     "ansi": 35,
     "hex": "#38a169"

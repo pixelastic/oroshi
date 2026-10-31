@@ -133,6 +133,8 @@
   "fzf-postprocess",
   "gcal-calendar-list",
   "gcal-calendar-list-raw",
+  "gcal-event-list",
+  "gcal-event-list-raw",
   "gdbus call",
   "gdbus",
   "gdoc-comment-list-raw",

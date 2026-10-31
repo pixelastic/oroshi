@@ -125,7 +125,11 @@
   "gcal": {
     "calendar-id":      "orange",
     "calendar-name":    "gray-3",
-    "calendar-primary": "green"
+    "calendar-primary": "green",
+    "event-all-day":    "purple",
+    "event-date":       "sky-6",
+    "event-status":     "gray-4",
+    "event-title":      "gray-3"
   },
 
   // Gmail
