@@ -1,6 +1,5 @@
-import { _, dayjs } from 'golgoth';
-
-const DATE_FORMAT = 'YYYY-MM-DD';
+import { _ } from 'golgoth';
+import { fromApiDates } from './fromApiDates.js';
 
 /**
  * Format one Event of the API into the output JSON shared by every command.
@@ -11,11 +10,10 @@ const DATE_FORMAT = 'YYYY-MM-DD';
  * @returns {object} The Event as { eventId, calendarId, title, status, dateStart, dateEnd, isAllDay, location, description, url, organizer, attendees }. An absent text is an empty string, and organizer is an e-mail address
  */
 export function formatEvent(response, calendarId) {
-  const isAllDay = _.has(response, 'start.date');
-  const dateStart = response.start.dateTime || response.start.date;
-  const dateEnd = isAllDay
-    ? dayjs(response.end.date).subtract(1, 'day').format(DATE_FORMAT)
-    : response.end.dateTime;
+  const { dateStart, dateEnd, isAllDay } = fromApiDates(
+    response.start,
+    response.end,
+  );
 
   return {
     eventId: response.id,
