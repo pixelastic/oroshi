@@ -131,19 +131,19 @@ describe('eventCreate', () => {
   it.each([
     {
       title: 'private with isPrivate',
-      flag: { isPrivate: true },
+      input: { isPrivate: true },
       expected: 'private',
     },
     {
       title: 'default with isPublic',
-      flag: { isPublic: true },
+      input: { isPublic: true },
       expected: 'default',
     },
-  ])('sends visibility $title', async ({ flag, expected }) => {
+  ])('sends visibility $title', async ({ input, expected }) => {
     await eventCreate({
       title: 'Dentist',
       dateStart: '2026-11-02T10:00',
-      ...flag,
+      ...input,
     });
 
     const [, { body }] = insertCall();

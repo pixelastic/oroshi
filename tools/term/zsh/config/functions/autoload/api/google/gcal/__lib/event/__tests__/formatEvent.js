@@ -89,19 +89,16 @@ describe('formatEvent', () => {
 
   describe('isPrivate', () => {
     it.each([
-      { title: 'private', visibility: 'private', expected: true },
-      { title: 'default', visibility: 'default', expected: false },
-      { title: 'public', visibility: 'public', expected: false },
-      { title: 'confidential', visibility: 'confidential', expected: false },
-      { title: 'absent', visibility: undefined, expected: false },
-    ])(
-      'is $expected when the visibility is $title',
-      ({ visibility, expected }) => {
-        const actual = formatEvent(event({ visibility }), 'primary');
+      { title: 'private', input: 'private', expected: true },
+      { title: 'default', input: 'default', expected: false },
+      { title: 'public', input: 'public', expected: false },
+      { title: 'confidential', input: 'confidential', expected: false },
+      { title: 'absent', input: undefined, expected: false },
+    ])('is $expected when the visibility is $title', ({ input, expected }) => {
+      const actual = formatEvent(event({ visibility: input }), 'primary');
 
-        expect(actual).toHaveProperty('isPrivate', expected);
-      },
-    );
+      expect(actual).toHaveProperty('isPrivate', expected);
+    });
   });
 
   describe('absent fields', () => {
