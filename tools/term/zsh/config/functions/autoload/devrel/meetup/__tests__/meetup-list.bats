@@ -93,7 +93,7 @@ setup() {
   }
   bats_mock meetup-list-raw
 
-  bats_run_zsh "meetup-list --min-date 2024-13"
+  bats_run_zsh "meetup-list --date-min 2024-13"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"Invalid date: 2024-13"* ]]
 }
@@ -109,19 +109,19 @@ setup() {
   [[ "$output" != *"--upcoming"* ]]
 }
 
-@test "passes --min-date and --max-date to the raw list" {
-  bats_run_zsh "meetup-list --min-date 2024-11 --max-date 2024-11"
+@test "passes --date-min and --date-max to the raw list" {
+  bats_run_zsh "meetup-list --date-min 2024-11 --date-max 2024-11"
   [[ "$status" -eq 0 ]]
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--min-date 2024-11 --max-date 2024-11" ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--date-min 2024-11 --date-max 2024-11" ]]
 }
 
 @test "passes only the dates given" {
-  bats_run_zsh "meetup-list --max-date 2024"
-  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--max-date 2024" ]]
+  bats_run_zsh "meetup-list --date-max 2024"
+  [[ "$(cat "$BATS_TMP_DIR/raw-args")" == "--date-max 2024" ]]
 }
 
-@test "documents --min-date and --max-date" {
+@test "documents --date-min and --date-max" {
   bats_run_zsh "cat \${^fpath}/meetup-list(N)"
-  [[ "$output" == *"--min-date"* ]]
-  [[ "$output" == *"--max-date"* ]]
+  [[ "$output" == *"--date-min"* ]]
+  [[ "$output" == *"--date-max"* ]]
 }

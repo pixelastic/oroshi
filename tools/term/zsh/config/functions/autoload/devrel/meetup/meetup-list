@@ -2,8 +2,8 @@
 # Columns: date, status, name, URL
 # Columns share the terminal width like any table, so the longest Field comes last
 # --status keeps only the meetups with that status (pending, confirmed or cancelled)
-# --min-date starts the list at a date, inclusive (default: today)
-# --max-date stops the list at a date, inclusive (default: none)
+# --date-min starts the list at a date, inclusive (default: today)
+# --date-max stops the list at a date, inclusive (default: none)
 # A date is YYYY, YYYY-MM or YYYY-MM-DD: a partial date is its first day as a minimum, its last day as a maximum
 # An invalid date, or a minimum later than the maximum, exits with code 1
 # --limit keeps only the first meetups (default: 25)
@@ -13,18 +13,18 @@
 # $ meetup-list
 # $ meetup-list --status pending
 # $ meetup-list --limit 25
-# $ meetup-list --min-date 2024-11 --max-date 2024-11
+# $ meetup-list --date-min 2024-11 --date-max 2024-11
 setopt local_options err_return
 
 zparseopts -E -D \
   -status:=flagStatus \
-  -min-date:=flagMinDate \
-  -max-date:=flagMaxDate \
+  -date-min:=flagDateMin \
+  -date-max:=flagDateMax \
   -limit:=flagLimit
 
 local statusFilter=${flagStatus[2]}
-local minDate=${flagMinDate[2]}
-local maxDate=${flagMaxDate[2]}
+local dateMin=${flagDateMin[2]}
+local dateMax=${flagDateMax[2]}
 local limit=${flagLimit[2]}
 
 colors-load-definitions
@@ -33,8 +33,8 @@ colors-load-definitions
 local rawArgs=()
 [[ "$limit" != "" ]] && rawArgs+=(--limit "$limit")
 [[ "$statusFilter" != "" ]] && rawArgs+=(--status "$statusFilter")
-[[ "$minDate" != "" ]] && rawArgs+=(--min-date "$minDate")
-[[ "$maxDate" != "" ]] && rawArgs+=(--max-date "$maxDate")
+[[ "$dateMin" != "" ]] && rawArgs+=(--date-min "$dateMin")
+[[ "$dateMax" != "" ]] && rawArgs+=(--date-max "$dateMax")
 
 # An invalid argument fails the raw list: exit with its error
 # zsh-lint disable=noSplitLocal

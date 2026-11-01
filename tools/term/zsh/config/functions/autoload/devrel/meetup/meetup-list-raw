@@ -3,8 +3,8 @@
 # The status is its label: pending, confirmed or cancelled
 # An empty Field leaves an empty column
 # --status keeps only the meetups with that status
-# --min-date starts the list at a date, inclusive (default: today)
-# --max-date stops the list at a date, inclusive (default: none)
+# --date-min starts the list at a date, inclusive (default: today)
+# --date-max stops the list at a date, inclusive (default: none)
 # A date is YYYY, YYYY-MM or YYYY-MM-DD: a partial date is its first day as a minimum, its last day as a maximum
 # An invalid date, or a minimum later than the maximum, exits with code 1 before any request
 # --limit keeps only the first meetups, once the other filters are applied (default: 25)
@@ -15,23 +15,23 @@
 # $ meetup-list-raw
 # $ meetup-list-raw --status pending
 # $ meetup-list-raw --limit 10
-# $ meetup-list-raw --min-date 2024-11 --max-date 2024-11
+# $ meetup-list-raw --date-min 2024-11 --date-max 2024-11
 setopt local_options err_return
 
 zparseopts -E -D \
   -status:=flagStatus \
-  -min-date:=flagMinDate \
-  -max-date:=flagMaxDate \
+  -date-min:=flagDateMin \
+  -date-max:=flagDateMax \
   -limit:=flagLimit
 
 local statusFilter=${flagStatus[2]}
-local minDate=${flagMinDate[2]}
-local maxDate=${flagMaxDate[2]}
+local dateMin=${flagDateMin[2]}
+local dateMax=${flagDateMax[2]}
 local limit=${flagLimit[2]}
 
 # Without --limit or a date flag, the list is capped and warns if more meetups match
 local isDefaultLimit=0
-if [[ "$limit" == "" && "$minDate" == "" && "$maxDate" == "" ]]; then
+if [[ "$limit" == "" && "$dateMin" == "" && "$dateMax" == "" ]]; then
   limit=25
   isDefaultLimit=1
 fi
@@ -43,18 +43,18 @@ if [[ "$statusFilter" != "" && ! "$statusFilter" =~ ^(pending|confirmed|cancelle
 fi
 
 # A date must exist before any request
-if [[ "$minDate" != "" ]] && ! date-is-valid "$minDate"; then
-  echoerr "Invalid --min-date: $minDate (YYYY, YYYY-MM or YYYY-MM-DD)"
+if [[ "$dateMin" != "" ]] && ! date-is-valid "$dateMin"; then
+  echoerr "Invalid --date-min: $dateMin (YYYY, YYYY-MM or YYYY-MM-DD)"
   return 1
 fi
-if [[ "$maxDate" != "" ]] && ! date-is-valid "$maxDate"; then
-  echoerr "Invalid --max-date: $maxDate (YYYY, YYYY-MM or YYYY-MM-DD)"
+if [[ "$dateMax" != "" ]] && ! date-is-valid "$dateMax"; then
+  echoerr "Invalid --date-max: $dateMax (YYYY, YYYY-MM or YYYY-MM-DD)"
   return 1
 fi
 
 # A period cannot end before it starts
-if [[ "$minDate" != "" && "$maxDate" != "" && "$(date-expand "$minDate")" > "$(date-expand --last "$maxDate")" ]]; then
-  echoerr "--min-date $minDate is later than --max-date $maxDate"
+if [[ "$dateMin" != "" && "$dateMax" != "" && "$(date-expand "$dateMin")" > "$(date-expand --last "$dateMax")" ]]; then
+  echoerr "--date-min $dateMin is later than --date-max $dateMax"
   return 1
 fi
 
@@ -84,13 +84,13 @@ rawRecords="$(jq \
   | join("▮")
 ' <<< "$rawRecords")"
 
-# The period starts today unless --min-date says otherwise
+# The period starts today unless --date-min says otherwise
 local firstDate="$(date +%Y-%m-%d)"
-[[ "$minDate" != "" ]] && firstDate="$(date-expand "$minDate")"
+[[ "$dateMin" != "" ]] && firstDate="$(date-expand "$dateMin")"
 
-# The period has no end unless --max-date says otherwise
+# The period has no end unless --date-max says otherwise
 local lastDate=""
-[[ "$maxDate" != "" ]] && lastDate="$(date-expand --last "$maxDate")"
+[[ "$dateMax" != "" ]] && lastDate="$(date-expand --last "$dateMax")"
 
 local printedCount=0
 for rawRecord in ${(f)rawRecords}; do

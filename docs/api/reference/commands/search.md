@@ -40,7 +40,7 @@ If the service API accepts a custom query language (like Gmail), the only
 argument is the whole search query, written in that language.
 
 If the service API doesn't have a custom query language, or if said language is
-limited, then additional options (like `--limit`, or `--min-date`) can be added
+limited, then additional options (like `--limit`, or `--date-min`) can be added
 to cover all use-cases. In that case, the positional argument is usually simply
 the text to look for.
 
