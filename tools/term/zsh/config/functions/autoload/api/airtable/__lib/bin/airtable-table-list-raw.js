@@ -5,7 +5,13 @@ import { setAccount } from '../setAccount.js';
 import { tableListRaw } from '../table/tableListRaw.js';
 
 await runBin(async () => {
-  const { named } = parseBinArgs({ setAccount });
+  const { named } = parseBinArgs({
+    setAccount,
+    options: {
+      baseId: { type: 'string' },
+      limit: { type: 'string' },
+    },
+  });
   const output = await tableListRaw(named);
   console.log(output);
 });

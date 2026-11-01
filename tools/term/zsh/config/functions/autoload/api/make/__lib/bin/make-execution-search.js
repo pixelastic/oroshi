@@ -8,7 +8,13 @@ await runBin(async () => {
   // Keep the dates as text, so that a bare year is not read as a number
   const { named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['status', 'date-min', 'date-max'] },
+    options: {
+      scenarioId: { type: 'string' },
+      status: { type: 'string' },
+      'date-min': { type: 'string' },
+      'date-max': { type: 'string' },
+      limit: { type: 'string' },
+    },
   });
   const { results, hasMore } = await executionSearch(named);
   if (hasMore) {

@@ -6,7 +6,14 @@ import { setAccount } from '../setAccount.js';
 
 await runBin(async () => {
   // The formula is the first positional argument, the filters are named
-  const { positional, named } = parseBinArgs({ setAccount });
+  const { positional, named } = parseBinArgs({
+    setAccount,
+    options: {
+      baseId: { type: 'string' },
+      tableId: { type: 'string' },
+      limit: { type: 'string' },
+    },
+  });
   const { results, hasMore } = await recordSearch({
     query: positional,
     ...named,

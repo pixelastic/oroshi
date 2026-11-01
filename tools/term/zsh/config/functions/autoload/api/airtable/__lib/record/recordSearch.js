@@ -32,7 +32,8 @@ export async function recordSearch(options) {
 
   const path = `${baseId}/${encodeURIComponent(tableId)}`;
   // The API gives no total nor "more" flag, so one extra Record tells it
-  const wanted = limit + 1;
+  // A flag gives the limit as a string
+  const wanted = Number(limit) + 1;
   const records = [];
   let offset;
   do {

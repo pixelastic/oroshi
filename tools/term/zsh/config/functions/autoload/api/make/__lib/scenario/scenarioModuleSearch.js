@@ -23,7 +23,12 @@ export async function scenarioModuleSearch(options) {
 
   // Check the arguments before calling the API, so a typo costs no request
   assertScenarioId(scenarioId, USAGE);
-  if (!_.isInteger(days) || !_.inRange(days, MIN_DAYS, MAX_DAYS + 1)) {
+  // A flag gives the days as a string
+  const daysCount = Number(days);
+  if (
+    !_.isInteger(daysCount) ||
+    !_.inRange(daysCount, MIN_DAYS, MAX_DAYS + 1)
+  ) {
     throw firostError(
       'MAKE_DAYS_OUT_OF_RANGE',
       `Invalid --days ${days}, it must be a whole number from ${MIN_DAYS} to ${MAX_DAYS}. Usage: ${USAGE}`,
@@ -35,7 +40,7 @@ export async function scenarioModuleSearch(options) {
   const blueprint = await __.callApi(`scenarios/${scenarioId}/blueprint`);
   const operations = await __.callApi(
     `scenarios/${scenarioId}/modules/operations`,
-    { query: { days } },
+    { query: { days: daysCount } },
   );
   const names = __.moduleNames(blueprint.response.blueprint.flow);
 

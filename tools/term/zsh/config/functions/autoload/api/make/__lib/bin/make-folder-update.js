@@ -8,7 +8,10 @@ await runBin(async () => {
   // The id is the positional argument, the content is made of named fields
   const { positional, named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['name'] },
+    options: {
+      name: { type: 'string' },
+      parentFolderId: { type: 'string' },
+    },
   });
   const output = await folderUpdate({ folderId: positional, ...named });
   console.log(JSON.stringify(output, null, 2));

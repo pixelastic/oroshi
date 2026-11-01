@@ -9,7 +9,9 @@ await runBin(async () => {
   // The id is the positional argument
   const { positional, named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['_'] },
+    options: {
+      scenarioId: { type: 'string' },
+    },
   });
   const output = await executionRead({ executionId: positional, ...named });
   console.log(JSON.stringify(output, null, 2));

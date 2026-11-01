@@ -6,7 +6,14 @@ import { setAccount } from '../setAccount.js';
 
 await runBin(async () => {
   // The content is the positional argument (open schema), the anchors are named
-  const { positional, named } = parseBinArgs({ setAccount });
+  const { positional, named } = parseBinArgs({
+    setAccount,
+    options: {
+      baseId: { type: 'string' },
+      tableId: { type: 'string' },
+      'data-file': { type: 'string' },
+    },
+  });
   const output = await recordCreate({ content: positional, ...named });
   console.log(JSON.stringify(output, null, 2));
 });

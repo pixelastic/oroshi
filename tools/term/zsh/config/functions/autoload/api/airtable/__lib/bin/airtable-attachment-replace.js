@@ -7,7 +7,13 @@ import { setAccount } from '../setAccount.js';
 await runBin(async () => {
   const { named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['field'] },
+    options: {
+      baseId: { type: 'string' },
+      tableId: { type: 'string' },
+      recordId: { type: 'string' },
+      field: { type: 'string' },
+      file: { type: 'string' },
+    },
   });
   const output = await attachmentReplace(named);
   console.log(JSON.stringify(output, null, 2));

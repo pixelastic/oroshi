@@ -7,9 +7,13 @@ import { setAccount } from '../setAccount.js';
 await runBin(async () => {
   const { named } = parseBinArgs({
     setAccount,
-    minimist: {
-      string: ['field', 'attachmentId'],
-      boolean: ['all'],
+    options: {
+      baseId: { type: 'string' },
+      tableId: { type: 'string' },
+      recordId: { type: 'string' },
+      field: { type: 'string' },
+      attachmentId: { type: 'string', multiple: true },
+      all: { type: 'boolean' },
     },
   });
   const output = await attachmentRemove(named);

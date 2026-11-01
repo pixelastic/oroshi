@@ -8,9 +8,10 @@ await runBin(async () => {
   // The id is the positional argument
   const { positional, named } = parseBinArgs({
     setAccount,
-    minimist: {
-      string: ['data', 'data-file'],
-      boolean: ['wait'],
+    options: {
+      data: { type: 'string' },
+      'data-file': { type: 'string' },
+      wait: { type: 'boolean' },
     },
   });
   const output = await scenarioRun({ scenarioId: positional, ...named });

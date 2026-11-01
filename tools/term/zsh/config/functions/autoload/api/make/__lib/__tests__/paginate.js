@@ -22,6 +22,15 @@ describe('paginate', () => {
     expect(fetchPage).toHaveBeenCalledWith({ offset: 0, limit: 6 });
   });
 
+  it('accepts the limit as a string, like a flag gives it', async () => {
+    const fetchPage = fakeApi(100);
+
+    const { items } = await paginate(fetchPage, { limit: '5', pageSize: 50 });
+
+    expect(items).toEqual([0, 1, 2, 3, 4]);
+    expect(fetchPage).toHaveBeenCalledWith({ offset: 0, limit: 6 });
+  });
+
   it('makes several calls when the limit is above the cap', async () => {
     const fetchPage = fakeApi(500);
 

@@ -80,8 +80,17 @@ describe('scenarioModuleSearch', () => {
     ]);
   });
 
-  it('passes the number of days to the API', async () => {
-    await scenarioModuleSearch({ scenarioId: 925, days: 15 });
+  it.each([
+    {
+      title: 'passes the number of days to the API',
+      input: { scenarioId: 925, days: 15 },
+    },
+    {
+      title: 'accepts the number of days as a string, like a flag gives it',
+      input: { scenarioId: 925, days: '15' },
+    },
+  ])('$title', async ({ input }) => {
+    await scenarioModuleSearch(input);
 
     expect(__.callApi).toHaveBeenCalledWith(
       'scenarios/925/modules/operations',

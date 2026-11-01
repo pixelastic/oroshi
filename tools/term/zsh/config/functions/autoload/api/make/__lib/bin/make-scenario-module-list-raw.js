@@ -9,7 +9,10 @@ await runBin(async () => {
   const { positional, named } = parseBinArgs({
     setAccount,
     // Keep the app as text, so that a numeric name is not read as a number
-    minimist: { string: ['app'] },
+    options: {
+      days: { type: 'string' },
+      app: { type: 'string' },
+    },
   });
   const output = await scenarioModuleListRaw({
     scenarioId: positional,

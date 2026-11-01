@@ -44,6 +44,16 @@ describe('recordSearch', () => {
     });
   });
 
+  it('accepts the limit as a string, like a flag gives it', async () => {
+    mockPages([ids(1)]);
+
+    await recordSearch({ ...anchors, limit: '10' });
+
+    expect(__.callApi).toHaveBeenCalledWith('appDEVREL/tblMEETUPS', {
+      query: { filterByFormula: undefined, pageSize: 11 },
+    });
+  });
+
   it('encodes a Table name in the path', async () => {
     mockPages([ids(1)]);
 

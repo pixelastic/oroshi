@@ -11,6 +11,7 @@ await runBin(async () => {
     setAccount(value) {
       account = value;
     },
+    options: {},
   });
 
   // Without --account, the user must choose, or the tokens land in the wrong

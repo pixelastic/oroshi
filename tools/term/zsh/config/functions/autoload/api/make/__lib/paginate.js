@@ -10,7 +10,9 @@ import { _ } from 'golgoth';
  * @returns {Promise<object>} The items (at most limit) and hasMore, true when more items exist
  */
 export async function paginate(fetchPage, options) {
-  const { limit, pageSize } = options;
+  const { pageSize } = options;
+  // A flag gives the limit as a string
+  const limit = Number(options.limit);
   const wanted = limit + 1;
 
   const items = [];

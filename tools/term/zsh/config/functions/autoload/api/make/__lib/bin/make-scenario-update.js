@@ -8,14 +8,13 @@ await runBin(async () => {
   // The id is the positional argument, the content is made of named fields
   const { positional, named } = parseBinArgs({
     setAccount,
-    minimist: {
-      string: [
-        'name',
-        'blueprint',
-        'blueprint-file',
-        'scheduling',
-        'scheduling-file',
-      ],
+    options: {
+      name: { type: 'string' },
+      folderId: { type: 'string' },
+      blueprint: { type: 'string' },
+      'blueprint-file': { type: 'string' },
+      scheduling: { type: 'string' },
+      'scheduling-file': { type: 'string' },
     },
   });
   const output = await scenarioUpdate({ scenarioId: positional, ...named });

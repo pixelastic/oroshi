@@ -6,7 +6,13 @@ import { setAccount } from '../setAccount.js';
 
 await runBin(async () => {
   // The id is the positional argument, the anchors are named
-  const { positional, named } = parseBinArgs({ setAccount });
+  const { positional, named } = parseBinArgs({
+    setAccount,
+    options: {
+      baseId: { type: 'string' },
+      tableId: { type: 'string' },
+    },
+  });
   const output = await recordRead({ recordId: positional, ...named });
   console.log(JSON.stringify(output, null, 2));
 });

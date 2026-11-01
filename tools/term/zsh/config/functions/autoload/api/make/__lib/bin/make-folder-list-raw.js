@@ -6,7 +6,12 @@ import { setAccount } from '../setAccount.js';
 
 await runBin(async () => {
   // The filters are named
-  const { named } = parseBinArgs({ setAccount });
+  const { named } = parseBinArgs({
+    setAccount,
+    options: {
+      limit: { type: 'string' },
+    },
+  });
   const output = await folderListRaw(named);
   console.log(output);
 });

@@ -8,7 +8,10 @@ await runBin(async () => {
   // The content is made of named fields
   const { named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['name'] },
+    options: {
+      name: { type: 'string' },
+      parentFolderId: { type: 'string' },
+    },
   });
   const output = await folderCreate(named);
   console.log(JSON.stringify(output, null, 2));

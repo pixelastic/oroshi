@@ -6,7 +6,13 @@ import { setAccount } from '../setAccount.js';
 
 await runBin(async () => {
   // The text is the first positional argument, the filters are named
-  const { positional, named } = parseBinArgs({ setAccount });
+  const { positional, named } = parseBinArgs({
+    setAccount,
+    options: {
+      folderId: { type: 'string' },
+      limit: { type: 'string' },
+    },
+  });
   const output = await scenarioListRaw({ query: positional, ...named });
   console.log(output);
 });

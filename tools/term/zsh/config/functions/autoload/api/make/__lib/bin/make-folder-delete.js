@@ -6,7 +6,10 @@ import { setAccount } from '../setAccount.js';
 
 await runBin(async () => {
   // The id is the positional argument
-  const { positional, named } = parseBinArgs({ setAccount });
+  const { positional, named } = parseBinArgs({
+    setAccount,
+    options: {},
+  });
   const output = await folderDelete({ folderId: positional, ...named });
   console.log(output);
 });
