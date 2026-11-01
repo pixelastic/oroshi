@@ -1,0 +1,19 @@
+# Uninvite one person from an Event, and print it as JSON
+# The eventId is printed by gcal-event-list-raw
+# --eventId is required. The e-mail address is positional, only one: several
+# addresses fail with GCAL_ATTENDEE_TOO_MANY
+# The other Attendees are kept
+# An address that is not an Attendee fails with GCAL_ATTENDEE_NOT_FOUND, before
+# any save. Addresses are compared without their case
+# The organizer cannot be removed: it fails with GCAL_ATTENDEE_ORGANIZER
+# It never sends an e-mail to an Attendee (sendUpdates=none)
+# The Calendar is the Primary by default
+# Output: same JSON as gcal-event-read
+# Usage:
+# $ gcal-attendee-remove --eventId eventId amy@algolia.com
+# $ gcal-attendee-remove --eventId eventId amy@algolia.com --calendarId work@group.calendar.google.com
+# $ gcal-attendee-remove --eventId eventId amy@algolia.com --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gcal-attendee-remove.js" "$@"

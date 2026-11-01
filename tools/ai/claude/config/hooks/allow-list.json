@@ -131,6 +131,8 @@
   "fzf",
   "fzf-plans",
   "fzf-postprocess",
+  "gcal-attendee-add",
+  "gcal-attendee-remove",
   "gcal-calendar-list",
   "gcal-calendar-list-raw",
   "gcal-event-create",
