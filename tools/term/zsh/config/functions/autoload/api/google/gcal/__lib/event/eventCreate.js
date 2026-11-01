@@ -2,6 +2,7 @@ import { _ } from 'golgoth';
 import { firostError, read } from 'firost';
 import { callApi } from '../callApi.js';
 import { formatEvent } from './formatEvent.js';
+import { getTimeZone } from './getTimeZone.js';
 import { toApiDates } from './toApiDates.js';
 
 export let __;
@@ -59,18 +60,6 @@ export async function eventCreate(options) {
 
 __ = {
   /**
-   * Get the time zone of a Calendar
-   * @param {string} calendarId - Id of the Calendar
-   * @returns {Promise<string>} The time zone, as an IANA name
-   */
-  async getTimeZone(calendarId) {
-    const calendar = await __.callApi(
-      `users/me/calendarList/${encodeURIComponent(calendarId)}`,
-    );
-    return calendar.timeZone;
-  },
-
-  /**
    * Turn a list of e-mail addresses into the Attendees of the API
    * @param {string} attendees - E-mail addresses, separated by commas
    * @returns {object[]} The Attendees, as { email }
@@ -86,5 +75,6 @@ __ = {
 
   callApi,
   formatEvent,
+  getTimeZone,
   read,
 };

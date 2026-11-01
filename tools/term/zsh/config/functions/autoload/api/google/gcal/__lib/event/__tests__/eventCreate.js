@@ -13,10 +13,8 @@ describe('eventCreate', () => {
   }
 
   beforeEach(() => {
-    // The API answers the time zone of a Calendar, and the created Event
-    vi.spyOn(__, 'callApi').mockImplementation((path, options) =>
-      options?.method === 'POST' ? { id: 'created' } : { timeZone },
-    );
+    vi.spyOn(__, 'callApi').mockReturnValue({ id: 'created' });
+    vi.spyOn(__, 'getTimeZone').mockReturnValue(timeZone);
     vi.spyOn(__, 'formatEvent').mockReturnValue({ eventId: 'created' });
     vi.spyOn(__, 'read').mockReturnValue('Long text');
   });
@@ -38,11 +36,7 @@ describe('eventCreate', () => {
   });
 
   it('reads the time as local to the Calendar', async () => {
-    __.callApi.mockImplementation((path, options) =>
-      options?.method === 'POST'
-        ? { id: 'created' }
-        : { timeZone: 'Asia/Tokyo' },
-    );
+    __.getTimeZone.mockReturnValue('Asia/Tokyo');
 
     await eventCreate({ title: 'Dentist', dateStart: '2026-11-02T10:00' });
 
@@ -51,7 +45,7 @@ describe('eventCreate', () => {
       dateTime: '2026-11-02T10:00:00',
       timeZone: 'Asia/Tokyo',
     });
-    expect(__.callApi).toHaveBeenCalledWith('users/me/calendarList/primary');
+    expect(__.getTimeZone).toHaveBeenCalledWith('primary');
   });
 
   it('creates an All-day Event from a date without time, with an inclusive end', async () => {
@@ -77,9 +71,7 @@ describe('eventCreate', () => {
 
     const [path] = insertCall();
     expect(path).toEqual('calendars/work%40group.calendar.google.com/events');
-    expect(__.callApi).toHaveBeenCalledWith(
-      'users/me/calendarList/work%40group.calendar.google.com',
-    );
+    expect(__.getTimeZone).toHaveBeenCalledWith(calendarId);
     expect(__.formatEvent).toHaveBeenCalledWith({ id: 'created' }, calendarId);
   });
 

@@ -1,0 +1,31 @@
+# Update an Event, and print it as JSON
+# The eventId is printed by gcal-event-list-raw
+# Fields: --title, --date-start, --date-end, --location, --description and
+# --description-file. A field that is not passed stays untouched
+# A field passed empty (--location "") clears it
+# There is no --attendees. Use gcal-attendee-add and gcal-attendee-remove
+# A date with a time, as YYYY-MM-DDTHH:MM, is a local time in the time zone of
+# the Calendar. An offset is rejected
+# A date without a time, as YYYY-MM-DD, makes an All-day Event. Its --date-end
+# is its last day
+# --date-start alone moves the Event and keeps its duration. Changing from a
+# time to a date (or back) gives one day (or one hour)
+# --date-end alone changes only the end
+# --description-file takes precedence over --description
+# It never sends an e-mail to an Attendee
+# The Calendar is the Primary by default
+# Output: same JSON as gcal-event-read
+# Usage:
+# $ gcal-event-update eventId --title "New title"
+# $ gcal-event-update eventId --date-start 2026-11-05T14:00
+# $ gcal-event-update eventId --date-start 2026-11-05T14:00 --date-end 2026-11-05T14:30
+# $ gcal-event-update eventId --date-end 2026-11-05T15:00
+# $ gcal-event-update eventId --date-start 2026-11-05
+# $ gcal-event-update eventId --location "Room 2" --description "Bring the file"
+# $ gcal-event-update eventId --description-file ./agenda.md
+# $ gcal-event-update eventId --title "New title" --calendarId work@group.calendar.google.com
+# $ gcal-event-update eventId --title "New title" --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gcal-event-update.js" "$@"

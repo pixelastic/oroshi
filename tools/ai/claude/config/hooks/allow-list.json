@@ -138,6 +138,7 @@
   "gcal-event-list-raw",
   "gcal-event-read",
   "gcal-event-search",
+  "gcal-event-update",
   "gdbus call",
   "gdbus",
   "gdoc-comment-list-raw",
