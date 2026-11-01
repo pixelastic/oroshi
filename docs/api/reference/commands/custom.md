@@ -49,11 +49,11 @@ import { parseBinArgs } from '@oroshi/api-shared/parseBinArgs.js';
 import { entityVerb } from '../<entity>/<entity>Verb.js';
 import { setAccount } from '../setAccount.js';
 
-// The id is the positional argument, the options are named. A flag that must
-// stay a string or a boolean is declared in the minimist options
+// The id is the positional argument, the options are named. Every flag is
+// declared in the native parseArgs options, and an unknown flag is rejected
 const { positional, named } = parseBinArgs({
   setAccount,
-  minimist: { boolean: ['wait'] },
+  options: { wait: { type: 'boolean' } },
 });
 const output = await entityVerb({ entityId: positional, ...named });
 console.log(
