@@ -55,6 +55,43 @@ describe('eventUpdate', () => {
     ]);
   });
 
+  it.each([
+    {
+      title: 'private with isPrivate',
+      input: { isPrivate: true },
+      expected: 'private',
+    },
+    {
+      title: 'default with isPublic',
+      input: { isPublic: true },
+      expected: 'default',
+    },
+  ])('patches visibility $title', async ({ input, expected }) => {
+    await eventUpdate({ eventId: 'abc', ...input });
+
+    const [, { body }] = patchCall();
+    expect(body).toEqual({ visibility: expected });
+  });
+
+  it('leaves visibility out of the body without a flag', async () => {
+    await eventUpdate({ eventId: 'abc', title: 'New title' });
+
+    const [, { body }] = patchCall();
+    expect(body).not.toHaveProperty('visibility');
+  });
+
+  it('throws GCAL_VISIBILITY_CONFLICT without calling the API when both flags are set', async () => {
+    let actual = null;
+    try {
+      await eventUpdate({ eventId: 'abc', isPrivate: true, isPublic: true });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', 'GCAL_VISIBILITY_CONFLICT');
+    expect(__.callApi).not.toHaveBeenCalled();
+  });
+
   it('reads a long description from --description-file, ahead of --description', async () => {
     vi.spyOn(__, 'read').mockReturnValue('Long text');
 

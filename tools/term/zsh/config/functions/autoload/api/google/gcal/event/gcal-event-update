@@ -3,6 +3,9 @@
 # Fields: --title, --date-start, --date-end, --location, --description and
 # --description-file. A field that is not passed stays untouched
 # A field passed empty (--location "") clears it
+# --private hides the details of the Event from the readers of the Calendar
+# --public puts the Event back to the default visibility of the Calendar
+# Passing both is an error. Passing neither leaves the visibility untouched
 # There is no --attendees. Use gcal-attendee-add and gcal-attendee-remove
 # A date with a time, as YYYY-MM-DDTHH:MM, is a local time in the time zone of
 # the Calendar. An offset is rejected
@@ -23,6 +26,8 @@
 # $ gcal-event-update eventId --date-start 2026-11-05
 # $ gcal-event-update eventId --location "Room 2" --description "Bring the file"
 # $ gcal-event-update eventId --description-file ./agenda.md
+# $ gcal-event-update eventId --private
+# $ gcal-event-update eventId --public
 # $ gcal-event-update eventId --title "New title" --calendarId work@group.calendar.google.com
 # $ gcal-event-update eventId --title "New title" --account perso
 setopt local_options err_return

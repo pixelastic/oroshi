@@ -6,6 +6,7 @@ import { formatEvent } from './formatEvent.js';
 import { fromApiDates } from './fromApiDates.js';
 import { getEventPath } from './getEventPath.js';
 import { getTimeZone } from './getTimeZone.js';
+import { resolveVisibility } from './resolveVisibility.js';
 import { toApiDates } from './toApiDates.js';
 
 export let __;
@@ -20,9 +21,11 @@ export let __;
  * @param {string} [options.location] - Location
  * @param {string} [options.description] - Description
  * @param {string} [options.descriptionFile] - Path of a file holding the description. It takes precedence over description
+ * @param {boolean} [options.isPrivate] - Make the Event private
+ * @param {boolean} [options.isPublic] - Give the Event the default visibility of the Calendar
  * @param {string} [options.calendarId] - Calendar of the Event, the Primary by default
  * @returns {Promise<object>} The updated Event, formatted by formatEvent
- * @throws {Error} GCAL_EVENT_ID_MISSING without an eventId, and the errors of toApiDates on a bad date
+ * @throws {Error} GCAL_EVENT_ID_MISSING without an eventId, GCAL_VISIBILITY_CONFLICT when both isPrivate and isPublic are set, and the errors of toApiDates on a bad date
  */
 export async function eventUpdate(options) {
   const {
@@ -32,8 +35,12 @@ export async function eventUpdate(options) {
     dateEnd,
     location,
     descriptionFile,
+    isPrivate,
+    isPublic,
     calendarId = 'primary',
   } = options;
+
+  const visibility = resolveVisibility({ isPrivate, isPublic });
 
   const eventPath = getEventPath(calendarId, eventId);
   const dates = await __.resolveDates({
@@ -56,6 +63,7 @@ export async function eventUpdate(options) {
         ...__.clearOtherKind(dates),
         location,
         description,
+        visibility,
       },
       _.isUndefined,
     ),
