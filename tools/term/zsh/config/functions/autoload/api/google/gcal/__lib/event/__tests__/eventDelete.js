@@ -41,8 +41,8 @@ describe('eventDelete', () => {
     let actual = null;
     try {
       await eventDelete({ eventId: '' });
-    } catch (err) {
-      actual = err;
+    } catch (error) {
+      actual = error;
     }
 
     expect(actual).toHaveProperty('code', 'GCAL_EVENT_ID_MISSING');
@@ -60,8 +60,8 @@ describe('eventDelete', () => {
     let actual = null;
     try {
       await eventDelete({ eventId: 'a' });
-    } catch (err) {
-      actual = err;
+    } catch (error) {
+      actual = error;
     }
 
     expect(actual).toHaveProperty('code', 'GCAL_EVENT_NOT_FOUND');
@@ -76,8 +76,8 @@ describe('eventDelete', () => {
     let actual = null;
     try {
       await eventDelete({ eventId: 'a' });
-    } catch (err) {
-      actual = err;
+    } catch (error) {
+      actual = error;
     }
 
     expect(actual).toHaveProperty('code', 'GCAL_REQUEST_FAILED');

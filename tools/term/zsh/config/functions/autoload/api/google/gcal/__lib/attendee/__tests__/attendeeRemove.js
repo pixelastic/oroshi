@@ -90,8 +90,8 @@ describe('attendeeRemove', () => {
     let actual = null;
     try {
       await attendeeRemove(input);
-    } catch (err) {
-      actual = err;
+    } catch (error) {
+      actual = error;
     }
 
     expect(actual).toHaveProperty('code', code);
@@ -108,8 +108,8 @@ describe('attendeeRemove', () => {
     let actual = null;
     try {
       await attendeeRemove({ eventId: 'a', emails: ['org@algolia.com'] });
-    } catch (err) {
-      actual = err;
+    } catch (error) {
+      actual = error;
     }
 
     expect(actual).toHaveProperty('code', 'GCAL_ATTENDEE_ORGANIZER');
@@ -122,8 +122,8 @@ describe('attendeeRemove', () => {
     let actual = null;
     try {
       await attendeeRemove({ eventId: 'a', emails: ['bob@algolia.com'] });
-    } catch (err) {
-      actual = err;
+    } catch (error) {
+      actual = error;
     }
 
     expect(actual).toHaveProperty('code', 'GCAL_ATTENDEE_NOT_FOUND');

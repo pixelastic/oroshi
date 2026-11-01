@@ -2,6 +2,7 @@ import { _, dayjs } from 'golgoth';
 import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
 import { callApi } from '../callApi.js';
 import { formatEvent } from './formatEvent.js';
+import { getEventsPath } from './getEventsPath.js';
 
 export let __;
 
@@ -57,7 +58,7 @@ __ = {
    * @returns {Promise<object[]>} The Events, as returned by the API
    */
   async getEvents(calendarId, limit, { q, timeMin, timeMax }) {
-    const path = `calendars/${encodeURIComponent(calendarId)}/events`;
+    const path = getEventsPath(calendarId);
     const events = [];
     let pageToken = null;
     do {

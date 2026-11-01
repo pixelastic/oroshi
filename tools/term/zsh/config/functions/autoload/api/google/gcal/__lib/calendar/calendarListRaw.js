@@ -24,7 +24,7 @@ export async function calendarListRaw(options) {
   const calendars = await __.getAllCalendars();
 
   return _.chain(calendars)
-    .map(__.formatCalendar)
+    .map(formatCalendar)
     .orderBy(
       [
         (calendar) => !calendar.primary,
@@ -83,5 +83,4 @@ __ = {
   },
 
   callApi,
-  formatCalendar,
 };

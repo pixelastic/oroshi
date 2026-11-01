@@ -232,8 +232,8 @@ describe('eventUpdate', () => {
       let actual = null;
       try {
         await eventUpdate({ eventId: 'abc', ...input });
-      } catch (err) {
-        actual = err;
+      } catch (error) {
+        actual = error;
       }
 
       expect(actual).toHaveProperty('code', code);
@@ -245,8 +245,8 @@ describe('eventUpdate', () => {
     let actual = null;
     try {
       await eventUpdate({ title: 'New title' });
-    } catch (err) {
-      actual = err;
+    } catch (error) {
+      actual = error;
     }
 
     expect(actual).toHaveProperty('code', 'GCAL_EVENT_ID_MISSING');

@@ -116,8 +116,8 @@ describe('attendeeAdd', () => {
     let actual = null;
     try {
       await attendeeAdd(input);
-    } catch (err) {
-      actual = err;
+    } catch (error) {
+      actual = error;
     }
 
     expect(actual).toHaveProperty('code', code);

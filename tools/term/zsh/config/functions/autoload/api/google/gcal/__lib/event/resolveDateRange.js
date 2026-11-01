@@ -1,9 +1,9 @@
 import { _, dayjs } from 'golgoth';
 import { firostError } from 'firost';
+import { DATE_FORMAT } from './dateFormats.js';
 
 export let __;
 
-const FORMAT = 'YYYY-MM-DD';
 const DEFAULT_SPAN_IN_DAYS = 7;
 const DAYS_IN_WEEK = 7;
 
@@ -22,7 +22,10 @@ export function resolveDateRange(flags, today) {
   const start = dayjs(today);
 
   if (flags.today) {
-    return { dateMin: start.format(FORMAT), dateMax: start.format(FORMAT) };
+    return {
+      dateMin: start.format(DATE_FORMAT),
+      dateMax: start.format(DATE_FORMAT),
+    };
   }
 
   if (flags.week) {
@@ -32,8 +35,8 @@ export function resolveDateRange(flags, today) {
       'day',
     );
     return {
-      dateMin: monday.format(FORMAT),
-      dateMax: monday.add(DAYS_IN_WEEK - 1, 'day').format(FORMAT),
+      dateMin: monday.format(DATE_FORMAT),
+      dateMax: monday.add(DAYS_IN_WEEK - 1, 'day').format(DATE_FORMAT),
     };
   }
 
@@ -49,13 +52,13 @@ export function resolveDateRange(flags, today) {
   if (resolvedMin.isAfter(resolvedMax)) {
     throw firostError(
       'GCAL_DATE_RANGE_INVALID',
-      `--date-min ${resolvedMin.format(FORMAT)} is after --date-max ${resolvedMax.format(FORMAT)}`,
+      `--date-min ${resolvedMin.format(DATE_FORMAT)} is after --date-max ${resolvedMax.format(DATE_FORMAT)}`,
     );
   }
 
   return {
-    dateMin: resolvedMin.format(FORMAT),
-    dateMax: resolvedMax.format(FORMAT),
+    dateMin: resolvedMin.format(DATE_FORMAT),
+    dateMax: resolvedMax.format(DATE_FORMAT),
   };
 }
 
@@ -72,7 +75,7 @@ __ = {
     }
     const date = dayjs(value);
     // A date that dayjs rolls over (2026-02-30) or reads loosely (02/11/2026) does not round-trip
-    if (date.format(FORMAT) !== value) {
+    if (date.format(DATE_FORMAT) !== value) {
       throw firostError(
         'GCAL_DATE_INVALID',
         `"${value}" is not a date, use YYYY-MM-DD`,

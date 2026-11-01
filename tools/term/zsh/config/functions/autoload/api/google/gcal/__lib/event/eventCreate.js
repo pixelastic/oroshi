@@ -2,6 +2,7 @@ import { _ } from 'golgoth';
 import { firostError, read } from 'firost';
 import { callApi } from '../callApi.js';
 import { formatEvent } from './formatEvent.js';
+import { getEventsPath } from './getEventsPath.js';
 import { getTimeZone } from './getTimeZone.js';
 import { toApiDates } from './toApiDates.js';
 
@@ -38,23 +39,20 @@ export async function eventCreate(options) {
     ? await __.read(descriptionFile)
     : options.description;
 
-  const response = await __.callApi(
-    `calendars/${encodeURIComponent(calendarId)}/events`,
-    {
-      method: 'POST',
-      query: { sendUpdates: 'none' },
-      body: _.omitBy(
-        {
-          summary: title,
-          ...dates,
-          location,
-          description,
-          attendees: attendees && __.parseAttendees(attendees),
-        },
-        _.isUndefined,
-      ),
-    },
-  );
+  const response = await __.callApi(getEventsPath(calendarId), {
+    method: 'POST',
+    query: { sendUpdates: 'none' },
+    body: _.omitBy(
+      {
+        summary: title,
+        ...dates,
+        location,
+        description,
+        attendees: attendees && __.parseAttendees(attendees),
+      },
+      _.isUndefined,
+    ),
+  });
   return __.formatEvent(response, calendarId);
 }
 

@@ -2,6 +2,7 @@ import { _ } from 'golgoth';
 import { firostError } from 'firost';
 import { callApi } from '../callApi.js';
 import { formatEvent } from '../event/formatEvent.js';
+import { getEventPath } from '../event/getEventPath.js';
 import { saveAttendees } from './saveAttendees.js';
 
 export let __;
@@ -17,17 +18,13 @@ export let __;
  */
 export async function attendeeAdd(options) {
   const { eventId, emails, calendarId = 'primary' } = options;
+  const eventPath = getEventPath(calendarId, eventId);
 
-  if (!eventId) {
-    throw firostError('GCAL_EVENT_ID_MISSING', 'Pass the id of an Event');
-  }
   if (_.isEmpty(emails)) {
     throw firostError('GCAL_ATTENDEE_MISSING', 'Pass an e-mail address');
   }
 
-  const current = await __.callApi(
-    `calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`,
-  );
+  const current = await __.callApi(eventPath);
 
   // Addresses are compared without their case
   const known = _.map(current.attendees, (attendee) =>

@@ -141,8 +141,8 @@ describe('toApiDates', () => {
       let actual = null;
       try {
         toApiDates({ dateStart, timeZone });
-      } catch (err) {
-        actual = err;
+      } catch (error) {
+        actual = error;
       }
 
       expect(actual).toHaveProperty('code', 'GCAL_DATE_INVALID');
@@ -156,8 +156,8 @@ describe('toApiDates', () => {
       let actual = null;
       try {
         toApiDates({ dateStart: '2026-11-02T10:00', dateEnd, timeZone });
-      } catch (err) {
-        actual = err;
+      } catch (error) {
+        actual = error;
       }
 
       expect(actual).toHaveProperty('code', 'GCAL_DATE_INVALID');
@@ -178,8 +178,8 @@ describe('toApiDates', () => {
       let actual = null;
       try {
         toApiDates({ dateStart, dateEnd, timeZone });
-      } catch (err) {
-        actual = err;
+      } catch (error) {
+        actual = error;
       }
 
       expect(actual).toHaveProperty('code', 'GCAL_DATE_INVALID');
@@ -205,8 +205,8 @@ describe('toApiDates', () => {
       let actual = null;
       try {
         toApiDates({ dateStart, dateEnd, timeZone });
-      } catch (err) {
-        actual = err;
+      } catch (error) {
+        actual = error;
       }
 
       expect(actual).toHaveProperty('code', 'GCAL_DATE_RANGE_INVALID');
@@ -216,8 +216,8 @@ describe('toApiDates', () => {
       let actual = null;
       try {
         toApiDates({ timeZone });
-      } catch (err) {
-        actual = err;
+      } catch (error) {
+        actual = error;
       }
 
       expect(actual).toHaveProperty('code', 'GCAL_DATE_START_MISSING');

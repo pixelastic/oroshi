@@ -190,8 +190,8 @@ describe('eventCreate', () => {
       let actual = null;
       try {
         await eventCreate(input);
-      } catch (err) {
-        actual = err;
+      } catch (error) {
+        actual = error;
       }
 
       expect(actual).toHaveProperty('code', code);

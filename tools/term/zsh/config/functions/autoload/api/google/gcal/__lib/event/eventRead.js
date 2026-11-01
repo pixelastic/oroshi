@@ -1,6 +1,6 @@
-import { firostError } from 'firost';
 import { callApi } from '../callApi.js';
 import { formatEvent } from './formatEvent.js';
+import { getEventPath } from './getEventPath.js';
 
 export let __;
 
@@ -14,13 +14,8 @@ export let __;
 export async function eventRead(options) {
   const { eventId, calendarId = 'primary' } = options;
 
-  if (!eventId) {
-    throw firostError('GCAL_EVENT_ID_MISSING', 'Pass the id of an Event');
-  }
-
-  const response = await __.callApi(
-    `calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`,
-  );
+  const eventPath = getEventPath(calendarId, eventId);
+  const response = await __.callApi(eventPath);
   return __.formatEvent(response, calendarId);
 }
 

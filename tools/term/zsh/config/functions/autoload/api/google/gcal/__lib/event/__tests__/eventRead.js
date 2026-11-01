@@ -39,8 +39,8 @@ describe('eventRead', () => {
     let actual = null;
     try {
       await eventRead({ eventId: '' });
-    } catch (err) {
-      actual = err;
+    } catch (error) {
+      actual = error;
     }
 
     expect(actual).toHaveProperty('code', 'GCAL_EVENT_ID_MISSING');

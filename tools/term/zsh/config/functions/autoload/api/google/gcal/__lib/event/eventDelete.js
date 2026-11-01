@@ -1,5 +1,6 @@
 import { firostError } from 'firost';
 import { callApi } from '../callApi.js';
+import { getEventPath } from './getEventPath.js';
 
 export let __;
 
@@ -14,15 +15,12 @@ export let __;
 export async function eventDelete(options) {
   const { eventId, calendarId = 'primary' } = options;
 
-  if (!eventId) {
-    throw firostError('GCAL_EVENT_ID_MISSING', 'Pass the id of an Event');
-  }
-
+  const eventPath = getEventPath(calendarId, eventId);
   try {
-    await __.callApi(
-      `calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`,
-      { method: 'DELETE', query: { sendUpdates: 'none' } },
-    );
+    await __.callApi(eventPath, {
+      method: 'DELETE',
+      query: { sendUpdates: 'none' },
+    });
   } catch (error) {
     // callApi starts the message of a failed request with the HTTP status. The
     // API answers 410 for an Event that is already deleted

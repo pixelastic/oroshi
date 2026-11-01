@@ -1,11 +1,8 @@
 import { _, dayjs } from 'golgoth';
 import { firostError } from 'firost';
+import { API_TIME_FORMAT, DATE_FORMAT, TIME_FORMAT } from './dateFormats.js';
 
 export let __;
-
-const DATE_FORMAT = 'YYYY-MM-DD';
-const TIME_FORMAT = 'YYYY-MM-DDTHH:mm';
-const API_TIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
 
 /**
  * Convert the dates of the CLI into the start and end of the API

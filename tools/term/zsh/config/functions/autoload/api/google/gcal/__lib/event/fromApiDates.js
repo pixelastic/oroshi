@@ -1,6 +1,5 @@
 import { _, dayjs } from 'golgoth';
-
-const DATE_FORMAT = 'YYYY-MM-DD';
+import { DATE_FORMAT } from './dateFormats.js';
 
 /**
  * Convert the start and end of the API into the dates of the CLI

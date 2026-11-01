@@ -1,15 +1,14 @@
 import { _, dayjs } from 'golgoth';
-import { firostError, read } from 'firost';
+import { read } from 'firost';
 import { callApi } from '../callApi.js';
+import { API_TIME_FORMAT, DATE_FORMAT } from './dateFormats.js';
 import { formatEvent } from './formatEvent.js';
 import { fromApiDates } from './fromApiDates.js';
+import { getEventPath } from './getEventPath.js';
 import { getTimeZone } from './getTimeZone.js';
 import { toApiDates } from './toApiDates.js';
 
 export let __;
-
-const API_TIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
-const DATE_FORMAT = 'YYYY-MM-DD';
 
 /**
  * Update an Event. It never notifies the Attendees, and never changes them
@@ -30,11 +29,7 @@ export async function eventUpdate(options) {
     options;
   const { calendarId = 'primary' } = options;
 
-  if (!eventId) {
-    throw firostError('GCAL_EVENT_ID_MISSING', 'Pass the id of an Event');
-  }
-
-  const eventPath = `calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`;
+  const eventPath = getEventPath(calendarId, eventId);
   const dates = await __.resolveDates({
     eventPath,
     calendarId,

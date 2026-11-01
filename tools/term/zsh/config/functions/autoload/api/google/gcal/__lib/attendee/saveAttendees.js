@@ -1,5 +1,6 @@
 import { callApi } from '../callApi.js';
 import { formatEvent } from '../event/formatEvent.js';
+import { getEventPath } from '../event/getEventPath.js';
 
 export let __;
 
@@ -14,14 +15,11 @@ export let __;
 export async function saveAttendees(options) {
   const { eventId, calendarId, attendees } = options;
 
-  const response = await __.callApi(
-    `calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`,
-    {
-      method: 'PATCH',
-      query: { sendUpdates: 'none' },
-      body: { attendees },
-    },
-  );
+  const response = await __.callApi(getEventPath(calendarId, eventId), {
+    method: 'PATCH',
+    query: { sendUpdates: 'none' },
+    body: { attendees },
+  });
   return __.formatEvent(response, calendarId);
 }
 
