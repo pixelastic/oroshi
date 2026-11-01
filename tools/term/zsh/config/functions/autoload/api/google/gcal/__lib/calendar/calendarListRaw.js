@@ -6,7 +6,7 @@ import { formatCalendar } from './formatCalendar.js';
 export let __;
 
 // Largest page that calendarList.list accepts
-const PAGE_SIZE = 250;
+const MAX_PAGE_SIZE = 250;
 const DEFAULT_LIMIT = 25;
 
 /**
@@ -48,7 +48,7 @@ __ = {
     let pageToken = null;
     do {
       const response = await __.callApi('users/me/calendarList', {
-        query: { maxResults: PAGE_SIZE, pageToken },
+        query: { maxResults: MAX_PAGE_SIZE, pageToken },
       });
       calendars.push(..._.get(response, 'items', []));
       pageToken = response.nextPageToken;

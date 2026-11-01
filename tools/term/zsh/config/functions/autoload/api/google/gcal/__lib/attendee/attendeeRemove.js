@@ -31,16 +31,16 @@ export async function attendeeRemove(options) {
   }
 
   const [email] = emails;
-  const current = await __.callApi(eventPath);
+  const currentEvent = await __.callApi(eventPath);
 
   // Addresses are compared without their case
   const target = _.find(
-    current.attendees,
+    currentEvent.attendees,
     (attendee) => _.toLower(attendee.email) === _.toLower(email),
   );
   // The API does not always list the organizer among the Attendees
   const isOrganizer =
-    _.chain(current).get('organizer.email').toLower().value() ===
+    _.chain(currentEvent).get('organizer.email').toLower().value() ===
       _.toLower(email) || _.get(target, 'organizer', false);
   if (isOrganizer) {
     throw firostError(
@@ -58,7 +58,7 @@ export async function attendeeRemove(options) {
   return await __.saveAttendees({
     eventId,
     calendarId,
-    attendees: _.without(current.attendees, target),
+    attendees: _.without(currentEvent.attendees, target),
   });
 }
 

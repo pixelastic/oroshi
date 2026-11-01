@@ -19,19 +19,19 @@ const DAYS_IN_WEEK = 7;
  * @throws {Error} GCAL_DATE_INVALID on a date that is not a real YYYY-MM-DD, GCAL_DATE_RANGE_INVALID when the minimum is after the maximum
  */
 export function resolveDateRange(flags, today) {
-  const start = dayjs(today);
+  const todayDate = dayjs(today);
 
   if (flags.today) {
     return {
-      dateMin: start.format(DATE_FORMAT),
-      dateMax: start.format(DATE_FORMAT),
+      dateMin: todayDate.format(DATE_FORMAT),
+      dateMax: todayDate.format(DATE_FORMAT),
     };
   }
 
   if (flags.week) {
     // dayjs counts Sunday as day 0, the ISO week starts on Monday
-    const monday = start.subtract(
-      (start.day() + DAYS_IN_WEEK - 1) % DAYS_IN_WEEK,
+    const monday = todayDate.subtract(
+      (todayDate.day() + DAYS_IN_WEEK - 1) % DAYS_IN_WEEK,
       'day',
     );
     return {
@@ -46,7 +46,7 @@ export function resolveDateRange(flags, today) {
   // Only a maximum: the period is the 7 days before it
   const resolvedMin =
     dateMin ||
-    (dateMax ? dateMax.subtract(DEFAULT_SPAN_IN_DAYS, 'day') : start);
+    (dateMax ? dateMax.subtract(DEFAULT_SPAN_IN_DAYS, 'day') : todayDate);
   const resolvedMax = dateMax || resolvedMin.add(DEFAULT_SPAN_IN_DAYS, 'day');
 
   if (resolvedMin.isAfter(resolvedMax)) {

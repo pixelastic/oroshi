@@ -25,8 +25,10 @@ export function toApiDates(options) {
     );
   }
 
-  const start = __.parse(dateStart, '--date-start');
-  const end = _.isUndefined(dateEnd) ? null : __.parse(dateEnd, '--date-end');
+  const start = __.parseDate(dateStart, '--date-start');
+  const end = _.isUndefined(dateEnd)
+    ? null
+    : __.parseDate(dateEnd, '--date-end');
 
   if (end && end.isAllDay !== start.isAllDay) {
     throw firostError(
@@ -67,7 +69,7 @@ __ = {
    * @returns {{date: import('dayjs').Dayjs, isAllDay: boolean}} The date, and whether it has no time
    * @throws {Error} GCAL_DATE_INVALID when the value is not a real date in one of the two formats
    */
-  parse(value, flag) {
+  parseDate(value, flag) {
     const isAllDay = _.size(value) === DATE_FORMAT.length;
     const format = isAllDay ? DATE_FORMAT : TIME_FORMAT;
     const date = dayjs.utc(value);

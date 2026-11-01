@@ -24,10 +24,10 @@ export async function attendeeAdd(options) {
     throw firostError('GCAL_ATTENDEE_MISSING', 'Pass an e-mail address');
   }
 
-  const current = await __.callApi(eventPath);
+  const currentEvent = await __.callApi(eventPath);
 
   // Addresses are compared without their case
-  const known = _.map(current.attendees, (attendee) =>
+  const known = _.map(currentEvent.attendees, (attendee) =>
     _.toLower(attendee.email),
   );
   const added = _.chain(emails)
@@ -37,13 +37,13 @@ export async function attendeeAdd(options) {
     .value();
 
   if (_.isEmpty(added)) {
-    return __.formatEvent(current, calendarId);
+    return __.formatEvent(currentEvent, calendarId);
   }
 
   return await __.saveAttendees({
     eventId,
     calendarId,
-    attendees: [...(current.attendees ?? []), ...added],
+    attendees: [...(currentEvent.attendees ?? []), ...added],
   });
 }
 

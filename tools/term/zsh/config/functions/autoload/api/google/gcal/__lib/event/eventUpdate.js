@@ -1,7 +1,7 @@
 import { _, dayjs } from 'golgoth';
 import { read } from 'firost';
 import { callApi } from '../callApi.js';
-import { API_TIME_FORMAT, DATE_FORMAT } from './dateFormats.js';
+import { API_TIME_FORMAT, DATE_FORMAT, TIME_FORMAT } from './dateFormats.js';
 import { formatEvent } from './formatEvent.js';
 import { fromApiDates } from './fromApiDates.js';
 import { getEventPath } from './getEventPath.js';
@@ -82,13 +82,13 @@ __ = {
       return toApiDates({ dateStart, dateEnd, timeZone });
     }
 
-    const current = await __.callApi(eventPath);
+    const currentEvent = await __.callApi(eventPath);
     if (_.isUndefined(dateStart)) {
       // The start of the Event is given without its offset
       const keptStart = _.truncate(
-        fromApiDates(current.start, current.end).dateStart,
+        fromApiDates(currentEvent.start, currentEvent.end).dateStart,
         {
-          length: 16,
+          length: TIME_FORMAT.length,
           omission: '',
         },
       );
@@ -96,7 +96,7 @@ __ = {
     }
 
     const moved = toApiDates({ dateStart, timeZone });
-    return __.keepDuration(moved, current);
+    return __.keepDuration(moved, currentEvent);
   },
 
   /**
@@ -119,23 +119,25 @@ __ = {
    * before. A new start of another kind (timed or All-day) keeps the default
    * end of toApiDates
    * @param {object} moved - New start and default end, as returned by toApiDates
-   * @param {object} current - Start and end of the Event as the API gives them
+   * @param {object} currentEvent - Start and end of the Event as the API gives them
    * @returns {object} The new start and end of the API
    */
-  keepDuration(moved, current) {
+  keepDuration(moved, currentEvent) {
     const isAllDay = _.has(moved.start, 'date');
-    if (isAllDay !== _.has(current.start, 'date')) {
+    if (isAllDay !== _.has(currentEvent.start, 'date')) {
       return moved;
     }
 
     if (isAllDay) {
-      const days = dayjs.utc(current.end.date).diff(current.start.date, 'day');
+      const days = dayjs
+        .utc(currentEvent.end.date)
+        .diff(currentEvent.start.date, 'day');
       const date = dayjs.utc(moved.start.date).add(days, 'day');
       return { start: moved.start, end: { date: date.format(DATE_FORMAT) } };
     }
 
-    const minutes = dayjs(current.end.dateTime).diff(
-      current.start.dateTime,
+    const minutes = dayjs(currentEvent.end.dateTime).diff(
+      currentEvent.start.dateTime,
       'minute',
     );
     const dateTime = dayjs.utc(moved.start.dateTime).add(minutes, 'minute');
