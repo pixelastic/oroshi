@@ -1,0 +1,2 @@
+# Display SQLite databases as SQL dumps in diffs
+*.sqlite diff=sqlite3

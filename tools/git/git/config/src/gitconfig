@@ -1,8 +1,8 @@
 [core]
   editor = nvim
-  excludesfile = ~/.gitignore
   safecrlf = false
   autocrlf = input
+  attributesfile = ~/.oroshi/tools/git/git/config/gitattributes
 [init]
   defaultBranch = main
 [user]
@@ -30,6 +30,10 @@
   enabled = true
 [status]
   showUntrackedFiles = all
+[diff "sqlite3"]
+  binary = true
+  cachetextconv = true
+  textconv = sqlite3 -cmd .dump
 [merge "jsonlist"]
   name = Merge JSON arrays, keeping both sides
   driver = bin-zsh git-merge-json %O %A %B
