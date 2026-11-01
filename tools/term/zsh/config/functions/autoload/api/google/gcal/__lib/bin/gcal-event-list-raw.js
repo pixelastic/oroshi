@@ -8,9 +8,13 @@ await runBin(async () => {
   // The dates and the id stay strings, so that the module reports a bad value
   const { named } = parseBinArgs({
     setAccount,
-    minimist: {
-      boolean: ['today', 'week'],
-      string: ['date-min', 'date-max', 'calendarId'],
+    options: {
+      today: { type: 'boolean' },
+      week: { type: 'boolean' },
+      'date-min': { type: 'string' },
+      'date-max': { type: 'string' },
+      calendarId: { type: 'string' },
+      limit: { type: 'string' },
     },
   });
   const output = await eventListRaw(named);

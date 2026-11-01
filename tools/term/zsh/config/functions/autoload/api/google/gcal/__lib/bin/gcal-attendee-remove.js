@@ -8,7 +8,10 @@ await runBin(async () => {
   // Every positional argument is an e-mail address
   const { _: emails, named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['_', 'eventId', 'calendarId'] },
+    options: {
+      eventId: { type: 'string' },
+      calendarId: { type: 'string' },
+    },
   });
   const output = await attendeeRemove({ emails, ...named });
   console.log(JSON.stringify(output, null, 2));

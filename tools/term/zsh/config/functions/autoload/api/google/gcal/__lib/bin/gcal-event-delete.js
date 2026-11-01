@@ -8,7 +8,7 @@ await runBin(async () => {
   // The id of the Event is the positional argument
   const { positional, named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['calendarId'] },
+    options: { calendarId: { type: 'string' } },
   });
   const output = await eventDelete({ eventId: positional, ...named });
   console.log(output);

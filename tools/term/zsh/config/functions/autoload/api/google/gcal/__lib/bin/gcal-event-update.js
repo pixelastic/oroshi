@@ -6,22 +6,20 @@ import { eventUpdate } from '../event/eventUpdate.js';
 
 await runBin(async () => {
   // The id of the Event is the positional argument. Every field is a string
-  // flag, so that a title like 2026 is not read as a number, and that a bare
-  // flag reaches the module as an empty string. The visibility flags are
-  // booleans
+  // flag, so that a title like 2026 is not read as a number. The visibility
+  // flags are booleans
   const { positional, named } = parseBinArgs({
     setAccount,
-    minimist: {
-      string: [
-        'title',
-        'date-start',
-        'date-end',
-        'location',
-        'description',
-        'description-file',
-        'calendarId',
-      ],
-      boolean: ['private', 'public'],
+    options: {
+      title: { type: 'string' },
+      'date-start': { type: 'string' },
+      'date-end': { type: 'string' },
+      location: { type: 'string' },
+      description: { type: 'string' },
+      'description-file': { type: 'string' },
+      calendarId: { type: 'string' },
+      private: { type: 'boolean' },
+      public: { type: 'boolean' },
     },
   });
   // private is a reserved word, so the flags are renamed to the options of the
