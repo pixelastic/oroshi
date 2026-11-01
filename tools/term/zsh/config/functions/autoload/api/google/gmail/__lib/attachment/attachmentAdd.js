@@ -21,7 +21,10 @@ export async function attachmentAdd(options) {
   const { draftId, files } = options;
 
   if (!draftId) {
-    throw firostError('GMAIL_DRAFT_ID_MISSING', 'Pass the id of a Draft');
+    throw firostError(
+      'GMAIL_DRAFT_ID_MISSING',
+      'Pass the --draftId of a Draft',
+    );
   }
   if (!files?.length) {
     throw firostError(

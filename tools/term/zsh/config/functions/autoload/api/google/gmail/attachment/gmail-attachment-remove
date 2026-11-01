@@ -3,12 +3,13 @@
 # The draftId and the partId are listed by gmail-draft-read (draftId and attachments)
 # Gmail gives new partId values to the attachments left, so read them in the output
 # Flags:
+# --draftId <id>       Id of the Draft
 # --partId <id>        Part id of the attachment to remove
 # --account <name>     Account of the Draft. The default account if empty
 # Each attachment has partId, filename, mimeType and size, never its bytes
 # Usage:
-# $ gmail-attachment-remove draftId --partId 1.2
-# $ gmail-attachment-remove draftId --partId 1.2 --account perso
+# $ gmail-attachment-remove --draftId d1 --partId 1.2
+# $ gmail-attachment-remove --draftId d1 --partId 1.2 --account perso
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h:h}/__lib"

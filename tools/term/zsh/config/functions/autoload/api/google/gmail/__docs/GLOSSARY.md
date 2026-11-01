@@ -76,18 +76,19 @@ _Avoid_: unsent mail, unsent email, reply
 **`add`**:
 
 A **Custom verb** of the `attachment` entity:
-`gmail-attachment-add draftId file...` adds files to a **Draft** and keeps its
-**Attachments**. It prints `draftId`, `threadId`, `url` and `attachments`, with
-the current `partId` values. All the **Attachments** weigh at most 25 MB,
-counted in base64 (about 4/3 of the bytes), or it fails before any save.
+`gmail-attachment-add --draftId <id> file...` adds files to a **Draft** and
+keeps its **Attachments**. It prints `draftId`, `threadId`, `url` and
+`attachments`, with the current `partId` values. All the **Attachments** weigh
+at most 25 MB, counted in base64 (about 4/3 of the bytes), or it fails before
+any save.
 
 **`remove`**:
 
 A **Custom verb** of the `attachment` entity:
-`gmail-attachment-remove draftId --partId <id>` removes one **Attachment** of a
-**Draft** and keeps the others. It prints `draftId`, `threadId`, `url` and
-`attachments`, with the current `partId` values. An unknown `partId` fails
-before any save.
+`gmail-attachment-remove --draftId <id> --partId <id>` removes one
+**Attachment** of a **Draft** and keeps the others. It prints `draftId`,
+`threadId`, `url` and `attachments`, with the current `partId` values. An
+unknown `partId` fails before any save.
 
 **`download`**:
 

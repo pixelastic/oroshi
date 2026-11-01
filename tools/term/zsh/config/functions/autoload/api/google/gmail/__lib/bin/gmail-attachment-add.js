@@ -5,14 +5,13 @@ import { setAccount } from '@oroshi/google/setAccount.js';
 import { attachmentAdd } from '../attachment/attachmentAdd.js';
 
 await runBin(async () => {
-  // The id of the Draft is the first positional argument, all the others are
-  // file paths. The positional arguments stay strings, so that a file named
-  // 2024 is not read as a number
-  const { _: positional } = parseBinArgs({
+  // The positional arguments are file paths. They stay strings, so that a file
+  // named 2024 is not read as a number. The flag stays a string, so that a
+  // missing value is reported by the module
+  const { _: files, named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['_'] },
+    minimist: { string: ['_', 'draftId'] },
   });
-  const [draftId, ...files] = positional;
-  const draft = await attachmentAdd({ draftId, files });
+  const draft = await attachmentAdd({ draftId: named.draftId, files });
   console.log(JSON.stringify(draft, null, 2));
 });

@@ -20,7 +20,10 @@ export async function attachmentRemove(options) {
   const { draftId, partId } = options;
 
   if (!draftId) {
-    throw firostError('GMAIL_DRAFT_ID_MISSING', 'Pass the id of a Draft');
+    throw firostError(
+      'GMAIL_DRAFT_ID_MISSING',
+      'Pass the --draftId of a Draft',
+    );
   }
   if (!partId) {
     throw firostError('GMAIL_PART_ID_MISSING', 'Pass the --partId of the part');
