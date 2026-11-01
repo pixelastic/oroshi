@@ -51,11 +51,11 @@ occurrence of a recurring **Event** is an **Event** like any other.
 _Avoid_: meeting, appointment, invitation
 
 `list-raw` prints the **Events** of a period, as `▮` lines:
-`eventId▮title▮status▮dateStart▮dateEnd▮isAllDay▮attendeeCount▮location`. The
-**Events** are sorted by start, the closest first. `status` is `confirmed`,
+`eventId▮title▮status▮dateStart▮dateEnd▮isAllDay▮attendeeCount▮location▮isPrivate`.
+The **Events** are sorted by start, the closest first. `status` is `confirmed`,
 `tentative` or `cancelled`, and `attendeeCount` is the number of **Attendees**.
-`read` prints `isAllDay` too, but no `attendeeCount`: its `attendees` array has
-the count.
+`isPrivate` is `true` only for a private **Event**. `read` prints `isAllDay` and
+`isPrivate` too, but no `attendeeCount`: its `attendees` array has the count.
 
 **All-day Event**:
 

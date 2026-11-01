@@ -1,7 +1,7 @@
 # List the Events of a period, one per line, for machine consumption
 # Sorted by start. Recurring Events are expanded into one Event per occurrence
 # For human consumption, use gcal-event-list
-# Fields: eventId▮title▮status▮dateStart▮dateEnd▮isAllDay▮attendeeCount▮location
+# Fields: eventId▮title▮status▮dateStart▮dateEnd▮isAllDay▮attendeeCount▮location▮isPrivate
 # dateStart and dateEnd hold a time, or a date for an All-day Event, whose
 # dateEnd is its last day
 # The period is today and the next 7 days by default

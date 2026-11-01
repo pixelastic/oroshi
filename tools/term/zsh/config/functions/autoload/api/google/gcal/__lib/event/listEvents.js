@@ -94,6 +94,7 @@ __ = {
       event.isAllDay,
       _.size(event.attendees),
       event.location,
+      event.isPrivate,
     ])
       .map((value) => rawColumn(value))
       .join('▮')

@@ -2,7 +2,7 @@
 # consumption
 # The text matches the title, description, location, Attendees and organizer
 # Sorted by start. Recurring Events are expanded into one Event per occurrence
-# Fields: eventId▮title▮status▮dateStart▮dateEnd▮isAllDay▮attendeeCount▮location
+# Fields: eventId▮title▮status▮dateStart▮dateEnd▮isAllDay▮attendeeCount▮location▮isPrivate
 # dateStart and dateEnd hold a time, or a date for an All-day Event, whose
 # dateEnd is its last day
 # Unlike gcal-event-list-raw, there is no default period: it searches the whole

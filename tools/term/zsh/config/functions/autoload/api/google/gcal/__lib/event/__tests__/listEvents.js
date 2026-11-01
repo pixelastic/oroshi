@@ -1,4 +1,4 @@
-import { dayjs } from 'golgoth';
+import { _, dayjs } from 'golgoth';
 import { __, listEvents } from '../listEvents.js';
 
 describe('listEvents', () => {
@@ -99,7 +99,7 @@ describe('listEvents', () => {
   });
 
   describe('the lines', () => {
-    it('prints one line per Event with eight columns', async () => {
+    it('prints one line per Event with nine columns', async () => {
       mockPages([
         [
           event('a', {
@@ -113,9 +113,29 @@ describe('listEvents', () => {
       const actual = await listEvents({ calendarId: 'primary' });
 
       expect(actual).toEqual(
-        'a▮Stand-up▮confirmed▮2026-11-02T10:00:00+01:00▮2026-11-02T11:00:00+01:00▮false▮2▮Room 1',
+        'a▮Stand-up▮confirmed▮2026-11-02T10:00:00+01:00▮2026-11-02T11:00:00+01:00▮false▮2▮Room 1▮false',
       );
     });
+
+    it.each([
+      { title: 'a private Event', input: 'private', expected: 'true' },
+      { title: 'a default Event', input: 'default', expected: 'false' },
+      { title: 'a public Event', input: 'public', expected: 'false' },
+      {
+        title: 'an Event without visibility',
+        input: undefined,
+        expected: 'false',
+      },
+    ])(
+      'prints isPrivate as the last column of $title',
+      async ({ input, expected }) => {
+        mockPages([[event('a', { visibility: input })]]);
+
+        const actual = await listEvents({ calendarId: 'primary' });
+
+        expect(_.last(actual.split('▮'))).toEqual(expected);
+      },
+    );
 
     it('prints the Events in the order of the API, sorted by start', async () => {
       mockPages([[event('b'), event('a'), event('c')]]);
