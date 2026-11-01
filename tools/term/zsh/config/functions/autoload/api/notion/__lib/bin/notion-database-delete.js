@@ -4,6 +4,9 @@ import { databaseDelete } from '../database/databaseDelete.js';
 import { setAccount } from '../setAccount.js';
 
 // The id is the positional argument
-const { positional, named } = parseBinArgs({ setAccount });
+const { positional, named } = parseBinArgs({
+  setAccount,
+  options: {},
+});
 const output = await databaseDelete({ databaseId: positional, ...named });
 console.log(output);

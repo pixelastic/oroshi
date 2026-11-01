@@ -6,7 +6,13 @@ import { commentListRaw } from '../comment/commentListRaw.js';
 
 await runBin(async () => {
   // The URL or id is the positional argument
-  const { positional, named } = parseBinArgs({ setAccount });
+  const { positional, named } = parseBinArgs({
+    setAccount,
+    options: {
+      documentId: { type: 'string' },
+      limit: { type: 'string' },
+    },
+  });
   const output = await commentListRaw({ documentId: positional, ...named });
   console.log(output);
 });

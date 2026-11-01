@@ -6,7 +6,13 @@ import { setAccount } from '../setAccount.js';
 // The Properties are the positional argument, the parent and the content are named
 const { positional, named } = parseBinArgs({
   setAccount,
-  minimist: { string: ['content', 'content-file'] },
+  options: {
+    parentPageId: { type: 'string' },
+    parentDatabaseId: { type: 'string' },
+    'data-file': { type: 'string' },
+    content: { type: 'string' },
+    'content-file': { type: 'string' },
+  },
 });
 const output = await pageCreate({ data: positional, ...named });
 console.log(JSON.stringify(output, null, 2));

@@ -4,6 +4,9 @@ import { iconUpdate } from '../icon/iconUpdate.js';
 import { setAccount } from '../setAccount.js';
 
 // The Icon is the positional argument, the id is named
-const { positional, named } = parseBinArgs({ setAccount });
+const { positional, named } = parseBinArgs({
+  setAccount,
+  options: { pageId: { type: 'string' } },
+});
 const output = await iconUpdate({ icon: positional, ...named });
 console.log(output);

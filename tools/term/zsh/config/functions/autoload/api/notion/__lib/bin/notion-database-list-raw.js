@@ -4,6 +4,13 @@ import { databaseListRaw } from '../database/databaseListRaw.js';
 import { setAccount } from '../setAccount.js';
 
 // The id of the database is the positional argument
-const { positional, named } = parseBinArgs({ setAccount });
+const { positional, named } = parseBinArgs({
+  setAccount,
+  options: {
+    filter: { type: 'string' },
+    sort: { type: 'string' },
+    limit: { type: 'string' },
+  },
+});
 const output = await databaseListRaw({ databaseId: positional, ...named });
 console.log(output);

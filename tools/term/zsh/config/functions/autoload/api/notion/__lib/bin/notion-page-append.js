@@ -6,7 +6,11 @@ import { setAccount } from '../setAccount.js';
 // The Content is the positional argument, the id is named
 const { positional, named } = parseBinArgs({
   setAccount,
-  minimist: { string: ['content', 'content-file'] },
+  options: {
+    pageId: { type: 'string' },
+    content: { type: 'string' },
+    'content-file': { type: 'string' },
+  },
 });
 const output = await pageAppend({ content: positional, ...named });
 console.log(JSON.stringify(output, null, 2));

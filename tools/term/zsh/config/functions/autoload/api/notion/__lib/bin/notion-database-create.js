@@ -4,6 +4,12 @@ import { databaseCreate } from '../database/databaseCreate.js';
 import { setAccount } from '../setAccount.js';
 
 // The schema is the positional argument, the parent is named
-const { positional, named } = parseBinArgs({ setAccount });
+const { positional, named } = parseBinArgs({
+  setAccount,
+  options: {
+    parentPageId: { type: 'string' },
+    'data-file': { type: 'string' },
+  },
+});
 const output = await databaseCreate({ data: positional, ...named });
 console.log(JSON.stringify(output, null, 2));

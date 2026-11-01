@@ -7,10 +7,14 @@ import { openUrl } from '../openUrl.js';
 
 await runBin(async () => {
   // The path of the file is the positional argument. A flag that must stay a
-  // string or a boolean is declared in the minimist options
+  // string or a boolean is declared in the options
   const { positional, named } = parseBinArgs({
     setAccount,
-    minimist: { boolean: ['open'], string: ['title', 'directory'] },
+    options: {
+      open: { type: 'boolean' },
+      title: { type: 'string' },
+      directory: { type: 'string' },
+    },
   });
   const { open, ...options } = named;
   const output = await documentCreate({ filepath: positional, ...options });

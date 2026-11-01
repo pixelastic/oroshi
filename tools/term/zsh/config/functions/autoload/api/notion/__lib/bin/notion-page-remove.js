@@ -6,7 +6,11 @@ import { setAccount } from '../setAccount.js';
 // The passage is named. It stays a string, even when it looks like a number
 const { named } = parseBinArgs({
   setAccount,
-  minimist: { string: ['old', 'old-file'] },
+  options: {
+    pageId: { type: 'string' },
+    old: { type: 'string' },
+    'old-file': { type: 'string' },
+  },
 });
 const output = await pageRemove(named);
 console.log(JSON.stringify(output, null, 2));

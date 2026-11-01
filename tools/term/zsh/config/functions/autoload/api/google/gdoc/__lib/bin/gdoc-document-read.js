@@ -6,7 +6,10 @@ import { documentRead } from '../document/documentRead.js';
 
 await runBin(async () => {
   // The URL or id is the positional argument
-  const { positional } = parseBinArgs({ setAccount });
+  const { positional } = parseBinArgs({
+    setAccount,
+    options: {},
+  });
   const output = await documentRead({ documentId: positional });
   console.log(JSON.stringify(output, null, 2));
 });

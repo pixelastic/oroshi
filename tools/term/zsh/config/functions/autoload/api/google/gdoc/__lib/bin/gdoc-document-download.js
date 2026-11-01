@@ -6,7 +6,10 @@ import { documentDownload } from '../document/documentDownload.js';
 
 await runBin(async () => {
   // The URL or id is the positional argument
-  const { positional } = parseBinArgs({ setAccount });
+  const { positional } = parseBinArgs({
+    setAccount,
+    options: {},
+  });
   const output = await documentDownload({ documentId: positional });
   console.log(output);
 });

@@ -4,6 +4,9 @@ import { databaseRead } from '../database/databaseRead.js';
 import { setAccount } from '../setAccount.js';
 
 // The id is the positional argument
-const { positional, named } = parseBinArgs({ setAccount });
+const { positional, named } = parseBinArgs({
+  setAccount,
+  options: {},
+});
 const output = await databaseRead({ databaseId: positional, ...named });
 console.log(JSON.stringify(output, null, 2));
