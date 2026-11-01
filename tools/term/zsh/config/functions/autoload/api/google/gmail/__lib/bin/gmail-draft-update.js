@@ -5,11 +5,16 @@ import { setAccount } from '@oroshi/google/setAccount.js';
 import { draftUpdate } from '../draft/draftUpdate.js';
 
 await runBin(async () => {
-  // The id of the Draft is the positional argument. The flags stay strings, so
-  // that a missing value is reported by the module
+  // The id of the Draft is the positional argument. The flags are strings, so
+  // that a subject like 2026 is not read as a number
   const { positional, named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['to', 'subject', 'body', 'body-file'] },
+    options: {
+      to: { type: 'string' },
+      subject: { type: 'string' },
+      body: { type: 'string' },
+      'body-file': { type: 'string' },
+    },
   });
   const draft = await draftUpdate({ draftId: positional, ...named });
   console.log(JSON.stringify(draft, null, 2));

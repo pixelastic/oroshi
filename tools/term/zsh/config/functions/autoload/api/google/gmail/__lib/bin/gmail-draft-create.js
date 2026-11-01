@@ -5,10 +5,16 @@ import { setAccount } from '@oroshi/google/setAccount.js';
 import { draftCreate } from '../draft/draftCreate.js';
 
 await runBin(async () => {
-  // The flags stay strings, so that a missing value is reported by the module
+  // The flags are strings, so that a subject like 2026 is not read as a number
   const { named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['threadId', 'to', 'subject', 'body', 'body-file'] },
+    options: {
+      threadId: { type: 'string' },
+      to: { type: 'string' },
+      subject: { type: 'string' },
+      body: { type: 'string' },
+      'body-file': { type: 'string' },
+    },
   });
   const draft = await draftCreate(named);
   console.log(JSON.stringify(draft, null, 2));

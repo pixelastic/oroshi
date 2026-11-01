@@ -5,10 +5,12 @@ import { setAccount } from '@oroshi/google/setAccount.js';
 import { attachmentRemove } from '../attachment/attachmentRemove.js';
 
 await runBin(async () => {
-  // The flags stay strings, so that a missing value is reported by the module
   const { named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['draftId', 'partId'] },
+    options: {
+      draftId: { type: 'string' },
+      partId: { type: 'string' },
+    },
   });
   const draft = await attachmentRemove(named);
   console.log(JSON.stringify(draft, null, 2));

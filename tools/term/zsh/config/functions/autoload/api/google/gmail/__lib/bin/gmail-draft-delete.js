@@ -6,7 +6,7 @@ import { draftDelete } from '../draft/draftDelete.js';
 
 await runBin(async () => {
   // The id of the Draft is the positional argument
-  const { positional, named } = parseBinArgs({ setAccount });
+  const { positional, named } = parseBinArgs({ setAccount, options: {} });
   const output = await draftDelete({ draftId: positional, ...named });
   console.log(JSON.stringify(output, null, 2));
 });

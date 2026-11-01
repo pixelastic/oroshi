@@ -6,7 +6,10 @@ import { threadSearch } from '../thread/threadSearch.js';
 
 await runBin(async () => {
   // The Gmail query is the positional argument
-  const { positional, named } = parseBinArgs({ setAccount });
+  const { positional, named } = parseBinArgs({
+    setAccount,
+    options: { limit: { type: 'string' } },
+  });
   const output = await threadSearch({ query: positional, ...named });
   console.log(JSON.stringify(output, null, 2));
 });

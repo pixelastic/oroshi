@@ -6,7 +6,7 @@ import { threadRead } from '../thread/threadRead.js';
 
 await runBin(async () => {
   // The id of the Thread is the positional argument
-  const { positional, named } = parseBinArgs({ setAccount });
+  const { positional, named } = parseBinArgs({ setAccount, options: {} });
   const output = await threadRead({ threadId: positional, ...named });
   console.log(JSON.stringify(output, null, 2));
 });

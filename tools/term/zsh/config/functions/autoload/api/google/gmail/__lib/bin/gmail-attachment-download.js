@@ -5,11 +5,13 @@ import { setAccount } from '@oroshi/google/setAccount.js';
 import { attachmentDownload } from '../attachment/attachmentDownload.js';
 
 await runBin(async () => {
-  // The id of the Message is the positional argument. The flags stay strings, so
-  // that a missing value is reported by the module
+  // The id of the Message is the positional argument
   const { positional, named } = parseBinArgs({
     setAccount,
-    minimist: { string: ['partId', 'out'] },
+    options: {
+      partId: { type: 'string' },
+      out: { type: 'string' },
+    },
   });
   const filepath = await attachmentDownload({
     messageId: positional,

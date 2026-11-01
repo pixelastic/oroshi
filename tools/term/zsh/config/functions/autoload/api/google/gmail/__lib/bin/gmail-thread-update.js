@@ -8,7 +8,10 @@ await runBin(async () => {
   // The id of the Thread is the positional argument
   const { positional, named } = parseBinArgs({
     setAccount,
-    minimist: { boolean: ['read', 'unread'] },
+    options: {
+      read: { type: 'boolean' },
+      unread: { type: 'boolean' },
+    },
   });
   const output = await threadUpdate({ threadId: positional, ...named });
   console.log(JSON.stringify(output, null, 2));

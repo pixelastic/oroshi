@@ -5,7 +5,10 @@ import { setAccount } from '@oroshi/google/setAccount.js';
 import { threadListRaw } from '../thread/threadListRaw.js';
 
 await runBin(async () => {
-  const { named } = parseBinArgs({ setAccount });
+  const { named } = parseBinArgs({
+    setAccount,
+    options: { limit: { type: 'string' } },
+  });
   const output = await threadListRaw(named);
   console.log(output);
 });
