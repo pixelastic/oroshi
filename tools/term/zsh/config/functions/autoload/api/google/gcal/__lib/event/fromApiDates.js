@@ -12,11 +12,17 @@ import { DATE_FORMAT } from './dateFormats.js';
 export function fromApiDates(start, end) {
   const isAllDay = _.has(start, 'date');
 
+  if (isAllDay) {
+    return {
+      dateStart: start.date,
+      dateEnd: dayjs.utc(end.date).subtract(1, 'day').format(DATE_FORMAT),
+      isAllDay,
+    };
+  }
+
   return {
-    dateStart: isAllDay ? start.date : start.dateTime,
-    dateEnd: isAllDay
-      ? dayjs.utc(end.date).subtract(1, 'day').format(DATE_FORMAT)
-      : end.dateTime,
+    dateStart: start.dateTime,
+    dateEnd: end.dateTime,
     isAllDay,
   };
 }

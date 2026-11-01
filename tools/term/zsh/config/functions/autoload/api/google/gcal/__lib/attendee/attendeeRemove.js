@@ -39,10 +39,11 @@ export async function attendeeRemove(options) {
     (attendee) => _.toLower(attendee.email) === _.toLower(email),
   );
   // The API does not always list the organizer among the Attendees
-  const isOrganizer =
+  const isEventOrganizer =
     _.chain(currentEvent).get('organizer.email').toLower().value() ===
-      _.toLower(email) || _.get(target, 'organizer', false);
-  if (isOrganizer) {
+    _.toLower(email);
+  const isMarkedOrganizer = _.get(target, 'organizer', false);
+  if (isEventOrganizer || isMarkedOrganizer) {
     throw firostError(
       'GCAL_ATTENDEE_ORGANIZER',
       `${email} is the organizer of Event ${eventId}`,

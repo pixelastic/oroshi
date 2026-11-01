@@ -25,9 +25,15 @@ export let __;
  * @throws {Error} GCAL_EVENT_ID_MISSING without an eventId, and the errors of toApiDates on a bad date
  */
 export async function eventUpdate(options) {
-  const { eventId, title, dateStart, dateEnd, location, descriptionFile } =
-    options;
-  const { calendarId = 'primary' } = options;
+  const {
+    eventId,
+    title,
+    dateStart,
+    dateEnd,
+    location,
+    descriptionFile,
+    calendarId = 'primary',
+  } = options;
 
   const eventPath = getEventPath(calendarId, eventId);
   const dates = await __.resolveDates({
@@ -73,17 +79,20 @@ __ = {
   async resolveDates(options) {
     const { eventPath, calendarId, dateStart, dateEnd } = options;
 
-    if (_.isUndefined(dateStart) && _.isUndefined(dateEnd)) {
+    const hasDateStart = !_.isUndefined(dateStart);
+    const hasDateEnd = !_.isUndefined(dateEnd);
+
+    if (!hasDateStart && !hasDateEnd) {
       return {};
     }
 
     const timeZone = await __.getTimeZone(calendarId);
-    if (!_.isUndefined(dateStart) && !_.isUndefined(dateEnd)) {
+    if (hasDateStart && hasDateEnd) {
       return toApiDates({ dateStart, dateEnd, timeZone });
     }
 
     const currentEvent = await __.callApi(eventPath);
-    if (_.isUndefined(dateStart)) {
+    if (!hasDateStart) {
       // The start of the Event is given without its offset
       const keptStart = _.truncate(
         fromApiDates(currentEvent.start, currentEvent.end).dateStart,
@@ -97,21 +106,6 @@ __ = {
 
     const moved = toApiDates({ dateStart, timeZone });
     return __.keepDuration(moved, currentEvent);
-  },
-
-  /**
-   * Null the fields of the other kind (timed or All-day) in a start and an
-   * end. The API merges a patched start into the current one, so a date next
-   * to the old dateTime is refused
-   * @param {object} dates - Start and end of the API, or an empty object
-   * @returns {object} The same dates, with the fields of the other kind set to null
-   */
-  clearOtherKind(dates) {
-    return _.mapValues(dates, (day) =>
-      _.has(day, 'date')
-        ? { ...day, dateTime: null, timeZone: null }
-        : { ...day, date: null },
-    );
   },
 
   /**
@@ -148,6 +142,21 @@ __ = {
         timeZone: moved.start.timeZone,
       },
     };
+  },
+
+  /**
+   * Null the fields of the other kind (timed or All-day) in a start and an
+   * end. The API merges a patched start into the current one, so a date next
+   * to the old dateTime is refused
+   * @param {object} dates - Start and end of the API, or an empty object
+   * @returns {object} The same dates, with the fields of the other kind set to null
+   */
+  clearOtherKind(dates) {
+    return _.mapValues(dates, (day) =>
+      _.has(day, 'date')
+        ? { ...day, dateTime: null, timeZone: null }
+        : { ...day, date: null },
+    );
   },
 
   callApi,

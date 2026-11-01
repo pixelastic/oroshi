@@ -27,10 +27,10 @@ export async function eventDelete(options) {
     const isNotFound =
       error.code === 'GCAL_REQUEST_FAILED' &&
       /^(404|410)\b/.test(error.message);
-    if (!isNotFound) {
-      throw error;
+    if (isNotFound) {
+      throw firostError('GCAL_EVENT_NOT_FOUND', `Event ${eventId} not found`);
     }
-    throw firostError('GCAL_EVENT_NOT_FOUND', `Event ${eventId} not found`);
+    throw error;
   }
 
   return eventId;

@@ -23,9 +23,15 @@ export let __;
  * @throws {Error} GCAL_TITLE_MISSING without a title, and the errors of toApiDates on a bad date
  */
 export async function eventCreate(options) {
-  const { title, dateStart, dateEnd, location, descriptionFile, attendees } =
-    options;
-  const { calendarId = 'primary' } = options;
+  const {
+    title,
+    dateStart,
+    dateEnd,
+    location,
+    descriptionFile,
+    attendees,
+    calendarId = 'primary',
+  } = options;
 
   if (!title) {
     throw firostError('GCAL_TITLE_MISSING', 'Pass the title with --title');

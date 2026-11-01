@@ -44,9 +44,10 @@ export function resolveDateRange(flags, today) {
   const dateMax = __.parseDate(flags.dateMax);
 
   // Only a maximum: the period is the 7 days before it
-  const resolvedMin =
-    dateMin ||
-    (dateMax ? dateMax.subtract(DEFAULT_SPAN_IN_DAYS, 'day') : todayDate);
+  const defaultMin = dateMax
+    ? dateMax.subtract(DEFAULT_SPAN_IN_DAYS, 'day')
+    : todayDate;
+  const resolvedMin = dateMin || defaultMin;
   const resolvedMax = dateMax || resolvedMin.add(DEFAULT_SPAN_IN_DAYS, 'day');
 
   if (resolvedMin.isAfter(resolvedMax)) {
