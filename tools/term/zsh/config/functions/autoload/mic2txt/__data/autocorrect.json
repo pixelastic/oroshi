@@ -198,5 +198,6 @@
   "ETC host": "/etc/hosts",
   "XMODEMAP": "xmodmap",
   "Roche et Root": "OROSHI_ROOT",
-  "paquet route": "packageRoot"
+  "paquet route": "packageRoot",
+  "yardrun": "yarn run"
 }

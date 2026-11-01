@@ -59,3 +59,6 @@
 2026-10-07 Refactor all Claude hooks (preToolUse and postToolUse): split mixed concerns into single-concern functions or separate hooks, no behavior change domain:Claude size:large id:hooks-split
 2026-10-26 Migrate meetup-create into the DevRel meetup domain and add a meetup read helper, following the API documentation conventions. Wait for the DevRel meetup worktree to finish first. domain:Misc size:medium id:meetup-crud
 2026-10-26 Add gmail helpers to list the labels of a message, add a label to it and remove a label from it. domain:Google size:medium id:gmail-labels
+2026-11-01 Finish NAS setup: store films and photos, access them from the TV and phones domain:Ideas size:large id:nas-setup
+2026-11-01 Finish liquid-ink board showing preselected maps of my imaginary world (prototype exists) domain:Ideas size:large id:ink-board
+2026-11-01 Retro emulation station on the TV: handheld console on SCART, 3 Anbernic RG-P01 controllers, 16-bit multiplayer (Micro Machines, Bomberman) domain:Ideas size:large id:retro-station

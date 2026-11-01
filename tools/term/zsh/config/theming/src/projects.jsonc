@@ -229,7 +229,7 @@
   "haerdalis": {
     "background": "purple-7",
     "foreground": "purple-1",
-    "icon": " ",
+    "icon": "<} ",
     "path": "~/local/www/projects/haerdalis"
   },
   "home": {

@@ -24,7 +24,7 @@
     "deny": ["AskUserQuestion"],
     "defaultMode": "acceptEdits"
   },
-  "model": "opus",
+  "model": "fable",
   "hooks": {
     "PreToolUse": [
       {
@@ -113,7 +113,7 @@
   "autoMemoryEnabled": false,
   "theme": "custom:oroshi",
   "preferredNotifChannel": "notifications_disabled",
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": false,
-  "agentPushNotifEnabled": true
+  "voiceEnabled": false
 }
