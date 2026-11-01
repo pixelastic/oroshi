@@ -48,6 +48,7 @@ describe('formatEvent', () => {
       dateStart: '2026-11-02T10:00:00+01:00',
       dateEnd: '2026-11-02T11:00:00+01:00',
       isAllDay: false,
+      isPrivate: false,
       location: 'Room 1',
       description: 'Daily sync',
       url: 'https://www.google.com/calendar/event?eid=abc',
@@ -84,6 +85,23 @@ describe('formatEvent', () => {
 
       expect(actual).not.toHaveProperty('attendeeCount');
     });
+  });
+
+  describe('isPrivate', () => {
+    it.each([
+      { title: 'private', visibility: 'private', expected: true },
+      { title: 'default', visibility: 'default', expected: false },
+      { title: 'public', visibility: 'public', expected: false },
+      { title: 'confidential', visibility: 'confidential', expected: false },
+      { title: 'absent', visibility: undefined, expected: false },
+    ])(
+      'is $expected when the visibility is $title',
+      ({ visibility, expected }) => {
+        const actual = formatEvent(event({ visibility }), 'primary');
+
+        expect(actual).toHaveProperty('isPrivate', expected);
+      },
+    );
   });
 
   describe('absent fields', () => {

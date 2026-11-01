@@ -20,8 +20,12 @@ await runBin(async () => {
         'attendees',
         'calendarId',
       ],
+      boolean: ['private', 'public'],
     },
   });
-  const output = await eventCreate(named);
+  // private is a reserved word, so the flags are renamed to the options of the
+  // module
+  const { private: isPrivate, public: isPublic, ...fields } = named;
+  const output = await eventCreate({ ...fields, isPrivate, isPublic });
   console.log(JSON.stringify(output, null, 2));
 });

@@ -7,7 +7,7 @@ import { fromApiDates } from './fromApiDates.js';
  * last day
  * @param {object} response - The Event, as returned by the API
  * @param {string} calendarId - Calendar that holds the Event
- * @returns {object} The Event as { eventId, calendarId, title, status, dateStart, dateEnd, isAllDay, location, description, url, organizer, attendees }. An absent text is an empty string, and organizer is an e-mail address
+ * @returns {object} The Event as { eventId, calendarId, title, status, dateStart, dateEnd, isAllDay, isPrivate, location, description, url, organizer, attendees }. An absent text is an empty string, and organizer is an e-mail address
  */
 export function formatEvent(response, calendarId) {
   const { dateStart, dateEnd, isAllDay } = fromApiDates(
@@ -23,6 +23,7 @@ export function formatEvent(response, calendarId) {
     dateStart,
     dateEnd,
     isAllDay,
+    isPrivate: response.visibility === 'private',
     location: _.get(response, 'location', ''),
     description: _.get(response, 'description', ''),
     url: response.htmlLink,

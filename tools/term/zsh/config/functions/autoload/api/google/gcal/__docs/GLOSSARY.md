@@ -76,6 +76,18 @@ A person invited to an **Event**, identified by an e-mail address, and with a
 
 _Avoid_: guest, invitee, participant
 
+**Private**:
+
+An **Event** whose visibility is `private`: the readers of the **Calendar** see
+that it is busy, but not its details. `--private` of `gcal-event-create` makes
+one, and `--public` sends `default` instead. Both flags together fail with
+`GCAL_VISIBILITY_CONFLICT`.
+
+_Avoid_: hidden event, confidential event
+
+`isPrivate` is `true` for a **Private** **Event**. The commands print it for
+every **Event**. `confidential` is not handled: it gives `false`.
+
 ### Custom verbs
 
 **`add`**:

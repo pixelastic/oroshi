@@ -1,16 +1,18 @@
 # Read one Event, and print it as JSON
 # The eventId is printed by gcal-event-list-raw
 # Fields: eventId, calendarId, title, status, dateStart, dateEnd, isAllDay,
-# location, description, url, organizer, attendees
+# isPrivate, location, description, url, organizer, attendees
 # dateStart and dateEnd hold a time, or a date for an All-day Event, whose
 # dateEnd is its last day
 # Each Attendee has email and responseStatus. Count them from the array
+# isPrivate is true only for a private Event
 # organizer is an e-mail address. An absent text is an empty string
 # The Calendar is the Primary by default
 # Usage:
 # $ gcal-event-read eventId
 # $ gcal-event-read eventId --calendarId work@group.calendar.google.com
 # $ gcal-event-read eventId --account perso
+# $ gcal-event-read eventId | jq .isPrivate
 setopt local_options err_return
 
 local libDir="${functions_source[$0]:A:h:h}/__lib"

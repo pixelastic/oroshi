@@ -128,6 +128,45 @@ describe('eventCreate', () => {
     expect(body).toHaveProperty('description', 'Long text');
   });
 
+  it.each([
+    {
+      title: 'private with isPrivate',
+      flag: { isPrivate: true },
+      expected: 'private',
+    },
+    {
+      title: 'default with isPublic',
+      flag: { isPublic: true },
+      expected: 'default',
+    },
+  ])('sends visibility $title', async ({ flag, expected }) => {
+    await eventCreate({
+      title: 'Dentist',
+      dateStart: '2026-11-02T10:00',
+      ...flag,
+    });
+
+    const [, { body }] = insertCall();
+    expect(body).toHaveProperty('visibility', expected);
+  });
+
+  it('throws GCAL_VISIBILITY_CONFLICT without calling the API when both flags are set', async () => {
+    let actual = null;
+    try {
+      await eventCreate({
+        title: 'Dentist',
+        dateStart: '2026-11-02T10:00',
+        isPrivate: true,
+        isPublic: true,
+      });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', 'GCAL_VISIBILITY_CONFLICT');
+    expect(__.callApi).not.toHaveBeenCalled();
+  });
+
   it('sends only the fields it has', async () => {
     await eventCreate({ title: 'Dentist', dateStart: '2026-11-02T10:00' });
 

@@ -4,6 +4,7 @@ import { callApi } from '../callApi.js';
 import { formatEvent } from './formatEvent.js';
 import { getEventsPath } from './getEventsPath.js';
 import { getTimeZone } from './getTimeZone.js';
+import { resolveVisibility } from './resolveVisibility.js';
 import { toApiDates } from './toApiDates.js';
 
 export let __;
@@ -18,9 +19,11 @@ export let __;
  * @param {string} [options.description] - Description
  * @param {string} [options.descriptionFile] - Path of a file holding the description. It takes precedence over description
  * @param {string} [options.attendees] - E-mail addresses of the initial Attendees, separated by commas
+ * @param {boolean} [options.isPrivate] - Make the Event private
+ * @param {boolean} [options.isPublic] - Give the Event the default visibility of the Calendar
  * @param {string} [options.calendarId] - Calendar of the Event, the Primary by default
  * @returns {Promise<object>} The created Event, formatted by formatEvent
- * @throws {Error} GCAL_TITLE_MISSING without a title, and the errors of toApiDates on a bad date
+ * @throws {Error} GCAL_TITLE_MISSING without a title, GCAL_VISIBILITY_CONFLICT when both isPrivate and isPublic are set, and the errors of toApiDates on a bad date
  */
 export async function eventCreate(options) {
   const {
@@ -30,12 +33,16 @@ export async function eventCreate(options) {
     location,
     descriptionFile,
     attendees,
+    isPrivate,
+    isPublic,
     calendarId = 'primary',
   } = options;
 
   if (!title) {
     throw firostError('GCAL_TITLE_MISSING', 'Pass the title with --title');
   }
+
+  const visibility = resolveVisibility({ isPrivate, isPublic });
 
   // The time is local to the Calendar, so its time zone comes first
   const timeZone = await __.getTimeZone(calendarId);
@@ -54,6 +61,7 @@ export async function eventCreate(options) {
         ...dates,
         location,
         description,
+        visibility,
         attendees: attendees && __.parseAttendees(attendees),
       },
       _.isUndefined,
