@@ -1,16 +1,40 @@
-import { getRepo } from '../__lib/config.js';
-import { getDiff } from '../__lib/getDiff.js';
-
-vi.mock('../__lib/config.js', () => ({ getRepo: vi.fn() }));
+import { __, getDiff } from '../__lib/getDiff.js';
 
 describe('getDiff', () => {
+  describe('isBinaryDiff', () => {
+    it.each([
+      ['undefined', undefined, true],
+      ['empty string', '', true],
+      ['whitespace only', ' \n\t', true],
+      [
+        'binary placeholder',
+        'Binary files a/db.sqlite and b/db.sqlite differ',
+        true,
+      ],
+      [
+        'binary placeholder after a header',
+        'diff --git a/db.sqlite b/db.sqlite\nBinary files a/db.sqlite and b/db.sqlite differ',
+        true,
+      ],
+      ['text diff', 'diff --git a/app.js b/app.js\n+foo', false],
+      [
+        'text diff mentioning binary files mid-line',
+        '+// Binary files are skipped',
+        false,
+      ],
+    ])('%s', (_name, diff, expected) => {
+      const actual = __.isBinaryDiff(diff);
+      expect(actual).toEqual(expected);
+    });
+  });
+
   let mockRun;
   let mockStagedFilesWithStatus;
 
   beforeEach(() => {
     mockRun = vi.fn();
     mockStagedFilesWithStatus = vi.fn();
-    getRepo.mockReturnValue({
+    vi.spyOn(__, 'getRepo').mockReturnValue({
       stagedFilesWithStatus: mockStagedFilesWithStatus,
       run: mockRun,
     });
