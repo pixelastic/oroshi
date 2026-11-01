@@ -2,7 +2,8 @@
 # The Draft keeps its attachments, and is never sent. The url opens it in Gmail
 # The draftId is printed by gmail-draft-create, gmail-draft-read and gmail-thread-read
 # The arguments are the file paths
-# The attachments weigh at most 25 MB once in base64, existing ones included
+# The attachments weigh at most 25 MB once in base64 (about 4/3 of the bytes), existing ones included
+# A missing file or a total over the limit fails before any save
 # Flags:
 # --draftId <id>       Id of the Draft
 # --account <name>     Account of the Draft. The default account if empty

@@ -2,6 +2,7 @@
 # The Draft keeps its other attachments, and is never sent. The url opens it in Gmail
 # The draftId and the partId are listed by gmail-draft-read (draftId and attachments)
 # Gmail gives new partId values to the attachments left, so read them in the output
+# An unknown partId fails before any save
 # Flags:
 # --draftId <id>       Id of the Draft
 # --partId <id>        Part id of the attachment to remove
