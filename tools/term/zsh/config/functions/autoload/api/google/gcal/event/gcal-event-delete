@@ -1,0 +1,15 @@
+# Delete an Event, and print its eventId
+# The eventId is printed by gcal-event-list-raw
+# It never sends an e-mail to an Attendee (sendUpdates=none)
+# On the Calendar of the organizer, the Event is then read as status "cancelled"
+# Not verified: whether the Event disappears from the Calendar of a Google
+# Attendee. Only the Calendar of the organizer was checked
+# The Calendar is the Primary by default
+# Usage:
+# $ gcal-event-delete eventId
+# $ gcal-event-delete eventId --calendarId work@group.calendar.google.com
+# $ gcal-event-delete eventId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gcal-event-delete.js" "$@"

@@ -134,6 +134,7 @@
   "gcal-calendar-list",
   "gcal-calendar-list-raw",
   "gcal-event-create",
+  "gcal-event-delete",
   "gcal-event-list",
   "gcal-event-list-raw",
   "gcal-event-read",
