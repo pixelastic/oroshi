@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Cryptsetup: Manage LUKS encrypted volumes (open, close, reencrypt in place).
+# https://gitlab.com/cryptsetup/cryptsetup
+# cryptsetup-initramfs lets the initramfs unlock an encrypted root at boot.
+set -e
+sudo apt-get install cryptsetup cryptsetup-initramfs
