@@ -62,3 +62,4 @@
 2026-11-01 Finish NAS setup: store films and photos, access them from the TV and phones domain:Ideas size:large id:nas-setup
 2026-11-01 Finish liquid-ink board showing preselected maps of my imaginary world (prototype exists) domain:Ideas size:large id:ink-board
 2026-11-01 Retro emulation station on the TV: handheld console on SCART, 3 Anbernic RG-P01 controllers, 16-bit multiplayer (Micro Machines, Bomberman) domain:Ideas size:large id:retro-station
+2026-11-02 Decide in aberlaas whether prettier.config.js belongs at the project root: the blog project using aberlaas has none, auctioneer has one. Find which of the two projects is wrong domain:JavaScript size:medium id:prettier-config

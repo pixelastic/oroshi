@@ -493,6 +493,12 @@
     "icon": " ",
     "path": "~/local/www/projects/shar-teel"
   },
+  "shortwheel": {
+    "background": "pink-7",
+    "foreground": "purple-1",
+    "icon": "󰠳 ",
+    "path": "~/local/www/projects/shortwheel"
+  },
   "signature": {
     "background": "gray-7",
     "foreground": "gray-2",
@@ -528,12 +534,6 @@
     "foreground": "gray-3",
     "icon": " ",
     "path": "~/local/www/talks/speaker-program"
-  },
-  "speech-to-blog": {
-    "background": "yellow-6",
-    "foreground": "dark-amber",
-    "icon": "󰔊 ",
-    "path": "~/local/www/projects/speech-to-blog"
   },
   "spells": {
     "background": "blue-8",

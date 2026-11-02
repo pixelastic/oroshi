@@ -182,6 +182,7 @@
   "git ls-tree",
   "git merge-base",
   "git mv",
+  "git pull",
   "git reflog",
   "git remote get-url",
   "git remote",

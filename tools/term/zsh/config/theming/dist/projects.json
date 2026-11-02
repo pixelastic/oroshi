@@ -1614,6 +1614,26 @@
     "icon": " ",
     "path": "~/local/www/projects/shar-teel"
   },
+  "shortwheel": {
+    "background": {
+      "ansi": 87,
+      "hex": "#831843",
+      "name": "pink-7"
+    },
+    "backgroundInactive": {
+      "ansi": 80,
+      "hex": "#1f0f16",
+      "name": "pink-dark"
+    },
+    "foreground": {
+      "ansi": 61,
+      "hex": "#e9d8fd",
+      "name": "purple-1"
+    },
+    "hideNameInPrompt": false,
+    "icon": "󰠳 ",
+    "path": "~/local/www/projects/shortwheel"
+  },
   "signature": {
     "background": {
       "ansi": 207,
@@ -1733,21 +1753,6 @@
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/talks/speaker-program"
-  },
-  "speech-to-blog": {
-    "background": {
-      "ansi": 46,
-      "hex": "#b7791f",
-      "name": "yellow-6"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
-    "hideNameInPrompt": false,
-    "icon": "󰔊 ",
-    "path": "~/local/www/projects/speech-to-blog"
   },
   "spells": {
     "background": {
