@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Restic: Encrypted, deduplicated, incremental backups.
+# https://restic.net/
+# Needs rclone to back up to a cloud drive (rclone:<remote>:<path>), see ../rclone/install
+set -e
+sudo apt-get install restic
