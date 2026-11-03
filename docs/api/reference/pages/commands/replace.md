@@ -1,11 +1,10 @@
 # `replace`
 
 `replace` swaps one passage of the text of an entity for another passage, and
-prints the entity as JSON, in the same format as [`read`](read.md).
+prints the entity as JSON, in the same format as
+[`read`](../../commands/read.md).
 
-This file holds the contract shared by [`replace`](replace.md),
-[`remove`](remove.md) and [`append`](append.md). The other two link here and do
-not repeat it.
+`replace` is one of the three custom verbs of a [Page](../README.md).
 
 ## Example
 
@@ -20,9 +19,9 @@ $ notion-page-replace --pageId 1f3a --old 'Pariss' --new 'Paris'
 
 ## Arguments
 
-The id of the entity is given as in [`read`](read.md#arguments). The passages
-are named, and follow the [`-file` suffix](../../arguments.md#-file-suffix)
-rule.
+The id of the entity is given as in [`read`](../../commands/read.md#arguments).
+The passages are named, and follow the
+[`-file` suffix](../../../arguments.md#-file-suffix) rule.
 
 | Flag         | Role                                                   |
 | ------------ | ------------------------------------------------------ |
@@ -38,15 +37,15 @@ $ notion-page-replace --pageId 1f3a --old-file ./old.md --new-file ./new.md
 
 ## Passage
 
-The contract of a passage is the same for all services:
+The contract of the old passage is the same for all services:
 
-- A passage is Markdown text.
-- The old passage must appear exactly once in the text. The command fails when
-  it appears zero times, and fails when it appears several times. A failed
-  command changes nothing.
+- The old passage is Markdown text.
+- It must appear exactly once in the text. The command fails when it appears
+  zero times, and fails when it appears several times. A failed command changes
+  nothing.
 - To insert text in the middle, repeat the old passage in the new one.
 
-### Limits of a service
+## Limits of a service
 
 A service can narrow the contract, and says so in the header of its wrappers.
 Google Docs adds these limits:

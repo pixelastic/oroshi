@@ -1,8 +1,8 @@
 # `remove`
 
 `remove` deletes one passage of the text of an entity, and prints the entity as
-JSON, in the same format as [`read`](read.md). The entity stays: use
-[`delete`](delete.md) to remove the entity itself.
+JSON, in the same format as [`read`](../../commands/read.md). The entity stays:
+use [`delete`](../../commands/delete.md) to remove the entity itself.
 
 ## Example
 

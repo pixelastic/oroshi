@@ -16,9 +16,6 @@ The vocabulary is closed: a command is named after one of these verbs.
 | [`create`](create.md)     | Make a new entity, and print it as JSON           |
 | [`update`](update.md)     | Change some fields of an entity, and print it     |
 | [`delete`](delete.md)     | Remove an entity, and print its id                |
-| [`append`](append.md)     | Add content at the end of an entity, and print it |
-| [`replace`](replace.md)   | Swap one passage of an entity, and print it       |
-| [`remove`](remove.md)     | Delete one passage of an entity, and print it     |
 
 If the API doesn't offer a way to perform certain verbs (like an `update` on a
 read-only `log`), then that command is not implemented.

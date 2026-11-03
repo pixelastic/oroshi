@@ -2,7 +2,7 @@
 
 `append` adds some content at the end of the text of an entity, keeps the
 existing text, and prints the entity as JSON, in the same format as
-[`read`](read.md).
+[`read`](../../commands/read.md).
 
 ## Example
 
@@ -18,20 +18,20 @@ $ notion-page-append --pageId 1f3a '## New section'
 
 ## Arguments
 
-The id of the entity is given as in [`read`](read.md#arguments). The content is
-the positional argument, or a file given with `--content-file`. The file wins
-over the positional content, see the
-[`-file` suffix](../../arguments.md#-file-suffix).
+The id of the entity is given as in [`read`](../../commands/read.md#arguments).
+The content is the positional argument, or a file given with `--content-file`.
+The file wins over the positional content, see the
+[`-file` suffix](../../../arguments.md#-file-suffix).
 
 ```text
 $ notion-page-append --pageId 1f3a '## New section'
 $ notion-page-append --pageId 1f3a --content-file ./section.md
 ```
 
-`append` has no [passage](replace.md#passage) to find, so it never fails on zero
-or several matches.
+`append` has no [Passage](../README.md#vocabulary) to find, so it never fails on
+zero or several matches.
 
-### Limits of a service
+## Limits of a service
 
 A service can narrow the contract, and says so in the header of its wrappers.
 Google Docs adds these limits:

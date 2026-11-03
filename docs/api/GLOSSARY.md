@@ -90,14 +90,11 @@ different shape depending on its table.
 
 _Avoid_: loose schema, free schema
 
-**Passage**:
+**Page**:
 
-A part of the text of an entity, written as Markdown, that `replace` and
-`remove` find, and that `replace` puts instead. The old **Passage** must appear
-exactly once. See
-[reference/commands/replace.md](reference/commands/replace.md#passage).
-
-_Avoid_: snippet, excerpt, selection
+An entity made of a long text, such as a Google Doc, a Notion page or a
+Confluence page. It has its own verbs, `append`, `replace` and `remove`. See
+[reference/pages/README.md](reference/pages/README.md).
 
 **Wrapper**:
 
@@ -172,27 +169,6 @@ _Avoid_: `edit`, `set`, `write`
 Remove an entity, and print its id.
 
 _Avoid_: `destroy`
-
-**[`append`](reference/commands/append.md)**:
-
-Add some content at the end of the text of an entity, keep the existing text,
-and print the entity as JSON.
-
-_Avoid_: `add`, `push`
-
-**[`replace`](reference/commands/replace.md)**:
-
-Swap one **Passage** of the text of an entity for another, and print the entity
-as JSON.
-
-_Avoid_: `edit`, `swap`
-
-**[`remove`](reference/commands/remove.md)**:
-
-Delete one **Passage** of the text of an entity, and print the entity as JSON.
-The entity stays.
-
-_Avoid_: `delete`, `cut`
 
 **Custom verb**:
 

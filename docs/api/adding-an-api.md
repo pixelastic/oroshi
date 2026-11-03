@@ -95,10 +95,8 @@ template of each verb:
 5. [`create`](reference/commands/create.md)
 6. [`update`](reference/commands/update.md)
 7. [`delete`](reference/commands/delete.md)
-8. [`append`](reference/commands/append.md),
-   [`replace`](reference/commands/replace.md) and
-   [`remove`](reference/commands/remove.md), if the service can change the text
-   of an entity. They share one contract, defined in `replace`.
+8. if the entity is a [Page](reference/pages/README.md): `append`, `replace` and
+   `remove`.
 9. a [custom verb](reference/commands/custom.md), for an action that is not
    CRUD.
 
