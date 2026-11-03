@@ -1,0 +1,15 @@
+# Add Markdown at the end of a Google Doc, and print it as JSON
+# The content is full Markdown: headings, lists, bold, italic, links
+# The existing content, formatting and comments stay
+# Images and tables of the content are not copied
+# Usage:
+# $ gdoc-document-append https://docs.google.com/document/d/docA/edit $'## Notes\n\n- one\n- two'
+# A content that starts with a dash needs -- before it
+# $ gdoc-document-append docA -- $'- one\n- two'
+# $ gdoc-document-append docA --content-file ./notes.md
+# $ gdoc-document-append docA --content-file ./notes.md --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+local referenceDoc="${libDir:h}/__config/reference.docx"
+OROSHI_MD2GDOC_REFERENCE_DOC="$referenceDoc" node "${libDir}/bin/gdoc-document-append.js" "$@"
