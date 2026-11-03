@@ -1,0 +1,13 @@
+# Replace the whole content of a Google Doc with a Markdown or docx file, and print it as JSON
+# The Document keeps its ID and URL. Unresolved comments are lost, with no warning
+# A .md file is converted with pandoc and the reference style, a .docx is used as is
+# Usage:
+# $ gdoc-document-update https://docs.google.com/document/d/docA/edit article.md
+# $ gdoc-document-update docA article.docx
+# $ gdoc-document-update docA article.md --title "Paris Meetup"
+# $ gdoc-document-update docA article.md --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+local referenceDoc="${libDir:h}/__config/reference.docx"
+OROSHI_MD2GDOC_REFERENCE_DOC="$referenceDoc" node "${libDir}/bin/gdoc-document-update.js" "$@"

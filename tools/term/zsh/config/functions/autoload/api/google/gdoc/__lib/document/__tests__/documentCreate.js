@@ -1,74 +1,31 @@
 import { __, documentCreate } from '../documentCreate.js';
 
 describe('documentCreate', () => {
-  // Content of the file that is uploaded, from a Markdown or a docx source
-  const docxFromMarkdown = Buffer.from('docx from markdown');
-  const docxAsIs = Buffer.from('docx as is');
+  const docx = Buffer.from('docx content');
 
-  // The request sent to the upload endpoint
-  const getRequest = () => __.callApi.mock.calls[0];
-  const getBody = async () => await getRequest()[1].body.text();
+  // The request sent to uploadDocx
+  const getRequest = () => __.uploadDocx.mock.calls[0][0];
 
   beforeEach(() => {
     vi.spyOn(__, 'getConfig').mockReturnValue({
       docsFolderId: 'folderDefault',
-      referenceDoc: '/config/reference.docx',
     });
-    vi.spyOn(__, 'callApi').mockReturnValue({ id: 'docA', name: 'article' });
-    vi.spyOn(__, 'markdownToDocx').mockReturnValue(docxFromMarkdown);
-    vi.spyOn(__, 'readFile').mockReturnValue(docxAsIs);
+    vi.spyOn(__, 'readDocx').mockReturnValue(docx);
+    vi.spyOn(__, 'uploadDocx').mockReturnValue({ id: 'docA', name: 'article' });
     vi.spyOn(__, 'documentSetPageless').mockReturnValue();
     vi.spyOn(__, 'formatDocument').mockReturnValue({ id: 'formatted' });
   });
 
-  it('converts a .md file with pandoc, uploads it and switches to pageless', async () => {
+  it('uploads the docx of the file as a new file, and switches to pageless', async () => {
     await documentCreate({ filepath: '/path/to/article.md' });
 
-    expect(__.markdownToDocx).toHaveBeenCalledWith(
-      '/path/to/article.md',
-      '/config/reference.docx',
-    );
-    expect(await getBody()).toContain('docx from markdown');
-    expect(__.documentSetPageless).toHaveBeenCalledWith('docA');
-  });
-
-  it('uploads a .docx file as is, without pandoc', async () => {
-    await documentCreate({ filepath: '/path/to/article.docx' });
-
-    expect(__.markdownToDocx).not.toHaveBeenCalled();
-    expect(__.readFile).toHaveBeenCalledWith('/path/to/article.docx');
-    expect(await getBody()).toContain('docx as is');
-  });
-
-  it('sends the upload to the Drive upload endpoint, converted to a Google Doc', async () => {
-    await documentCreate({ filepath: '/path/to/article.md' });
-
-    const [path, options] = getRequest();
-    expect(path).toEqual('files');
-    expect(options).toMatchObject({
-      baseUrl: 'https://www.googleapis.com/upload/drive/v3',
+    expect(__.readDocx).toHaveBeenCalledWith('/path/to/article.md');
+    expect(getRequest()).toMatchObject({
+      path: 'files',
       method: 'POST',
-      query: { uploadType: 'multipart', fields: 'id,name' },
+      content: docx,
     });
-  });
-
-  it('sends a multipart request with the metadata part, then the file part', async () => {
-    await documentCreate({ filepath: '/path/to/article.md' });
-
-    const { headers } = getRequest()[1];
-    const boundary = headers['Content-Type'].match(
-      /^multipart\/related; boundary=(.+)$/,
-    )[1];
-    const body = await getBody();
-    const [, metadataPart, filePart] = body.split(`--${boundary}`);
-
-    expect(body.trimEnd().endsWith(`--${boundary}--`)).toEqual(true);
-    expect(metadataPart).toContain('Content-Type: application/json');
-    expect(metadataPart).toContain('"name":"article"');
-    expect(filePart).toContain(
-      'Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    );
-    expect(filePart).toContain('docx from markdown');
+    expect(__.documentSetPageless).toHaveBeenCalledWith('docA');
   });
 
   it.each([
@@ -90,10 +47,7 @@ describe('documentCreate', () => {
   ])('names the Document with $title', async ({ options, expected }) => {
     await documentCreate(options);
 
-    const metadata = JSON.parse(
-      (await getBody()).match(/application\/json[^\r\n]*\r\n\r\n(.+)\r\n/)[1],
-    );
-    expect(metadata).toMatchObject({
+    expect(getRequest().metadata).toMatchObject({
       name: expected,
       mimeType: 'application/vnd.google-apps.document',
     });
@@ -118,19 +72,15 @@ describe('documentCreate', () => {
   ])('puts the Document in $title', async ({ directory, expected }) => {
     await documentCreate({ filepath: '/path/to/article.md', directory });
 
-    const body = await getBody();
-    const metadata = JSON.parse(body.match(/\r\n\r\n(\{.+\})\r\n/)[1]);
-    expect(metadata).toHaveProperty('parents', expected);
+    expect(getRequest().metadata).toHaveProperty('parents', expected);
   });
 
   it('puts the Document at the root of the Drive without any folder', async () => {
-    __.getConfig.mockReturnValue({ referenceDoc: '/config/reference.docx' });
+    __.getConfig.mockReturnValue({});
 
     await documentCreate({ filepath: '/path/to/article.md' });
 
-    const body = await getBody();
-    const metadata = JSON.parse(body.match(/\r\n\r\n(\{.+\})\r\n/)[1]);
-    expect(metadata).not.toHaveProperty('parents');
+    expect(getRequest().metadata).not.toHaveProperty('parents');
   });
 
   it('returns the created Document, formatted', async () => {
@@ -143,26 +93,19 @@ describe('documentCreate', () => {
     expect(actual).toEqual({ id: 'formatted' });
   });
 
-  it.each([
-    {
-      title: 'no file',
-      options: {},
-      expected: 'GDOC_FILE_MISSING',
-    },
-    {
-      title: 'an unsupported file',
-      options: { filepath: '/path/to/notes.txt' },
-      expected: 'GDOC_FILE_UNSUPPORTED',
-    },
-  ])('throws $expected on $title', async ({ options, expected }) => {
+  it('does not upload when the file cannot be read', async () => {
+    __.readDocx.mockImplementation(() => {
+      throw new Error('GDOC_FILE_MISSING');
+    });
+
     let actual = null;
     try {
-      await documentCreate(options);
+      await documentCreate({});
     } catch (error) {
       actual = error;
     }
 
-    expect(actual).toHaveProperty('code', expected);
-    expect(__.callApi).not.toHaveBeenCalled();
+    expect(actual).toHaveProperty('message', 'GDOC_FILE_MISSING');
+    expect(__.uploadDocx).not.toHaveBeenCalled();
   });
 });
