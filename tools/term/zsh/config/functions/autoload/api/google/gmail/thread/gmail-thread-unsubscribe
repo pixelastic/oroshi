@@ -1,0 +1,18 @@
+# Unsubscribe from the mailing list of a Thread, and print its threadId, url and done as JSON
+# The threadId is printed by the other gmail-thread commands
+# WARNING: the action is irreversible. The sender removes the address from its list
+# Only the one-click POST of RFC 8058 is sent, to the HTTPS link of the List-Unsubscribe header of the last Message
+# It never reads the body, opens a browser or sends an e-mail
+# Errors:
+# GMAIL_THREAD_ID_MISSING            The threadId is empty
+# GMAIL_THREAD_NOT_FOUND             The Thread does not exist
+# GMAIL_UNSUBSCRIBE_NOT_AVAILABLE    No one-click HTTPS link, or the POST failed. A mailto: address is shown in the message
+# Flags:
+# --account <name>     Account of the Thread. The default account if empty
+# Usage:
+# $ gmail-thread-unsubscribe threadId
+# $ gmail-thread-unsubscribe threadId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-thread-unsubscribe.js" "$@"

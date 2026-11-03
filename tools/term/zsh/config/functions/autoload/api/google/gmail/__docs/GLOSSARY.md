@@ -138,6 +138,13 @@ purges it after 30 days. No command deletes a **Thread** for good.
 
 A **Custom verb** of the `thread` entity: restores a **Thread** from the trash.
 
+**`unsubscribe`**:
+
+A **Custom verb** of the `thread` entity: leaves the mailing list of a
+**Thread**, with the one-click POST of RFC 8058. It is irreversible. A sender
+without a one-click HTTPS link is not supported: the error shows its `mailto:`
+address, if any.
+
 ### Service terms
 
 **Inbox**:
