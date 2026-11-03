@@ -8,7 +8,6 @@ export let __;
 
 const DEFAULT_LIMIT = 25;
 const MAX_PAGE_SIZE = 100;
-const GATEWAY_URL = 'https://api.atlassian.com/ex/confluence';
 const HIGHLIGHT_MARKERS = /@@@(end)?hl@@@/g;
 
 /**
@@ -26,9 +25,8 @@ export async function pageSearch(options) {
     throw firostError('CONFLUENCE_QUERY_MISSING', 'Pass the text to search');
   }
 
-  const { domain, cloudId } = await __.getConfig();
+  const { domain } = await __.getConfig();
   // The search is only served by the v1 API
-  const baseUrl = `${GATEWAY_URL}/${cloudId}/wiki/rest/api`;
   const cql = `type = page AND text ~ "${__.escapeCql(query)}"`;
 
   // A flag gives the limit as a string
@@ -37,7 +35,7 @@ export async function pageSearch(options) {
   let hasNext = true;
   while (hasNext && results.length < wanted) {
     const response = await __.callApi('search', {
-      baseUrl,
+      apiPath: 'wiki/rest/api',
       query: {
         cql,
         limit: Math.min(wanted - results.length, MAX_PAGE_SIZE),

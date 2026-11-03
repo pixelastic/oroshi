@@ -2,9 +2,6 @@ import { _ } from 'golgoth';
 import { __, pageSearch } from '../pageSearch.js';
 
 describe('pageSearch', () => {
-  const searchBaseUrl =
-    'https://api.atlassian.com/ex/confluence/cloud-123/wiki/rest/api';
-
   // A result of the search API
   const result = (id, excerpt = 'Some text') => ({
     title: `Page ${id}`,
@@ -40,7 +37,7 @@ describe('pageSearch', () => {
     await pageSearch({ query: 'meetup', limit: 5 });
 
     expect(__.callApi).toHaveBeenCalledWith('search', {
-      baseUrl: searchBaseUrl,
+      apiPath: 'wiki/rest/api',
       query: { cql: 'type = page AND text ~ "meetup"', limit: 5, start: 0 },
     });
   });

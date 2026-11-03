@@ -42,11 +42,13 @@ describe('callApi', () => {
     );
   });
 
-  it('uses the base URL it is given instead of the default one', async () => {
-    await callApi('search', { baseUrl: 'https://example.com/rest' });
+  it('uses the API path it is given instead of the default one', async () => {
+    await callApi('search', { apiPath: 'wiki/rest/api' });
 
     const actual = __.fetch.mock.calls[0][0];
-    expect(actual).toEqual('https://example.com/rest/search');
+    expect(actual).toEqual(
+      'https://api.atlassian.com/ex/confluence/cloud-123/wiki/rest/api/search',
+    );
   });
 
   it.each([

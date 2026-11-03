@@ -10,7 +10,7 @@ const GATEWAY_URL = 'https://api.atlassian.com/ex/confluence';
  * Call the Confluence API, through the Atlassian gateway
  * @param {string} path - Path of the endpoint, from the v2 API
  * @param {object} [options] - Request options
- * @param {string} [options.baseUrl] - Base URL of the endpoint, for an endpoint served by another API
+ * @param {string} [options.apiPath] - Path of the API on the site, for an endpoint served by another API
  * @param {string} [options.method] - HTTP method
  * @param {object} [options.body] - Body of the request
  * @param {object} [options.query] - Query parameters, merged over the defaults
@@ -21,11 +21,10 @@ export async function callApi(path, options = {}) {
   const { method = 'GET', body, query, headers } = options;
 
   const { email, token, cloudId } = await __.getConfig();
-  const { baseUrl = `${GATEWAY_URL}/${cloudId}/wiki/api/v2` } = options;
+  const { apiPath = 'wiki/api/v2' } = options;
+  const baseUrl = `${GATEWAY_URL}/${cloudId}/${apiPath}`;
 
-  // A passed query key replaces a default key
-  const defaultQuery = {};
-  const search = queryString({ ...defaultQuery, ...query });
+  const search = queryString(query);
   const url = `${baseUrl}/${path}${search}`;
 
   // A passed header replaces a default header, the authentication included
