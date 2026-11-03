@@ -1,0 +1,10 @@
+# Search the Pages of Confluence by text, and print them as JSON
+# Each element is {"id", "title", "space", "url", "excerpt"}
+# Usage:
+# $ confluence-page-search "paris meetup"
+# $ confluence-page-search "paris meetup" --limit 10
+# $ confluence-page-search "paris meetup" --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/confluence-page-search.js" "$@"
