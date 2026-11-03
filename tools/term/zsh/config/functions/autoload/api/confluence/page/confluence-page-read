@@ -1,0 +1,9 @@
+# Read a Confluence page by its id or url, and print it as JSON
+# Usage:
+# $ confluence-page-read 123456
+# $ confluence-page-read https://example.atlassian.net/wiki/spaces/X/pages/123456
+# $ confluence-page-read 123456 --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/confluence-page-read.js" "$@"

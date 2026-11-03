@@ -58,6 +58,8 @@ _Avoid_: refresh, repaint
 - [Notion](tools/term/zsh/config/functions/autoload/api/notion/__docs/GLOSSARY.md)
   — Pages, Databases, Icons, Properties, Content, Parent, Trash, Filter, Sort,
   Token
+- [Confluence](tools/term/zsh/config/functions/autoload/api/confluence/__docs/GLOSSARY.md)
+  — Pages, Spaces, Body, Page ID, Email, Token, Cloud ID, Domain
 - [Google Calendar](tools/term/zsh/config/functions/autoload/api/google/gcal/__docs/GLOSSARY.md)
   — Calendars, Primary, Events, All-day Events, Attendees
 - [Lunii](tools/term/zsh/config/functions/autoload/worktools/lunii/__docs/GLOSSARY.md)

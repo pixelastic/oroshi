@@ -62,6 +62,7 @@
   "command",
   "comm",
   "completion-header",
+  "confluence-page-read",
   "confluence-read",
   "confluence-search",
   "context-badge",

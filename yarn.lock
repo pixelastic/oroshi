@@ -1380,6 +1380,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@oroshi/confluence@workspace:tools/term/zsh/config/functions/autoload/api/confluence/__lib":
+  version: 0.0.0-use.local
+  resolution: "@oroshi/confluence@workspace:tools/term/zsh/config/functions/autoload/api/confluence/__lib"
+  dependencies:
+    "@oroshi/api-shared": "workspace:*"
+    firost: "npm:5.11.0"
+    golgoth: "npm:3.1.0"
+  languageName: unknown
+  linkType: soft
+
 "@oroshi/gcal@workspace:tools/term/zsh/config/functions/autoload/api/google/gcal/__lib":
   version: 0.0.0-use.local
   resolution: "@oroshi/gcal@workspace:tools/term/zsh/config/functions/autoload/api/google/gcal/__lib"
