@@ -40,6 +40,7 @@ with its fixed description, so the Claude Code statusline colors it.
 | `contradiction` | `Goldfish contradiction` | `references/goldfishes/contradiction.md` |
 | `glossary`      | `Goldfish glossary`      | `references/goldfishes/glossary.md`      |
 | `gap`           | `Goldfish gap`           | `references/goldfishes/gap.md`           |
+| `clarity`       | `Goldfish clarity`       | `references/goldfishes/clarity.md`       |
 
 Launch every Goldfish in a single message with one `Agent` call each, so they
 run in parallel. Never launch them one after another.
@@ -69,6 +70,7 @@ duplicates into one finding:
 - Keep the highest severity of the group.
 - Keep every distinct quote.
 - Keep the problem sentence that names the cause most precisely.
+- Keep the `Proposed wording` of the clarity Goldfish, when the group has one.
 
 A Goldfish that reports its no-finding sentence adds nothing to the list.
 
@@ -92,6 +94,11 @@ Go through the merged findings, blocking first. For each finding:
 Ask the user before the edit only when the fix changes the meaning of a rule:
 two passages disagree, and choosing one changes what a reader must do. Show both
 quotes and offer the options. Fix the other findings without asking.
+
+A clarity finding lists competing readings and a proposed wording. Apply the
+proposed wording when it keeps the meaning the docs clearly intend. Ask the user
+when the readings lead to different actions and no passage says which one is
+meant.
 
 A gap finding asks for an answer that the docs do not hold. Never invent the
 answer. Ask the user, unless the project files or a referenced file hold it.
@@ -128,6 +135,7 @@ second round.
 | "Two Goldfish found it, I'll fix it twice"               | Merge duplicates first. One defect is one fix.                   |
 | "I'll paste the glossary into the prompt to help"        | The Goldfish finds its own glossary. Pasting adds context.       |
 | "The gap is obvious, I'll write the missing answer"      | The docs lack it. Ask the user, or find it in a referenced file. |
+| "I know which reading the author meant"                  | You are not a Goldfish. If the docs do not say, ask the user.    |
 
 ## Checklist
 
