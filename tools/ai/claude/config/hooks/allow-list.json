@@ -150,6 +150,8 @@
   "gdoc-document-create",
   "gdoc-document-download",
   "gdoc-document-read",
+  "gdoc-document-remove",
+  "gdoc-document-replace",
   "gext list",
   "gext search",
   "ghostscript",
