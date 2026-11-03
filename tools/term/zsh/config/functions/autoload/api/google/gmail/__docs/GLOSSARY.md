@@ -116,6 +116,25 @@ keeps its other **Labels**.
 A **Custom verb** of the `label` entity: removes a **Label** from a **Thread**,
 and keeps its other **Labels**.
 
+**`archive`**:
+
+A **Custom verb** of the `thread` entity: removes a **Thread** from the
+**Inbox**.
+
+**`unarchive`**:
+
+A **Custom verb** of the `thread` entity: puts a **Thread** back in the
+**Inbox**.
+
+**`trash`**:
+
+A **Custom verb** of the `thread` entity: moves a **Thread** to the trash. Gmail
+purges it after 30 days. No command deletes a **Thread** for good.
+
+**`untrash`**:
+
+A **Custom verb** of the `thread` entity: restores a **Thread** from the trash.
+
 ### Service terms
 
 **Inbox**:

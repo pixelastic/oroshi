@@ -1,6 +1,7 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
 import { modifyLabels } from './modifyLabels.js';
+import { requireThreadId } from './requireThreadId.js';
 
 export let __;
 
@@ -15,9 +16,7 @@ export let __;
 export async function threadUpdate(options) {
   const { threadId, read, unread } = options;
 
-  if (!threadId) {
-    throw firostError('GMAIL_THREAD_ID_MISSING', 'Pass the id of a Thread');
-  }
+  requireThreadId(threadId);
   if (!read && !unread) {
     throw firostError('GMAIL_THREAD_UPDATE_EMPTY', 'Pass --read or --unread');
   }

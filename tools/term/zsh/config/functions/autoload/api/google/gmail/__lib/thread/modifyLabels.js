@@ -1,5 +1,4 @@
-import { firostError } from 'firost';
-import { callApi } from '../callApi.js';
+import { callThread } from './callThread.js';
 
 export let __;
 
@@ -14,22 +13,13 @@ export let __;
 export async function modifyLabels(options) {
   const { threadId, add, remove } = options;
 
-  try {
-    return await __.callApi(`threads/${threadId}/modify`, {
-      method: 'POST',
-      body: { addLabelIds: add, removeLabelIds: remove },
-    });
-  } catch (error) {
-    // callApi starts the message of a failed request with the HTTP status
-    const isNotFound =
-      error.code === 'GMAIL_REQUEST_FAILED' && error.message.startsWith('404');
-    if (!isNotFound) {
-      throw error;
-    }
-    throw firostError('GMAIL_THREAD_NOT_FOUND', `Thread ${threadId} not found`);
-  }
+  return await __.callThread({
+    threadId,
+    action: 'modify',
+    body: { addLabelIds: add, removeLabelIds: remove },
+  });
 }
 
 __ = {
-  callApi,
+  callThread,
 };

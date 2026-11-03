@@ -1,0 +1,15 @@
+# Restore a Thread from the trash, and print its threadId as JSON
+# The threadId is printed by the other gmail-thread commands
+# Restoring a Thread that is not in the trash changes nothing and is not an error
+# Errors:
+# GMAIL_THREAD_ID_MISSING   The threadId is empty
+# GMAIL_THREAD_NOT_FOUND    The Thread does not exist
+# Flags:
+# --account <name>     Account of the Thread. The default account if empty
+# Usage:
+# $ gmail-thread-untrash threadId
+# $ gmail-thread-untrash threadId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-thread-untrash.js" "$@"

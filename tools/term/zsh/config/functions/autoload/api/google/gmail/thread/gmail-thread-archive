@@ -1,0 +1,15 @@
+# Remove a Thread from the Inbox, and print its threadId as JSON
+# The threadId is printed by the other gmail-thread commands
+# Archiving a Thread that is not in the Inbox changes nothing and is not an error
+# Errors:
+# GMAIL_THREAD_ID_MISSING   The threadId is empty
+# GMAIL_THREAD_NOT_FOUND    The Thread does not exist
+# Flags:
+# --account <name>     Account of the Thread. The default account if empty
+# Usage:
+# $ gmail-thread-archive threadId
+# $ gmail-thread-archive threadId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-thread-archive.js" "$@"
