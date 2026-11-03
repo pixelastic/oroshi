@@ -1,0 +1,11 @@
+# Search the Pages of Confluence by text, one per line, for machine consumption
+# For human consumption, use confluence-page-list
+# Fields: pageId▮title▮space▮url
+# Usage:
+# $ confluence-page-list-raw "paris meetup"
+# $ confluence-page-list-raw "paris meetup" --limit 10
+# $ confluence-page-list-raw "paris meetup" --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/confluence-page-list-raw.js" "$@"

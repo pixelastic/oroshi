@@ -187,6 +187,10 @@
     "ansi": 205,
     "hex": "#6b7280"
   },
+  "confluence-page-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
   "constant": {
     "ansi": 105,
     "hex": "#ea580c"

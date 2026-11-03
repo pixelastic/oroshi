@@ -1,0 +1,31 @@
+# Search the Pages of Confluence by text as a colored table, one row per Page
+# For machine consumption, use confluence-page-list-raw
+# Usage:
+# $ confluence-page-list "paris meetup"
+# $ confluence-page-list "paris meetup" --limit 10
+# $ confluence-page-list "paris meetup" --account perso
+setopt local_options err_return
+
+colors-load-definitions
+
+# The raw command is named like this wrapper, with a -raw suffix
+local rawCommand="${0}-raw"
+
+local rawPages="$($rawCommand "$@")"
+
+# Nothing to display if no page matches
+[[ "$rawPages" == "" ]] && return 1
+
+local rows=()
+for rawPage in ${(f)rawPages}; do
+  local fields=("${(@ps/▮/)rawPage}")
+
+  # Color the id. Keep the other columns as they are
+  local columns=("$(colorize "${fields[1]}" $COLORS[confluence-page-id])")
+  columns+=("${(@)fields[2,-1]}")
+
+  rows+=("${(j:▮:)columns}")
+done
+
+# One row per line, separated by real newlines. `table` splits the columns on ▮
+table "${(F)rows}"

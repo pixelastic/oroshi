@@ -99,6 +99,11 @@
   // Ralph
   "ralph-auto": "yellow",
 
+  // Confluence
+  "confluence": {
+    "page-id": "orange"
+  },
+
   // Docker
   "docker": {
     "comment":           "gray-4",
