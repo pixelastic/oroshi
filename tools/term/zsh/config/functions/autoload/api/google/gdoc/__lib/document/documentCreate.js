@@ -1,11 +1,12 @@
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
-import { basename, dirname, extname, join, resolve } from 'node:path';
-import { firostError, mkdirp, remove, run, tmpDirectory } from 'firost';
+import { basename, extname } from 'node:path';
+import { firostError } from 'firost';
 import { getConfig } from '@oroshi/google/getConfig.js';
 import { callApi } from '../callApi.js';
 import { documentSetPageless } from './documentSetPageless.js';
 import { formatDocument } from './formatDocument.js';
+import { markdownToDocx } from './markdownToDocx.js';
 import { parseDirectoryId } from './parseDirectoryId.js';
 
 export let __;
@@ -71,39 +72,6 @@ export async function documentCreate(options) {
 
 __ = {
   /**
-   * Convert a Markdown file to docx with pandoc
-   * @param {string} filepath - Path to the Markdown file
-   * @param {string} referenceDoc - Path to the pandoc reference document
-   * @returns {Promise<Buffer>} Content of the docx
-   */
-  async markdownToDocx(filepath, referenceDoc) {
-    const workDirectory = tmpDirectory('documentCreate');
-    const docxPath = join(workDirectory, 'output.docx');
-    // Pandoc runs from the folder of the file, so the path must be absolute
-    const absolutePath = resolve(filepath);
-
-    try {
-      await __.mkdirp(workDirectory);
-      await __.run(
-        [
-          'pandoc',
-          '-f',
-          'markdown-auto_identifiers',
-          absolutePath,
-          '-o',
-          docxPath,
-          `--reference-doc=${referenceDoc}`,
-          `--extract-media=${workDirectory}/`,
-        ],
-        { cwd: dirname(absolutePath), stdout: false, stderr: false },
-      );
-      return await __.readFile(docxPath);
-    } finally {
-      await __.remove(workDirectory);
-    }
-  },
-
-  /**
    * Build the multipart/related body of a Drive upload: the metadata as JSON,
    * then the docx
    * @param {object} input - Parts of the body
@@ -128,8 +96,6 @@ __ = {
   documentSetPageless,
   formatDocument,
   getConfig,
-  mkdirp,
+  markdownToDocx,
   readFile,
-  remove,
-  run,
 };
