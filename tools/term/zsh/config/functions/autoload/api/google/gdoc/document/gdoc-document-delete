@@ -1,0 +1,10 @@
+# Put a Google Doc in the Drive trash by its URL or ID, and print it as JSON
+# The Document is trashed, never deleted, and asks for no confirmation
+# Usage:
+# $ gdoc-document-delete https://docs.google.com/document/d/docA/edit
+# $ gdoc-document-delete docA
+# $ gdoc-document-delete docA --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gdoc-document-delete.js" "$@"
