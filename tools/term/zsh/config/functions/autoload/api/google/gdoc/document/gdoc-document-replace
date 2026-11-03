@@ -1,0 +1,13 @@
+# Swap one passage of a Google Doc for another, and print it as JSON
+# The old passage is plain text in one paragraph, and must appear once
+# The new passage is inline Markdown: **bold**, *italic*, `code`, [link](url)
+# Other text, formatting and comments stay
+# Usage:
+# $ gdoc-document-replace https://docs.google.com/document/d/docA/edit --old 'Pariss' --new 'Paris'
+# $ gdoc-document-replace docA --old 'a big city' --new 'a **big** city'
+# $ gdoc-document-replace docA --old-file ./old.txt --new-file ./new.md
+# $ gdoc-document-replace docA --old 'Pariss' --new 'Paris' --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gdoc-document-replace.js" "$@"
