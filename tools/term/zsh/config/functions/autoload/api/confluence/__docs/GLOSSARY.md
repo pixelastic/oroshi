@@ -89,7 +89,7 @@ read-only on purpose, so that an agent cannot change the documents of a team.
 
 - "id" can be a numeric ID or a URL — resolved: `read` takes both, as a **Page
   ID**.
-- The old `confluence-*` commands used `OROSHI_CONFLUENCE_*` variables —
+- The variable names carried an `OROSHI_` prefix in the first version —
   resolved: the variables are `CONFLUENCE_EMAIL`, `CONFLUENCE_TOKEN`,
   `CONFLUENCE_CLOUD_ID` and `CONFLUENCE_DOMAIN`.
 - The glossary of the API calls Confluence an **OAuth API** — resolved: it is a
