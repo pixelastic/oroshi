@@ -41,6 +41,7 @@ with its fixed description, so the Claude Code statusline colors it.
 | `glossary`      | `Goldfish glossary`      | `references/goldfishes/glossary.md`      |
 | `gap`           | `Goldfish gap`           | `references/goldfishes/gap.md`           |
 | `clarity`       | `Goldfish clarity`       | `references/goldfishes/clarity.md`       |
+| `concision`     | `Goldfish concision`     | `references/goldfishes/concision.md`     |
 
 Launch every Goldfish in a single message with one `Agent` call each, so they
 run in parallel. Never launch them one after another.
@@ -71,6 +72,8 @@ duplicates into one finding:
 - Keep every distinct quote.
 - Keep the problem sentence that names the cause most precisely.
 - Keep the `Proposed wording` of the clarity Goldfish, when the group has one.
+- Keep the `Keep in` or `Shorter wording` of the concision Goldfish, when the
+  group has one.
 
 A Goldfish that reports its no-finding sentence adds nothing to the list.
 
@@ -99,6 +102,13 @@ A clarity finding lists competing readings and a proposed wording. Apply the
 proposed wording when it keeps the meaning the docs clearly intend. Ask the user
 when the readings lead to different actions and no passage says which one is
 meant.
+
+A concision finding names the place where a repeated rule stays. Keep the rule
+there, and remove it from every other place, or replace it with a pointer to the
+kept place. Before the removal, check that the kept place holds every detail of
+the removed one, and move any missing detail there. After the fix, the rule
+appears once and no rule is lost. For a verbose passage, apply the
+`Shorter wording` when it keeps every rule of the passage.
 
 A gap finding asks for an answer that the docs do not hold. Never invent the
 answer. Ask the user, unless the project files or a referenced file hold it.
@@ -136,6 +146,7 @@ second round.
 | "I'll paste the glossary into the prompt to help"        | The Goldfish finds its own glossary. Pasting adds context.       |
 | "The gap is obvious, I'll write the missing answer"      | The docs lack it. Ask the user, or find it in a referenced file. |
 | "I know which reading the author meant"                  | You are not a Goldfish. If the docs do not say, ask the user.    |
+| "I'll delete the repeated rule, the other copy has it"   | Check the kept copy holds every detail first. Never lose a rule. |
 
 ## Checklist
 
@@ -145,6 +156,7 @@ second round.
 - [ ] Prompt holds only the shared rules, the brief and the doc paths
 - [ ] Duplicate findings merged before any fix
 - [ ] Every finding fixed, asked about or rejected with a reason
+- [ ] Each repeated rule kept in one place, with no rule lost
 - [ ] User asked only for fixes that change the meaning of a rule
 - [ ] `markdown-fix` and `markdown-lint --fix` run on every modified file
 - [ ] Reply gives the implementability verdict, with the missing items after
