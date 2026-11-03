@@ -1,0 +1,18 @@
+# Detach a user label from a Thread, and print its threadId and name as JSON
+# The name is the one printed by gmail-label-list
+# The threadId is printed by the other gmail-thread commands
+# Detaching a label that the Thread does not carry changes nothing and is not an error
+# Errors:
+# GMAIL_THREAD_ID_MISSING   --threadId is empty
+# GMAIL_LABEL_NOT_FOUND     No user label has this name
+# GMAIL_THREAD_NOT_FOUND    The Thread does not exist
+# Flags:
+# --threadId <id>      Thread to detach the label from
+# --account <name>     Account of the Thread. The default account if empty
+# Usage:
+# $ gmail-label-detach Work --threadId threadId
+# $ gmail-label-detach Work --threadId threadId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-label-detach.js" "$@"

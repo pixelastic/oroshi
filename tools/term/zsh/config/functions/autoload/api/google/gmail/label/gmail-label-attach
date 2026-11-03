@@ -1,0 +1,18 @@
+# Attach a user label to a Thread, and print its threadId and name as JSON
+# The name is the one printed by gmail-label-list. Create a missing label with gmail-label-create
+# The threadId is printed by the other gmail-thread commands
+# Attaching a label that the Thread carries already changes nothing and is not an error
+# Errors:
+# GMAIL_THREAD_ID_MISSING   --threadId is empty
+# GMAIL_LABEL_NOT_FOUND     No user label has this name
+# GMAIL_THREAD_NOT_FOUND    The Thread does not exist
+# Flags:
+# --threadId <id>      Thread to attach the label to
+# --account <name>     Account of the Thread. The default account if empty
+# Usage:
+# $ gmail-label-attach Work --threadId threadId
+# $ gmail-label-attach Work --threadId threadId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-label-attach.js" "$@"

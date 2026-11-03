@@ -106,6 +106,16 @@ A **Custom verb** of the `attachment` entity: removes one **Attachment** of a
 A **Custom verb** of the `attachment` entity: saves one **Attachment** of a
 **Message** as a local file.
 
+**`attach`**:
+
+A **Custom verb** of the `label` entity: adds a **Label** to a **Thread**, and
+keeps its other **Labels**.
+
+**`detach`**:
+
+A **Custom verb** of the `label` entity: removes a **Label** from a **Thread**,
+and keeps its other **Labels**.
+
 ### Service terms
 
 **Inbox**:

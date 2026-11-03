@@ -3,7 +3,7 @@ import { __, threadUpdate } from '../threadUpdate.js';
 
 describe('threadUpdate', () => {
   beforeEach(() => {
-    vi.spyOn(__, 'callApi').mockReturnValue({
+    vi.spyOn(__, 'modifyLabels').mockReturnValue({
       id: 't1',
       messages: [{ id: 'm1', labelIds: ['INBOX'] }],
     });
@@ -36,27 +36,13 @@ describe('threadUpdate', () => {
       }
 
       expect(actual).toHaveProperty('code', expected);
-      expect(__.callApi).not.toHaveBeenCalled();
+      expect(__.modifyLabels).not.toHaveBeenCalled();
     },
   );
 
-  it.each([
-    {
-      title: 'the API answers 404',
-      apiError: firostError(
-        'GMAIL_REQUEST_FAILED',
-        '404 {"error":"NOT_FOUND"}',
-      ),
-      expected: 'GMAIL_THREAD_NOT_FOUND',
-    },
-    {
-      title: 'the API answers any other error',
-      apiError: firostError('GMAIL_REQUEST_FAILED', '500 oops'),
-      expected: 'GMAIL_REQUEST_FAILED',
-    },
-  ])('fails with $expected when $title', async ({ apiError, expected }) => {
-    __.callApi.mockImplementation(() => {
-      throw apiError;
+  it('lets the error of modifyLabels through', async () => {
+    __.modifyLabels.mockImplementation(() => {
+      throw firostError('GMAIL_THREAD_NOT_FOUND', 'Thread t1 not found');
     });
 
     let actual = null;
@@ -66,27 +52,24 @@ describe('threadUpdate', () => {
       actual = error;
     }
 
-    expect(actual).toHaveProperty('code', expected);
+    expect(actual).toHaveProperty('code', 'GMAIL_THREAD_NOT_FOUND');
   });
 
   it.each([
     {
       title: 'removes the UNREAD label when marking as read',
       options: { read: true },
-      expected: { removeLabelIds: ['UNREAD'] },
+      expected: { threadId: 't1', remove: ['UNREAD'] },
     },
     {
       title: 'adds the UNREAD label when marking as unread',
       options: { unread: true },
-      expected: { addLabelIds: ['UNREAD'] },
+      expected: { threadId: 't1', add: ['UNREAD'] },
     },
   ])('$title', async ({ options, expected }) => {
     await threadUpdate({ threadId: 't1', ...options });
 
-    expect(__.callApi).toHaveBeenCalledWith('threads/t1/modify', {
-      method: 'POST',
-      body: expected,
-    });
+    expect(__.modifyLabels).toHaveBeenCalledWith(expected);
   });
 
   it.each([
@@ -123,7 +106,7 @@ describe('threadUpdate', () => {
   ])(
     'returns $expected.unread when $title',
     async ({ options, input, expected }) => {
-      __.callApi.mockReturnValue(input);
+      __.modifyLabels.mockReturnValue(input);
 
       const actual = await threadUpdate({ threadId: 't1', ...options });
 

@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
-import { callApi } from '../callApi.js';
+import { modifyLabels } from './modifyLabels.js';
 
 export let __;
 
@@ -28,24 +28,8 @@ export async function threadUpdate(options) {
     );
   }
 
-  const labelChange = unread
-    ? { addLabelIds: ['UNREAD'] }
-    : { removeLabelIds: ['UNREAD'] };
-  let response;
-  try {
-    response = await __.callApi(`threads/${threadId}/modify`, {
-      method: 'POST',
-      body: labelChange,
-    });
-  } catch (error) {
-    // callApi starts the message of a failed request with the HTTP status
-    const isNotFound =
-      error.code === 'GMAIL_REQUEST_FAILED' && error.message.startsWith('404');
-    if (!isNotFound) {
-      throw error;
-    }
-    throw firostError('GMAIL_THREAD_NOT_FOUND', `Thread ${threadId} not found`);
-  }
+  const labelChange = unread ? { add: ['UNREAD'] } : { remove: ['UNREAD'] };
+  const response = await __.modifyLabels({ threadId, ...labelChange });
 
   return { threadId, unread: __.isUnread(response, !read) };
 }
@@ -67,5 +51,5 @@ __ = {
     );
   },
 
-  callApi,
+  modifyLabels,
 };
