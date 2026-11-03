@@ -106,6 +106,47 @@ describe('eventUpdate', () => {
     expect(body).toEqual({ description: 'Long text' });
   });
 
+  it.each([
+    {
+      title: 'sends the recurrence array',
+      input: 'FREQ=WEEKLY;INTERVAL=2;UNTIL=20261231T235959Z',
+      expected: ['RRULE:FREQ=WEEKLY;INTERVAL=2;UNTIL=20261231T235959Z'],
+    },
+    {
+      title: 'removes the recurrence with an empty value',
+      input: '',
+      expected: [],
+    },
+  ])('$title', async ({ input, expected }) => {
+    await eventUpdate({ eventId: 'abc', recurrence: input });
+
+    const [, { body }] = patchCall();
+    expect(body).toEqual({ recurrence: expected });
+  });
+
+  it('leaves recurrence out of the body without the flag', async () => {
+    await eventUpdate({ eventId: 'abc', title: 'New title' });
+
+    const [, { body }] = patchCall();
+    expect(body).not.toHaveProperty('recurrence');
+  });
+
+  it('lets the message of the API about an invalid rule reach the caller', async () => {
+    const message = '400 Invalid recurrence rule: FREQ=SOMETIMES';
+    __.callApi.mockImplementation(() => {
+      throw new Error(message);
+    });
+
+    let actual = null;
+    try {
+      await eventUpdate({ eventId: 'abc', recurrence: 'FREQ=SOMETIMES' });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('message', message);
+  });
+
   it('keeps the Attendees untouched', async () => {
     await eventUpdate({
       eventId: 'abc',

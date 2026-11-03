@@ -1,8 +1,16 @@
 # Update an Event, and print it as JSON
 # The eventId is printed by gcal-event-list-raw
-# Fields: --title, --date-start, --date-end, --location, --description and
-# --description-file. A field that is not passed stays untouched
+# Fields: --title, --date-start, --date-end, --location, --description,
+# --description-file and --recurrence. A field that is not passed stays
+# untouched
 # A field passed empty (--location "") clears it
+# --recurrence is a raw RFC 5545 rule, with or without the RRULE: prefix. The
+# helper does not validate it: the API rejects an invalid rule, and its message
+# is printed. --recurrence "" removes the recurrence
+# UNTIL of a timed Event must be in UTC, like 20261231T235959Z. UNTIL of an
+# All-day Event is a date, like 20261231
+# The recurrence of a series belongs to its master Event. The eventId of an
+# occurrence edits that occurrence only
 # --private hides the details of the Event from the readers of the Calendar
 # --public puts the Event back to the default visibility of the Calendar
 # Passing both is an error. Passing neither leaves the visibility untouched
@@ -26,6 +34,9 @@
 # $ gcal-event-update eventId --date-start 2026-11-05
 # $ gcal-event-update eventId --location "Room 2" --description "Bring the file"
 # $ gcal-event-update eventId --description-file ./agenda.md
+# $ gcal-event-update eventId --recurrence "FREQ=WEEKLY;BYDAY=WE"
+# $ gcal-event-update eventId --recurrence "FREQ=WEEKLY;INTERVAL=2;UNTIL=20261231T235959Z"
+# $ gcal-event-update eventId --recurrence ""
 # $ gcal-event-update eventId --private
 # $ gcal-event-update eventId --public
 # $ gcal-event-update eventId --title "New title" --calendarId work@group.calendar.google.com

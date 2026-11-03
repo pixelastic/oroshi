@@ -1,11 +1,13 @@
 # Read one Event, and print it as JSON
 # The eventId is printed by gcal-event-list-raw
 # Fields: eventId, calendarId, title, status, dateStart, dateEnd, isAllDay,
-# isPrivate, location, description, url, organizer, attendees
+# isPrivate, location, description, url, organizer, attendees, recurrence
 # dateStart and dateEnd hold a time, or a date for an All-day Event, whose
 # dateEnd is its last day
 # Each Attendee has email and responseStatus. Count them from the array
 # isPrivate is true only for a private Event
+# recurrence is the array of RFC 5545 rules of a recurring Event, like
+# RRULE:FREQ=WEEKLY;BYDAY=WE. It is empty for a single Event
 # organizer is an e-mail address. An absent text is an empty string
 # The Calendar is the Primary by default
 # Usage:

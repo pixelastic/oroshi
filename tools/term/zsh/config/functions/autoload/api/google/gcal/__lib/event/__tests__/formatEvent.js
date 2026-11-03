@@ -54,6 +54,7 @@ describe('formatEvent', () => {
       url: 'https://www.google.com/calendar/event?eid=abc',
       organizer: 'boss@algolia.com',
       attendees: [{ email: 'boss@algolia.com', responseStatus: 'accepted' }],
+      recurrence: [],
     });
   });
 
@@ -84,6 +85,24 @@ describe('formatEvent', () => {
       const actual = formatEvent(event(), 'primary');
 
       expect(actual).not.toHaveProperty('attendeeCount');
+    });
+  });
+
+  describe('recurrence', () => {
+    it('lists the rules of a recurring Event', () => {
+      const response = event({ recurrence: ['RRULE:FREQ=WEEKLY;BYDAY=WE'] });
+
+      const actual = formatEvent(response, 'primary');
+
+      expect(actual).toHaveProperty('recurrence', [
+        'RRULE:FREQ=WEEKLY;BYDAY=WE',
+      ]);
+    });
+
+    it('is an empty array for a single Event', () => {
+      const actual = formatEvent(event(), 'primary');
+
+      expect(actual).toHaveProperty('recurrence', []);
     });
   });
 

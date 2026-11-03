@@ -4,6 +4,7 @@ import { callApi } from '../callApi.js';
 import { formatEvent } from './formatEvent.js';
 import { getEventsPath } from './getEventsPath.js';
 import { getTimeZone } from './getTimeZone.js';
+import { resolveRecurrence } from './resolveRecurrence.js';
 import { resolveVisibility } from './resolveVisibility.js';
 import { toApiDates } from './toApiDates.js';
 
@@ -21,6 +22,7 @@ export let __;
  * @param {string} [options.attendees] - E-mail addresses of the initial Attendees, separated by commas
  * @param {boolean} [options.isPrivate] - Make the Event private
  * @param {boolean} [options.isPublic] - Give the Event the default visibility of the Calendar
+ * @param {string} [options.recurrence] - RFC 5545 rule, with or without the RRULE: prefix. It is not validated
  * @param {string} [options.calendarId] - Calendar of the Event, the Primary by default
  * @returns {Promise<object>} The created Event, formatted by formatEvent
  * @throws {Error} GCAL_TITLE_MISSING without a title, GCAL_VISIBILITY_CONFLICT when both isPrivate and isPublic are set, and the errors of toApiDates on a bad date
@@ -35,6 +37,7 @@ export async function eventCreate(options) {
     attendees,
     isPrivate,
     isPublic,
+    recurrence,
     calendarId = 'primary',
   } = options;
 
@@ -62,6 +65,7 @@ export async function eventCreate(options) {
         location,
         description,
         visibility,
+        recurrence: resolveRecurrence(recurrence),
         attendees: attendees && __.parseAttendees(attendees),
       },
       _.isUndefined,

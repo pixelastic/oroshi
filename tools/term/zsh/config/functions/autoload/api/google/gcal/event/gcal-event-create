@@ -1,6 +1,7 @@
 # Create an Event, and print it as JSON
 # Fields: --title (required), --date-start (required), --date-end, --location,
-# --description, --description-file, --attendees, --private and --public
+# --description, --description-file, --attendees, --recurrence, --private and
+# --public
 # A date with a time, as YYYY-MM-DDTHH:MM, is a local time in the time zone of
 # the Calendar. An offset is rejected
 # A date without a time, as YYYY-MM-DD, makes an All-day Event. Its --date-end
@@ -8,6 +9,11 @@
 # Without --date-end, an Event lasts one hour, and an All-day Event one day
 # --description-file takes precedence over --description
 # --attendees is a comma-separated list of e-mail addresses
+# --recurrence is a raw RFC 5545 rule, with or without the RRULE: prefix. The
+# helper does not validate it: the API rejects an invalid rule, and its message
+# is printed
+# UNTIL of a timed Event must be in UTC, like 20261231T235959Z. UNTIL of an
+# All-day Event is a date, like 20261231
 # --private hides the details of the Event from the readers of the Calendar
 # --public gives the Event the default visibility of the Calendar
 # Both flags together fail with GCAL_VISIBILITY_CONFLICT
@@ -20,6 +26,8 @@
 # $ gcal-event-create --title "Day off" --date-start 2026-11-02
 # $ gcal-event-create --title "Trip" --date-start 2026-11-02 --date-end 2026-11-04
 # $ gcal-event-create --title Lunch --date-start 2026-11-02T12:00 --location "Chez Paul" --attendees a@algolia.com,b@algolia.com
+# $ gcal-event-create --title Stand-up --date-start 2026-11-04T10:00 --recurrence "FREQ=WEEKLY;BYDAY=WE"
+# $ gcal-event-create --title Sync --date-start 2026-11-04T10:00 --recurrence "FREQ=WEEKLY;INTERVAL=2;UNTIL=20261231T235959Z"
 # $ gcal-event-create --title Review --date-start 2026-11-02T14:00 --description "Bring the file"
 # $ gcal-event-create --title Review --date-start 2026-11-02T14:00 --description-file ./agenda.md
 # $ gcal-event-create --title Dentist --date-start 2026-11-02T10:00 --private

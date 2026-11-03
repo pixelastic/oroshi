@@ -89,6 +89,48 @@ describe('eventCreate', () => {
     ]);
   });
 
+  it('sends the recurrence array with the Event', async () => {
+    await eventCreate({
+      title: 'Stand-up',
+      dateStart: '2026-11-04T10:00',
+      recurrence: 'FREQ=WEEKLY;BYDAY=WE',
+    });
+
+    const [, { body }] = insertCall();
+    expect(body).toHaveProperty('recurrence', ['RRULE:FREQ=WEEKLY;BYDAY=WE']);
+    expect(body).toHaveProperty('start', {
+      dateTime: '2026-11-04T10:00:00',
+      timeZone,
+    });
+  });
+
+  it('leaves recurrence out of the body without the flag', async () => {
+    await eventCreate({ title: 'Dentist', dateStart: '2026-11-02T10:00' });
+
+    const [, { body }] = insertCall();
+    expect(body).not.toHaveProperty('recurrence');
+  });
+
+  it('lets the message of the API about an invalid rule reach the caller', async () => {
+    const message = '400 Invalid recurrence rule: FREQ=SOMETIMES';
+    __.callApi.mockImplementation(() => {
+      throw new Error(message);
+    });
+
+    let actual = null;
+    try {
+      await eventCreate({
+        title: 'Stand-up',
+        dateStart: '2026-11-04T10:00',
+        recurrence: 'FREQ=SOMETIMES',
+      });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('message', message);
+  });
+
   it('adds the location and the description', async () => {
     await eventCreate({
       title: 'Dentist',

@@ -17,6 +17,7 @@ await runBin(async () => {
       location: { type: 'string' },
       description: { type: 'string' },
       'description-file': { type: 'string' },
+      recurrence: { type: 'string' },
       calendarId: { type: 'string' },
       private: { type: 'boolean' },
       public: { type: 'boolean' },

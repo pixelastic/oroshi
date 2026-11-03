@@ -46,7 +46,14 @@ _Avoid_: default calendar, main calendar, personal calendar
 
 An entry of a **Calendar**, with a title, a start and an end. `eventId` is its
 id. Its **Anchor** is `--calendarId`, and it has a **Fixed schema**. An
-occurrence of a recurring **Event** is an **Event** like any other.
+occurrence of a recurring **Event** is an **Event** like any other, with its own
+`eventId`.
+
+A recurring **Event** has a `recurrence`: a raw RFC 5545 rule, set with
+`--recurrence` on `create` and `update`. The helper does not validate it, the
+API does. `--recurrence ""` removes it. The `recurrence` of a series belongs to
+its master **Event**: `update` on an occurrence edits that occurrence only.
+`read` prints `recurrence` as an array of rules, empty for a single **Event**.
 
 _Avoid_: meeting, appointment, invitation
 
