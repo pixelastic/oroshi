@@ -14,6 +14,7 @@ describe('pageRead', () => {
     vi.spyOn(__, 'getConfig').mockReturnValue({ domain: 'work.atlassian.net' });
     vi.spyOn(__, 'callApi').mockReturnValue(page);
     vi.spyOn(__, 'formatPage').mockImplementation((input) => input);
+    vi.spyOn(__, 'convertToMarkdown').mockReturnValue('Hello');
   });
 
   it('calls the pages endpoint with the parsed id', async () => {
@@ -36,7 +37,13 @@ describe('pageRead', () => {
       title: 'Paris Meetup',
       spaceId: '9',
       url: 'https://work.atlassian.net/wiki/spaces/ENG/pages/123456/Paris+Meetup',
-      markdown: '<p>Hello</p>',
+      markdown: 'Hello',
     });
+  });
+
+  it('converts the storage HTML to Markdown', async () => {
+    await pageRead({ pageId: '123456' });
+
+    expect(__.convertToMarkdown).toHaveBeenCalledWith('<p>Hello</p>');
   });
 });

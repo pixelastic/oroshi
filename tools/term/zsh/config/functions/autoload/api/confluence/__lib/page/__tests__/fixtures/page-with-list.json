@@ -1,0 +1,10 @@
+{
+  "id": "654321",
+  "title": "Example list",
+  "body": {
+    "storage": {
+      "value": "<h2>Checklist</h2>\n<p>Before you start:</p>\n<ul>\n<li>First item</li>\n<li>Second item</li>\n</ul>",
+      "representation": "storage"
+    }
+  }
+}

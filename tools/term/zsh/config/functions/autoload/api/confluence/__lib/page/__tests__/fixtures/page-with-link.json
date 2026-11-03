@@ -1,0 +1,10 @@
+{
+  "id": "123456",
+  "title": "Example page",
+  "body": {
+    "storage": {
+      "value": "<h2>Getting started</h2>\n<p>Read the <a href=\"https://example.com/docs\">documentation</a> first.</p>\n<p>Then <strong>follow</strong> the steps.</p>",
+      "representation": "storage"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": 345678,
+  "title": "Example inline comment",
+  "body": {
+    "storage": {
+      "representation": "storage",
+      "value": "<p>Run <ac:inline-comment-marker ac:ref=\"3eb60cf2-972f-44fa-92fb-4f800970875b\">the agent</ac:inline-comment-marker> now</p>"
+    }
+  }
+}

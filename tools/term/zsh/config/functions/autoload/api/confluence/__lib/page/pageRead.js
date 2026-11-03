@@ -1,5 +1,6 @@
 import { callApi } from '../callApi.js';
 import { getConfig } from '../getConfig.js';
+import { convertToMarkdown } from './convertToMarkdown.js';
 import { formatPage } from './formatPage.js';
 import { parsePageId } from './parsePageId.js';
 
@@ -23,12 +24,14 @@ export async function pageRead(options) {
   const { domain } = await __.getConfig();
   const url = `https://${domain}/wiki${_links.webui}`;
 
-  // The markdown key holds the raw storage HTML until it is converted
-  return { id, title, spaceId, url, markdown: body.storage.value };
+  const markdown = await __.convertToMarkdown(body.storage.value);
+
+  return { id, title, spaceId, url, markdown };
 }
 
 __ = {
   callApi,
+  convertToMarkdown,
   formatPage,
   getConfig,
   parsePageId,
