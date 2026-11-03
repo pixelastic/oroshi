@@ -5,10 +5,10 @@ the [API glossary](../../../../../../../../../docs/api/GLOSSARY.md), and defines
 only the words of this service.
 
 This glossary defines only what is custom to Notion. The base verbs (`list`,
-`list-raw`, `search`, `read`, `create`, `update` and `delete`) are defined in
-the API glossary and are not defined again here. Do not add an entry for a base
-verb, even for a new command. The behavior of a command belongs in the header of
-its wrapper.
+`list-raw`, `search`, `read`, `create`, `update`, `delete`, `append`, `replace`
+and `remove`) are defined in the API glossary and are not defined again here. Do
+not add an entry for a base verb, even for a new command. The behavior of a
+command belongs in the header of its wrapper.
 
 ## Language
 
@@ -46,25 +46,6 @@ is `--pageId`, and it has a **Fixed schema**: one value.
 _Avoid_: image, logo, thumbnail, avatar
 
 ### Custom verbs
-
-**append**:
-
-Adds some **Content** at the end of a **Page**, and keeps the existing
-**Content**.
-
-_Avoid_: add, push
-
-**replace**:
-
-Swaps one passage of the **Content** of a **Page** for another passage.
-
-_Avoid_: edit, swap
-
-**remove**:
-
-Deletes one passage of the **Content** of a **Page**.
-
-_Avoid_: delete, cut
 
 **generate**:
 

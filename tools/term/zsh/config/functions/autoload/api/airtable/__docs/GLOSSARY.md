@@ -5,10 +5,10 @@ follows the [API glossary](../../../../../../../../../docs/api/GLOSSARY.md), and
 defines only the words of this service.
 
 This glossary defines only what is custom to Airtable. The base verbs (`list`,
-`list-raw`, `search`, `read`, `create`, `update` and `delete`) are defined in
-the API glossary and are not defined again here. Do not add an entry for a base
-verb, even for a new command. The behavior of a command belongs in the header of
-its wrapper.
+`list-raw`, `search`, `read`, `create`, `update`, `delete`, `append`, `replace`
+and `remove`) are defined in the API glossary and are not defined again here. Do
+not add an entry for a base verb, even for a new command. The behavior of a
+command belongs in the header of its wrapper.
 
 ## Language
 
