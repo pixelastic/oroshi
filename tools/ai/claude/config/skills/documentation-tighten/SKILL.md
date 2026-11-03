@@ -39,6 +39,7 @@ with its fixed description, so the Claude Code statusline colors it.
 | --------------- | ------------------------ | ---------------------------------------- |
 | `contradiction` | `Goldfish contradiction` | `references/goldfishes/contradiction.md` |
 | `glossary`      | `Goldfish glossary`      | `references/goldfishes/glossary.md`      |
+| `gap`           | `Goldfish gap`           | `references/goldfishes/gap.md`           |
 
 Launch every Goldfish in a single message with one `Agent` call each, so they
 run in parallel. Never launch them one after another.
@@ -71,6 +72,9 @@ duplicates into one finding:
 
 A Goldfish that reports its no-finding sentence adds nothing to the list.
 
+The gap Goldfish also reports an implementability verdict. It is not a finding.
+Do not merge it. Keep it, with its list of missing items, for Step 5.
+
 ### Step 4 — Fix the docs
 
 **Goal:** Apply every merged finding to the docs.
@@ -89,14 +93,22 @@ Ask the user before the edit only when the fix changes the meaning of a rule:
 two passages disagree, and choosing one changes what a reader must do. Show both
 quotes and offer the options. Fix the other findings without asking.
 
+A gap finding asks for an answer that the docs do not hold. Never invent the
+answer. Ask the user, unless the project files or a referenced file hold it.
+
 Run `markdown-fix <file>` then `markdown-lint --fix <file>` on every modified
 file.
 
 ### Step 5 — End the round
 
-**Goal:** Give the user the outcome in one line.
+**Goal:** Give the user the verdict and the outcome.
 
 **Exit criterion:** The last line of the reply gives the highest severity found.
+
+Copy the `**Verdict:**` of the gap Goldfish into the reply, as
+`Implementation: can implement` or `Implementation: cannot implement`. After
+`cannot implement`, list the missing items the Goldfish gave. The verdict is the
+one the Goldfish reported, whatever the fix outcome.
 
 Write the last line of the reply as `Highest severity: <level>`, with `<level>`
 one of `blocking`, `important`, `nitpick` or `none`. It is the highest severity
@@ -105,16 +117,17 @@ second round.
 
 ## Common Rationalizations
 
-| Rationalization                                          | Reality                                                        |
-| -------------------------------------------------------- | -------------------------------------------------------------- |
-| "I'll give the Goldfish some context, it will find more" | Context is what hides defects. A reader without it finds them. |
-| "The fixes changed the docs, I should run another round" | One invocation is one round. The user decides on the next.     |
-| "The finding is wrong, I'll skip it silently"            | Reject it with a reason, in the reply.                         |
-| "Both passages are fine, I'll pick one and move on"      | A fix that changes a rule needs the user. Ask.                 |
-| "The Goldfish could fix the typo itself"                 | A Goldfish never edits. The Elephant owns every edit.          |
-| "I'll launch the Goldfish one by one"                    | One message, all Goldfish. They run in parallel.               |
-| "Two Goldfish found it, I'll fix it twice"               | Merge duplicates first. One defect is one fix.                 |
-| "I'll paste the glossary into the prompt to help"        | The Goldfish finds its own glossary. Pasting adds context.     |
+| Rationalization                                          | Reality                                                          |
+| -------------------------------------------------------- | ---------------------------------------------------------------- |
+| "I'll give the Goldfish some context, it will find more" | Context is what hides defects. A reader without it finds them.   |
+| "The fixes changed the docs, I should run another round" | One invocation is one round. The user decides on the next.       |
+| "The finding is wrong, I'll skip it silently"            | Reject it with a reason, in the reply.                           |
+| "Both passages are fine, I'll pick one and move on"      | A fix that changes a rule needs the user. Ask.                   |
+| "The Goldfish could fix the typo itself"                 | A Goldfish never edits. The Elephant owns every edit.            |
+| "I'll launch the Goldfish one by one"                    | One message, all Goldfish. They run in parallel.                 |
+| "Two Goldfish found it, I'll fix it twice"               | Merge duplicates first. One defect is one fix.                   |
+| "I'll paste the glossary into the prompt to help"        | The Goldfish finds its own glossary. Pasting adds context.       |
+| "The gap is obvious, I'll write the missing answer"      | The docs lack it. Ask the user, or find it in a referenced file. |
 
 ## Checklist
 
@@ -126,5 +139,7 @@ second round.
 - [ ] Every finding fixed, asked about or rejected with a reason
 - [ ] User asked only for fixes that change the meaning of a rule
 - [ ] `markdown-fix` and `markdown-lint --fix` run on every modified file
+- [ ] Reply gives the implementability verdict, with the missing items after
+      `cannot implement`
 - [ ] Last line is `Highest severity: <level>`
 - [ ] No second round started
