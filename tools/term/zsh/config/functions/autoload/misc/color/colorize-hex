@@ -1,0 +1,24 @@
+# Colorize the given text in the given hex color, in 24-bit true color
+# A color that is not a #rrggbb hex leaves the text uncolored
+# Usage:
+#   $ colorize-hex main '#ff8800'     # Displays "main" in orange
+#   $ colorize-hex main ''            # Displays "main" uncolored
+#   $ colorize-hex --reply main '#ff8800'  # Write to $REPLY, no echo
+setopt local_options err_return
+zparseopts -E -D \
+  -reply=flagReply
+
+local input="$1"
+local hexColor="$2"
+
+REPLY="$input"
+if [[ "$hexColor" == \#?????? ]]; then
+  local hex="${hexColor:1}"
+  local red=$(( 16#${hex[1,2]} ))
+  local green=$(( 16#${hex[3,4]} ))
+  local blue=$(( 16#${hex[5,6]} ))
+  REPLY=$'\e[38;2;'"${red};${green};${blue}m${input}"$'\e[0m'
+fi
+
+[[ ${#flagReply} == "1" ]] && return
+print -n "$REPLY"

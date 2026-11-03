@@ -18,9 +18,17 @@ export async function resolveLabel(name) {
   );
 
   if (!label) {
+    const isSystem = _.some(
+      labels,
+      (item) =>
+        item.type === 'system' && _.toLower(item.name) === _.toLower(name),
+    );
+    const hint = isSystem
+      ? 'It is a system label, and only user labels are supported'
+      : 'Create it with gmail-label-create';
     throw firostError(
       'GMAIL_LABEL_NOT_FOUND',
-      `Label ${name} not found. Create it with gmail-label-create`,
+      `Label ${name} not found. ${hint}`,
     );
   }
 

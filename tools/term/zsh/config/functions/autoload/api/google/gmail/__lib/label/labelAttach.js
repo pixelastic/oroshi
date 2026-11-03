@@ -1,5 +1,5 @@
-import { firostError } from 'firost';
 import { modifyLabels } from '../thread/modifyLabels.js';
+import { requireThreadId } from '../thread/requireThreadId.js';
 import { resolveLabel } from './resolveLabel.js';
 
 export let __;
@@ -14,9 +14,7 @@ export let __;
 export async function labelAttach(options) {
   const { threadId, name } = options;
 
-  if (!threadId) {
-    throw firostError('GMAIL_THREAD_ID_MISSING', 'Pass the id of a Thread');
-  }
+  __.requireThreadId(threadId);
 
   const labelId = await __.resolveLabel(name);
   await __.modifyLabels({ threadId, add: [labelId] });
@@ -26,5 +24,6 @@ export async function labelAttach(options) {
 
 __ = {
   modifyLabels,
+  requireThreadId,
   resolveLabel,
 };

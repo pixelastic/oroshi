@@ -19,7 +19,6 @@ describe('resolveLabel', () => {
 
   it.each([
     { title: 'the label does not exist', name: 'Home' },
-    { title: 'the name is the one of a system label', name: 'INBOX' },
     { title: 'the name is empty', name: undefined },
   ])('fails with GMAIL_LABEL_NOT_FOUND when $title', async ({ name }) => {
     let actual = null;
@@ -33,6 +32,20 @@ describe('resolveLabel', () => {
     expect(actual).toHaveProperty(
       'message',
       `Label ${name} not found. Create it with gmail-label-create`,
+    );
+  });
+  it('explains that a system label is not supported', async () => {
+    let actual = null;
+    try {
+      await resolveLabel('INBOX');
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', 'GMAIL_LABEL_NOT_FOUND');
+    expect(actual).toHaveProperty(
+      'message',
+      'Label INBOX not found. It is a system label, and only user labels are supported',
     );
   });
 });

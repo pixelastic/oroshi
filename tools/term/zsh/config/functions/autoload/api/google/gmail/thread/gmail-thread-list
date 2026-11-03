@@ -35,7 +35,6 @@ local epoch
 local labels
 local labelColor
 local labelName
-local hex
 for rawThread in ${(f)rawThreads}; do
   local fields=("${(@ps/▮/)rawThread}")
   local isoDate="${fields[2]}"
@@ -49,11 +48,8 @@ for rawThread in ${(f)rawThreads}; do
   for labelItem in ${(@ps/▯/)fields[8]}; do
     labelColor="${labelItem%%:*}"
     labelName="${labelItem#*:}"
-    if [[ "$labelColor" == \#?????? ]]; then
-      hex="${labelColor:1}"
-      labelName=$'\e[38;2;'"$(( 16#${hex[1,2]} ));$(( 16#${hex[3,4]} ));$(( 16#${hex[5,6]} ))m${labelName}"$'\e[0m'
-    fi
-    labels+=("$labelName")
+    colorize-hex --reply "$labelName" "$labelColor"
+    labels+=("$REPLY")
   done
 
   # Cells are never empty, or `table` would collapse the columns

@@ -26,13 +26,8 @@ for rawLabel in ${(f)rawLabels}; do
   local backgroundColor="${fields[4]}"
 
   # A label with a color shows its name in true color
-  if [[ "$backgroundColor" == \#?????? ]]; then
-    local hex="${backgroundColor:1}"
-    local red=$(( 16#${hex[1,2]} ))
-    local green=$(( 16#${hex[3,4]} ))
-    local blue=$(( 16#${hex[5,6]} ))
-    name=$'\e[38;2;'"${red};${green};${blue}m${name}"$'\e[0m'
-  fi
+  colorize-hex --reply "$name" "$backgroundColor"
+  name="$REPLY"
 
   # Cells are never empty, or `table` would collapse the columns
   local columns=("$(colorize "${fields[1]}" $COLORS[gmail-label-id])" "$name")
