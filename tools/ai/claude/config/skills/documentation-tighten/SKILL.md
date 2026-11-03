@@ -28,9 +28,9 @@ The argument is the path of a doc file or a directory.
 
 ### Step 2 — Launch the Goldfish
 
-**Goal:** Get a findings report from a Goldfish that has no context.
+**Goal:** Get a findings report from each Goldfish, all running at once.
 
-**Exit criterion:** The Goldfish returned its report.
+**Exit criterion:** Every Goldfish returned its report.
 
 Use the `Agent` tool with the `general-purpose` subagent. Launch each Goldfish
 with its fixed description, so the Claude Code statusline colors it.
@@ -38,6 +38,10 @@ with its fixed description, so the Claude Code statusline colors it.
 | Goldfish        | Description              | Brief                                    |
 | --------------- | ------------------------ | ---------------------------------------- |
 | `contradiction` | `Goldfish contradiction` | `references/goldfishes/contradiction.md` |
+| `glossary`      | `Goldfish glossary`      | `references/goldfishes/glossary.md`      |
+
+Launch every Goldfish in a single message with one `Agent` call each, so they
+run in parallel. Never launch them one after another.
 
 The prompt of a Goldfish holds exactly these parts, in this order:
 
@@ -45,17 +49,36 @@ The prompt of a Goldfish holds exactly these parts, in this order:
 2. The content of the Goldfish brief
 3. The list of target doc paths
 
+The Goldfish finds the nearest `GLOSSARY.md` and follows the references of the
+docs by itself. Do not read them for it, and do not paste them into the prompt.
+
 Do not add the conversation, the intent of the user, your own opinion of the
 docs or any code path. A Goldfish with context is not a Goldfish.
 
-### Step 3 — Fix the docs
+### Step 3 — Merge the findings
 
-**Goal:** Apply every finding to the docs.
+**Goal:** One list of findings, with no duplicate.
+
+**Exit criterion:** Every defect appears once, with every quote that shows it.
+
+Collect the findings of all Goldfish. Treat two findings as duplicates when they
+share at least one quoted passage and name the same defect. Merge each group of
+duplicates into one finding:
+
+- Keep the highest severity of the group.
+- Keep every distinct quote.
+- Keep the problem sentence that names the cause most precisely.
+
+A Goldfish that reports its no-finding sentence adds nothing to the list.
+
+### Step 4 — Fix the docs
+
+**Goal:** Apply every merged finding to the docs.
 
 **Exit criterion:** Every finding is fixed, asked about or dismissed with a
 reason.
 
-Go through the findings, blocking first. For each finding:
+Go through the merged findings, blocking first. For each finding:
 
 1. Read the quoted passages in the doc. Reject the finding when it has no
    severity, no quote, or a quote that does not match the doc, and say why.
@@ -69,7 +92,7 @@ quotes and offer the options. Fix the other findings without asking.
 Run `markdown-fix <file>` then `markdown-lint --fix <file>` on every modified
 file.
 
-### Step 4 — End the round
+### Step 5 — End the round
 
 **Goal:** Give the user the outcome in one line.
 
@@ -77,7 +100,7 @@ file.
 
 Write the last line of the reply as `Highest severity: <level>`, with `<level>`
 one of `blocking`, `important`, `nitpick` or `none`. It is the highest severity
-the Goldfish reported, whatever the fix outcome. Stop there. Do not start a
+any Goldfish reported, whatever the fix outcome. Stop there. Do not start a
 second round.
 
 ## Common Rationalizations
@@ -89,12 +112,17 @@ second round.
 | "The finding is wrong, I'll skip it silently"            | Reject it with a reason, in the reply.                         |
 | "Both passages are fine, I'll pick one and move on"      | A fix that changes a rule needs the user. Ask.                 |
 | "The Goldfish could fix the typo itself"                 | A Goldfish never edits. The Elephant owns every edit.          |
+| "I'll launch the Goldfish one by one"                    | One message, all Goldfish. They run in parallel.               |
+| "Two Goldfish found it, I'll fix it twice"               | Merge duplicates first. One defect is one fix.                 |
+| "I'll paste the glossary into the prompt to help"        | The Goldfish finds its own glossary. Pasting adds context.     |
 
 ## Checklist
 
 - [ ] Target resolved from the path argument, or asked for
-- [ ] Goldfish launched with the description `Goldfish contradiction`
+- [ ] Goldfish launched in one message, each with its `Goldfish <axis>`
+      description
 - [ ] Prompt holds only the shared rules, the brief and the doc paths
+- [ ] Duplicate findings merged before any fix
 - [ ] Every finding fixed, asked about or rejected with a reason
 - [ ] User asked only for fixes that change the meaning of a rule
 - [ ] `markdown-fix` and `markdown-lint --fix` run on every modified file

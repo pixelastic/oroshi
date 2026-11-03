@@ -10,6 +10,8 @@ what they say.
 - The nearest `GLOSSARY.md`: search from the directory of each doc upward and
   stop at the first one found.
 - The files the docs reference, such as linked docs or named config files.
+  Follow each reference, even when the file lies outside the given paths, so you
+  do not report a blind spot the referenced file fills.
 
 ## What you never do
 
@@ -43,5 +45,5 @@ Rules:
 - Quote the passage verbatim, with its file path. Never paraphrase a quote.
 - Report only your own axis, defined in your brief.
 - Order findings from blocking to nitpick.
-- When you find nothing, say so explicitly: `No <axis> found.` Never return an
-  empty report.
+- When you find nothing, say so explicitly, with the sentence your brief gives.
+  Never return an empty report.
