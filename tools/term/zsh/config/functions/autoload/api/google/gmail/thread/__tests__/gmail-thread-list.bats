@@ -91,3 +91,50 @@ setup() {
   [[ "${lines[0]}" == *"Alice"*"Hello" ]]
   [[ "${lines[1]}" == "   03/11 08:00     Carol  Lunch" ]]
 }
+
+@test "shows the labels of a Thread after the subject, separated by commas" {
+  gmail-thread-list-raw() {
+    echo "thrA▮2026-03-12T10:05:00.000Z▮1▮Alice▮Hello▮Hi▮false▮#16a766:Work▯:Misc"
+    echo "thrB▮2026-03-11T08:00:00.000Z▮1▮Carol▮Lunch▮Noon?▮false▮"
+  }
+  bats_mock gmail-thread-list-raw
+
+  bats_run_zsh "gmail-thread-list | text-ansi-remove"
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" == "   03/12 10:05     Alice  Hello  Work, Misc" ]]
+  [[ "${lines[1]}" == "   03/11 08:00     Carol  Lunch" ]]
+}
+
+@test "colors each label name with the color of its label" {
+  gmail-thread-list-raw() {
+    echo "thrA▮2026-03-12T10:05:00.000Z▮1▮Alice▮Hello▮Hi▮false▮#16a766:Work▯:Misc"
+  }
+  bats_mock gmail-thread-list-raw
+
+  bats_run_zsh "gmail-thread-list"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *$'\e[38;2;22;167;102mWork'$'\e[0m'* ]]
+}
+
+@test "does not color a label without color" {
+  gmail-thread-list-raw() {
+    echo "thrA▮2026-03-12T10:05:00.000Z▮1▮Alice▮Hello▮Hi▮false▮:Misc"
+  }
+  bats_mock gmail-thread-list-raw
+
+  bats_run_zsh "gmail-thread-list"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"Misc"* ]]
+  [[ "$output" != *$'\e[38;2;'*"Misc"* ]]
+}
+
+@test "keeps a colon inside the name of a label" {
+  gmail-thread-list-raw() {
+    echo "thrA▮2026-03-12T10:05:00.000Z▮1▮Alice▮Hello▮Hi▮false▮#16a766:Work: urgent"
+  }
+  bats_mock gmail-thread-list-raw
+
+  bats_run_zsh "gmail-thread-list | text-ansi-remove"
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" == *"Work: urgent" ]]
+}

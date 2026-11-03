@@ -1,6 +1,7 @@
 # List the Threads of the inbox as a colored table, one row per Thread
 # Unread Threads come first, then the most recent ones
-# Columns: unread marker (●), date (MM/DD HH:mm), Message count (blank for one Message), authors, subject
+# Columns: unread marker (●), date (MM/DD HH:mm), Message count (blank for one Message), authors, subject, labels
+# Each label name has the color of its label, and stays uncolored without color
 # For machine consumption, use gmail-thread-list-raw
 # Usage:
 # $ gmail-thread-list
@@ -31,6 +32,10 @@ done
 
 local rows=()
 local epoch
+local labels
+local labelColor
+local labelName
+local hex
 for rawThread in ${(f)rawThreads}; do
   local fields=("${(@ps/▮/)rawThread}")
   local isoDate="${fields[2]}"
@@ -38,6 +43,18 @@ for rawThread in ${(f)rawThreads}; do
   local authors="${fields[4]//▯/, }"
   local subject="${fields[5]}"
   local isUnread="${fields[7]}"
+
+  # Each label item is the color, a colon and the name. The color has no colon
+  labels=()
+  for labelItem in ${(@ps/▯/)fields[8]}; do
+    labelColor="${labelItem%%:*}"
+    labelName="${labelItem#*:}"
+    if [[ "$labelColor" == \#?????? ]]; then
+      hex="${labelColor:1}"
+      labelName=$'\e[38;2;'"$(( 16#${hex[1,2]} ));$(( 16#${hex[3,4]} ));$(( 16#${hex[5,6]} ))m${labelName}"$'\e[0m'
+    fi
+    labels+=("$labelName")
+  done
 
   # Cells are never empty, or `table` would collapse the columns
   local marker=" "
@@ -62,6 +79,7 @@ for rawThread in ${(f)rawThreads}; do
     "$(colorize "$count" $COLORS[gmail-count])"
     "$(colorize "$authors" $COLORS[gmail-author])"
     "$(colorize "${subject//$'\n'/ }" $COLORS[gmail-subject])"
+    "${(j:, :)labels:- }"
   )
   rows+=("${(j:▮:)columns}")
 done

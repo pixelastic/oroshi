@@ -56,6 +56,9 @@ describe('threadListRaw', () => {
 
   beforeEach(() => {
     mockThreads([thread('c1'), thread('c2'), thread('c3')]);
+    vi.spyOn(__, 'getUserLabelNames').mockImplementation((threads) =>
+      threads.map(() => []),
+    );
   });
 
   it('prints one row per Thread, with the Thread id first', async () => {
@@ -89,7 +92,7 @@ describe('threadListRaw', () => {
     const actual = await threadListRaw({});
 
     expect(actual).toEqual(
-      'c1▮2026-10-03T19:26:59.000Z▮3▮Alice▯Bob▮Subject c1▮Snippet c1▮false',
+      'c1▮2026-10-03T19:26:59.000Z▮3▮Alice▯Bob▮Subject c1▮Snippet c1▮false▮',
     );
   });
 
@@ -131,6 +134,33 @@ describe('threadListRaw', () => {
     const actual = await threadListRaw({});
 
     expect(actual.split('▮')[1]).toEqual('2026-10-05T08:00:00.000Z');
+  });
+
+  it('prints the user labels in the last column, with their color', async () => {
+    mockThreads([thread('c1'), thread('c2')]);
+    vi.spyOn(__, 'getUserLabelNames').mockReturnValue([
+      [
+        { name: 'Work', backgroundColor: '#16a766' },
+        { name: 'Misc', backgroundColor: undefined },
+      ],
+      [],
+    ]);
+
+    const actual = await threadListRaw({});
+
+    const columns = actual.split('\n').map((line) => line.split('▮'));
+    expect(columns[0]).toHaveLength(8);
+    expect(columns).toHaveProperty('0.7', '#16a766:Work▯:Misc');
+    expect(columns).toHaveProperty('1.7', '');
+  });
+
+  it('looks up the labels of all the Threads at once', async () => {
+    mockThreads([thread('c1'), thread('c2'), thread('c3')]);
+
+    await threadListRaw({});
+
+    expect(__.getUserLabelNames).toHaveBeenCalledTimes(1);
+    expect(__.getUserLabelNames.mock.calls[0][0]).toHaveLength(3);
   });
 
   it('prints the unread authors first', async () => {
@@ -214,9 +244,13 @@ describe('threadListRaw', () => {
           subject: 'Quarterly report',
           snippet: 'Please find the report',
           unread: false,
+          labels: [
+            { name: 'Work', backgroundColor: '#16a766' },
+            { name: 'Misc' },
+          ],
         },
         expected:
-          'c1▮2026-10-03T19:26:59.000Z▮2▮Bob▯Alice Martin▮Quarterly report▮Please find the report▮false',
+          'c1▮2026-10-03T19:26:59.000Z▮2▮Bob▯Alice Martin▮Quarterly report▮Please find the report▮false▮#16a766:Work▯:Misc',
       },
       {
         title: 'an unread Thread with newlines and separators',
@@ -228,8 +262,9 @@ describe('threadListRaw', () => {
           subject: 'Line one\nline two',
           snippet: 'a▮b▯c',
           unread: true,
+          labels: [],
         },
-        expected: 'c2▮▮1▮▮Line one line two▮abc▮true',
+        expected: 'c2▮▮1▮▮Line one line two▮abc▮true▮',
       },
     ])('$title', ({ entry, expected }) => {
       const actual = __.toLine(entry);

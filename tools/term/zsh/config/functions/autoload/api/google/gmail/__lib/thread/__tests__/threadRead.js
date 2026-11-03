@@ -10,6 +10,12 @@ describe('threadRead', () => {
         { id: 'm2', labelIds: ['INBOX'] },
       ],
     });
+    vi.spyOn(__, 'getUserLabelNames').mockReturnValue([
+      [
+        { name: 'Work', backgroundColor: '#16a766' },
+        { name: 'Misc', backgroundColor: undefined },
+      ],
+    ]);
     vi.spyOn(__, 'getDraftIds').mockReturnValue({});
     vi.spyOn(__, 'formatThread').mockReturnValue({
       threadId: 't1',
@@ -31,6 +37,20 @@ describe('threadRead', () => {
     });
   });
 
+  it('finds the user labels of the Messages of the Thread', async () => {
+    await threadRead({ threadId: 't1' });
+
+    expect(__.getUserLabelNames).toHaveBeenCalledWith([
+      {
+        id: 't1',
+        messages: [
+          { id: 'm1', labelIds: ['INBOX'] },
+          { id: 'm2', labelIds: ['INBOX'] },
+        ],
+      },
+    ]);
+  });
+
   it('returns the envelope of the Thread, without the list fields', async () => {
     const actual = await threadRead({ threadId: 't1' });
 
@@ -42,6 +62,7 @@ describe('threadRead', () => {
         { messageId: 'm1', isDraft: false },
         { messageId: 'm2', isDraft: false },
       ],
+      labels: ['Work', 'Misc'],
     });
   });
 

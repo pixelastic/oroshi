@@ -1,6 +1,7 @@
 import { _, dayjs, pMap } from 'golgoth';
 import { rawColumn } from '@oroshi/api-shared/rawColumn.js';
 import { callApi } from '../callApi.js';
+import { getUserLabelNames } from '../label/getUserLabelNames.js';
 import { limits } from '../limits.js';
 import { formatThread } from './formatThread.js';
 
@@ -33,8 +34,13 @@ export async function threadListRaw(options) {
     { concurrency: CONCURRENCY },
   );
 
+  const labels = await __.getUserLabelNames(threads);
+
   return _.chain(threads)
-    .map(formatThread)
+    .map((thread, index) => ({
+      ...formatThread(thread),
+      labels: labels[index],
+    }))
     .orderBy(
       [
         (thread) => thread.unread,
@@ -50,8 +56,8 @@ export async function threadListRaw(options) {
 __ = {
   /**
    * Turn one formatted Thread into a raw line
-   * @param {object} thread - Formatted Thread, as returned by formatThread
-   * @returns {string} The Thread fields, separated by ▮
+   * @param {object} thread - Formatted Thread, as returned by formatThread, with its labels as { name, backgroundColor }
+   * @returns {string} The Thread fields, separated by ▮. The labels column holds one color:name item per label
    */
   toLine(thread) {
     return _.chain([
@@ -62,11 +68,22 @@ __ = {
       thread.subject,
       thread.snippet,
       thread.unread,
+      _.map(thread.labels, __.toLabelItem),
     ])
       .map((value) => rawColumn(value))
       .join('▮')
       .value();
   },
 
+  /**
+   * Turn one label into an item of the labels column
+   * @param {object} label - Label as { name, backgroundColor }
+   * @returns {string} The color, a colon and the name. The color is empty for a label without color
+   */
+  toLabelItem(label) {
+    return `${label.backgroundColor ?? ''}:${label.name}`;
+  },
+
   callApi,
+  getUserLabelNames,
 };

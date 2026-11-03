@@ -1,5 +1,6 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
+import { getUserLabelNames } from '../label/getUserLabelNames.js';
 import { formatThread } from './formatThread.js';
 import { getDraftIds } from './getDraftIds.js';
 import { getThread } from './getThread.js';
@@ -10,7 +11,7 @@ export let __;
  * Read a Thread as a whole
  * @param {object} options - Read options
  * @param {string} options.threadId - Id of the Thread. Throws GMAIL_THREAD_ID_MISSING if empty
- * @returns {Promise<object>} The Thread as { threadId, subject, unread, messages }, its Messages formatted, oldest first. Each Message has isDraft, and a Draft Message has its draftId
+ * @returns {Promise<object>} The Thread as { threadId, subject, unread, labels, messages }, its Messages formatted, oldest first. labels is the list of the names of its user labels. Each Message has isDraft, and a Draft Message has its draftId
  */
 export async function threadRead(options) {
   const { threadId } = options;
@@ -23,6 +24,7 @@ export async function threadRead(options) {
     query: { format: 'full' },
   });
   const thread = __.formatThread(response);
+  const [labels] = await __.getUserLabelNames([response]);
   const draftMessageIds = _.chain(response.messages)
     .filter((message) => _.includes(message.labelIds, 'DRAFT'))
     .map('id')
@@ -32,6 +34,7 @@ export async function threadRead(options) {
 
   return {
     ..._.pick(thread, ['threadId', 'subject', 'unread']),
+    labels: _.map(labels, 'name'),
     messages: _.map(thread.messages, (message) => {
       const isDraft = _.includes(draftMessageIds, message.messageId);
       return {
@@ -47,4 +50,5 @@ __ = {
   formatThread,
   getDraftIds,
   getThread,
+  getUserLabelNames,
 };

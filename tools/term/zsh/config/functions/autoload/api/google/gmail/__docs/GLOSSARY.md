@@ -44,9 +44,12 @@ header of a **Message**, not its id.
 _Avoid_: mail, email
 
 `list-raw` prints the **Threads** of the inbox, as `▮` lines:
-`threadId▮date▮count▮authors▮subject▮snippet▮unread`. `date` is the date of the
-last **Message**, `count` the number of **Messages**, and the authors are
-separated by `▯`. Unread **Threads** come first, then the newest first.
+`threadId▮date▮count▮authors▮subject▮snippet▮unread▮labels`. `date` is the date
+of the last **Message**, `count` the number of **Messages**, and the authors are
+separated by `▯`. `labels` holds the user **Labels** of the **Thread**,
+separated by `▯`, each as `color:name`, with an empty `color` for a **Label**
+without color. `read` prints the names as a `labels` array. `list` colors each
+name. Unread **Threads** come first, then the newest first.
 
 **Attachment**:
 
