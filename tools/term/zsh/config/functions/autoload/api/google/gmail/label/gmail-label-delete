@@ -1,0 +1,15 @@
+# Delete a user label by name, and print its labelId as JSON
+# Gmail removes the label from every Thread and keeps the Threads
+# WARNING: the action is irreversible. The label cannot be restored, and its Threads lose it for good
+# The name is the one printed by gmail-label-list
+# Errors:
+# GMAIL_LABEL_NOT_FOUND   No user label has this name. System labels cannot be deleted
+# Flags:
+# --account <name>     Account of the label. The default account if empty
+# Usage:
+# $ gmail-label-delete Work
+# $ gmail-label-delete Work --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-label-delete.js" "$@"
