@@ -1,0 +1,16 @@
+# List the user labels of the Account, one per line, for machine consumption
+# For human consumption, use gmail-label-list
+# The id is the labelId. System labels are not listed
+# Fields: labelId▮name▮type▮backgroundColor▮textColor
+# backgroundColor and textColor are hexadecimal (#rrggbb), and empty for a label without color
+# Flags:
+# [filter]             Keep the labels whose name contains this text, ignoring case
+# --account <name>     Account of the labels. The default account if empty
+# Usage:
+# $ gmail-label-list-raw
+# $ gmail-label-list-raw work
+# $ gmail-label-list-raw --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-label-list-raw.js" "$@"

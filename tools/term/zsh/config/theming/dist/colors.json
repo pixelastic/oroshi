@@ -619,6 +619,10 @@
     "ansi": 166,
     "hex": "#0369a1"
   },
+  "gmail-label-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
   "gmail-subject": {
     "ansi": 203,
     "hex": "#d1d5db"

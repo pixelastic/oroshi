@@ -134,10 +134,11 @@
 
   // Gmail
   "gmail": {
-    "author":  "gray-4",
-    "count":   "purple",
-    "date":    "sky-6",
-    "subject": "gray-3"
+    "author":   "gray-4",
+    "count":    "purple",
+    "date":     "sky-6",
+    "label-id": "orange",
+    "subject":  "gray-3"
   },
 
   // Git

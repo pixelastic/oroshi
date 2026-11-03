@@ -1,0 +1,15 @@
+# Create a user label, and print its labelId and name as JSON
+# The name is the one that the other label commands take
+# Errors:
+# GMAIL_LABEL_NAME_MISSING   The name is empty
+# GMAIL_LABEL_NAME_SYSTEM    The name is the name of a system label
+# GMAIL_LABEL_EXISTS         A label has this name already
+# Flags:
+# --account <name>     Account of the label. The default account if empty
+# Usage:
+# $ gmail-label-create Work
+# $ gmail-label-create Work --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gmail-label-create.js" "$@"

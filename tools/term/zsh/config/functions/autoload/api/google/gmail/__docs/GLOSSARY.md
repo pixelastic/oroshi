@@ -71,6 +71,24 @@ only the text of the user, and no copy of the previous **Message**.
 
 _Avoid_: unsent mail, unsent email, reply
 
+**Label**:
+
+A name that groups **Threads** in an **Account**. A **Label** is either a user
+**Label** or a system **Label**, like `INBOX`, whose id is its name in capitals.
+Commands take the name of a **Label**, never its id, because the Gmail API takes
+ids only: the name is resolved with `labels.list`. It has no **Anchor** and has
+a **Fixed schema**. Gmail compares the names without case.
+
+Only user **Labels** are shown by `list-raw` and `list`.
+
+`list-raw` prints the user **Labels** as `▮` lines:
+`labelId▮name▮type▮backgroundColor▮textColor`. The colors are hexadecimal
+(`#rrggbb`) and empty for a **Label** without color. Its positional argument
+keeps the **Labels** whose name contains it, ignoring case. `list` colors each
+name with the color of its **Label**.
+
+_Avoid_: tag, folder, category
+
 ### Custom verbs
 
 **`add`**:
@@ -109,6 +127,9 @@ _Avoid_: identity, sender, address
 - A **Thread** contains one or more **Messages**
 - A **Message** carries zero or more **Attachments**
 - The **Inbox** holds zero or more **Threads**
+- An **Account** has zero or more user **Labels**, and the system **Labels**
+- A **Label** groups zero or more **Threads**
+- The **Inbox** is the system **Label** `INBOX`
 - Every command uses the tokens of one **Account**
 - An **Account** has one or more **Aliases**
 - A **Draft** replies to the last **Message** of one **Thread**, or to none
