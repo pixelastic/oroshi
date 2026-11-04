@@ -3,7 +3,7 @@
 # $ skills-allowlist-add "tree"
 # $ skills-allowlist-add tree "apt list" jq
 setopt local_options err_return
-local allowlistFile=~/.oroshi/tools/ai/claude/config/hooks/allow-list.json
+local allowlistFile="$OROSHI_ROOT/tools/ai/claude/config/hooks/allow-list.json"
 
 # At least one command is required
 if [[ $# -eq 0 ]]; then
