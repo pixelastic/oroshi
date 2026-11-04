@@ -50,10 +50,10 @@ Launch every Goldfish in a single message, one `Agent` call each, so they run in
 parallel. Wait for the report of every Goldfish before Step 3.
 
 A Goldfish that errors, times out or returns a malformed report is a fatal
-error. A report is malformed when one of its findings has no severity or no
-quote. Do not retry it and do not continue the round. Report the failure to the
-user first, with the Goldfish name and the error, so the user fixes it before
-any result is used.
+error. A report of a finding Goldfish (every Goldfish except `summary`) is
+malformed when one of its findings has no severity or no quote. Do not retry it
+and do not continue the round. Report the failure to the user first, with the
+Goldfish name and the error, so the user fixes it before any result is used.
 
 The prompt of a Goldfish holds exactly these parts, in this order:
 
@@ -71,8 +71,8 @@ opinion of the docs or code path. The Goldfish finds its own context.
 **Exit criterion:** Every defect appears once, with every quote that shows it.
 
 Collect the findings of all Goldfish. Treat two findings as duplicates when they
-share at least one quoted passage and describe the same problem, whatever the
-Goldfish axis. Merge each group of duplicates into one finding:
+share at least one quoted passage and describe the same defect of the doc,
+whatever the Goldfish axis. Merge each group of duplicates into one finding:
 
 - Keep the highest severity of the group.
 - Keep every distinct quote.
@@ -81,7 +81,10 @@ Goldfish axis. Merge each group of duplicates into one finding:
 - Keep the `Keep in` or `Shorter wording` of the concision Goldfish, when the
   group has one.
 
-A Goldfish that reports its no-finding sentence adds nothing to the list.
+A Goldfish that reports its no-finding sentence reports zero findings: it adds
+nothing to the list. When every Goldfish reports zero, the list is empty. Step 5
+then calls the severity script with `0` for each count, and that outcome is
+valid.
 
 The summary Goldfish reports a summary, never a finding. Compare it to your own
 reading of the docs:
@@ -110,7 +113,7 @@ rejected with a reason or `Ignored`. The recap is printed.
 
 Fix only the highest tier present among the merged findings, to keep the diff
 readable. Every lower tier is `Ignored`. When only `nitpick` remains, fix the
-nitpicks of every Goldfish, the gap Goldfish included.
+nitpicks of every Goldfish, with no exception.
 
 Edit a Markdown file outside the target list only when it lies in the directory
 of a target file or in a subdirectory of it. A finding that needs any other file
@@ -119,8 +122,9 @@ is `Ignored`, with the path of that file.
 Go through the findings to fix, blocking first. For each finding:
 
 1. Read the quoted passages in the doc, even if an earlier fix already read
-   them. When an earlier fix made the finding obsolete, reject it with the
-   reason "already resolved by another fix".
+   them. Reject the finding, with a reason, when an earlier fix made it obsolete
+   ("already resolved by another fix") or when you judge it wrong. You hold more
+   context than the Goldfish, so your judgment prevails.
 2. Pick the fix. Follow the nearest `GLOSSARY.md`. `markdown-lint` checks the
    Markdown rules afterward.
 3. Apply the fix with the `Edit` tool.
@@ -142,8 +146,8 @@ A clarity finding lists competing readings and a proposed wording. Apply the
 proposed wording when it keeps the meaning the docs clearly intend.
 
 An ambiguity finding shows that a reader without context misreads a passage.
-Reword the passage so that your own reading, formed in Step 3 before you opened
-the summary, is the only possible one.
+Reword the passage so that your own reading (see Step 3) is the only possible
+one.
 
 A concision finding names the place where a repeated rule stays. Keep the rule
 there, and remove it from every other place, or replace it with a pointer to the
@@ -183,10 +187,11 @@ Get each part from
 `documentation-tighten-severity --blocking <n> --important <n> --nitpick <n>`.
 The script prints the emoji and the label. Call it twice:
 
-- **Initial:** count all Goldfish findings and ambiguity findings, whatever
-  their outcome (fixed, asked, rejected or `Ignored`).
-- **Remaining:** count the findings that are `Asked` or `Ignored` when you write
-  the line.
+- **Initial:** count the findings of the merged list from Step 3 (Goldfish
+  findings and ambiguity findings), whatever their outcome (fixed, asked,
+  rejected or `Ignored`).
+- **Remaining:** count the findings that are `Asked` when you write the line. Do
+  not count `Ignored` findings.
 
 The last message is the one after the user answered or skipped every question,
 or the first message when it asks none.
@@ -200,12 +205,12 @@ Stop there. Do not start a second round: one invocation is one round.
 
 ## Common Rationalizations
 
-| Rationalization                                          | Reality                                                         |
-| -------------------------------------------------------- | --------------------------------------------------------------- |
-| "I'll give the Goldfish some context, it will find more" | Context is what hides defects. A reader without it finds them.  |
-| "The fixes changed the docs, I should run another round" | One invocation is one round. Stop after Step 5.                 |
-| "The Goldfish summarized it wrong, that is its fault"    | A wrong summary shows an ambiguous doc. Report the mismatch.    |
-| "I'll read the summary first, then skim the docs"        | Form your own reading first. Else you only confirm the summary. |
+| Rationalization                                          | Reality                                                        |
+| -------------------------------------------------------- | -------------------------------------------------------------- |
+| "I'll give the Goldfish some context, it will find more" | Context is what hides defects. A reader without it finds them. |
+| "The fixes changed the docs, I should run another round" | Stop after Step 5.                                             |
+| "The Goldfish summarized it wrong, that is its fault"    | A wrong summary shows an ambiguous doc. Report the mismatch.   |
+| "I'll read the summary first, then skim the docs"        | Step 3 sets the order. Else you only confirm the summary.      |
 
 ## Checklist
 
