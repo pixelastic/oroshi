@@ -1,6 +1,6 @@
 ---
 name: documentation-tighten
-description: Use when the user wants to tighten, audit or proofread local Markdown documentation (a file or a directory). Runs one round: Goldfish sub-agents with zero context report findings, then the main agent fixes the docs.
+description: Use when the user wants to tighten, audit or proofread local Markdown documentation (a file). Runs one round: Goldfish sub-agents with zero context report findings, then the main agent fixes the docs.
 ---
 
 # Documentation Tighten
@@ -24,12 +24,10 @@ The user may pass several paths. The target is the union of their targets. The
 Elephant resolves a relative path from the working directory.
 
 - Local Markdown file (`.md` extension): the target is that file.
-- Local directory: the target is every `.md` file under it, recursively, except
-  the files that git ignores (`git check-ignore` returns their path).
 - Anything else (a URL, a Confluence page, a pull request, a missing path, a
-  file without the `.md` extension, a directory with no `.md` file): stop and
-  tell the user the skill needs local Markdown. One such path stops the round,
-  even when other paths are valid.
+  directory, a file without the `.md` extension): stop and tell the user the
+  skill needs a local Markdown file. One such path stops the round, even when
+  other paths are valid.
 - No argument: ask the user. Do not infer one.
 
 ### Step 2 — Launch the Goldfish
@@ -70,8 +68,8 @@ The prompt of a Goldfish holds exactly these parts, in this order:
 2. The content of the Goldfish brief
 3. The list of target doc paths
 
-Add nothing else: no glossary, referenced file, conversation, user intent,
-opinion of the docs or code path. The Goldfish finds its own context.
+Add nothing else (no glossary, referenced file, conversation, user intent,
+opinion of the docs or code path): the Goldfish finds its own context.
 
 ### Step 3 — Merge the findings
 
@@ -97,14 +95,14 @@ finding:
   `Proposed wording` guides the fix, and the `Shorter wording` applies only when
   the `Shorter wording` keeps every rule of the `Proposed wording`.
 
-A no-finding sentence counts as zero findings and adds nothing to the list. When
-every Goldfish reports zero, the list is empty, and that outcome is valid: tell
-the user the docs hold no finding. When you reject every finding in Step 4, tell
-the user the same.
+A no-finding sentence adds nothing to the list. When every Goldfish reports
+zero, or when you reject every finding in Step 4, tell the user the docs hold no
+finding.
 
 When the list holds only nitpicks, the docs have reached the stop point of the
 Elephant and Goldfish pattern: further rounds return only nitpicks. Tell the
-user that only nitpicks remain and that another round is not worth it.
+user that only nitpicks remain and that another round is not worth it. Then go
+to Step 4.
 
 The summary Goldfish reports a summary, never a finding. Compare it to your own
 reading of the docs:
@@ -136,8 +134,7 @@ The phases and the statuses `Asked` and `Ignored` are internal. Never write the
 words "Phase", `Asked` or `Ignored` to the user.
 
 Edit a Markdown file outside the target list only when it lies in the directory
-of a target file or in a subdirectory of that directory. When a finding needs
-any other file, its question names the path of that file.
+of a target file or in a subdirectory of that directory.
 
 Within each phase, fix the findings in this order: blocking, important, nitpick.
 For each finding:
@@ -148,7 +145,7 @@ For each finding:
    than the Goldfish, so your judgment prevails.
 2. Pick the fix. Follow the nearest `GLOSSARY.md` of the doc you edit: the first
    one found when searching upward from the directory of that doc.
-3. Apply the fix with the `Edit` tool.
+3. Apply the fix with the `Edit` tool. Human fixes delay this step (see below).
 
 The ask cases are these four:
 
@@ -165,24 +162,28 @@ The ask cases are these four:
 Fix every finding that matches no ask case, of any severity, in the order set
 above. A nitpick that matches an ask case is never asked: it moves to `Ignored`.
 Run the end-of-phase commands (see "Fix rules"), then print the recap of the
-Automated fixes phase. When <n> findings match an ask case (<n> at least 1), end
-the last message of this phase with "I have <n> unanswered questions. May I ask
-them?", then wait for the answer. The user may commit meanwhile. When the user
-declines, the round ends.
+Automated fixes phase. Let <n> be the number of questions Human fixes will ask:
+one question per group of ask-case findings that one answer settles, none for a
+nitpick. When <n> is at least 1, append "I have <n> unanswered questions. May I
+ask them?" to the message that holds the recap, or send it alone when the phase
+has no recap. Then wait for the answer. The user may commit meanwhile. When the
+user declines, the round ends.
 
 #### Human fixes
 
-Ask the user about every finding that matches an ask case, one question at a
-time, with your recommended answer. Show every quote of the finding (both quotes
-for a disagreement). Give one concrete example that shows the problem: a
-realistic case where the passage leads a reader to two different actions. Offer
-the options. When the answer to one finding also settles another finding, ask
-one question that covers both findings. The user may skip a question: the
-finding moves to `Ignored`. Apply the fix of an answered finding only after the
-last answer, and apply no fix of a skipped finding. After the last answer, run
-the end-of-phase commands (see "Fix rules"), print the recap of the Human fixes
-phase and end the round. A finding the user leaves unanswered, by declining to
-be asked or by ending the session, stays `Asked`.
+Ask the user about every finding that matches an ask case, except nitpicks, one
+question at a time. Show every quote of the finding (both quotes for a
+disagreement). Give one concrete example that shows the problem: a realistic
+case where the passage leads a reader to two different actions. Offer the
+candidate answers, one per competing reading, meaning or fix, and mark your
+recommended one. Name the path of any file outside the target list. When the
+answer to one finding also settles another finding, ask one question that covers
+both findings. The user may skip a question: the finding moves to `Ignored`.
+Apply the fix of an answered finding only after the last answer, and apply no
+fix of a skipped finding. After the last answer, run the end-of-phase commands
+(see "Fix rules"), print the recap of the Human fixes phase and end the round. A
+finding the user leaves unanswered, by declining to be asked or by ending the
+session, stays `Asked`.
 
 #### Fix rules
 
@@ -210,24 +211,22 @@ doc already states. Never cite a code path in the docs. When the code
 contradicts the doc, the doc is right: do not change it to match the code.
 
 At the end of each phase, run `markdown-fix <file>` then
-`markdown-lint --fix <file>` on every file modified in that phase. A command
-that exits with an error is a fatal error (see Step 2).
+`markdown-lint --fix <file>` on every file modified in that phase. A failing
+command is a fatal error (see Step 2).
 
-Print no recap for a phase with no fix. Write each recap in English. It lists
-only the fixes of its phase, in one section per severity. Each section header
-holds the severity emoji, the severity name and the number of fixes:
-`🔴 Blocking (n)`, `🟠 Important (n)`, `🟢 Nitpick (n)`. Omit a severity with no
-fix. Each section groups its fixes by the doc passage or topic they touch, with
-what you removed and what you changed. It lists no rejected, `Ignored` or
-`Asked` finding.
+Print no recap for a phase with no fix, nor in a message that holds only a
+question. Write each recap in English. It lists only the fixes of its phase, in
+one section per severity. Each section header holds the severity emoji, the
+severity name and the number of fixes: `🔴 Blocking (n)`, `🟠 Important (n)`,
+`🟢 Nitpick (n)`. Omit a severity with no fix. Each section groups its fixes by
+the doc passage or topic they touch, with what you removed and what you changed.
+It lists no rejected, `Ignored` or `Asked` finding.
 
 ### Step 5 — End the round
 
 **Goal:** Give the user the outcome.
 
 **Exit criterion:** The user holds every recap printed.
-
-A message that holds only a question carries no recap.
 
 Stop after the last recap. One invocation is one round.
 
