@@ -36,13 +36,12 @@ entity.
 
 ## Arguments
 
-If the service API accepts a custom query language (like Gmail), the only
-argument is the whole search query, written in that language.
+If the API has a query language (like Gmail), the positional argument is the
+whole query, written in that language. Add a named flag only for what the query
+cannot express, such as `--limit`.
 
-If the service API doesn't have a custom query language, or if said language is
-limited, then additional options (like `--limit`, or `--date-min`) can be added
-to cover all use-cases. In that case, the positional argument is usually simply
-the text to look for.
+If the API has no query language, the positional argument is the text to look
+for, and the filters (like `--date-min`) are named flags.
 
 ```text
 # Example #1: Gmail has a query language, but still needs an option to limit the
@@ -138,5 +137,3 @@ two parts:
   call
 - Assert that each entity returned by the API is correctly formatted and
   returned by the function.
-
-The zsh wrapper and the bin are so thin that they need no test.

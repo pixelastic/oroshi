@@ -6,8 +6,8 @@
 
 - `getConfig` is the only way to read the credentials and the configuration of
   the service.
-- Other modules call it through `__` (`await __.getConfig()`), so tests mock it
-  and never touch the environment.
+- Command modules call it through `__` (`await __.getConfig()`), so tests mock
+  it and never touch the environment.
 - Env variables are prefixed with the name of the service: `<SERVICE>_TOKEN`,
   `<SERVICE>_BASE_URL`.
 - Each service owns one, in `<service>/__lib/getConfig.js`.

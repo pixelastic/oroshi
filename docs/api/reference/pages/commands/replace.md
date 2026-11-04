@@ -23,12 +23,12 @@ The id of the entity is given as in [`read`](../../commands/read.md#arguments).
 The passages are named, and follow the
 [`-file` suffix](../../../arguments.md#-file-suffix) rule.
 
-| Flag         | Role                                                   |
-| ------------ | ------------------------------------------------------ |
-| `--old`      | The passage to find, as Markdown                       |
-| `--old-file` | A file that holds the passage to find. It wins `--old` |
-| `--new`      | The passage to put instead, as Markdown                |
-| `--new-file` | A file that holds the passage to put. It wins `--new`  |
+| Flag         | Role                                                                    |
+| ------------ | ----------------------------------------------------------------------- |
+| `--old`      | The passage to find, as Markdown                                        |
+| `--old-file` | A file that holds the passage to find. It takes precedence over `--old` |
+| `--new`      | The passage to put instead, as Markdown                                 |
+| `--new-file` | A file that holds the passage to put. It takes precedence over `--new`  |
 
 ```text
 $ notion-page-replace --pageId 1f3a --old 'Pariss' --new 'Paris'
@@ -44,17 +44,6 @@ The contract of the old passage is the same for all services:
   zero times, and fails when it appears several times. A failed command changes
   nothing.
 - To insert text in the middle, repeat the old passage in the new one.
-
-## Limits of a service
-
-A service can narrow the contract, and says so in the header of its wrappers.
-Google Docs adds these limits:
-
-- The Document is the positional argument, not a named `--<entity>Id`.
-- `--old` is plain text, in one paragraph. It cannot span a paragraph break or
-  an image, and it cannot be found inside a table. An empty `--old` fails.
-- `--new` is inline Markdown only: bold, italic, code and links. A heading or a
-  list is plain text there. `append` reads full Markdown.
 
 ## Template
 
@@ -150,11 +139,9 @@ __ = {
 The test lives in `<service>/__lib/<entity>/__tests__/<entity>Replace.js`.
 
 The vitest test covers the module only. It mocks `callApi` and `read` through
-`__` and mostly checks three behaviors:
+`__` and checks at least three behaviors:
 
 - Given `old` and `new`, the module calls `callApi` with both passages.
 - A `oldFile` or a `newFile` wins over `old` or `new`, and its content is the
   passage.
 - The returned value is the entity, read again after the change.
-
-The zsh wrapper and the bin are so thin that they need no test.

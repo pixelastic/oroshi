@@ -6,15 +6,12 @@ This file defines how a command receives its arguments.
 
 The JavaScript bin parses the arguments with the shared `parseBinArgs` helper
 and unpacks them into one options object for the module. The positional argument
-and the named flags become its keys: `<entity>Id`, the anchors and the filters.
-The wrapper is described in
+and the named flags become its keys: the main input (`<entity>Id`, `query` or
+`content`), the anchors and the filters. The wrapper is described in
 [architecture.md](architecture.md#zsh-and-javascript).
 
 The bin handles `--account` itself, as defined in
 [architecture.md](architecture.md#accounts).
-
-The wrapper lists the accepted arguments in its `# Usage:` header, as defined in
-[documentation.md](documentation.md).
 
 ## Positional and named
 
@@ -24,7 +21,7 @@ guided the choices:
 - The main input of a command is positional: the query of `search`, the id of
   `read`, the content of `create` and `update`.
 - Everything else is named: anchors (a table, a space), the id of an entity when
-  the content takes the positional slot, filters and options.
+  the content takes the positional slot, filters and any other flag.
 
 ```text
 $ <service>-<entity>-read recA

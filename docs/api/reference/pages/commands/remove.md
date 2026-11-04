@@ -22,7 +22,6 @@ $ notion-page-remove --pageId 1f3a --old 'Obsolete paragraph'
 
 The passage follows the [contract of `replace`](replace.md#passage): Markdown
 text that must appear exactly once, or the command fails and changes nothing.
-The limits of a service apply as well.
 
 ```text
 $ notion-page-remove --pageId 1f3a --old 'Obsolete paragraph'

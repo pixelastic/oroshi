@@ -18,14 +18,10 @@ $ confluence-login --account perso
 - An OAuth API has a `login`. A Key API has none.
 - It opens a browser, so that the user grants access. It gets the tokens, and
   saves them.
-- The tokens go to the state folder of the service:
-  `$OROSHI_FOLDER_STATE/<service>/tokens.json`.
-- The default account and the other accounts use different files, see
-  [architecture.md](../../architecture.md#accounts).
-- When the tokens file is missing, or when the API reports a missing login, the
-  other commands fail with the typed error `<SERVICE>_LOGIN_REQUIRED`. Its
-  message points to this command: `run <service>-login`. See
-  [oauth.md](../../oauth.md).
+- The tokens go to the tokens file of the service, one per account, see
+  [oauth.md](../../oauth.md#what-an-oauth-api-changes).
+- The other commands fail with `<SERVICE>_LOGIN_REQUIRED` when the login is
+  missing or invalid, see [oauth.md](../../oauth.md).
 - No command logs in by itself. Only `<service>-login` opens a browser, and the
   user runs it by hand.
 
@@ -128,11 +124,9 @@ The test lives in `<service>/__lib/__tests__/login.js`.
 
 The vitest test covers the module only. It mocks everything that opens a browser
 (and everything that waits for the grant or exchanges it) through `__`. It
-points `OROSHI_FOLDER_STATE` to a temporary folder, and mostly checks three
+points `OROSHI_FOLDER_STATE` to a temporary folder, and checks at least three
 behaviors:
 
 - Given no account, the module writes the tokens to `<service>/tokens.json`.
 - Given an account, the module writes them to `<service>/tokens-<account>.json`.
 - The JSON written holds the token given by the mocked grant.
-
-The zsh wrapper and the bin are so thin that they need no test.

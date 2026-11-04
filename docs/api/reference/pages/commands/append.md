@@ -31,15 +31,6 @@ $ notion-page-append --pageId 1f3a --content-file ./section.md
 `append` has no [Passage](../README.md#vocabulary) to find, so it never fails on
 zero or several matches.
 
-## Limits of a service
-
-A service can narrow the contract, and says so in the header of its wrappers.
-Google Docs adds these limits:
-
-- The images and the tables of the content are not copied.
-- The Document is the first positional argument and the content the second. A
-  content that starts with a dash needs `--` before it.
-
 ## Template
 
 ### ZSH Wrapper
@@ -128,11 +119,9 @@ __ = {
 The test lives in `<service>/__lib/<entity>/__tests__/<entity>Append.js`.
 
 The vitest test covers the module only. It mocks `callApi` and `read` through
-`__` and mostly checks three behaviors:
+`__` and checks at least three behaviors:
 
 - Given some content, the module calls `callApi` with it, after the existing
   text.
 - A `contentFile` wins over `content`, and its content is added.
 - The returned value is the entity, read again after the change.
-
-The zsh wrapper and the bin are so thin that they need no test.

@@ -105,7 +105,8 @@ table "${(F)rows}"
 The test lives in `<service>/<entity>/__tests__/<service>-<entity>-list.bats`.
 
 `list` has a bats test, because `table` aligns the columns and the colors depend
-on the terminal.
+on the terminal. `list-raw` and `table` have their own tests, so this one only
+covers the transformation.
 
 The test mocks `list-raw` with canned lines, and covers:
 

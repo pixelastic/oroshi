@@ -1,8 +1,6 @@
 # Architecture
 
-This file defines the overall architecture of each API service. They all follow
-the same pattern, making creating a new one easy by following the current
-documentation.
+All API services follow this architecture.
 
 ## ZSH and JavaScript
 
@@ -27,6 +25,7 @@ api/
 ├── __shared/
 │   └── __lib/
 │       ├── package.json
+│       ├── getJsonFromOptions.js
 │       ├── parseBinArgs.js
 │       ├── queryString.js
 │       └── rawColumn.js
@@ -53,10 +52,10 @@ api/
 Each `<service>` folder contains:
 
 - an `<entity>` folder per entity, to hold the ZSH wrappers
-  - `<entity>-search`
-  - `<entity>-list`
-  - `<entity>-list-raw`
-  - `<entity>-read`
+  - `<service>-<entity>-search`
+  - `<service>-<entity>-list`
+  - `<service>-<entity>-list-raw`
+  - `<service>-<entity>-read`
   - etc.
 - a `__docs/` folder:
   - a `GLOSSARY.md` to define the vocabulary of the service
@@ -79,8 +78,7 @@ Each `<service>` folder contains:
 The `list` wrapper has no module. It calls `list-raw` and adds colors and
 `table`.
 
-A service with a single entity keeps its `<entity>` folder. The layout does not
-change.
+A single-entity service keeps its `<entity>` folder.
 
 ## Shared package
 
@@ -93,8 +91,12 @@ every service needs. Services import from it, for example
 - `queryString.js` turns an object of query parameters into a query string. It
   sends a list as `key[]`, and a list of objects as `key[index][property]`.
 - `getJsonFromOptions.js` gets a JSON value from the options of a command.
-- `parseBinArgs.js` parses the arguments of a bin into `positional`, `named` and
-  `_`. It calls the `setAccount` of the service with the `--account` flag.
+- `parseBinArgs.js` parses the arguments of a bin with the native `parseArgs`,
+  in strict mode: every flag must be declared in the `options` of the bin, and
+  an unknown flag throws the native error. It returns `positional` (the first
+  positional argument), `named` (the other flags, with camelCase names) and `_`
+  (all the positional arguments). It calls the `setAccount` of the service with
+  the `--account` flag.
 
 Move any other code that several services share there.
 
@@ -115,17 +117,18 @@ Each service has a glossary that defines its own vocabulary. See
   [`format<Entity>.js`](reference/lib/formatEntity.md).
 - Other files carry the entity in their name (e.g. `record/recordListRaw.js`).
 - Modules take one options object, return data and print nothing. The bin
-  unpacks the positional argument and the named flags into that object. Its keys
-  are the `<entity>Id`, the anchors and the filters.
+  unpacks the arguments into that object, as described in
+  [arguments.md](arguments.md#parsing).
 - Bins are in kebab-case and named like their wrapper
   (`bin/<service>-<entity>-list-raw.js`).
 - Bins parse arguments with the shared [`parseBinArgs`](#shared-package), call
-  the module and print the result with `console.log`. They have no `try/catch`.
+  the module and print the result with `console.log`.
 
 ## Accounts
 
-If a service requires several accounts, one is defined as the default one. Other
-accounts can be selected by using `--account <accountName>`.
+If a service supports several accounts, the account without a suffix
+(`<SERVICE>_TOKEN`, `tokens.json`) is the default one. Other accounts can be
+selected by using `--account <accountName>`.
 
 ```text
 $ <service>-<entity>-list-raw

@@ -2,9 +2,6 @@
 
 The words used across `docs/api/`. Every doc uses these terms, and no others.
 
-This file holds the generic rules. The exceptions are defined in the files of
-the commands concerned.
-
 ## Language
 
 **Service**:
@@ -24,7 +21,8 @@ _Avoid_: object, item, resource
 **Command**:
 
 An executable named after one service, one entity and one verb, that a human or
-an agent runs from the shell (`<service>-<entity>-<action>`).
+an agent runs from the shell (`<service>-<entity>-<action>`). The only exception
+is [`<service>-login`](reference/commands/login.md), which has no entity.
 
 _Avoid_: script, function, tool, bare helper
 
@@ -69,6 +67,11 @@ named. Filters are named too.
 
 _Avoid_: option, switch, parameter
 
+**Filter**:
+
+A named argument that narrows the entities that a command returns, such as
+`--date-min`. `--limit` and `--account` are not filters.
+
 **Anchor**:
 
 When an id is not enough to uniquely identify an entity, an anchor is needed
@@ -92,8 +95,8 @@ _Avoid_: loose schema, free schema
 
 **Page**:
 
-An entity made of a long text, such as a Google Doc, a Notion page or a
-Confluence page. It has its own verbs, `append`, `replace` and `remove`. See
+An entity that holds a text edited piece by piece, such as a Google Doc, a
+Notion page or a Confluence page. Its vocabulary and its verbs are defined in
 [reference/pages/README.md](reference/pages/README.md).
 
 **Wrapper**:

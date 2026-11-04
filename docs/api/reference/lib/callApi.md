@@ -4,10 +4,12 @@
 
 ## Role
 
-- `callApi` is the only way to talk to the service.
-- It is the only module that talks to the network.
+- `callApi` is the only way for a command module to talk to the service. The
+  `login` module and the token refresh of an OAuth API are the exceptions, see
+  [oauth.md](../../oauth.md).
+- Among the command modules, it is the only one that talks to the network.
 - It exposes the HTTP call as `__.fetch`, so tests mock it.
-- Other modules call it through `__` (`__.callApi()`), so their tests mock it.
+- Command modules call it through `__` (`__.callApi()`), so their tests mock it.
 - It throws a `firostError` on every failure
   ([architecture.md](../../architecture.md#errors)).
 - Each service owns one, in `<service>/__lib/callApi.js`.

@@ -6,7 +6,9 @@ whole command.
 ## Role
 
 - Every service has one, in `<service>/__lib/setAccount.js`.
-- No other module receives the account, and none forwards it.
+- No command module receives the account, and none forwards it. Only the
+  [`login`](../commands/login.md) module takes it, to write the tokens of that
+  account.
 - It changes the private `account` that `getConfig` holds in its `__`.
 
 ## Inputs/Outputs

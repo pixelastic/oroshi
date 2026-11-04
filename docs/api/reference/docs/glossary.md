@@ -17,7 +17,8 @@ Write the glossary of the service with the `/glossary` skill, in the
 
 ## Required content
 
-Whatever the drill settles, the glossary must define these points:
+Whatever the `/glossary` interview settles, the glossary must define these
+points:
 
 - **Authentication**: the kind of the service, a Key API or an OAuth API. An
   OAuth API needs a [`login`](../commands/login.md), see

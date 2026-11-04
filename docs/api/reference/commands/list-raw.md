@@ -1,7 +1,8 @@
 # `list-raw`
 
 `list-raw` prints the entities of a service as plain lines, one entity per line,
-with the most common fields, so that agents and scripts can parse them easily.
+with the id first, then the fields that the developer picks for the `# Fields:`
+header, so that agents and scripts can parse them easily.
 
 ## Example
 
@@ -20,14 +21,15 @@ recB▮Lyon Meetup▮▮
 - A newline inside a value becomes a space.
 - The module removes `▮` and `▯` from the values, so they cannot break the
   columns. `rawColumn` from `@oroshi/api-shared` applies these rules to one
-  value.
+  value. A nil value stays an empty column, and an object is written as JSON.
 - An empty listing prints one empty line.
 
 `list-raw` sits on top of [`search`](search.md): it passes its flags to
 `search`, gets the JSON back and turns it into lines.
 
-If the service has no endpoint to search the entities, `search` is skipped.
-`list-raw` then calls `callApi` directly, with the most realistic call.
+If `search` is skipped (see [`search`](search.md#role)), `list-raw` calls the
+endpoint of the service that returns the entities of this type, with the filters
+from the flags.
 
 ## Arguments
 
@@ -167,8 +169,7 @@ __ = {
 
 The test lives in `<service>/__lib/<entity>/__tests__/<entity>ListRaw.js`.
 
-The vitest test covers the module only. The zsh wrapper and bin are so thin we
-don't need to test them.
+The vitest test covers the module only.
 
 The `toLine` test gives `toLine` a minimal inline entity and asserts the line it
 builds.

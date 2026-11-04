@@ -40,10 +40,10 @@ vi.spyOn(__, 'getConfig').mockResolvedValue({ token: 'secret-token' });
 
 ### Mocking HTTP
 
-`callApi` is the only module that talks to the network, and it has its own
-tests. They mock the HTTP call (`__.fetch`) to return a response with a status
-and a body, and assert on the request it received (url, method, headers, body).
-The behaviors to cover are listed in
+`callApi` is the only command module that talks to the network, and it has its
+own tests. They mock the HTTP call (`__.fetch`) to return a response with a
+status and a body, and assert on the request it received (url, method, headers,
+body). The behaviors to cover are listed in
 [`callApi`](reference/lib/callApi.md#template).
 
 Every other module mocks `callApi` whenever it needs an API response. Their
@@ -85,13 +85,3 @@ describe('entityRead', () => {
 
 Module tests mock `callApi` and return a minimal inline object, as in the
 template above. A command whose test needs more says so in its own file.
-
-## bats
-
-Only one file requires a `bats` test: `list`. `list` reads data from `list-raw`,
-colors the id, and passes it to `table` for a nicer display in columns. An empty
-`list-raw` makes `list` stop with a non-zero status.
-
-Its test mocks `list-raw` and asserts the final output based on various inputs.
-Both `list-raw` and `table` are themselves tested, so the tests of `list` only
-focus on the transformation aspect.

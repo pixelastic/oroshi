@@ -11,13 +11,9 @@ exit criterion of the previous step is met.
 **Exit criterion:** The glossary of the service exists and defines its
 authentication kind, its entities, its custom verbs and its terms.
 
-Write the glossary with the `/glossary` skill. It defines:
-
-- the authentication kind of the service,
-- its entities, each with a fixed or open schema (see
-  [GLOSSARY.md](GLOSSARY.md)),
-- its custom verbs,
-- its terms ([reference/docs/glossary.md](reference/docs/glossary.md)).
+Write the glossary of the service as described in
+[reference/docs/glossary.md](reference/docs/glossary.md). That file holds the
+method and the required content.
 
 ## Step 2 — Validate the entities
 
@@ -87,7 +83,7 @@ For each entity, implement the commands in this order, one at a time. Copy the
 template of each verb:
 
 1. [`search`](reference/commands/search.md), first: `list-raw` sits on top of
-   it. Skip it only if the service has no endpoint to search the entities.
+   it. Its Role section says when to skip it.
 2. [`list-raw`](reference/commands/list-raw.md). Write its `# Fields:` header
    only with the fields confirmed in step 2.
 3. [`list`](reference/commands/list.md)

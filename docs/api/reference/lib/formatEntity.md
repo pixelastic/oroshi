@@ -15,7 +15,7 @@ a command prints.
   to make the entity easier for other commands to consume.
 - Having one central function ensures all commands deal with the same shape of
   data.
-- Other modules call it through `__` (`__.formatEntity()`), so tests mock it.
+- Command modules call it through `__` (`__.formatEntity()`), so tests mock it.
 
 ## Inputs/Outputs
 

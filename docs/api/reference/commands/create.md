@@ -109,11 +109,9 @@ __ = {
 The test lives in `<service>/__lib/<entity>/__tests__/<entity>Create.js`.
 
 The vitest test covers the module only. It mocks `callApi` through `__` and
-mostly checks three behaviors:
+checks at least three behaviors:
 
 - Given the content, the module calls `callApi` with the right method, path and
   body.
 - Given a `-file` flag, the file content wins over the inline value.
 - The returned value is the response of the API, passed through `formatEntity`.
-
-The zsh wrapper and the bin are so thin that they need no test.
