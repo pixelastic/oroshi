@@ -50,7 +50,8 @@ Launch every Goldfish in a single message, one `Agent` call each, so they run in
 parallel. Wait for the report of every Goldfish before Step 3.
 
 A Goldfish that errors, times out or returns a malformed report is a fatal
-error. Do not retry it and do not continue the round. Report the failure to the
+error. A report is malformed when one of its findings has no severity or no
+quote. Do not retry it and do not continue the round. Report the failure to the
 user first, with the Goldfish name and the error, so the user fixes it before
 any result is used.
 
@@ -107,15 +108,13 @@ Markdown files.
 **Exit criterion:** Every finding of the highest tier is fixed, asked about or
 rejected with a reason. The recap is printed.
 
-First, check every merged finding. Reject the finding when it has no severity,
-no quote, or a quote that does not match the doc, and say why. Then fix only the
-highest tier present among the findings you did not reject, to keep the diff
-readable. Every finding of a lower tier is `Ignored`.
+Fix only the highest tier present among the merged findings, to keep the diff
+readable. Every lower tier is `Ignored`. When only `nitpick` remains, fix the
+nitpicks of every Goldfish, the gap Goldfish included.
 
-- `blocking` present: fix the `blocking` findings.
-- No `blocking`, `important` present: fix the `important` findings.
-- Only `nitpick` present: fix the `nitpick` findings of every Goldfish, the gap
-  Goldfish included.
+Edit a Markdown file outside the target list only when it lies in the directory
+of a target file or in a subdirectory of it. A finding that needs any other file
+is `Ignored`, with the path of that file.
 
 Go through the findings to fix, blocking first. For each finding:
 
@@ -124,8 +123,8 @@ Go through the findings to fix, blocking first. For each finding:
    Markdown rules afterward.
 3. Apply the fix with the `Edit` tool.
 
-Fix the findings that need no user opinion, print the recap below, then ask the
-user about the rest.
+Fix every finding that matches none of the cases below, print the recap below,
+then ask the user about the findings that match one.
 
 Ask the user only when the fix changes what a reader must do. Cases: two
 passages disagree, the readings of a passage lead to different actions, you
@@ -134,13 +133,15 @@ not hold. Ask through `/grill-me`: one question at a time, with your recommended
 answer. Show both quotes and offer the options. When the answer to one question
 settles another finding, ask them as one question. After each answer, apply the
 matching fix with the `Edit` tool before you ask the next question. A question
-without its fix is not finished.
+without its fix is not finished. The user may skip a question: the finding moves
+to `Ignored`, and you ask the next question.
 
 A clarity finding lists competing readings and a proposed wording. Apply the
 proposed wording when it keeps the meaning the docs clearly intend.
 
 An ambiguity finding shows that a reader without context misreads a passage.
-Reword the passage so the reading you hold is the only one.
+Reword the passage so that your own reading, formed in Step 3 before you opened
+the summary, is the only possible one.
 
 A concision finding names the place where a repeated rule stays. Keep the rule
 there, and remove it from every other place, or replace it with a pointer to the
@@ -170,13 +171,17 @@ answers, apply the fixes and print again the groups that changed.
 
 **Goal:** Give the user the outcome.
 
-**Exit criterion:** The reply ends with one severity emoji and its label.
+**Exit criterion:** The first message starts, and the last message ends, with
+one severity emoji and its label.
 
-The recap of Step 4 comes first in the reply. Write the last line of the reply
-as the emoji and the label of the highest severity of any Goldfish finding or
-ambiguity finding, rejected ones included. The fix outcome does not change it.
+The recap of Step 4 comes after the first line of the first message. Write that
+first line, and the last line of the last message, as the emoji and the label of
+the highest severity of any Goldfish finding or ambiguity finding, rejected ones
+included. The fix outcome does not change it. The last message is the one after
+the user answered or skipped every question, or the first message when it asks
+none.
 
-| Highest severity | Last line    |
+| Highest severity | Emoji line   |
 | ---------------- | ------------ |
 | `blocking`       | 🔴 blocking  |
 | `important`      | 🟠 important |
@@ -187,24 +192,24 @@ Stop there. Do not start a second round: one invocation is one round.
 
 ## Common Rationalizations
 
-| Rationalization                                          | Reality                                                          |
-| -------------------------------------------------------- | ---------------------------------------------------------------- |
-| "I'll give the Goldfish some context, it will find more" | Context is what hides defects. A reader without it finds them.   |
-| "The fixes changed the docs, I should run another round" | See Step 5.                                                      |
-| "The finding is wrong, I'll skip it silently"            | Reject it with a reason, in the reply.                           |
-| "Both passages are fine, I'll pick one and move on"      | See Step 4.                                                      |
-| "The Goldfish could fix the typo itself"                 | A Goldfish never edits. The Elephant owns every edit.            |
-| "I'll launch the Goldfish one by one"                    | See Step 2.                                                      |
-| "Two Goldfish found it, I'll fix it twice"               | Merge duplicates first. One defect is one fix.                   |
-| "I'll paste the glossary into the prompt to help"        | See Step 2.                                                      |
-| "The gap is obvious, I'll write the missing answer"      | The docs lack it. Ask the user, or find it in a referenced file. |
-| "I know which reading the author meant"                  | You are not a Goldfish. If the docs do not say, ask the user.    |
-| "I'll delete the repeated rule, the other copy has it"   | Check the kept copy holds every detail first. Never lose a rule. |
-| "The Goldfish summarized it wrong, that is its fault"    | A wrong summary shows an ambiguous doc. Report the mismatch.     |
-| "I'll read the summary first, then skim the docs"        | Form your own reading first. Else you only confirm the summary.  |
-| "I'll fix the nitpicks too, while I am here"             | See Step 4.                                                      |
-| "The code says otherwise, I'll change the doc"           | The doc is right. Use the code to check a fact, never to decide. |
-| "I'll ask all the questions in one message"              | See Step 4.                                                      |
+| Rationalization                                          | Reality                                                         |
+| -------------------------------------------------------- | --------------------------------------------------------------- |
+| "I'll give the Goldfish some context, it will find more" | Context is what hides defects. A reader without it finds them.  |
+| "The fixes changed the docs, I should run another round" | See Step 5.                                                     |
+| "The finding is wrong, I'll skip it silently"            | Reject it with a reason, in the reply.                          |
+| "Both passages are fine, I'll pick one and move on"      | See Step 4.                                                     |
+| "The Goldfish could fix the typo itself"                 | A Goldfish never edits. The Elephant owns every edit.           |
+| "I'll launch the Goldfish one by one"                    | See Step 2.                                                     |
+| "Two Goldfish found it, I'll fix it twice"               | See Step 3.                                                     |
+| "I'll paste the glossary into the prompt to help"        | See Step 2.                                                     |
+| "The gap is obvious, I'll write the missing answer"      | See Step 4.                                                     |
+| "I know which reading the author meant"                  | You are not a Goldfish. If the docs do not say, ask the user.   |
+| "I'll delete the repeated rule, the other copy has it"   | See Step 4.                                                     |
+| "The Goldfish summarized it wrong, that is its fault"    | A wrong summary shows an ambiguous doc. Report the mismatch.    |
+| "I'll read the summary first, then skim the docs"        | Form your own reading first. Else you only confirm the summary. |
+| "I'll fix the nitpicks too, while I am here"             | See Step 4.                                                     |
+| "The code says otherwise, I'll change the doc"           | See Step 4.                                                     |
+| "I'll ask all the questions in one message"              | See Step 4.                                                     |
 
 ## Checklist
 
@@ -219,4 +224,4 @@ Stop there. Do not start a second round: one invocation is one round.
 - [ ] Each summary mismatch listed as an ambiguity finding
 - [ ] User asked only as Step 4 says
 - [ ] `markdown-fix` and `markdown-lint --fix` run on every modified file
-- [ ] Last line is the severity emoji and its label
+- [ ] First line and last line are the severity emoji and its label
