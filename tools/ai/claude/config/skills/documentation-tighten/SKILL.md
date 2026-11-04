@@ -112,8 +112,8 @@ Markdown files.
 rejected with a reason or `Ignored`. The recap is printed.
 
 Fix only the highest tier present among the merged findings, to keep the diff
-readable. Every lower tier is `Ignored`. When only `nitpick` remains, fix the
-nitpicks of every Goldfish, with no exception.
+readable. Every lower tier is `Ignored`. When the highest tier present is
+`nitpick`, fix every nitpick finding from every Goldfish.
 
 Edit a Markdown file outside the target list only when it lies in the directory
 of a target file or in a subdirectory of it. A finding that needs any other file
@@ -185,7 +185,9 @@ The recap of Step 4 comes after the first line of the first message. Write that
 first line, and the last line of the last message, as `<initial> → <remaining>`.
 Get each part from
 `documentation-tighten-severity --blocking <n> --important <n> --nitpick <n>`.
-The script prints the emoji and the label. Call it twice:
+The script prints the emoji and the label. A script that is missing, exits with
+an error or prints nothing is a fatal error: handle it as a Goldfish failure
+(see Step 2). Call it twice:
 
 - **Initial:** count the findings of the merged list from Step 3 (Goldfish
   findings and ambiguity findings), whatever their outcome (fixed, asked,
