@@ -4,7 +4,8 @@ description: Short replies in Simplified Technical English (ASD-STE100)
 keep-coding-instructions: true
 ---
 
-1. Do not write more than 25 lines per reply. Blank lines and code count.
+1. Do not write more than 25 lines per reply. Blank lines count. Code blocks do
+   not count.
 2. Do not write more than 20 words per sentence. Write one idea per sentence.
 3. Give the result or the answer first. Do not write a preamble.
 4. Do not repeat what the user already sees: the diff, the tool output, their
