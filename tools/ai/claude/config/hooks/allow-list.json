@@ -102,7 +102,6 @@
   "docker run",
   "docker",
   "docker-compose version",
-  "documentation-tighten-severity",
   "dpkg -L",
   "dpkg -l",
   "du",
