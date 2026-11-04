@@ -47,7 +47,19 @@ src/
 └── transport/      # sends API requests
 ```
 
-- Show component interaction, control flow, or data flow with Mermaid:
+- Show component interaction, control flow, or data flow with Mermaid. Write the
+  diagram to a `.mmd` file in `~/local/tmp/oroshi/claude/show-me/`, never in
+  `/tmp`: the user's browser cannot read it. Convert it with `mmd2svg -f`
+  (themed SVG, written next to the source), then open the SVG for the user. Use
+  `mmd2png -f` instead when the user needs a PNG. Do not paste the raw Mermaid
+  in the reply.
+
+```text
+Bash(mmd2svg -f path/to/show-me-{description}.mmd)
+Bash(img-open path/to/show-me-{description}.svg)
+```
+
+Example of the `.mmd` content:
 
 ```mermaid
 sequenceDiagram
