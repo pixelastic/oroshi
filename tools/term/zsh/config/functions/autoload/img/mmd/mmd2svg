@@ -1,0 +1,36 @@
+# Convert Mermaid files to themed SVG files, next to the source
+# Usage:
+# $ mmd2svg ./diagram.mmd        # Writes ./diagram.svg
+# $ mmd2svg -f ./*.mmd           # Overwrites existing destinations
+setopt local_options err_return
+
+zparseopts -E -D \
+  f=flagForce \
+  -force=flagForce
+
+local isForce=${#flagForce}
+local hasFailed=0
+
+for input in "$@"; do
+  local inputPath=${input:a}
+
+  # Fail on missing files
+  if [[ ! -f $inputPath ]]; then
+    echoerr "✘ $inputPath does not exist"
+    hasFailed=1
+    continue
+  fi
+
+  local outputPath="${inputPath:r}.svg"
+
+  # Fail if output already exists (unless --force)
+  if [[ -e $outputPath ]] && [[ $isForce == "0" ]]; then
+    echoerr "✘ $outputPath already exists. Pass --force / -f to overwrite"
+    hasFailed=1
+    continue
+  fi
+
+  node ${functions_source[$0]:A:h:h}/__lib/mmd2svg.js $inputPath $outputPath || hasFailed=1
+done
+
+return $hasFailed
