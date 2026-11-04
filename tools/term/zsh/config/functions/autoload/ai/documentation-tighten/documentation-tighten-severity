@@ -1,0 +1,31 @@
+# Print the emoji and label of the highest severity among finding counts
+# Usage:
+# $ documentation-tighten-severity --blocking 1 --important 0 --nitpick 25  # 🔴 blocking
+# $ documentation-tighten-severity --blocking 0 --important 0 --nitpick 0   # 🟢 none
+setopt local_options err_return
+
+zparseopts -E -D \
+  -blocking:=flagBlocking \
+  -important:=flagImportant \
+  -nitpick:=flagNitpick
+
+local blocking=${flagBlocking[2]}
+local important=${flagImportant[2]}
+local nitpick=${flagNitpick[2]}
+
+# The three counts are required, each a non-negative integer
+local count
+for count in "$blocking" "$important" "$nitpick"; do
+  if [[ ! "$count" =~ '^[0-9]+$' ]]; then
+    echoerr "Usage: documentation-tighten-severity --blocking <n> --important <n> --nitpick <n>"
+    return 1
+  fi
+done
+
+# Highest severity wins
+local label="🟢 none"
+(( nitpick > 0 )) && label="🟡 nitpick"
+(( important > 0 )) && label="🟠 important"
+(( blocking > 0 )) && label="🔴 blocking"
+
+echo "$label"

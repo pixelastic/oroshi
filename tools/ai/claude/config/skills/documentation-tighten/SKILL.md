@@ -105,8 +105,8 @@ reading of the docs:
 **Goal:** Apply the merged findings of the highest severity tier to the local
 Markdown files.
 
-**Exit criterion:** Every finding of the highest tier is fixed, asked about or
-rejected with a reason. The recap is printed.
+**Exit criterion:** Every finding of the highest tier is fixed, asked about,
+rejected with a reason or `Ignored`. The recap is printed.
 
 Fix only the highest tier present among the merged findings, to keep the diff
 readable. Every lower tier is `Ignored`. When only `nitpick` remains, fix the
@@ -118,7 +118,9 @@ is `Ignored`, with the path of that file.
 
 Go through the findings to fix, blocking first. For each finding:
 
-1. Read the quoted passages in the doc.
+1. Read the quoted passages in the doc, even if an earlier fix already read
+   them. When an earlier fix made the finding obsolete, reject it with the
+   reason "already resolved by another fix".
 2. Pick the fix. Follow the nearest `GLOSSARY.md`. `markdown-lint` checks the
    Markdown rules afterward.
 3. Apply the fix with the `Edit` tool.
@@ -157,7 +159,8 @@ docs. When the code contradicts the doc, the doc is right: do not change it to
 match the code.
 
 Run `markdown-fix <file>` then `markdown-lint --fix <file>` on every modified
-file.
+file. A failure of either command is a fatal error: handle it as a Goldfish
+failure (see Step 2).
 
 Write the recap in English, with four groups, in this order. After the user
 answers, apply the fixes and print again the groups that changed.
@@ -172,21 +175,26 @@ answers, apply the fixes and print again the groups that changed.
 **Goal:** Give the user the outcome.
 
 **Exit criterion:** The first message starts, and the last message ends, with
-one severity emoji and its label.
+one severity line: the initial severity, an arrow, the remaining severity.
 
 The recap of Step 4 comes after the first line of the first message. Write that
-first line, and the last line of the last message, as the emoji and the label of
-the highest severity of any Goldfish finding or ambiguity finding, rejected ones
-included. The fix outcome does not change it. The last message is the one after
-the user answered or skipped every question, or the first message when it asks
-none.
+first line, and the last line of the last message, as `<initial> → <remaining>`.
+Get each part from
+`documentation-tighten-severity --blocking <n> --important <n> --nitpick <n>`.
+The script prints the emoji and the label. Call it twice:
 
-| Highest severity | Emoji line   |
-| ---------------- | ------------ |
-| `blocking`       | 🔴 blocking  |
-| `important`      | 🟠 important |
-| `nitpick`        | 🟡 nitpick   |
-| none             | 🟢 none      |
+- **Initial:** count all Goldfish findings and ambiguity findings, whatever
+  their outcome (fixed, asked, rejected or `Ignored`).
+- **Remaining:** count the findings that are `Asked` or `Ignored` when you write
+  the line.
+
+The last message is the one after the user answered or skipped every question,
+or the first message when it asks none.
+
+A round that ends early (a Step 1 stop or a fatal Goldfish error) carries no
+severity line.
+
+Example: `🟠 important → 🟡 nitpick`.
 
 Stop there. Do not start a second round: one invocation is one round.
 
@@ -195,33 +203,22 @@ Stop there. Do not start a second round: one invocation is one round.
 | Rationalization                                          | Reality                                                         |
 | -------------------------------------------------------- | --------------------------------------------------------------- |
 | "I'll give the Goldfish some context, it will find more" | Context is what hides defects. A reader without it finds them.  |
-| "The fixes changed the docs, I should run another round" | See Step 5.                                                     |
-| "The finding is wrong, I'll skip it silently"            | Reject it with a reason, in the reply.                          |
-| "Both passages are fine, I'll pick one and move on"      | See Step 4.                                                     |
-| "The Goldfish could fix the typo itself"                 | A Goldfish never edits. The Elephant owns every edit.           |
-| "I'll launch the Goldfish one by one"                    | See Step 2.                                                     |
-| "Two Goldfish found it, I'll fix it twice"               | See Step 3.                                                     |
-| "I'll paste the glossary into the prompt to help"        | See Step 2.                                                     |
-| "The gap is obvious, I'll write the missing answer"      | See Step 4.                                                     |
-| "I know which reading the author meant"                  | You are not a Goldfish. If the docs do not say, ask the user.   |
-| "I'll delete the repeated rule, the other copy has it"   | See Step 4.                                                     |
+| "The fixes changed the docs, I should run another round" | One invocation is one round. Stop after Step 5.                 |
 | "The Goldfish summarized it wrong, that is its fault"    | A wrong summary shows an ambiguous doc. Report the mismatch.    |
 | "I'll read the summary first, then skim the docs"        | Form your own reading first. Else you only confirm the summary. |
-| "I'll fix the nitpicks too, while I am here"             | See Step 4.                                                     |
-| "The code says otherwise, I'll change the doc"           | See Step 4.                                                     |
-| "I'll ask all the questions in one message"              | See Step 4.                                                     |
 
 ## Checklist
 
 - [ ] Target resolved to local Markdown files, or the round stopped
 - [ ] Goldfish launched and prompted as Step 2 says
 - [ ] Duplicate findings merged before any fix
-- [ ] Every finding of the highest tier fixed, asked about or rejected with a
-      reason
+- [ ] Every finding of the highest tier fixed, asked about, rejected with a
+      reason or `Ignored`
 - [ ] Recap printed in English, with `Asked`, `Fixed`, `Rejected` and `Ignored`
 - [ ] Each repeated rule kept in one place, with no rule lost
 - [ ] Own reading of the docs formed before reading the summary
 - [ ] Each summary mismatch listed as an ambiguity finding
 - [ ] User asked only as Step 4 says
 - [ ] `markdown-fix` and `markdown-lint --fix` run on every modified file
-- [ ] First line and last line are the severity emoji and its label
+- [ ] First line and last line are the initial and the remaining severity, each
+      with its emoji and label
