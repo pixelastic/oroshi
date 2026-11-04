@@ -69,8 +69,7 @@ its `callApi.js`.
 `tools/ai/claude/config/hooks/allow-list.json`.
 
 Add every command of step 3 with `skills-allowlist-add <name>...`. Do not edit
-`allow-list.json` by hand: the helper keeps it sorted. Add the commands as soon
-as you create each one, so that Claude can test it without a permission prompt.
+`allow-list.json` by hand: the helper keeps it sorted.
 
 ## Step 7 — Implement the commands
 
