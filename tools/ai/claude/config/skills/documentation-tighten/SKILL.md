@@ -55,8 +55,9 @@ parallel.
 
 A Goldfish that errors, times out or returns a malformed report is a fatal
 error. A report of a finding Goldfish (every Goldfish except `summary`) is
-malformed when one of its findings has no severity or no quote. The report of
-the `summary` Goldfish is malformed when it is empty.
+malformed when it is empty, or when one of its findings has no quote or a
+severity other than `blocking`, `important` or `nitpick`. The report of the
+`summary` Goldfish is malformed when it is empty.
 
 A fatal error stops the round. Do not retry and do not continue the round. Keep
 the edits already applied. Report the failure to the user before any other
@@ -94,7 +95,7 @@ finding:
 - Keep the `Keep in` or `Shorter wording` of the concision Goldfish, when the
   group has one. When the group also has a `Proposed wording`, the
   `Proposed wording` guides the fix, and the `Shorter wording` applies only when
-  it keeps every rule of the `Proposed wording`.
+  the `Shorter wording` keeps every rule of the `Proposed wording`.
 
 A no-finding sentence counts as zero findings and adds nothing to the list. When
 every Goldfish reports zero, the list is empty, and that outcome is valid: tell
@@ -123,24 +124,23 @@ reading of the docs:
 **Goal:** Apply the merged findings to the local Markdown files, in two phases:
 the automated fixes, then the human fixes.
 
-**Exit criterion:** Every finding is fixed, asked about, rejected with a reason
-or `Ignored`. The recap of each phase with a fix is printed.
+**Exit criterion:** Every finding is fixed, asked about, rejected or `Ignored`.
+The recap of each phase with a fix is printed.
 
 The phases and the statuses `Asked` and `Ignored` are internal. Never write the
 words "Phase", `Asked` or `Ignored` to the user.
 
 Edit a Markdown file outside the target list only when it lies in the same
-directory as a target file, or in a subdirectory of that directory. A finding
-that needs any other file is an ask case, and its question names the path of
-that file.
+directory as a target file, or in a subdirectory of that directory. When a
+finding needs any other file, its question names the path of that file.
 
 Within each phase, fix the findings in this order: blocking, important, nitpick.
 For each finding:
 
 1. Read the quoted passages in the doc, even if an earlier fix already read
-   them. Reject the finding, with a reason, when an earlier fix made it obsolete
-   ("already resolved by another fix") or when you judge it wrong. You hold more
-   context than the Goldfish, so your judgment prevails.
+   them. Reject the finding when an earlier fix made it obsolete ("already
+   resolved by another fix") or when you judge it wrong. You hold more context
+   than the Goldfish, so your judgment prevails.
 2. Pick the fix. Follow the nearest `GLOSSARY.md`. `markdown-lint` checks the
    Markdown rules afterward.
 3. Apply the fix with the `Edit` tool.
@@ -153,24 +153,26 @@ reference holds, or the fix needs a file outside the allowed scope above.
 
 #### Automated fixes
 
-Fix every finding that matches no ask case, whatever its severity. Run the
-end-of-phase commands (see "Fix rules"), then print the recap of the Automated
-fixes phase. When <n> findings match an ask case (<n> at least 1), end the last
-message of this phase with "I have <n> unanswered questions. May I ask them?",
-then wait for the answer. The user may commit meanwhile. When the user declines,
-the findings stay `Asked` and the round ends.
+Fix every finding that matches no ask case, of any severity, in the order set
+above. Run the end-of-phase commands (see "Fix rules"), then print the recap of
+the Automated fixes phase. When <n> findings match an ask case (<n> at least 1),
+end the last message of this phase with "I have <n> unanswered questions. May I
+ask them?", then wait for the answer. The user may commit meanwhile. When the
+user declines, the findings stay `Asked` and the round ends.
 
 #### Human fixes
 
 Ask the user about every finding that matches an ask case, one question at a
 time, with your recommended answer. Show every quote of the finding (both quotes
-for a disagreement) and offer the options. When the answer to one finding also
-settles another finding, ask one question that covers both findings. The user
-may skip a question: the finding moves to `Ignored`. Apply no fix of an asked
-finding before the last answer. After the last answer, apply every matching fix,
-run the end-of-phase commands (see "Fix rules"), print the recap of the Human
-fixes phase and end the round. When the user ends the session without answering,
-the finding stays `Asked`.
+for a disagreement). Give one concrete example that shows the problem: a
+realistic case where the passage leads a reader to two different actions. Offer
+the options. When the answer to one finding also settles another finding, ask
+one question that covers both findings. The user may skip a question: the
+finding moves to `Ignored`. Apply no fix of an asked finding before the last
+answer. After the last answer, apply every matching fix, run the end-of-phase
+commands (see "Fix rules"), print the recap of the Human fixes phase and end the
+round. When the user ends the session without answering, the finding stays
+`Asked`.
 
 #### Fix rules
 
@@ -215,7 +217,7 @@ what you removed and what you changed. It lists no rejected, `Ignored` or
 
 **Exit criterion:** The user holds every recap printed.
 
-Intermediate messages, such as one question each, carry no recap.
+A message that holds only a question carries no recap.
 
 Stop after the last recap. One invocation is one round.
 
