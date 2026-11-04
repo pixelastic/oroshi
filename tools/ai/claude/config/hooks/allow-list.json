@@ -318,6 +318,7 @@
   "img-height",
   "img-is-png",
   "img-min",
+  "img-open",
   "img-orientation",
   "img-resize",
   "img-svg-create",

@@ -1,0 +1,48 @@
+# Convert Mermaid files to themed PNG files, next to the source
+# Usage:
+# $ mmd2png ./diagram.mmd        # Writes ./diagram.png
+# $ mmd2png -f ./*.mmd           # Overwrites existing destinations
+setopt local_options err_return
+
+zparseopts -E -D \
+  f=flagForce \
+  -force=flagForce
+
+local isForce=${#flagForce}
+local hasFailed=0
+
+for input in "$@"; do
+  local inputPath=${input:a}
+
+  # Fail on missing files
+  if [[ ! -f $inputPath ]]; then
+    echoerr "✘ $inputPath does not exist"
+    hasFailed=1
+    continue
+  fi
+
+  local outputPath="${inputPath:r}.png"
+
+  # Fail if output already exists (unless --force)
+  if [[ -e $outputPath ]] && [[ $isForce == "0" ]]; then
+    echoerr "✘ $outputPath already exists. Pass --force / -f to overwrite"
+    hasFailed=1
+    continue
+  fi
+
+  # Render in a temp folder so an svg next to the source is never touched
+  local tmpDir="$(mktemp --directory)"
+  local tmpMmd="$tmpDir/${inputPath:t}"
+  local tmpSvg="${tmpMmd:r}.svg"
+  local tmpPng="${tmpMmd:r}.png"
+
+  cp $inputPath $tmpMmd
+  mmd2svg $tmpMmd &&
+  svg2png $tmpSvg &&
+  mv --force $tmpPng $outputPath ||
+  hasFailed=1
+
+  rm --recursive --force $tmpDir
+done
+
+return $hasFailed
