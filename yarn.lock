@@ -1437,6 +1437,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@oroshi/img@workspace:tools/term/zsh/config/functions/autoload/img/__lib":
+  version: 0.0.0-use.local
+  resolution: "@oroshi/img@workspace:tools/term/zsh/config/functions/autoload/img/__lib"
+  dependencies:
+    firost: "npm:5.11.0"
+    golgoth: "npm:3.1.0"
+    imoen: "npm:3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@oroshi/make@workspace:tools/term/zsh/config/functions/autoload/api/make/__lib":
   version: 0.0.0-use.local
   resolution: "@oroshi/make@workspace:tools/term/zsh/config/functions/autoload/api/make/__lib"

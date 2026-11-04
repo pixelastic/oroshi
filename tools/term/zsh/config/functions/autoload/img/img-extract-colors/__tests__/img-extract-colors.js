@@ -5,7 +5,7 @@ import { run } from 'firost';
 const testDirectory = import.meta.dirname;
 const scriptPath = path.resolve(
   testDirectory,
-  '../__lib/img-extract-colors.js',
+  '../../__lib/img-extract-colors.js',
 );
 const fixturesPath = path.resolve(testDirectory, 'fixtures');
 

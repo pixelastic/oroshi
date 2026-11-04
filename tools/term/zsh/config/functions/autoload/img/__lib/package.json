@@ -1,0 +1,13 @@
+{
+  "name": "@oroshi/img",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dependencies of the img-* ZSH helpers",
+  "license": "MIT",
+  "dependencies": {
+    "firost": "5.11.0",
+    "golgoth": "3.1.0",
+    "imoen": "3.0.0"
+  }
+}
