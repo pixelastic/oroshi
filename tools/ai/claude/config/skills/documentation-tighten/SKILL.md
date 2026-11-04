@@ -19,8 +19,6 @@ that reads only the docs and reports findings.
 
 **Exit criterion:** A list of absolute paths of local Markdown files is ready.
 
-The skill edits local Markdown files only.
-
 - Local Markdown file: the target is that file.
 - Local directory: the target is every Markdown file under it, recursively.
 - Anything else (a URL, a Confluence page, a pull request, a missing path, a
@@ -82,14 +80,15 @@ finding:
 
 - Keep the highest severity of the group.
 - Keep every distinct quote.
-- Keep the problem sentence that names the cause most precisely.
+- Keep the problem sentence of the Goldfish whose axis matches the cause of the
+  defect. When several match, keep the one with the highest severity.
 - Keep the `Proposed wording` of the clarity Goldfish, when the group has one.
 - Keep the `Keep in` or `Shorter wording` of the concision Goldfish, when the
   group has one.
 
-A Goldfish that reports its no-finding sentence reports zero findings: it adds
-nothing to the list. When every Goldfish reports zero, the list is empty, and
-that outcome is valid: tell the user the docs hold no finding.
+A no-finding sentence counts as zero findings and adds nothing to the list. When
+every Goldfish reports zero, the list is empty, and that outcome is valid: tell
+the user the docs hold no finding.
 
 The summary Goldfish reports a summary, never a finding. Compare it to your own
 reading of the docs:
@@ -120,11 +119,12 @@ or `Ignored`. The recap of each phase is printed.
 The phases and the statuses `Asked` and `Ignored` are internal. Never write the
 words "Phase", `Asked` or `Ignored` to the user.
 
-Edit a Markdown file outside the target list only when it lies in the directory
-of a target file or in a subdirectory of it. A finding that needs any other file
-is `Ignored`, with the path of that file.
+Edit a Markdown file outside the target list only when it lies in the same
+directory as a target file, or in a subdirectory of that directory. A finding
+that needs any other file is `Ignored`, with the path of that file.
 
-Go through the findings to fix, blocking first, then important, then nitpick.
+Fix the findings in this order: blocking, important, nitpick. Phase 1 fixes the
+findings that match no ask case. Phase 2 fixes the others, after the answers.
 For each finding:
 
 1. Read the quoted passages in the doc, even if an earlier fix already read
@@ -142,7 +142,7 @@ neither the target docs, the nearest `GLOSSARY.md` nor a file the target docs
 reference holds.
 
 **Phase 1 — automatic fixes.** Fix every finding that matches no ask case,
-whatever its tier. Run the lint commands of the "At the end of each phase"
+whatever its severity. Run the lint commands of the "At the end of each phase"
 paragraph below, then print the Autofix recap. When <n> findings match an ask
 case (<n> at least 1), end the message with "I have <n> unanswered questions.
 May I ask them?", then wait for the answer. The user may commit meanwhile. When
@@ -151,12 +151,12 @@ the user declines, the findings stay `Asked` and the round ends.
 **Phase 2 — manual fixes.** Ask the user about every finding that matches an ask
 case, one question at a time, with your recommended answer. Show every quote of
 the finding (both quotes for a disagreement) and offer the options. When the
-answer to one question settles another finding, ask them as one question. The
-user may skip a question: the finding moves to `Ignored`. Apply no fix before
-the last answer. After the last answer, apply every matching fix with the `Edit`
-tool, run the lint commands of the "At the end of each phase" paragraph below,
-print the Manual fixes recap and end the round. When the user ends the session
-without answering, the finding stays `Asked`.
+answer to one finding also settles another finding, ask one question that covers
+both findings. The user may skip a question: the finding moves to `Ignored`.
+Apply no fix before the last answer. After the last answer, apply every matching
+fix with the `Edit` tool, run the lint commands of the "At the end of each
+phase" paragraph below, print the Manual fixes recap and end the round. When the
+user ends the session without answering, the finding stays `Asked`.
 
 A clarity finding lists competing readings and a proposed wording. Apply the
 proposed wording when it keeps every rule of the passage. Otherwise write your
@@ -186,11 +186,11 @@ At the end of each phase, run `markdown-fix <file>` then
 that exits with an error is a fatal error (see Step 2).
 
 Write each recap in English. It lists only the fixes of its phase, in one
-section per tier. Each section header holds the tier emoji, the tier name and
-the number of fixes: `🔴 Blocking (n)`, `🟠 Important (n)`, `🟢 Nitpick (n)`.
-Omit a tier with no fix. Each section groups its fixes by theme, with what you
-removed and what you changed. It lists no rejected, `Ignored` or `Asked`
-finding.
+section per severity. Each section header holds the severity emoji, the severity
+name and the number of fixes: `🔴 Blocking (n)`, `🟠 Important (n)`,
+`🟢 Nitpick (n)`. Omit a severity with no fix. Each section groups its fixes by
+theme, with what you removed and what you changed. It lists no rejected,
+`Ignored` or `Asked` finding.
 
 ### Step 5 — End the round
 
@@ -199,12 +199,10 @@ finding.
 **Exit criterion:** The user holds the Autofix recap, and the Manual fixes recap
 when the user answered the questions.
 
-The first message of the round after Step 4 is the Autofix recap. The last
-message is the Manual fixes recap, or the Autofix recap when no question remains
-or the user declines. Intermediate messages, such as one question each, carry no
-recap.
+Intermediate messages, such as one question each, carry no recap.
 
-Stop there. Do not start a second round: one invocation is one round.
+Stop after the last recap. Do not start a second round: one invocation is one
+round.
 
 ## Common Rationalizations
 
@@ -214,18 +212,3 @@ Stop there. Do not start a second round: one invocation is one round.
 | "The fixes changed the docs, I should run another round" | Stop after Step 5.                                             |
 | "The Goldfish summarized it wrong, that is its fault"    | A wrong summary shows an ambiguous doc. Report the mismatch.   |
 | "I'll read the summary first, then skim the docs"        | Step 3 sets the order. Else you only confirm the summary.      |
-
-## Checklist
-
-- [ ] Target resolved to local Markdown files, or the round stopped
-- [ ] Goldfish launched and prompted as Step 2 says
-- [ ] Duplicate findings merged before any fix
-- [ ] Phase 1 fixed every finding that matches no ask case, whatever its tier
-- [ ] Autofix recap printed in English, with the fixes only
-- [ ] Manual questions asked before any manual fix, then the Manual fixes recap
-      printed
-- [ ] Words "Phase", `Asked` and `Ignored` never shown to the user
-- [ ] Each repeated rule kept in one place, with no rule lost
-- [ ] Own reading of the docs formed before reading the summary
-- [ ] Each summary mismatch listed as an ambiguity finding
-- [ ] `markdown-fix` and `markdown-lint --fix` run on every modified file
