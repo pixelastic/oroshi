@@ -18,8 +18,13 @@ format as [`read`](read.md).
 
 - `create` adds one entity and prints the entity that was created, as `read`
   would have returned it.
+- If the response of the API holds the whole entity, the module uses it.
+  Otherwise it reads the entity again.
 
 ## Arguments
+
+`create` has no required argument of its own. Its required fields follow
+[Required and empty fields](../../arguments.md#required-and-empty-fields).
 
 The content follows the schema of the entity, see
 [Passing content](../../arguments.md#passing-content).

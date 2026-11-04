@@ -75,7 +75,13 @@ import { entityListRaw } from '../<entity>/<entity>ListRaw.js';
 import { setAccount } from '../setAccount.js';
 
 // The query is the first positional argument, the filters are named
-const { positional, named } = parseBinArgs({ setAccount });
+const { positional, named } = parseBinArgs({
+  setAccount,
+  options: {
+    limit: { type: 'string' },
+    // Declare the filters of the service (--date-min, ...) and the anchors
+  },
+});
 const output = await entityListRaw({ query: positional, ...named });
 console.log(output);
 ```

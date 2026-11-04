@@ -23,7 +23,8 @@ fields.
 
 ## Arguments
 
-The id is always a positional argument. Example: `gmail-thread-read {id}`
+The id is always a positional argument, and it is required. Example:
+`gmail-thread-read {id}`
 
 If the entity needs an anchor (a folder, a workspace, a table, etc), `read`
 requires it as a named argument. Example:
@@ -60,7 +61,12 @@ import { entityRead } from '../<entity>/<entity>Read.js';
 import { setAccount } from '../setAccount.js';
 
 // The id is the positional argument, the anchors are named
-const { positional, named } = parseBinArgs({ setAccount });
+const { positional, named } = parseBinArgs({
+  setAccount,
+  options: {
+    // Declare the anchors of the entity (--baseId, --tableId, ...)
+  },
+});
 const output = await entityRead({ entityId: positional, ...named });
 console.log(JSON.stringify(output, null, 2));
 ```

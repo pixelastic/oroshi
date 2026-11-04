@@ -13,14 +13,20 @@ $ notion-page-append --pageId 1f3a '## New section'
 ## Role
 
 - `append` adds. The existing text, with its formatting, keeps its value.
-- The content is Markdown, in full: headings, lists, bold, italic and links.
+- The content is Markdown, in full: headings, lists, images, bold, italic and
+  links.
+- The content is added after the existing text, as one or more new blocks of the
+  Page (paragraphs, headings, lists, images). It never continues the last line
+  of the existing text. On a Page with no text, the content becomes the whole
+  text.
+- The command fails and changes nothing when the content is missing or empty.
 - It prints the entity as it is after the change, as `read` would print it.
 
 ## Arguments
 
-The id of the entity is given as in [`read`](../../commands/read.md#arguments).
-The content is the positional argument, or a file given with `--content-file`.
-The file wins over the positional content, see the
+The id and the content are required. The id of the entity is the named flag
+`--<entity>Id`. The content is the positional argument, or a file given with
+`--content-file`. The file wins over the positional content, see the
 [`-file` suffix](../../../arguments.md#-file-suffix).
 
 ```text

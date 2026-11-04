@@ -19,6 +19,12 @@ A part of the text of a Page, written as Markdown.
 
 _Avoid_: snippet, excerpt, selection
 
+## Fields
+
+A Page has a title and a body. The title is required, and cannot be empty. The
+body is optional: `create` can make an empty Page, and `update` can empty the
+body.
+
 ## Commands
 
 A Page follows the [base verbs](../commands/README.md), and adds three custom

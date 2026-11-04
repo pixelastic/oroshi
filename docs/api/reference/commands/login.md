@@ -23,7 +23,10 @@ $ confluence-login --account perso
 - The other commands fail with `<SERVICE>_LOGIN_REQUIRED` when the login is
   missing or invalid, see [oauth.md](../../oauth.md).
 - No command logs in by itself. Only `<service>-login` opens a browser, and the
-  user runs it by hand.
+  user runs it by hand. An agent never runs it: on `<SERVICE>_LOGIN_REQUIRED`,
+  the agent stops and asks the user to log in.
+- `login` has no failure rule of its own. If the grant fails, the command fails
+  and the user runs it again.
 
 ## Arguments
 

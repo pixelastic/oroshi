@@ -19,9 +19,12 @@ $ notion-page-replace --pageId 1f3a --old 'Pariss' --new 'Paris'
 
 ## Arguments
 
-The id of the entity is given as in [`read`](../../commands/read.md#arguments).
-The passages are named, and follow the
-[`-file` suffix](../../../arguments.md#-file-suffix) rule.
+The id of the entity is the named flag `--<entity>Id`. The passages are named,
+and follow the [`-file` suffix](../../../arguments.md#-file-suffix) rule.
+
+The id and both passages are required: `--old` or `--old-file`, and `--new` or
+`--new-file`. The command fails and changes nothing when one is missing. An
+empty old passage counts as a missing one. An empty new passage is valid.
 
 | Flag         | Role                                                                    |
 | ------------ | ----------------------------------------------------------------------- |

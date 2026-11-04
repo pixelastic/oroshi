@@ -17,8 +17,9 @@ $ notion-page-remove --pageId 1f3a --old 'Obsolete paragraph'
 
 ## Arguments
 
-`remove` takes the id and the old passage of [`replace`](replace.md#arguments):
-`--old` and `--old-file`. It has no `--new` and no `--new-file`.
+`remove` requires the id and the old passage of
+[`replace`](replace.md#arguments): `--old` and `--old-file`. It has no `--new`
+and no `--new-file`.
 
 The passage follows the [contract of `replace`](replace.md#passage): Markdown
 text that must appear exactly once, or the command fails and changes nothing.

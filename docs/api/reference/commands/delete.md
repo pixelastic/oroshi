@@ -16,8 +16,8 @@ recA
 
 ## Arguments
 
-The id is a positional argument, and the anchor (if any) is named, as in
-[`read`](read.md#arguments).
+The id is a required positional argument, and the anchor (if any) is named, as
+in [`read`](read.md#arguments).
 
 ## Template
 
@@ -50,7 +50,12 @@ import { entityDelete } from '../<entity>/<entity>Delete.js';
 import { setAccount } from '../setAccount.js';
 
 // The id is the positional argument, the anchor (if any) is named
-const { positional, named } = parseBinArgs({ setAccount });
+const { positional, named } = parseBinArgs({
+  setAccount,
+  options: {
+    // Declare the anchors of the entity (--baseId, --tableId, ...)
+  },
+});
 const output = await entityDelete({ entityId: positional, ...named });
 console.log(output);
 ```

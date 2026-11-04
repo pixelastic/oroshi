@@ -60,6 +60,10 @@ its `callApi.js`.
 - Create its [`callApi.js`](reference/lib/callApi.md).
 - For an OAuth API, read [oauth.md](oauth.md) first. It changes both files and
   adds the command to log in.
+- Run `yarn install`: the root `package.json` finds the `__lib` folder of every
+  service, and links it as a workspace.
+- Run `oroshi-reload-fpath` (alias `of`): it adds every folder under the `api`
+  autoload folder to `$fpath`, so the wrappers become callable.
 
 ## Step 6 — Allow the commands
 

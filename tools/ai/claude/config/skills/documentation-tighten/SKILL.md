@@ -1,6 +1,6 @@
 ---
 name: documentation-tighten
-description: Use when the user wants to tighten, audit or proofread documentation — a doc file or a directory of docs. Runs one round. The Elephant (main agent) launches Goldfish sub-agents with zero context, which read only the docs and report findings, then the Elephant fixes the docs.
+description: Use when the user wants to tighten, audit or proofread documentation, from any source (a doc file, a directory, a Confluence page, a pull request). Runs one round. The Elephant (main agent) launches Goldfish sub-agents with zero context, which read only the docs and report findings, then the Elephant fixes the docs.
 ---
 
 # Documentation Tighten
@@ -10,7 +10,8 @@ description: Use when the user wants to tighten, audit or proofread documentatio
 One round of documentation tightening, based on the Elephant and Goldfish
 pattern. The Elephant is the main agent. A Goldfish is a zero-context sub-agent
 that reads only the docs and reports findings. One invocation runs one round.
-There is no cap, no loop and no stop rule.
+There is no loop. A round fixes the `blocking` and `important` findings, and the
+user starts the next round.
 
 ## Core Workflow
 
@@ -18,13 +19,17 @@ There is no cap, no loop and no stop rule.
 
 **Goal:** Know which docs the round covers.
 
-**Exit criterion:** A list of absolute doc paths is ready.
+**Exit criterion:** A list of absolute paths of local Markdown files is ready.
 
-The argument is the path of a doc file or a directory.
+The argument names the documentation. It can be any source: a file, a directory,
+a Confluence page, a pull request, a URL. A Goldfish reads local Markdown files
+only.
 
-- File: the target is that file.
-- Directory: the target is every Markdown file under it, recursively.
-- No argument: ask the user for a path. Do not infer one.
+- Local Markdown file: the target is that file.
+- Local directory: the target is every Markdown file under it, recursively.
+- Any other source: retrieve it with the tool that fits, and write it as
+  Markdown files in the scratchpad. The target is those files.
+- No argument, or a source you cannot retrieve: ask the user. Do not infer one.
 
 ### Step 2 — Launch the Goldfish
 
@@ -45,7 +50,8 @@ with its fixed description, so the Claude Code statusline colors it.
 | `summary`       | `Goldfish summary`       | `references/goldfishes/summary.md`       |
 
 Launch every Goldfish in a single message with one `Agent` call each, so they
-run in parallel. Never launch them one after another.
+run in parallel. Never launch them one after another. Wait for the report of
+every Goldfish before Step 3.
 
 The prompt of a Goldfish holds exactly these parts, in this order:
 
@@ -102,21 +108,30 @@ A summary that matches your reading adds no finding.
 
 ### Step 4 — Fix the docs
 
-**Goal:** Apply every merged finding to the docs.
+**Goal:** Apply the essential merged findings to the local Markdown files.
 
-**Exit criterion:** Every finding is fixed, asked about or dismissed with a
-reason.
+**Exit criterion:** Every `blocking` and `important` finding is fixed, asked
+about or rejected with a reason. The recap is printed.
 
-Go through the merged findings, blocking first. For each finding:
+Fix the `blocking` and `important` findings. Fix a `nitpick` or a minor gap only
+when no `blocking` or `important` finding is left. Every finding you leave alone
+is `Ignored`.
+
+Go through the findings to fix, blocking first. For each finding:
 
 1. Read the quoted passages in the doc. Reject the finding when it has no
    severity, no quote, or a quote that does not match the doc, and say why.
 2. Pick the fix. Follow the nearest `GLOSSARY.md` and the Markdown conventions.
 3. Apply the fix with the `Edit` tool.
 
-Ask the user before the edit only when the fix changes the meaning of a rule:
-two passages disagree, and choosing one changes what a reader must do. Show both
-quotes and offer the options. Fix the other findings without asking.
+Fix the findings that need no opinion of the user first. Then print the recap,
+as described below. Then ask the user about the others.
+
+Ask the user only when the fix changes the meaning of a rule: two passages
+disagree, and choosing one changes what a reader must do. Ask through
+`/grill-me`: one question at a time, with your recommended answer. Show both
+quotes and offer the options. When the answer to one question settles another
+finding, ask them as one question.
 
 A clarity finding lists competing readings and a proposed wording. Apply the
 proposed wording when it keeps the meaning the docs clearly intend. Ask the user
@@ -135,10 +150,19 @@ appears once and no rule is lost. For a verbose passage, apply the
 `Shorter wording` when it keeps every rule of the passage.
 
 A gap finding asks for an answer that the docs do not hold. Never invent the
-answer. Ask the user, unless the project files or a referenced file hold it.
+answer. Ask the user, unless the project files or a referenced file hold it. You
+may read the code to check a fact when a finding raises a question or an
+omission. Never cite a code path in the docs. When the code contradicts the doc,
+the doc is right: do not change it to match the code.
 
 Run `markdown-fix <file>` then `markdown-lint --fix <file>` on every modified
 file.
+
+Write the recap in English, with three groups:
+
+- `Fixed`: grouped by theme, with what you removed and what you changed.
+- `Rejected`: one line per rejected finding, with the reason.
+- `Ignored`: the findings you left for a next round.
 
 ### Step 5 — End the round
 
@@ -146,10 +170,11 @@ file.
 
 **Exit criterion:** The last line of the reply gives the highest severity found.
 
-Copy the `**Verdict:**` of the gap Goldfish into the reply, as
-`Implementation: can implement` or `Implementation: cannot implement`. After
-`cannot implement`, list the missing items the Goldfish gave. The verdict is the
-one the Goldfish reported, whatever the fix outcome.
+The recap of Step 4 comes first in the reply. Then copy the `**Verdict:**` of
+the gap Goldfish into the reply, as `Implementation: can implement` or
+`Implementation: cannot implement`. After `cannot implement`, list the missing
+items the Goldfish gave. The verdict is the one the Goldfish reported, whatever
+the fix outcome.
 
 Write the last line of the reply as `Highest severity: <level>`, with `<level>`
 one of `blocking`, `important`, `nitpick` or `none`. It is the highest severity
@@ -173,19 +198,26 @@ there. Do not start a second round.
 | "I'll delete the repeated rule, the other copy has it"   | Check the kept copy holds every detail first. Never lose a rule. |
 | "The Goldfish summarized it wrong, that is its fault"    | A wrong summary shows an ambiguous doc. Report the mismatch.     |
 | "I'll read the summary first, then skim the docs"        | Form your own reading first. Else you only confirm the summary.  |
+| "I'll fix the nitpicks too, while I am here"             | Only when no `blocking` or `important` finding is left.          |
+| "The code says otherwise, I'll change the doc"           | The doc is right. Use the code to check a fact, never to decide. |
+| "I'll ask all the questions in one message"              | `/grill-me`: one question at a time, with a recommendation.      |
 
 ## Checklist
 
-- [ ] Target resolved from the path argument, or asked for
+- [ ] Target resolved to local Markdown files, or the user asked for the source
 - [ ] Goldfish launched in one message, each with its `Goldfish <axis>`
       description
 - [ ] Prompt holds only the shared rules, the brief and the doc paths
 - [ ] Duplicate findings merged before any fix
-- [ ] Every finding fixed, asked about or rejected with a reason
+- [ ] Every `blocking` and `important` finding fixed, asked about or rejected
+      with a reason
+- [ ] Minor findings fixed only when no `blocking` or `important` is left
+- [ ] Recap printed in English, with `Fixed`, `Rejected` and `Ignored`
 - [ ] Each repeated rule kept in one place, with no rule lost
 - [ ] Own reading of the docs formed before reading the summary
 - [ ] Each summary mismatch listed as an ambiguity finding
-- [ ] User asked only for fixes that change the meaning of a rule
+- [ ] User asked only for fixes that change the meaning of a rule, through
+      `/grill-me`
 - [ ] `markdown-fix` and `markdown-lint --fix` run on every modified file
 - [ ] Reply gives the implementability verdict, with the missing items after
       `cannot implement`

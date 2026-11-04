@@ -105,6 +105,10 @@ Move any other code that several services share there.
 Each service has a glossary that defines its own vocabulary. See
 [reference/docs/glossary.md](reference/docs/glossary.md) for details.
 
+These generic docs stay agnostic: they hold no rule that belongs to one service.
+A service that departs from them says so in its own glossary. An example may
+name a service.
+
 ## JavaScript conventions
 
 - One export per file, plus `__`.

@@ -19,8 +19,12 @@ same format as [`read`](read.md).
 - `update` is a partial update: only the given fields change. The other fields
   keep their value.
 - It prints the entity as it is after the update, as `read` would print it.
+- If the response of the API holds the whole entity, the module uses it.
+  Otherwise it reads the entity again.
 
 ## Arguments
+
+The id is required, with at least one field to change.
 
 The content follows the schema of the entity, see
 [Passing content](../../arguments.md#passing-content).

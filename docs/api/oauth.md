@@ -11,7 +11,8 @@ An OAuth API adds a command and a file, and changes two shared modules:
   saves them.
 - A tokens file, written by `login`:
   `$OROSHI_FOLDER_STATE/<service>/tokens.json` (or `tokens-<account>.json` for a
-  non-default account).
+  non-default account). The glossary of the service defines the keys of the
+  file.
 - A [`getConfig`](#getconfig) that reads the tokens file.
 - A [`callApi`](#callapi) that keeps the tokens fresh.
 
@@ -33,7 +34,8 @@ The wrapper, the bin and the module of `login` follow the template of
 
 [`getConfig`](reference/lib/getConfig.md) reads the tokens file instead of an
 environment variable: `$OROSHI_FOLDER_STATE/<service>/tokens.json`, the file
-that `login` writes.
+that `login` writes. It returns the tokens of the account, with the client
+credentials and the settings of the service.
 
 When the tokens file is missing, it fails early with a `firostError` coded
 `<SERVICE>_LOGIN_REQUIRED`. The message tells the user what to run:
@@ -49,22 +51,26 @@ with three differences:
 
 - It reads the tokens through `await __.getConfig()`, and authenticates with
   them.
-- It tries to keep the tokens fresh, on a best-effort basis. When they are about
-  to expire, it asks the service for new ones (`__.refreshTokens`), and rewrites
-  the tokens file. A failed refresh does not stop the call: it goes on with the
-  current tokens.
-- It throws `<SERVICE>_LOGIN_REQUIRED` when the API reports a missing or invalid
-  login, usually with a 401. The message says `run <service>-login`.
+- On a 401 response, it asks the service for new tokens (`__.refreshTokens`),
+  rewrites the tokens file, and replays the request once with the new tokens.
+  `__.refreshTokens` takes the current tokens and returns the new ones. It keeps
+  the fields that the service does not send back.
+- It throws `<SERVICE>_LOGIN_REQUIRED` when the refresh fails, or when the
+  replayed request answers 401 again. The message says `run <service>-login`. A
+  service that signals an expired token another way than a 401 says so in its
+  glossary.
 
 ## Tests
 
 The test mocks `__.getConfig`, `__.refreshTokens` and `__.fetch`, and checks
 these behaviors:
 
-- Given a successful response, the function returns its JSON body, and the
-  request holds the tokens returned by `__.refreshTokens`.
-- Given a failed refresh, the function still calls the API with the current
-  tokens.
-- Given a 401 response, the function throws `<SERVICE>_LOGIN_REQUIRED`.
+- Given a successful response, the function returns its JSON body, and never
+  calls `__.refreshTokens`.
+- Given a 401 response, then a success, the function refreshes the tokens,
+  rewrites the tokens file and returns the JSON body of the replayed request.
+- Given a 401 response, then a failed refresh, the function throws
+  `<SERVICE>_LOGIN_REQUIRED`.
+- Given a 401 response twice, the function throws `<SERVICE>_LOGIN_REQUIRED`.
 - Given another failed response, the function throws the `firostError`, with the
   body of the API as message.

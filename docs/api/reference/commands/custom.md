@@ -28,7 +28,9 @@ and output work well with them:
   [arguments.md](../../arguments.md).
 - The output is the entity as JSON, as in [`read`](read.md), when the action
   returns one. Otherwise it is the id, as in [`delete`](delete.md).
-- A verb that does not fit these guidelines may break them.
+- Follow the guidelines whenever possible. A verb breaks one only when its
+  action cannot follow it, and its entry in the glossary of the service says
+  which guideline and why.
 
 ## Template
 

@@ -26,7 +26,9 @@ entity.
 ## Role
 
 - `search` is the lowest-level way to find information in a service.
-- It returns a JSON array, one element per entity.
+- It returns a JSON array, one element per entity. With no match, it prints an
+  empty array (`[]`).
+- Without a query, it returns every entity, up to `--limit`.
 - Each element goes through the `format<Entity>` function of the service.
 - Search is always per entity: `<service>-<entity>-search`.
 - If the service only has a global search, `<service>-<entity>-search` runs it
@@ -35,6 +37,8 @@ entity.
   Skip it only if the service has no endpoint to search the entities.
 
 ## Arguments
+
+No argument is required, apart from the anchor of the entity, if any.
 
 If the API has a query language (like Gmail), the positional argument is the
 whole query, written in that language. Add a named flag only for what the query
@@ -85,7 +89,13 @@ import { entitySearch } from '../<entity>/<entity>Search.js';
 import { setAccount } from '../setAccount.js';
 
 // The query is the first positional argument, the filters are named
-const { positional, named } = parseBinArgs({ setAccount });
+const { positional, named } = parseBinArgs({
+  setAccount,
+  options: {
+    limit: { type: 'string' },
+    // Declare the filters of the service (--date-min, ...) and the anchors
+  },
+});
 const output = await entitySearch({ query: positional, ...named });
 console.log(JSON.stringify(output, null, 2));
 ```
