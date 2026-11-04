@@ -424,6 +424,8 @@
   "midjourney-writer-end",
   "mkdir",
   "mktemp",
+  "mmd2png",
+  "mmd2svg",
   "montage",
   "mv",
   "nautilus",
