@@ -46,5 +46,6 @@ Rules:
 - Quote the passage verbatim, with its file path. Never paraphrase a quote.
 - Report only your own axis, defined in your brief.
 - Order findings from blocking to nitpick.
+- Zero finding is a valid result. Never report a finding to fill a report.
 - When you find nothing, say so explicitly, with the sentence your brief gives.
   Never return an empty report.

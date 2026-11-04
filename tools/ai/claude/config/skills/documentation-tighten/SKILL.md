@@ -1,6 +1,6 @@
 ---
 name: documentation-tighten
-description: Use when the user wants to tighten, audit or proofread local Markdown documentation (a file or a directory). Runs one round. The Elephant (main agent) launches Goldfish sub-agents with zero context, which read only the docs and report findings, then the Elephant fixes the docs.
+description: Use when the user wants to tighten, audit or proofread local Markdown documentation (a file or a directory). Runs one round: Goldfish sub-agents with zero context report findings, then the main agent fixes the docs.
 ---
 
 # Documentation Tighten
@@ -9,7 +9,8 @@ description: Use when the user wants to tighten, audit or proofread local Markdo
 
 One round of documentation tightening, based on the Elephant and Goldfish
 pattern. The Elephant is the main agent. A Goldfish is a zero-context sub-agent
-that reads only the docs and reports findings.
+that reads only the docs, the nearest `GLOSSARY.md` and the files the docs
+reference, and reports findings.
 
 ## Core Workflow
 
@@ -54,15 +55,14 @@ Launch every Goldfish in a single message, one `Agent` call each, so they run in
 parallel.
 
 A Goldfish that errors, times out or returns a malformed report is a fatal
-error. A report of a finding Goldfish (every Goldfish except `summary`) is
-malformed when it is empty, or when one of its findings has no quote or a
-severity other than `blocking`, `important` or `nitpick`. The report of the
-`summary` Goldfish is malformed when it is empty.
+error. An empty report is malformed. The report of a finding Goldfish (every
+Goldfish except `summary`) is also malformed when one of its findings has no
+quote or a severity other than `blocking`, `important` or `nitpick`.
 
 A fatal error stops the round. Do not retry and do not continue the round. Keep
 the edits already applied. Report the failure to the user before any other
-output, with the name of the Goldfish, command or script that failed and its
-error, so the user fixes it before any result is used.
+output, with the name of the Goldfish or command that failed and its error, so
+the user fixes it before any result is used.
 
 The prompt of a Goldfish holds exactly these parts, in this order:
 
@@ -99,7 +99,8 @@ finding:
 
 A no-finding sentence counts as zero findings and adds nothing to the list. When
 every Goldfish reports zero, the list is empty, and that outcome is valid: tell
-the user the docs hold no finding. Do the same when you reject every finding.
+the user the docs hold no finding. When you reject every finding, tell the user
+the same.
 
 The summary Goldfish reports a summary, never a finding. Compare it to your own
 reading of the docs:
@@ -110,11 +111,11 @@ reading of the docs:
    that differs in meaning from the doc, a summary rule the doc never states, or
    a doc rule the summary leaves out. A different wording with the same meaning
    is not a mismatch.
-3. Write each mismatch as an ambiguity finding, in the shared format. Quote the
-   doc passage. When the summary states a rule the doc never states, quote the
-   nearest doc passage on the same subject. Add a `Summary` line with the
-   summary bullet, or `omitted` when the summary leaves the rule out. In the
-   problem sentence, say how the reader went wrong.
+3. Write each mismatch as an ambiguity finding, in the finding format of
+   `references/goldfish.md`. Quote the doc passage. When the summary states a
+   rule the doc never states, quote the nearest doc passage on the same subject.
+   Add a `Summary` line with the summary bullet, or `omitted` when the summary
+   leaves the rule out. In the problem sentence, say how the reader went wrong.
 4. Give the finding `blocking` when the reader would do the wrong thing,
    otherwise `important`.
 5. Add the finding to the list, then merge it by the duplicate rule above.
@@ -130,9 +131,9 @@ The recap of each phase with a fix is printed.
 The phases and the statuses `Asked` and `Ignored` are internal. Never write the
 words "Phase", `Asked` or `Ignored` to the user.
 
-Edit a Markdown file outside the target list only when it lies in the same
-directory as a target file, or in a subdirectory of that directory. When a
-finding needs any other file, its question names the path of that file.
+Edit a Markdown file outside the target list only when it lies in the directory
+of a target file or in a subdirectory of that directory. When a finding needs
+any other file, its question names the path of that file.
 
 Within each phase, fix the findings in this order: blocking, important, nitpick.
 For each finding:
@@ -141,15 +142,18 @@ For each finding:
    them. Reject the finding when an earlier fix made it obsolete ("already
    resolved by another fix") or when you judge it wrong. You hold more context
    than the Goldfish, so your judgment prevails.
-2. Pick the fix. Follow the nearest `GLOSSARY.md`. `markdown-lint` checks the
-   Markdown rules afterward.
+2. Pick the fix. Follow the nearest `GLOSSARY.md`.
 3. Apply the fix with the `Edit` tool.
 
-The ask cases are these four: two passages disagree and the nearest
-`GLOSSARY.md` does not settle which is right, you cannot tell which of several
-readings or meanings of a passage the docs intend, a gap needs an answer that
-neither the target docs, the nearest `GLOSSARY.md` nor a file the target docs
-reference holds, or the fix needs a file outside the allowed scope above.
+The ask cases are these four:
+
+1. Two passages disagree and the nearest `GLOSSARY.md` does not settle which one
+   is right.
+2. You cannot tell which of several readings or meanings of a passage the docs
+   intend.
+3. A gap needs an answer that is in none of the target docs, the nearest
+   `GLOSSARY.md` and the files the target docs reference.
+4. The fix needs a file outside the allowed scope above.
 
 #### Automated fixes
 
@@ -158,7 +162,7 @@ above. Run the end-of-phase commands (see "Fix rules"), then print the recap of
 the Automated fixes phase. When <n> findings match an ask case (<n> at least 1),
 end the last message of this phase with "I have <n> unanswered questions. May I
 ask them?", then wait for the answer. The user may commit meanwhile. When the
-user declines, the findings stay `Asked` and the round ends.
+user declines, the round ends.
 
 #### Human fixes
 
@@ -171,8 +175,8 @@ one question that covers both findings. The user may skip a question: the
 finding moves to `Ignored`. Apply no fix of an asked finding before the last
 answer. After the last answer, apply every matching fix, run the end-of-phase
 commands (see "Fix rules"), print the recap of the Human fixes phase and end the
-round. When the user ends the session without answering, the finding stays
-`Asked`.
+round. A finding the user leaves unanswered, by declining to be asked or by
+ending the session, stays `Asked`.
 
 #### Fix rules
 
