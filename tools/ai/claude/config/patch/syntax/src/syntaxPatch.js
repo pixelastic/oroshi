@@ -1,4 +1,5 @@
 import { PATCH_MARKER, patchHighlightTables } from './patchHighlightTables.js';
+import { patchTreeGrammar } from './patchTreeGrammar.js';
 
 /**
  * Patch contract of the syntax highlighting colors
@@ -19,6 +20,11 @@ export const syntaxPatch = {
    * @returns {{text: string, offsets: number[]}} Patched text and patched offsets
    */
   patch(text, { scopeColors, decorationColors }) {
-    return patchHighlightTables(text, scopeColors, decorationColors);
+    const tables = patchHighlightTables(text, scopeColors, decorationColors);
+    const grammar = patchTreeGrammar(tables.text);
+    return {
+      text: grammar.text,
+      offsets: [...tables.offsets, grammar.offset],
+    };
   },
 };

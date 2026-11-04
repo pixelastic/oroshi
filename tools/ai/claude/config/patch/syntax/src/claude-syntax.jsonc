@@ -47,6 +47,11 @@
     "operator": "punctuation",
     "punctuation": "punctuation",
     // Markdown headings
-    "section": "purple-3"
+    "section": "purple-3",
+    // tree code fences, a grammar replacing the unused Cedar one. Comments use
+    // the comment scope
+    "branch": "punctuation",
+    "dir": "directory",
+    "file": "file"
   }
 }

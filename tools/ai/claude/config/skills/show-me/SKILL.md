@@ -38,9 +38,10 @@ submitForm
     <RunSkillButton> (packages/ui)
 ```
 
-- Show file responsibility or a broad refactor as a shallow file tree:
+- Show file responsibility or a broad refactor as a shallow file tree. Tag the
+  fence `tree`: it colors folders, files, branch markers and `#` comments:
 
-```text
+```tree
 src/
 ├── commands/       # parses user actions
 ├── sessions/       # owns session state

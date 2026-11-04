@@ -6828,6 +6828,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"highlight.js@npm:11.11.1":
+  version: 11.11.1
+  resolution: "highlight.js@npm:11.11.1"
+  checksum: 10c0/40f53ac19dac079891fcefd5bd8a21cf2e8931fd47da5bd1dca73b7e4375c1defed0636fc39120c639b9c44119b7d110f7f0c15aa899557a5a1c8910f3c0144c
+  languageName: node
+  linkType: hard
+
 "highlight.js@npm:^10.7.1":
   version: 10.7.3
   resolution: "highlight.js@npm:10.7.3"
@@ -9915,6 +9922,7 @@ __metadata:
     firost: "npm:5.11.0"
     gilmore: "npm:1.4.0"
     golgoth: "npm:3.1.0"
+    highlight.js: "npm:11.11.1"
     imoen: "npm:3.0.0"
     jsonc-parser: "npm:3.3.1"
     markdownlint-cli2: "npm:0.23.3"

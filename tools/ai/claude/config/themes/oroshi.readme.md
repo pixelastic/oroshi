@@ -20,13 +20,28 @@ Claude Code, and the diff line number and marker colors, to a color name from
 `colors.jsonc`, like the bat theme does. So changing a color name (e.g.
 `keyword`) updates Claude along with the other tools.
 
+### Custom languages
+
+The patch can also add a code fence language, something a plugin can't do.
+
+As we can't replace a new language, we need to replace an existing one. We need
+to keep its grammar as exactly the original length. We chose to replace Cedar
+with `tree`.
+
+- `../patch/syntax/src/patchTreeGrammar.js` holds the grammar. `dir` colors
+  folders (names ending with `/`), `file` the other names, and `branch` the
+  `│ ├ └ ─` markers. Comments (`#`) use the `comment` scope
+- `claude-syntax.jsonc` sets the colors of `dir`, `file` and `branch`. The color
+  table has little room left, so these scopes have short names and the patch
+  groups the table by color
+
 ### How the patch works
 
 The binary is a Bun standalone executable, embedding the source and the
 precompiled bytecode of each module.
 
-1. Each table is replaced in place by one of the exact same length (padded with
-   spaces), so no offset in the binary moves
+1. Each table or grammar is replaced in place by one of the exact same length
+   (padded with spaces), so no offset in the binary moves
 2. The bytecode of the patched modules is removed, so Bun compiles them from the
    patched source instead of running the original bytecode
 3. The result is written to a temporary file then renamed over the binary: it

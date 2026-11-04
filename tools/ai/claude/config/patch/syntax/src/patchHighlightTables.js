@@ -1,5 +1,6 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
+import { TREE_SCOPES } from './patchTreeGrammar.js';
 
 // Written after the diff table to flag a patched binary. It sits in the
 // padding, so the patched output keeps the exact input length.
@@ -16,9 +17,11 @@ const DIFF_ENTRY_REGEXP =
 
 // Markdown code block table (chalk), immediately followed by the scope lookup
 const CODE_TABLE_REGEXP =
-  /new Map\(Object\.entries\(\{keyword:[^;]*?\)\)\s*(?=;function [\w$]+\(e\)\{let t=e\.replace\(\/\^hljs-\/)/;
+  /new Map\(Object\.entries\(\{(?:keyword:|"[0-9a-f]{6}":)[^;]*?\)\)\s*(?=;function [\w$]+\(e\)\{let t=e\.replace\(\/\^hljs-\/)/;
 const CODE_ENTRY_REGEXP =
   /(?:"([^"]+)"|([\w$-]+)):("[0-9a-f]{6}"|[\w$]+(?:\.[\w$]+)+)/g;
+
+const GROUP_ENTRY_REGEXP = /"([0-9a-f]{6})":"([^"]+)"/g;
 
 // Dark theme diff line number and +/- marker colors, identified by the
 // foreground, deleteLine and deleteWord colors declared just before them
@@ -111,17 +114,16 @@ __ = {
   },
 
   /**
-   * Build the code block table, as hex strings converted by chalk at load time
+   * Build the code block table. Scopes are grouped by color, as hex strings
+   * converted by chalk at load time, to save room for the scopes we add
    * @param {Array} match - CODE_TABLE_REGEXP match
    * @param {object} scopeColors - Map of scope → '#rrggbb'
    * @returns {string} Replacement table
    */
   buildCodeTable(match, scopeColors) {
     const [original] = match;
-    const body = original.match(/Object\.entries\(\{(.*?)\}\)/)[1];
-    const entries = _.chain([...body.matchAll(CODE_ENTRY_REGEXP)])
-      .map(([, quotedKey, bareKey, value]) => {
-        const scope = quotedKey || bareKey;
+    const entries = _.chain(__.parseCodeEntries(original))
+      .map(([scope, value]) => {
         const hex = scopeColors[scope];
         if (hex) {
           return [scope, `"${_.trimStart(hex, '#')}"`];
@@ -138,13 +140,58 @@ __ = {
       })
       .compact()
       .value();
-    const chalkVariable = _.chain(entries)
+    // Scopes of languages added by the patch are not in the original table
+    _.each(TREE_SCOPES, (scope) => {
+      const isPresent = _.some(entries, ([entryScope]) => entryScope === scope);
+      if (scopeColors[scope] && !isPresent) {
+        entries.push([scope, `"${_.trimStart(scopeColors[scope], '#')}"`]);
+      }
+    });
+    const [hexEntries, otherEntries] = _.partition(entries, ([, value]) =>
+      value.startsWith('"'),
+    );
+    const chalkVariable = _.chain(otherEntries)
       .map(([, value]) => value.match(/^([\w$]+)\./)?.[1])
       .compact()
       .first()
       .value();
+    const groups = _.chain(hexEntries)
+      .groupBy(([, value]) => value)
+      .map(
+        (group, hex) => `${hex}:"${_.chain(group).map(0).join(' ').value()}"`,
+      )
+      .join(',')
+      .value();
 
-    return `new Map(Object.entries({${__.serializeEntries(entries)}}).map(([k,v])=>[k,typeof v=="string"?${chalkVariable}.hex("#"+v):v]))`;
+    return `new Map(Object.entries({${groups}}).flatMap(([h,s])=>s.split(" ").map(k=>[k,${chalkVariable}.hex("#"+h)])).concat(Object.entries({${__.serializeEntries(otherEntries)}})))`;
+  },
+
+  /**
+   * List the [scope, value] entries of a code block table, either original
+   * or grouped by color by a previous patch
+   * @param {string} table - Code block table source
+   * @returns {Array} List of [scope, value source code]
+   */
+  parseCodeEntries(table) {
+    const bodies = _.map(
+      [...table.matchAll(/Object\.entries\(\{(.*?)\}\)/g)],
+      1,
+    );
+    const isGrouped = table.includes('.flatMap(');
+    const groupedEntries = _.flatMap(
+      [...(isGrouped ? bodies[0] : '').matchAll(GROUP_ENTRY_REGEXP)],
+      ([, hex, scopes]) =>
+        _.chain(scopes)
+          .split(' ')
+          .map((scope) => [scope, `"${hex}"`])
+          .value(),
+    );
+    const otherBody = isGrouped ? bodies[1] : bodies[0];
+    const otherEntries = _.map(
+      [...otherBody.matchAll(CODE_ENTRY_REGEXP)],
+      ([, quotedKey, bareKey, value]) => [quotedKey || bareKey, value],
+    );
+    return _.uniqBy([...groupedEntries, ...otherEntries], 0);
   },
 
   /**

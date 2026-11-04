@@ -15,6 +15,9 @@
     "node": ">=22.18.0"
   },
   "packageManager": "yarn@4.18.0",
+  "devDependencies": {
+    "highlight.js": "11.11.1"
+  },
   "dependencies": {
     "@anthropic-ai/claude-code": "2.1.287",
     "@prettier/plugin-xml": "3.4.1",
