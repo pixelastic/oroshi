@@ -2,7 +2,7 @@
 # Usage:
 # $ complete-skills-allowlist-add
 setopt local_options err_return
-local allowlistFile=~/.oroshi/tools/ai/claude/config/hooks/allow-list.json
+local allowlistFile="${OROSHI_ROOT}/tools/ai/claude/config/hooks/allow-list.json"
 
 local candidates=(${(f)"$(ctrl-b --source)"})
 
