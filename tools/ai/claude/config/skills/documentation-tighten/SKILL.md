@@ -19,11 +19,16 @@ that reads only the docs and reports findings.
 
 **Exit criterion:** A list of absolute paths of local Markdown files is ready.
 
-- Local Markdown file: the target is that file.
-- Local directory: the target is every Markdown file under it, recursively.
+The user may pass several paths. The target is the union of their targets. The
+Elephant resolves a relative path from the working directory.
+
+- Local Markdown file (`.md` extension): the target is that file.
+- Local directory: the target is every `.md` file under it, recursively, except
+  the files that `.gitignore` ignores.
 - Anything else (a URL, a Confluence page, a pull request, a missing path, a
-  directory with no Markdown file): stop and tell the user the skill needs local
-  Markdown.
+  file without the `.md` extension, a directory with no `.md` file): stop and
+  tell the user the skill needs local Markdown. One such path stops the round,
+  even when other paths are valid.
 - No argument: ask the user. Do not infer one.
 
 ### Step 2 — Launch the Goldfish
@@ -84,7 +89,9 @@ finding:
   defect. When several match, keep the one with the highest severity.
 - Keep the `Proposed wording` of the clarity Goldfish, when the group has one.
 - Keep the `Keep in` or `Shorter wording` of the concision Goldfish, when the
-  group has one.
+  group has one. When the group also has a `Proposed wording`, the
+  `Proposed wording` guides the fix, and the `Shorter wording` applies only when
+  it keeps every rule of the `Proposed wording`.
 
 A no-finding sentence counts as zero findings and adds nothing to the list. When
 every Goldfish reports zero, the list is empty, and that outcome is valid: tell
@@ -114,7 +121,7 @@ reading of the docs:
 the automatic fixes, then the manual fixes.
 
 **Exit criterion:** Every finding is fixed, asked about, rejected with a reason
-or `Ignored`. The recap of each phase is printed.
+or `Ignored`. The recap of each phase with a fix is printed.
 
 The phases and the statuses `Asked` and `Ignored` are internal. Never write the
 words "Phase", `Asked` or `Ignored` to the user.
@@ -123,9 +130,9 @@ Edit a Markdown file outside the target list only when it lies in the same
 directory as a target file, or in a subdirectory of that directory. A finding
 that needs any other file is `Ignored`, with the path of that file.
 
-Fix the findings in this order: blocking, important, nitpick. Phase 1 fixes the
-findings that match no ask case. Phase 2 fixes the others, after the answers.
-For each finding:
+Fix the findings in this order: blocking, important, nitpick. The automated
+fixes cover the findings that match no ask case. The human fixes cover the
+others, after the answers. For each finding:
 
 1. Read the quoted passages in the doc, even if an earlier fix already read
    them. Reject the finding, with a reason, when an earlier fix made it obsolete
@@ -141,22 +148,28 @@ readings or meanings of a passage the docs intend, or a gap needs an answer that
 neither the target docs, the nearest `GLOSSARY.md` nor a file the target docs
 reference holds.
 
-**Phase 1 — automatic fixes.** Fix every finding that matches no ask case,
-whatever its severity. Run the lint commands of the "At the end of each phase"
-paragraph below, then print the Autofix recap. When <n> findings match an ask
-case (<n> at least 1), end the message with "I have <n> unanswered questions.
-May I ask them?", then wait for the answer. The user may commit meanwhile. When
-the user declines, the findings stay `Asked` and the round ends.
+#### Automated fixes
 
-**Phase 2 — manual fixes.** Ask the user about every finding that matches an ask
-case, one question at a time, with your recommended answer. Show every quote of
-the finding (both quotes for a disagreement) and offer the options. When the
-answer to one finding also settles another finding, ask one question that covers
-both findings. The user may skip a question: the finding moves to `Ignored`.
-Apply no fix before the last answer. After the last answer, apply every matching
-fix with the `Edit` tool, run the lint commands of the "At the end of each
-phase" paragraph below, print the Manual fixes recap and end the round. When the
-user ends the session without answering, the finding stays `Asked`.
+Fix every finding that matches no ask case, whatever its severity. Run the lint
+commands of the "At the end of each phase" paragraph below, then print the
+Autofix recap. When <n> findings match an ask case (<n> at least 1), end the
+message with "I have <n> unanswered questions. May I ask them?", then wait for
+the answer. The user may commit meanwhile. When the user declines, the findings
+stay `Asked` and the round ends.
+
+#### Human fixes
+
+Ask the user about every finding that matches an ask case, one question at a
+time, with your recommended answer. Show every quote of the finding (both quotes
+for a disagreement) and offer the options. When the answer to one finding also
+settles another finding, ask one question that covers both findings. The user
+may skip a question: the finding moves to `Ignored`. Apply no fix before the
+last answer. After the last answer, apply every matching fix with the `Edit`
+tool, run the lint commands of the "At the end of each phase" paragraph below,
+print the Manual fixes recap and end the round. When the user ends the session
+without answering, the finding stays `Asked`.
+
+#### Fix rules
 
 A clarity finding lists competing readings and a proposed wording. Apply the
 proposed wording when it keeps every rule of the passage. Otherwise write your
@@ -185,19 +198,18 @@ At the end of each phase, run `markdown-fix <file>` then
 `markdown-lint --fix <file>` on every file modified in that phase. A command
 that exits with an error is a fatal error (see Step 2).
 
-Write each recap in English. It lists only the fixes of its phase, in one
-section per severity. Each section header holds the severity emoji, the severity
-name and the number of fixes: `🔴 Blocking (n)`, `🟠 Important (n)`,
-`🟢 Nitpick (n)`. Omit a severity with no fix. Each section groups its fixes by
-theme, with what you removed and what you changed. It lists no rejected,
-`Ignored` or `Asked` finding.
+Print no recap for a phase with no fix. Write each recap in English. It lists
+only the fixes of its phase, in one section per severity. Each section header
+holds the severity emoji, the severity name and the number of fixes:
+`🔴 Blocking (n)`, `🟠 Important (n)`, `🟢 Nitpick (n)`. Omit a severity with no
+fix. Each section groups its fixes by theme, with what you removed and what you
+changed. It lists no rejected, `Ignored` or `Asked` finding.
 
 ### Step 5 — End the round
 
 **Goal:** Give the user the outcome.
 
-**Exit criterion:** The user holds the Autofix recap, and the Manual fixes recap
-when the user answered the questions.
+**Exit criterion:** The user holds the recap of each phase that applied a fix.
 
 Intermediate messages, such as one question each, carry no recap.
 
