@@ -24,7 +24,7 @@ Elephant resolves a relative path from the working directory.
 
 - Local Markdown file (`.md` extension): the target is that file.
 - Local directory: the target is every `.md` file under it, recursively, except
-  the files that `.gitignore` ignores.
+  the files that git ignores (`git check-ignore` returns their path).
 - Anything else (a URL, a Confluence page, a pull request, a missing path, a
   file without the `.md` extension, a directory with no `.md` file): stop and
   tell the user the skill needs local Markdown. One such path stops the round,
@@ -51,7 +51,7 @@ with its fixed description, so the Claude Code statusline colors it. Every
 | `summary`       | `Goldfish summary`       | `references/goldfishes/summary.md`       |
 
 Launch every Goldfish in a single message, one `Agent` call each, so they run in
-parallel. Wait for the report of every Goldfish before Step 3.
+parallel.
 
 A Goldfish that errors, times out or returns a malformed report is a fatal
 error. A report of a finding Goldfish (every Goldfish except `summary`) is
@@ -85,8 +85,11 @@ finding:
 
 - Keep the highest severity of the group.
 - Keep every distinct quote.
-- Keep the problem sentence of the Goldfish whose axis matches the cause of the
-  defect. When several match, keep the one with the highest severity.
+- Keep the problem sentence of the Goldfish whose axis names the kind of the
+  defect: clarity for a passage open to two readings, contradiction for two
+  passages that disagree, gap for a missing answer, concision for a repeated
+  rule or a verbose passage, glossary for a term that breaks its definition.
+  When several match, keep the one with the highest severity.
 - Keep the `Proposed wording` of the clarity Goldfish, when the group has one.
 - Keep the `Keep in` or `Shorter wording` of the concision Goldfish, when the
   group has one. When the group also has a `Proposed wording`, the
@@ -95,7 +98,7 @@ finding:
 
 A no-finding sentence counts as zero findings and adds nothing to the list. When
 every Goldfish reports zero, the list is empty, and that outcome is valid: tell
-the user the docs hold no finding.
+the user the docs hold no finding. Do the same when you reject every finding.
 
 The summary Goldfish reports a summary, never a finding. Compare it to your own
 reading of the docs:
@@ -118,7 +121,7 @@ reading of the docs:
 ### Step 4 — Fix the docs
 
 **Goal:** Apply the merged findings to the local Markdown files, in two phases:
-the automatic fixes, then the manual fixes.
+the automated fixes, then the human fixes.
 
 **Exit criterion:** Every finding is fixed, asked about, rejected with a reason
 or `Ignored`. The recap of each phase with a fix is printed.
@@ -128,11 +131,11 @@ words "Phase", `Asked` or `Ignored` to the user.
 
 Edit a Markdown file outside the target list only when it lies in the same
 directory as a target file, or in a subdirectory of that directory. A finding
-that needs any other file is `Ignored`, with the path of that file.
+that needs any other file is an ask case, and its question names the path of
+that file.
 
-Fix the findings in this order: blocking, important, nitpick. The automated
-fixes cover the findings that match no ask case. The human fixes cover the
-others, after the answers. For each finding:
+Within each phase, fix the findings in this order: blocking, important, nitpick.
+For each finding:
 
 1. Read the quoted passages in the doc, even if an earlier fix already read
    them. Reject the finding, with a reason, when an earlier fix made it obsolete
@@ -142,20 +145,20 @@ others, after the answers. For each finding:
    Markdown rules afterward.
 3. Apply the fix with the `Edit` tool.
 
-The ask cases are these three: two passages disagree and the nearest
+The ask cases are these four: two passages disagree and the nearest
 `GLOSSARY.md` does not settle which is right, you cannot tell which of several
-readings or meanings of a passage the docs intend, or a gap needs an answer that
+readings or meanings of a passage the docs intend, a gap needs an answer that
 neither the target docs, the nearest `GLOSSARY.md` nor a file the target docs
-reference holds.
+reference holds, or the fix needs a file outside the allowed scope above.
 
 #### Automated fixes
 
-Fix every finding that matches no ask case, whatever its severity. Run the lint
-commands of the "At the end of each phase" paragraph below, then print the
-Autofix recap. When <n> findings match an ask case (<n> at least 1), end the
-message with "I have <n> unanswered questions. May I ask them?", then wait for
-the answer. The user may commit meanwhile. When the user declines, the findings
-stay `Asked` and the round ends.
+Fix every finding that matches no ask case, whatever its severity. Run the
+end-of-phase commands (see "Fix rules"), then print the recap of the Automated
+fixes phase. When <n> findings match an ask case (<n> at least 1), end the last
+message of this phase with "I have <n> unanswered questions. May I ask them?",
+then wait for the answer. The user may commit meanwhile. When the user declines,
+the findings stay `Asked` and the round ends.
 
 #### Human fixes
 
@@ -163,11 +166,11 @@ Ask the user about every finding that matches an ask case, one question at a
 time, with your recommended answer. Show every quote of the finding (both quotes
 for a disagreement) and offer the options. When the answer to one finding also
 settles another finding, ask one question that covers both findings. The user
-may skip a question: the finding moves to `Ignored`. Apply no fix before the
-last answer. After the last answer, apply every matching fix with the `Edit`
-tool, run the lint commands of the "At the end of each phase" paragraph below,
-print the Manual fixes recap and end the round. When the user ends the session
-without answering, the finding stays `Asked`.
+may skip a question: the finding moves to `Ignored`. Apply no fix of an asked
+finding before the last answer. After the last answer, apply every matching fix,
+run the end-of-phase commands (see "Fix rules"), print the recap of the Human
+fixes phase and end the round. When the user ends the session without answering,
+the finding stays `Asked`.
 
 #### Fix rules
 
@@ -181,7 +184,7 @@ for that passage is its only possible reading.
 
 A contradiction or glossary finding shows two passages, or a passage and a
 glossary definition, that disagree. Keep the one that follows the nearest
-`GLOSSARY.md` and fix the other to match it. Otherwise it is an ask case.
+`GLOSSARY.md` and fix the other to match it.
 
 A concision finding names the place where a repeated rule stays. Keep the rule
 there, and remove it from every other place, or replace it with a pointer to the
@@ -202,19 +205,19 @@ Print no recap for a phase with no fix. Write each recap in English. It lists
 only the fixes of its phase, in one section per severity. Each section header
 holds the severity emoji, the severity name and the number of fixes:
 `🔴 Blocking (n)`, `🟠 Important (n)`, `🟢 Nitpick (n)`. Omit a severity with no
-fix. Each section groups its fixes by theme, with what you removed and what you
-changed. It lists no rejected, `Ignored` or `Asked` finding.
+fix. Each section groups its fixes by the doc passage or topic they touch, with
+what you removed and what you changed. It lists no rejected, `Ignored` or
+`Asked` finding.
 
 ### Step 5 — End the round
 
 **Goal:** Give the user the outcome.
 
-**Exit criterion:** The user holds the recap of each phase that applied a fix.
+**Exit criterion:** The user holds every recap printed.
 
 Intermediate messages, such as one question each, carry no recap.
 
-Stop after the last recap. Do not start a second round: one invocation is one
-round.
+Stop after the last recap. One invocation is one round.
 
 ## Common Rationalizations
 
