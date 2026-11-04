@@ -52,9 +52,12 @@ parallel. Wait for the report of every Goldfish before Step 3.
 A Goldfish that errors, times out or returns a malformed report is a fatal
 error. A report of a finding Goldfish (every Goldfish except `summary`) is
 malformed when one of its findings has no severity or no quote. The report of
-the `summary` Goldfish is malformed when it is empty. Do not retry it and do not
-continue the round. Report the failure to the user first, with the Goldfish name
-and the error, so the user fixes it before any result is used.
+the `summary` Goldfish is malformed when it is empty.
+
+A fatal error stops the round. Do not retry and do not continue the round. Keep
+the edits already applied. Report the failure to the user first, with the name
+of the Goldfish, command or script that failed and its error, so the user fixes
+it before any result is used.
 
 The prompt of a Goldfish holds exactly these parts, in this order:
 
@@ -159,16 +162,13 @@ the removed one, and move any missing detail there. For a verbose passage, apply
 the `Shorter wording` when it keeps every rule of the passage.
 
 A gap finding asks for an answer that the docs do not hold. Never invent the
-answer. Ask the user, unless a doc of the project (such as `GLOSSARY.md`) or a
-file the target docs reference holds it. You may read the code to check a fact
-when a finding raises a question or an omission. Never cite a code path in the
-docs. When the code contradicts the doc, the doc is right: do not change it to
-match the code.
+answer. Ask the user, unless the nearest `GLOSSARY.md` or a file the target docs
+reference holds it. You may read the code to check a fact when a finding raises
+a question or an omission. Never cite a code path in the docs. When the code
+contradicts the doc, the doc is right: do not change it to match the code.
 
 Run `markdown-fix <file>` then `markdown-lint --fix <file>` on every modified
-file. A command that exits with an error is a fatal error: do not retry, stop
-the round, and report the command name and its error to the user. Keep the edits
-already applied.
+file. A command that exits with an error is a fatal error (see Step 2).
 
 Write the recap in English, with four groups, in this order. After the user
 answers, apply the fixes and print again the groups that changed.
@@ -194,8 +194,10 @@ question each, carry no severity line.
 Write each line as `<initial> → <remaining>`. Get each part from the helper
 `documentation-tighten-severity --blocking <n> --important <n> --nitpick <n>`,
 which lies in PATH. The script prints the emoji and the label. A script that is
-missing, exits with an error or prints nothing is a fatal error: handle it as a
-Goldfish failure (see Step 2). Call it twice for each line:
+missing, exits with an error or prints nothing is a fatal error (see Step 2).
+Each time you write a severity line, call it twice: once for the initial part
+and once for the remaining part. Pass one count for each severity (`blocking`,
+`important`, `nitpick`) to its flag:
 
 - **Initial:** count the findings of the merged list from Step 3 (Goldfish
   findings and ambiguity findings), whatever their outcome (fixed, asked,
