@@ -51,9 +51,10 @@ parallel. Wait for the report of every Goldfish before Step 3.
 
 A Goldfish that errors, times out or returns a malformed report is a fatal
 error. A report of a finding Goldfish (every Goldfish except `summary`) is
-malformed when one of its findings has no severity or no quote. Do not retry it
-and do not continue the round. Report the failure to the user first, with the
-Goldfish name and the error, so the user fixes it before any result is used.
+malformed when one of its findings has no severity or no quote. The report of
+the `summary` Goldfish is malformed when it is empty. Do not retry it and do not
+continue the round. Report the failure to the user first, with the Goldfish name
+and the error, so the user fixes it before any result is used.
 
 The prompt of a Goldfish holds exactly these parts, in this order:
 
@@ -111,9 +112,9 @@ Markdown files.
 **Exit criterion:** Every finding of the highest tier is fixed, asked about,
 rejected with a reason or `Ignored`. The recap is printed.
 
-Fix only the highest tier present among the merged findings, to keep the diff
-readable. Every lower tier is `Ignored`. When the highest tier present is
-`nitpick`, fix every nitpick finding from every Goldfish.
+Fix every merged finding of the highest tier present (`blocking`, then
+`important`, then `nitpick`), to keep the diff readable. Mark every finding of a
+lower tier `Ignored`.
 
 Edit a Markdown file outside the target list only when it lies in the directory
 of a target file or in a subdirectory of it. A finding that needs any other file
@@ -129,25 +130,27 @@ Go through the findings to fix, blocking first. For each finding:
    Markdown rules afterward.
 3. Apply the fix with the `Edit` tool.
 
-Fix every finding that matches none of the cases below, print the recap below,
-then ask the user about the findings that match one.
+Fix every finding that matches none of the four cases listed in the next
+paragraph. Print the recap, then ask the user about the findings that match one.
 
-Ask the user only when the fix changes what a reader must do. Cases: two
-passages disagree, the readings of a passage lead to different actions, you
-cannot tell which meaning the docs intend, or a gap needs an answer the docs do
-not hold. Ask through `/grill-me`: one question at a time, with your recommended
-answer. Show both quotes and offer the options. When the answer to one question
-settles another finding, ask them as one question. After each answer, apply the
-matching fix with the `Edit` tool before you ask the next question. A question
-without its fix is not finished. The user may skip a question: the finding moves
-to `Ignored`, and you ask the next question.
+Ask the user only in these four cases: two passages disagree, the readings of a
+passage lead to different actions, you cannot tell which meaning the docs
+intend, or a gap needs an answer the docs do not hold. Ask through `/grill-me`:
+one question at a time, with your recommended answer. Show both quotes and offer
+the options. When the answer to one question settles another finding, ask them
+as one question. After each answer, apply the matching fix with the `Edit` tool
+before you ask the next question. A question without its fix is not finished.
+The user may skip a question: the finding moves to `Ignored`, and you ask the
+next question.
 
 A clarity finding lists competing readings and a proposed wording. Apply the
-proposed wording when it keeps the meaning the docs clearly intend.
+proposed wording when it keeps every rule of the passage. Otherwise write your
+own wording that keeps every rule, or ask the user when you cannot tell which
+meaning the docs intend.
 
 An ambiguity finding shows that a reader without context misreads a passage.
-Reword the passage so that your own reading (see Step 3) is the only possible
-one.
+Reword the passage so that the meaning you listed in Step 3, item 1 is the only
+possible reading.
 
 A concision finding names the place where a repeated rule stays. Keep the rule
 there, and remove it from every other place, or replace it with a pointer to the
@@ -163,8 +166,9 @@ docs. When the code contradicts the doc, the doc is right: do not change it to
 match the code.
 
 Run `markdown-fix <file>` then `markdown-lint --fix <file>` on every modified
-file. A failure of either command is a fatal error: handle it as a Goldfish
-failure (see Step 2).
+file. A command that exits with an error is a fatal error: do not retry, stop
+the round, and report the command name and its error to the user. Keep the edits
+already applied.
 
 Write the recap in English, with four groups, in this order. After the user
 answers, apply the fixes and print again the groups that changed.
@@ -181,22 +185,23 @@ answers, apply the fixes and print again the groups that changed.
 **Exit criterion:** The first message starts, and the last message ends, with
 one severity line: the initial severity, an arrow, the remaining severity.
 
-The recap of Step 4 comes after the first line of the first message. Write that
-first line, and the last line of the last message, as `<initial> → <remaining>`.
-Get each part from
-`documentation-tighten-severity --blocking <n> --important <n> --nitpick <n>`.
-The script prints the emoji and the label. A script that is missing, exits with
-an error or prints nothing is a fatal error: handle it as a Goldfish failure
-(see Step 2). Call it twice:
+The first message is the first assistant message of the round. It starts with
+the severity line, followed by the recap of Step 4. The last message is the one
+after the user answered or skipped every question, or the first message when it
+asks none. It ends with the severity line. Intermediate messages, such as one
+question each, carry no severity line.
+
+Write each line as `<initial> → <remaining>`. Get each part from the helper
+`documentation-tighten-severity --blocking <n> --important <n> --nitpick <n>`,
+which lies in PATH. The script prints the emoji and the label. A script that is
+missing, exits with an error or prints nothing is a fatal error: handle it as a
+Goldfish failure (see Step 2). Call it twice for each line:
 
 - **Initial:** count the findings of the merged list from Step 3 (Goldfish
   findings and ambiguity findings), whatever their outcome (fixed, asked,
   rejected or `Ignored`).
-- **Remaining:** count the findings that are `Asked` when you write the line. Do
-  not count `Ignored` findings.
-
-The last message is the one after the user answered or skipped every question,
-or the first message when it asks none.
+- **Remaining:** count the findings with status `Asked` at the moment you write
+  that line. Do not count `Ignored` findings.
 
 A round that ends early (a Step 1 stop or a fatal Goldfish error) carries no
 severity line.
@@ -227,5 +232,4 @@ Stop there. Do not start a second round: one invocation is one round.
 - [ ] Each summary mismatch listed as an ambiguity finding
 - [ ] User asked only as Step 4 says
 - [ ] `markdown-fix` and `markdown-lint --fix` run on every modified file
-- [ ] First line and last line are the initial and the remaining severity, each
-      with its emoji and label
+- [ ] Severity lines written as Step 5 says
