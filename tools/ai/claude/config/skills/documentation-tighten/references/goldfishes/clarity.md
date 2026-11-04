@@ -23,8 +23,6 @@ For each finding, name the competing readings:
 - Write each reading in the problem sentence, as
   `Reading A: ... Reading B: ...`. For an undefined reference, Reading B is that
   the reference points to nothing.
-- Add a proposed wording that allows one reading, in a `Proposed wording` line
-  after the problem.
 
 ## Severity
 

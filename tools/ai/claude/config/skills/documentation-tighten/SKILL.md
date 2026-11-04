@@ -9,9 +9,8 @@ description: Use when the user wants to tighten, audit or proofread documentatio
 
 One round of documentation tightening, based on the Elephant and Goldfish
 pattern. The Elephant is the main agent. A Goldfish is a zero-context sub-agent
-that reads only the docs and reports findings. One invocation runs one round.
-There is no loop. A round fixes the `blocking` and `important` findings, and the
-user starts the next round.
+that reads only the docs and reports findings. A round fixes only the highest
+severity tier found, and the user starts the next round.
 
 ## Core Workflow
 
@@ -33,7 +32,7 @@ only.
 
 ### Step 2 — Launch the Goldfish
 
-**Goal:** Get a findings report from each Goldfish, all running at once.
+**Goal:** Get a findings report from each Goldfish.
 
 **Exit criterion:** Every Goldfish returned its report.
 
@@ -60,7 +59,8 @@ The prompt of a Goldfish holds exactly these parts, in this order:
 3. The list of target doc paths
 
 The Goldfish finds the nearest `GLOSSARY.md` and follows the references of the
-docs by itself. Do not read them for it, and do not paste them into the prompt.
+docs by itself. Do not read them to prepare the prompt, and do not paste them
+into it.
 
 Do not add the conversation, the intent of the user, your own opinion of the
 docs or any code path. A Goldfish with context is not a Goldfish.
@@ -72,8 +72,8 @@ docs or any code path. A Goldfish with context is not a Goldfish.
 **Exit criterion:** Every defect appears once, with every quote that shows it.
 
 Collect the findings of all Goldfish. Treat two findings as duplicates when they
-share at least one quoted passage and name the same defect. Merge each group of
-duplicates into one finding:
+share at least one quoted passage and describe the same problem, whatever the
+Goldfish axis. Merge each group of duplicates into one finding:
 
 - Keep the highest severity of the group.
 - Keep every distinct quote.
@@ -108,30 +108,37 @@ A summary that matches your reading adds no finding.
 
 ### Step 4 — Fix the docs
 
-**Goal:** Apply the essential merged findings to the local Markdown files.
+**Goal:** Apply the merged findings of the highest severity tier to the local
+Markdown files.
 
-**Exit criterion:** Every `blocking` and `important` finding is fixed, asked
-about or rejected with a reason. The recap is printed.
+**Exit criterion:** Every finding of the highest tier is fixed, asked about or
+rejected with a reason. The recap is printed.
 
-Fix the `blocking` and `important` findings. Fix a `nitpick` or a minor gap only
-when no `blocking` or `important` finding is left. Every finding you leave alone
-is `Ignored`.
+Fix only the highest tier present, to keep the diff readable. Every finding of a
+lower tier is `Ignored`.
+
+- `blocking` present: ask the user what to do, then fix the `blocking` findings.
+- No `blocking`, `important` present: fix the `important` findings. Ask the user
+  only for those you cannot fix alone.
+- Only `nitpick` present: fix the `nitpick` findings, including `nitpick` gap
+  findings.
 
 Go through the findings to fix, blocking first. For each finding:
 
 1. Read the quoted passages in the doc. Reject the finding when it has no
    severity, no quote, or a quote that does not match the doc, and say why.
-2. Pick the fix. Follow the nearest `GLOSSARY.md` and the Markdown conventions.
+2. Pick the fix. Follow the nearest `GLOSSARY.md` and the rules that
+   `markdown-lint` enforces.
 3. Apply the fix with the `Edit` tool.
 
-Fix the findings that need no opinion of the user first. Then print the recap,
-as described below. Then ask the user about the others.
+Fix the findings that need no user opinion, print the recap below, then ask the
+user about the rest.
 
-Ask the user only when the fix changes the meaning of a rule: two passages
-disagree, and choosing one changes what a reader must do. Ask through
-`/grill-me`: one question at a time, with your recommended answer. Show both
-quotes and offer the options. When the answer to one question settles another
-finding, ask them as one question.
+Ask the user only when the fix changes what a reader must do. Cases: two
+passages disagree, the readings of a passage lead to different actions, or a gap
+needs an answer the docs do not hold. Ask through `/grill-me`: one question at a
+time, with your recommended answer. Show both quotes and offer the options. When
+the answer to one question settles another finding, ask them as one question.
 
 A clarity finding lists competing readings and a proposed wording. Apply the
 proposed wording when it keeps the meaning the docs clearly intend. Ask the user
@@ -168,7 +175,7 @@ Write the recap in English, with three groups:
 
 **Goal:** Give the user the verdict and the outcome.
 
-**Exit criterion:** The last line of the reply gives the highest severity found.
+**Exit criterion:** The reply ends with `Highest severity: <level>`.
 
 The recap of Step 4 comes first in the reply. Then copy the `**Verdict:**` of
 the gap Goldfish into the reply, as `Implementation: can implement` or
@@ -198,7 +205,7 @@ there. Do not start a second round.
 | "I'll delete the repeated rule, the other copy has it"   | Check the kept copy holds every detail first. Never lose a rule. |
 | "The Goldfish summarized it wrong, that is its fault"    | A wrong summary shows an ambiguous doc. Report the mismatch.     |
 | "I'll read the summary first, then skim the docs"        | Form your own reading first. Else you only confirm the summary.  |
-| "I'll fix the nitpicks too, while I am here"             | Only when no `blocking` or `important` finding is left.          |
+| "I'll fix the nitpicks too, while I am here"             | Only when the round found nothing above `nitpick`.               |
 | "The code says otherwise, I'll change the doc"           | The doc is right. Use the code to check a fact, never to decide. |
 | "I'll ask all the questions in one message"              | `/grill-me`: one question at a time, with a recommendation.      |
 
@@ -209,9 +216,9 @@ there. Do not start a second round.
       description
 - [ ] Prompt holds only the shared rules, the brief and the doc paths
 - [ ] Duplicate findings merged before any fix
-- [ ] Every `blocking` and `important` finding fixed, asked about or rejected
-      with a reason
-- [ ] Minor findings fixed only when no `blocking` or `important` is left
+- [ ] Every finding of the highest tier fixed, asked about or rejected with a
+      reason
+- [ ] Lower tiers left `Ignored`
 - [ ] Recap printed in English, with `Fixed`, `Rejected` and `Ignored`
 - [ ] Each repeated rule kept in one place, with no rule lost
 - [ ] Own reading of the docs formed before reading the summary

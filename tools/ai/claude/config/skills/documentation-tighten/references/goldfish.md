@@ -15,7 +15,8 @@ what they say.
 
 ## What you never do
 
-- Never read code. A source file is not a doc, even when a doc references it.
+- Never read code. A source file is not a doc, even when a doc references it. A
+  config or data file is not code.
 - Never read the conversation or guess the intent of the author.
 - Never edit, write or delete any file. You are read-only.
 - Never fix a problem. Report it.
