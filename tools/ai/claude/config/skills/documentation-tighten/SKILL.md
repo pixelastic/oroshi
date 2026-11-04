@@ -1,6 +1,6 @@
 ---
 name: documentation-tighten
-description: Use when the user wants to tighten, audit or proofread documentation, from any source (a doc file, a directory, a Confluence page, a pull request). Runs one round. The Elephant (main agent) launches Goldfish sub-agents with zero context, which read only the docs and report findings, then the Elephant fixes the docs.
+description: Use when the user wants to tighten, audit or proofread local Markdown documentation (a file or a directory). Runs one round. The Elephant (main agent) launches Goldfish sub-agents with zero context, which read only the docs and report findings, then the Elephant fixes the docs.
 ---
 
 # Documentation Tighten
@@ -19,16 +19,14 @@ that reads only the docs and reports findings.
 
 **Exit criterion:** A list of absolute paths of local Markdown files is ready.
 
-The argument names the documentation. It can be any source: a file, a directory,
-a Confluence page, a pull request, a URL. A Goldfish reads local Markdown files
-only.
+The skill edits local Markdown files only.
 
 - Local Markdown file: the target is that file.
 - Local directory: the target is every Markdown file under it, recursively.
-- Any other source: retrieve it with a matching helper (see `helper-list`),
-  otherwise with another tool, and write it as Markdown files in the scratchpad.
-  The target is those files.
-- No argument, or a source you cannot retrieve: ask the user. Do not infer one.
+- Anything else (a URL, a Confluence page, a pull request, a missing path, a
+  directory with no Markdown file): stop and tell the user the skill needs local
+  Markdown.
+- No argument: ask the user. Do not infer one.
 
 ### Step 2 — Launch the Goldfish
 
@@ -84,9 +82,6 @@ Goldfish axis. Merge each group of duplicates into one finding:
 
 A Goldfish that reports its no-finding sentence adds nothing to the list.
 
-The gap Goldfish also reports an implementability verdict. It is not a finding.
-Do not merge it. Keep it, with its list of missing items, for Step 5.
-
 The summary Goldfish reports a summary, never a finding. Compare it to your own
 reading of the docs:
 
@@ -112,19 +107,19 @@ Markdown files.
 **Exit criterion:** Every finding of the highest tier is fixed, asked about or
 rejected with a reason. The recap is printed.
 
-Fix only the highest tier present among the merged findings you did not reject,
-to keep the diff readable. Every finding of a lower tier is `Ignored`. The user
-starts the next round.
+First, check every merged finding. Reject the finding when it has no severity,
+no quote, or a quote that does not match the doc, and say why. Then fix only the
+highest tier present among the findings you did not reject, to keep the diff
+readable. Every finding of a lower tier is `Ignored`.
 
 - `blocking` present: fix the `blocking` findings.
 - No `blocking`, `important` present: fix the `important` findings.
-- Only `nitpick` present: fix the `nitpick` findings, including `nitpick` gap
-  findings.
+- Only `nitpick` present: fix the `nitpick` findings of every Goldfish, the gap
+  Goldfish included.
 
 Go through the findings to fix, blocking first. For each finding:
 
-1. Read the quoted passages in the doc. Reject the finding when it has no
-   severity, no quote, or a quote that does not match the doc, and say why.
+1. Read the quoted passages in the doc.
 2. Pick the fix. Follow the nearest `GLOSSARY.md`. `markdown-lint` checks the
    Markdown rules afterward.
 3. Apply the fix with the `Edit` tool.
@@ -154,10 +149,11 @@ the removed one, and move any missing detail there. For a verbose passage, apply
 the `Shorter wording` when it keeps every rule of the passage.
 
 A gap finding asks for an answer that the docs do not hold. Never invent the
-answer. Ask the user, unless the project files or a referenced file hold it. You
-may read the code to check a fact when a finding raises a question or an
-omission. Never cite a code path in the docs. When the code contradicts the doc,
-the doc is right: do not change it to match the code.
+answer. Ask the user, unless a doc of the project (such as `GLOSSARY.md`) or a
+file the target docs reference holds it. You may read the code to check a fact
+when a finding raises a question or an omission. Never cite a code path in the
+docs. When the code contradicts the doc, the doc is right: do not change it to
+match the code.
 
 Run `markdown-fix <file>` then `markdown-lint --fix <file>` on every modified
 file.
@@ -172,60 +168,55 @@ answers, apply the fixes and print again the groups that changed.
 
 ### Step 5 — End the round
 
-**Goal:** Give the user the verdict and the outcome.
+**Goal:** Give the user the outcome.
 
-**Exit criterion:** The reply ends with `Highest severity: <level>`.
+**Exit criterion:** The reply ends with one severity emoji and its label.
 
-The recap of Step 4 comes first in the reply. Then copy the `**Verdict:**` of
-the gap Goldfish into the reply, as `Implementation: can implement` or
-`Implementation: cannot implement`. After `cannot implement`, list the missing
-items the Goldfish gave.
+The recap of Step 4 comes first in the reply. Write the last line of the reply
+as the emoji and the label of the highest severity of any Goldfish finding or
+ambiguity finding, rejected ones included. The fix outcome does not change it.
 
-Write the last line of the reply as `Highest severity: <level>`, with `<level>`
-one of `blocking`, `important`, `nitpick` or `none`. It is the highest severity
-of any Goldfish finding or ambiguity finding, rejected ones included. Both the
-verdict and the level ignore the fix outcome. Stop there. Do not start a second
-round: one invocation is one round.
+| Highest severity | Last line    |
+| ---------------- | ------------ |
+| `blocking`       | 🔴 blocking  |
+| `important`      | 🟠 important |
+| `nitpick`        | 🟡 nitpick   |
+| none             | 🟢 none      |
+
+Stop there. Do not start a second round: one invocation is one round.
 
 ## Common Rationalizations
 
 | Rationalization                                          | Reality                                                          |
 | -------------------------------------------------------- | ---------------------------------------------------------------- |
 | "I'll give the Goldfish some context, it will find more" | Context is what hides defects. A reader without it finds them.   |
-| "The fixes changed the docs, I should run another round" | One invocation is one round. The user decides on the next.       |
+| "The fixes changed the docs, I should run another round" | See Step 5.                                                      |
 | "The finding is wrong, I'll skip it silently"            | Reject it with a reason, in the reply.                           |
-| "Both passages are fine, I'll pick one and move on"      | A fix that changes a rule needs the user. Ask.                   |
+| "Both passages are fine, I'll pick one and move on"      | See Step 4.                                                      |
 | "The Goldfish could fix the typo itself"                 | A Goldfish never edits. The Elephant owns every edit.            |
-| "I'll launch the Goldfish one by one"                    | One message, all Goldfish. They run in parallel.                 |
+| "I'll launch the Goldfish one by one"                    | See Step 2.                                                      |
 | "Two Goldfish found it, I'll fix it twice"               | Merge duplicates first. One defect is one fix.                   |
-| "I'll paste the glossary into the prompt to help"        | The Goldfish finds its own glossary. Pasting adds context.       |
+| "I'll paste the glossary into the prompt to help"        | See Step 2.                                                      |
 | "The gap is obvious, I'll write the missing answer"      | The docs lack it. Ask the user, or find it in a referenced file. |
 | "I know which reading the author meant"                  | You are not a Goldfish. If the docs do not say, ask the user.    |
 | "I'll delete the repeated rule, the other copy has it"   | Check the kept copy holds every detail first. Never lose a rule. |
 | "The Goldfish summarized it wrong, that is its fault"    | A wrong summary shows an ambiguous doc. Report the mismatch.     |
 | "I'll read the summary first, then skim the docs"        | Form your own reading first. Else you only confirm the summary.  |
-| "I'll fix the nitpicks too, while I am here"             | Only when the round found nothing above `nitpick`.               |
+| "I'll fix the nitpicks too, while I am here"             | See Step 4.                                                      |
 | "The code says otherwise, I'll change the doc"           | The doc is right. Use the code to check a fact, never to decide. |
-| "I'll ask all the questions in one message"              | `/grill-me`: one question at a time, with a recommendation.      |
+| "I'll ask all the questions in one message"              | See Step 4.                                                      |
 
 ## Checklist
 
-- [ ] Target resolved to local Markdown files, or the user asked for the source
-- [ ] Goldfish launched in one message, each with its `Goldfish <axis>`
-      description
-- [ ] Prompt holds only the shared rules, the brief and the doc paths
+- [ ] Target resolved to local Markdown files, or the round stopped
+- [ ] Goldfish launched and prompted as Step 2 says
 - [ ] Duplicate findings merged before any fix
 - [ ] Every finding of the highest tier fixed, asked about or rejected with a
       reason
-- [ ] Lower tiers left `Ignored`
 - [ ] Recap printed in English, with `Asked`, `Fixed`, `Rejected` and `Ignored`
 - [ ] Each repeated rule kept in one place, with no rule lost
 - [ ] Own reading of the docs formed before reading the summary
 - [ ] Each summary mismatch listed as an ambiguity finding
-- [ ] User asked only for fixes that change the meaning of a rule, through
-      `/grill-me`
+- [ ] User asked only as Step 4 says
 - [ ] `markdown-fix` and `markdown-lint --fix` run on every modified file
-- [ ] Reply gives the implementability verdict, with the missing items after
-      `cannot implement`
-- [ ] Last line is `Highest severity: <level>`
-- [ ] No second round started
+- [ ] Last line is the severity emoji and its label

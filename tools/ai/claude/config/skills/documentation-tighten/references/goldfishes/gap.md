@@ -42,30 +42,7 @@ sentence which question the docs leave open.
 3. For each item, ask what happens when it is missing, invalid, empty, at its
    limit, repeated or failing.
 4. Keep each question that no passage answers. Report it as a finding.
-5. Imagine you must implement the docs now, with no other source. Decide the
-   verdict.
+5. Imagine you must implement the docs now, with no other source. Report each
+   item you lack as a `blocking` finding.
 
-## Verdict
-
-After the findings, always end your report with the implementability verdict. It
-is not a finding and has no severity. Write one of these two forms.
-
-When you can implement the docs from the docs alone:
-
-```markdown
-**Verdict:** can implement
-```
-
-When you cannot, list every item you lack. Each blocking finding is one item:
-
-```markdown
-**Verdict:** cannot implement
-
-- <missing item>
-- <missing item>
-```
-
-The verdict is `cannot implement` when, and only when, you report at least one
-blocking finding.
-
-When you find no gap, write `No gap found.` before the verdict.
+When you find no gap, answer `No gap found.`
