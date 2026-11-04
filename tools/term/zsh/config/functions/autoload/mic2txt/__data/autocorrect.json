@@ -199,5 +199,7 @@
   "XMODEMAP": "xmodmap",
   "Roche et Root": "OROSHI_ROOT",
   "paquet route": "packageRoot",
-  "yardrun": "yarn run"
+  "yardrun": "yarn run",
+  "document titan": "documentation-tighten",
+  "documentation titan": "documentation-tighten"
 }
