@@ -38,9 +38,8 @@ Elephant resolves a relative path from the working directory.
 
 **Exit criterion:** Every Goldfish returned its report.
 
-Use the `Agent` tool with the `general-purpose` subagent. Launch each Goldfish
-with its fixed description, so the Claude Code statusline colors it. Every
-`references/...` path of this skill is relative to the directory of this file.
+Use the `Agent` tool with the `general-purpose` subagent. Every `references/...`
+path of this skill is relative to the directory of this file.
 
 | Goldfish        | Description              | Brief                                    |
 | --------------- | ------------------------ | ---------------------------------------- |
@@ -52,17 +51,18 @@ with its fixed description, so the Claude Code statusline colors it. Every
 | `summary`       | `Goldfish summary`       | `references/goldfishes/summary.md`       |
 
 Launch every Goldfish in a single message, one `Agent` call each, so they run in
-parallel.
+parallel. Give each its fixed description, so the Claude Code statusline colors
+it.
 
 A Goldfish that errors, times out or returns a malformed report is a fatal
 error. An empty report is malformed. The report of a finding Goldfish (every
 Goldfish except `summary`) is also malformed when one of its findings has no
 quote or a severity other than `blocking`, `important` or `nitpick`.
 
-A fatal error stops the round. Do not retry and do not continue the round. Keep
-the edits already applied. Report the failure to the user before any other
-output, with the name of the Goldfish or command that failed and its error, so
-the user fixes it before any result is used.
+A fatal error stops the round: do not retry, and keep the edits already applied.
+Report the failure to the user before any other output, with the name of the
+Goldfish or command that failed and its error, so the user fixes it before any
+result is used.
 
 The prompt of a Goldfish holds exactly these parts, in this order:
 
@@ -99,8 +99,12 @@ finding:
 
 A no-finding sentence counts as zero findings and adds nothing to the list. When
 every Goldfish reports zero, the list is empty, and that outcome is valid: tell
-the user the docs hold no finding. When you reject every finding, tell the user
-the same.
+the user the docs hold no finding. When you reject every finding in Step 4, tell
+the user the same.
+
+When the list holds only nitpicks, the docs have reached the stop point of the
+Elephant and Goldfish pattern: further rounds return only nitpicks. Tell the
+user that only nitpicks remain and that another round is not worth it.
 
 The summary Goldfish reports a summary, never a finding. Compare it to your own
 reading of the docs:
@@ -126,7 +130,7 @@ reading of the docs:
 the automated fixes, then the human fixes.
 
 **Exit criterion:** Every finding is fixed, asked about, rejected or `Ignored`.
-The recap of each phase with a fix is printed.
+The recap of each phase is printed.
 
 The phases and the statuses `Asked` and `Ignored` are internal. Never write the
 words "Phase", `Asked` or `Ignored` to the user.
@@ -142,7 +146,8 @@ For each finding:
    them. Reject the finding when an earlier fix made it obsolete ("already
    resolved by another fix") or when you judge it wrong. You hold more context
    than the Goldfish, so your judgment prevails.
-2. Pick the fix. Follow the nearest `GLOSSARY.md`.
+2. Pick the fix. Follow the nearest `GLOSSARY.md` of the doc you edit: the first
+   one found when searching upward from the directory of that doc.
 3. Apply the fix with the `Edit` tool.
 
 The ask cases are these four:
@@ -158,11 +163,12 @@ The ask cases are these four:
 #### Automated fixes
 
 Fix every finding that matches no ask case, of any severity, in the order set
-above. Run the end-of-phase commands (see "Fix rules"), then print the recap of
-the Automated fixes phase. When <n> findings match an ask case (<n> at least 1),
-end the last message of this phase with "I have <n> unanswered questions. May I
-ask them?", then wait for the answer. The user may commit meanwhile. When the
-user declines, the round ends.
+above. A nitpick that matches an ask case is never asked: it moves to `Ignored`.
+Run the end-of-phase commands (see "Fix rules"), then print the recap of the
+Automated fixes phase. When <n> findings match an ask case (<n> at least 1), end
+the last message of this phase with "I have <n> unanswered questions. May I ask
+them?", then wait for the answer. The user may commit meanwhile. When the user
+declines, the round ends.
 
 #### Human fixes
 
@@ -172,11 +178,11 @@ for a disagreement). Give one concrete example that shows the problem: a
 realistic case where the passage leads a reader to two different actions. Offer
 the options. When the answer to one finding also settles another finding, ask
 one question that covers both findings. The user may skip a question: the
-finding moves to `Ignored`. Apply no fix of an asked finding before the last
-answer. After the last answer, apply every matching fix, run the end-of-phase
-commands (see "Fix rules"), print the recap of the Human fixes phase and end the
-round. A finding the user leaves unanswered, by declining to be asked or by
-ending the session, stays `Asked`.
+finding moves to `Ignored`. Apply the fix of an answered finding only after the
+last answer, and apply no fix of a skipped finding. After the last answer, run
+the end-of-phase commands (see "Fix rules"), print the recap of the Human fixes
+phase and end the round. A finding the user leaves unanswered, by declining to
+be asked or by ending the session, stays `Asked`.
 
 #### Fix rules
 
