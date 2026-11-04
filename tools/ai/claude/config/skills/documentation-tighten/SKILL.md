@@ -9,8 +9,7 @@ description: Use when the user wants to tighten, audit or proofread documentatio
 
 One round of documentation tightening, based on the Elephant and Goldfish
 pattern. The Elephant is the main agent. A Goldfish is a zero-context sub-agent
-that reads only the docs and reports findings. A round fixes only the highest
-severity tier found, and the user starts the next round.
+that reads only the docs and reports findings.
 
 ## Core Workflow
 
@@ -26,8 +25,9 @@ only.
 
 - Local Markdown file: the target is that file.
 - Local directory: the target is every Markdown file under it, recursively.
-- Any other source: retrieve it with the tool that fits, and write it as
-  Markdown files in the scratchpad. The target is those files.
+- Any other source: retrieve it with a matching helper (see `helper-list`),
+  otherwise with another tool, and write it as Markdown files in the scratchpad.
+  The target is those files.
 - No argument, or a source you cannot retrieve: ask the user. Do not infer one.
 
 ### Step 2 — Launch the Goldfish
@@ -48,9 +48,13 @@ with its fixed description, so the Claude Code statusline colors it.
 | `concision`     | `Goldfish concision`     | `references/goldfishes/concision.md`     |
 | `summary`       | `Goldfish summary`       | `references/goldfishes/summary.md`       |
 
-Launch every Goldfish in a single message with one `Agent` call each, so they
-run in parallel. Never launch them one after another. Wait for the report of
-every Goldfish before Step 3.
+Launch every Goldfish in a single message, one `Agent` call each, so they run in
+parallel. Wait for the report of every Goldfish before Step 3.
+
+A Goldfish that errors, times out or returns a malformed report is a fatal
+error. Do not retry it and do not continue the round. Report the failure to the
+user first, with the Goldfish name and the error, so the user fixes it before
+any result is used.
 
 The prompt of a Goldfish holds exactly these parts, in this order:
 
@@ -58,12 +62,8 @@ The prompt of a Goldfish holds exactly these parts, in this order:
 2. The content of the Goldfish brief
 3. The list of target doc paths
 
-The Goldfish finds the nearest `GLOSSARY.md` and follows the references of the
-docs by itself. Do not read them to prepare the prompt, and do not paste them
-into it.
-
-Do not add the conversation, the intent of the user, your own opinion of the
-docs or any code path. A Goldfish with context is not a Goldfish.
+Add nothing else: no glossary, referenced file, conversation, user intent,
+opinion of the docs or code path. The Goldfish finds its own context.
 
 ### Step 3 — Merge the findings
 
@@ -104,8 +104,6 @@ reading of the docs:
    otherwise `important`.
 5. Add the finding to the list, then merge it by the duplicate rule above.
 
-A summary that matches your reading adds no finding.
-
 ### Step 4 — Fix the docs
 
 **Goal:** Apply the merged findings of the highest severity tier to the local
@@ -114,12 +112,12 @@ Markdown files.
 **Exit criterion:** Every finding of the highest tier is fixed, asked about or
 rejected with a reason. The recap is printed.
 
-Fix only the highest tier present, to keep the diff readable. Every finding of a
-lower tier is `Ignored`.
+Fix only the highest tier present among the merged findings you did not reject,
+to keep the diff readable. Every finding of a lower tier is `Ignored`. The user
+starts the next round.
 
-- `blocking` present: ask the user what to do, then fix the `blocking` findings.
-- No `blocking`, `important` present: fix the `important` findings. Ask the user
-  only for those you cannot fix alone.
+- `blocking` present: fix the `blocking` findings.
+- No `blocking`, `important` present: fix the `important` findings.
 - Only `nitpick` present: fix the `nitpick` findings, including `nitpick` gap
   findings.
 
@@ -127,34 +125,33 @@ Go through the findings to fix, blocking first. For each finding:
 
 1. Read the quoted passages in the doc. Reject the finding when it has no
    severity, no quote, or a quote that does not match the doc, and say why.
-2. Pick the fix. Follow the nearest `GLOSSARY.md` and the rules that
-   `markdown-lint` enforces.
+2. Pick the fix. Follow the nearest `GLOSSARY.md`. `markdown-lint` checks the
+   Markdown rules afterward.
 3. Apply the fix with the `Edit` tool.
 
 Fix the findings that need no user opinion, print the recap below, then ask the
 user about the rest.
 
 Ask the user only when the fix changes what a reader must do. Cases: two
-passages disagree, the readings of a passage lead to different actions, or a gap
-needs an answer the docs do not hold. Ask through `/grill-me`: one question at a
-time, with your recommended answer. Show both quotes and offer the options. When
-the answer to one question settles another finding, ask them as one question.
+passages disagree, the readings of a passage lead to different actions, you
+cannot tell which meaning the docs intend, or a gap needs an answer the docs do
+not hold. Ask through `/grill-me`: one question at a time, with your recommended
+answer. Show both quotes and offer the options. When the answer to one question
+settles another finding, ask them as one question. After each answer, apply the
+matching fix with the `Edit` tool before you ask the next question. A question
+without its fix is not finished.
 
 A clarity finding lists competing readings and a proposed wording. Apply the
-proposed wording when it keeps the meaning the docs clearly intend. Ask the user
-when the readings lead to different actions and no passage says which one is
-meant.
+proposed wording when it keeps the meaning the docs clearly intend.
 
 An ambiguity finding shows that a reader without context misreads a passage.
-Reword the passage so the reading you hold is the only one. Ask the user when
-you cannot tell which meaning the docs intend.
+Reword the passage so the reading you hold is the only one.
 
 A concision finding names the place where a repeated rule stays. Keep the rule
 there, and remove it from every other place, or replace it with a pointer to the
 kept place. Before the removal, check that the kept place holds every detail of
-the removed one, and move any missing detail there. After the fix, the rule
-appears once and no rule is lost. For a verbose passage, apply the
-`Shorter wording` when it keeps every rule of the passage.
+the removed one, and move any missing detail there. For a verbose passage, apply
+the `Shorter wording` when it keeps every rule of the passage.
 
 A gap finding asks for an answer that the docs do not hold. Never invent the
 answer. Ask the user, unless the project files or a referenced file hold it. You
@@ -165,8 +162,10 @@ the doc is right: do not change it to match the code.
 Run `markdown-fix <file>` then `markdown-lint --fix <file>` on every modified
 file.
 
-Write the recap in English, with three groups:
+Write the recap in English, with four groups, in this order. After the user
+answers, apply the fixes and print again the groups that changed.
 
+- `Asked`: the findings that wait for an answer of the user.
 - `Fixed`: grouped by theme, with what you removed and what you changed.
 - `Rejected`: one line per rejected finding, with the reason.
 - `Ignored`: the findings you left for a next round.
@@ -180,13 +179,13 @@ Write the recap in English, with three groups:
 The recap of Step 4 comes first in the reply. Then copy the `**Verdict:**` of
 the gap Goldfish into the reply, as `Implementation: can implement` or
 `Implementation: cannot implement`. After `cannot implement`, list the missing
-items the Goldfish gave. The verdict is the one the Goldfish reported, whatever
-the fix outcome.
+items the Goldfish gave.
 
 Write the last line of the reply as `Highest severity: <level>`, with `<level>`
 one of `blocking`, `important`, `nitpick` or `none`. It is the highest severity
-of any Goldfish finding or ambiguity finding, whatever the fix outcome. Stop
-there. Do not start a second round.
+of any Goldfish finding or ambiguity finding, rejected ones included. Both the
+verdict and the level ignore the fix outcome. Stop there. Do not start a second
+round: one invocation is one round.
 
 ## Common Rationalizations
 
@@ -219,7 +218,7 @@ there. Do not start a second round.
 - [ ] Every finding of the highest tier fixed, asked about or rejected with a
       reason
 - [ ] Lower tiers left `Ignored`
-- [ ] Recap printed in English, with `Fixed`, `Rejected` and `Ignored`
+- [ ] Recap printed in English, with `Asked`, `Fixed`, `Rejected` and `Ignored`
 - [ ] Each repeated rule kept in one place, with no rule lost
 - [ ] Own reading of the docs formed before reading the summary
 - [ ] Each summary mismatch listed as an ambiguity finding
