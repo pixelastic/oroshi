@@ -35,7 +35,8 @@ The skill edits local Markdown files only.
 **Exit criterion:** Every Goldfish returned its report.
 
 Use the `Agent` tool with the `general-purpose` subagent. Launch each Goldfish
-with its fixed description, so the Claude Code statusline colors it.
+with its fixed description, so the Claude Code statusline colors it. Every
+`references/...` path of this skill is relative to the directory of this file.
 
 | Goldfish        | Description              | Brief                                    |
 | --------------- | ------------------------ | ---------------------------------------- |
@@ -75,8 +76,9 @@ opinion of the docs or code path. The Goldfish finds its own context.
 **Exit criterion:** Every defect appears once, with every quote that shows it.
 
 Collect the findings of all Goldfish. Treat two findings as duplicates when they
-share at least one quoted passage and describe the same defect of the doc,
-whatever the Goldfish axis. Merge each group of duplicates into one finding:
+share at least one quoted passage and a single edit of the doc would resolve
+both, whatever the Goldfish axis. Merge each group of duplicates into one
+finding:
 
 - Keep the highest severity of the group.
 - Keep every distinct quote.
@@ -100,24 +102,24 @@ reading of the docs:
    a doc rule the summary leaves out. A different wording with the same meaning
    is not a mismatch.
 3. Write each mismatch as an ambiguity finding, in the shared format. Quote the
-   doc passage. Add a `Summary` line with the summary bullet, or `omitted` when
-   the summary leaves the rule out. In the problem sentence, say how the reader
-   went wrong.
+   doc passage. When the summary states a rule the doc never states, quote the
+   nearest doc passage on the same subject. Add a `Summary` line with the
+   summary bullet, or `omitted` when the summary leaves the rule out. In the
+   problem sentence, say how the reader went wrong.
 4. Give the finding `blocking` when the reader would do the wrong thing,
    otherwise `important`.
 5. Add the finding to the list, then merge it by the duplicate rule above.
 
 ### Step 4 — Fix the docs
 
-**Goal:** Apply the merged findings of the highest severity tier to the local
-Markdown files.
+**Goal:** Apply the merged findings to the local Markdown files, in two phases:
+the automatic fixes, then the manual fixes.
 
-**Exit criterion:** Every finding of the highest tier is fixed, asked about,
-rejected with a reason or `Ignored`. The recap is printed.
+**Exit criterion:** Every finding is fixed, asked about, rejected with a reason
+or `Ignored`. The recap of each phase is printed.
 
-Fix every merged finding of the highest tier present (`blocking`, then
-`important`, then `nitpick`), to keep the diff readable. Mark every finding of a
-lower tier `Ignored`.
+Phase 1 handles every finding that matches none of the three ask cases, whatever
+its tier. Phase 2 handles the findings that match one.
 
 Edit a Markdown file outside the target list only when it lies in the directory
 of a target file or in a subdirectory of it. A finding that needs any other file
@@ -133,27 +135,40 @@ Go through the findings to fix, blocking first. For each finding:
    Markdown rules afterward.
 3. Apply the fix with the `Edit` tool.
 
-Fix every finding that matches none of the four cases listed in the next
-paragraph. Print the recap, then ask the user about the findings that match one.
+The ask cases are these three: two passages disagree and the nearest
+`GLOSSARY.md` does not settle which is right, you cannot tell which of several
+readings or meanings of a passage the docs intend, or a gap needs an answer that
+neither the target docs, the nearest `GLOSSARY.md` nor a file the target docs
+reference holds.
 
-Ask the user only in these four cases: two passages disagree, the readings of a
-passage lead to different actions, you cannot tell which meaning the docs
-intend, or a gap needs an answer the docs do not hold. Ask through `/grill-me`:
-one question at a time, with your recommended answer. Show both quotes and offer
-the options. When the answer to one question settles another finding, ask them
-as one question. After each answer, apply the matching fix with the `Edit` tool
-before you ask the next question. A question without its fix is not finished.
-The user may skip a question: the finding moves to `Ignored`, and you ask the
-next question.
+**Phase 1 — automatic fixes.** Fix every finding that matches no ask case,
+blocking first, then important, then nitpick. Run the lint commands below, then
+print the Phase 1 recap. When at least one finding matches an ask case, end the
+message with the question "Continue with the manual fixes?". The user may commit
+before the answer. When the user declines, the findings stay `Asked` and the
+round ends.
+
+**Phase 2 — manual fixes.** Ask the user about every finding that matches an ask
+case, one question at a time, with your recommended answer. Show every quote of
+the finding (both quotes for a disagreement) and offer the options. When the
+answer to one question settles another finding, ask them as one question. The
+user may skip a question: the finding moves to `Ignored`. Apply no fix before
+the last answer. After the last answer, apply every matching fix with the `Edit`
+tool, run the lint commands below, print the Phase 2 recap and end the round.
+When the user ends the session without answering, the finding stays `Asked`.
 
 A clarity finding lists competing readings and a proposed wording. Apply the
 proposed wording when it keeps every rule of the passage. Otherwise write your
-own wording that keeps every rule, or ask the user when you cannot tell which
-meaning the docs intend.
+own wording that keeps every rule.
 
 An ambiguity finding shows that a reader without context misreads a passage.
-Reword the passage so that the meaning you listed in Step 3, item 1 is the only
-possible reading.
+Reword the passage so that the rule you wrote in your own list (Step 3, item 1)
+for that passage is its only possible reading.
+
+A contradiction or glossary finding shows two passages, or a passage and a
+glossary definition, that disagree. Keep the one that follows the nearest
+`GLOSSARY.md` and fix the other to match it. With no `GLOSSARY.md`, or when it
+is silent, the finding is an ask case: the user says which passage is right.
 
 A concision finding names the place where a repeated rule stays. Keep the rule
 there, and remove it from every other place, or replace it with a pointer to the
@@ -162,42 +177,39 @@ the removed one, and move any missing detail there. For a verbose passage, apply
 the `Shorter wording` when it keeps every rule of the passage.
 
 A gap finding asks for an answer that the docs do not hold. Never invent the
-answer. Ask the user, unless the nearest `GLOSSARY.md` or a file the target docs
-reference holds it. You may read the code to check a fact when a finding raises
-a question or an omission. Never cite a code path in the docs. When the code
+answer. The code never supplies the answer: read it only to verify a fact that a
+doc already states. Never cite a code path in the docs. When the code
 contradicts the doc, the doc is right: do not change it to match the code.
 
-Run `markdown-fix <file>` then `markdown-lint --fix <file>` on every modified
-file. A command that exits with an error is a fatal error (see Step 2).
+At the end of each phase, run `markdown-fix <file>` then
+`markdown-lint --fix <file>` on every file modified in that phase. A command
+that exits with an error is a fatal error (see Step 2).
 
-Write the recap in English, with four groups, in this order. After the user
-answers, apply the fixes and print again the groups that changed.
-
-- `Asked`: the findings that wait for an answer of the user.
-- `Fixed`: grouped by theme, with what you removed and what you changed.
-- `Rejected`: one line per rejected finding, with the reason.
-- `Ignored`: the findings you left for a next round.
+Write each recap in English. It lists only the fixes of its phase, ordered by
+tier (blocking, important, nitpick), then grouped by theme, with what you
+removed and what you changed. It lists no rejected, `Ignored` or `Asked`
+finding.
 
 ### Step 5 — End the round
 
 **Goal:** Give the user the outcome.
 
-**Exit criterion:** The first message starts, and the last message ends, with
-one severity line: the initial severity, an arrow, the remaining severity.
+**Exit criterion:** The first and last messages carry one severity line.
 
 The first message is the first assistant message of the round. It starts with
-the severity line, followed by the recap of Step 4. The last message is the one
-after the user answered or skipped every question, or the first message when it
-asks none. It ends with the severity line. Intermediate messages, such as one
+the severity line, followed by the Phase 1 recap. The last message is the Phase
+2 recap, or the first message when no finding is `Asked` or the user declines
+Phase 2. It ends with the severity line. Intermediate messages, such as one
 question each, carry no severity line.
 
 Write each line as `<initial> → <remaining>`. Get each part from the helper
 `documentation-tighten-severity --blocking <n> --important <n> --nitpick <n>`,
-which lies in PATH. The script prints the emoji and the label. A script that is
-missing, exits with an error or prints nothing is a fatal error (see Step 2).
-Each time you write a severity line, call it twice: once for the initial part
-and once for the remaining part. Pass one count for each severity (`blocking`,
-`important`, `nitpick`) to its flag:
+which lies in PATH. The script prints the emoji and the label: for `0` in every
+count, it prints `🟢 none`. A script that is missing, exits with an error or
+prints nothing is a fatal error (see Step 2). Each time you write a severity
+line, call it twice: once for the initial part and once for the remaining part.
+Pass one count for each severity (`blocking`, `important`, `nitpick`) to its
+flag:
 
 - **Initial:** count the findings of the merged list from Step 3 (Goldfish
   findings and ambiguity findings), whatever their outcome (fixed, asked,
@@ -205,10 +217,10 @@ and once for the remaining part. Pass one count for each severity (`blocking`,
 - **Remaining:** count the findings with status `Asked` at the moment you write
   that line. Do not count `Ignored` findings.
 
-A round that ends early (a Step 1 stop or a fatal Goldfish error) carries no
-severity line.
+A round that ends early (a Step 1 stop or any fatal error, whether it comes from
+a Goldfish, a command or the severity script) carries no severity line.
 
-Example: `🟠 important → 🟡 nitpick`.
+Example: `🟠 important → 🟢 none`.
 
 Stop there. Do not start a second round: one invocation is one round.
 
@@ -226,9 +238,9 @@ Stop there. Do not start a second round: one invocation is one round.
 - [ ] Target resolved to local Markdown files, or the round stopped
 - [ ] Goldfish launched and prompted as Step 2 says
 - [ ] Duplicate findings merged before any fix
-- [ ] Every finding of the highest tier fixed, asked about, rejected with a
-      reason or `Ignored`
-- [ ] Recap printed in English, with `Asked`, `Fixed`, `Rejected` and `Ignored`
+- [ ] Phase 1 fixed every finding that matches no ask case, whatever its tier
+- [ ] Phase 1 recap printed in English, with the fixes only
+- [ ] Phase 2 asked every question before any fix, then printed its recap
 - [ ] Each repeated rule kept in one place, with no rule lost
 - [ ] Own reading of the docs formed before reading the summary
 - [ ] Each summary mismatch listed as an ambiguity finding
