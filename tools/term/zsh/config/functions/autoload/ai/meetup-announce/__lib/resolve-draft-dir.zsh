@@ -2,9 +2,6 @@
 # Usage:
 # $ resolve-draft-dir <recordId> <meetupName>
 
-# Guard: skip if already defined (e.g. mocked in tests)
-whence resolve-draft-dir >/dev/null && return 0
-
 source "${0:A:h}/config.zsh"
 
 function resolve-draft-dir() {

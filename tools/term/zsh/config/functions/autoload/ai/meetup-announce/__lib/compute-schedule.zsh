@@ -6,9 +6,6 @@
 # --today: override for today's date (defaults to $(date +%Y-%m-%d))
 # Outputs JSON object: {window, messages: [{id, scheduledFor, channel, state}]}
 
-# Guard: skip if already defined (e.g. mocked in tests)
-whence compute-schedule >/dev/null && return 0
-
 source "${0:A:h}/config.zsh"
 
 function compute-schedule() {
