@@ -26,18 +26,12 @@ describe('eventRespond', () => {
     vi.spyOn(__, 'saveAttendees').mockReturnValue({ eventId: 'a' });
   });
 
-  it('patches the Response of Self and keeps the other Attendees untouched', async () => {
-    await eventRespond({ eventId: 'a', responseStatus: 'declined' });
-
-    expect(__.saveAttendees).toHaveBeenCalledWith({
-      eventId: 'a',
-      calendarId: 'primary',
-      attendees: [organizer, { ...self, responseStatus: 'declined' }, amy],
-    });
-  });
-
-  it.each([{ responseStatus: 'accepted' }, { responseStatus: 'tentative' }])(
-    'patches the Response of Self to $responseStatus',
+  it.each([
+    { responseStatus: 'accepted' },
+    { responseStatus: 'declined' },
+    { responseStatus: 'tentative' },
+  ])(
+    'patches the Response of Self to $responseStatus and keeps the other Attendees untouched',
     async ({ responseStatus }) => {
       await eventRespond({ eventId: 'a', responseStatus });
 
