@@ -19,8 +19,6 @@ Three waves, run sequentially:
 2. **Rewrite** — complex methods, coupling, responsibilities
 3. **Restructure** — module boundaries, dependency flow, layering
 
-Each wave produces issues, not patches.
-
 ---
 
 ## Core Workflow
@@ -46,8 +44,12 @@ Extract the wave from `$ARGUMENTS`: if it contains `reduce`, `rewrite`, or
 **Exit criterion:** Analysis complete, findings collected.
 
 1. Read `references/<currentWave>.md` for the analysis categories.
-2. Scan the code in the current directory for issues matching `currentWave`'s
-   categories.
+2. Scan the code under the current working directory for issues matching
+   `currentWave`'s categories.
+3. If a test of the scanned code fails, stop. Tell the user to fix the tests
+   first.
+4. If the `currentWave` is `rewrite` or `restructure` and no plan exists, stop.
+   Tell the user to run the earlier waves first.
 
 ---
 
@@ -55,11 +57,14 @@ Extract the wave from `$ARGUMENTS`: if it contains `reduce`, `rewrite`, or
 
 **Goal:** Record any bugs found during analysis without fixing them.
 
-**Exit criterion:** Bugs appended to GUIDANCE.md, or skipped if none found.
+**Exit criterion:** Bugs appended to the plan's GUIDANCE.md, or skipped if none
+found.
 
-If you spotted bugs during analysis, append them to the plan's GUIDANCE.md under
-`## Bugs found`. Do **not** fix them — Two Hats principle: refactoring hat and
-bug-fixing hat are separate.
+If you spotted bugs during analysis, append them to the GUIDANCE.md of the plan
+(run `plan-directory` to find it) under `## Bugs found`. In the `reduce` wave,
+no plan exists yet: hold the bugs, then append them once Step 5 creates the
+plan. Do **not** fix them — Two Hats principle: refactoring hat and bug-fixing
+hat are separate.
 
 ---
 
@@ -69,12 +74,15 @@ bug-fixing hat are separate.
 
 **Exit criterion:** User approved the set of findings to turn into issues.
 
-1. Present findings as a table: file, line range, category (dead-code / naming),
-   description, confidence (high/medium/low).
+1. Present findings as a table: file, line range, category (one of the
+   categories of `references/<currentWave>.md`), description, confidence
+   (high/medium/low).
 2. Present cataloged bugs separately.
 3. Use `/grill-me` to discuss findings with the user — which to keep, drop,
    merge, or reframe.
 4. Only proceed to Step 5 once the user approves the final set of findings.
+5. If the analysis found no finding, or the user rejected every finding, stop.
+   Create no issue. Tell the user to run `/refactor <nextWave>`.
 
 ---
 
@@ -88,23 +96,28 @@ bug-fixing hat are separate.
 skill, passing approved findings as context for issue creation.
 
 **If `currentWave` is `rewrite` or `restructure`:** update the existing plan
-previously created by `/plan`. Read the plan's `state.json`, find the highest
-issue `id` in `.issues[]`, create new issue files starting from the next id, and
-append entries to `.issues[]`.
+previously created by `/plan` (run `plan-directory` to find it). Read the plan's
+`state.json`, find the highest issue `id` in `.issues[]`, create new issue files
+starting from the next id, and append entries to `.issues[]`. Use the same
+format as the existing issues created by `/plan`, for files and entries alike.
 
 For each finding, apply the test gate:
 
-- If tests exist and cover the guards and error paths of the affected code →
-  create the refactoring issue.
+- If the existing tests exercise every guard and error path of the affected code
+  (judge by reading the tests) → create the refactoring issue.
 - If no tests exist, or they cover only the nominal case → create a "Write
   characterization tests for X" issue first (guards and error paths included),
-  then the refactoring issue immediately after it (with `blocked_by`
-  dependency). Keep them paired.
+  then the refactoring issue with the next id and a `blocked_by` dependency on
+  the characterization issue. Never drop or reorder one without the other.
 
 Write each refactoring issue using
 [references/refactoring-issue.template.md](references/refactoring-issue.template.md).
-Fill its `## Impact` section for `restructure` issues only, and remove it for
-the other waves.
+Keep its `## Impact` section, heading included, for `restructure` issues only.
+Delete it from the issues of the other waves.
+
+Write each characterization issue with the same template, and replace its
+`## Refactoring constraint` section with: "Write tests that pass on the current
+code. Do not change the source code. No TDD cycle."
 
 ---
 
@@ -125,21 +138,21 @@ Step 1.
 
 ## Common Rationalizations
 
-| Rationalization                                       | Reality                                                                     |
-| ----------------------------------------------------- | --------------------------------------------------------------------------- |
-| "I'll fix this bug while refactoring"                 | Bugs are cataloged, never fixed during refactoring. Two Hats principle.     |
-| "This code doesn't need tests, the change is trivial" | Every refactoring needs a test gate. Write characterization tests first.    |
-| "Findings are clear, no need to check with user"      | User hasn't seen or validated findings yet. Always present before planning. |
+| Rationalization                                       | Reality                                          |
+| ----------------------------------------------------- | ------------------------------------------------ |
+| "I'll fix this bug while refactoring"                 | See Step 3.                                      |
+| "This code doesn't need tests, the change is trivial" | Every finding goes through the Step 5 test gate. |
+| "Findings are clear, no need to check with user"      | Step 4 approval is mandatory.                    |
 
 ## Checklist
 
 - [ ] `refactor-start` called, `currentWave` and `nextWave` parsed
 - [ ] Reference file for `currentWave` read
 - [ ] Code analyzed using `currentWave`'s categories
-- [ ] Bugs cataloged in GUIDANCE.md `## Bugs found` (not fixed)
-- [ ] Findings presented to user, `/grill-me` used, user approved final set
-- [ ] Test gate applied per finding (tests cover guards and error paths,
-      otherwise characterization test issue paired before refactoring issue)
+- [ ] Bugs cataloged, not fixed (Step 3)
+- [ ] User approved the findings (Step 4)
+- [ ] Test gate applied per finding (Step 5)
 - [ ] Plan created (reduce) or issues appended (rewrite/restructure)
-- [ ] Every refactoring issue includes the refactoring constraint block
+- [ ] Every refactoring issue keeps the `## Refactoring constraint` section of
+      the template
 - [ ] Checkpoint issue added using `checkpoint-<currentWave>.template.md`
