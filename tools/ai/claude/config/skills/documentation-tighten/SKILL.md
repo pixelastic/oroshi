@@ -128,7 +128,7 @@ reading of the docs:
 the automated fixes, then the human fixes.
 
 **Exit criterion:** Every finding is fixed, asked about, rejected or `Ignored`.
-The recap of each phase is printed.
+The recap of each phase with a fix is printed.
 
 The phases and the statuses `Asked` and `Ignored` are internal. Never write the
 words "Phase", `Asked` or `Ignored` to the user.
@@ -155,7 +155,8 @@ The ask cases are these four:
    intend.
 3. A gap needs an answer that is in none of the target docs, the nearest
    `GLOSSARY.md` and the files the target docs reference.
-4. The fix needs a file outside the allowed scope above.
+4. The fix needs to edit a Markdown file that is neither in the target list nor
+   in the directory of a target file or a subdirectory of that directory.
 
 #### Automated fixes
 
@@ -163,11 +164,11 @@ Fix every finding that matches no ask case, of any severity, in the order set
 above. A nitpick that matches an ask case is never asked: it moves to `Ignored`.
 Run the end-of-phase commands (see "Fix rules"), then print the recap of the
 Automated fixes phase. Let <n> be the number of questions Human fixes will ask:
-one question per group of ask-case findings that one answer settles, none for a
-nitpick. When <n> is at least 1, append "I have <n> unanswered questions. May I
-ask them?" to the message that holds the recap, or send it alone when the phase
-has no recap. Then wait for the answer. The user may commit meanwhile. When the
-user declines, the round ends.
+one question per group of ask-case findings that one answer settles. When <n> is
+at least 1, append "I have <n> unanswered questions. May I ask them?" to the
+message that holds the recap, or send it alone when the phase has no recap. Then
+wait for the answer. The user may commit meanwhile. When the user declines, the
+round ends.
 
 #### Human fixes
 
