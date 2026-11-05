@@ -53,7 +53,9 @@ A recurring **Event** has a `recurrence`: a raw RFC 5545 rule, set with
 `--recurrence` on `create` and `update`. The helper does not validate it, the
 API does. `--recurrence ""` removes it. The `recurrence` of a series belongs to
 its master **Event**: `update` on an occurrence edits that occurrence only.
-`read` prints `recurrence` as an array of rules, empty for a single **Event**.
+`read` prints `recurrence` as an array of rules, empty for a single **Event**. A
+**Response** given on the master **Event** applies to the whole series, and one
+given on an occurrence applies to that occurrence only.
 
 _Avoid_: meeting, appointment, invitation
 
@@ -83,6 +85,29 @@ A person invited to an **Event**, identified by an e-mail address, and with a
 
 _Avoid_: guest, invitee, participant
 
+**Self**:
+
+The **Attendee** of an **Event** that is the **Account** itself, and the only
+**Attendee** whose **Response** a command can change.
+
+_Avoid_: me, current user, guest
+
+**Response**:
+
+The answer of an **Attendee** to an **Event**: `accepted`, `declined` or
+`tentative`.
+
+_Avoid_: RSVP, reply, answer
+
+`read` prints the **Response** of every **Attendee** as `responseStatus`.
+
+**Comment**:
+
+The short free text that goes with a **Response**, distinct from the
+`description` of the **Event**.
+
+_Avoid_: note, message, reason, description
+
 **Private**:
 
 An **Event** whose visibility is `private`: the readers of the **Calendar** see
@@ -107,6 +132,27 @@ A **Custom verb** of the `attendee` entity: `gcal-attendee-add` adds
 A **Custom verb** of the `attendee` entity: `gcal-attendee-remove` removes one
 **Attendee** of an **Event**.
 
+**`accept`**:
+
+A **Custom verb** of the `event` entity: **Self** confirms that they will
+attend.
+
+_Avoid_: confirm, yes
+
+**`decline`**:
+
+A **Custom verb** of the `event` entity: **Self** confirms that they will be
+absent.
+
+_Avoid_: refuse, reject
+
+**`tentative`**:
+
+A **Custom verb** of the `event` entity: **Self** hopes to attend, but cannot
+confirm yet.
+
+_Avoid_: maybe
+
 ## Relationships
 
 - An **Account** has one or more **Calendars**
@@ -114,6 +160,9 @@ A **Custom verb** of the `attendee` entity: `gcal-attendee-remove` removes one
 - A **Calendar** holds zero or more **Events**
 - An **Event** belongs to exactly one **Calendar**
 - An **Event** has zero or more **Attendees**
+- An **Event** has at most one **Self**
+- An **Attendee** has exactly one **Response**, and at most one **Comment**
+- **Self** is an **Attendee**
 - An **All-day Event** is an **Event**
 - Every command uses the tokens of one **Account**
 - No command sends an e-mail to an **Attendee**
@@ -135,3 +184,12 @@ A **Custom verb** of the `attendee` entity: `gcal-attendee-remove` removes one
 > **Dev:** "Is a day off an **Event**, or something else?" **Domain expert:**
 > "It is an **All-day Event**. Its `dateEnd` is the last day, and `isAllDay` is
 > `true`."
+>
+> **Dev:** "I cannot attend the weekly. Do I remove myself with
+> `gcal-attendee-remove`?" **Domain expert:** "No. Use `gcal-event-decline`: it
+> sets the **Response** of **Self** to `declined`, and `--comment` adds a
+> **Comment**. The organizer gets no e-mail."
+>
+> **Dev:** "On the master **Event** of the weekly, does it decline one
+> occurrence?" **Domain expert:** "No. A **Response** on the master applies to
+> the whole series. Pass the `eventId` of an occurrence to decline that one."

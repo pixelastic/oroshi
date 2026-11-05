@@ -61,6 +61,6 @@ _Avoid_: refresh, repaint
 - [Confluence](tools/term/zsh/config/functions/autoload/api/confluence/__docs/GLOSSARY.md)
   — Pages, Spaces, Body, Page ID, Email, Token, Cloud ID, Domain
 - [Google Calendar](tools/term/zsh/config/functions/autoload/api/google/gcal/__docs/GLOSSARY.md)
-  — Calendars, Primary, Events, All-day Events, Attendees
+  — Calendars, Primary, Events, All-day Events, Attendees, Self, Responses
 - [Lunii](tools/term/zsh/config/functions/autoload/worktools/lunii/__docs/GLOSSARY.md)
   — Packs, Podcasts, Episodes, Thumbnails — RSS-to-Lunii conversion vocabulary
