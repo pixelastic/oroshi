@@ -6,12 +6,12 @@ setup() {
 
 # -- AI vocabulary detection --
 
-@test "flags overused AI vocabulary (delve)" {
+@test "flags overused AI vocabulary (delves)" {
   local file="$BATS_TMP_DIR/ai-text.md"
-  printf 'We delve into the details of the project.\n' > "$file"
+  printf 'She delves into the details of the project.\n' > "$file"
   bats_run_zsh "prose-lint $file"
   [[ "$status" -eq 1 ]]
-  printf '%s' "$output" | jq -e '.[] | select(.rule | startswith("ai-tells."))' >/dev/null
+  printf '%s' "$output" | jq -e '.[] | select(.rule == "oroshi.OverusedVocabulary")' >/dev/null
 }
 
 @test "flags overused AI vocabulary (robust)" {
@@ -34,7 +34,7 @@ setup() {
 
 @test "ai-tells rules report as warning severity" {
   local file="$BATS_TMP_DIR/ai-text.md"
-  printf 'We delve into the details of the project.\n' > "$file"
+  printf 'It is worth noting that the system works well.\n' > "$file"
   bats_run_zsh "prose-lint $file"
   [[ "$status" -eq 1 ]]
   local severity="$(printf '%s' "$output" | jq -r '[.[] | select(.rule | startswith("ai-tells."))] | .[0].severity')"

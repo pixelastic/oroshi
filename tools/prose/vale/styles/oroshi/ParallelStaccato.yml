@@ -1,0 +1,39 @@
+---
+extends: existence
+# Forked from ai-tells/ParallelStaccato.yml
+#
+# Adds the negations the upstream rule misses (can't, cannot, won't, isn't,
+# aren't) and accepts "A"/"An" as the second subject.
+message: "AI staccato: '%s'. Combine these clipped parallel sentences or vary the structure."
+level: error
+nonword: true
+tokens:
+  # === Parallel pairs (any verb — the structure is the tell) ===
+
+  # "Noun verbs. Noun verbs."
+  # "Shippers scan. Practitioners read." "Engineers build. Managers ship."
+  - "\\b[A-Z][a-z]+ [a-z]+s?\\. [A-Z][a-z]+ [a-z]+s?\\."
+
+  # "The noun verbs. The noun verbs."
+  - "\\bThe [a-z]+ [a-z]+s?\\. The [a-z]+ [a-z]+s?\\."
+
+  # "Noun verb-phrase. Noun doesn't/don't/can't/won't/isn't/aren't."
+  # "Content carries the personality. Chrome doesn't."
+  # "The patch can add a language. A plugin can't."
+  # The second subject is one capitalized word, or "A"/"An" plus up to 4 words.
+  - "\\b[A-Z][a-z]+ [^.!?]+\\. (?:[A-Z][a-z]+|An?(?: [\\w-]+){1,4}) (?:doesn'?t|don'?t|does not|do not|can'?t|cannot|can not|won'?t|will not|isn'?t|is not|aren'?t|are not)\\."
+
+  # Multi-word-subject parallel-staccato:
+  # "Concurrent readers don't block each other. One writer at a time
+  # doesn't block readers."
+  # Subjects up to 5 words; the second sentence stays short (3 words after the
+  # verb, no comma), so subordinate clauses ("If I don't need it, ...") pass.
+  # Matches the contracted and the spelled-out negations.
+  - "\\b[A-Z][a-z]+(?: [\\w-]+){1,4} [^.!?]+\\. (?:[A-Z][a-z]+|An?)(?: [\\w-]+){1,4} (?:doesn'?t|don'?t|does not|do not|can'?t|cannot|can not|won'?t|will not|isn'?t|is not|aren'?t|are not)(?: [\\w-]+){0,3}\\."
+
+  # === Solo two-word staccato (enumerated verbs) ===
+  # Single "Subject verb." sentences that AI drops for dramatic effect.
+  # Only flagged for verbs commonly used this way.
+  # scales/works/counts are dropped here: MicDrop owns the pronoun
+  # one-liner ("It works.", "That scales.") and fires on them already.
+  - "\\b[A-Z][a-z]+ (?:ships?|breaks?|builds?|flows?|lands?|wins?|fails?|scans?|reads?|stays?|drops?|clicks?|runs?|falls?|grows?|fades?|leads?|hits?|fits?|stops?|starts?|moves?|waits?|holds?|lives?|dies?|rises?|shines?|shifts?|sticks?|stands?|spreads?|bends?|flips?|snaps?|locks?|fires?|loads?|calls?|pulls?|push(?:es)?|pays?|sells?|talks?|walks?)\\."
