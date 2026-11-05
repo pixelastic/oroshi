@@ -98,7 +98,7 @@ describe('formatEvent', () => {
     it.each([
       {
         title: 'keeps the comment of an Attendee that has one',
-        attendee: {
+        input: {
           email: 'a@y.z',
           responseStatus: 'declined',
           comment: 'On leave',
@@ -107,11 +107,11 @@ describe('formatEvent', () => {
       },
       {
         title: 'prints an empty comment for an Attendee without one',
-        attendee: { email: 'a@y.z', responseStatus: 'accepted' },
+        input: { email: 'a@y.z', responseStatus: 'accepted' },
         expected: '',
       },
-    ])('$title', ({ attendee, expected }) => {
-      const response = event({ attendees: [attendee] });
+    ])('$title', ({ input, expected }) => {
+      const response = event({ attendees: [input] });
 
       const actual = formatEvent(response, 'primary');
 
