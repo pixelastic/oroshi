@@ -36,6 +36,63 @@ describe('eventRespond', () => {
     });
   });
 
+  describe('comment', () => {
+    const selfWithComment = { ...self, comment: 'Original' };
+
+    beforeEach(() => {
+      __.callApi.mockReturnValue({
+        id: 'a',
+        attendees: [organizer, selfWithComment, amy],
+      });
+    });
+
+    it.each([
+      {
+        title: 'sets the Comment of Self',
+        input: { comment: 'Too late for me' },
+        expected: 'Too late for me',
+      },
+      {
+        title: 'keeps the existing Comment when no comment is passed',
+        input: {},
+        expected: 'Original',
+      },
+      {
+        title: 'clears the Comment when the comment is empty',
+        input: { comment: '' },
+        expected: '',
+      },
+    ])('$title', async ({ input, expected }) => {
+      await eventRespond({
+        eventId: 'a',
+        responseStatus: 'declined',
+        ...input,
+      });
+
+      expect(__.saveAttendees).toHaveBeenCalledWith({
+        eventId: 'a',
+        calendarId: 'primary',
+        attendees: [
+          organizer,
+          { ...selfWithComment, responseStatus: 'declined', comment: expected },
+          amy,
+        ],
+      });
+    });
+
+    it('keeps the Comment of the other Attendees', async () => {
+      await eventRespond({
+        eventId: 'a',
+        responseStatus: 'declined',
+        comment: 'Too late for me',
+      });
+
+      const { attendees } = __.saveAttendees.mock.calls[0][0];
+      expect(attendees).toHaveProperty('0', organizer);
+      expect(attendees).toHaveProperty('2', amy);
+    });
+  });
+
   it('reads the Event of the Primary by default', async () => {
     await eventRespond({ eventId: 'a', responseStatus: 'declined' });
 

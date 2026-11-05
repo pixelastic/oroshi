@@ -7,10 +7,14 @@
 # write
 # On the master Event of a series, the Response applies to the whole series
 # The eventId is printed by gcal-event-list-raw
+# --comment sets the Comment of Self. An empty --comment "" clears it, and
+# no --comment keeps the existing one
 # The Calendar is the Primary by default
 # Prints the updated Event as JSON, with the fields of gcal-event-read
 # Usage:
 # $ gcal-event-decline eventId
+# $ gcal-event-decline eventId --comment "Too late for me"
+# $ gcal-event-decline eventId --comment ""
 # $ gcal-event-decline eventId --calendarId work@group.calendar.google.com
 # $ gcal-event-decline eventId --account perso
 setopt local_options err_return

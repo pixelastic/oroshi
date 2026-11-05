@@ -8,7 +8,10 @@ await runBin(async () => {
   // The id of the Event is the positional argument
   const { positional, named } = parseBinArgs({
     setAccount,
-    options: { calendarId: { type: 'string' } },
+    options: {
+      calendarId: { type: 'string' },
+      comment: { type: 'string' },
+    },
   });
   const output = await eventRespond({
     eventId: positional,
