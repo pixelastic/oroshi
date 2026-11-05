@@ -47,6 +47,13 @@ feels written by the same person.
 - Do not link every pair of sentences. Independent facts can follow each other
   without a link.
 
+## Pronouns
+
+When a pronoun can have more than one reading, replace it with the noun.
+
+- Bad: "I ran `yarn test` and `yarn lint`, but it failed."
+- Good: "I ran `yarn test` and `yarn lint`, but the lint failed."
+
 ## Tone
 
 - Sound like a senior developer at a conference afterparty, explaining something
