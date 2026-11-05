@@ -25,14 +25,27 @@ feels written by the same person.
 - State a cause with "turns out" or "it happens because".
 - State a fix: "the fix is", "the trick is", "all I had to do was", "I ended
   up".
-- Pivot with short connectors: "But", "Then", "So,", "Now", "Still,", "Anyway,",
-  "In the end".
+- Pivot with short connectors: "But", "Once", "Now", "Still,", "Anyway,", "In
+  the end".
 - Start a sentence with "And" or "But" when it helps.
 - Hedge honestly: "I guess", "I think", "as far as I can tell", "I'm not sure
   why".
 - Leave technical nouns raw. Do not explain a word the Reader knows.
 - Use a few favorite adjectives: hacky, clever, naive, tedious, nasty, sneaky.
   Use each rarely.
+
+## Links
+
+- Link an idea to the previous one by a relation, not by sequence. The relation
+  is a cause (so, because, which means), an obstacle (but, although, even
+  though, while), or a condition (if, unless, once).
+- When two short sentences state a fact and its limit, join them in one sentence
+  with a subordinate clause.
+- Treat "So" at the start of a sentence and "and then" as weak links. Look for a
+  link that names the relation better ("that's why", "which means", "since").
+- Link two ideas per sentence. Do not chain a third: start a new sentence.
+- Do not link every pair of sentences. Independent facts can follow each other
+  without a link.
 
 ## Tone
 
@@ -51,6 +64,7 @@ feels written by the same person.
 ## Sentences
 
 - Most sentences are short or medium, in plain order: subject, verb, object.
+  Join a fact and its limit in one sentence.
 - Put asides in parentheses. Use commas, colons and parentheses.
 - Ask a rhetorical question in the middle of a story, then answer it.
 - Use inline code for every command, file, option and value.
