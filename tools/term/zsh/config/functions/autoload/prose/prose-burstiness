@@ -1,0 +1,85 @@
+# Measure how much sentence length varies in a text, as a JSON object, and say if it is ok
+# The variation (coefficient of variation) is the standard deviation of the words per
+# sentence divided by their mean length. A variation near 0 means uniform sentences.
+# Exits 1 when the sentences are too uniform.
+# Usage:
+# $ prose-burstiness "some text to check"   # Measure a string
+# $ prose-burstiness --file post.md         # Measure a Markdown file
+setopt local_options err_return
+
+# A text with at least this many sentences must reach this variation to be ok
+local MIN_SENTENCES=5
+local MIN_VARIATION=0.25
+
+zparseopts -E -D \
+  -file:=flagFile
+
+local filePath="${flagFile[2]}"
+
+local text="$1"
+[[ "$filePath" != "" ]] && text="$(<"$filePath")"
+
+# Keep prose only: drop front matter, code blocks, headings, quotes, lists,
+# tables, images and HTML. Then split on sentence-ending punctuation.
+local stats="$(printf '%s\n' "$text" | awk '
+  /^---$/ && frontMatter < 2 { frontMatter++; next }
+  frontMatter == 1 { next }
+  /^```/ { inCode = !inCode; next }
+  inCode { next }
+  /^(#|>|-|\*|[0-9]+\.|\||!|<)/ { next }
+  NF { prose = prose " " $0 }
+  function round(value) { return sprintf("%.2f", value) + 0 }
+  END {
+    count = 0
+    total = 0
+    sentenceCount = split(prose, sentences, /[.!?]+[ ]+|[.!?]+$/)
+    for (i = 1; i <= sentenceCount; i++) {
+      wordCount = split(sentences[i], words, /[ ]+/)
+      length_ = 0
+      for (j = 1; j <= wordCount; j++) if (words[j] != "") length_++
+      if (length_ == 0) continue
+      lengths[++count] = length_
+      total += length_
+    }
+    if (count == 0) { print "0"; exit }
+    mean = total / count
+    for (i = 1; i <= count; i++) squares += (lengths[i] - mean) ^ 2
+    deviation = sqrt(squares / count)
+    if (count == 1) { print 1, round(mean), round(deviation); exit }
+    print count, round(mean), round(deviation), round(deviation / mean)
+  }
+')"
+
+local fields=(${=stats})
+local sentenceCount=$fields[1]
+local meanLength="${fields[2]:-null}"
+local standardDeviation="${fields[3]:-null}"
+local variation="${fields[4]:-null}"
+
+# Too few sentences to judge, so the text passes
+local isOk=true
+local message=""
+if (( sentenceCount >= MIN_SENTENCES && variation < MIN_VARIATION )); then
+  isOk=false
+  message="Sentence length is too uniform (variation $variation, minimum $MIN_VARIATION)."
+  message+=" Vary the sentence length."
+fi
+
+jq --compact-output --null-input \
+  --argjson sentenceCount "$sentenceCount" \
+  --argjson meanLength "$meanLength" \
+  --argjson standardDeviation "$standardDeviation" \
+  --argjson variation "$variation" \
+  --argjson isOk "$isOk" \
+  --arg message "$message" \
+'{
+    ok: $isOk,
+    sentenceCount: $sentenceCount,
+    meanLength: $meanLength,
+    standardDeviation: $standardDeviation,
+    variation: $variation,
+    message: (if $message == "" then null else $message end)
+  }'
+
+[[ "$isOk" == "false" ]] && return 1
+return 0

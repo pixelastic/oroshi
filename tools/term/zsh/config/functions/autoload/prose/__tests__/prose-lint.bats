@@ -120,3 +120,52 @@ setup() {
   [[ "$status" -eq 1 ]]
   [[ "$(printf '%s' "$output" | jq -r '.[].rule')" == *"Google.Ordinal"* ]]
 }
+
+# -- Burstiness check (runs after Vale, not inside it) --
+
+@test "uniform sentences: adds a burstiness error to the list" {
+  vale() { printf '{}\n'; }
+  bats_mock vale
+
+  local file="$BATS_TMP_DIR/uniform.md"
+  printf 'One two three four. Five six seven eight. Nine ten eleven twelve. Red blue green black. Cat dog bird fish. Sun moon star sky.\n' > "$file"
+  bats_run_zsh "prose-lint $file"
+  [[ "$status" -eq 1 ]]
+  local rule="$(printf '%s' "$output" | jq --raw-output '.[0].rule')"
+  [[ "$rule" == "burstiness" ]]
+  local severity="$(printf '%s' "$output" | jq --raw-output '.[0].severity')"
+  [[ "$severity" == "error" ]]
+}
+
+@test "varied sentences: no burstiness error" {
+  vale() { printf '{}\n'; }
+  bats_mock vale
+
+  local file="$BATS_TMP_DIR/varied.md"
+  printf 'Fast. I had already tried it on another project, and now I wanted to compare it with something else entirely. Still no luck. It broke. I fixed the build by removing the cache folder and running the whole thing again from scratch. Done.\n' > "$file"
+  bats_run_zsh "prose-lint $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == '[]' ]]
+}
+
+@test "short text: no burstiness error under the minimum sentence count" {
+  vale() { printf '{}\n'; }
+  bats_mock vale
+
+  local file="$BATS_TMP_DIR/short.md"
+  printf 'One two three. Four five six.\n' > "$file"
+  bats_run_zsh "prose-lint $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == '[]' ]]
+}
+
+@test "burstiness error keeps the 5-key violation shape" {
+  vale() { printf '{}\n'; }
+  bats_mock vale
+
+  local file="$BATS_TMP_DIR/uniform.md"
+  printf 'One two three four. Five six seven eight. Nine ten eleven twelve. Red blue green black. Cat dog bird fish. Sun moon star sky.\n' > "$file"
+  bats_run_zsh "prose-lint $file"
+  local keys="$(printf '%s' "$output" | jq --raw-output '.[0] | keys | join(",")')"
+  [[ "$keys" == "line,match,message,rule,severity" ]]
+}

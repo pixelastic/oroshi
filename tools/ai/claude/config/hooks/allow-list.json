@@ -517,6 +517,7 @@
   "project-name",
   "project-remove",
   "prose-build",
+  "prose-burstiness",
   "prose-lint",
   "pstree",
   "ps",
