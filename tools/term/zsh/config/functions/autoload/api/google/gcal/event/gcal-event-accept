@@ -1,0 +1,24 @@
+# Accept an Event: Self confirms that they will attend
+# The Response of Self becomes "accepted". The other Attendees keep their
+# Response and Comment
+# It never sends an e-mail to an Attendee (sendUpdates=none)
+# Self is the Attendee that is the Account. It fails with
+# GCAL_ATTENDEE_SELF_NOT_FOUND when the Account is not an Attendee, before any
+# write
+# On the master Event of a series, the Response applies to the whole series
+# On an occurrence, it applies to that occurrence only
+# The eventId is printed by gcal-event-list-raw
+# --comment sets the Comment of Self. An empty --comment "" clears it, and
+# no --comment keeps the existing one
+# The Calendar is the Primary by default
+# Prints the updated Event as JSON, with the fields of gcal-event-read
+# Usage:
+# $ gcal-event-accept eventId
+# $ gcal-event-accept eventId --comment "See you there"
+# $ gcal-event-accept eventId --comment ""
+# $ gcal-event-accept eventId --calendarId work@group.calendar.google.com
+# $ gcal-event-accept eventId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gcal-event-accept.js" "$@"

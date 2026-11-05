@@ -36,6 +36,34 @@ describe('eventRespond', () => {
     });
   });
 
+  it.each([{ responseStatus: 'accepted' }, { responseStatus: 'tentative' }])(
+    'patches the Response of Self to $responseStatus',
+    async ({ responseStatus }) => {
+      await eventRespond({ eventId: 'a', responseStatus });
+
+      expect(__.saveAttendees).toHaveBeenCalledWith({
+        eventId: 'a',
+        calendarId: 'primary',
+        attendees: [organizer, { ...self, responseStatus }, amy],
+      });
+    },
+  );
+
+  it('changes only the occurrence when the eventId is an occurrence', async () => {
+    const occurrenceId = 'a_20261105T100000Z';
+
+    await eventRespond({ eventId: occurrenceId, responseStatus: 'accepted' });
+
+    expect(__.callApi).toHaveBeenCalledWith(
+      `calendars/primary/events/${occurrenceId}`,
+    );
+    expect(__.saveAttendees).toHaveBeenCalledWith({
+      eventId: occurrenceId,
+      calendarId: 'primary',
+      attendees: [organizer, { ...self, responseStatus: 'accepted' }, amy],
+    });
+  });
+
   describe('comment', () => {
     const selfWithComment = { ...self, comment: 'Original' };
 

@@ -6,6 +6,7 @@
 # GCAL_ATTENDEE_SELF_NOT_FOUND when the Account is not an Attendee, before any
 # write
 # On the master Event of a series, the Response applies to the whole series
+# On an occurrence, it applies to that occurrence only
 # The eventId is printed by gcal-event-list-raw
 # --comment sets the Comment of Self. An empty --comment "" clears it, and
 # no --comment keeps the existing one
