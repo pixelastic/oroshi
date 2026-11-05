@@ -13,6 +13,11 @@ Use this template when creating a refactoring issue from the analysis findings.
 
 <Describe the refactoring to apply>
 
+## Impact
+
+<Restructure issues only. List every caller, test, fixture, config entry and
+export the change touches. The issue is done only when each one is updated.>
+
 ## Refactoring constraint
 
 This is a refactoring issue — no TDD cycle.

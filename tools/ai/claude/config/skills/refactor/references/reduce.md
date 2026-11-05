@@ -14,6 +14,16 @@ Surface-level cleanup: remove what's dead, rename what's drifted.
 - Unused variables and parameters
 - Dead feature flags or config entries
 
+**Not dead code.** Keep these, even if no caller or test reaches them:
+
+- Validation of external input (user input, API responses, files, environment
+  variables)
+- Error handling that prevents data loss
+- Security checks and accessibility attributes
+
+A branch that looks like such a boundary but that you cannot confirm gets
+confidence `low`. The user decides during Present & Align.
+
 ### 2. Naming drift
 
 - Functions whose name no longer matches what they do (function grew beyond its
@@ -40,7 +50,8 @@ Surface-level cleanup: remove what's dead, rename what's drifted.
 ## How to scan
 
 1. List all files in scope
-2. For each file, scan for dead code signals (unused exports, unreachable paths)
+2. For each file, scan for dead code signals (unused exports, unreachable
+   paths). Skip anything listed under "Not dead code"
 3. For each file, scan for naming issues (read function names vs bodies, look
    for magic literals)
 4. Record each finding with: file path, line range, category (dead-code or

@@ -17,6 +17,11 @@ Fix bug: <short bug description from GUIDANCE.md>
 
 <Copy the bug entry from GUIDANCE.md `## Bugs found`>
 
+## Before fixing
+
+Grep every caller of the function you touch. Fix the root cause once, in the
+shared code, not in each caller.
+
 ## Cleanup
 
 After fixing the bug, remove its entry from GUIDANCE.md `## Bugs found`.

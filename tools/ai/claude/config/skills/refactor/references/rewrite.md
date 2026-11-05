@@ -40,6 +40,14 @@ conditions, tighten cohesion.
   Initialization Together")
 - Missing blank lines between logical groups (Beck's "Chunk Statements")
 
+### 4. Reuse
+
+- Hand-rolled logic that an existing function of the repo already does (reuse
+  the helper the surrounding code uses)
+- Hand-rolled logic that an already-installed dependency already does
+- Replace only when edge-case behavior is identical, otherwise confidence `low`
+- Never add or suggest a new dependency: that is not the job of this skill
+
 ---
 
 ## What this wave does NOT do
@@ -62,9 +70,11 @@ conditions, tighten cohesion.
    booleans, negated conditions
 4. Scan for cohesion issues: check reading order, proximity of related code,
    logical grouping
-5. Record each finding with: file path, line range, category
-   (symmetry/conditional/cohesion), description, suggested change
-6. If a bug is discovered, add it to the bugs list — do not create a refactoring
+5. Scan for reuse: look for hand-rolled logic that a repo helper or an installed
+   dependency already provides
+6. Record each finding with: file path, line range, category
+   (symmetry/conditional/cohesion/reuse), description, suggested change
+7. If a bug is discovered, add it to the bugs list — do not create a refactoring
    issue for it
 
 ---
@@ -76,4 +86,6 @@ Rank by:
 - conditional simplification first (guard clauses are the safest rewrite)
 - then symmetry normalization (makes patterns visible)
 - then cohesion reordering (moving code within a file is low risk but changes
-  diffs).
+  diffs)
+- then reuse (replacing code with a helper or dependency needs the edge-case
+  behavior checked, so it is last).

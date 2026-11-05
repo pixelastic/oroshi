@@ -94,13 +94,17 @@ append entries to `.issues[]`.
 
 For each finding, apply the test gate:
 
-- If tests exist for the affected code → create the refactoring issue.
-- If no tests exist → create a "Write characterization tests for X" issue first,
+- If tests exist and cover the guards and error paths of the affected code →
+  create the refactoring issue.
+- If no tests exist, or they cover only the nominal case → create a "Write
+  characterization tests for X" issue first (guards and error paths included),
   then the refactoring issue immediately after it (with `blocked_by`
   dependency). Keep them paired.
 
 Write each refactoring issue using
 [references/refactoring-issue.template.md](references/refactoring-issue.template.md).
+Fill its `## Impact` section for `restructure` issues only, and remove it for
+the other waves.
 
 ---
 
@@ -134,8 +138,8 @@ Step 1.
 - [ ] Code analyzed using `currentWave`'s categories
 - [ ] Bugs cataloged in GUIDANCE.md `## Bugs found` (not fixed)
 - [ ] Findings presented to user, `/grill-me` used, user approved final set
-- [ ] Test gate applied per finding (characterization test issue paired before
-      refactoring issue)
+- [ ] Test gate applied per finding (tests cover guards and error paths,
+      otherwise characterization test issue paired before refactoring issue)
 - [ ] Plan created (reduce) or issues appended (rewrite/restructure)
 - [ ] Every refactoring issue includes the refactoring constraint block
 - [ ] Checkpoint issue added using `checkpoint-<currentWave>.template.md`
