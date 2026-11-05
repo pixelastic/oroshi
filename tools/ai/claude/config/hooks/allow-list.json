@@ -95,6 +95,7 @@
   "diff",
   "direnv",
   "dirname",
+  "disown",
   "djlint",
   "dmesg",
   "docker history",
