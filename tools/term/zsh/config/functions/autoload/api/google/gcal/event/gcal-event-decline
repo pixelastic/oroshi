@@ -1,0 +1,19 @@
+# Decline an Event: Self confirms that they will be absent
+# The Response of Self becomes "declined". The other Attendees keep their
+# Response and Comment
+# It never sends an e-mail to an Attendee (sendUpdates=none)
+# Self is the Attendee that is the Account. It fails with
+# GCAL_ATTENDEE_SELF_NOT_FOUND when the Account is not an Attendee, before any
+# write
+# On the master Event of a series, the Response applies to the whole series
+# The eventId is printed by gcal-event-list-raw
+# The Calendar is the Primary by default
+# Prints the updated Event as JSON, with the fields of gcal-event-read
+# Usage:
+# $ gcal-event-decline eventId
+# $ gcal-event-decline eventId --calendarId work@group.calendar.google.com
+# $ gcal-event-decline eventId --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/gcal-event-decline.js" "$@"
