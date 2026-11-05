@@ -53,26 +53,69 @@ describe('formatEvent', () => {
       description: 'Daily sync',
       url: 'https://www.google.com/calendar/event?eid=abc',
       organizer: 'boss@algolia.com',
-      attendees: [{ email: 'boss@algolia.com', responseStatus: 'accepted' }],
+      attendees: [
+        { email: 'boss@algolia.com', responseStatus: 'accepted', comment: '' },
+      ],
       recurrence: [],
     });
   });
 
   describe('attendees', () => {
-    it('keeps only the email and the responseStatus of each Attendee', () => {
+    it('keeps only the email, responseStatus and comment of each Attendee', () => {
       const response = event({
         attendees: [
-          { email: 'a@y.z', responseStatus: 'accepted', displayName: 'A' },
-          { email: 'b@y.z', responseStatus: 'needsAction', optional: true },
+          {
+            email: 'a@y.z',
+            responseStatus: 'accepted',
+            comment: 'See you there',
+            displayName: 'A',
+          },
+          {
+            email: 'b@y.z',
+            responseStatus: 'needsAction',
+            comment: 'Running late',
+            optional: true,
+          },
         ],
       });
 
       const actual = formatEvent(response, 'primary');
 
       expect(actual).toHaveProperty('attendees', [
-        { email: 'a@y.z', responseStatus: 'accepted' },
-        { email: 'b@y.z', responseStatus: 'needsAction' },
+        {
+          email: 'a@y.z',
+          responseStatus: 'accepted',
+          comment: 'See you there',
+        },
+        {
+          email: 'b@y.z',
+          responseStatus: 'needsAction',
+          comment: 'Running late',
+        },
       ]);
+    });
+
+    it.each([
+      {
+        title: 'keeps the comment of an Attendee that has one',
+        attendee: {
+          email: 'a@y.z',
+          responseStatus: 'declined',
+          comment: 'On leave',
+        },
+        expected: 'On leave',
+      },
+      {
+        title: 'prints an empty comment for an Attendee without one',
+        attendee: { email: 'a@y.z', responseStatus: 'accepted' },
+        expected: '',
+      },
+    ])('$title', ({ attendee, expected }) => {
+      const response = event({ attendees: [attendee] });
+
+      const actual = formatEvent(response, 'primary');
+
+      expect(actual.attendees[0]).toHaveProperty('comment', expected);
     });
 
     it('is an empty array for an Event without Attendees', () => {
