@@ -10,6 +10,8 @@
 # The eventId is printed by gcal-event-list-raw
 # --comment sets the Comment of Self. An empty --comment "" clears it, and
 # no --comment keeps the existing one
+# Not verified: whether the organizer sees the Comment in the details of the
+# Event, without an e-mail
 # The Calendar is the Primary by default
 # Prints the updated Event as JSON, with the fields of gcal-event-read
 # Usage:
