@@ -108,9 +108,10 @@ pasted image must be copied in the same turn.
 
 1. Read `references/draft-format.md`.
 2. Read the style references that exist: `references/style.md`,
-   `references/voice.md`, `references/structure.md`, `references/story.md`.
-   Missing files are pending. Tell the user which are pending, then write
-   without them.
+   `references/voice.md`, `references/structure.md`, `references/story.md`. Also
+   read `references/links.md` and `references/sound-human.md`, which `voice.md`
+   points to. Missing files are pending. Tell the user which are pending, then
+   write without them.
 3. Write in English, whatever language the user speaks, including quotes from
    the French Interview.
 4. Link each image of the `images` folder with a relative path and its alt text,
@@ -152,7 +153,8 @@ errors and the link check reports zero broken links.
 2. Each prompt includes the absolute `draft` path and tells the Reviewer to:
    - read the Draft;
    - read its own reference file from the table below, and
-     `references/review-format.md`, and nothing else;
+     `references/review-format.md`, and nothing else (the Voice Reviewer also
+     reads `references/links.md` and `references/sound-human.md`);
    - check the Draft against its axis only;
    - return findings in the format of `references/review-format.md`, or
      `No findings.`
