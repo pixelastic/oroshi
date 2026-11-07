@@ -63,8 +63,8 @@ State the detected mode: "Mode: **create**" or "Mode: **review**".
 Read `references/title-patterns.md`. Generate 3-5 title options using the proven
 patterns. Iterate until user selects.
 
-**If create mode:** Read `references/links.md` and `references/sound-human.md`
-and apply them to every title option.
+**If create mode:** Use the `prose-writer` skill as a base for every title
+option.
 
 ### Step 4 — Abstract
 
@@ -75,8 +75,8 @@ and apply them to every title option.
 Read `references/abstract-structure.md`. Write the abstract using the four-part
 structure (Hook → Context → Content → Takeaway). Generate 3-5 key takeaways.
 
-**If create mode:** Read `references/links.md` and `references/sound-human.md`
-and apply them to the abstract and the takeaways.
+**If create mode:** Use the `prose-writer` skill as a base for the abstract and
+the takeaways.
 
 **If review mode:** Read `references/voice-preservation.md`. Restructure and
 reorder freely, but do not rewrite sentences that already work.
@@ -143,6 +143,7 @@ If approved, add to the appropriate section:
 - [ ] At least 3 title options generated
 - [ ] Abstract follows Hook → Context → Content → Takeaway
 - [ ] Voice-preservation rules applied (review mode)
+- [ ] Every item of the `prose-writer` checklist is checked too
 - [ ] Draft written to `draftPath`
 - [ ] `prose-lint --profile cfp-writer` returns zero errors
 - [ ] `cfp-writer-tick <draftPath>` called when output displayed

@@ -23,7 +23,7 @@ speech does.
 - Condition: "if", "unless", "once"
 - Pivot: "anyway,", "now,", "in the end"
 
-### Pronouns
+## Pronouns
 
 When a pronoun can have more than one reading, replace it with the noun.
 

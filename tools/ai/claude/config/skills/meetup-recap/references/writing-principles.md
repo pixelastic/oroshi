@@ -16,9 +16,5 @@
 5. **Honest.** Problems stated as facts, no blame, no sugarcoating. "3 people
    left early" not "attendance could have been better."
 
-6. **Sound human.** Like telling a colleague over coffee. Read
-   [sound-human.md](sound-human.md) for the full rules. 1-2 emoji max per recap.
-
-7. **Link ideas.** Connect each idea to the previous one by a relation (cause,
-   obstacle, condition), not by sequence. Read [links.md](links.md) for the full
-   rules.
+6. **Sound human.** Like telling a colleague over coffee. Use the `prose-writer`
+   skill as a base. 1-2 emoji max per recap.

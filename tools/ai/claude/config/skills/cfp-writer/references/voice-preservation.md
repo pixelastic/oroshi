@@ -11,5 +11,5 @@ When reviewing an existing draft, preserve the speaker's voice.
 
 ## Precedence
 
-In review mode, these rules take precedence over `links.md`. Do not rewrite a
-sentence to add a spoken connector. Add a link only where you write new text.
+In review mode, these rules add to the `prose-writer` skill. When they
+contradict it, these rules overwrite it.

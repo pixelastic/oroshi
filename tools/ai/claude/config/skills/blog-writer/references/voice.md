@@ -34,12 +34,9 @@ feels written by the same person.
 - Use a few favorite adjectives: hacky, clever, naive, tedious, nasty, sneaky.
   Use each rarely.
 
-## Shared references
+## Base
 
-Two shared references apply to the Voice. Read both.
-
-- `links.md`: how a sentence connects to the next, and how to word a pronoun.
-- `sound-human.md`: how to write like a colleague, not like a tool.
+Use the `prose-writer` skill as a base for the Voice.
 
 ## Tone
 
