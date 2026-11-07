@@ -70,6 +70,9 @@ _Avoid_: number
   Token
 - [Confluence](tools/term/zsh/config/functions/autoload/api/confluence/__docs/GLOSSARY.md)
   — Pages, Spaces, Body, Page ID, Email, Token, Cloud ID, Domain
+- [Bluesky](tools/term/zsh/config/functions/autoload/api/bluesky/__docs/GLOSSARY.md)
+  — Account, Handle, DID, PDS, Post, lint, AT URI, Record, Facet, Embed, Blob,
+  Parent, Thread root, Draft
 - [Google Calendar](tools/term/zsh/config/functions/autoload/api/google/gcal/__docs/GLOSSARY.md)
   — Calendars, Primary, Events, All-day Events, Attendees, Self, Responses
 - [Lunii](tools/term/zsh/config/functions/autoload/worktools/lunii/__docs/GLOSSARY.md)
