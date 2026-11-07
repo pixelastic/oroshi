@@ -63,6 +63,9 @@ State the detected mode: "Mode: **create**" or "Mode: **review**".
 Read `references/title-patterns.md`. Generate 3-5 title options using the proven
 patterns. Iterate until user selects.
 
+**If create mode:** Read `references/links.md` and `references/sound-human.md`
+and apply them to every title option.
+
 ### Step 4 — Abstract
 
 **Goal:** Write a ~250-word abstract with key takeaways.
@@ -71,6 +74,9 @@ patterns. Iterate until user selects.
 
 Read `references/abstract-structure.md`. Write the abstract using the four-part
 structure (Hook → Context → Content → Takeaway). Generate 3-5 key takeaways.
+
+**If create mode:** Read `references/links.md` and `references/sound-human.md`
+and apply them to the abstract and the takeaways.
 
 **If review mode:** Read `references/voice-preservation.md`. Restructure and
 reorder freely, but do not rewrite sentences that already work.
