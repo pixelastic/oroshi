@@ -62,3 +62,5 @@
 2026-11-01 Finish liquid-ink board showing preselected maps of my imaginary world (prototype exists) domain:Ideas size:large id:ink-board
 2026-11-01 Retro emulation station on the TV: handheld console on SCART, 3 Anbernic RG-P01 controllers, 16-bit multiplayer (Micro Machines, Bomberman) domain:Ideas size:large id:retro-station
 2026-11-02 Decide in aberlaas whether prettier.config.js belongs at the project root: the blog project using aberlaas has none, auctioneer has one. Find which of the two projects is wrong domain:JavaScript size:medium id:prettier-config
+2026-11-06 Transcribe all the bedtime stories (histoires du soir) told to my daughter, recorded as MP3 on my disk, then turn the transcripts into a book domain:Ideas size:large id:bedtime-book
+2026-11-06 Investigate reverse-engineering a Super Nintendo game: turn a ROM into readable, usable code, then see if I can vibe-code my own version domain:Ideas size:large id:snes-reverse
