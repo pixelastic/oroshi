@@ -80,7 +80,12 @@ Apply these principles, by priority:
 5. **Sound human.** Write like a colleague, not a report. Softeners are fine ("I
    think", "not sure", "..."). Light emoji is OK when it takes the edge off.
    Avoid categorical phrasing that sounds robotic ("I have zero context." → "No
-   idea what these are about...").
+   idea what these are about..."). Read `references/sound-human.md` for the full
+   rules.
+
+6. **Link ideas.** Connect each idea to the previous one by a relation (cause,
+   obstacle, condition), not by sequence. Read `references/links.md` for the
+   full rules.
 
 Write the draft to `draftPath` using the **Create** tool.
 
@@ -120,6 +125,7 @@ remain. Warnings may stay if justified.
 - [ ] `<draftPath>` obtained from `slack-writer-start`
 - [ ] Important info is in the first sentence
 - [ ] No repeated information
+- [ ] Linked ideas: each sentence connects to the previous one by a relation
 - [ ] Language verified (English unless explicitly requested otherwise)
 - [ ] `prose-lint` returns zero errors
 - [ ] `slack-writer-tick` called with `<draftPath>`
