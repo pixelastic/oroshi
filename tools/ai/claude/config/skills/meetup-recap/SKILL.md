@@ -107,7 +107,7 @@ If approved, ask: "Summarize talks too, or stop here?" — if yes, invoke
 - [ ] `draftPath` obtained from `meetup-recap-start`
 - [ ] Event name, date, and attendance confirmed
 - [ ] Language verified (English unless explicitly requested otherwise)
-- [ ] All 6 writing principles applied
+- [ ] All 7 writing principles applied
 - [ ] Score computed
 - [ ] Output structure followed
 - [ ] `prose-lint --profile meetup-recap` returns zero errors
