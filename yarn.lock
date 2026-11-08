@@ -1652,6 +1652,11 @@ __metadata:
     "@oroshi/api-shared": "workspace:*"
     firost: "npm:5.11.0"
     golgoth: "npm:3.1.0"
+    mdast-util-from-markdown: "npm:2.1.0"
+    mdast-util-gfm-autolink-literal: "npm:2.1.0"
+    mdast-util-gfm-strikethrough: "npm:2.0.1"
+    micromark-extension-gfm-autolink-literal: "npm:2.1.0"
+    micromark-extension-gfm-strikethrough: "npm:2.1.0"
   languageName: unknown
   linkType: soft
 
@@ -8842,7 +8847,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-from-markdown@npm:^2.0.0, mdast-util-from-markdown@npm:^2.0.2":
+"mdast-util-from-markdown@npm:2.1.0, mdast-util-from-markdown@npm:^2.0.0, mdast-util-from-markdown@npm:^2.0.2":
   version: 2.1.0
   resolution: "mdast-util-from-markdown@npm:2.1.0"
   dependencies:
@@ -8876,6 +8881,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mdast-util-gfm-autolink-literal@npm:2.1.0":
+  version: 2.1.0
+  resolution: "mdast-util-gfm-autolink-literal@npm:2.1.0"
+  dependencies:
+    "@types/mdast": "npm:^4.0.0"
+    ccount: "npm:^2.0.0"
+    devlop: "npm:^1.0.0"
+    mdast-util-find-and-replace: "npm:^3.0.0"
+    micromark-util-character: "npm:^2.0.0"
+  checksum: 10c0/a9a517f56fea8c92bc8534d0a65f3023144362801d923bc53afa6205d47b74fbca9ce183941e320a3f63f2d816e9b4c8c2d1435c8eed05231a4c84aee3157502
+  languageName: node
+  linkType: hard
+
 "mdast-util-gfm-autolink-literal@npm:^2.0.0":
   version: 2.0.1
   resolution: "mdast-util-gfm-autolink-literal@npm:2.0.1"
@@ -8902,7 +8920,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-gfm-strikethrough@npm:^2.0.0":
+"mdast-util-gfm-strikethrough@npm:2.0.1, mdast-util-gfm-strikethrough@npm:^2.0.0":
   version: 2.0.1
   resolution: "mdast-util-gfm-strikethrough@npm:2.0.1"
   dependencies:
@@ -9152,7 +9170,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromark-extension-gfm-strikethrough@npm:^2.0.0":
+"micromark-extension-gfm-strikethrough@npm:2.1.0, micromark-extension-gfm-strikethrough@npm:^2.0.0":
   version: 2.1.0
   resolution: "micromark-extension-gfm-strikethrough@npm:2.1.0"
   dependencies:
