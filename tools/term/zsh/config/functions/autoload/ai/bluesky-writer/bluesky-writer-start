@@ -1,0 +1,13 @@
+# Initialize a bluesky-writer session and output JSON with the draft filepath
+# Usage:
+# $ bluesky-writer-start
+# {"draftPath":"/tmp/oroshi/claude/bluesky-writer/e8d0442d.md"}
+setopt local_options err_return
+
+local sessionDir="/tmp/oroshi/claude/bluesky-writer"
+mkdir --parents "$sessionDir"
+
+local id="$(uuidgen)"
+local draftPath="$sessionDir/$id.md"
+
+jo draftPath="$draftPath"

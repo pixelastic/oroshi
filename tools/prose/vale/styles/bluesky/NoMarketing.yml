@@ -1,0 +1,20 @@
+extends: existence
+message: "Marketing phrasing: '%s'."
+level: error
+ignorecase: true
+tokens:
+  - game[- ]?changer
+  - game[- ]?changing
+  - revolutionary
+  - supercharge
+  - unlock
+  - next level
+  - level up
+  - excited to announce
+  - thrilled to
+  - proud to announce
+  - don't miss
+  - stay tuned
+  - check it out
+  - link in bio
+  - must[- ]have

@@ -33,6 +33,7 @@ yarn-error.log
 # Synced packages (except custom oroshi rules)
 tools/prose/vale/styles/*
 !tools/prose/vale/styles/oroshi/
+!tools/prose/vale/styles/bluesky/
 
 # Tool directories
 .claude/

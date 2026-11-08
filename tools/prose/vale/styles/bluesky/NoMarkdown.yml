@@ -1,0 +1,9 @@
+extends: existence
+message: "Bluesky shows Markdown as plain text. Remove '%s'."
+level: error
+scope: raw
+nonword: true
+tokens:
+  - '\*\*[^*\n]+\*\*'
+  - '__[^_\n]+__'
+  - '(?m)^#{1,6} '

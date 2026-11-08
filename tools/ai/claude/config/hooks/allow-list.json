@@ -44,6 +44,8 @@
   "bluesky-post-list",
   "bluesky-post-list-raw",
   "bluesky-post-read",
+  "bluesky-writer-start",
+  "bluesky-writer-tick",
   "cat",
   "cd",
   "cfp-writer-start",

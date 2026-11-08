@@ -1,0 +1,6 @@
+extends: occurrence
+message: "Use at most two hashtags."
+level: error
+scope: raw
+max: 2
+token: '(?:^|\s)#[\p{L}\p{N}_]+'
