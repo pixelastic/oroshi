@@ -1,0 +1,11 @@
+# Read a CircleCI run by its id, with its jobs, and print it as JSON
+# Prints the branch, the commit, the duration and the URL of the run, and the
+# number, status, duration and URL of each job. Durations are in seconds, and
+# null while running. The id is the one printed by the run commands
+# Usage:
+# $ circleci-run-read 1bd4f068-b2f0-4769-8574-609c4e00ae6c
+# $ circleci-run-read 1bd4f068-b2f0-4769-8574-609c4e00ae6c --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/circleci-run-read.js" "$@"
