@@ -19,41 +19,101 @@ const HANDLE_SEGMENT = '[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?';
  * @param {string} markdown - Markdown source of the post
  * @param {object} [options] - Options of the parser
  * @param {string} [options.directory] - Folder that the relative paths of the images start from
+ * @param {boolean} [options.thread] - Split the Markdown into one post per line of three dashes. Without it, the dashes stay in the text
  * @returns {object[]} Posts, each with its `text`, its `facets` (UTF-8 byte
  * offsets of the text), its `images` (`alt`, absolute `path` and `line`, taken out of the text) and the `line` of the source where it starts
  */
 export function parsePostMarkdown(markdown, options = {}) {
-  const { directory = process.cwd() } = options;
-  const tree = fromMarkdown(markdown, {
-    extensions: [gfmAutolinkLiteral(), gfmStrikethrough()],
-    mdastExtensions: [
-      gfmAutolinkLiteralFromMarkdown(),
-      gfmStrikethroughFromMarkdown(),
-    ],
-  });
-  const pieces = __.collectPieces(tree);
+  const { directory = process.cwd(), thread = false } = options;
+  const chunks = thread
+    ? __.splitThread(markdown)
+    : [{ markdown, lineOffset: 0 }];
 
-  const facets = [];
-  let byteStart = 0;
-  _.each(pieces, ({ text, feature }) => {
-    const byteEnd = byteStart + Buffer.byteLength(text);
-    if (feature) {
-      facets.push({ index: { byteStart, byteEnd }, features: [feature] });
-    }
-    byteStart = byteEnd;
+  return _.map(chunks, ({ markdown: source, lineOffset }) => {
+    return __.parsePost(source, directory, lineOffset);
   });
-
-  return [
-    {
-      text: _.chain(pieces).map('text').join('').value(),
-      facets,
-      images: __.collectImages(tree, directory),
-      line: _.get(tree, 'children[0].position.start.line', 1),
-    },
-  ];
 }
 
 __ = {
+  /**
+   * Cut the Markdown of a Thread at each line of three dashes
+   * The cut happens on the source, because Markdown reads a separator under a
+   * line of text as a heading.
+   * @param {string} markdown - Markdown source of the Thread
+   * @returns {object[]} Chunks, each with its `markdown` and the `lineOffset` of its first line in the source
+   */
+  splitThread(markdown) {
+    const chunks = [{ lines: [], lineOffset: 0 }];
+    _.chain(markdown)
+      .split('\n')
+      .each((line, index) => {
+        if (/^---\s*$/.test(line)) {
+          chunks.push({ lines: [], lineOffset: index + 1 });
+          return;
+        }
+        _.last(chunks).lines.push(line);
+      })
+      .value();
+
+    return _.map(chunks, ({ lines, lineOffset }) => {
+      return { markdown: _.join(lines, '\n'), lineOffset };
+    });
+  },
+  /**
+   * Convert the Markdown of one post
+   * @param {string} markdown - Markdown source of the post
+   * @param {string} directory - Folder that the relative paths of the images start from
+   * @param {number} lineOffset - Number of lines that come before the post in the source
+   * @returns {object} The post, with its `text`, `facets`, `images` and `line`
+   */
+  parsePost(markdown, directory, lineOffset) {
+    const tree = fromMarkdown(markdown, {
+      extensions: [gfmAutolinkLiteral(), gfmStrikethrough()],
+      mdastExtensions: [
+        gfmAutolinkLiteralFromMarkdown(),
+        gfmStrikethroughFromMarkdown(),
+      ],
+    });
+    __.restoreSetextDashes(tree, markdown);
+    const pieces = __.collectPieces(tree);
+
+    const facets = [];
+    let byteStart = 0;
+    _.each(pieces, ({ text, feature }) => {
+      const byteEnd = byteStart + Buffer.byteLength(text);
+      if (feature) {
+        facets.push({ index: { byteStart, byteEnd }, features: [feature] });
+      }
+      byteStart = byteEnd;
+    });
+
+    return {
+      text: _.chain(pieces).map('text').join('').value(),
+      facets,
+      images: _.map(__.collectImages(tree, directory), (image) => ({
+        ...image,
+        line: image.line + lineOffset,
+      })),
+      line: _.get(tree, 'children[0].position.start.line', 1) + lineOffset,
+    };
+  },
+  /**
+   * Put back the line of three dashes that Markdown swallowed as a heading underline
+   * @param {object} node - mdast node, changed in place
+   * @param {string} markdown - Markdown source that the node was parsed from
+   */
+  restoreSetextDashes(node, markdown) {
+    if (node.type === 'heading') {
+      const { start, end } = node.position;
+      const source = markdown.slice(start.offset, end.offset);
+      if (/\n---[ \t]*$/.test(source)) {
+        node.children.push({ type: 'text', value: '\n\n---' });
+      }
+    }
+    _.each(node.children, (child) => {
+      __.restoreSetextDashes(child, markdown);
+    });
+  },
   /**
    * Find every image of a node, in the order of the source
    * @param {object} node - mdast node
@@ -103,7 +163,11 @@ __ = {
       const separator = _.includes(BLOCK_NODE_TYPES, node.type) ? '\n\n' : '';
       return __.joinPieces(_.map(node.children, __.collectPieces), separator);
     }
-    // Code and HTML keep their text, but images and thematic breaks have none
+    // A separator that is not a thread cut stays in the text
+    if (node.type === 'thematicBreak') {
+      return [{ text: '---' }];
+    }
+    // Code and HTML keep their text, but images have none
     return node.value ? [{ text: node.value }] : [];
   },
   /**

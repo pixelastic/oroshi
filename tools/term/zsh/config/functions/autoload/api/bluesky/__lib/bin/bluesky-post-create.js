@@ -13,6 +13,7 @@ await runBin(async () => {
       'dry-run': { type: 'boolean' },
       'no-embed': { type: 'boolean' },
       'reply-to': { type: 'string' },
+      thread: { type: 'boolean' },
     },
   });
   const output = await postCreate(named);

@@ -4,8 +4,13 @@
 # A page that cannot be fetched gives a warning, and the post is published without card
 # --reply-to publishes a reply to any post, mine or someone else's. It takes an AT URI or a bsky.app URL, and sets the root of its thread and its parent on the record
 # An unknown or invalid reference fails before anything is sent. --dry-run shows the target post
+# --thread splits the Markdown on each line of three dashes, and publishes the posts one by one, each replying to the previous one
+# Every post is validated before anything is sent. On a failure in the middle, the error lists the URLs already published
+# With --reply-to, the first post of the thread replies to the target. Without --thread, three dashes stay in the text
 # Usage:
 # $ bluesky-post-create --text "Hello world"
+# $ bluesky-post-create --text-file ./thread.md --thread   # One post per block between lines of ---
+# $ bluesky-post-create --text-file ./thread.md --thread --dry-run   # Preview every post with its length
 # $ bluesky-post-create --text-file ./post.md   # The file wins over --text
 # $ bluesky-post-create --text-file ./post.md --dry-run   # Preview, uploads and writes nothing
 # $ bluesky-post-create --text "See https://a.io" --no-embed   # A bare link, without card

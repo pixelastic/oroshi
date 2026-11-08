@@ -36,6 +36,15 @@ describe('postLint', () => {
     });
   });
 
+  it('splits the Markdown into posts with the thread option', async () => {
+    await postLint({ text: 'Hello', thread: true });
+
+    expect(__.parsePostMarkdown).toHaveBeenCalledWith('Hello', {
+      directory: '/work',
+      thread: true,
+    });
+  });
+
   it('validates the parsed posts', async () => {
     await postLint({ text: 'Hello' });
 

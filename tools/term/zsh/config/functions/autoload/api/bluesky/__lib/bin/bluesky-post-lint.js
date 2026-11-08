@@ -10,6 +10,7 @@ await runBin(async () => {
     options: {
       text: { type: 'string' },
       'text-file': { type: 'string' },
+      thread: { type: 'boolean' },
     },
   });
   const violations = await postLint(named);

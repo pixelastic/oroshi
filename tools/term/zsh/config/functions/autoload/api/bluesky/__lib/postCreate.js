@@ -1,4 +1,4 @@
-import { _ } from 'golgoth';
+import { _, pMap } from 'golgoth';
 import { firostError } from 'firost';
 import { callApi } from './callApi.js';
 import { formatPost } from './formatPost.js';
@@ -19,6 +19,7 @@ const COLLECTION = 'app.bsky.feed.post';
 
 /**
  * Publish a Post with its facets, and its images or link card, or preview it
+ * With --thread, a line of three dashes splits the Draft into a chain of posts, validated together and published one by one.
  * Validation runs before any network write, and the blobs are uploaded last.
  * Mentions are resolved to DIDs and link cards are fetched before the preview and the write, so --dry-run calls the API when mentions exist, and fetches the first link.
  * @param {object} options - Options of the command
@@ -26,12 +27,16 @@ const COLLECTION = 'app.bsky.feed.post';
  * @param {string} [options.textFile] - Path of the Markdown file given with --text-file, which wins over the text
  * @param {boolean} [options.dryRun] - Preview the posts, and write nothing
  * @param {boolean} [options.noEmbed] - Attach no link card
- * @param {string} [options.replyTo] - AT URI or bsky.app URL of the Post to reply to
- * @returns {Promise<object|object[]>} The URI and the web URL of the created Post, with its `warnings` when there are some, or the preview with --dry-run
+ * @param {string} [options.replyTo] - AT URI or bsky.app URL of the Post to reply to. With --thread, the first post replies to it
+ * @param {boolean} [options.thread] - Split the Draft into a Thread on each line of three dashes
+ * @returns {Promise<object|object[]>} The URI and the web URL of the created Post, with its `warnings` when there are some (one such object per post with --thread), or the preview with --dry-run
  */
 export async function postCreate(options) {
   const { file, directory, markdown } = await __.readDraft(options);
-  const parsedPosts = __.parsePostMarkdown(markdown, { directory });
+  const parsedPosts = __.parsePostMarkdown(markdown, {
+    directory,
+    thread: options.thread,
+  });
 
   // Abort on any error, before any network write. Warnings do not block
   const violations = await __.validatePost(parsedPosts);
@@ -71,40 +76,86 @@ export async function postCreate(options) {
   // The tokens file holds the sessions of the DIDs that logged in
   const { tokens } = await __.getConfig();
   const [repo] = _.keys(tokens.sessions);
-  const [{ text, facets, images, card, warnings, replyTo: target }] = posts;
+  const published = await __.publishPosts(posts, repo);
 
-  // One embed per post: the images win, and resolveLinkCards left no card
-  let embed = null;
-  if (!_.isEmpty(images)) {
-    embed = await __.uploadImages(images);
-  } else if (card) {
-    embed = await __.uploadLinkCard(card);
-  }
-  const record = {
-    $type: COLLECTION,
-    text,
-    ...(_.isEmpty(facets) ? {} : { facets }),
-    ...(embed ? { embed } : {}),
-    ...(target ? { reply: __.buildReply(target) } : {}),
-    createdAt: new Date().toISOString(),
-  };
-  const response = await __.callApi('com.atproto.repo.createRecord', {
-    method: 'POST',
-    body: { repo, collection: COLLECTION, record },
-  });
-
-  const published = __.formatPost(response);
-  return _.isEmpty(warnings) ? published : { ...published, warnings };
+  // A Thread returns every post, a single post only itself
+  return options.thread ? published : published[0];
 }
 
 __ = {
   /**
-   * Build the reply of a record: the Thread root and the Parent
-   * @param {{uri: string, cid: string, root: object}} target - Post to reply to, as returned by resolvePostRef
-   * @returns {{root: object, parent: object}} The reply of the record
+   * Publish the posts one by one, each replying to the previous one
+   * The first post replies to the target of --reply-to, if any. The root stays
+   * the root of the target, or the first post.
+   * @param {object[]} posts - Posts returned by resolveLinkCards
+   * @param {string} repo - DID of the account that publishes
+   * @returns {Promise<object[]>} For each post, its `uri` and `url`, with its `warnings` when there are some. Throws BLUESKY_THREAD_INTERRUPTED, which lists the published posts, when a post fails after the first one
    */
-  buildReply(target) {
-    return { root: target.root, parent: _.pick(target, ['uri', 'cid']) };
+  async publishPosts(posts, repo) {
+    const target = _.get(posts, '0.replyTo');
+    let root = _.get(target, 'root');
+    let parent = target ? _.pick(target, ['uri', 'cid']) : null;
+    const published = [];
+
+    try {
+      await pMap(
+        posts,
+        async (post) => {
+          const reply = parent ? { root, parent } : null;
+          const response = await __.publishPost(post, repo, reply);
+          parent = _.pick(response, ['uri', 'cid']);
+          root = root ?? parent;
+
+          const { warnings } = post;
+          const formatted = __.formatPost(response);
+          published.push(
+            _.isEmpty(warnings) ? formatted : { ...formatted, warnings },
+          );
+        },
+        { concurrency: 1 },
+      );
+    } catch (error) {
+      if (_.isEmpty(published)) {
+        throw error;
+      }
+      const urls = _.map(published, ({ uri, url }) => `- ${uri} ${url}`);
+      throw firostError(
+        'BLUESKY_THREAD_INTERRUPTED',
+        `Post ${published.length + 1}/${posts.length} failed: ${error.message}\nAlready published:\n${_.join(urls, '\n')}`,
+      );
+    }
+
+    return published;
+  },
+  /**
+   * Create the record of one post, with its embed
+   * @param {object} post - Post returned by resolveLinkCards
+   * @param {string} repo - DID of the account that publishes
+   * @param {{root: object, parent: object}|null} reply - Reply of the record, or null for a top-level post
+   * @returns {Promise<{uri: string, cid: string}>} The response of createRecord
+   */
+  async publishPost(post, repo, reply) {
+    const { text, facets, images, card } = post;
+
+    // One embed per post: the images win, and resolveLinkCards left no card
+    let embed = null;
+    if (!_.isEmpty(images)) {
+      embed = await __.uploadImages(images);
+    } else if (card) {
+      embed = await __.uploadLinkCard(card);
+    }
+    const record = {
+      $type: COLLECTION,
+      text,
+      ...(_.isEmpty(facets) ? {} : { facets }),
+      ...(embed ? { embed } : {}),
+      ...(reply ? { reply } : {}),
+      createdAt: new Date().toISOString(),
+    };
+    return await __.callApi('com.atproto.repo.createRecord', {
+      method: 'POST',
+      body: { repo, collection: COLLECTION, record },
+    });
   },
 
   callApi,

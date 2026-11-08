@@ -281,6 +281,194 @@ describe('postCreate', () => {
     });
   });
 
+  describe('with --thread', () => {
+    const threadPosts = [
+      { text: 'One', facets: [], images: [], line: 1 },
+      { text: 'Two', facets: [], images: [], line: 5 },
+      { text: 'Three', facets: [], images: [], line: 9 },
+    ];
+    const ref = (name) => ({ uri: `at://${name}`, cid: `bafy${name}` });
+    const recordOf = (index) => __.callApi.mock.calls[index][1].body.record;
+
+    beforeEach(() => {
+      __.parsePostMarkdown.mockReturnValue(threadPosts);
+      let count = 0;
+      __.callApi.mockImplementation(() => ref(`post${++count}`));
+      __.formatPost.mockImplementation(({ uri }) => ({
+        uri,
+        url: `https://${uri}`,
+      }));
+    });
+
+    it('parses the draft with the thread option', async () => {
+      await postCreate({ text: 'One', thread: true });
+
+      expect(__.parsePostMarkdown).toHaveBeenCalledWith('Hello', {
+        directory: '/work',
+        thread: true,
+      });
+    });
+
+    it('publishes one record per post, in order', async () => {
+      await postCreate({ text: 'One', thread: true });
+
+      expect(__.callApi).toHaveBeenCalledTimes(3);
+      expect(recordOf(0)).toHaveProperty('text', 'One');
+      expect(recordOf(1)).toHaveProperty('text', 'Two');
+      expect(recordOf(2)).toHaveProperty('text', 'Three');
+    });
+
+    it('returns the URI and the URL of every post', async () => {
+      const actual = await postCreate({ text: 'One', thread: true });
+
+      expect(actual).toEqual([
+        { uri: 'at://post1', url: 'https://at://post1' },
+        { uri: 'at://post2', url: 'https://at://post2' },
+        { uri: 'at://post3', url: 'https://at://post3' },
+      ]);
+    });
+
+    it('makes each post reply to the previous one, under the first post', async () => {
+      await postCreate({ text: 'One', thread: true });
+
+      expect(recordOf(0)).not.toHaveProperty('reply');
+      expect(recordOf(1)).toHaveProperty('reply', {
+        root: ref('post1'),
+        parent: ref('post1'),
+      });
+      expect(recordOf(2)).toHaveProperty('reply', {
+        root: ref('post1'),
+        parent: ref('post2'),
+      });
+    });
+
+    it('replies to the target with the first post, and keeps its root', async () => {
+      const target = {
+        ...ref('target'),
+        text: 'Original',
+        root: ref('targetRoot'),
+      };
+      __.resolvePostRef.mockReturnValue(target);
+
+      await postCreate({ text: 'One', thread: true, replyTo: 'at://target' });
+
+      expect(recordOf(0)).toHaveProperty('reply', {
+        root: ref('targetRoot'),
+        parent: ref('target'),
+      });
+      expect(recordOf(1)).toHaveProperty('reply', {
+        root: ref('targetRoot'),
+        parent: ref('post1'),
+      });
+    });
+
+    it('attaches the images to the post that holds them only', async () => {
+      const images = [{ alt: 'A cat', path: '/work/cat.png', line: 9 }];
+      const embed = { $type: 'app.bsky.embed.images', images: [] };
+      __.resolveMentions.mockReturnValue([
+        threadPosts[0],
+        threadPosts[1],
+        { ...threadPosts[2], images },
+      ]);
+      __.uploadImages.mockReturnValue(embed);
+
+      await postCreate({ text: 'One', thread: true });
+
+      expect(__.uploadImages).toHaveBeenCalledTimes(1);
+      expect(__.uploadImages).toHaveBeenCalledWith(images);
+      expect(recordOf(0)).not.toHaveProperty('embed');
+      expect(recordOf(1)).not.toHaveProperty('embed');
+      expect(recordOf(2)).toHaveProperty('embed', embed);
+    });
+
+    it('sends nothing when a post in the middle is invalid', async () => {
+      __.validatePost.mockReturnValue([
+        { code: 'empty', level: 'error', line: 5, message: 'No text' },
+      ]);
+
+      let actual = null;
+      try {
+        await postCreate({ text: 'One', thread: true });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'BLUESKY_INVALID_POST');
+      expect(actual).toHaveProperty('message', '<text>:5 empty No text');
+      expect(__.validatePost).toHaveBeenCalledWith(threadPosts);
+      expect(__.callApi).not.toHaveBeenCalled();
+    });
+
+    it('stops on a failure and lists the posts already published', async () => {
+      let count = 0;
+      __.callApi.mockImplementation(() => {
+        if (++count === 2) {
+          throw firostError('BLUESKY_REQUEST_FAILED', '500 Server error');
+        }
+        return ref(`post${count}`);
+      });
+
+      let actual = null;
+      try {
+        await postCreate({ text: 'One', thread: true });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'BLUESKY_THREAD_INTERRUPTED');
+      expect(actual).toHaveProperty(
+        'message',
+        'Post 2/3 failed: 500 Server error\nAlready published:\n- at://post1 https://at://post1',
+      );
+      expect(__.callApi).toHaveBeenCalledTimes(2);
+    });
+
+    it('rethrows the error as it is when the first post fails', async () => {
+      __.callApi.mockImplementation(() => {
+        throw firostError('BLUESKY_REQUEST_FAILED', '500 Server error');
+      });
+
+      let actual = null;
+      try {
+        await postCreate({ text: 'One', thread: true });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'BLUESKY_REQUEST_FAILED');
+    });
+
+    it('previews every post with --dry-run', async () => {
+      const actual = await postCreate({
+        text: 'One',
+        thread: true,
+        dryRun: true,
+      });
+
+      expect(__.previewPosts).toHaveBeenCalledWith(threadPosts);
+      expect(actual).toEqual([{ text: 'preview' }]);
+      expect(__.callApi).not.toHaveBeenCalled();
+    });
+
+    it('returns the warnings of each post', async () => {
+      __.resolveLinkCards.mockReturnValue([
+        threadPosts[0],
+        { ...threadPosts[1], warnings: ['5 Cannot fetch https://a.io'] },
+        threadPosts[2],
+      ]);
+
+      const actual = await postCreate({ text: 'One', thread: true });
+
+      expect(actual).toHaveProperty('0', {
+        uri: 'at://post1',
+        url: 'https://at://post1',
+      });
+      expect(actual).toHaveProperty('1.warnings', [
+        '5 Cannot fetch https://a.io',
+      ]);
+    });
+  });
+
   it('adds no reply to the record without --reply-to', async () => {
     await postCreate({ text: 'Hello' });
 

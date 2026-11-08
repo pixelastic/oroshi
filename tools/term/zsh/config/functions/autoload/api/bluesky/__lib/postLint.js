@@ -10,11 +10,15 @@ export let __;
  * @param {object} options - Options of the command
  * @param {string} [options.text] - Markdown given with --text
  * @param {string} [options.textFile] - Path of the Markdown file given with --text-file, which wins over the text
+ * @param {boolean} [options.thread] - Lint each post of a Thread, split on the lines of three dashes
  * @returns {Promise<object[]>} Violations in the unified lint shape. Throws BLUESKY_MISSING_ARGUMENT when there is no text
  */
 export async function postLint(options) {
   const { file, directory, markdown } = await __.readDraft(options);
-  const posts = __.parsePostMarkdown(markdown, { directory });
+  const posts = __.parsePostMarkdown(markdown, {
+    directory,
+    thread: options.thread,
+  });
   const violations = await __.validatePost(posts);
 
   return _.map(violations, ({ code, level, line, message }) => ({

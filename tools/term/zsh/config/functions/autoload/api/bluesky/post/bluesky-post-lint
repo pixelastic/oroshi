@@ -1,6 +1,8 @@
 # Lint a Draft, without any network call. Publishes nothing
+# --thread lints each post of a thread, split on the lines of three dashes. Line numbers point at the source file
 # Usage:
 # $ bluesky-post-lint --text-file draft.md   # Stylish output (default)
+# $ bluesky-post-lint --text-file thread.md --thread
 # $ bluesky-post-lint --text "Hello world"
 # $ bluesky-post-lint --json --text-file draft.md   # Unified JSON output
 # Exit 1 if there are violations
