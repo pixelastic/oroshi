@@ -1,0 +1,8 @@
+# Read a CircleCI project by its slug, and print it as JSON
+# Usage:
+# $ circleci-project-read gh/pixelastic/firost
+# $ circleci-project-read gh/pixelastic/firost --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/circleci-project-read.js" "$@"

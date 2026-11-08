@@ -42,6 +42,7 @@
   "cfp-writer-start",
   "cfp-writer-tick",
   "chmod",
+  "circleci-project-read",
   "claude mcp list",
   "claude mcp logs",
   "claude skills list",

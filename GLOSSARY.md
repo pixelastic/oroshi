@@ -55,6 +55,8 @@ _Avoid_: refresh, repaint
   — Bases, Tables, Records, Fields, Attachments, Token
 - [Make](tools/term/zsh/config/functions/autoload/api/make/__docs/GLOSSARY.md) —
   Scenarios, Folders, Executions, Blueprint, Scheduling, Team, Zone
+- [CircleCI](tools/term/zsh/config/functions/autoload/api/circleci/__docs/GLOSSARY.md)
+  — Projects, Runs, Logs, Jobs, Steps, Slug, rerun
 - [Notion](tools/term/zsh/config/functions/autoload/api/notion/__docs/GLOSSARY.md)
   — Pages, Databases, Icons, Properties, Content, Parent, Trash, Filter, Sort,
   Token
