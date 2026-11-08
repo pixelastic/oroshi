@@ -1,0 +1,11 @@
+# Publish a text post on Bluesky with its facets, and print its URI and URL
+# Validation runs before any network write
+# Usage:
+# $ bluesky-post-create --text "Hello world"
+# $ bluesky-post-create --text-file ./post.md   # The file wins over --text
+# $ bluesky-post-create --text-file ./post.md --dry-run   # Preview, writes nothing
+# $ bluesky-post-create --text "Hello" --account test
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/bluesky-post-create.js" "$@"

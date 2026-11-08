@@ -4,21 +4,31 @@ describe('postLint', () => {
   const posts = [{ text: 'Hello', facets: [], line: 3 }];
 
   beforeEach(() => {
-    vi.spyOn(__, 'read').mockReturnValue('# From file');
+    vi.spyOn(__, 'readDraft').mockReturnValue({
+      file: '<text>',
+      markdown: 'Hello',
+    });
     vi.spyOn(__, 'parsePostMarkdown').mockReturnValue(posts);
     vi.spyOn(__, 'validatePost').mockReturnValue([]);
   });
 
-  it('parses the inline text', async () => {
-    await postLint({ text: 'Hello' });
-
-    expect(__.parsePostMarkdown).toHaveBeenCalledWith('Hello');
-  });
-
-  it('parses the content of the file, which wins over the inline text', async () => {
+  it('reads the draft from the options', async () => {
     await postLint({ text: 'Hello', textFile: 'draft.md' });
 
-    expect(__.read).toHaveBeenCalledWith(expect.stringMatching(/draft\.md$/));
+    expect(__.readDraft).toHaveBeenCalledWith({
+      text: 'Hello',
+      textFile: 'draft.md',
+    });
+  });
+
+  it('parses the Markdown of the draft', async () => {
+    __.readDraft.mockReturnValue({
+      file: '/tmp/a.md',
+      markdown: '# From file',
+    });
+
+    await postLint({ textFile: '/tmp/a.md' });
+
     expect(__.parsePostMarkdown).toHaveBeenCalledWith('# From file');
   });
 
@@ -35,6 +45,7 @@ describe('postLint', () => {
   });
 
   it('returns each violation in the unified lint shape, with its file', async () => {
+    __.readDraft.mockReturnValue({ file: '/tmp/draft.md', markdown: '' });
     __.validatePost.mockReturnValue([
       { code: 'empty', level: 'error', line: 3, message: 'No text' },
     ]);
@@ -63,21 +74,5 @@ describe('postLint', () => {
     const actual = await postLint({ text: ' ' });
 
     expect(actual).toHaveProperty('0.file', '<text>');
-  });
-
-  it.each([
-    { title: 'nothing is given', options: {} },
-    { title: 'the inline text is empty', options: { text: '' } },
-  ])('fails with BLUESKY_MISSING_ARGUMENT when $title', async ({ options }) => {
-    let actual = null;
-    try {
-      await postLint(options);
-    } catch (error) {
-      actual = error;
-    }
-
-    expect(actual).toHaveProperty('code', 'BLUESKY_MISSING_ARGUMENT');
-    expect(actual).toHaveProperty('message', 'Pass the --text or --text-file');
-    expect(__.parsePostMarkdown).not.toHaveBeenCalled();
   });
 });

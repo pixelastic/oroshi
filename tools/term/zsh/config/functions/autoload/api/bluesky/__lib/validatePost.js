@@ -1,4 +1,5 @@
 import { _ } from 'golgoth';
+import { countGraphemes } from './countGraphemes.js';
 
 export let __;
 
@@ -34,7 +35,7 @@ __ = {
       ];
     }
 
-    const graphemes = __.countGraphemes(text);
+    const graphemes = countGraphemes(text);
     const bytes = Buffer.byteLength(text);
     const problems = [];
     if (graphemes > MAX_GRAPHEMES) {
@@ -52,13 +53,5 @@ __ = {
       });
     }
     return problems;
-  },
-  /**
-   * Count the graphemes of a text, as a reader sees them
-   * @param {string} text - Text to measure
-   * @returns {number} Number of graphemes
-   */
-  countGraphemes(text) {
-    return [...new Intl.Segmenter().segment(text)].length;
   },
 };

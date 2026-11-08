@@ -1,7 +1,6 @@
-import { resolve } from 'node:path';
 import { _ } from 'golgoth';
-import { firostError, read } from 'firost';
 import { parsePostMarkdown } from './parsePostMarkdown.js';
+import { readDraft } from './readDraft.js';
 import { validatePost } from './validatePost.js';
 
 export let __;
@@ -14,18 +13,7 @@ export let __;
  * @returns {Promise<object[]>} Violations in the unified lint shape. Throws BLUESKY_MISSING_ARGUMENT when there is no text
  */
 export async function postLint(options) {
-  const { text, textFile } = options;
-
-  if (!text && !textFile) {
-    throw firostError(
-      'BLUESKY_MISSING_ARGUMENT',
-      'Pass the --text or --text-file',
-    );
-  }
-
-  // firost resolves a relative path from its own folder, not from the caller
-  const file = textFile ? resolve(textFile) : '<text>';
-  const markdown = textFile ? await __.read(file) : text;
+  const { file, markdown } = await __.readDraft(options);
   const violations = __.validatePost(__.parsePostMarkdown(markdown));
 
   return _.map(violations, ({ code, level, line, message }) => ({
@@ -41,7 +29,7 @@ export async function postLint(options) {
 }
 
 __ = {
-  read,
+  readDraft,
   parsePostMarkdown,
   validatePost,
 };
