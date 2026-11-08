@@ -1,0 +1,25 @@
+# Lint a Draft, without any network call. Publishes nothing
+# Usage:
+# $ bluesky-post-lint --text-file draft.md   # Stylish output (default)
+# $ bluesky-post-lint --text "Hello world"
+# $ bluesky-post-lint --json --text-file draft.md   # Unified JSON output
+# Exit 1 if there are violations
+setopt local_options err_return
+
+zparseopts -E -D \
+  -json=flagJson
+local isJson=${#flagJson}
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+local violations="$(node "${libDir}/bin/bluesky-post-lint.js" "$@")"
+
+# The bin printed an error and no JSON
+[[ "$violations" == "" ]] && return 1
+
+if [[ $isJson == 1 ]]; then
+  printf '%s\n' "$violations"
+  [[ "$(printf '%s' "$violations" | jq --raw-output 'length')" == "0" ]]
+  return
+fi
+
+printf '%s' "$violations" | json2stylish
