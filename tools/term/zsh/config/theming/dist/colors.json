@@ -115,6 +115,10 @@
     "ansi": 50,
     "hex": "#0e1529"
   },
+  "bluesky-post-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
   "boolean": {
     "ansi": 144,
     "hex": "#f59e0b"

@@ -1,0 +1,10 @@
+# Delete one of my Bluesky posts by its AT URI or bsky.app URL, and print the deleted post as JSON
+# A post of another account fails before anything is sent
+# Usage:
+# $ bluesky-post-delete at://did:plc:abc/app.bsky.feed.post/3k44
+# $ bluesky-post-delete https://bsky.app/profile/a.bsky.social/post/3k44
+# $ bluesky-post-delete https://bsky.app/profile/a.bsky.social/post/3k44 --account test
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/bluesky-post-delete.js" "$@"

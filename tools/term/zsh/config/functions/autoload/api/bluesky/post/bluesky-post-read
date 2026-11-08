@@ -1,0 +1,9 @@
+# Read one Bluesky post by its AT URI or bsky.app URL, and print it as JSON
+# Usage:
+# $ bluesky-post-read at://did:plc:abc/app.bsky.feed.post/3k44
+# $ bluesky-post-read https://bsky.app/profile/a.bsky.social/post/3k44
+# $ bluesky-post-read https://bsky.app/profile/a.bsky.social/post/3k44 --account test
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/bluesky-post-read.js" "$@"

@@ -1,0 +1,10 @@
+# List my Bluesky posts, newest first, one per line, for machine consumption
+# For human consumption, use bluesky-post-list
+# Usage:
+# $ bluesky-post-list-raw
+# $ bluesky-post-list-raw --limit 10
+# $ bluesky-post-list-raw --account test
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/bluesky-post-list-raw.js" "$@"

@@ -9,7 +9,12 @@ describe('resolvePostRef', () => {
     return {
       thread: {
         $type: 'app.bsky.feed.defs#threadViewPost',
-        post: { uri, cid: 'bafyTarget', record },
+        post: {
+          uri,
+          cid: 'bafyTarget',
+          author: { handle: 'a.bsky.social' },
+          record: { createdAt: '2026-03-12T10:00:00.000Z', ...record },
+        },
       },
     };
   };
@@ -36,6 +41,8 @@ describe('resolvePostRef', () => {
       uri,
       cid: 'bafyTarget',
       text: 'Hello',
+      handle: 'a.bsky.social',
+      createdAt: '2026-03-12T10:00:00.000Z',
       root: { uri, cid: 'bafyTarget' },
     });
   });
@@ -53,6 +60,20 @@ describe('resolvePostRef', () => {
     expect(__.callApi).toHaveBeenCalledWith('app.bsky.feed.getPostThread', {
       query: { uri, depth: 0, parentHeight: 0 },
     });
+  });
+
+  it('names the argument in the error, to match the command', async () => {
+    let actual = null;
+    try {
+      await resolvePostRef('not a post', { argument: 'post' });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty(
+      'message',
+      'Invalid post not a post: pass an AT URI or a bsky.app post URL',
+    );
   });
 
   it('uses the root of the target when the target is a reply', async () => {

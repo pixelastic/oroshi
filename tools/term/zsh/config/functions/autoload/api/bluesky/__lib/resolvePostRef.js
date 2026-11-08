@@ -16,13 +16,16 @@ const WEB_URL = /^https:\/\/bsky\.app\/profile\/([^/]+)\/post\/([^/]+)$/;
  * The reference is an AT URI or a bsky.app URL, with a handle or a DID.
  * Every failure to reach a Post is a BLUESKY_INVALID_ARGUMENT, so that nothing is sent.
  * @param {string} ref - AT URI or bsky.app URL of the Post
- * @returns {Promise<{uri: string, cid: string, text: string, root: {uri: string, cid: string}}>} The target, with its `text` and the `root` of its Thread (the target itself when it is not a reply)
+ * @param {object} [options] - Options of the resolver
+ * @param {string} [options.argument] - Name of the argument that holds the reference, to name it in the errors
+ * @returns {Promise<{uri: string, cid: string, text: string, handle: string, createdAt: string, root: {uri: string, cid: string}}>} The target, with its `text` and the `root` of its Thread (the target itself when it is not a reply)
  */
-export async function resolvePostRef(ref) {
+export async function resolvePostRef(ref, options = {}) {
+  const { argument = '--reply-to' } = options;
   const invalid = (reason) => {
     return firostError(
       'BLUESKY_INVALID_ARGUMENT',
-      `Invalid --reply-to ${ref}: ${reason}`,
+      `Invalid ${argument} ${ref}: ${reason}`,
     );
   };
 
@@ -67,6 +70,8 @@ export async function resolvePostRef(ref) {
     uri: post.uri,
     cid,
     text: record.text,
+    handle: post.author.handle,
+    createdAt: record.createdAt,
     root: _.get(record, 'reply.root', { uri: post.uri, cid }),
   };
 }

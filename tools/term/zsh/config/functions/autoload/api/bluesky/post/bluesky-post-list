@@ -1,0 +1,31 @@
+# List my Bluesky posts as a colored table, newest first, one row per post
+# For machine consumption, use bluesky-post-list-raw
+# Usage:
+# $ bluesky-post-list
+# $ bluesky-post-list --limit 10
+# $ bluesky-post-list --account test
+setopt local_options err_return
+
+colors-load-definitions
+
+# The raw command is named like this wrapper, with a -raw suffix
+local rawCommand="${0}-raw"
+
+local rawPosts="$($rawCommand "$@")"
+
+# Nothing to display if there is no post
+[[ "$rawPosts" == "" ]] && return 1
+
+local rows=()
+for rawPost in ${(f)rawPosts}; do
+  local fields=("${(@ps/▮/)rawPost}")
+
+  # Color the AT URI. Keep the other columns as they are
+  local columns=("$(colorize "${fields[1]}" $COLORS[bluesky-post-id])")
+  columns+=("${(@)fields[2,-1]//▯/, }")
+
+  rows+=("${(j:▮:)columns}")
+done
+
+# One row per line, separated by real newlines. `table` splits the columns on ▮
+table "${(F)rows}"
