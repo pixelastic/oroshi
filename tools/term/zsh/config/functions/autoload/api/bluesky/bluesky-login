@@ -1,0 +1,9 @@
+# Log in to Bluesky, and save the OAuth session
+# Usage:
+# $ bluesky-login                     # Asks which account
+# $ bluesky-login --account test
+# $ bluesky-login --account default   # The account without a suffix
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h}/__lib"
+node "${libDir}/bin/bluesky-login.js" "$@"

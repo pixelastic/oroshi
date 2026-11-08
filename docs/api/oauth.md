@@ -60,6 +60,12 @@ with three differences:
   service that signals an expired token another way than a 401 says so in its
   glossary.
 
+A service that uses an OAuth client library (such as Bluesky) does not refresh
+the tokens itself. `callApi` restores the session through the library, which
+signs the requests and refreshes the tokens. It mocks `__.createOAuthClient`
+instead of `__.refreshTokens`, and throws `<SERVICE>_LOGIN_REQUIRED` when the
+restore fails, or when the response answers 401.
+
 ## Tests
 
 The test mocks `__.getConfig`, `__.refreshTokens` and `__.fetch`, and checks
