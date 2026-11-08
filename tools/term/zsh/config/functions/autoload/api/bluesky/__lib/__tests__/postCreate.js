@@ -19,6 +19,11 @@ describe('postCreate', () => {
     vi.spyOn(__, 'parsePostMarkdown').mockReturnValue(posts);
     vi.spyOn(__, 'validatePost').mockReturnValue([]);
     vi.spyOn(__, 'resolveMentions').mockImplementation((input) => input);
+    vi.spyOn(__, 'resolveLinkCards').mockImplementation((input) => input);
+    vi.spyOn(__, 'uploadLinkCard').mockReturnValue({
+      $type: 'app.bsky.embed.external',
+      external: {},
+    });
     vi.spyOn(__, 'getConfig').mockReturnValue({
       tokens: { sessions: { 'did:plc:abc': {} } },
     });
@@ -255,6 +260,93 @@ describe('postCreate', () => {
       expect(actual).toHaveProperty('code', 'BLUESKY_MISSING_ALT');
       expect(actual).toHaveProperty('message', '<text>:3 missing-alt No alt');
       expect(__.uploadImages).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('with a link card', () => {
+    const card = {
+      uri: 'https://a.io',
+      title: 'A',
+      description: '',
+      imageUrl: null,
+    };
+    const external = {
+      $type: 'app.bsky.embed.external',
+      external: { uri: 'https://a.io', title: 'A', description: '' },
+    };
+    const withCard = [
+      { text: 'See', facets, images: [], card, warnings: [], line: 1 },
+    ];
+
+    beforeEach(() => {
+      __.resolveLinkCards.mockReturnValue(withCard);
+      __.uploadLinkCard.mockReturnValue(external);
+    });
+
+    it('resolves the cards of the posts, with the --no-embed option', async () => {
+      await postCreate({ text: 'See', noEmbed: true });
+
+      expect(__.resolveLinkCards).toHaveBeenCalledWith(posts, {
+        noEmbed: true,
+      });
+    });
+
+    it('uploads the card and attaches the external embed', async () => {
+      await postCreate({ text: 'See' });
+
+      expect(__.uploadLinkCard).toHaveBeenCalledWith(card);
+      expect(__.uploadImages).not.toHaveBeenCalled();
+      expect(__.callApi).toHaveBeenCalledWith(
+        'com.atproto.repo.createRecord',
+        expect.objectContaining({
+          body: expect.objectContaining({
+            record: expect.objectContaining({ embed: external }),
+          }),
+        }),
+      );
+    });
+
+    it('attaches the images, not the card, when the post has both', async () => {
+      const images = [{ alt: 'A cat', path: '/work/cat.png', line: 1 }];
+      const imagesEmbed = { $type: 'app.bsky.embed.images', images: [] };
+      __.resolveLinkCards.mockReturnValue([{ ...withCard[0], images }]);
+      __.uploadImages.mockReturnValue(imagesEmbed);
+
+      await postCreate({ text: 'See' });
+
+      expect(__.uploadLinkCard).not.toHaveBeenCalled();
+      expect(__).toHaveProperty(
+        'callApi.mock.calls.0.1.body.record.embed',
+        imagesEmbed,
+      );
+    });
+
+    it('does not upload anything with --dry-run', async () => {
+      await postCreate({ text: 'See', dryRun: true });
+
+      expect(__.previewPosts).toHaveBeenCalledWith(withCard);
+      expect(__.uploadLinkCard).not.toHaveBeenCalled();
+    });
+
+    it('publishes without a card, and returns the warning, when the page failed', async () => {
+      __.resolveLinkCards.mockReturnValue([
+        {
+          ...withCard[0],
+          card: null,
+          warnings: ['1 Cannot fetch https://a.io'],
+        },
+      ]);
+
+      const actual = await postCreate({ text: 'See' });
+
+      expect(__.callApi.mock.calls[0][1].body.record).not.toHaveProperty(
+        'embed',
+      );
+      expect(actual).toEqual({
+        uri: 'at://x',
+        url: 'https://y',
+        warnings: ['1 Cannot fetch https://a.io'],
+      });
     });
   });
 

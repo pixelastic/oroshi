@@ -48,7 +48,38 @@ describe('previewPosts', () => {
         hashtags: ['vitest'],
         mentions: ['did:plc:pixelastic'],
         images: [{ alt: 'A cat', path: '/drafts/cat.png', size: 52_000 }],
+        card: null,
+        warnings: [],
       },
     ]);
+  });
+
+  it('shows the card and the warnings of a post', async () => {
+    const posts = [
+      {
+        text: 'See https://a.io',
+        line: 1,
+        images: [],
+        facets: [],
+        card: {
+          uri: 'https://a.io',
+          title: 'A',
+          description: 'About A',
+          imageUrl: 'https://a.io/cover.png',
+        },
+        warnings: ['1 Something'],
+      },
+    ];
+
+    const actual = await previewPosts(posts);
+
+    expect(actual[0]).toMatchObject({
+      card: {
+        title: 'A',
+        description: 'About A',
+        imageUrl: 'https://a.io/cover.png',
+      },
+      warnings: ['1 Something'],
+    });
   });
 });

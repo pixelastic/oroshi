@@ -6,8 +6,10 @@ import { getConfig } from './getConfig.js';
 import { parsePostMarkdown } from './parsePostMarkdown.js';
 import { previewPosts } from './previewPosts.js';
 import { readDraft } from './readDraft.js';
+import { resolveLinkCards } from './resolveLinkCards.js';
 import { resolveMentions } from './resolveMentions.js';
 import { uploadImages } from './uploadImages.js';
+import { uploadLinkCard } from './uploadLinkCard.js';
 import { validatePost } from './validatePost.js';
 
 export let __;
@@ -15,14 +17,15 @@ export let __;
 const COLLECTION = 'app.bsky.feed.post';
 
 /**
- * Publish a Post with its facets and its images, or preview it
- * Validation runs before any network write, and the images are uploaded last.
- * Mentions are resolved to DIDs before the preview and the write, so --dry-run calls the API when mentions exist.
+ * Publish a Post with its facets, and its images or link card, or preview it
+ * Validation runs before any network write, and the blobs are uploaded last.
+ * Mentions are resolved to DIDs and link cards are fetched before the preview and the write, so --dry-run calls the API when mentions exist, and fetches the first link.
  * @param {object} options - Options of the command
  * @param {string} [options.text] - Markdown given with --text
  * @param {string} [options.textFile] - Path of the Markdown file given with --text-file, which wins over the text
  * @param {boolean} [options.dryRun] - Preview the posts, and write nothing
- * @returns {Promise<object|object[]>} The URI and the web URL of the created Post, or the preview with --dry-run
+ * @param {boolean} [options.noEmbed] - Attach no link card
+ * @returns {Promise<object|object[]>} The URI and the web URL of the created Post, with its `warnings` when there are some, or the preview with --dry-run
  */
 export async function postCreate(options) {
   const { file, directory, markdown } = await __.readDraft(options);
@@ -43,7 +46,12 @@ export async function postCreate(options) {
   }
 
   // An unknown handle aborts here, so that no one is mentioned by mistake
-  const posts = await __.resolveMentions(parsedPosts);
+  const mentioned = await __.resolveMentions(parsedPosts);
+
+  // An unreachable page only gives a warning, so the post goes without a card
+  const posts = await __.resolveLinkCards(mentioned, {
+    noEmbed: options.noEmbed,
+  });
 
   if (options.dryRun) {
     return await __.previewPosts(posts);
@@ -52,8 +60,15 @@ export async function postCreate(options) {
   // The tokens file holds the sessions of the DIDs that logged in
   const { tokens } = await __.getConfig();
   const [repo] = _.keys(tokens.sessions);
-  const [{ text, facets, images }] = posts;
-  const embed = _.isEmpty(images) ? null : await __.uploadImages(images);
+  const [{ text, facets, images, card, warnings }] = posts;
+
+  // One embed per post: the images win, and resolveLinkCards left no card
+  let embed = null;
+  if (!_.isEmpty(images)) {
+    embed = await __.uploadImages(images);
+  } else if (card) {
+    embed = await __.uploadLinkCard(card);
+  }
   const record = {
     $type: COLLECTION,
     text,
@@ -66,7 +81,8 @@ export async function postCreate(options) {
     body: { repo, collection: COLLECTION, record },
   });
 
-  return __.formatPost(response);
+  const published = __.formatPost(response);
+  return _.isEmpty(warnings) ? published : { ...published, warnings };
 }
 
 __ = {
@@ -76,7 +92,9 @@ __ = {
   parsePostMarkdown,
   previewPosts,
   readDraft,
+  resolveLinkCards,
   resolveMentions,
   uploadImages,
+  uploadLinkCard,
   validatePost,
 };
