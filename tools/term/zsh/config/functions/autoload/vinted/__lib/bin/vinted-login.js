@@ -6,7 +6,10 @@ const VINTED_URL = 'https://www.vinted.fr';
 
 const context = await openSession();
 const page = context.pages()[0] ?? (await context.newPage());
-await page.goto(VINTED_URL);
+// An expired session redirects to /session-refresh, which never finishes
+// loading and blocks the login. Dropping the stale cookies avoids the redirect.
+await context.clearCookies({ domain: /vinted\./ });
+await page.goto(VINTED_URL, { waitUntil: 'commit' });
 
 consoleInfo('Log in to Vinted by hand, then close the browser or press Enter');
 
