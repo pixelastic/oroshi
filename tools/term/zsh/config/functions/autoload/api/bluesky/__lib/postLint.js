@@ -13,8 +13,9 @@ export let __;
  * @returns {Promise<object[]>} Violations in the unified lint shape. Throws BLUESKY_MISSING_ARGUMENT when there is no text
  */
 export async function postLint(options) {
-  const { file, markdown } = await __.readDraft(options);
-  const violations = __.validatePost(__.parsePostMarkdown(markdown));
+  const { file, directory, markdown } = await __.readDraft(options);
+  const posts = __.parsePostMarkdown(markdown, { directory });
+  const violations = await __.validatePost(posts);
 
   return _.map(violations, ({ code, level, line, message }) => ({
     file,

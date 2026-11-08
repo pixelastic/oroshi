@@ -13,6 +13,7 @@ describe('postCreate', () => {
   beforeEach(() => {
     vi.spyOn(__, 'readDraft').mockReturnValue({
       file: '<text>',
+      directory: '/work',
       markdown: 'Hello',
     });
     vi.spyOn(__, 'parsePostMarkdown').mockReturnValue(posts);
@@ -27,6 +28,10 @@ describe('postCreate', () => {
       url: 'https://y',
     });
     vi.spyOn(__, 'previewPosts').mockReturnValue([{ text: 'preview' }]);
+    vi.spyOn(__, 'uploadImages').mockReturnValue({
+      $type: 'app.bsky.embed.images',
+      images: [],
+    });
   });
 
   it('creates the record with the text and the facets', async () => {
@@ -54,7 +59,9 @@ describe('postCreate', () => {
       text: 'Hello',
       textFile: 'draft.md',
     });
-    expect(__.parsePostMarkdown).toHaveBeenCalledWith('Hello');
+    expect(__.parsePostMarkdown).toHaveBeenCalledWith('Hello', {
+      directory: '/work',
+    });
   });
 
   it('returns the URI and the web URL of the created record', async () => {
@@ -181,6 +188,81 @@ describe('postCreate', () => {
       expect(actual).toHaveProperty('code', 'BLUESKY_INVALID_POST');
       expect(__.resolveMentions).not.toHaveBeenCalled();
     });
+  });
+
+  describe('with images', () => {
+    const images = [{ alt: 'A cat', path: '/work/cat.png', line: 1 }];
+    const withImages = [{ text: 'Look', facets: [], images, line: 1 }];
+    const embed = {
+      $type: 'app.bsky.embed.images',
+      images: [{ alt: 'A cat', image: { $type: 'blob' } }],
+    };
+
+    beforeEach(() => {
+      __.resolveMentions.mockReturnValue(withImages);
+      __.uploadImages.mockReturnValue(embed);
+    });
+
+    it('uploads the images and attaches the embed to the record', async () => {
+      await postCreate({ text: 'Look' });
+
+      expect(__.uploadImages).toHaveBeenCalledWith(images);
+      expect(__.callApi).toHaveBeenCalledWith(
+        'com.atproto.repo.createRecord',
+        expect.objectContaining({
+          body: expect.objectContaining({
+            record: expect.objectContaining({ embed }),
+          }),
+        }),
+      );
+    });
+
+    it('does not upload anything with --dry-run', async () => {
+      await postCreate({ text: 'Look', dryRun: true });
+
+      expect(__.previewPosts).toHaveBeenCalledWith(withImages);
+      expect(__.uploadImages).not.toHaveBeenCalled();
+    });
+
+    it('uploads nothing when a post is invalid', async () => {
+      __.validatePost.mockReturnValue([
+        { code: 'image-not-found', level: 'error', line: 1, message: 'Gone' },
+      ]);
+
+      let actual = null;
+      try {
+        await postCreate({ text: 'Look' });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'BLUESKY_INVALID_POST');
+      expect(__.uploadImages).not.toHaveBeenCalled();
+    });
+
+    it('fails with the missing alt error when an image has no alt', async () => {
+      __.validatePost.mockReturnValue([
+        { code: 'missing-alt', level: 'error', line: 3, message: 'No alt' },
+      ]);
+
+      let actual = null;
+      try {
+        await postCreate({ text: 'Look' });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'BLUESKY_MISSING_ALT');
+      expect(actual).toHaveProperty('message', '<text>:3 missing-alt No alt');
+      expect(__.uploadImages).not.toHaveBeenCalled();
+    });
+  });
+
+  it('attaches no embed to a post without images', async () => {
+    await postCreate({ text: 'Hello' });
+
+    expect(__.uploadImages).not.toHaveBeenCalled();
+    expect(__.callApi.mock.calls[0][1].body.record).not.toHaveProperty('embed');
   });
 
   it('still validates with --dry-run', async () => {

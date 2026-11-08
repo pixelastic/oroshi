@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { _ } from 'golgoth';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { gfmAutolinkLiteralFromMarkdown } from 'mdast-util-gfm-autolink-literal';
@@ -16,10 +17,13 @@ const HANDLE_SEGMENT = '[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?';
  * Links, hashtags and mentions become facets. Other formatting is removed and
  * its text kept. A mention facet carries the handle, not the DID.
  * @param {string} markdown - Markdown source of the post
+ * @param {object} [options] - Options of the parser
+ * @param {string} [options.directory] - Folder that the relative paths of the images start from
  * @returns {object[]} Posts, each with its `text`, its `facets` (UTF-8 byte
- * offsets of the text) and the `line` of the source where it starts
+ * offsets of the text), its `images` (`alt`, absolute `path` and `line`, taken out of the text) and the `line` of the source where it starts
  */
-export function parsePostMarkdown(markdown) {
+export function parsePostMarkdown(markdown, options = {}) {
+  const { directory = process.cwd() } = options;
   const tree = fromMarkdown(markdown, {
     extensions: [gfmAutolinkLiteral(), gfmStrikethrough()],
     mdastExtensions: [
@@ -43,12 +47,33 @@ export function parsePostMarkdown(markdown) {
     {
       text: _.chain(pieces).map('text').join('').value(),
       facets,
+      images: __.collectImages(tree, directory),
       line: _.get(tree, 'children[0].position.start.line', 1),
     },
   ];
 }
 
 __ = {
+  /**
+   * Find every image of a node, in the order of the source
+   * @param {object} node - mdast node
+   * @param {string} directory - Folder that the relative paths start from
+   * @returns {object[]} Images, each with an `alt`, an absolute `path` and a `line`
+   */
+  collectImages(node, directory) {
+    if (node.type === 'image') {
+      return [
+        {
+          alt: node.alt ?? '',
+          path: resolve(directory, node.url),
+          line: node.position.start.line,
+        },
+      ];
+    }
+    return _.flatMap(node.children, (child) => {
+      return __.collectImages(child, directory);
+    });
+  },
   /**
    * Flatten a node into the pieces of final text it holds
    * @param {object} node - mdast node

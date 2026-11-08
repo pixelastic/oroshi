@@ -91,6 +91,72 @@ describe('parsePostMarkdown', () => {
   ])('$title', ({ input, expected }) => {
     const actual = parsePostMarkdown(input);
 
-    expect(actual).toEqual([{ line: 1, ...expected }]);
+    expect(actual).toEqual([{ line: 1, images: [], ...expected }]);
+  });
+
+  describe('images', () => {
+    it.each([
+      {
+        title: 'an image leaves the text and keeps its alt and its path',
+        input: 'Look\n\n![A red cat](cat.png)',
+        options: { directory: '/drafts' },
+        expected: {
+          text: 'Look',
+          images: [{ alt: 'A red cat', path: '/drafts/cat.png', line: 3 }],
+        },
+      },
+      {
+        title: 'a path is relative to the directory of the draft',
+        input: '![Cat](./img/cat.png)',
+        options: { directory: '/drafts/a' },
+        expected: {
+          text: '',
+          images: [{ alt: 'Cat', path: '/drafts/a/img/cat.png', line: 1 }],
+        },
+      },
+      {
+        title: 'an absolute path stays as it is',
+        input: '![Cat](/photos/cat.png)',
+        options: { directory: '/drafts' },
+        expected: {
+          text: '',
+          images: [{ alt: 'Cat', path: '/photos/cat.png', line: 1 }],
+        },
+      },
+      {
+        title: 'an image without alt has an empty alt',
+        input: 'Hello\n\n![](cat.png)',
+        options: { directory: '/drafts' },
+        expected: {
+          text: 'Hello',
+          images: [{ alt: '', path: '/drafts/cat.png', line: 3 }],
+        },
+      },
+      {
+        title: 'images keep their order, inside a paragraph too',
+        input: 'See ![One](a.png) and ![Two](b.jpg)',
+        options: { directory: '/drafts' },
+        expected: {
+          text: 'See  and ',
+          images: [
+            { alt: 'One', path: '/drafts/a.png', line: 1 },
+            { alt: 'Two', path: '/drafts/b.jpg', line: 1 },
+          ],
+        },
+      },
+      {
+        title: 'the directory is the current directory by default',
+        input: '![Cat](cat.png)',
+        options: undefined,
+        expected: {
+          text: '',
+          images: [{ alt: 'Cat', path: `${process.cwd()}/cat.png`, line: 1 }],
+        },
+      },
+    ])('$title', ({ input, options, expected }) => {
+      const actual = parsePostMarkdown(input, options);
+
+      expect(actual).toEqual([{ line: 1, facets: [], ...expected }]);
+    });
   });
 });

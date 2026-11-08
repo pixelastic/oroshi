@@ -1,9 +1,9 @@
-# Publish a text post on Bluesky with its facets, and print its URI and URL
-# Validation runs before any network write
+# Publish a post on Bluesky with its facets and up to four images, and print its URI and URL
+# Validation runs before any network write. Images come from the Markdown: ![alt](path), relative to the --text-file (or to the current directory with --text)
 # Usage:
 # $ bluesky-post-create --text "Hello world"
 # $ bluesky-post-create --text-file ./post.md   # The file wins over --text
-# $ bluesky-post-create --text-file ./post.md --dry-run   # Preview, writes nothing
+# $ bluesky-post-create --text-file ./post.md --dry-run   # Preview, uploads and writes nothing
 # $ bluesky-post-create --text "Hello" --account test
 setopt local_options err_return
 

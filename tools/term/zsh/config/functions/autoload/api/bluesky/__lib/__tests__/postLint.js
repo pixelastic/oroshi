@@ -6,6 +6,7 @@ describe('postLint', () => {
   beforeEach(() => {
     vi.spyOn(__, 'readDraft').mockReturnValue({
       file: '<text>',
+      directory: '/work',
       markdown: 'Hello',
     });
     vi.spyOn(__, 'parsePostMarkdown').mockReturnValue(posts);
@@ -24,12 +25,15 @@ describe('postLint', () => {
   it('parses the Markdown of the draft', async () => {
     __.readDraft.mockReturnValue({
       file: '/tmp/a.md',
+      directory: '/tmp',
       markdown: '# From file',
     });
 
     await postLint({ textFile: '/tmp/a.md' });
 
-    expect(__.parsePostMarkdown).toHaveBeenCalledWith('# From file');
+    expect(__.parsePostMarkdown).toHaveBeenCalledWith('# From file', {
+      directory: '/tmp',
+    });
   });
 
   it('validates the parsed posts', async () => {

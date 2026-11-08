@@ -8,14 +8,22 @@ describe('readDraft', () => {
   it('returns the inline text, named <text>', async () => {
     const actual = await readDraft({ text: 'Hello' });
 
-    expect(actual).toEqual({ file: '<text>', markdown: 'Hello' });
+    expect(actual).toEqual({
+      file: '<text>',
+      directory: process.cwd(),
+      markdown: 'Hello',
+    });
   });
 
   it('returns the content of the file, which wins over the inline text', async () => {
     const actual = await readDraft({ text: 'Hello', textFile: '/tmp/a.md' });
 
     expect(__.read).toHaveBeenCalledWith('/tmp/a.md');
-    expect(actual).toEqual({ file: '/tmp/a.md', markdown: '# From file' });
+    expect(actual).toEqual({
+      file: '/tmp/a.md',
+      directory: '/tmp',
+      markdown: '# From file',
+    });
   });
 
   it.each([

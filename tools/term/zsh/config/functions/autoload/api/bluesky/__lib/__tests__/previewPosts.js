@@ -1,12 +1,17 @@
-import { previewPosts } from '../previewPosts.js';
+import { __, previewPosts } from '../previewPosts.js';
 
 describe('previewPosts', () => {
-  it('describes each post with its length, links, hashtags and mentions', () => {
+  beforeEach(() => {
+    vi.spyOn(__, 'fileSize').mockReturnValue(52_000);
+  });
+
+  it('describes each post with its length, links, hashtags, mentions and images', async () => {
     const text = 'Café #vitest @pixelastic.bsky.social docs';
     const posts = [
       {
         text,
         line: 2,
+        images: [{ alt: 'A cat', path: '/drafts/cat.png', line: 4 }],
         facets: [
           {
             index: { byteStart: 0, byteEnd: 5 },
@@ -31,7 +36,7 @@ describe('previewPosts', () => {
       },
     ];
 
-    const actual = previewPosts(posts);
+    const actual = await previewPosts(posts);
 
     expect(actual).toEqual([
       {
@@ -42,6 +47,7 @@ describe('previewPosts', () => {
         links: ['https://a.io'],
         hashtags: ['vitest'],
         mentions: ['did:plc:pixelastic'],
+        images: [{ alt: 'A cat', path: '/drafts/cat.png', size: 52_000 }],
       },
     ]);
   });

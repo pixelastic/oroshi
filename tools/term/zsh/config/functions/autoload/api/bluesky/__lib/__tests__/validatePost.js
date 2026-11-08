@@ -1,7 +1,30 @@
-import { validatePost } from '../validatePost.js';
+import { __, validatePost } from '../validatePost.js';
 
 describe('validatePost', () => {
-  const post = (text, extra = {}) => ({ text, facets: [], line: 1, ...extra });
+  const post = (text, extra = {}) => ({
+    text,
+    facets: [],
+    images: [],
+    line: 1,
+    ...extra,
+  });
+  const image = (name, extra = {}) => ({
+    alt: 'Alt',
+    path: `/drafts/${name}`,
+    line: 3,
+    ...extra,
+  });
+  // Size in bytes of the files that exist
+  const sizes = {
+    '/drafts/small.png': 500_000,
+    '/drafts/small.jpg': 1_000_000,
+    '/drafts/big.png': 1_000_001,
+    '/drafts/anim.gif': 100,
+  };
+
+  beforeEach(() => {
+    vi.spyOn(__, 'fileSize').mockImplementation((path) => sizes[path] ?? null);
+  });
 
   const empty = (line) => ({
     code: 'empty',
@@ -82,8 +105,131 @@ describe('validatePost', () => {
       ],
       expected: [empty(7), tooLongGraphemes(301, 9)],
     },
-  ])('$title', ({ posts, expected }) => {
-    const actual = validatePost(posts);
+    {
+      title: 'a post of four valid images, one at the limit, has no violation',
+      posts: [
+        post('Hello', {
+          images: [
+            image('small.png'),
+            image('small.jpg'),
+            image('small.png'),
+            image('small.png'),
+          ],
+        }),
+      ],
+      expected: [],
+    },
+    {
+      title: 'a fifth image is an error, at the line of that image',
+      posts: [
+        post('Hello', {
+          images: [
+            image('small.png'),
+            image('small.png'),
+            image('small.png'),
+            image('small.png'),
+            image('small.png', { line: 8 }),
+          ],
+        }),
+      ],
+      expected: [
+        {
+          code: 'too-many-images',
+          level: 'error',
+          line: 8,
+          message: 'The post has 5 images, the limit is 4',
+        },
+      ],
+    },
+    {
+      title: 'an image without alt text is an error, at its line',
+      posts: [post('Hello', { images: [image('small.png', { alt: '' })] })],
+      expected: [
+        {
+          code: 'missing-alt',
+          level: 'error',
+          line: 3,
+          message: 'The image small.png has no alt text',
+        },
+      ],
+    },
+    {
+      title: 'an alt text of only whitespace is missing',
+      posts: [post('Hello', { images: [image('small.png', { alt: '  ' })] })],
+      expected: [
+        {
+          code: 'missing-alt',
+          level: 'error',
+          line: 3,
+          message: 'The image small.png has no alt text',
+        },
+      ],
+    },
+    {
+      title: 'a missing file is an error',
+      posts: [post('Hello', { images: [image('gone.png', { line: 5 })] })],
+      expected: [
+        {
+          code: 'image-not-found',
+          level: 'error',
+          line: 5,
+          message: 'The image gone.png does not exist',
+        },
+      ],
+    },
+    {
+      title: 'an unsupported format is an error, even when the file exists',
+      posts: [post('Hello', { images: [image('anim.gif')] })],
+      expected: [
+        {
+          code: 'image-unsupported-format',
+          level: 'error',
+          line: 3,
+          message: 'The image anim.gif is not a jpg or png',
+        },
+      ],
+    },
+    {
+      title: 'an image over the limit is a warning, with its size',
+      posts: [post('Hello', { images: [image('big.png')] })],
+      expected: [
+        {
+          code: 'image-heavy',
+          level: 'warning',
+          line: 3,
+          message:
+            'The image big.png weighs 1000001 bytes, over the limit of 1000000: it will be compressed at publish time',
+        },
+      ],
+    },
+    {
+      title: 'each image reports its own violations, after the text ones',
+      posts: [
+        post('', {
+          images: [
+            image('small.png', { alt: '', line: 2 }),
+            image('gone.png', { line: 4 }),
+          ],
+        }),
+      ],
+      expected: [
+        empty(1),
+        {
+          code: 'missing-alt',
+          level: 'error',
+          line: 2,
+          message: 'The image small.png has no alt text',
+        },
+        {
+          code: 'image-not-found',
+          level: 'error',
+          line: 4,
+          message: 'The image gone.png does not exist',
+        },
+      ],
+    },
+  ])('$title', async ({ posts, expected }) => {
+    const actual = await validatePost(posts);
 
     expect(actual).toEqual(expected);
   });
