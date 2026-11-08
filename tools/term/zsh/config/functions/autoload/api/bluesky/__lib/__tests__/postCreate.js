@@ -17,6 +17,7 @@ describe('postCreate', () => {
     });
     vi.spyOn(__, 'parsePostMarkdown').mockReturnValue(posts);
     vi.spyOn(__, 'validatePost').mockReturnValue([]);
+    vi.spyOn(__, 'resolveMentions').mockImplementation((input) => input);
     vi.spyOn(__, 'getConfig').mockReturnValue({
       tokens: { sessions: { 'did:plc:abc': {} } },
     });
@@ -105,6 +106,81 @@ describe('postCreate', () => {
     expect(__.previewPosts).toHaveBeenCalledWith(posts);
     expect(actual).toEqual([{ text: 'preview' }]);
     expect(__.callApi).not.toHaveBeenCalled();
+  });
+
+  describe('with mentions', () => {
+    const resolved = [
+      {
+        text: '@a.bsky.social',
+        line: 1,
+        facets: [
+          {
+            index: { byteStart: 0, byteEnd: 14 },
+            features: [
+              { $type: 'app.bsky.richtext.facet#mention', did: 'did:plc:a' },
+            ],
+          },
+        ],
+      },
+    ];
+
+    beforeEach(() => {
+      __.resolveMentions.mockReturnValue(resolved);
+    });
+
+    it('creates the record with the DID of the mention', async () => {
+      await postCreate({ text: '@a.bsky.social' });
+
+      expect(__.resolveMentions).toHaveBeenCalledWith(posts);
+      expect(__.callApi).toHaveBeenCalledWith(
+        'com.atproto.repo.createRecord',
+        expect.objectContaining({
+          body: expect.objectContaining({
+            record: expect.objectContaining({
+              facets: resolved[0].facets,
+            }),
+          }),
+        }),
+      );
+    });
+
+    it('previews the resolved posts with --dry-run', async () => {
+      await postCreate({ text: '@a.bsky.social', dryRun: true });
+
+      expect(__.previewPosts).toHaveBeenCalledWith(resolved);
+    });
+
+    it('sends nothing when a handle does not resolve', async () => {
+      __.resolveMentions.mockImplementation(() => {
+        throw firostError('BLUESKY_UNKNOWN_HANDLE', 'unknown.bsky.social');
+      });
+
+      let actual = null;
+      try {
+        await postCreate({ text: '@unknown.bsky.social' });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'BLUESKY_UNKNOWN_HANDLE');
+      expect(__.callApi).not.toHaveBeenCalled();
+    });
+
+    it('does not resolve when the post is invalid', async () => {
+      __.validatePost.mockReturnValue([
+        { code: 'empty', level: 'error', line: 1, message: 'No text' },
+      ]);
+
+      let actual = null;
+      try {
+        await postCreate({ text: ' ' });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'BLUESKY_INVALID_POST');
+      expect(__.resolveMentions).not.toHaveBeenCalled();
+    });
   });
 
   it('still validates with --dry-run', async () => {

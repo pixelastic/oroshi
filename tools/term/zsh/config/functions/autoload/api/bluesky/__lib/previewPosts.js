@@ -5,8 +5,8 @@ const FACET_TYPE = 'app.bsky.richtext.facet';
 
 /**
  * Describe parsed posts for --dry-run, without any network call
- * @param {object[]} posts - Posts returned by parsePostMarkdown
- * @returns {object[]} For each post: its `line`, `text`, `graphemes`, `bytes`, `links`, `hashtags` and `mentions`
+ * @param {object[]} posts - Posts returned by resolveMentions, whose mention features hold a `did`
+ * @returns {object[]} For each post: its `line`, `text`, `graphemes`, `bytes`, `links`, `hashtags` and `mentions` (the DIDs)
  */
 export function previewPosts(posts) {
   return _.map(posts, ({ text, line, facets }) => {
@@ -25,7 +25,7 @@ export function previewPosts(posts) {
       bytes: Buffer.byteLength(text),
       links: pick('link', 'uri'),
       hashtags: pick('tag', 'tag'),
-      mentions: pick('mention', 'handle'),
+      mentions: pick('mention', 'did'),
     };
   });
 }

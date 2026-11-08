@@ -23,7 +23,7 @@ describe('previewPosts', () => {
             features: [
               {
                 $type: 'app.bsky.richtext.facet#mention',
-                handle: 'pixelastic.bsky.social',
+                did: 'did:plc:pixelastic',
               },
             ],
           },
@@ -41,7 +41,7 @@ describe('previewPosts', () => {
         bytes: 42,
         links: ['https://a.io'],
         hashtags: ['vitest'],
-        mentions: ['pixelastic.bsky.social'],
+        mentions: ['did:plc:pixelastic'],
       },
     ]);
   });
