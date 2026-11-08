@@ -1,6 +1,7 @@
 import { _, pMap } from 'golgoth';
 import { firostError } from 'firost';
 import { callApi } from './callApi.js';
+import { checkImages } from './checkImages.js';
 import { formatPost } from './formatPost.js';
 import { getConfig } from './getConfig.js';
 import { parsePostMarkdown } from './parsePostMarkdown.js';
@@ -45,11 +46,7 @@ export async function postCreate(options) {
     const lines = _.map(errors, ({ line, code, message }) => {
       return `${file}:${line} ${code} ${message}`;
     });
-    const hasMissingAlt = _.some(errors, { code: 'missing-alt' });
-    throw firostError(
-      hasMissingAlt ? 'BLUESKY_MISSING_ALT' : 'BLUESKY_INVALID_POST',
-      _.join(lines, '\n'),
-    );
+    throw firostError(__.errorCode(errors), _.join(lines, '\n'));
   }
 
   // An unreachable target aborts here, before anything else is fetched
@@ -73,6 +70,9 @@ export async function postCreate(options) {
     return await __.previewPosts(posts);
   }
 
+  // A thread must not stop halfway because of an image of a later post
+  await __.checkImages(posts);
+
   // The tokens file holds the sessions of the DIDs that logged in
   const { tokens } = await __.getConfig();
   const [repo] = _.keys(tokens.sessions);
@@ -83,6 +83,20 @@ export async function postCreate(options) {
 }
 
 __ = {
+  /**
+   * Pick the typed error that names the violations
+   * @param {object[]} errors - Violations of level error
+   * @returns {string} The BLUESKY_ code of the error to throw
+   */
+  errorCode(errors) {
+    if (_.some(errors, { code: 'missing-alt' })) {
+      return 'BLUESKY_MISSING_ALT';
+    }
+    const isTooLong = _.some(errors, ({ code }) => {
+      return _.startsWith(code, 'too-long');
+    });
+    return isTooLong ? 'BLUESKY_POST_TOO_LONG' : 'BLUESKY_INVALID_POST';
+  },
   /**
    * Publish the posts one by one, each replying to the previous one
    * The first post replies to the target of --reply-to, if any. The root stays
@@ -159,6 +173,7 @@ __ = {
   },
 
   callApi,
+  checkImages,
   formatPost,
   getConfig,
   parsePostMarkdown,

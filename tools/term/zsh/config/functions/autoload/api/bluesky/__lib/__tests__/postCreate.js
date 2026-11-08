@@ -34,6 +34,7 @@ describe('postCreate', () => {
       url: 'https://y',
     });
     vi.spyOn(__, 'previewPosts').mockReturnValue([{ text: 'preview' }]);
+    vi.spyOn(__, 'checkImages').mockReturnValue();
     vi.spyOn(__, 'uploadImages').mockReturnValue({
       $type: 'app.bsky.embed.images',
       images: [],
@@ -85,7 +86,7 @@ describe('postCreate', () => {
         line: 3,
         message: 'The post has no text',
       },
-      { code: 'too-long-bytes', level: 'error', line: 5, message: 'Too heavy' },
+      { code: 'too-many-images', level: 'error', line: 5, message: 'Too many' },
     ]);
 
     let actual = null;
@@ -98,7 +99,7 @@ describe('postCreate', () => {
     expect(actual).toHaveProperty('code', 'BLUESKY_INVALID_POST');
     expect(actual).toHaveProperty(
       'message',
-      '<text>:3 empty The post has no text\n<text>:5 too-long-bytes Too heavy',
+      '<text>:3 empty The post has no text\n<text>:5 too-many-images Too many',
     );
     expect(__.callApi).not.toHaveBeenCalled();
   });
@@ -628,6 +629,37 @@ describe('postCreate', () => {
         warnings: ['1 Cannot fetch https://a.io'],
       });
     });
+  });
+
+  it('fails with the too long error, when a post is too long', async () => {
+    __.validatePost.mockReturnValue([
+      { code: 'too-long-graphemes', level: 'error', line: 1, message: 'Long' },
+    ]);
+
+    let actual = null;
+    try {
+      await postCreate({ text: 'Hello' });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', 'BLUESKY_POST_TOO_LONG');
+  });
+
+  it('writes nothing when an image of a later post is too large', async () => {
+    __.checkImages.mockImplementation(() => {
+      throw firostError('BLUESKY_IMAGE_TOO_LARGE', 'Too large');
+    });
+
+    let actual = null;
+    try {
+      await postCreate({ text: 'Hello' });
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', 'BLUESKY_IMAGE_TOO_LARGE');
+    expect(__.callApi).not.toHaveBeenCalled();
   });
 
   it('attaches no embed to a post without images', async () => {

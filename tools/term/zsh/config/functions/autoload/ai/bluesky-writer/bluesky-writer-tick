@@ -10,6 +10,8 @@ if [[ "$draftPath" == "" ]]; then
   echoerr "Usage: bluesky-writer-tick <draft-path>"
   return 1
 fi
+
+# Draft file must exist
 if [[ ! -f "$draftPath" ]]; then
   echoerr "Draft file not found: $draftPath"
   return 1
