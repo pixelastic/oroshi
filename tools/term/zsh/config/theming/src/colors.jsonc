@@ -217,6 +217,11 @@
     "mic2txt-processing": "yellow-7"
   },
 
+  // CircleCI
+  "circleci": {
+    "project-id": "orange"
+  },
+
   // Make
   "make": {
     "execution-id": "orange",

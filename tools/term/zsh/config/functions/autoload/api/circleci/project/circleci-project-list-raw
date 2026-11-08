@@ -1,0 +1,14 @@
+# List the CircleCI projects that the account follows, one per line, for machine consumption
+# For human consumption, use circleci-project-list
+# Fields: projectSlug▮defaultBranch
+# The slug works with circleci-project-read. CircleCI only lists the projects
+# that the account follows. The query is matched against the slug, ignoring case
+# Usage:
+# $ circleci-project-list-raw
+# $ circleci-project-list-raw firost
+# $ circleci-project-list-raw firost --limit 10
+# $ circleci-project-list-raw firost --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/circleci-project-list-raw.js" "$@"

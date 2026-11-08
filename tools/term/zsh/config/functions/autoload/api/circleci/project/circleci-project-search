@@ -1,0 +1,12 @@
+# Search the CircleCI projects that the account follows, and print them as JSON
+# The query is matched against the slug, ignoring case. CircleCI only lists the
+# projects that the account follows
+# Usage:
+# $ circleci-project-search
+# $ circleci-project-search firost
+# $ circleci-project-search firost --limit 10
+# $ circleci-project-search firost --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/circleci-project-search.js" "$@"
