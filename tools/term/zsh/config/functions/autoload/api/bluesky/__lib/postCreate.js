@@ -8,6 +8,7 @@ import { previewPosts } from './previewPosts.js';
 import { readDraft } from './readDraft.js';
 import { resolveLinkCards } from './resolveLinkCards.js';
 import { resolveMentions } from './resolveMentions.js';
+import { resolvePostRef } from './resolvePostRef.js';
 import { uploadImages } from './uploadImages.js';
 import { uploadLinkCard } from './uploadLinkCard.js';
 import { validatePost } from './validatePost.js';
@@ -25,6 +26,7 @@ const COLLECTION = 'app.bsky.feed.post';
  * @param {string} [options.textFile] - Path of the Markdown file given with --text-file, which wins over the text
  * @param {boolean} [options.dryRun] - Preview the posts, and write nothing
  * @param {boolean} [options.noEmbed] - Attach no link card
+ * @param {string} [options.replyTo] - AT URI or bsky.app URL of the Post to reply to
  * @returns {Promise<object|object[]>} The URI and the web URL of the created Post, with its `warnings` when there are some, or the preview with --dry-run
  */
 export async function postCreate(options) {
@@ -45,8 +47,17 @@ export async function postCreate(options) {
     );
   }
 
+  // An unreachable target aborts here, before anything else is fetched
+  const [first, ...others] = parsedPosts;
+  const replyTo = _.isNil(options.replyTo)
+    ? null
+    : await __.resolvePostRef(options.replyTo);
+  const repliedPosts = replyTo
+    ? [{ ...first, replyTo }, ...others]
+    : parsedPosts;
+
   // An unknown handle aborts here, so that no one is mentioned by mistake
-  const mentioned = await __.resolveMentions(parsedPosts);
+  const mentioned = await __.resolveMentions(repliedPosts);
 
   // An unreachable page only gives a warning, so the post goes without a card
   const posts = await __.resolveLinkCards(mentioned, {
@@ -60,7 +71,7 @@ export async function postCreate(options) {
   // The tokens file holds the sessions of the DIDs that logged in
   const { tokens } = await __.getConfig();
   const [repo] = _.keys(tokens.sessions);
-  const [{ text, facets, images, card, warnings }] = posts;
+  const [{ text, facets, images, card, warnings, replyTo: target }] = posts;
 
   // One embed per post: the images win, and resolveLinkCards left no card
   let embed = null;
@@ -74,6 +85,7 @@ export async function postCreate(options) {
     text,
     ...(_.isEmpty(facets) ? {} : { facets }),
     ...(embed ? { embed } : {}),
+    ...(target ? { reply: __.buildReply(target) } : {}),
     createdAt: new Date().toISOString(),
   };
   const response = await __.callApi('com.atproto.repo.createRecord', {
@@ -86,6 +98,15 @@ export async function postCreate(options) {
 }
 
 __ = {
+  /**
+   * Build the reply of a record: the Thread root and the Parent
+   * @param {{uri: string, cid: string, root: object}} target - Post to reply to, as returned by resolvePostRef
+   * @returns {{root: object, parent: object}} The reply of the record
+   */
+  buildReply(target) {
+    return { root: target.root, parent: _.pick(target, ['uri', 'cid']) };
+  },
+
   callApi,
   formatPost,
   getConfig,
@@ -94,6 +115,7 @@ __ = {
   readDraft,
   resolveLinkCards,
   resolveMentions,
+  resolvePostRef,
   uploadImages,
   uploadLinkCard,
   validatePost,

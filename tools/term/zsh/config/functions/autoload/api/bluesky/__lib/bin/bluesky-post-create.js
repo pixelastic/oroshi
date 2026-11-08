@@ -12,6 +12,7 @@ await runBin(async () => {
       'text-file': { type: 'string' },
       'dry-run': { type: 'boolean' },
       'no-embed': { type: 'boolean' },
+      'reply-to': { type: 'string' },
     },
   });
   const output = await postCreate(named);

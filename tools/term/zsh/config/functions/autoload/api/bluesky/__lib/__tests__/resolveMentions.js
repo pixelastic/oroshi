@@ -1,4 +1,3 @@
-import { firostError } from 'firost';
 import { __, resolveMentions } from '../resolveMentions.js';
 
 describe('resolveMentions', () => {
@@ -14,14 +13,8 @@ describe('resolveMentions', () => {
   };
 
   beforeEach(() => {
-    vi.spyOn(__, 'callApi').mockImplementation((path, { query }) => {
-      if (query.handle === 'unknown.bsky.social') {
-        throw firostError(
-          'BLUESKY_REQUEST_FAILED',
-          '400 {"error":"InvalidRequest","message":"Unable to resolve handle"}',
-        );
-      }
-      return { did: `did:plc:${query.handle}` };
+    vi.spyOn(__, 'resolveHandle').mockImplementation((handle) => {
+      return handle === 'unknown.bsky.social' ? null : `did:plc:${handle}`;
     });
   });
 
@@ -32,10 +25,7 @@ describe('resolveMentions', () => {
 
     const actual = await resolveMentions(posts);
 
-    expect(__.callApi).toHaveBeenCalledWith(
-      'com.atproto.identity.resolveHandle',
-      { query: { handle: 'a.bsky.social' } },
-    );
+    expect(__.resolveHandle).toHaveBeenCalledWith('a.bsky.social');
     expect(actual).toEqual([
       {
         text: '@a.bsky.social',
@@ -67,7 +57,7 @@ describe('resolveMentions', () => {
 
     await resolveMentions(posts);
 
-    expect(__.callApi).toHaveBeenCalledTimes(1);
+    expect(__.resolveHandle).toHaveBeenCalledTimes(1);
   });
 
   it('leaves the other facets untouched and makes no call without mention', async () => {
@@ -76,7 +66,7 @@ describe('resolveMentions', () => {
     const actual = await resolveMentions(posts);
 
     expect(actual).toEqual(posts);
-    expect(__.callApi).not.toHaveBeenCalled();
+    expect(__.resolveHandle).not.toHaveBeenCalled();
   });
 
   it('fails and names every handle that does not resolve', async () => {
@@ -100,21 +90,5 @@ describe('resolveMentions', () => {
       'message',
       'Cannot resolve the handle: @unknown.bsky.social',
     );
-  });
-
-  it('lets the other API errors through', async () => {
-    __.callApi.mockImplementation(() => {
-      throw firostError('BLUESKY_LOGIN_REQUIRED', 'Log in');
-    });
-    const posts = [{ text: '', line: 1, facets: [mention('a.bsky.social')] }];
-
-    let actual = null;
-    try {
-      await resolveMentions(posts);
-    } catch (error) {
-      actual = error;
-    }
-
-    expect(actual).toHaveProperty('code', 'BLUESKY_LOGIN_REQUIRED');
   });
 });

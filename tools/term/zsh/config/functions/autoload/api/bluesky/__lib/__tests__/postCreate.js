@@ -19,6 +19,7 @@ describe('postCreate', () => {
     vi.spyOn(__, 'parsePostMarkdown').mockReturnValue(posts);
     vi.spyOn(__, 'validatePost').mockReturnValue([]);
     vi.spyOn(__, 'resolveMentions').mockImplementation((input) => input);
+    vi.spyOn(__, 'resolvePostRef').mockReturnValue(null);
     vi.spyOn(__, 'resolveLinkCards').mockImplementation((input) => input);
     vi.spyOn(__, 'uploadLinkCard').mockReturnValue({
       $type: 'app.bsky.embed.external',
@@ -193,6 +194,97 @@ describe('postCreate', () => {
       expect(actual).toHaveProperty('code', 'BLUESKY_INVALID_POST');
       expect(__.resolveMentions).not.toHaveBeenCalled();
     });
+  });
+
+  describe('with --reply-to', () => {
+    const target = {
+      uri: 'at://did:plc:abc/app.bsky.feed.post/3k44',
+      cid: 'bafyTarget',
+      text: 'Original',
+      root: {
+        uri: 'at://did:plc:root/app.bsky.feed.post/3k00',
+        cid: 'bafyRoot',
+      },
+    };
+
+    beforeEach(() => {
+      vi.spyOn(__, 'resolvePostRef').mockReturnValue(target);
+    });
+
+    it('sets the root and the parent on the record', async () => {
+      await postCreate({ text: 'Agreed', replyTo: 'https://bsky.app/x' });
+
+      expect(__.resolvePostRef).toHaveBeenCalledWith('https://bsky.app/x');
+      expect(__.callApi.mock.calls[0][1].body.record).toHaveProperty('reply', {
+        root: target.root,
+        parent: { uri: target.uri, cid: target.cid },
+      });
+    });
+
+    it('uses the target as root and parent for a top-level post', async () => {
+      const topLevel = {
+        ...target,
+        root: { uri: target.uri, cid: target.cid },
+      };
+      __.resolvePostRef.mockReturnValue(topLevel);
+
+      await postCreate({ text: 'Agreed', replyTo: target.uri });
+
+      const { reply } = __.callApi.mock.calls[0][1].body.record;
+      expect(reply).toHaveProperty('root', reply.parent);
+    });
+
+    it('sends the target to the preview with --dry-run', async () => {
+      await postCreate({ text: 'Agreed', replyTo: target.uri, dryRun: true });
+
+      expect(__.previewPosts).toHaveBeenCalledWith([
+        { ...posts[0], replyTo: target },
+      ]);
+      expect(__.callApi).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      { title: 'is invalid', replyTo: 'nope' },
+      { title: 'is empty, so no top-level post goes out', replyTo: '' },
+    ])('sends nothing when the reference $title', async ({ replyTo }) => {
+      __.resolvePostRef.mockImplementation(() => {
+        throw firostError('BLUESKY_INVALID_ARGUMENT', 'Invalid --reply-to');
+      });
+
+      let actual = null;
+      try {
+        await postCreate({ text: 'Agreed', replyTo });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'BLUESKY_INVALID_ARGUMENT');
+      expect(__.resolvePostRef).toHaveBeenCalledWith(replyTo);
+      expect(__.callApi).not.toHaveBeenCalled();
+      expect(__.resolveMentions).not.toHaveBeenCalled();
+    });
+
+    it('does not resolve a target when the post is invalid', async () => {
+      __.validatePost.mockReturnValue([
+        { code: 'empty', level: 'error', line: 1, message: 'No text' },
+      ]);
+
+      let actual = null;
+      try {
+        await postCreate({ text: ' ', replyTo: target.uri });
+      } catch (error) {
+        actual = error;
+      }
+
+      expect(actual).toHaveProperty('code', 'BLUESKY_INVALID_POST');
+      expect(__.resolvePostRef).not.toHaveBeenCalled();
+    });
+  });
+
+  it('adds no reply to the record without --reply-to', async () => {
+    await postCreate({ text: 'Hello' });
+
+    expect(__.callApi.mock.calls[0][1].body.record).not.toHaveProperty('reply');
   });
 
   describe('with images', () => {

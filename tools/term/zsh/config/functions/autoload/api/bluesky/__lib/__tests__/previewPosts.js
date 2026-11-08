@@ -50,8 +50,33 @@ describe('previewPosts', () => {
         images: [{ alt: 'A cat', path: '/drafts/cat.png', size: 52_000 }],
         card: null,
         warnings: [],
+        replyTo: null,
       },
     ]);
+  });
+
+  it('shows the post a reply goes to', async () => {
+    const posts = [
+      {
+        text: 'Agreed',
+        line: 1,
+        images: [],
+        facets: [],
+        replyTo: {
+          uri: 'at://did:plc:abc/app.bsky.feed.post/3k44',
+          cid: 'bafy',
+          text: 'Original',
+          root: { uri: 'at://did:plc:abc/app.bsky.feed.post/3k00', cid: 'r' },
+        },
+      },
+    ];
+
+    const actual = await previewPosts(posts);
+
+    expect(actual[0]).toHaveProperty('replyTo', {
+      uri: 'at://did:plc:abc/app.bsky.feed.post/3k44',
+      text: 'Original',
+    });
   });
 
   it('shows the card and the warnings of a post', async () => {
