@@ -123,6 +123,10 @@
     "ansi": 105,
     "hex": "#ea580c"
   },
+  "circleci-run-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
   "claude-commandMode": {
     "ansi": 136,
     "hex": "#0f766e"

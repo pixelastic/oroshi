@@ -1,7 +1,7 @@
 import { _ } from 'golgoth';
-import { firostError } from 'firost';
 import { callApi } from '../callApi.js';
 import { defaultLimit } from '../defaultLimit.js';
+import { toLimit } from '../toLimit.js';
 import { formatProject } from './formatProject.js';
 
 export let __;
@@ -20,7 +20,7 @@ export async function projectSearch(options) {
   const { query = '', limit = defaultLimit } = options;
 
   // Validate before calling the API, so a typo costs no request
-  const max = __.toLimit(limit);
+  const max = toLimit(limit);
 
   // The v2 API has no list of Projects. The v1.1 list is not paginated, and
   // holds only the Projects that the account follows
@@ -37,22 +37,6 @@ export async function projectSearch(options) {
 }
 
 __ = {
-  /**
-   * Convert the limit to a positive integer
-   * @param {number|string} limit - The limit, as a number or as typed in a flag
-   * @returns {number} The limit
-   */
-  toLimit(limit) {
-    const value =
-      _.isString(limit) && limit.trim() === '' ? NaN : Number(limit);
-    if (!Number.isInteger(value) || value < 1) {
-      throw firostError(
-        'CIRCLECI_INVALID_ARGUMENT',
-        `--limit must be a positive integer, got "${limit}"`,
-      );
-    }
-    return value;
-  },
   /**
    * Turn one Project of the v1.1 API into the shape of the v2 API
    * @param {object} project - The Project, as returned by v1.1

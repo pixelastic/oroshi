@@ -219,7 +219,8 @@
 
   // CircleCI
   "circleci": {
-    "project-id": "orange"
+    "project-id": "orange",
+    "run-id": "orange"
   },
 
   // Make

@@ -1,0 +1,16 @@
+# Search the runs of a CircleCI project, newest first, and print them as JSON
+# --project is required, and has no default. --branch keeps one branch
+# --limit is the number of runs read
+# --status keeps the runs of one status (success, failed, running...). CircleCI
+# has no status filter, so it applies after --limit: the result can hold fewer
+# runs than --limit, and a short result is not a complete one
+# Usage:
+# $ circleci-run-search --project gh/pixelastic/firost
+# $ circleci-run-search --project gh/pixelastic/firost --branch renovate/tooling
+# $ circleci-run-search --project gh/pixelastic/firost --status failed
+# $ circleci-run-search --project gh/pixelastic/firost --limit 50
+# $ circleci-run-search --project gh/pixelastic/firost --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/circleci-run-search.js" "$@"
