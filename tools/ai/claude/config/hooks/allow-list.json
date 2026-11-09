@@ -250,6 +250,7 @@
   "git-issue-read",
   "git-issue-search",
   "git-is-submodule",
+  "git-pullrequest-list",
   "git-pullrequest-list-raw",
   "git-pullrequest-read",
   "git-pullrequest-search",

@@ -1,8 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+# Link yarn main config file to ~/.yarnrc.yml
+set -e
 
-# Force pinning version numbers (no ^ nor ~)
-yarn config set save-prefix ""
-
-# Make log output minimal
-yarn config set silent true
-
+ln -fs "${0:h}/config/yarnrc.yml" ~/.yarnrc.yml

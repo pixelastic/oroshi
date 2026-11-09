@@ -1,0 +1,15 @@
+# Force pinning version numbers (no ^ nor ~)
+defaultSemverRangePrefix: ""
+
+# My own packages, I accept to not wait 24h of shelf time that is configured by
+# default before accepting a package.
+npmPreapprovedPackages:
+  - aberlaas
+  - firost
+  - gilmore
+  - golgoth
+  - haerdalis
+  - imoen
+  - keyleth
+  - pietro
+  - solkan
