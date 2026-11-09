@@ -42,6 +42,7 @@
   "cfp-writer-start",
   "cfp-writer-tick",
   "chmod",
+  "circleci-log-read",
   "circleci-project-list",
   "circleci-project-list-raw",
   "circleci-project-read",
