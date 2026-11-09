@@ -1,0 +1,46 @@
+# Read one issue with its full body and every comment, and print it as JSON
+# Prints the number, title, state, date, author, url, labels and body of the
+# issue, and the author, date and body of each comment. Stops with an error if
+# the issue does not exist
+# Usage:
+# $ git-issue-read 42                         # Issue of the current repo
+# $ git-issue-read 42 --repo pixelastic/imoen # Issue of another repo
+# {"number","title","state","date","author","url","labels","body","comments"}
+setopt local_options err_return pipe_fail
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local number="$1"
+local repo="${flagRepo[2]}"
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+local ghArgs=()
+[[ "$repo" != "" ]] && ghArgs+=(--repo "$repo")
+
+gh issue view "$number" \
+  --json number,title,state,createdAt,author,url,labels,body,comments \
+  "${ghArgs[@]}" \
+| jq '
+    {
+      number,
+      title,
+      state: (.state | ascii_downcase),
+      date: .createdAt,
+      author: .author.login,
+      url,
+      labels: [.labels[].name],
+      body,
+      comments: [
+        .comments[] | {
+          author: .author.login,
+          date: .createdAt,
+          body
+        }
+      ]
+    }
+  '
