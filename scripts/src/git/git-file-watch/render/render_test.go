@@ -11,7 +11,7 @@ import (
 	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/diff"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/layout"
-	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/theme"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/theme"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -636,8 +636,9 @@ func loadTestTheme(t *testing.T) *theme.Theme {
 	ftData, err := json.Marshal(filetypes)
 	require.NoError(t, err)
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "filetypes.json"), ftData, 0o644))
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "icons.json"), []byte(`{}`), 0o644))
 
-	th, err := theme.Load(root)
+	th, err := theme.Load(root, nil)
 	require.NoError(t, err)
 	return th
 }

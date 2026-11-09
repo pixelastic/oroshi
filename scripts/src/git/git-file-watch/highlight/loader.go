@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/ebitengine/purego"
-	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/filetype"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/filetype"
 	tree_sitter "github.com/tree-sitter/go-tree-sitter"
 )
 

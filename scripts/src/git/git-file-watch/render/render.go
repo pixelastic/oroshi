@@ -11,7 +11,7 @@ import (
 	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/flash"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/highlight"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/layout"
-	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/theme"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/theme"
 )
 
 // Context holds display state needed by rendering functions,
@@ -54,7 +54,7 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int, isCursor b
 	firstLine := firstLineForFile(ctx.RawLines, row.Path)
 	dirStyle := lipgloss.NewStyle().Foreground(ctx.Theme.Lipgloss("directory"))
 	styledFile := file
-	fileColor, fileBold := ctx.Theme.FilenameColorForPath(row.Path, firstLine)
+	fileColor, fileBold := ctx.Theme.FiletypeColor(row.Path, firstLine)
 	if fileColor != "" {
 		s := lipgloss.NewStyle().Foreground(fileColor)
 		if fileBold {
@@ -64,7 +64,7 @@ func FileHeader(ctx Context, row layout.FileHeaderRow, fileCount int, isCursor b
 	}
 
 	// Icon in the line number column, colored like the filename
-	icon := ctx.Theme.FilenameIconForPath(row.Path, firstLine)
+	icon := ctx.Theme.FiletypeIcon(row.Path, firstLine)
 	iconCol := strings.Repeat(" ", ctx.LineNumberWidth)
 	if icon != "" {
 		pad := ctx.LineNumberWidth - 1

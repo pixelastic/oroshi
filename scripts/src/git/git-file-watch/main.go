@@ -23,8 +23,8 @@ import (
 	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/layout"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/navigation"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/render"
-	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/theme"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/watcher"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/theme"
 )
 
 // DiffChangedMsg is sent when the watcher detects a new git diff.
@@ -713,8 +713,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	th, err := theme.Load(oroshiRoot)
+	th, err := theme.Load(oroshiRoot, nil)
 	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	if err := th.Require("git-added", "git-modified", "git-removed", "orange", "gray", "gray-7", "directory"); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

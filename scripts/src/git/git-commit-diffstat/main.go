@@ -6,10 +6,11 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/charmbracelet/lipgloss"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-commit-diffstat/bar"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-commit-diffstat/diff"
-	"github.com/pixelastic/oroshi/scripts/src/git/git-commit-diffstat/theme"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-commit-diffstat/tree"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/theme"
 )
 
 func main() {
@@ -27,7 +28,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	thm, err := theme.Load(oroshiRoot)
+	thm, err := theme.Load(oroshiRoot, execRunner)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -53,7 +54,17 @@ func main() {
 	}
 
 	t := tree.Build(changes)
-	fmt.Print(tree.Render(t, thm, barRenderer))
+	fmt.Print(tree.Render(t, pathTheme{thm}, barRenderer))
+}
+
+// pathTheme adapts the shared theme to tree.ThemeResolver, which colors files by path only.
+type pathTheme struct {
+	*theme.Theme
+}
+
+func (p pathTheme) FiletypeColor(path string) lipgloss.Color {
+	color, _ := p.Theme.FiletypeColor(path, "")
+	return color
 }
 
 func execRunner(name string, args ...string) (string, error) {

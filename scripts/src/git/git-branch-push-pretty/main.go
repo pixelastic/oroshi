@@ -8,8 +8,8 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-branch-push-pretty/runner"
-	"github.com/pixelastic/oroshi/scripts/src/git/git-branch-push-pretty/theme"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-branch-push-pretty/tui"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/theme"
 )
 
 func main() {

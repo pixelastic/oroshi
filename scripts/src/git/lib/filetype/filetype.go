@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/shebang"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/shebang"
 )
 
 // Result holds the resolved language and filetype key for a file.
