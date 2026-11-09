@@ -5,6 +5,7 @@ defaultSemverRangePrefix: ""
 # default before accepting a package.
 npmPreapprovedPackages:
   - aberlaas
+  - aberlaas-*
   - firost
   - gilmore
   - golgoth
