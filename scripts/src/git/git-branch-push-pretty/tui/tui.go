@@ -1,32 +1,13 @@
 package tui
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
-	"github.com/charmbracelet/bubbles/progress"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/progress"
 )
-
-const rawSeparator = "───────────────────────────────────────"
-
-// ProgressMsg carries progress data from parsed git stderr events.
-type ProgressMsg struct {
-	Phase      string
-	Percentage int
-}
-
-// DoneMsg signals the subprocess has exited.
-type DoneMsg struct {
-	ExitCode int
-}
-
-// ErrorMsg carries a raw error line from git stderr.
-type ErrorMsg struct {
-	Raw string
-}
 
 // UpToDateMsg signals "Everything up-to-date" was detected.
 type UpToDateMsg struct{}
@@ -42,13 +23,6 @@ type RemoteMessageMsg struct {
 	Text string
 }
 
-// RawLineMsg carries a raw stderr line for the raw output buffer.
-// Overwrite replaces the last line (simulates \r carriage return behavior).
-type RawLineMsg struct {
-	Line      string
-	Overwrite bool
-}
-
 // Config holds the initial configuration for the TUI model.
 type Config struct {
 	BranchName  string
@@ -58,15 +32,10 @@ type Config struct {
 }
 
 // Model is the bubbletea model for the push progress TUI.
+// It composes the shared progress model and adds the push summary.
 type Model struct {
-	phase          string
-	percentage     int
-	started        bool
-	bar            progress.Model
-	errors         []string
+	progress       progress.Model
 	upToDate       bool
-	exitCode       int
-	done           bool
 	branchName     string
 	remoteName     string
 	branchColor    int
@@ -74,56 +43,39 @@ type Model struct {
 	fromRef        string
 	toRef          string
 	remoteMessages []string
-	rawLines       []string
-	showRaw        bool
-	termWidth      int
 }
 
 // ExitCode returns the subprocess exit code after DoneMsg is received.
 func (m Model) ExitCode() int {
-	return m.exitCode
+	return m.progress.ExitCode()
 }
 
 // Errors returns accumulated error lines for the caller to print to stderr.
 func (m Model) Errors() []string {
-	return m.errors
+	return m.progress.Errors()
 }
 
 // FailureOutput returns the raw stderr when the subprocess failed without any
 // classified error, so the caller can print what git actually said.
 func (m Model) FailureOutput() string {
-	if m.exitCode == 0 || len(m.errors) > 0 {
-		return ""
-	}
-	return strings.Join(m.rawLines, "\n")
+	return m.progress.FailureOutput()
 }
 
 // RawPanel returns the raw output panel content if the panel was open, empty string otherwise.
 // Includes the separator to match the in-TUI visual.
 func (m Model) RawPanel() string {
-	if !m.showRaw || len(m.rawLines) == 0 {
-		return ""
-	}
-	return rawSeparator + "\n" + strings.Join(m.rawLines, "\n")
+	return m.progress.RawPanel()
 }
 
 // New creates a TUI model with the given ANSI color index for the progress bar.
 func New(ansiColor int) Model {
-	bar := progress.New(
-		progress.WithSolidFill(strconv.Itoa(ansiColor)),
-		progress.WithoutPercentage(),
-	)
-	return Model{bar: bar}
+	return Model{progress: progress.New(ansiColor)}
 }
 
 // NewWithSummary creates a TUI model with full summary configuration.
 func NewWithSummary(cfg Config) Model {
-	bar := progress.New(
-		progress.WithSolidFill("7"),
-		progress.WithoutPercentage(),
-	)
 	return Model{
-		bar:         bar,
+		progress:    progress.New(7),
 		branchName:  cfg.BranchName,
 		remoteName:  cfg.RemoteName,
 		branchColor: cfg.BranchColor,
@@ -137,21 +89,10 @@ func (m Model) Init() tea.Cmd {
 }
 
 // Update implements tea.Model.
+// It handles the push-specific messages and forwards the others to the shared
+// progress model.
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
-	case tea.KeyMsg:
-		if msg.Type == tea.KeyCtrlC {
-			return m, tea.Quit
-		}
-		if msg.Type == tea.KeyCtrlO {
-			m.showRaw = !m.showRaw
-		}
-	case ProgressMsg:
-		m.phase = msg.Phase
-		m.percentage = msg.Percentage
-		m.started = true
-	case ErrorMsg:
-		m.errors = append(m.errors, msg.Raw)
 	case UpToDateMsg:
 		m.upToDate = true
 	case RefUpdateMsg:
@@ -159,18 +100,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.toRef = msg.ToRef
 	case RemoteMessageMsg:
 		m.remoteMessages = append(m.remoteMessages, msg.Text)
-	case RawLineMsg:
-		if msg.Overwrite && len(m.rawLines) > 0 {
-			m.rawLines[len(m.rawLines)-1] = msg.Line
-		} else {
-			m.rawLines = append(m.rawLines, msg.Line)
-		}
-	case tea.WindowSizeMsg:
-		m.termWidth = msg.Width
-	case DoneMsg:
-		m.exitCode = msg.ExitCode
-		m.done = true
-		return m, tea.Quit
+	default:
+		var cmd tea.Cmd
+		m.progress, cmd = m.progress.Update(msg)
+		return m, cmd
 	}
 	return m, nil
 }
@@ -181,47 +114,9 @@ func (m Model) Summary() string {
 	return m.viewSummary()
 }
 
-const (
-	maxBarWidth = 40
-	minBarWidth = 10
-)
-
-// barWidth computes the progress bar width from terminal width minus the suffix,
-// capped at maxBarWidth (default bubbles width).
-func (m Model) barWidth() int {
-	if m.termWidth == 0 {
-		return maxBarWidth
-	}
-	// "  " + pct (4 chars max "100%") + "  " + phase + "  " + hint (14 chars)
-	suffix := 2 + 4 + 2 + len(m.phase) + 2 + 14
-	width := m.termWidth - suffix
-	if width > maxBarWidth {
-		width = maxBarWidth
-	}
-	if width < minBarWidth {
-		width = minBarWidth
-	}
-	return width
-}
-
 // View implements tea.Model.
 func (m Model) View() string {
-	if m.done {
-		return ""
-	}
-	if !m.started {
-		return ""
-	}
-	m.bar.Width = m.barWidth()
-	line := fmt.Sprintf("%s  %3d%%  %s", m.bar.ViewAs(float64(m.percentage)/100.0), m.percentage, m.phase)
-	if !m.showRaw {
-		hint := lipgloss.NewStyle().Faint(true).Render("ctrl+o raw log")
-		line += "  " + hint
-	}
-	if m.showRaw && len(m.rawLines) > 0 {
-		line += "\n" + rawSeparator + "\n" + strings.Join(m.rawLines, "\n")
-	}
-	return line
+	return m.progress.View()
 }
 
 func (m Model) viewSummary() string {

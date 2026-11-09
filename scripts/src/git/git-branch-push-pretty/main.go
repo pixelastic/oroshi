@@ -9,6 +9,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-branch-push-pretty/runner"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-branch-push-pretty/tui"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/progress"
 	"github.com/pixelastic/oroshi/scripts/src/git/lib/theme"
 )
 
@@ -71,14 +72,14 @@ func main() {
 		cmd := exec.CommandContext(ctx, "bin-zsh", append([]string{"git-branch-push"}, pushArgs...)...)
 		stderr, err := cmd.StderrPipe()
 		if err != nil {
-			p.Send(tui.ErrorMsg{Raw: err.Error()})
-			p.Send(tui.DoneMsg{ExitCode: 1})
+			p.Send(progress.ErrorMsg{Raw: err.Error()})
+			p.Send(progress.DoneMsg{ExitCode: 1})
 			return
 		}
 
 		if err := cmd.Start(); err != nil {
-			p.Send(tui.ErrorMsg{Raw: err.Error()})
-			p.Send(tui.DoneMsg{ExitCode: 1})
+			p.Send(progress.ErrorMsg{Raw: err.Error()})
+			p.Send(progress.DoneMsg{ExitCode: 1})
 			return
 		}
 
@@ -92,7 +93,7 @@ func main() {
 				exitCode = 1
 			}
 		}
-		p.Send(tui.DoneMsg{ExitCode: exitCode})
+		p.Send(progress.DoneMsg{ExitCode: exitCode})
 	}()
 
 	finalModel, err := p.Run()

@@ -6,6 +6,8 @@ import (
 
 	"github.com/pixelastic/oroshi/scripts/src/git/git-branch-push-pretty/parser"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-branch-push-pretty/tui"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/progress"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/stream"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -179,8 +181,8 @@ func TestParseArgsWithoutRepoCallsRemoteCurrentWithoutPath(t *testing.T) {
 func TestEventToMsgConvertsProgress(t *testing.T) {
 	event := parser.Event{Type: parser.Progress, Phase: "Writing", Percentage: 50}
 	msg := EventToMsg(event)
-	pm, ok := msg.(tui.ProgressMsg)
-	require.True(t, ok, "expected ProgressMsg, got %T", msg)
+	pm, ok := msg.(progress.PhaseMsg)
+	require.True(t, ok, "expected PhaseMsg, got %T", msg)
 	assert.Equal(t, "Writing", pm.Phase)
 	assert.Equal(t, 50, pm.Percentage)
 }
@@ -188,7 +190,7 @@ func TestEventToMsgConvertsProgress(t *testing.T) {
 func TestEventToMsgConvertsError(t *testing.T) {
 	event := parser.Event{Type: parser.Error, Raw: "rejected"}
 	msg := EventToMsg(event)
-	em, ok := msg.(tui.ErrorMsg)
+	em, ok := msg.(progress.ErrorMsg)
 	require.True(t, ok, "expected ErrorMsg, got %T", msg)
 	assert.Equal(t, "rejected", em.Raw)
 }
@@ -236,12 +238,12 @@ func TestStreamStderrSendsProgressMessages(t *testing.T) {
 	var messages []tea.Msg
 	send := func(msg tea.Msg) { messages = append(messages, msg) }
 	StreamStderr(reader, send)
-	// RawLineMsg + ProgressMsg
+	// LineMsg + PhaseMsg
 	require.Len(t, messages, 2)
-	raw, ok := messages[0].(tui.RawLineMsg)
-	require.True(t, ok, "first should be RawLineMsg, got %T", messages[0])
+	raw, ok := messages[0].(stream.LineMsg)
+	require.True(t, ok, "first should be LineMsg, got %T", messages[0])
 	assert.False(t, raw.Overwrite)
-	assert.IsType(t, tui.ProgressMsg{}, messages[1])
+	assert.IsType(t, progress.PhaseMsg{}, messages[1])
 }
 
 func TestStreamStderrSendsRawLineForNoise(t *testing.T) {
@@ -250,10 +252,10 @@ func TestStreamStderrSendsRawLineForNoise(t *testing.T) {
 	var messages []tea.Msg
 	send := func(msg tea.Msg) { messages = append(messages, msg) }
 	StreamStderr(reader, send)
-	// RawLineMsg only (noise produces no typed message)
+	// LineMsg only (noise produces no typed message)
 	require.Len(t, messages, 1)
-	raw, ok := messages[0].(tui.RawLineMsg)
-	require.True(t, ok, "expected RawLineMsg, got %T", messages[0])
+	raw, ok := messages[0].(stream.LineMsg)
+	require.True(t, ok, "expected LineMsg, got %T", messages[0])
 	assert.Equal(t, "Delta compression using up to 18 threads", raw.Line)
 }
 
@@ -263,17 +265,17 @@ func TestStreamStderrSplitsOnCarriageReturn(t *testing.T) {
 	var messages []tea.Msg
 	send := func(msg tea.Msg) { messages = append(messages, msg) }
 	StreamStderr(reader, send)
-	// 2x (RawLineMsg + ProgressMsg) = 4 messages
+	// 2x (LineMsg + PhaseMsg) = 4 messages
 	require.Len(t, messages, 4)
 	// CR-terminated line should have Overwrite=true
-	firstRaw := messages[0].(tui.RawLineMsg)
+	firstRaw := messages[0].(stream.LineMsg)
 	assert.True(t, firstRaw.Overwrite)
-	first := messages[1].(tui.ProgressMsg)
+	first := messages[1].(progress.PhaseMsg)
 	assert.Equal(t, 50, first.Percentage)
 	// LF-terminated line should have Overwrite=false
-	lastRaw := messages[2].(tui.RawLineMsg)
+	lastRaw := messages[2].(stream.LineMsg)
 	assert.False(t, lastRaw.Overwrite)
-	last := messages[3].(tui.ProgressMsg)
+	last := messages[3].(progress.PhaseMsg)
 	assert.Equal(t, 100, last.Percentage)
 }
 

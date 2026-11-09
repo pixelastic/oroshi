@@ -1,13 +1,14 @@
 package runner
 
 import (
-	"bufio"
 	"io"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-branch-push-pretty/parser"
 	"github.com/pixelastic/oroshi/scripts/src/git/git-branch-push-pretty/tui"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/progress"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/stream"
 )
 
 // ParseArgs extracts branch/remote from user args, resolving defaults via runner.
@@ -73,9 +74,9 @@ func ParseArgs(args []string, runner func(string, ...string) (string, error)) (s
 func EventToMsg(event parser.Event) tea.Msg {
 	switch event.Type {
 	case parser.Progress:
-		return tui.ProgressMsg{Phase: event.Phase, Percentage: event.Percentage}
+		return progress.PhaseMsg{Phase: event.Phase, Percentage: event.Percentage}
 	case parser.Error:
-		return tui.ErrorMsg{Raw: event.Raw}
+		return progress.ErrorMsg{Raw: event.Raw}
 	case parser.UpToDate:
 		return tui.UpToDateMsg{}
 	case parser.RefUpdate:
@@ -92,41 +93,10 @@ func EventToMsg(event parser.Event) tea.Msg {
 	}
 }
 
-// StreamStderr reads from a reader, splits on \r and \n, parses each segment,
+// StreamStderr reads from a reader, splits it into lines, parses each line,
 // and sends resulting TUI messages via the send function.
-// Lines terminated by \r send RawLineMsg with Overwrite=true to simulate
-// terminal carriage return behavior (in-place progress updates).
 func StreamStderr(reader io.Reader, send func(tea.Msg)) {
-	br := bufio.NewReader(reader)
-	var current []byte
-	for {
-		b, err := br.ReadByte()
-		if err != nil {
-			// Flush remaining data
-			if len(current) > 0 {
-				line := string(current)
-				send(tui.RawLineMsg{Line: line})
-				event := parser.ParseLine(line)
-				if msg := EventToMsg(event); msg != nil {
-					send(msg)
-				}
-			}
-			return
-		}
-		if b != '\r' && b != '\n' {
-			current = append(current, b)
-			continue
-		}
-		// Hit a delimiter — emit the line
-		if len(current) == 0 {
-			continue
-		}
-		line := string(current)
-		current = current[:0]
-		send(tui.RawLineMsg{Line: line, Overwrite: b == '\r'})
-		event := parser.ParseLine(line)
-		if msg := EventToMsg(event); msg != nil {
-			send(msg)
-		}
-	}
+	stream.Read(reader, send, func(line string) tea.Msg {
+		return EventToMsg(parser.ParseLine(line))
+	})
 }
