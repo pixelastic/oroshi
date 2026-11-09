@@ -19,7 +19,7 @@ export async function fetchSoldIds(page) {
   if ((await page.locator(LOGIN_BUTTON_SELECTOR).count()) > 0) {
     throw firostError(
       'VINTED_NOT_LOGGED_IN',
-      'Vinted session expired, run vinted-login to log in again',
+      'Vinted session expired, run `yarn vinted:login` in Auctioneer to log in again',
     );
   }
   return parseSoldIds(await page.content());

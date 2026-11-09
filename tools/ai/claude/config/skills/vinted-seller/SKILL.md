@@ -138,7 +138,8 @@ Open the saved screenshot and check that the form matches the listing. If the
 dry-run fails or the form is wrong, stop, report the error, and do not publish.
 Then run `vinted-listing-publish <root>`. The first failure stops the batch.
 Re-running is safe: published listings are skipped. If it fails because the
-session expired, ask the user to run `vinted-login`, then re-run.
+session expired, ask the user to run `yarn vinted:login` in Auctioneer, then
+re-run.
 
 ## Common Rationalizations
 

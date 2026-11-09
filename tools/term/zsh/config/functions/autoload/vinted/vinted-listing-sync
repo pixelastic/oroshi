@@ -2,9 +2,10 @@
 # Usage:
 # $ vinted-listing-sync ~/books                   # Mark the sold listings
 # $ vinted-listing-sync ~/books --older-than 30   # List the listings online for more than 30 days
-# Opens the logged-in Vinted session (run vinted-login first) and reads the item
-# id of each sold item. A listing is sold when the id in its url matches. The
-# title is never used. Writes status sold and soldAt in the matching listing.json.
+# Opens the logged-in Vinted session (run `yarn vinted:login` in Auctioneer
+# first) and reads the item id of each sold item. A listing is sold when the id
+# in its url matches. The title is never used. Writes status sold and soldAt in
+# the matching listing.json.
 # With --older-than, nothing is opened and nothing is written.
 setopt local_options err_return
 

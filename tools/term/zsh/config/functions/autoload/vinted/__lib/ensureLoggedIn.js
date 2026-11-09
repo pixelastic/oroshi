@@ -15,6 +15,6 @@ export async function ensureLoggedIn(page) {
   }
   throw firostError(
     'VINTED_NOT_LOGGED_IN',
-    'Vinted session expired, run vinted-login to log in again',
+    'Vinted session expired, run `yarn vinted:login` in Auctioneer to log in again',
   );
 }

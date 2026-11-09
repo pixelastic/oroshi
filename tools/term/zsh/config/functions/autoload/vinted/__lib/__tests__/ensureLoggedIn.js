@@ -26,18 +26,21 @@ describe('ensureLoggedIn', () => {
   it.each([
     { input: 'https://www.vinted.fr/member/register/select_type' },
     { input: 'https://www.vinted.fr/member/login' },
-  ])('throws an error naming vinted-login on $input', async ({ input }) => {
-    let actual = null;
-    try {
-      await ensureLoggedIn(pageAt(input));
-    } catch (error) {
-      actual = error;
-    }
+  ])(
+    'throws an error naming yarn vinted:login on $input',
+    async ({ input }) => {
+      let actual = null;
+      try {
+        await ensureLoggedIn(pageAt(input));
+      } catch (error) {
+        actual = error;
+      }
 
-    expect(actual).toHaveProperty('code', 'VINTED_NOT_LOGGED_IN');
-    expect(actual).toHaveProperty(
-      'message',
-      'Vinted session expired, run vinted-login to log in again',
-    );
-  });
+      expect(actual).toHaveProperty('code', 'VINTED_NOT_LOGGED_IN');
+      expect(actual).toHaveProperty(
+        'message',
+        'Vinted session expired, run `yarn vinted:login` in Auctioneer to log in again',
+      );
+    },
+  );
 });
