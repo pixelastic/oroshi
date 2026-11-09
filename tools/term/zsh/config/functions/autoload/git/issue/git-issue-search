@@ -1,0 +1,64 @@
+# Search the issues of a repo and print them as a JSON array
+# Usage:
+# $ git-issue-search                          # Open issues of the current repo
+# $ git-issue-search "login bug"              # Free-text query
+# $ git-issue-search --state closed           # open (default), closed or all
+# $ git-issue-search --author renovate --label bug --limit 10  # 25 by default
+# $ git-issue-search --date-min 2026-01-01 --date-max 2026-02-01
+# $ git-issue-search --repo pixelastic/imoen  # Another repo
+# [{"number","title","state","date","author","url","labels","body"}]
+setopt local_options err_return
+
+DEFAULT_LIMIT=25
+
+source "${functions_source[$0]:A:h:h}/github/__lib/search-args.zsh"
+
+zparseopts -E -D \
+  -state:=flagState \
+  -author:=flagAuthor \
+  -label:=flagLabel \
+  -date-min:=flagDateMin \
+  -date-max:=flagDateMax \
+  -limit:=flagLimit \
+  -repo:=flagRepo
+
+local state="${flagState[2]}"
+local author="${flagAuthor[2]}"
+local label="${flagLabel[2]}"
+local dateMin="${flagDateMin[2]}"
+local dateMax="${flagDateMax[2]}"
+local limit="${flagLimit[2]:-$DEFAULT_LIMIT}"
+local repo="${flagRepo[2]}"
+local query="$1"
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+git-github-search-args \
+  --state "$state" \
+  --date-min "$dateMin" \
+  --date-max "$dateMax" \
+  --repo "$repo" \
+  --query "$query"
+
+local ghArgs=("${reply[@]}" --limit "$limit")
+[[ "$author" != "" ]] && ghArgs+=(--author "$author")
+[[ "$label" != "" ]] && ghArgs+=(--label "$label")
+
+gh issue list \
+  --json number,title,state,createdAt,author,url,labels,body \
+  "${ghArgs[@]}" \
+| jq '
+    map({
+      number,
+      title,
+      state: (.state | ascii_downcase),
+      date: .createdAt,
+      author: .author.login,
+      url,
+      labels: [.labels[].name],
+      body
+    })
+  '
