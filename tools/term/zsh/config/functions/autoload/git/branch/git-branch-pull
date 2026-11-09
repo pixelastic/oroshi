@@ -2,7 +2,16 @@
 # Usage:
 # $ git-branch-pull           # Pull the current branch
 # $ git-branch-pull develop   # Pull a specific branch and switch to it
+# $ git-branch-pull --progress # Force git to print progress, even without a tty
 setopt local_options err_return
+
+zparseopts -E -D \
+  -progress=flagProgress
+
+# Forward --progress to every git network command
+local isProgress=${#flagProgress}
+local progressArgs=()
+[[ $isProgress == 1 ]] && progressArgs=(--progress)
 
 local currentBranch="$(git-branch-current)"
 local currentRemote="$(git-remote-current)"
@@ -18,7 +27,7 @@ local colorizedRemote="$(git-remote-colorize $currentRemote --with-icon)"
 
 # We always update tags when pulling
 echo "Fetching tags..."
-git fetch --tags
+git fetch --tags $progressArgs
 
 # Stop if the branch does not exist on the remote
 if ! git-branch-exists-remote $targetBranch; then
@@ -31,7 +40,7 @@ if [[ $targetBranch == "$currentBranch" ]]; then
   local currentCommit="$(git-commit-current)"
 
   # Pull remote branch
-  git pull $currentRemote $targetBranch
+  git pull $progressArgs $currentRemote $targetBranch
 
   # Update dependencies
   git-dependencies-update $currentCommit --async
@@ -43,6 +52,6 @@ fi
 
 # Pulling a different branch
 # We fetch the branch locally, then we switch to it
-git fetch $currentRemote $targetBranch:$targetBranch
+git fetch $progressArgs $currentRemote $targetBranch:$targetBranch
 git-branch-switch $targetBranch
 echo "Switched to latest branch $colorizedBranch"
