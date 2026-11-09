@@ -28,6 +28,7 @@ SCRIPT
 
 teardown() {
   rm -rf "$OROSHI_ROOT/scripts/src/bats-test-build-pwd"
+  rm -rf "$OROSHI_ROOT/scripts/src/bats-test-domain"
   bats_cleanup
 }
 
@@ -39,4 +40,27 @@ teardown() {
   local recordedPwd
   recordedPwd="$(cat "$OROSHI_ROOT/scripts/src/bats-test-build-pwd/dist/recorded-pwd")"
   [[ "$recordedPwd" == "$OROSHI_ROOT" ]]
+}
+
+@test "builds and runs a binary located in a domain subdirectory" {
+  local domainDir="$OROSHI_ROOT/scripts/src/bats-test-domain"
+  local srcDir="$domainDir/bats-test-nested"
+  mkdir -p "$srcDir/dist"
+
+  # Fake build script writes a binary that prints a marker instead of calling go build
+  cat > "$srcDir/build" <<'SCRIPT'
+#!/usr/bin/env zsh
+set -e
+local binaryName="bats-test-nested"
+local srcDirectory="${OROSHI_ROOT}/scripts/src/bats-test-domain/${binaryName}"
+printf '#!/bin/sh\necho nested-ok' > "$srcDirectory/dist/$binaryName"
+chmod +x "$srcDirectory/dist/$binaryName"
+SCRIPT
+  chmod +x "$srcDir/build"
+  touch "$srcDir/main.go"
+
+  bats_run_zsh "go-run-oroshi bats-test-nested"
+
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *"nested-ok"* ]]
 }

@@ -1,4 +1,5 @@
 # Build-if-needed and run a structured Go binary from scripts/src/
+# The source lives in scripts/src/<name>/ or in a domain folder scripts/src/<domain>/<name>/
 # Usage:
 # $ go-run-oroshi git-branch-push-pretty           # Build if needed, then run
 # $ go-run-oroshi git-branch-push-pretty --help     # Forward args to binary
@@ -7,7 +8,23 @@ setopt local_options err_return
 local commandName="$1"
 shift
 
-local sourceDirectory="${OROSHI_ROOT}/scripts/src/${commandName}"
+# Top-level source first, then any domain subdirectory
+local sourceRoot="${OROSHI_ROOT}/scripts/src"
+local -a candidates=("${sourceRoot}/${commandName}" "${sourceRoot}"/*/${commandName}(N/))
+local sourceDirectory=""
+for candidate in "${candidates[@]}"; do
+  # Skip candidates without a build script
+  [[ ! -f "${candidate}/build" ]] && continue
+  sourceDirectory="$candidate"
+  break
+done
+
+# No source found
+if [[ "$sourceDirectory" == "" ]]; then
+  echoerr "Error: No source found for ${commandName}"
+  return 1
+fi
+
 local binaryPath="${sourceDirectory}/dist/${commandName}"
 
 function _needsRebuild() {

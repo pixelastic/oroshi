@@ -1,0 +1,172 @@
+package layout
+
+import (
+	"fmt"
+	"sort"
+
+	"github.com/pixelastic/oroshi/scripts/src/git/git-file-watch/diff"
+)
+
+// LineKey returns the canonical "file:line" key used to index line-level data.
+func LineKey(path string, lineNumber int) string {
+	return fmt.Sprintf("%s:%d", path, lineNumber)
+}
+
+// Row is a display row in the layout output.
+type Row interface {
+	isRow()
+}
+
+// LineRow represents a file line with optional change marker.
+// Distance is 0 for changed lines, and increases for context lines further away.
+type LineRow struct {
+	FilePath   string
+	LineNumber int
+	Content    string
+	Marker     *diff.Marker
+	Distance   int
+}
+
+func (LineRow) isRow() {}
+
+// SeparatorRow represents an ellipsis between non-contiguous hunks.
+type SeparatorRow struct{}
+
+func (SeparatorRow) isRow() {}
+
+// FileHeaderRow represents a file path header.
+type FileHeaderRow struct {
+	Path    string
+	Deleted bool
+}
+
+func (FileHeaderRow) isRow() {}
+
+// RemovedLineRow represents a line of a deleted file, numbered as in the old
+// version. It is not a LineRow, so it never carries a comment anchor.
+type RemovedLineRow struct {
+	FilePath   string
+	LineNumber int
+	Content    string
+}
+
+func (RemovedLineRow) isRow() {}
+
+// BinaryRow represents a placeholder for binary file content.
+type BinaryRow struct{}
+
+func (BinaryRow) isRow() {}
+
+type lineRange struct {
+	start int
+	end   int
+}
+
+// Build expands marked lines with context, merges ranges, and emits rows.
+func Build(fileDiff diff.FileDiff, markers map[int]diff.Marker, totalLines int) []Row {
+	if fileDiff.Binary {
+		return []Row{FileHeaderRow{Path: fileDiff.Path, Deleted: fileDiff.Deleted}, BinaryRow{}}
+	}
+	if fileDiff.Deleted {
+		return buildDeleted(fileDiff)
+	}
+	if len(markers) == 0 {
+		return []Row{FileHeaderRow{Path: fileDiff.Path}}
+	}
+
+	ranges := expandRanges(markers, totalLines)
+	merged := mergeRanges(ranges)
+	return emitRows(fileDiff.Path, merged, markers)
+}
+
+// buildDeleted emits the removed lines of a deleted file from the diff alone,
+// since the file is gone from disk.
+func buildDeleted(fileDiff diff.FileDiff) []Row {
+	rows := []Row{FileHeaderRow{Path: fileDiff.Path, Deleted: true}}
+	for _, hunk := range fileDiff.Hunks {
+		lineNumber := hunk.OldStart
+		for _, line := range hunk.Lines {
+			rows = append(rows, RemovedLineRow{
+				FilePath:   fileDiff.Path,
+				LineNumber: lineNumber,
+				Content:    line.Content,
+			})
+			lineNumber++
+		}
+	}
+	return rows
+}
+
+func expandRanges(markers map[int]diff.Marker, totalLines int) []lineRange {
+	ranges := make([]lineRange, 0, len(markers))
+	for line := range markers {
+		start := line - 3
+		if start < 1 {
+			start = 1
+		}
+		end := line + 3
+		if end > totalLines {
+			end = totalLines
+		}
+		ranges = append(ranges, lineRange{start: start, end: end})
+	}
+	sort.Slice(ranges, func(i, j int) bool {
+		return ranges[i].start < ranges[j].start
+	})
+	return ranges
+}
+
+func mergeRanges(ranges []lineRange) []lineRange {
+	if len(ranges) == 0 {
+		return ranges
+	}
+
+	merged := []lineRange{ranges[0]}
+	for _, r := range ranges[1:] {
+		last := &merged[len(merged)-1]
+		if r.start <= last.end+1 {
+			if r.end > last.end {
+				last.end = r.end
+			}
+			continue
+		}
+		merged = append(merged, r)
+	}
+	return merged
+}
+
+func emitRows(path string, ranges []lineRange, markers map[int]diff.Marker) []Row {
+	rows := []Row{FileHeaderRow{Path: path}}
+
+	for i, r := range ranges {
+		if i > 0 {
+			rows = append(rows, SeparatorRow{})
+		}
+		for line := r.start; line <= r.end; line++ {
+			row := LineRow{FilePath: path, LineNumber: line}
+			if marker, ok := markers[line]; ok {
+				m := marker
+				row.Marker = &m
+			} else {
+				row.Distance = distanceToNearest(line, markers)
+			}
+			rows = append(rows, row)
+		}
+	}
+
+	return rows
+}
+
+func distanceToNearest(line int, markers map[int]diff.Marker) int {
+	best := 999
+	for markedLine := range markers {
+		d := line - markedLine
+		if d < 0 {
+			d = -d
+		}
+		if d < best {
+			best = d
+		}
+	}
+	return best
+}
