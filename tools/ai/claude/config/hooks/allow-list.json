@@ -246,6 +246,7 @@
   "git-github-repo-exists",
   "git-github-repo-is-archived",
   "git-issue-list",
+  "git-issue-list-raw",
   "git-issue-search",
   "git-is-submodule",
   "git-worktree-create",
