@@ -11,11 +11,11 @@
 # $ git-pullrequest-list --repo pixelastic/imoen  # Another repo
 setopt local_options err_return
 
-colors-load-definitions
-
 # Read --repo without consuming it, because the raw command needs it too
 zparseopts -E -repo:=flagRepo
 local repo="${flagRepo[2]}"
+
+colors-load-definitions
 
 # Stop if not in a GitHub repo, unless --repo targets another one
 if [[ "$repo" == "" ]]; then

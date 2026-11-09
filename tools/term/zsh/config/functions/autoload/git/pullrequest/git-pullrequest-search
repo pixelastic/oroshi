@@ -44,6 +44,9 @@ if [[ "$state" == "draft" ]]; then
   state="open"
 fi
 
+# An open pull request is not a draft, GitHub search tells them apart
+[[ "$isDraftSearch" == false && ("$state" == "open" || "$state" == "") ]] && query="${query:+$query }draft:false"
+
 git-github-search-args \
   --state "$state" \
   --date-min "$dateMin" \

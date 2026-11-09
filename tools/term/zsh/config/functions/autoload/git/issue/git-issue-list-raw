@@ -12,7 +12,7 @@
 # $ git-issue-list-raw --author renovate --label bug --limit 10
 # $ git-issue-list-raw --date-min 2026-01-01 --date-max 2026-02-01
 # $ git-issue-list-raw --repo pixelastic/imoen  # Another repo
-setopt local_options err_return
+setopt local_options err_return pipe_fail
 
 git-issue-search "$@" \
   | jq \

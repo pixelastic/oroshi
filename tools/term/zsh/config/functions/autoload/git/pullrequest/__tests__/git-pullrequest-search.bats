@@ -41,6 +41,12 @@ JSON
   [[ "$(gh_args)" != *"--draft"* ]]
 }
 
+@test "excludes drafts from open pull requests" {
+  bats_run_zsh "git-pullrequest-search 'login bug'"
+  [[ "$status" -eq 0 ]]
+  [[ "$(gh_args)" == *"--search login bug draft:false"* ]]
+}
+
 @test "passes --state merged to gh" {
   bats_run_zsh "git-pullrequest-search --state merged"
   [[ "$status" -eq 0 ]]
@@ -84,7 +90,7 @@ JSON
 @test "keeps the query and the dates in one search" {
   bats_run_zsh "git-pullrequest-search 'login bug' --date-min 2026-01-01"
   [[ "$status" -eq 0 ]]
-  [[ "$(gh_args)" == *"--search login bug created:>=2026-01-01T00:00:00Z"* ]]
+  [[ "$(gh_args)" == *"--search login bug draft:false created:>=2026-01-01T00:00:00Z"* ]]
 }
 
 # -- Output --
