@@ -31,6 +31,29 @@ describe('parsePageId', () => {
   });
 
   it.each([
+    {
+      title: 'a short link',
+      input: 'https://algolia.atlassian.net/wiki/x/0gDgqQE',
+    },
+    {
+      title: 'a short link with a trailing slash',
+      input: 'https://algolia.atlassian.net/wiki/x/0gDgqQE/',
+    },
+    {
+      title: 'a short link with a query',
+      input: 'https://algolia.atlassian.net/wiki/x/0gDgqQE?atlOrigin=abc',
+    },
+    {
+      title: 'a short link with a hash',
+      input: 'https://algolia.atlassian.net/wiki/x/0gDgqQE#Section',
+    },
+  ])('returns the decoded id of $title', ({ input }) => {
+    const actual = parsePageId(input);
+
+    expect(actual).toEqual('7144997074');
+  });
+
+  it.each([
     { title: 'an empty value', input: '' },
     { title: 'a missing value', input: undefined },
     {
@@ -38,6 +61,10 @@ describe('parsePageId', () => {
       input: 'https://work.atlassian.net/wiki',
     },
     { title: 'text', input: 'hello' },
+    {
+      title: 'a short link without token',
+      input: 'https://work.atlassian.net/wiki/x/',
+    },
   ])('throws on $title', ({ input }) => {
     let actual = null;
     try {
