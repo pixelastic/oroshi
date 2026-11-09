@@ -251,6 +251,7 @@
   "git-issue-search",
   "git-is-submodule",
   "git-pullrequest-list-raw",
+  "git-pullrequest-read",
   "git-pullrequest-search",
   "git-worktree-create",
   "git-worktree-create-kitty",

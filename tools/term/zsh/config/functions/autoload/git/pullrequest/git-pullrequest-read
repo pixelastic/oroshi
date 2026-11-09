@@ -1,0 +1,102 @@
+# Read one pull request with its full body, comments, files, commits and checks,
+# and print it as JSON
+# Stops with an error if the pull request does not exist
+# Usage:
+# $ git-pullrequest-read 27                         # Pull request of the current repo
+# $ git-pullrequest-read 27 --full                  # Adds file counts and the diff
+# $ git-pullrequest-read 27 --repo pixelastic/imoen # Pull request of another repo
+# {"number","title","state","date","author","url","labels","head","base","mergeState","body","comments","files","commits","checks"}
+# state is draft, open, closed or merged. files is a list of paths, or with
+# --full a list of {path,additions,deletions}, and the diff is added.
+setopt local_options err_return pipe_fail
+
+zparseopts -E -D \
+  -full=flagFull \
+  -repo:=flagRepo
+
+local number="$1"
+local repo="${flagRepo[2]}"
+local isFull=${#flagFull}
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+local ghArgs=()
+[[ "$repo" != "" ]] && ghArgs+=(--repo "$repo")
+
+local fields=(
+  number title state isDraft createdAt author url labels headRefName
+  baseRefName mergeStateStatus body comments files commits
+)
+
+local view="$(
+  gh pr view "$number" \
+    --json "${(j:,:)fields}" \
+    "${ghArgs[@]}"
+)"
+
+# Stop if gh found no pull request, as `local` hides its exit code
+[[ "$view" == "" ]] && return 1
+
+# gh pr checks fails when there is no check, and exits with 8 when some are
+# pending. Both are valid outputs, so the exit code is ignored
+local checks="$(
+  gh pr checks "$number" \
+    --json name,state,link \
+    "${ghArgs[@]}" \
+    2>/dev/null \
+  || true
+)"
+[[ "$checks" == "" ]] && checks="[]"
+
+local diff=""
+if [[ $isFull == 1 ]]; then
+  diff="$(gh pr diff "$number" "${ghArgs[@]}")"
+fi
+
+jq \
+  --argjson checks "$checks" \
+  --argjson isFull "$isFull" \
+  --arg diff "$diff" \
+'
+    {
+      number,
+      title,
+      state: (if .isDraft then "draft" else (.state | ascii_downcase) end),
+      date: .createdAt,
+      author: .author.login,
+      url,
+      labels: [.labels[].name],
+      head: .headRefName,
+      base: .baseRefName,
+      mergeState: (.mergeStateStatus | ascii_downcase),
+      body,
+      comments: [
+        .comments[] | {
+          author: .author.login,
+          date: .createdAt,
+          body
+        }
+      ],
+      files: [
+        .files[]
+        | if $isFull == 1 then {path, additions, deletions} else .path end
+      ],
+      commits: [
+        .commits[] | {
+          sha: .oid[0:7],
+          message: .messageHeadline
+        }
+      ],
+      checks: [
+        $checks[] | {
+          name,
+          state: (.state | ascii_downcase),
+          link
+        }
+      ]
+    }
+    | if $isFull == 1 then . + {diff: $diff} else . end
+  ' <<< "$view"
