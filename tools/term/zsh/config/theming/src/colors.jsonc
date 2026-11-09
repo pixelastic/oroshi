@@ -166,6 +166,7 @@
     "message":         "gray-4",
     "modified":        "violet-3",
     "pullrequest":     "purple",
+    "pullrequest-id":  "purple",
     "rebase":          "red-4",
     "remote":          "yellow",
     "remote-algolia":  "blue-3",

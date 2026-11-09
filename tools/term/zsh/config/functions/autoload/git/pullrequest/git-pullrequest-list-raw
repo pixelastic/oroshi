@@ -1,0 +1,37 @@
+# List the pull requests of a repo, one per line, for machine consumption
+# For human consumption, use git-pullrequest-list
+# Fields: number▮title▮state▮date▮author▮url▮labels▮head▮base▮checks
+# state is draft, open, closed or merged. date is the creation date, in ISO 8601
+# labels are joined with ▯, and the field is empty when there is no label
+# checks is success, failure, pending or empty when there is no check
+# Takes the same flags as git-pullrequest-search, and prints nothing when
+# nothing matches. It has no side effect: it does not refresh the count cache
+# Usage:
+# $ git-pullrequest-list-raw                          # Open pull requests of the current repo
+# $ git-pullrequest-list-raw "login bug"              # Free-text query
+# $ git-pullrequest-list-raw --state merged           # open (default), draft, closed, merged or all
+# $ git-pullrequest-list-raw --author renovate --label bug --limit 10
+# $ git-pullrequest-list-raw --date-min 2026-01-01 --date-max 2026-02-01
+# $ git-pullrequest-list-raw --repo pixelastic/imoen  # Another repo
+setopt local_options err_return pipe_fail
+
+git-pullrequest-search "$@" \
+  | jq \
+  --raw-output \
+'
+    .[]
+    | [
+        .number,
+        .title,
+        .state,
+        .date,
+        .author,
+        .url,
+        (.labels | join("▯")),
+        .head,
+        .base,
+        .checks
+      ]
+    | map(tostring)
+    | join("▮")
+  '

@@ -539,6 +539,10 @@
     "ansi": 65,
     "hex": "#805ad5"
   },
+  "git-pullrequest-id": {
+    "ansi": 65,
+    "hex": "#805ad5"
+  },
   "git-rebase": {
     "ansi": 24,
     "hex": "#ef4444"
