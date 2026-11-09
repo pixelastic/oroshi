@@ -1,0 +1,18 @@
+# Trigger a new pipeline on a CircleCI project, and print it as JSON
+# The pipeline is not a run: CircleCI creates its runs a moment later, so read
+# them with circleci-run-list
+# --project is required, and has no default
+# --branch is the branch to run, the default branch of the project if empty
+# --parameters is a JSON object of pipeline parameters, with their types. The
+# project config must declare them
+# This command changes state and is not in the allow-list on purpose, so that an
+# agent asks before it runs
+# Usage:
+# $ circleci-run-trigger --project gh/pixelastic/firost
+# $ circleci-run-trigger --project gh/pixelastic/firost --branch renovate/tooling
+# $ circleci-run-trigger --project gh/pixelastic/firost --parameters '{"deploy_prod": true}'
+# $ circleci-run-trigger --project gh/pixelastic/firost --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/circleci-run-trigger.js" "$@"
