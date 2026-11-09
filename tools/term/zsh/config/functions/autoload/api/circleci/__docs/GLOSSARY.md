@@ -86,7 +86,9 @@ _Avoid_: action, command
   **Steps**, and its id is the id of another entity, the **Run**. A **Log** has
   no id, no `list` and no `search` of its own. CircleCI has no log endpoint, so
   the **Log** is built from the **Steps** of a **Run**, and only the **Run** can
-  name it.
+  name it. Its positional argument also accepts a URL or the number of a **Job**
+  (with `--project`), which it resolves to the **Run** and limits the **Log** to
+  that **Job**.
 
 ## Flag convention
 

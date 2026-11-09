@@ -2,6 +2,8 @@ import { stripVTControlCharacters } from 'node:util';
 import { _, pMap } from 'golgoth';
 import { firostError } from 'firost';
 import { callApi } from '../callApi.js';
+import { parseCircleciUrl } from '../parseCircleciUrl.js';
+import { resolveRunId } from '../resolveRunId.js';
 import { runRead } from '../run/runRead.js';
 
 export let __;
@@ -10,25 +12,35 @@ const V1_BASE_URL = 'https://circleci.com/api/v1.1';
 
 /**
  * Read the Log of one Run: the output of every Step of every Job
- * @param {object} options - Id of the Run and filters
- * @param {string} options.runId - Id of the Run (a workflow UUID)
+ * @param {object} options - What to read and filters
+ * @param {string} options.target - URL of a Run or a Job, number of a Job, or id of a Run (a workflow UUID)
+ * @param {string} [options.project] - Slug of the Project, needed by a Job number
  * @param {string} [options.job] - Only the Steps of the Job of this name
  * @param {string} [options.status] - Only the Steps of this status, applied before the download
  * @returns {Promise<object>} The Log, with one entry per Step
  */
 export async function logRead(options) {
-  const { runId, job, status } = options;
+  const { target, project, job, status } = options;
 
-  if (!runId) {
-    throw firostError('CIRCLECI_MISSING_ARGUMENT', 'Pass the id of the run');
+  if (!target) {
+    throw firostError(
+      'CIRCLECI_MISSING_ARGUMENT',
+      'Pass a URL, a job number or the id of a run',
+    );
   }
 
+  const { jobNumber, ...source } = __.parseTarget(target, project);
+  const runId = await __.resolveRunId({ ...source, jobNumber });
   const run = await __.runRead({ runId });
 
-  // An approval Job has no number, and so no Step
+  // An approval Job has no number, and so no Step. A Job URL or number keeps
+  // only its Job
   const jobs = _.filter(
     run.jobs,
-    (item) => !_.isNull(item.number) && (!job || item.name === job),
+    (item) =>
+      !_.isNull(item.number) &&
+      (!job || item.name === job) &&
+      (!jobNumber || item.number === jobNumber),
   );
 
   const stepsByJob = await pMap(jobs, async (item) => {
@@ -57,6 +69,27 @@ export async function logRead(options) {
 }
 
 __ = {
+  /**
+   * Tell what the target points to
+   * @param {string} target - URL of a Run or a Job, number of a Job, or id of a Run
+   * @param {string} [project] - Slug of the Project, needed by a Job number
+   * @returns {object} The Slug, the id of the Run and the number of the Job, when the target holds them
+   */
+  parseTarget(target, project) {
+    if (/^https?:\/\//i.test(target)) {
+      return parseCircleciUrl(target);
+    }
+    if (!/^\d+$/.test(target)) {
+      return { runId: target };
+    }
+    if (!project) {
+      throw firostError(
+        'CIRCLECI_MISSING_ARGUMENT',
+        'Pass --project with a job number',
+      );
+    }
+    return { project, jobNumber: Number(target) };
+  },
   /**
    * Format one Step of a Job, without its output
    * @param {object} job - The Job of the Step, as formatted by runRead
@@ -99,6 +132,7 @@ __ = {
     const messages = await response.json();
     return _.chain(messages).map('message').join('').value();
   },
+  resolveRunId,
   runRead,
   callApi,
   fetch,

@@ -1,11 +1,20 @@
-# Read the log of a CircleCI run by its id, and print it as JSON
+# Read the log of a CircleCI run, from a URL, a job number or a run id, and print it as JSON
+# The target is one of:
+# - the URL of a run, of a job, or the GitHub status URL of a job
+# - the number of a job, with --project
+# - the id of a run
+# A job URL or a job number limits the log to that job. A run URL or an id keeps
+# every job
 # Prints the id, the project and the start of the run, and one entry per step of
 # every job: job name and number, step name, status, duration in seconds and the
 # output, without ANSI codes. Jobs without a number (approvals) have no step
+# --project is the slug of the project, needed by a job number
 # --job keeps the steps of the job of this name
 # --status keeps the steps of this status (success, failed...). It applies
 # before the download, so a filtered step costs no request
 # Usage:
+# $ circleci-log-read https://circleci.com/gh/pixelastic/firost/2111
+# $ circleci-log-read 2111 --project gh/pixelastic/firost
 # $ circleci-log-read 1bd4f068-b2f0-4769-8574-609c4e00ae6c
 # $ circleci-log-read 1bd4f068-b2f0-4769-8574-609c4e00ae6c --status failed
 # $ circleci-log-read 1bd4f068-b2f0-4769-8574-609c4e00ae6c --job ci
