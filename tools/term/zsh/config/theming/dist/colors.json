@@ -519,6 +519,10 @@
     "ansi": 45,
     "hex": "#d69e2e"
   },
+  "git-issue-id": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
   "git-message": {
     "ansi": 204,
     "hex": "#9ca3af"

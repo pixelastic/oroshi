@@ -162,6 +162,7 @@
     "commit":          "purple",
     "dirty":           "red-4",
     "issue":           "yellow",
+    "issue-id":        "yellow",
     "message":         "gray-4",
     "modified":        "violet-3",
     "pullrequest":     "purple",
