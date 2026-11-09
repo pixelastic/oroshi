@@ -1,0 +1,12 @@
+# Rerun every job of a CircleCI run by its id, and print the new run as JSON
+# The output is the one of circleci-run-read, for the run that CircleCI starts
+# There is no flag to rerun only the failed jobs or one job
+# This command changes state and is not in the allow-list on purpose, so that an
+# agent asks before it runs
+# Usage:
+# $ circleci-run-rerun 1bd4f068-b2f0-4769-8574-609c4e00ae6c
+# $ circleci-run-rerun 1bd4f068-b2f0-4769-8574-609c4e00ae6c --account perso
+setopt local_options err_return
+
+local libDir="${functions_source[$0]:A:h:h}/__lib"
+node "${libDir}/bin/circleci-run-rerun.js" "$@"
