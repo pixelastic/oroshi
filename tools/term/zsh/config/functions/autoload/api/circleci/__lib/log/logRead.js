@@ -5,10 +5,9 @@ import { callApi } from '../callApi.js';
 import { parseCircleciUrl } from '../parseCircleciUrl.js';
 import { resolveRunId } from '../resolveRunId.js';
 import { runRead } from '../run/runRead.js';
+import { v1BaseUrl } from '../v1BaseUrl.js';
 
 export let __;
-
-const V1_BASE_URL = 'https://circleci.com/api/v1.1';
 
 /**
  * Read the Log of one Run: the output of every Step of every Job
@@ -45,7 +44,7 @@ export async function logRead(options) {
 
   const stepsByJob = await pMap(jobs, async (item) => {
     const detail = await __.callApi(`project/${run.project}/${item.number}`, {
-      baseUrl: V1_BASE_URL,
+      baseUrl: v1BaseUrl,
     });
     return _.chain(detail.steps)
       .flatMap('actions')

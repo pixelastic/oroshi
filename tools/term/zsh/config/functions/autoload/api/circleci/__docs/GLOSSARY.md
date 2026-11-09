@@ -96,8 +96,8 @@ _Avoid_: action, command
   named.
 - Example: `circleci-project-read gh/pixelastic/firost`. The **Slug** is
   positional.
-- Example: `circleci-run-search "fix" --project gh/pixelastic/firost`. The text
-  query is positional, and the **Anchor** `--project` is named.
+- Example: `circleci-run-search --project gh/pixelastic/firost`. The **Anchor**
+  `--project` is named, and `run-search` takes no positional query.
 
 ## Relationships
 

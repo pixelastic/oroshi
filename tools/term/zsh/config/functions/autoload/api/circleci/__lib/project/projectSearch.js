@@ -2,11 +2,11 @@ import { _ } from 'golgoth';
 import { callApi } from '../callApi.js';
 import { defaultLimit } from '../defaultLimit.js';
 import { toLimit } from '../toLimit.js';
+import { v1BaseUrl } from '../v1BaseUrl.js';
 import { formatProject } from './formatProject.js';
 
 export let __;
 
-const V1_BASE_URL = 'https://circleci.com/api/v1.1';
 const SLUG_PREFIXES = { github: 'gh', bitbucket: 'bb' };
 
 /**
@@ -24,7 +24,7 @@ export async function projectSearch(options) {
 
   // The v2 API has no list of Projects. The v1.1 list is not paginated, and
   // holds only the Projects that the account follows
-  const response = await __.callApi('projects', { baseUrl: V1_BASE_URL });
+  const response = await __.callApi('projects', { baseUrl: v1BaseUrl });
 
   return _.chain(response)
     .map(__.toProject)
