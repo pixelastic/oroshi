@@ -1,0 +1,46 @@
+# Attach a label to an issue or a pull request, and print them as JSON
+# The target is --issueId or --pullrequestId, exactly one of them. Stops with an
+# error if both or none are given
+# Usage:
+# $ git-label-attach bug --issueId 42
+# $ git-label-attach "help wanted" --pullrequestId 108
+# $ git-label-attach bug --issueId 42 --repo pixelastic/imoen
+# {"name","issueId"} or {"name","pullrequestId"}
+setopt local_options err_return pipe_fail
+
+source "${functions_source[$0]:A:h:h}/github/__lib/target-resolve.zsh"
+
+zparseopts -E -D \
+  -issueId:=flagIssueId \
+  -pullrequestId:=flagPullrequestId \
+  -repo:=flagRepo
+
+local name="$1"
+local repo="${flagRepo[2]}"
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+git-github-target-resolve "${flagIssueId[@]}" "${flagPullrequestId[@]}"
+local targetKind="${reply[1]}"
+local targetId="${reply[2]}"
+
+local ghArgs=()
+[[ "$repo" != "" ]] && ghArgs+=(--repo "$repo")
+
+local ghCommand="issue"
+[[ "$targetKind" == "pullrequest" ]] && ghCommand="pr"
+
+gh "$ghCommand" edit "$targetId" \
+  --add-label "$name" \
+  "${ghArgs[@]}" \
+  > /dev/null
+
+jq \
+  --null-input \
+  --arg name "$name" \
+  --arg key "${targetKind}Id" \
+  --arg id "$targetId" \
+  '{name: $name, ($key): ($id | tonumber)}'
