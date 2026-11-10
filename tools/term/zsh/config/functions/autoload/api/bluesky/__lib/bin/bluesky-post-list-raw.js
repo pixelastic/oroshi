@@ -8,6 +8,7 @@ await runBin(async () => {
   const { named } = parseBinArgs({
     setAccount,
     options: {
+      actor: { type: 'string' },
       limit: { type: 'string' },
     },
   });

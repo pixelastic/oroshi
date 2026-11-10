@@ -1,6 +1,6 @@
 import { _ } from 'golgoth';
 import { firostError } from 'firost';
-import { callApi } from './callApi.js';
+import { callPublicApi } from './callPublicApi.js';
 import { resolveHandle } from './resolveHandle.js';
 
 export let __;
@@ -46,7 +46,7 @@ export async function resolvePostRef(ref, options = {}) {
   const uri = `at://${did}/${COLLECTION}/${rkey}`;
   let response;
   try {
-    response = await __.callApi('app.bsky.feed.getPostThread', {
+    response = await __.callPublicApi('app.bsky.feed.getPostThread', {
       query: { uri, depth: 0, parentHeight: 0 },
     });
   } catch (error) {
@@ -77,6 +77,6 @@ export async function resolvePostRef(ref, options = {}) {
 }
 
 __ = {
-  callApi,
+  callPublicApi,
   resolveHandle,
 };

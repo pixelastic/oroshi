@@ -1,8 +1,10 @@
 # List my Bluesky posts, newest first, one per line, for machine consumption
+# Pass --actor to list the posts of another account, without login
 # For human consumption, use bluesky-post-list
 # Usage:
 # $ bluesky-post-list-raw
 # $ bluesky-post-list-raw --limit 10
+# $ bluesky-post-list-raw --actor patak.cat --limit 20
 # $ bluesky-post-list-raw --account test
 setopt local_options err_return
 

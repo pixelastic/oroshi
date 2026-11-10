@@ -13,6 +13,7 @@ describe('postListRaw', () => {
     vi.spyOn(__, 'getConfig').mockReturnValue({
       tokens: { sessions: { 'did:plc:me': {} } },
     });
+    vi.spyOn(__, 'callPublicApi').mockReturnValue({ feed: [] });
     vi.spyOn(__, 'callApi').mockReturnValue({
       records: [
         record('3k11', '2026-03-10T10:00:00.000Z', 'Old'),
@@ -73,6 +74,62 @@ describe('postListRaw', () => {
     const actual = await postListRaw({});
 
     expect(actual).toEqual('');
+  });
+
+  describe('with an actor', () => {
+    const feedItem = (rkey, createdAt, text, reason) => {
+      return {
+        post: {
+          uri: `at://did:plc:you/app.bsky.feed.post/${rkey}`,
+          record: { text, createdAt },
+        },
+        ...(reason && { reason }),
+      };
+    };
+
+    beforeEach(() => {
+      __.callPublicApi.mockReturnValue({
+        feed: [
+          feedItem('3k33', '2026-03-12T10:00:00.000Z', 'New'),
+          feedItem('3k99', '2026-03-13T10:00:00.000Z', 'Repost', {
+            $type: 'app.bsky.feed.defs#reasonRepost',
+          }),
+          feedItem('3k22', '2026-03-11T10:00:00.000Z', 'Middle'),
+        ],
+      });
+    });
+
+    it('lists the posts of the actor, without reposts, and without login', async () => {
+      const actual = await postListRaw({ actor: 'you.dev', limit: '2' });
+
+      expect(__.callPublicApi).toHaveBeenCalledWith(
+        'app.bsky.feed.getAuthorFeed',
+        {
+          query: {
+            actor: 'you.dev',
+            filter: 'posts_no_replies',
+            limit: 2,
+          },
+        },
+      );
+      expect(__.getConfig).not.toHaveBeenCalled();
+      expect(__.callApi).not.toHaveBeenCalled();
+      expect(actual).toEqual(
+        [
+          'at://did:plc:you/app.bsky.feed.post/3k33▮2026-03-12T10:00:00.000Z▮New',
+          'at://did:plc:you/app.bsky.feed.post/3k22▮2026-03-11T10:00:00.000Z▮Middle',
+        ].join('\n'),
+      );
+    });
+
+    it('removes the @ typed before the handle', async () => {
+      await postListRaw({ actor: '@you.dev' });
+
+      expect(__.callPublicApi).toHaveBeenCalledWith(
+        'app.bsky.feed.getAuthorFeed',
+        { query: expect.objectContaining({ actor: 'you.dev' }) },
+      );
+    });
   });
 
   it.each([

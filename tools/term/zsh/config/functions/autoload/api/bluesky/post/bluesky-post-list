@@ -1,8 +1,10 @@
 # List my Bluesky posts as a colored table, newest first, one row per post
+# Pass --actor to list the posts of another account, without login
 # For machine consumption, use bluesky-post-list-raw
 # Usage:
 # $ bluesky-post-list
 # $ bluesky-post-list --limit 10
+# $ bluesky-post-list --actor patak.cat --limit 20
 # $ bluesky-post-list --account test
 setopt local_options err_return
 

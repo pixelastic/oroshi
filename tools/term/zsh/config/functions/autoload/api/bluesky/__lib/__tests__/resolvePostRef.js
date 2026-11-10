@@ -21,7 +21,7 @@ describe('resolvePostRef', () => {
 
   beforeEach(() => {
     vi.spyOn(__, 'resolveHandle').mockReturnValue('did:plc:abc');
-    vi.spyOn(__, 'callApi').mockReturnValue(thread({ text: 'Hello' }));
+    vi.spyOn(__, 'callPublicApi').mockReturnValue(thread({ text: 'Hello' }));
   });
 
   it.each([
@@ -34,9 +34,12 @@ describe('resolvePostRef', () => {
     const actual = await resolvePostRef(ref);
 
     expect(__.resolveHandle).not.toHaveBeenCalled();
-    expect(__.callApi).toHaveBeenCalledWith('app.bsky.feed.getPostThread', {
-      query: { uri, depth: 0, parentHeight: 0 },
-    });
+    expect(__.callPublicApi).toHaveBeenCalledWith(
+      'app.bsky.feed.getPostThread',
+      {
+        query: { uri, depth: 0, parentHeight: 0 },
+      },
+    );
     expect(actual).toEqual({
       uri,
       cid: 'bafyTarget',
@@ -57,9 +60,12 @@ describe('resolvePostRef', () => {
     await resolvePostRef(ref);
 
     expect(__.resolveHandle).toHaveBeenCalledWith('a.bsky.social');
-    expect(__.callApi).toHaveBeenCalledWith('app.bsky.feed.getPostThread', {
-      query: { uri, depth: 0, parentHeight: 0 },
-    });
+    expect(__.callPublicApi).toHaveBeenCalledWith(
+      'app.bsky.feed.getPostThread',
+      {
+        query: { uri, depth: 0, parentHeight: 0 },
+      },
+    );
   });
 
   it('names the argument in the error, to match the command', async () => {
@@ -77,7 +83,7 @@ describe('resolvePostRef', () => {
   });
 
   it('uses the root of the target when the target is a reply', async () => {
-    __.callApi.mockReturnValue(
+    __.callPublicApi.mockReturnValue(
       thread({
         text: 'Hello',
         reply: {
@@ -121,7 +127,7 @@ describe('resolvePostRef', () => {
       `Invalid --reply-to ${ref}: pass an AT URI or a bsky.app post URL`,
     );
     expect(__.resolveHandle).not.toHaveBeenCalled();
-    expect(__.callApi).not.toHaveBeenCalled();
+    expect(__.callPublicApi).not.toHaveBeenCalled();
   });
 
   it('fails when the handle does not resolve', async () => {
@@ -139,11 +145,11 @@ describe('resolvePostRef', () => {
       'message',
       'Invalid --reply-to https://bsky.app/profile/gone.bsky.social/post/1: cannot resolve the handle gone.bsky.social',
     );
-    expect(__.callApi).not.toHaveBeenCalled();
+    expect(__.callPublicApi).not.toHaveBeenCalled();
   });
 
   it('fails when the post does not exist', async () => {
-    __.callApi.mockImplementation(() => {
+    __.callPublicApi.mockImplementation(() => {
       throw firostError(
         'BLUESKY_REQUEST_FAILED',
         '400 {"error":"NotFound","message":"Post not found"}',
@@ -165,7 +171,7 @@ describe('resolvePostRef', () => {
   });
 
   it('fails when the thread holds no post', async () => {
-    __.callApi.mockReturnValue({
+    __.callPublicApi.mockReturnValue({
       thread: { $type: 'app.bsky.feed.defs#notFoundPost', uri, notFound: true },
     });
 
@@ -180,7 +186,7 @@ describe('resolvePostRef', () => {
   });
 
   it('lets the other API errors through', async () => {
-    __.callApi.mockImplementation(() => {
+    __.callPublicApi.mockImplementation(() => {
       throw firostError('BLUESKY_LOGIN_REQUIRED', 'Log in');
     });
 
