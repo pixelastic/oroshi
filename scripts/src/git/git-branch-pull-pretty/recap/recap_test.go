@@ -96,3 +96,50 @@ func TestOmitsDiffstatWhenAnotherBranchChanged(t *testing.T) {
 	lines := Lines(input, plainStyler{})
 	assert.Equal(t, []string{"[develop] +1 commit"}, lines)
 }
+
+func TestPrintsSwitchLineAfterTheRecapLine(t *testing.T) {
+	input := Input{
+		Events:        []parser.Event{updated("develop")},
+		Commits:       map[string]int{"develop": 2},
+		CurrentBranch: "main",
+		SwitchedTo:    "develop",
+	}
+	lines := Lines(input, plainStyler{})
+	assert.Equal(t, []string{"[develop] +2 commits", "Switched to [develop]"}, lines)
+}
+
+func TestPrintsSwitchLineAfterTags(t *testing.T) {
+	input := Input{
+		Events:     []parser.Event{updated("develop"), {Type: parser.NewTag, Tag: "v1"}},
+		Commits:    map[string]int{"develop": 1},
+		SwitchedTo: "develop",
+	}
+	lines := Lines(input, plainStyler{})
+	assert.Equal(t, []string{"[develop] +1 commit", "Tags: <v1>", "Switched to [develop]"}, lines)
+}
+
+func TestFlagsTheSwitchedBranchAsNewWhenItDidNotExistLocally(t *testing.T) {
+	input := Input{
+		Events:     []parser.Event{{Type: parser.BranchUpdate, Branch: "develop", New: true}},
+		SwitchedTo: "develop",
+	}
+	lines := Lines(input, plainStyler{})
+	assert.Equal(t, []string{"[develop] new", "Switched to [develop]"}, lines)
+}
+
+func TestPrintsSwitchLineWhenTheSwitchedBranchWasAlreadyUpToDate(t *testing.T) {
+	lines := Lines(Input{SwitchedTo: "develop"}, plainStyler{})
+	assert.Equal(t, []string{"Already up to date", "Switched to [develop]"}, lines)
+}
+
+func TestOmitsDiffstatWhenSwitching(t *testing.T) {
+	input := Input{
+		Events:        []parser.Event{updated("develop")},
+		Commits:       map[string]int{"develop": 1},
+		CurrentBranch: "develop",
+		Diffstat:      "b | 1 +",
+		SwitchedTo:    "develop",
+	}
+	lines := Lines(input, plainStyler{})
+	assert.Equal(t, []string{"[develop] +1 commit", "Switched to [develop]"}, lines)
+}

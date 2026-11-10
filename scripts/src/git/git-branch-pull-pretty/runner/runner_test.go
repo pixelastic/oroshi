@@ -122,3 +122,9 @@ func TestEnsureBranchUpdateKeepsEventsWhenTheCurrentBranchAlreadyHasOne(t *testi
 func TestEnsureBranchUpdateKeepsEventsWhenHeadDidNotMove(t *testing.T) {
 	assert.Empty(t, EnsureBranchUpdate(nil, "main", "aaa111", "aaa111"))
 }
+
+func TestRunKeepsRawStdoutWhenTheCommandFails(t *testing.T) {
+	model := runCollecting(t, `echo "✘ Branch missing doesn't exist on origin"; exit 1`)
+	assert.Equal(t, 1, model.ExitCode())
+	assert.Equal(t, "✘ Branch missing doesn't exist on origin", model.RawOutput())
+}

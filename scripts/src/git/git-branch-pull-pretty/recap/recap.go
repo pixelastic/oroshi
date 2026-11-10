@@ -17,15 +17,18 @@ type Styler interface {
 // Input holds everything the recap needs.
 // Commits is the number of new commits by branch name.
 // Diffstat belongs to CurrentBranch and is printed only when that branch changed.
+// SwitchedTo is the branch checked out by the pull, if it was another one. No
+// diffstat is printed in that case.
 type Input struct {
 	Events        []parser.Event
 	Commits       map[string]int
 	CurrentBranch string
 	Diffstat      string
+	SwitchedTo    string
 }
 
 // Lines returns the recap lines, or a single "Already up to date" line when
-// no event changed a branch or a tag.
+// no event changed a branch or a tag. The switch line, if any, comes last.
 func Lines(input Input, style Styler) []string {
 	var lines []string
 	var tags []string
@@ -34,7 +37,7 @@ func Lines(input Input, style Styler) []string {
 		switch event.Type {
 		case parser.BranchUpdate:
 			lines = append(lines, branchLine(event, input.Commits[event.Branch], style))
-			if event.Branch == input.CurrentBranch && input.Diffstat != "" {
+			if input.SwitchedTo == "" && event.Branch == input.CurrentBranch && input.Diffstat != "" {
 				lines = append(lines, strings.Split(input.Diffstat, "\n")...)
 			}
 		case parser.NewTag:
@@ -46,7 +49,10 @@ func Lines(input Input, style Styler) []string {
 		lines = append(lines, "Tags: "+strings.Join(tags, " "))
 	}
 	if len(lines) == 0 {
-		return []string{"Already up to date"}
+		lines = []string{"Already up to date"}
+	}
+	if input.SwitchedTo != "" {
+		lines = append(lines, "Switched to "+style.Branch(input.SwitchedTo))
 	}
 	return lines
 }

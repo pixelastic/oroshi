@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -70,22 +71,31 @@ func CommitCounts(events []parser.Event, runner CommandRunner) map[string]int {
 
 // Run executes the command, sends its stderr messages and finally a DoneMsg
 // holding the exit code.
-// The stdout of the command is discarded.
+// The stdout lines are kept as raw output only, because they carry the failure
+// reason of git-branch-pull (branch missing on the remote).
 func Run(ctx context.Context, command []string, send func(tea.Msg)) {
-	reader, writer := io.Pipe()
+	stderrReader, stderrWriter := io.Pipe()
+	stdoutReader, stdoutWriter := io.Pipe()
 	cmd := exec.CommandContext(ctx, command[0], command[1:]...)
-	cmd.Stderr = writer
+	cmd.Stderr = stderrWriter
+	cmd.Stdout = stdoutWriter
 	cmd.WaitDelay = backgroundGrace
 
-	streamed := make(chan struct{})
+	var streams sync.WaitGroup
+	streams.Add(2)
 	go func() {
-		defer close(streamed)
-		StreamStderr(reader, send)
+		defer streams.Done()
+		StreamStderr(stderrReader, send)
+	}()
+	go func() {
+		defer streams.Done()
+		stream.Read(stdoutReader, send, func(string) tea.Msg { return nil })
 	}()
 
 	exitCode := wait(cmd, send)
-	_ = writer.Close() // PipeWriter.Close always returns nil
-	<-streamed
+	_ = stderrWriter.Close() // PipeWriter.Close always returns nil
+	_ = stdoutWriter.Close()
+	streams.Wait()
 	send(progress.DoneMsg{ExitCode: exitCode})
 }
 
