@@ -11,9 +11,13 @@ gitBranchFormat+="%(upstream:track)▮"         # [ahead 4, behind 1]
 gitBranchFormat+="%(committerdate:relative)▮" # 3 months ago
 gitBranchFormat+="%(contents:subject)▮"       # fix typo
 
-local rawBranches="$(git branch --sort=-committerdate --format="$gitBranchFormat")"
+local rawBranches="$(git branch --sort=refname --format="$gitBranchFormat")"
 
-for rawLine in ${(f)rawBranches}; do
+# Alphabetical order, but main always comes first
+local rawLines=(${(f)rawBranches})
+rawLines=(${(M)rawLines:#main▮*} ${rawLines:#main▮*})
+
+for rawLine in $rawLines; do
   local fields=("${(@ps/▮/)rawLine}")
 
   # Branch name
