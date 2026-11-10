@@ -1,0 +1,60 @@
+# Post a comment on an issue or a pull request, and print it as JSON
+# The target is --issueId or --pullrequestId, exactly one of them. The body comes
+# from --body or from the content of --body-file, and is required. Stops with an
+# error if the target is ambiguous or missing, or if the body is empty
+# Usage:
+# $ git-comment-create --issueId 42 --body "Thanks"
+# $ git-comment-create --pullrequestId 108 --body-file ./comment.md
+# $ git-comment-create --issueId 42 --body "Thanks" --repo pixelastic/imoen
+# {"id","url"}
+setopt local_options err_return pipe_fail
+
+source "${functions_source[$0]:A:h:h}/github/__lib/body-resolve.zsh"
+source "${functions_source[$0]:A:h:h}/github/__lib/target-resolve.zsh"
+
+zparseopts -E -D \
+  -issueId:=flagIssueId \
+  -pullrequestId:=flagPullrequestId \
+  -body:=flagBody \
+  -body-file:=flagBodyFile \
+  -repo:=flagRepo
+
+local repo="${flagRepo[2]}"
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+git-github-target-resolve "${flagIssueId[@]}" "${flagPullrequestId[@]}"
+local targetKind="${reply[1]}"
+local targetId="${reply[2]}"
+
+git-github-body-resolve "${flagBody[@]}" "${flagBodyFile[@]}"
+local body="$REPLY"
+
+# Stop if there is no text to post
+if [[ "$body" == "" ]]; then
+  print -u 2 "Give a non-empty --body or --body-file"
+  return 1
+fi
+
+local ghArgs=()
+[[ "$repo" != "" ]] && ghArgs+=(--repo "$repo")
+
+local ghCommand="issue"
+[[ "$targetKind" == "pullrequest" ]] && ghCommand="pr"
+
+# gh prints only the URL of the comment, its id is the suffix after
+# `issuecomment-`
+local url="$(gh "$ghCommand" comment "$targetId" \
+  --body "$body" \
+  "${ghArgs[@]}")"
+
+# Stop if gh failed, its failure is hidden by the command substitution
+[[ "$url" == "" ]] && return 1
+
+jq \
+  --null-input \
+  --arg url "$url" \
+  '{id: ($url | capture("issuecomment-(?<id>[0-9]+)$").id | tonumber), url: $url}'
