@@ -1,17 +1,17 @@
 # Read one issue with its full body and every comment, and print it as JSON
-# Prints the number, title, state, date, author, url, labels and body of the
-# issue, and the author, date and body of each comment. Stops with an error if
-# the issue does not exist
+# Prints the id, title, state, date, author, url, labels and body of the
+# issue, and the id, author, date and body of each comment. Stops with an error
+# if the issue does not exist
 # Usage:
 # $ git-issue-read 42                         # Issue of the current repo
 # $ git-issue-read 42 --repo pixelastic/imoen # Issue of another repo
-# {"number","title","state","date","author","url","labels","body","comments"}
+# {"id","title","state","date","author","url","labels","body","comments"}
 setopt local_options err_return pipe_fail
 
 zparseopts -E -D \
   -repo:=flagRepo
 
-local number="$1"
+local id="$1"
 local repo="${flagRepo[2]}"
 
 # Stop if not in a GitHub repo, unless --repo targets another one
@@ -22,12 +22,12 @@ fi
 local ghArgs=()
 [[ "$repo" != "" ]] && ghArgs+=(--repo "$repo")
 
-gh issue view "$number" \
+gh issue view "$id" \
   --json number,title,state,createdAt,author,url,labels,body,comments \
   "${ghArgs[@]}" \
 | jq '
     {
-      number,
+      id: .number,
       title,
       state: (.state | ascii_downcase),
       date: .createdAt,
@@ -37,6 +37,7 @@ gh issue view "$number" \
       body,
       comments: [
         .comments[] | {
+          id: (.url | capture("issuecomment-(?<id>[0-9]+)$").id | tonumber),
           author: .author.login,
           date: .createdAt,
           body

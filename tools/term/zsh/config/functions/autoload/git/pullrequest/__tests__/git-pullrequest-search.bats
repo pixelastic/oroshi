@@ -99,7 +99,7 @@ JSON
   gh_response OPEN false '[{"__typename":"CheckRun","status":"COMPLETED","conclusion":"SUCCESS"}]'
   bats_run_zsh "git-pullrequest-search"
   [[ "$status" -eq 0 ]]
-  [[ "$(jq --compact-output '.[0]' <<< "$output")" == '{"number":27,"title":"Add search","state":"open","date":"2026-01-05T09:30:00Z","author":"pixelastic","url":"u","labels":[],"body":"","head":"feature","base":"main","checks":"success"}' ]]
+  [[ "$(jq --compact-output '.[0]' <<< "$output")" == '{"id":27,"title":"Add search","state":"open","date":"2026-01-05T09:30:00Z","author":"pixelastic","url":"u","labels":[],"body":"","head":"feature","base":"main","checks":"success"}' ]]
 }
 
 @test "asks gh for no comments, commits or files" {

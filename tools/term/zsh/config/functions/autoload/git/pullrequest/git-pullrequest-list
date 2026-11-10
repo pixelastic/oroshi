@@ -43,7 +43,7 @@ local rows=()
 for rawPullrequest in ${(f)rawPullrequests}; do
   local fields=("${(@ps/▮/)rawPullrequest}")
 
-  # Color the number. Keep the other columns as they are, and
+  # Color the id. Keep the other columns as they are, and
   # show their multi-values with commas
   local columns=("$(colorize "${fields[1]}" $COLORS[git-pullrequest-id])")
   columns+=("${(@)fields[2,-1]//▯/, }")

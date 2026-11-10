@@ -1,6 +1,6 @@
 # List the issues of a repo, one per line, for machine consumption
 # For human consumption, use git-issue-list
-# Fields: number▮title▮state▮date▮author▮url▮labels
+# Fields: id▮title▮state▮date▮author▮url▮labels
 # state is open or closed. date is the creation date, in ISO 8601
 # labels are joined with ▯, and the field is empty when there is no label
 # Takes the same flags as git-issue-search, and prints nothing when nothing
@@ -20,7 +20,7 @@ git-issue-search "$@" \
 '
     .[]
     | [
-        .number,
+        .id,
         .title,
         .state,
         .date,

@@ -1,6 +1,6 @@
 # List the pull requests of a repo, one per line, for machine consumption
 # For human consumption, use git-pullrequest-list
-# Fields: number▮title▮state▮date▮author▮url▮labels▮head▮base▮checks
+# Fields: id▮title▮state▮date▮author▮url▮labels▮head▮base▮checks
 # state is draft, open, closed or merged. date is the creation date, in ISO 8601
 # labels are joined with ▯, and the field is empty when there is no label
 # checks is success, failure, pending or empty when there is no check
@@ -21,7 +21,7 @@ git-pullrequest-search "$@" \
 '
     .[]
     | [
-        .number,
+        .id,
         .title,
         .state,
         .date,

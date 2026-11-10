@@ -82,13 +82,13 @@ gh_args() {
 
 # -- Output --
 
-@test "prints a JSON array with number, title, state, date, author, url, labels and body" {
+@test "prints a JSON array with id, title, state, date, author, url, labels and body" {
   cat > "$BATS_TMP_DIR/gh-response" <<'JSON'
 [{"number":12,"title":"Login fails","state":"OPEN","createdAt":"2026-01-05T09:30:00Z","author":{"login":"pixelastic","is_bot":false},"url":"https://github.com/pixelastic/imoen/issues/12","labels":[],"body":"It fails."}]
 JSON
   bats_run_zsh "git-issue-search"
   [[ "$status" -eq 0 ]]
-  [[ "$(jq --compact-output '.[0]' <<< "$output")" == '{"number":12,"title":"Login fails","state":"open","date":"2026-01-05T09:30:00Z","author":"pixelastic","url":"https://github.com/pixelastic/imoen/issues/12","labels":[],"body":"It fails."}' ]]
+  [[ "$(jq --compact-output '.[0]' <<< "$output")" == '{"id":12,"title":"Login fails","state":"open","date":"2026-01-05T09:30:00Z","author":"pixelastic","url":"https://github.com/pixelastic/imoen/issues/12","labels":[],"body":"It fails."}' ]]
 }
 
 @test "prints the label names as a list" {

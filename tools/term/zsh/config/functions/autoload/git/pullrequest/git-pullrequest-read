@@ -5,7 +5,7 @@
 # $ git-pullrequest-read 27                         # Pull request of the current repo
 # $ git-pullrequest-read 27 --full                  # Adds file counts and the diff
 # $ git-pullrequest-read 27 --repo pixelastic/imoen # Pull request of another repo
-# {"number","title","state","date","author","url","labels","head","base","mergeState","body","comments","files","commits","checks"}
+# {"id","title","state","date","author","url","labels","head","base","mergeState","body","comments","files","commits","checks"}
 # state is draft, open, closed or merged. files is a list of paths, or with
 # --full a list of {path,additions,deletions}, and the diff is added.
 setopt local_options err_return pipe_fail
@@ -14,7 +14,7 @@ zparseopts -E -D \
   -full=flagFull \
   -repo:=flagRepo
 
-local number="$1"
+local id="$1"
 local repo="${flagRepo[2]}"
 local isFull=${#flagFull}
 
@@ -32,7 +32,7 @@ local fields=(
 )
 
 local view="$(
-  gh pr view "$number" \
+  gh pr view "$id" \
     --json "${(j:,:)fields}" \
     "${ghArgs[@]}"
 )"
@@ -43,7 +43,7 @@ local view="$(
 # gh pr checks fails when there is no check, and exits with 8 when some are
 # pending. Both are valid outputs, so the exit code is ignored
 local checks="$(
-  gh pr checks "$number" \
+  gh pr checks "$id" \
     --json name,state,link \
     "${ghArgs[@]}" \
     2>/dev/null \
@@ -53,7 +53,7 @@ local checks="$(
 
 local diff=""
 if [[ $isFull == 1 ]]; then
-  diff="$(gh pr diff "$number" "${ghArgs[@]}")"
+  diff="$(gh pr diff "$id" "${ghArgs[@]}")"
 fi
 
 jq \
@@ -62,7 +62,7 @@ jq \
   --arg diff "$diff" \
 '
     {
-      number,
+      id: .number,
       title,
       state: (if .isDraft then "draft" else (.state | ascii_downcase) end),
       date: .createdAt,
@@ -75,6 +75,7 @@ jq \
       body,
       comments: [
         .comments[] | {
+          id: (.url | capture("issuecomment-(?<id>[0-9]+)$").id | tonumber),
           author: .author.login,
           date: .createdAt,
           body

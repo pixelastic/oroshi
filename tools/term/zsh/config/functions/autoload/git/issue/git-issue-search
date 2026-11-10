@@ -6,7 +6,7 @@
 # $ git-issue-search --author renovate --label bug --limit 10  # 25 by default
 # $ git-issue-search --date-min 2026-01-01 --date-max 2026-02-01
 # $ git-issue-search --repo pixelastic/imoen  # Another repo
-# [{"number","title","state","date","author","url","labels","body"}]
+# [{"id","title","state","date","author","url","labels","body"}]
 setopt local_options err_return
 
 DEFAULT_LIMIT=25
@@ -52,7 +52,7 @@ gh issue list \
   "${ghArgs[@]}" \
 | jq '
     map({
-      number,
+      id: .number,
       title,
       state: (.state | ascii_downcase),
       date: .createdAt,

@@ -18,7 +18,7 @@ setup() {
 
 @test "prints the fields in the documented order" {
   cat > "$BATS_TMP_DIR/search-response" <<'JSON'
-[{"number":27,"title":"Add login","state":"open","date":"2026-01-02T03:04:05Z","author":"pixelastic","url":"https://github.com/pixelastic/imoen/pull/27","labels":["bug"],"body":"Some body","head":"feature","base":"main","checks":"success"}]
+[{"id":27,"title":"Add login","state":"open","date":"2026-01-02T03:04:05Z","author":"pixelastic","url":"https://github.com/pixelastic/imoen/pull/27","labels":["bug"],"body":"Some body","head":"feature","base":"main","checks":"success"}]
 JSON
 
   bats_run_zsh "git-pullrequest-list-raw"
@@ -29,8 +29,8 @@ JSON
 @test "prints one pull request per line" {
   cat > "$BATS_TMP_DIR/search-response" <<'JSON'
 [
-  {"number":1,"title":"First","state":"open","date":"d","author":"a","url":"u1","labels":[],"body":"","head":"h1","base":"main","checks":""},
-  {"number":2,"title":"Second","state":"merged","date":"d","author":"b","url":"u2","labels":[],"body":"","head":"h2","base":"main","checks":"failure"}
+  {"id":1,"title":"First","state":"open","date":"d","author":"a","url":"u1","labels":[],"body":"","head":"h1","base":"main","checks":""},
+  {"id":2,"title":"Second","state":"merged","date":"d","author":"b","url":"u2","labels":[],"body":"","head":"h2","base":"main","checks":"failure"}
 ]
 JSON
 
@@ -43,7 +43,7 @@ JSON
 
 @test "joins several labels with ▯" {
   cat > "$BATS_TMP_DIR/search-response" <<'JSON'
-[{"number":1,"title":"T","state":"open","date":"d","author":"a","url":"u","labels":["bug","help wanted"],"body":"","head":"h","base":"main","checks":""}]
+[{"id":1,"title":"T","state":"open","date":"d","author":"a","url":"u","labels":["bug","help wanted"],"body":"","head":"h","base":"main","checks":""}]
 JSON
 
   bats_run_zsh "git-pullrequest-list-raw"
@@ -53,7 +53,7 @@ JSON
 
 @test "prints empty fields when there is no label and no checks" {
   cat > "$BATS_TMP_DIR/search-response" <<'JSON'
-[{"number":1,"title":"T","state":"draft","date":"d","author":"a","url":"u","labels":[],"body":"","head":"h","base":"main","checks":""}]
+[{"id":1,"title":"T","state":"draft","date":"d","author":"a","url":"u","labels":[],"body":"","head":"h","base":"main","checks":""}]
 JSON
 
   bats_run_zsh "git-pullrequest-list-raw"

@@ -6,7 +6,7 @@
 # $ git-pullrequest-search --author renovate --label bug --limit 10  # 25 by default
 # $ git-pullrequest-search --date-min 2026-01-01 --date-max 2026-02-01
 # $ git-pullrequest-search --repo pixelastic/imoen  # Another repo
-# [{"number","title","state","date","author","url","labels","body","head","base","checks"}]
+# [{"id","title","state","date","author","url","labels","body","head","base","checks"}]
 # state is draft, open, closed or merged. checks is success, failure, pending or empty.
 setopt local_options err_return pipe_fail
 
@@ -89,7 +89,7 @@ gh pr list \
         end;
 
     map({
-      number,
+      id: .number,
       title,
       state: (if .isDraft then "draft" else (.state | ascii_downcase) end),
       date: .createdAt,

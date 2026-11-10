@@ -27,8 +27,8 @@ setup() {
   "mergeStateStatus": "CLEAN",
   "body": "Bumps dep.",
   "comments": [
-    {"author": {"login": "alice"}, "createdAt": "2026-01-03T00:00:00Z", "body": "Looks good."},
-    {"author": {"login": "bob"}, "createdAt": "2026-01-04T00:00:00Z", "body": "Merging."}
+    {"id": "IC_kwDOA", "url": "https://github.com/pixelastic/imoen/pull/27#issuecomment-2001", "author": {"login": "alice"}, "createdAt": "2026-01-03T00:00:00Z", "body": "Looks good."},
+    {"id": "IC_kwDOB", "url": "https://github.com/pixelastic/imoen/pull/27#issuecomment-2002", "author": {"login": "bob"}, "createdAt": "2026-01-04T00:00:00Z", "body": "Merging."}
   ],
   "files": [
     {"path": "package.json", "additions": 1, "deletions": 2},
@@ -59,7 +59,7 @@ gh_calls() {
 @test "prints the documented fields for a pull request" {
   bats_run_zsh "git-pullrequest-read 27"
   [[ "$status" -eq 0 ]]
-  [[ "$(jq --compact-output 'del(.comments, .files, .commits, .checks)' <<< "$output")" == '{"number":27,"title":"Update dependency","state":"open","date":"2026-01-02T03:04:05Z","author":"renovate","url":"https://github.com/pixelastic/imoen/pull/27","labels":["dependencies","bot"],"head":"renovate/dep","base":"main","mergeState":"clean","body":"Bumps dep."}' ]]
+  [[ "$(jq --compact-output 'del(.comments, .files, .commits, .checks)' <<< "$output")" == '{"id":27,"title":"Update dependency","state":"open","date":"2026-01-02T03:04:05Z","author":"renovate","url":"https://github.com/pixelastic/imoen/pull/27","labels":["dependencies","bot"],"head":"renovate/dep","base":"main","mergeState":"clean","body":"Bumps dep."}' ]]
 }
 
 @test "prints draft as the state of a draft pull request" {
@@ -81,10 +81,23 @@ gh_calls() {
   [[ "$(jq --raw-output '.body' <<< "$output")" == "$body" ]]
 }
 
-@test "prints every comment with its author, date and body" {
+@test "prints id and no number" {
   bats_run_zsh "git-pullrequest-read 27"
   [[ "$status" -eq 0 ]]
-  [[ "$(jq --compact-output '.comments' <<< "$output")" == '[{"author":"alice","date":"2026-01-03T00:00:00Z","body":"Looks good."},{"author":"bob","date":"2026-01-04T00:00:00Z","body":"Merging."}]' ]]
+  [[ "$(jq '.id' <<< "$output")" == "27" ]]
+  [[ "$(jq 'has("number")' <<< "$output")" == "false" ]]
+}
+
+@test "prints every comment with its id, author, date and body" {
+  bats_run_zsh "git-pullrequest-read 27"
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --compact-output '.comments' <<< "$output")" == '[{"id":2001,"author":"alice","date":"2026-01-03T00:00:00Z","body":"Looks good."},{"id":2002,"author":"bob","date":"2026-01-04T00:00:00Z","body":"Merging."}]' ]]
+}
+
+@test "prints the id of a comment as a number, never the internal identifier" {
+  bats_run_zsh "git-pullrequest-read 27"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"IC_kwDO"* ]]
 }
 
 @test "prints the file paths only, without counts, by default" {

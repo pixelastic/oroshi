@@ -18,7 +18,7 @@ setup() {
 
 @test "prints the fields in the documented order" {
   cat > "$BATS_TMP_DIR/search-response" <<'EOF'
-[{"number":42,"title":"Login bug","state":"open","date":"2026-01-02T03:04:05Z","author":"pixelastic","url":"https://github.com/pixelastic/imoen/issues/42","labels":["bug"],"body":"Some body"}]
+[{"id":42,"title":"Login bug","state":"open","date":"2026-01-02T03:04:05Z","author":"pixelastic","url":"https://github.com/pixelastic/imoen/issues/42","labels":["bug"],"body":"Some body"}]
 EOF
 
   bats_run_zsh "git-issue-list-raw"
@@ -29,8 +29,8 @@ EOF
 @test "prints one issue per line" {
   cat > "$BATS_TMP_DIR/search-response" <<'EOF'
 [
-  {"number":1,"title":"First","state":"open","date":"2026-01-01T00:00:00Z","author":"a","url":"u1","labels":["bug"],"body":""},
-  {"number":2,"title":"Second","state":"closed","date":"2026-01-02T00:00:00Z","author":"b","url":"u2","labels":["bug"],"body":""}
+  {"id":1,"title":"First","state":"open","date":"2026-01-01T00:00:00Z","author":"a","url":"u1","labels":["bug"],"body":""},
+  {"id":2,"title":"Second","state":"closed","date":"2026-01-02T00:00:00Z","author":"b","url":"u2","labels":["bug"],"body":""}
 ]
 EOF
 
@@ -43,7 +43,7 @@ EOF
 
 @test "joins several labels with ▯" {
   cat > "$BATS_TMP_DIR/search-response" <<'EOF'
-[{"number":1,"title":"T","state":"open","date":"d","author":"a","url":"u","labels":["bug","help wanted"],"body":""}]
+[{"id":1,"title":"T","state":"open","date":"d","author":"a","url":"u","labels":["bug","help wanted"],"body":""}]
 EOF
 
   bats_run_zsh "git-issue-list-raw"
@@ -53,7 +53,7 @@ EOF
 
 @test "prints an empty field when an issue has no label" {
   cat > "$BATS_TMP_DIR/search-response" <<'EOF'
-[{"number":1,"title":"T","state":"open","date":"d","author":"a","url":"u","labels":[],"body":""}]
+[{"id":1,"title":"T","state":"open","date":"d","author":"a","url":"u","labels":[],"body":""}]
 EOF
 
   bats_run_zsh "git-issue-list-raw"

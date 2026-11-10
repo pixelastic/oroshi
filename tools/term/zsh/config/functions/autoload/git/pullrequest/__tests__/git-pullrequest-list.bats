@@ -31,7 +31,7 @@ setup() {
   [[ "${lines[1]}" == "28  Fix logout  merged  2026-01-03  bot  x.io/28           fix   main" ]]
 }
 
-@test "colors only the number" {
+@test "colors only the id" {
   bats_run_zsh "git-pullrequest-list"
   [[ "${lines[0]}" == $'\e['*"27"*$'\e[0m'*"Add login"* ]]
 }

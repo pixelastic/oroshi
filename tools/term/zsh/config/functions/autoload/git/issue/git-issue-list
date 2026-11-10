@@ -43,7 +43,7 @@ local rows=()
 for rawIssue in ${(f)rawIssues}; do
   local fields=("${(@ps/▮/)rawIssue}")
 
-  # Color the number. Keep the other columns as they are, and
+  # Color the id. Keep the other columns as they are, and
   # show their multi-values with commas
   local columns=("$(colorize "${fields[1]}" $COLORS[git-issue-id])")
   columns+=("${(@)fields[2,-1]//▯/, }")

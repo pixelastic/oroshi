@@ -22,8 +22,8 @@ setup() {
   "labels": [{"name": "bug"}, {"name": "auth"}],
   "body": "It fails.",
   "comments": [
-    {"author": {"login": "alice"}, "createdAt": "2026-01-03T00:00:00Z", "body": "Confirmed."},
-    {"author": {"login": "bob"}, "createdAt": "2026-01-04T00:00:00Z", "body": "Fixed in #43."}
+    {"id": "IC_kwDOA", "url": "https://github.com/pixelastic/imoen/issues/42#issuecomment-1001", "author": {"login": "alice"}, "createdAt": "2026-01-03T00:00:00Z", "body": "Confirmed."},
+    {"id": "IC_kwDOB", "url": "https://github.com/pixelastic/imoen/issues/42#issuecomment-1002", "author": {"login": "bob"}, "createdAt": "2026-01-04T00:00:00Z", "body": "Fixed in #43."}
   ]
 }
 JSON
@@ -37,13 +37,26 @@ gh_args() {
 @test "prints the documented fields for an issue" {
   bats_run_zsh "git-issue-read 42"
   [[ "$status" -eq 0 ]]
-  [[ "$(jq --compact-output 'del(.comments)' <<< "$output")" == '{"number":42,"title":"Login fails","state":"open","date":"2026-01-02T03:04:05Z","author":"pixelastic","url":"https://github.com/pixelastic/imoen/issues/42","labels":["bug","auth"],"body":"It fails."}' ]]
+  [[ "$(jq --compact-output 'del(.comments)' <<< "$output")" == '{"id":42,"title":"Login fails","state":"open","date":"2026-01-02T03:04:05Z","author":"pixelastic","url":"https://github.com/pixelastic/imoen/issues/42","labels":["bug","auth"],"body":"It fails."}' ]]
 }
 
-@test "prints every comment with its author, date and body" {
+@test "prints id and no number" {
   bats_run_zsh "git-issue-read 42"
   [[ "$status" -eq 0 ]]
-  [[ "$(jq --compact-output '.comments' <<< "$output")" == '[{"author":"alice","date":"2026-01-03T00:00:00Z","body":"Confirmed."},{"author":"bob","date":"2026-01-04T00:00:00Z","body":"Fixed in #43."}]' ]]
+  [[ "$(jq '.id' <<< "$output")" == "42" ]]
+  [[ "$(jq 'has("number")' <<< "$output")" == "false" ]]
+}
+
+@test "prints every comment with its id, author, date and body" {
+  bats_run_zsh "git-issue-read 42"
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq --compact-output '.comments' <<< "$output")" == '[{"id":1001,"author":"alice","date":"2026-01-03T00:00:00Z","body":"Confirmed."},{"id":1002,"author":"bob","date":"2026-01-04T00:00:00Z","body":"Fixed in #43."}]' ]]
+}
+
+@test "prints the id of a comment as a number, never the internal identifier" {
+  bats_run_zsh "git-issue-read 42"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *"IC_kwDO"* ]]
 }
 
 @test "prints an empty comment list for an issue without comment" {

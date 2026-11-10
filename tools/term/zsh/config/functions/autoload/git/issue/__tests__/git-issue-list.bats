@@ -31,7 +31,7 @@ setup() {
   [[ "${lines[1]}" == "43  Logout bug  closed  2026-01-03T03:04:05Z  bot  x.io/43" ]]
 }
 
-@test "colors only the number" {
+@test "colors only the id" {
   bats_run_zsh "git-issue-list"
   [[ "${lines[0]}" == $'\e['*"42"*$'\e[0m'*"Login bug"* ]]
 }

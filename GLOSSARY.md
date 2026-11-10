@@ -21,6 +21,14 @@ _Avoid_: refresh, repaint
 
 > "refresh" conflates both meanings and is banned — always use the precise term.
 
+**ID**:
+
+The number of an issue or pull request, such as 108. It is not the internal
+GitHub identifier, and no helper exposes that one. Examples: `--issueId`,
+`--pullrequestId`, the `id` key of `git-issue-read`
+
+_Avoid_: number
+
 ## Modules
 
 - [BATS Helper](tools/term/bats/GLOSSARY.md) — Worktree-aware, Deep Mocking,
