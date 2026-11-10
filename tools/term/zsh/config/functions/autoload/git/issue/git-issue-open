@@ -1,0 +1,20 @@
+# Open an issue in the browser, or the list of issues when no id is given
+# Usage:
+# $ git-issue-open            # Opens the list of issues
+# $ git-issue-open 42         # Opens issue 42
+setopt local_options err_return
+
+# Stop if not in a GitHub repo
+git-directory-is-github || return 1
+
+local id=$1
+local openedUrl="$(git-directory-url)"
+
+# Open a specific issue or the full list
+if [[ $id != "" ]]; then
+  openedUrl="${openedUrl}/issues/${id}"
+else
+  openedUrl="${openedUrl}/issues/"
+fi
+
+$BROWSER "$openedUrl" &>/dev/null
