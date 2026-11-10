@@ -2,7 +2,7 @@ package bar
 
 import (
 	"github.com/charmbracelet/lipgloss"
-	"github.com/pixelastic/oroshi/scripts/src/git/git-commit-diffstat/diff"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/diff"
 )
 
 // Colors holds the theme colors needed for bar rendering.

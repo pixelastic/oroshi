@@ -7,10 +7,10 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/pixelastic/oroshi/scripts/src/git/git-commit-diffstat/bar"
-	"github.com/pixelastic/oroshi/scripts/src/git/git-commit-diffstat/diff"
-	"github.com/pixelastic/oroshi/scripts/src/git/git-commit-diffstat/tree"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/bar"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/diff"
 	"github.com/pixelastic/oroshi/scripts/src/git/lib/theme"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/tree"
 )
 
 func main() {

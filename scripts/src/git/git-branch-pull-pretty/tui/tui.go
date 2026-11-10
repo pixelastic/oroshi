@@ -12,10 +12,16 @@ type EventMsg struct {
 	Event parser.Event
 }
 
+// OutputMsg carries one line printed on stdout by the subprocess.
+type OutputMsg struct {
+	Line string
+}
+
 // Model composes the shared progress model and keeps the events for the recap.
 type Model struct {
 	progress progress.Model
 	events   []parser.Event
+	output   []string
 }
 
 // New creates a model with the given ANSI color index for the progress bar.
@@ -38,6 +44,11 @@ func (m Model) Events() []parser.Event {
 	return m.events
 }
 
+// Output returns the stdout lines of the subprocess in arrival order.
+func (m Model) Output() []string {
+	return m.output
+}
+
 // Init implements tea.Model.
 func (m Model) Init() tea.Cmd {
 	return nil
@@ -48,6 +59,10 @@ func (m Model) Init() tea.Cmd {
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	if eventMsg, ok := msg.(EventMsg); ok {
 		m.events = append(m.events, eventMsg.Event)
+		return m, nil
+	}
+	if outputMsg, ok := msg.(OutputMsg); ok {
+		m.output = append(m.output, outputMsg.Line)
 		return m, nil
 	}
 	var cmd tea.Cmd

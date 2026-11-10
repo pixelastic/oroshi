@@ -71,8 +71,9 @@ func CommitCounts(events []parser.Event, runner CommandRunner) map[string]int {
 
 // Run executes the command, sends its stderr messages and finally a DoneMsg
 // holding the exit code.
-// The stdout lines are kept as raw output only, because they carry the failure
-// reason of git-branch-pull (branch missing on the remote).
+// The stdout lines are kept as raw output, because they carry the failure
+// reason of git-branch-pull (branch missing on the remote), and as output
+// messages, because they carry the dependency update output.
 func Run(ctx context.Context, command []string, send func(tea.Msg)) {
 	stderrReader, stderrWriter := io.Pipe()
 	stdoutReader, stdoutWriter := io.Pipe()
@@ -89,7 +90,7 @@ func Run(ctx context.Context, command []string, send func(tea.Msg)) {
 	}()
 	go func() {
 		defer streams.Done()
-		stream.Read(stdoutReader, send, func(string) tea.Msg { return nil })
+		stream.Read(stdoutReader, send, func(line string) tea.Msg { return tui.OutputMsg{Line: line} })
 	}()
 
 	exitCode := wait(cmd, send)
@@ -129,4 +130,19 @@ func EnsureBranchUpdate(events []parser.Event, branch string, startCommit string
 		}
 	}
 	return append(events, parser.Event{Type: parser.BranchUpdate, Branch: branch, FromRef: startCommit, ToRef: endCommit})
+}
+
+// DependencyOutput returns the stdout lines that come from the dependency
+// update, by dropping the lines git-branch-pull prints itself.
+func DependencyOutput(lines []string) []string {
+	var kept []string
+	for _, line := range lines {
+		if line == "Fetching tags..." ||
+			strings.HasSuffix(line, " branch updated") ||
+			strings.HasPrefix(line, "Switched to latest branch ") {
+			continue
+		}
+		kept = append(kept, line)
+	}
+	return kept
 }

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/pixelastic/oroshi/scripts/src/git/git-commit-diffstat/diff"
+	"github.com/pixelastic/oroshi/scripts/src/git/lib/diff"
 )
 
 // ThemeResolver provides colors for rendering.

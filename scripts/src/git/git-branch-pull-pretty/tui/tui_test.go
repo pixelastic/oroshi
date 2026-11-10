@@ -30,3 +30,10 @@ func TestExposesExitCodeAfterDone(t *testing.T) {
 	m1, _ := m.Update(progress.DoneMsg{ExitCode: 128})
 	assert.Equal(t, 128, m1.(Model).ExitCode())
 }
+
+func TestKeepsOutputLinesInArrivalOrder(t *testing.T) {
+	m := New(42)
+	m1, _ := m.Update(OutputMsg{Line: "first"})
+	m2, _ := m1.Update(OutputMsg{Line: "second"})
+	assert.Equal(t, []string{"first", "second"}, m2.(Model).Output())
+}

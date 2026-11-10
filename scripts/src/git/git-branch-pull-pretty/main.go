@@ -79,6 +79,11 @@ func main() {
 		input.Diffstat = strings.TrimRight(zshOutput(zshRunner, "git-commit-diffstat", startCommit), "\n")
 	}
 	fmt.Println(strings.Join(recap.Lines(input, themeStyler{theme: th}), "\n"))
+
+	// The dependency update output goes below the recap
+	for _, line := range runner.DependencyOutput(model.Output()) {
+		fmt.Println(line)
+	}
 }
 
 // runWithProgress pulls a branch (the current one by default) while displaying

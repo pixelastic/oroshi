@@ -128,3 +128,15 @@ func TestRunKeepsRawStdoutWhenTheCommandFails(t *testing.T) {
 	assert.Equal(t, 1, model.ExitCode())
 	assert.Equal(t, "✘ Branch missing doesn't exist on origin", model.RawOutput())
 }
+
+// --- Dependency output ---
+
+func TestDependencyOutputDropsThePullOwnLines(t *testing.T) {
+	lines := []string{"Fetching tags...", "Installing node modules", "main branch updated"}
+	assert.Equal(t, []string{"Installing node modules"}, DependencyOutput(lines))
+}
+
+func TestDependencyOutputIsEmptyWhenNothingWasUpdated(t *testing.T) {
+	lines := []string{"Fetching tags...", "Switched to latest branch develop"}
+	assert.Empty(t, DependencyOutput(lines))
+}
