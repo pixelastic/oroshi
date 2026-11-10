@@ -1,0 +1,48 @@
+# Rename a label or change its color or description, and print it as JSON
+# Stops with an error if nothing is given to change. The color is a 6 character
+# hexadecimal value, and any error from gh is shown as it is
+# Usage:
+# $ git-label-update bug --name defect                   # Rename
+# $ git-label-update bug --color d73a4a                  # Change the color
+# $ git-label-update bug --description "Something broke"
+# $ git-label-update bug --color d73a4a --repo pixelastic/imoen
+# {"name","color","description"}
+setopt local_options err_return pipe_fail
+
+source "${functions_source[$0]:A:h}/__lib/label-print.zsh"
+
+zparseopts -E -D \
+  -name:=flagName \
+  -color:=flagColor \
+  -description:=flagDescription \
+  -repo:=flagRepo
+
+local name="$1"
+local repo="${flagRepo[2]}"
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+# Stop if there is nothing to change
+if (( ${#flagName} + ${#flagColor} + ${#flagDescription} == 0 )); then
+  print -u 2 "Give at least one of --name, --color or --description"
+  return 1
+fi
+
+local ghArgs=()
+[[ "$repo" != "" ]] && ghArgs+=(--repo "$repo")
+
+local editArgs=()
+(( ${#flagName} > 0 )) && editArgs+=(--name "${flagName[2]}")
+(( ${#flagColor} > 0 )) && editArgs+=(--color "${flagColor[2]}")
+(( ${#flagDescription} > 0 )) && editArgs+=(--description "${flagDescription[2]}")
+
+gh label edit "$name" \
+  "${editArgs[@]}" \
+  "${ghArgs[@]}" \
+  > /dev/null
+
+# The label is known by its new name once renamed
+git-label-print "${flagName[2]:-$name}" "${ghArgs[@]}"

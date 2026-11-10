@@ -1,0 +1,30 @@
+# Delete a label, and print its name as JSON
+# Usage:
+# $ git-label-delete bug
+# $ git-label-delete "help wanted" --repo pixelastic/imoen
+# {"name"}
+setopt local_options err_return pipe_fail
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local name="$1"
+local repo="${flagRepo[2]}"
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+local ghArgs=()
+[[ "$repo" != "" ]] && ghArgs+=(--repo "$repo")
+
+gh label delete "$name" \
+  --yes \
+  "${ghArgs[@]}" \
+  > /dev/null
+
+jq \
+  --null-input \
+  --arg name "$name" \
+  '{name: $name}'

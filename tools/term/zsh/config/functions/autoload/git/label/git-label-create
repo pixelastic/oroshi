@@ -1,0 +1,38 @@
+# Create a label, and print it as JSON
+# Without --color, GitHub picks one. The color is a 6 character hexadecimal
+# value, and any error from gh is shown as it is
+# Usage:
+# $ git-label-create bug
+# $ git-label-create bug --color d73a4a --description "Something is broken"
+# $ git-label-create bug --repo pixelastic/imoen
+# {"name","color","description"}
+setopt local_options err_return pipe_fail
+
+source "${functions_source[$0]:A:h}/__lib/label-print.zsh"
+
+zparseopts -E -D \
+  -color:=flagColor \
+  -description:=flagDescription \
+  -repo:=flagRepo
+
+local name="$1"
+local repo="${flagRepo[2]}"
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+local ghArgs=()
+[[ "$repo" != "" ]] && ghArgs+=(--repo "$repo")
+
+local createArgs=()
+(( ${#flagColor} > 0 )) && createArgs+=(--color "${flagColor[2]}")
+(( ${#flagDescription} > 0 )) && createArgs+=(--description "${flagDescription[2]}")
+
+gh label create "$name" \
+  "${createArgs[@]}" \
+  "${ghArgs[@]}" \
+  > /dev/null
+
+git-label-print "$name" "${ghArgs[@]}"
