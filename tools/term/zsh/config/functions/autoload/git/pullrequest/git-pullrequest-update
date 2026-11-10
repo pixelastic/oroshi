@@ -1,0 +1,51 @@
+# Update the title or the body of a pull request, and print it as JSON
+# The body comes from --body or from the content of --body-file. Stops with an
+# error if nothing is given to change, or if both body flags are given
+# Usage:
+# $ git-pullrequest-update 42 --title "New title"        # Change the title
+# $ git-pullrequest-update 42 --body "New body"          # Change the body
+# $ git-pullrequest-update 42 --body-file ./body.md      # Body from a file
+# $ git-pullrequest-update 42 --title "T" --repo pixelastic/imoen
+# {"id","title","url"}
+setopt local_options err_return pipe_fail
+
+source "${functions_source[$0]:A:h:h}/github/__lib/body-resolve.zsh"
+
+zparseopts -E -D \
+  -title:=flagTitle \
+  -body:=flagBody \
+  -body-file:=flagBodyFile \
+  -repo:=flagRepo
+
+local id="$1"
+local repo="${flagRepo[2]}"
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+# Stop if there is nothing to change
+if (( ${#flagTitle} + ${#flagBody} + ${#flagBodyFile} == 0 )); then
+  print -u 2 "Give at least one of --title, --body or --body-file"
+  return 1
+fi
+
+git-github-body-resolve "${flagBody[@]}" "${flagBodyFile[@]}"
+
+local ghArgs=()
+[[ "$repo" != "" ]] && ghArgs+=(--repo "$repo")
+
+local editArgs=()
+(( ${#flagTitle} > 0 )) && editArgs+=(--title "${flagTitle[2]}")
+(( ${#flagBody} + ${#flagBodyFile} > 0 )) && editArgs+=(--body "$REPLY")
+
+gh pr edit "$id" \
+  "${editArgs[@]}" \
+  "${ghArgs[@]}" \
+  > /dev/null
+
+gh pr view "$id" \
+  --json number,title,url \
+  "${ghArgs[@]}" \
+  | jq '{id: .number, title, url}'
