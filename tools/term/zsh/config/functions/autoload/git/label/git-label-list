@@ -1,0 +1,39 @@
+# List the labels of a repo as a colored table, one row per label
+# For machine consumption, use git-label-list-raw
+# Takes the same flags as git-label-list-raw
+# Usage:
+# $ git-label-list                          # Labels of the current repo
+# $ git-label-list --repo pixelastic/imoen  # Another repo
+setopt local_options err_return
+
+# Read --repo without consuming it, because the raw command needs it too
+zparseopts -E -repo:=flagRepo
+local repo="${flagRepo[2]}"
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+# The raw command is named like this wrapper, with a -raw suffix
+local rawCommand="${0}-raw"
+
+local rawLabels="$($rawCommand "$@")"
+
+# Nothing to display if there is no label
+[[ "$rawLabels" == "" ]] && return 1
+
+local rows=()
+for rawLabel in ${(f)rawLabels}; do
+  local fields=("${(@ps/▮/)rawLabel}")
+
+  # Color the name with the color of the label. Keep the other columns as
+  # they are
+  local columns=("$(colorize-hex "${fields[1]}" "${fields[2]}")")
+  columns+=("${(@)fields[2,-1]}")
+
+  rows+=("${(j:▮:)columns}")
+done
+
+# One row per line, separated by real newlines. `table` splits the columns on ▮
+table "${(F)rows}"
