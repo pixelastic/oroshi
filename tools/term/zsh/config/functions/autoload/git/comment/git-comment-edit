@@ -1,0 +1,57 @@
+# Replace the body of an issue or pull request comment, and print it as JSON
+# The body comes from --body or from the content of --body-file, and is required.
+# REST finds the comment without the ID of its issue or pull request. Stops with
+# an error if the body is empty, or if GitHub refuses the edit
+# Usage:
+# $ git-comment-edit 987654 --body "New text"
+# $ git-comment-edit 987654 --body-file ./comment.md
+# $ git-comment-edit 987654 --body "New text" --repo pixelastic/imoen
+# {"id","url"}
+setopt local_options err_return pipe_fail
+
+source "${functions_source[$0]:A:h:h}/github/__lib/body-resolve.zsh"
+
+zparseopts -E -D \
+  -body:=flagBody \
+  -body-file:=flagBodyFile \
+  -repo:=flagRepo
+
+local id="$1"
+local repo="${flagRepo[2]}"
+
+# Stop if no comment is targeted
+if [[ "$id" == "" ]]; then
+  print -u 2 "Give a comment ID"
+  return 1
+fi
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+git-github-body-resolve "${flagBody[@]}" "${flagBodyFile[@]}"
+local body="$REPLY"
+
+# Stop if there is no text to post
+if [[ "$body" == "" ]]; then
+  print -u 2 "Give a non-empty --body or --body-file"
+  return 1
+fi
+
+# gh fills the placeholders from the current repo
+local repoPath='repos/{owner}/{repo}'
+[[ "$repo" != "" ]] && repoPath="repos/$repo"
+
+# --raw-field sends the body as is, --field would read a leading @ as a file
+local response="$(gh api "$repoPath/issues/comments/$id" \
+  --method PATCH \
+  --raw-field "body=$body")"
+
+# Stop if gh failed, as `local` hides its exit code
+[[ "$response" == "" ]] && return 1
+
+jq \
+  --null-input \
+  --argjson response "$response" \
+  '{id: $response.id, url: $response.html_url}'

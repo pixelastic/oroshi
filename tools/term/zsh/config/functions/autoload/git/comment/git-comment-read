@@ -1,0 +1,45 @@
+# Read one issue or pull request comment from its ID, and print it as JSON
+# REST finds the comment without the ID of its issue or pull request. Stops with
+# an error if the comment does not exist
+# Usage:
+# $ git-comment-read 987654                         # Comment of the current repo
+# $ git-comment-read 987654 --repo pixelastic/imoen # Comment of another repo
+# {"id","author","date","body","url"}
+setopt local_options err_return pipe_fail
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local id="$1"
+local repo="${flagRepo[2]}"
+
+# Stop if no comment is targeted
+if [[ "$id" == "" ]]; then
+  print -u 2 "Give a comment ID"
+  return 1
+fi
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+# gh fills the placeholders from the current repo
+local repoPath='repos/{owner}/{repo}'
+[[ "$repo" != "" ]] && repoPath="repos/$repo"
+
+local response="$(gh api "$repoPath/issues/comments/$id")"
+
+# Stop if gh found no comment, as `local` hides its exit code
+[[ "$response" == "" ]] && return 1
+
+jq \
+  --null-input \
+  --argjson response "$response" \
+'{
+    id: $response.id,
+    author: $response.user.login,
+    date: $response.created_at,
+    body: $response.body,
+    url: $response.html_url
+  }'
