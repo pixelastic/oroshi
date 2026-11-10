@@ -6,4 +6,4 @@ alias vghrl='git-github-rate-limit'
 alias vgho="git-github-open"
 alias vghos="git-github-open-settings"
 alias vghoi="git-issue-open"
-alias vghopr="git-github-open-pullrequests"
+alias vghopr="git-pullrequest-open"
