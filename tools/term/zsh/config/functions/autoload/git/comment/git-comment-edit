@@ -33,7 +33,7 @@ fi
 git-github-body-resolve "${flagBody[@]}" "${flagBodyFile[@]}"
 local body="$REPLY"
 
-# Stop if there is no text to post
+# Stop if there is no text to put in the comment
 if [[ "$body" == "" ]]; then
   print -u 2 "Give a non-empty --body or --body-file"
   return 1

@@ -36,3 +36,16 @@ setup() {
 	bats_run_zsh "git-pullrequest-open"
 	[[ "$status" -ne 0 ]]
 }
+
+@test "opens the PR of another repo with --repo" {
+	git-directory-is-github() { return 1; }
+	bats_mock git-directory-is-github
+
+	echo '#!/bin/sh' > "$BATS_TMP_DIR/fake-browser"
+	echo 'echo "$1" > "'"$BATS_TMP_DIR"'/opened-url.txt"' >> "$BATS_TMP_DIR/fake-browser"
+	chmod +x "$BATS_TMP_DIR/fake-browser"
+
+	bats_run_zsh "BROWSER=$BATS_TMP_DIR/fake-browser && git-pullrequest-open 42 --repo pixelastic/imoen"
+	[[ "$status" -eq 0 ]]
+	[[ "$(cat "$BATS_TMP_DIR/opened-url.txt")" == "https://github.com/pixelastic/imoen/pull/42" ]]
+}

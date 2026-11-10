@@ -33,3 +33,12 @@ setup() {
   [[ "$status" -eq 1 ]]
   [[ ! -f "$BATS_TMP_DIR/opened-url.txt" ]]
 }
+
+@test "opens the issue of another repo with --repo" {
+  git-directory-is-github() { return 1; }
+  bats_mock git-directory-is-github
+
+  bats_run_zsh "BROWSER=$BATS_TMP_DIR/fake-browser && git-issue-open 42 --repo pixelastic/imoen"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/opened-url.txt")" == "https://github.com/pixelastic/imoen/issues/42" ]]
+}

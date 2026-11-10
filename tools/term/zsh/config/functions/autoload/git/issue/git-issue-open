@@ -1,14 +1,24 @@
 # Open an issue in the browser, or the list of issues when no id is given
 # Usage:
-# $ git-issue-open            # Opens the list of issues
-# $ git-issue-open 42         # Opens issue 42
+# $ git-issue-open                              # Opens the list of issues
+# $ git-issue-open 42                           # Opens issue 42
+# $ git-issue-open 42 --repo pixelastic/imoen   # Opens issue 42 of another repo
 setopt local_options err_return
 
-# Stop if not in a GitHub repo
-git-directory-is-github || return 1
+zparseopts -E -D \
+  -repo:=flagRepo
 
-local id=$1
-local openedUrl="$(git-directory-url)"
+local id="$1"
+local repo="${flagRepo[2]}"
+local openedUrl
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+  openedUrl="$(git-directory-url)"
+else
+  openedUrl="https://github.com/${repo}"
+fi
 
 # Open a specific issue or the full list
 if [[ $id != "" ]]; then
