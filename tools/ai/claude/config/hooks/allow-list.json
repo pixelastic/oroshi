@@ -223,6 +223,7 @@
   "git --version",
   "git-branch-current",
   "git-branch-list",
+  "git-branch-pull",
   "git-branch-slug",
   "git-commit-current",
   "git-commit-message",

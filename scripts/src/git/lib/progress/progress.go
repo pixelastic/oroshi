@@ -61,6 +61,12 @@ func (m Model) FailureOutput() string {
 	if m.exitCode == 0 || len(m.errors) > 0 {
 		return ""
 	}
+	return m.RawOutput()
+}
+
+// RawOutput returns every raw line of the stream, whether or not the process
+// failed.
+func (m Model) RawOutput() string {
 	return strings.Join(m.rawLines, "\n")
 }
 

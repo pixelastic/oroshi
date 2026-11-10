@@ -89,6 +89,18 @@ func TestFailureOutputEmptyWhenErrorsAlreadyClassified(t *testing.T) {
 	assert.Empty(t, m.FailureOutput())
 }
 
+// --- Raw output ---
+
+func TestRawOutputReturnsRawLinesEvenWhenErrorsAreClassified(t *testing.T) {
+	m := update(New(42),
+		stream.LineMsg{Line: "fatal: not a repository"},
+		ErrorMsg{Raw: "not a repository"},
+		stream.LineMsg{Line: "Please make sure you have the correct access rights"},
+		DoneMsg{ExitCode: 128},
+	)
+	assert.Equal(t, "fatal: not a repository\nPlease make sure you have the correct access rights", m.RawOutput())
+}
+
 // --- Raw output toggle (Ctrl+O) ---
 
 var ctrlO = tea.KeyMsg{Type: tea.KeyCtrlO}

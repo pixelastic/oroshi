@@ -1,0 +1,6 @@
+# Auto-build and run the git-branch-pull-pretty Go binary
+# Usage:
+# $ git-branch-pull-pretty
+setopt local_options err_return
+
+go-run-oroshi git-branch-pull-pretty "$@"
