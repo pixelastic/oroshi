@@ -175,3 +175,44 @@ SCRIPT
   [[ "$status" -eq 1 ]]
   [[ "$output" == *"eslint"* ]]
 }
+
+@test "--original-path fixes the content through stdin, named after the original path" {
+  local file="$BATS_TMP_DIR/.conform.123.app.js"
+  local originalDir="$BATS_TMP_DIR/project/src"
+  mkdir -p "$originalDir"
+  local originalPath="$originalDir/app.js"
+  printf 'var x = 1;\n' > "$file"
+
+  mock_eslint <<SCRIPT
+#!/bin/bash
+printf '%s\n' "\$*" > "$BATS_TMP_DIR/eslint_args"
+# Simulate --fix-to-stdout: read the source from stdin, print the fixed code
+sed 's/var/const/' 
+exit 0
+SCRIPT
+
+  bats_run_zsh "source $LIB_DIR/eslint-fix.zsh && eslint-fix $file --original-path $originalPath"
+  [[ "$status" -eq 0 ]]
+  local args="$(cat "$BATS_TMP_DIR/eslint_args")"
+  [[ "$args" == *"--stdin"* ]]
+  [[ "$args" == *"--stdin-filename $originalPath"* ]]
+  [[ "$args" == *"--fix-to-stdout"* ]]
+  # The file itself is not given to eslint, but receives the fixed code
+  [[ "$args" != *"$file"* ]]
+  [[ "$(cat "$file")" == "const x = 1;" ]]
+}
+
+@test "--original-path keeps the file untouched when eslint prints nothing" {
+  local file="$BATS_TMP_DIR/tmp-copy.js"
+  local originalPath="$BATS_TMP_DIR/app.js"
+  printf 'var x = 1;\n' > "$file"
+
+  mock_eslint <<'SCRIPT'
+#!/bin/bash
+exit 0
+SCRIPT
+
+  bats_run_zsh "source $LIB_DIR/eslint-fix.zsh && eslint-fix $file --original-path $originalPath"
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$file")" == "var x = 1;" ]]
+}

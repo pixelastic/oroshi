@@ -33,8 +33,10 @@ local expanded="$(file-expand --filter is-json "$@")"
 local -a files=("${(@f)expanded}")
 
 # Stdout mode: swap the file for a temp copy
+# The copy is not the real file, so config and file name must come from the real path
 local temporaryFile=""
 if [[ $isStdout -eq 1 ]]; then
+  originalPath="${originalPath:-${files[1]:a}}"
   temporaryFile="$(mktemp)"
   cp "${files[1]}" "$temporaryFile"
   files=("$temporaryFile")
@@ -42,7 +44,7 @@ fi
 
 # Build --original-path args if set
 local -a originalPathArgs=()
-[[ $hasOriginalPath -eq 1 ]] && originalPathArgs=(--original-path "$originalPath")
+[[ "$originalPath" != "" ]] && originalPathArgs=(--original-path "$originalPath")
 
 # If inputs contain package.json files, they need to be handled specifically:
 local -a packageFiles=(${(M)files:#(*/|)package.json})

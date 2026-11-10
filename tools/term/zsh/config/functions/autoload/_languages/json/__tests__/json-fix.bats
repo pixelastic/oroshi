@@ -182,3 +182,50 @@ setup() {
   [[ "$jsonCalls" == *"other.json"* ]]
   [[ "$jsonCalls" != *"package.json"* ]]
 }
+
+@test "tells eslint the file is named like --original-path, even for a package.json" {
+  local file="$BATS_TMP_DIR/.conform.123.package.json"
+  echo '{"a":1}' > "$file"
+  local originalDir="$BATS_TMP_DIR/project"
+  mkdir -p "$originalDir"
+  local originalPath="$originalDir/package.json"
+
+  # Simulate eslint --fix-to-stdout: print the fixed content of stdin
+  eslint_d() {
+    echo "eslint_d $*" >> "$BATS_TMP_DIR/calls"
+    cat > /dev/null
+    echo '{"fixed":true}'
+  }
+  bats_mock eslint_d
+
+  bats_run_zsh "json-fix --original-path $originalPath $file"
+  [[ "$status" -eq 0 ]]
+
+  # eslint only applies its package.json rules to files named package.json
+  local eslintCall="$(grep '^eslint_d' "$BATS_TMP_DIR/calls")"
+  [[ "$eslintCall" == *"--stdin-filename $originalPath"* ]]
+  [[ "$(cat "$file")" == *'"fixed"'* ]]
+  # No intermediate file is created next to the original
+  [[ "$(ls -A "$originalDir")" == "" ]]
+}
+
+@test "--stdout tells eslint the file is named like the real file" {
+  local file="$BATS_TMP_DIR/package.json"
+  echo '{"a":1}' > "$file"
+
+  eslint_d() {
+    echo "eslint_d $*" >> "$BATS_TMP_DIR/calls"
+    cat > /dev/null
+    echo '{"fixed":true}'
+  }
+  bats_mock eslint_d
+
+  bats_run_zsh "json-fix --stdout $file"
+  [[ "$status" -eq 0 ]]
+
+  local eslintCall="$(grep '^eslint_d' "$BATS_TMP_DIR/calls")"
+  [[ "$eslintCall" == *"--stdin-filename $file"* ]]
+  [[ "$output" == *'"fixed"'* ]]
+  # The real file is left untouched
+  [[ "$(cat "$file")" == '{"a":1}' ]]
+}

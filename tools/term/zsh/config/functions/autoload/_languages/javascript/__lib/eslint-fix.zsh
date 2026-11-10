@@ -4,6 +4,43 @@
 # $ eslint-fix file.js --original-path /real/path   # Config from real path
 source "${0:A:h}/eslint-helpers.zsh"
 
+# Fix the given files in place, and return the eslint exit code
+# Args: workingDirectory configFile originalPath files...
+function __eslint-fix-in-place() {
+  local workingDirectory="$1"
+  local configFile="$2"
+  shift 3
+
+  # Change subshell to allow linting files outside of the caller's working dir
+  (cd "$workingDirectory" && eslint_d --config "$configFile" --fix "$@" >/dev/null)
+}
+
+# Fix the content of a single file as if it was named originalPath, and return
+# the eslint exit code. The file is a copy under another name: eslint reads it
+# from stdin, so name-specific rules (like package.json ones) apply
+# Args: workingDirectory configFile originalPath file
+function __eslint-fix-as-original() {
+  local workingDirectory="$1"
+  local configFile="$2"
+  local originalPath="$3"
+  local file="$4"
+
+  local fixedFile="$(mktemp)"
+  local exitCode=0
+  local eslintArgs=(
+    --config "$configFile"
+    --stdin
+    --stdin-filename "$originalPath"
+    --fix-to-stdout
+  )
+  (cd "$workingDirectory" && eslint_d "${eslintArgs[@]}" < "$file" > "$fixedFile") || exitCode=$?
+
+  # Only overwrite the file when eslint did not crash and returned some code
+  [[ $exitCode -le 1 && -s "$fixedFile" ]] && cp "$fixedFile" "$file"
+  rm -f "$fixedFile"
+  return $exitCode
+}
+
 function eslint-fix() {
   setopt local_options err_return
 
@@ -34,11 +71,11 @@ function eslint-fix() {
   # Point eslint_d to the right node_modules/eslint
   local -x ESLINT_D_ROOT="$(__eslint-root "$projectRoot")"
 
-  local eslintArgs=(--config "$configFile" --fix)
-
   # Change subshell to allow linting files outside of the caller's working dir
   local exitCode=0
-  (cd "$workingDirectory" && eslint_d ${eslintArgs[@]} "$@" >/dev/null) || exitCode=$?
+  local fixer=__eslint-fix-in-place
+  [[ $originalPath != "" ]] && fixer=__eslint-fix-as-original
+  $fixer "$workingDirectory" "$configFile" "${originalPath:a}" "$@" || exitCode=$?
 
   # eslint exit code 0: everything is fixed, no problem remains
   [[ $exitCode -eq 0 ]] && return 0
