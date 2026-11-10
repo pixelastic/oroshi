@@ -1,0 +1,71 @@
+# Merge a pull request, and print its id and the state obtained as JSON
+# It rebases by default. The pull request must be clean, any other merge state
+# stops with an error, unless --force skips that check. It never merges with
+# admin rights. Stops with an error if both --merge and --squash are given
+# Usage:
+# $ git-pullrequest-accept 42                         # Rebase and merge
+# $ git-pullrequest-accept 42 --merge                 # Create a merge commit
+# $ git-pullrequest-accept 42 --squash                # Squash and merge
+# $ git-pullrequest-accept 42 --force                 # Skip the merge state check
+# $ git-pullrequest-accept 42 --repo pixelastic/imoen # Pull request of another repo
+# {"id","state"}
+# state is merged, auto-merge or queued, as gh may enable auto-merge or queue
+# the pull request on a protected branch.
+setopt local_options err_return pipe_fail
+
+source "${functions_source[$0]:A:h}/__lib/merge-gate.zsh"
+
+zparseopts -E -D \
+  -merge=flagMerge \
+  -squash=flagSquash \
+  -force=flagForce \
+  -repo:=flagRepo
+
+local id="$1"
+local repo="${flagRepo[2]}"
+local isForce=${#flagForce}
+
+# Stop if not in a GitHub repo, unless --repo targets another one
+if [[ "$repo" == "" ]]; then
+  git-directory-is-github || return 1
+fi
+
+# The merge strategy must be unambiguous
+if (( ${#flagMerge} > 0 && ${#flagSquash} > 0 )); then
+  print -u 2 "Give --merge or --squash, not both"
+  return 1
+fi
+
+local ghArgs=()
+[[ "$repo" != "" ]] && ghArgs+=(--repo "$repo")
+
+# Stop if the pull request is not clean, unless forced
+if [[ $isForce == 0 ]]; then
+  git-pullrequest-merge-gate "$id" "${ghArgs[@]}"
+fi
+
+local strategy="--rebase"
+(( ${#flagMerge} > 0 )) && strategy="--merge"
+(( ${#flagSquash} > 0 )) && strategy="--squash"
+
+gh pr merge "$id" \
+  "$strategy" \
+  "${ghArgs[@]}" \
+  > /dev/null
+
+# A pull request that is still open after gh merged it was queued, unless it
+# has an auto-merge request
+gh pr view "$id" \
+  --json number,state,autoMergeRequest \
+  "${ghArgs[@]}" \
+| jq '
+    {
+      id: .number,
+      state: (
+        if .state == "MERGED" then "merged"
+        elif .autoMergeRequest != null then "auto-merge"
+        else "queued"
+        end
+      )
+    }
+  '
