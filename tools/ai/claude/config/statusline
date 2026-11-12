@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Render the Claude Code statusline with context, cost, model, sub-agent, mcp, plan and ralph auto badges
+# The mcp badge lists the servers connected in the session, read from the transcript at `transcript_path`
 # Usage:
 # $ statusline < status.json  # Render from the Claude Code statusLine JSON
 # $ statusline --dry-run      # Render with fake session data
@@ -17,6 +18,7 @@ if [[ "$1" == "--dry-run" ]]; then
   local totalTokens=51000
   local contextPercentage=24
   local sessionId=""
+  local transcriptPath=""
 else
   local stdinData=$(cat)
   local currentDir=$(echo "$stdinData" | jq -r '.workspace.current_dir')
@@ -25,6 +27,7 @@ else
   local totalTokens=$(echo "$stdinData" | jq -r '.context_window.current_usage | (.input_tokens + .output_tokens + .cache_creation_input_tokens + .cache_read_input_tokens)')
   local contextPercentage=$(echo "$stdinData" | jq -r '.context_window.used_percentage // 0')
   local sessionId=$(echo "$stdinData" | jq -r '.session_id // ""')
+  local transcriptPath=$(echo "$stdinData" | jq -r '.transcript_path // ""')
 fi
 
 local statusline=()
@@ -72,14 +75,8 @@ local subagentBadge="$(claude-subagent-badge "$sessionId")"
 # statusline+=("$displaySession")
 
 # MCP Servers
-local mcpConfigFile=~/.claude.json
-local mcpServers=("${(@f)$(jq -r '.mcpServers // {} | keys[]' "$mcpConfigFile" 2>/dev/null)}")
-local -a mcpDisplay=()
-for serverName in $mcpServers; do
-  local icon="${ICONS[claude-mcp-${serverName}]:-$serverName}"
-  mcpDisplay+=("$(colorize "$icon" $COLORS[claude-mcp])")
-done
-[[ ${#mcpDisplay} -gt 0 ]] && statusline+=("${(j: :)mcpDisplay} ")
+local mcpBadge="$(claude-mcp-badge "$transcriptPath")"
+[[ "$mcpBadge" != "" ]] && statusline+=("$mcpBadge ")
 
 # Ralph plan progress
 local planDirectory="$(plan-directory "$currentDir")"
