@@ -1,5 +1,6 @@
 # List the MCP servers connected in a Claude transcript, one raw name per line
 # A server is connected when it has a tool other than its authentication tools
+# Entries are replayed in file order, so late connections appear and removals disappear
 # Empty output when the transcript is missing, empty, or has no MCP tools
 # Usage:
 # $ claude-transcript-mcp-list-raw ~/.claude/projects/foo/abc.jsonl
@@ -14,9 +15,14 @@ local transcriptPath="$1"
 # Tool names look like mcp__<server>__<tool>
 local servers="$(
   grep --fixed-strings 'deferred_tools_delta' "$transcriptPath" \
-    | jq --raw-output '
-      select(.attachment.type == "deferred_tools_delta")
-      | .attachment.addedNames[]?
+    | jq --null-input --raw-output '
+      # Replay every entry in file order: add the new tools, then drop the removed ones
+      reduce (
+        inputs
+        | select(.attachment.type == "deferred_tools_delta")
+        | .attachment
+      ) as $delta ([]; (. + ($delta.addedNames // [])) - ($delta.removedNames // []))
+      | .[]
       | select(startswith("mcp__"))
       | split("__")
       | select(.[2:] | join("__") | IN("authenticate", "complete_authentication") | not)
