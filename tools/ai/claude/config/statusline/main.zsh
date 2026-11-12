@@ -12,7 +12,7 @@ colors-load-definitions
 
 # Load the segments, in an explicit list
 local segmentsDirectory="$OROSHI_ROOT/tools/ai/claude/config/statusline/segments"
-for segmentName in context cost model subagent mcp; do
+for segmentName in context cost model subagent mcp ralph; do
   source "$segmentsDirectory/$segmentName.zsh"
 done
 
@@ -71,15 +71,9 @@ getSubagentSegment "$sessionId"
 getMcpSegment "$transcriptPath"
 [[ "$REPLY" != "" ]] && statusline+=("$REPLY")
 
-# Ralph plan progress
-local planDirectory="$(plan-directory "$currentDir")"
-local planBadge="$(plan-badge "$planDirectory")"
-[[ "$planBadge" != "" ]] && statusline+=("$planBadge")
-
-# Ralph auto mode
-local ralphMode=""
-[[ "$planDirectory" != "" ]] && ralphMode="$(ralph-mode "$planDirectory")"
-[[ "$ralphMode" == "auto" ]] && statusline+=("$(colorize "$ICONS[ralph-auto]" $COLORS[ralph-auto])")
+# Ralph plan progress and auto mode
+getRalphSegment "$currentDir"
+[[ "$REPLY" != "" ]] && statusline+=("$REPLY")
 
 # Join the non-empty segments with a no-break space
 local separator=$'\u00a0'
