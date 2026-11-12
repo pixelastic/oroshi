@@ -1,25 +1,27 @@
 # List the MCP servers connected in a Claude transcript, one raw name per line
 # A server is connected when it has a tool other than its authentication tools
 # Entries are replayed in file order, so late connections appear and removals disappear
-# Empty output when the transcript is missing, empty, or has no MCP tools
+# Empty output when the transcript is missing, unreadable, empty, or has no MCP tools
+# Lines that are not valid JSON are skipped
 # Usage:
 # $ claude-transcript-mcp-list-raw ~/.claude/projects/foo/abc.jsonl
 setopt local_options err_return
 
 local transcriptPath="$1"
 
-# No transcript: no servers to list
-[[ ! -f "$transcriptPath" ]] && return 0
+# No readable transcript: no servers to list
+[[ ! -f "$transcriptPath" || ! -r "$transcriptPath" ]] && return 0
 
 # Prefilter with grep: much faster than parsing every line with jq.
 # Tool names look like mcp__<server>__<tool>
 local servers="$(
   grep --fixed-strings 'deferred_tools_delta' "$transcriptPath" \
-    | jq --null-input --raw-output '
+    | jq --null-input --raw-input --raw-output '
       # Replay every entry in file order: add the new tools, then drop the removed ones
       reduce (
         inputs
-        | select(.attachment.type == "deferred_tools_delta")
+        | fromjson?
+        | select(.attachment?.type? == "deferred_tools_delta")
         | .attachment
       ) as $delta ([]; (. + ($delta.addedNames // [])) - ($delta.removedNames // []))
       | .[]

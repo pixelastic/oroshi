@@ -60,3 +60,17 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ "$output" == "" ]]
 }
+
+@test "prints nothing and no error when the transcript is missing" {
+  bats_run_zsh "claude-mcp-badge $BATS_TMP_DIR/missing.jsonl 2>&1"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+}
+
+@test "prints nothing and no error when the transcript has invalid JSON lines only" {
+  echo 'deferred_tools_delta {not json' >"$BATS_TMP_DIR/transcript.jsonl"
+
+  bats_run_zsh "claude-mcp-badge $BATS_TMP_DIR/transcript.jsonl 2>&1"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+}

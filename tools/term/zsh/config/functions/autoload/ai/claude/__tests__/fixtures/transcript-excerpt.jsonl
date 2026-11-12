@@ -1,0 +1,2 @@
+{"type":"attachment","isSidechain":false,"entrypoint":"cli","userType":"external","version":"2.1.287","attachment":{"type":"deferred_tools_delta","addedNames":["Monitor","WebSearch","mcp__claude_ai_Algolia_Productivity__authenticate","mcp__claude_ai_Algolia_Productivity__complete_authentication","mcp__claude_ai_Claude_Docs__batch","mcp__claude_ai_Claude_Docs__guide"],"removedNames":[]}}
+{"type":"user","isSidechain":false,"userType":"external","message":{"role":"user","content":"hello"}}

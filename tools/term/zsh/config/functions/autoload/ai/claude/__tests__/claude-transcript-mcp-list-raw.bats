@@ -117,3 +117,46 @@ remove_tools() {
   bats_run_zsh "claude-transcript-mcp-list-raw $TRANSCRIPT"
   [[ "$output" == "claude_ai_Gmail" ]]
 }
+
+@test "lists the servers of a real transcript excerpt" {
+  bats_run_zsh "claude-transcript-mcp-list-raw $BATS_TEST_DIRNAME/fixtures/transcript-excerpt.jsonl"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "claude_ai_Claude_Docs" ]]
+}
+
+@test "still lists the valid servers when a line is not valid JSON" {
+  add_tools mcp__claude_ai_Slack__slack_read_channel
+  echo 'deferred_tools_delta {not json' >>"$TRANSCRIPT"
+  add_tools mcp__context7__query-docs
+
+  bats_run_zsh "claude-transcript-mcp-list-raw $TRANSCRIPT"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == $'claude_ai_Slack\ncontext7' ]]
+}
+
+@test "prints nothing and no error when every line is not valid JSON" {
+  echo 'deferred_tools_delta {not json' >"$TRANSCRIPT"
+
+  bats_run_zsh "claude-transcript-mcp-list-raw $TRANSCRIPT 2>&1"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+}
+
+@test "prints nothing and no error when the transcript is unreadable" {
+  add_tools mcp__claude_ai_Slack__slack_read_channel
+  chmod 000 "$TRANSCRIPT"
+
+  bats_run_zsh "claude-transcript-mcp-list-raw $TRANSCRIPT 2>&1"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "" ]]
+}
+
+@test "prints no error when a line is valid JSON but not an entry object" {
+  add_tools mcp__claude_ai_Slack__slack_read_channel
+  echo '"deferred_tools_delta"' >>"$TRANSCRIPT"
+  echo '{"attachment":"deferred_tools_delta"}' >>"$TRANSCRIPT"
+
+  bats_run_zsh "claude-transcript-mcp-list-raw $TRANSCRIPT 2>&1"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "claude_ai_Slack" ]]
+}
