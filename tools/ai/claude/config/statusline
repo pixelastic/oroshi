@@ -76,7 +76,7 @@ local subagentBadge="$(claude-subagent-badge "$sessionId")"
 
 # MCP Servers
 local mcpBadge="$(claude-mcp-badge "$transcriptPath")"
-[[ "$mcpBadge" != "" ]] && statusline+=("$mcpBadge ")
+[[ "$mcpBadge" != "" ]] && statusline+=("$mcpBadge "_)
 
 # Ralph plan progress
 local planDirectory="$(plan-directory "$currentDir")"

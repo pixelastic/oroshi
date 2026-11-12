@@ -53,9 +53,9 @@
 
   // Claude
   "claude": "●",
-  "claude-mcp-context7": "c7",
-  "claude-mcp-claude_ai_Claude_Docs": "C-DOCS",
-  "claude-mcp-claude_ai_Slack": "slack",
+  "claude-mcp-context7": "󰼕",
+  "claude-mcp-claude_ai_Claude_Docs": "",
+  "claude-mcp-claude_ai_Slack": "",
   "claude-subagent": "󱪂\u2002",
 
   // Ralph

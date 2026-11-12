@@ -118,7 +118,7 @@ mock_mcp_badge() {
   mock_mcp_badge "/some/transcript.jsonl"
   statusline_run "/some/dir" 0 0 "x" 0 "/some/transcript.jsonl"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == *"test MCP "* ]]
+  [[ "$(bats_strip_ansi "$output")" == *"test MCP _"* ]]
 }
 
 @test "mcp badge: no section when transcript_path is missing" {
@@ -168,14 +168,14 @@ mock_mcp_badge() {
   bats_mock claude-subagent-badge
   statusline_run "/some/dir" 0 0 "abc-123" 0 "/some/transcript.jsonl"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == *"test DOTS MCP " ]]
+  [[ "$(bats_strip_ansi "$output")" == *"test DOTS MCP _" ]]
 }
 
 @test "sub-agent badge: no extra segment when the badge is empty" {
   mock_mcp_badge "/some/transcript.jsonl"
   statusline_run "/some/dir" 0 0 "abc-123" 0 "/some/transcript.jsonl"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == *"test MCP " ]]
+  [[ "$(bats_strip_ansi "$output")" == *"test MCP _" ]]
 }
 
 @test "mcp badge: rendered before the plan badge" {
@@ -184,7 +184,7 @@ mock_mcp_badge() {
   plan-badge() { echo "PLAN_BADGE"; }
   bats_mock plan-directory plan-badge
   statusline_run "/some/dir" 0 0 "x" 0 "/some/transcript.jsonl"
-  [[ "$(bats_strip_ansi "$output")" == *"MCP PLAN_BADGE "* ]]
+  [[ "$(bats_strip_ansi "$output")" == *"MCP _PLAN_BADGE "* ]]
 }
 
 @test "ralph auto: yellow icon right after the plan badge when mode is auto" {
