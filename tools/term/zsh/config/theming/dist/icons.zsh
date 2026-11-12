@@ -3,6 +3,8 @@ typeset -gA ICONS
 ICONS[badge-separator]=""
 ICONS[bats]="󰭟"
 ICONS[claude]="●"
+ICONS[claude-mcp-claude_ai_Claude_Docs]="C-DOCS"
+ICONS[claude-mcp-claude_ai_Slack]="slack"
 ICONS[claude-mcp-context7]="c7"
 ICONS[claude-subagent]="󱪂 "
 ICONS[colors-hex]=""

@@ -2,6 +2,8 @@
   "badge-separator": "",
   "bats": "󰭟",
   "claude": "●",
+  "claude-mcp-claude_ai_Claude_Docs": "C-DOCS",
+  "claude-mcp-claude_ai_Slack": "slack",
   "claude-mcp-context7": "c7",
   "claude-subagent": "󱪂 ",
   "colors-hex": "",
