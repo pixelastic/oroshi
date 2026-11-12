@@ -23,13 +23,13 @@ setup() {
   icons-load-definitions() {
     typeset -gA ICONS
     ICONS[ralph-auto]="AUTO"
+    ICONS[claude-mcp-context7]="MCP"
     ICONS[claude-subagent]=$'DOT '
   }
   plan-directory() { echo ""; }
   plan-badge() { echo ""; }
   ralph-mode() { echo ""; }
-  claude-mcp-badge() { echo ""; }
-  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge ralph-mode claude-mcp-badge
+  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge ralph-mode
 }
 
 statusline_json() {
@@ -66,15 +66,15 @@ statusline_run() {
   bats_run_zsh "${OROSHI_ROOT}/tools/ai/claude/config/statusline/index.zsh < '${BATS_TMP_DIR}/input.json'"
 }
 
-# Mock claude-mcp-badge: prints "MCP" only for the given transcript path
+# Mock the transcript MCP list: connects context7 (icon "MCP") only for the given transcript path
 # Usage: mock_mcp_badge "/some/transcript.jsonl"
 mock_mcp_badge() {
   bats_mock_env "MOCK_TRANSCRIPT" "$1"
-  claude-mcp-badge() {
-    [[ "$1" == "$MOCK_TRANSCRIPT" && "$1" != "" ]] && echo "MCP"
+  claude-transcript-mcp-list-raw() {
+    [[ "$1" == "$MOCK_TRANSCRIPT" && "$1" != "" ]] && echo "context7"
     return 0
   }
-  bats_mock claude-mcp-badge
+  bats_mock claude-transcript-mcp-list-raw
 }
 
 @test "renders badge, tokens, cost, and model" {
@@ -86,7 +86,7 @@ mock_mcp_badge() {
 @test "separator: joins non-empty segments with a no-break space" {
   mock_mcp_badge "/some/transcript.jsonl"
   statusline_run "/some/dir" 51000 0.05 "x" 0 "/some/transcript.jsonl"
-  [[ "$(bats_strip_ansi "$output")" == "BADGE${NBSP}51k${NBSP}5¢${NBSP}test${NBSP}MCP _" ]]
+  [[ "$(bats_strip_ansi "$output")" == "BADGE${NBSP}51k${NBSP}5¢${NBSP}test${NBSP}MCP" ]]
 }
 
 @test "separator: leaves no trailing separator" {
@@ -106,7 +106,7 @@ mock_mcp_badge() {
   mock_mcp_badge "/some/transcript.jsonl"
   statusline_run "/some/dir" 0 0 "x" 0 "/some/transcript.jsonl"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == *"test${NBSP}MCP _"* ]]
+  [[ "$(bats_strip_ansi "$output")" == *"test${NBSP}MCP"* ]]
 }
 
 @test "mcp badge: no section when transcript_path is missing" {
@@ -156,14 +156,14 @@ mock_mcp_badge() {
   echo '{"subagents":[{"id":"a1","status":"running"}]}' >"$CLAUDE_SESSIONS_DIR/abc-123/statusline.json"
   statusline_run "/some/dir" 0 0 "abc-123" 0 "/some/transcript.jsonl"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == *"test${NBSP}DOT${EN_SPACE}${NBSP}MCP _" ]]
+  [[ "$(bats_strip_ansi "$output")" == *"test${NBSP}DOT${EN_SPACE}${NBSP}MCP" ]]
 }
 
 @test "sub-agent badge: no extra segment when the badge is empty" {
   mock_mcp_badge "/some/transcript.jsonl"
   statusline_run "/some/dir" 0 0 "abc-123" 0 "/some/transcript.jsonl"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == *"test${NBSP}MCP _" ]]
+  [[ "$(bats_strip_ansi "$output")" == *"test${NBSP}MCP" ]]
 }
 
 @test "mcp badge: rendered before the plan badge" {
@@ -172,7 +172,7 @@ mock_mcp_badge() {
   plan-badge() { echo "PLAN_BADGE"; }
   bats_mock plan-directory plan-badge
   statusline_run "/some/dir" 0 0 "x" 0 "/some/transcript.jsonl"
-  [[ "$(bats_strip_ansi "$output")" == *"MCP _${NBSP}PLAN_BADGE"* ]]
+  [[ "$(bats_strip_ansi "$output")" == *"MCP${NBSP}PLAN_BADGE"* ]]
 }
 
 @test "ralph auto: yellow icon right after the plan badge when mode is auto" {

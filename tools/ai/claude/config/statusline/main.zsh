@@ -12,7 +12,7 @@ colors-load-definitions
 
 # Load the segments, in an explicit list
 local segmentsDirectory="$OROSHI_ROOT/tools/ai/claude/config/statusline/segments"
-for segmentName in context cost model subagent; do
+for segmentName in context cost model subagent mcp; do
   source "$segmentsDirectory/$segmentName.zsh"
 done
 
@@ -68,8 +68,8 @@ getSubagentSegment "$sessionId"
 # statusline+=("$displaySession")
 
 # MCP Servers
-local mcpBadge="$(claude-mcp-badge "$transcriptPath")"
-[[ "$mcpBadge" != "" ]] && statusline+=("$mcpBadge _")
+getMcpSegment "$transcriptPath"
+[[ "$REPLY" != "" ]] && statusline+=("$REPLY")
 
 # Ralph plan progress
 local planDirectory="$(plan-directory "$currentDir")"

@@ -28,8 +28,7 @@ setup() {
   plan-directory() { echo ""; }
   plan-badge() { echo ""; }
   ralph-mode() { echo ""; }
-  claude-mcp-badge() { echo ""; }
-  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge ralph-mode claude-mcp-badge
+  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge ralph-mode
 }
 
 @test "renders the statusline from the Claude Code JSON" {
