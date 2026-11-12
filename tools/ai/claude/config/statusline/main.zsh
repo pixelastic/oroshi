@@ -10,6 +10,12 @@ set -e
 icons-load-definitions
 colors-load-definitions
 
+# Load the segments, in an explicit list
+local segmentsDirectory="$OROSHI_ROOT/tools/ai/claude/config/statusline/segments"
+for segmentName in context cost model; do
+  source "$segmentsDirectory/$segmentName.zsh"
+done
+
 # Real values from files, fake values for session data
 if [[ "$1" == "--dry-run" ]]; then
   local currentDir="$PWD"
@@ -38,37 +44,24 @@ local statusline=()
 # local effortLevel=$(jq -r '.effortLevel // "medium"' "$settingsFile")
 # }}}
 
-# Context Badge
-local displayBadge="$(context-badge "$currentDir")"
-[[ "$displayBadge" != "" ]] && statusline+=("$displayBadge ")
-
-# Context budget
-local tokensKRaw=$(printf "%.1f" $((totalTokens / 1000.0)))
-local tokensK="${tokensKRaw%\.0}k"
-local contextColor=$COLORS[claude-contextHigh]
-((contextPercentage < 60)) && contextColor=$COLORS[claude-contextMedium]
-((contextPercentage < 20)) && contextColor=$COLORS[claude-contextLow]
-local displayContext="$(colorize "${tokensK}" $contextColor)"
-statusline+=("$displayContext ")
+# Context (badge and token budget)
+getContextSegment \
+  --total-tokens "$totalTokens" \
+  --context-percentage "$contextPercentage" \
+  --current-dir "$currentDir"
+[[ "$REPLY" != "" ]] && statusline+=("$REPLY")
 
 # Cost
-local isInCents=$((totalCost < 1))
-if [[ $isInCents == "1" ]]; then
-  local roundedCents=$((totalCost * 100 + 0.5))
-  local displayCost="$(colorize "${roundedCents%.*}¢" $COLORS[claude-costLow])"
-else
-  local roundedDollars=$(printf "$%.2f" "$totalCost")
-  local displayCost="$(colorize "${roundedDollars}" $COLORS[claude-costHigh])"
-fi
-statusline+=("$displayCost ")
+getCostSegment "$totalCost"
+[[ "$REPLY" != "" ]] && statusline+=("$REPLY")
 
 # Model
-local displayModel="$(colorize "${modelName}" $COLORS[claude-model])"
-statusline+=("$displayModel ")
+getModelSegment "$modelName"
+[[ "$REPLY" != "" ]] && statusline+=("$REPLY")
 
 # Sub-agent dots
 local subagentBadge="$(claude-subagent-badge "$sessionId")"
-[[ "$subagentBadge" != "" ]] && statusline+=("$subagentBadge ")
+[[ "$subagentBadge" != "" ]] && statusline+=("$subagentBadge")
 
 # Session ID
 # local displaySession="$(colorize "[${sessionId}]" $COLORS[claude-sessionId])"
@@ -76,16 +69,18 @@ local subagentBadge="$(claude-subagent-badge "$sessionId")"
 
 # MCP Servers
 local mcpBadge="$(claude-mcp-badge "$transcriptPath")"
-[[ "$mcpBadge" != "" ]] && statusline+=("$mcpBadge "_)
+[[ "$mcpBadge" != "" ]] && statusline+=("$mcpBadge _")
 
 # Ralph plan progress
 local planDirectory="$(plan-directory "$currentDir")"
 local planBadge="$(plan-badge "$planDirectory")"
-[[ "$planBadge" != "" ]] && statusline+=("$planBadge ")
+[[ "$planBadge" != "" ]] && statusline+=("$planBadge")
 
 # Ralph auto mode
 local ralphMode=""
 [[ "$planDirectory" != "" ]] && ralphMode="$(ralph-mode "$planDirectory")"
-[[ "$ralphMode" == "auto" ]] && statusline+=("$(colorize "$ICONS[ralph-auto]" $COLORS[ralph-auto]) ")
+[[ "$ralphMode" == "auto" ]] && statusline+=("$(colorize "$ICONS[ralph-auto]" $COLORS[ralph-auto])")
 
-print "${(j::)statusline}"
+# Join the non-empty segments with a no-break space
+local separator=$'\u00a0'
+print "${(pj:$separator:)statusline}"

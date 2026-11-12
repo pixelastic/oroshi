@@ -3,6 +3,8 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
 
+  NBSP=$'\u00a0'
+
   INDEX="${OROSHI_ROOT}/tools/ai/claude/config/statusline/index.zsh"
 
   # Stub every external helper of main.zsh so the output only depends on the JSON input
@@ -50,7 +52,7 @@ setup() {
 EOF
   bats_run_zsh "${INDEX} < '${BATS_TMP_DIR}/input.json'"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == "BADGE 51k 5¢ test " ]]
+  [[ "$(bats_strip_ansi "$output")" == "BADGE${NBSP}51k${NBSP}5¢${NBSP}test" ]]
 }
 
 @test "sources the main.zsh of the current OROSHI_ROOT" {
@@ -68,5 +70,5 @@ EOF
 @test "supports --dry-run" {
   bats_run_zsh "${INDEX} --dry-run"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == "BADGE 51k 0¢ Sonnet 4.6 " ]]
+  [[ "$(bats_strip_ansi "$output")" == "BADGE${NBSP}51k${NBSP}0¢${NBSP}Sonnet 4.6" ]]
 }
