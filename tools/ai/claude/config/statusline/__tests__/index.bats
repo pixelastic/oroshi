@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR/sessions"
 
   NBSP=$'\u00a0'
 
@@ -27,9 +28,8 @@ setup() {
   plan-directory() { echo ""; }
   plan-badge() { echo ""; }
   ralph-mode() { echo ""; }
-  claude-subagent-badge() { echo ""; }
   claude-mcp-badge() { echo ""; }
-  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge ralph-mode claude-subagent-badge claude-mcp-badge
+  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge ralph-mode claude-mcp-badge
 }
 
 @test "renders the statusline from the Claude Code JSON" {

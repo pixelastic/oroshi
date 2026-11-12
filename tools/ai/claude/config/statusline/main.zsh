@@ -12,7 +12,7 @@ colors-load-definitions
 
 # Load the segments, in an explicit list
 local segmentsDirectory="$OROSHI_ROOT/tools/ai/claude/config/statusline/segments"
-for segmentName in context cost model; do
+for segmentName in context cost model subagent; do
   source "$segmentsDirectory/$segmentName.zsh"
 done
 
@@ -60,8 +60,8 @@ getModelSegment "$modelName"
 [[ "$REPLY" != "" ]] && statusline+=("$REPLY")
 
 # Sub-agent dots
-local subagentBadge="$(claude-subagent-badge "$sessionId")"
-[[ "$subagentBadge" != "" ]] && statusline+=("$subagentBadge")
+getSubagentSegment "$sessionId"
+[[ "$REPLY" != "" ]] && statusline+=("$REPLY")
 
 # Session ID
 # local displaySession="$(colorize "[${sessionId}]" $COLORS[claude-sessionId])"

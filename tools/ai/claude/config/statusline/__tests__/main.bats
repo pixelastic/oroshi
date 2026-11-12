@@ -2,11 +2,14 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR/sessions"
 
   NBSP=$'\u00a0'
+  EN_SPACE=$'\u2002'
 
   colors-load-definitions() {
     typeset -gA COLORS
+    COLORS[claude-subagent-running]=2
     COLORS[claude-contextHigh]=1
     COLORS[claude-contextMedium]=3
     COLORS[claude-contextLow]=8
@@ -20,13 +23,13 @@ setup() {
   icons-load-definitions() {
     typeset -gA ICONS
     ICONS[ralph-auto]="AUTO"
+    ICONS[claude-subagent]=$'DOT '
   }
   plan-directory() { echo ""; }
   plan-badge() { echo ""; }
   ralph-mode() { echo ""; }
-  claude-subagent-badge() { echo ""; }
   claude-mcp-badge() { echo ""; }
-  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge ralph-mode claude-subagent-badge claude-mcp-badge
+  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge ralph-mode claude-mcp-badge
 }
 
 statusline_json() {
@@ -149,11 +152,11 @@ mock_mcp_badge() {
 
 @test "sub-agent badge: rendered between the model and the mcp badge" {
   mock_mcp_badge "/some/transcript.jsonl"
-  claude-subagent-badge() { [[ "$1" == "abc-123" ]] && echo "DOTS"; }
-  bats_mock claude-subagent-badge
+  mkdir -p "$CLAUDE_SESSIONS_DIR/abc-123"
+  echo '{"subagents":[{"id":"a1","status":"running"}]}' >"$CLAUDE_SESSIONS_DIR/abc-123/statusline.json"
   statusline_run "/some/dir" 0 0 "abc-123" 0 "/some/transcript.jsonl"
   [[ "$status" -eq 0 ]]
-  [[ "$(bats_strip_ansi "$output")" == *"test${NBSP}DOTS${NBSP}MCP _" ]]
+  [[ "$(bats_strip_ansi "$output")" == *"test${NBSP}DOT${EN_SPACE}${NBSP}MCP _" ]]
 }
 
 @test "sub-agent badge: no extra segment when the badge is empty" {
