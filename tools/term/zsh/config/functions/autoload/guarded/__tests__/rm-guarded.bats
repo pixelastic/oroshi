@@ -3,6 +3,13 @@ bats_load_library 'helper'
 setup() {
   # Create an isolated git repo with one initial commit
   bats_git_dir 'test-repo'
+
+  # A folder that is neither in the worktree nor under a free root (/tmp, /dev/shm, ~/local/tmp)
+  export OUTSIDE_DIR="$(mktemp --directory /var/tmp/rm-guarded-XXXXXX)"
+}
+
+teardown() {
+  /bin/rm -rf "$OUTSIDE_DIR"
 }
 
 # --- Committed file ---
@@ -38,7 +45,7 @@ setup() {
 }
 
 @test "prints the refusal marker line outside a git repository" {
-  local noGitDir="$BATS_TMP_DIR/no-git"
+  local noGitDir="$OUTSIDE_DIR/no-git"
   mkdir -p "$noGitDir"
   echo "content" > "$noGitDir/file.txt"
 
@@ -99,7 +106,7 @@ setup() {
 # --- File outside worktree ---
 
 @test "refuses file outside worktree" {
-  local outsideDir="$BATS_TMP_DIR/elsewhere"
+  local outsideDir="$OUTSIDE_DIR/elsewhere"
   mkdir -p "$outsideDir"
   echo "content" > "$outsideDir/outside.txt"
 
@@ -112,7 +119,7 @@ setup() {
 # --- No git repo ---
 
 @test "refuses when not in a git repo" {
-  local noGitDir="$BATS_TMP_DIR/no-git"
+  local noGitDir="$OUTSIDE_DIR/no-git"
   mkdir -p "$noGitDir"
   echo "content" > "$noGitDir/file.txt"
 
@@ -291,4 +298,108 @@ setup() {
 
   bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded mydir"
   [[ "$status" -eq 1 ]]
+}
+
+# --- Free roots: /tmp, /dev/shm, ~/local/tmp ---
+
+@test "deletes a file under /tmp that is outside the worktree" {
+  mkdir -p "$BATS_TMP_DIR/free"
+  echo "content" > "$BATS_TMP_DIR/free/scratch.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded $BATS_TMP_DIR/free/scratch.txt"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_TMP_DIR/free/scratch.txt" ]]
+}
+
+@test "deletes a file under /tmp outside a git repository" {
+  mkdir -p "$BATS_TMP_DIR/free"
+  echo "content" > "$BATS_TMP_DIR/free/scratch.txt"
+
+  bats_run_zsh "cd $OUTSIDE_DIR && rm-guarded $BATS_TMP_DIR/free/scratch.txt"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_TMP_DIR/free/scratch.txt" ]]
+}
+
+@test "deletes a directory under /tmp recursively without a HEAD check" {
+  mkdir -p "$BATS_TMP_DIR/free/dir"
+  echo "content" > "$BATS_TMP_DIR/free/dir/a.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded -rf $BATS_TMP_DIR/free/dir"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$BATS_TMP_DIR/free/dir" ]]
+}
+
+@test "deletes a file under /dev/shm" {
+  [[ -d /dev/shm ]] || skip "no /dev/shm"
+  local shmFile="/dev/shm/rm-guarded-$$.txt"
+  echo "content" > "$shmFile"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded $shmFile"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$shmFile" ]]
+}
+
+@test "deletes a file under ~/local/tmp" {
+  local fakeHome="$OUTSIDE_DIR/home"
+  mkdir -p "$fakeHome/local/tmp"
+  echo "content" > "$fakeHome/local/tmp/state.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && HOME=$fakeHome rm-guarded $fakeHome/local/tmp/state.txt"
+  [[ "$status" -eq 0 ]]
+  [[ ! -e "$fakeHome/local/tmp/state.txt" ]]
+}
+
+@test "refuses a free root itself" {
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded /tmp"
+  [[ "$status" -eq 1 ]]
+  [[ -d /tmp ]]
+  [[ "$output" == *"rm /tmp rejected"* ]]
+}
+
+@test "refuses a path that climbs out of /tmp with .." {
+  echo "content" > "$OUTSIDE_DIR/climb.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded /tmp/../var/tmp/${OUTSIDE_DIR:t}/climb.txt"
+  [[ "$status" -eq 1 ]]
+  [[ -e "$OUTSIDE_DIR/climb.txt" ]]
+}
+
+@test "refuses a path that goes through a symlink leading out of /tmp" {
+  echo "content" > "$OUTSIDE_DIR/target.txt"
+  mkdir -p "$BATS_TMP_DIR/free"
+  ln -s "$OUTSIDE_DIR" "$BATS_TMP_DIR/free/escape"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded $BATS_TMP_DIR/free/escape/target.txt"
+  [[ "$status" -eq 1 ]]
+  [[ -e "$OUTSIDE_DIR/target.txt" ]]
+}
+
+@test "deletes a symlink under /tmp that points out of /tmp, as rm removes the link only" {
+  echo "content" > "$OUTSIDE_DIR/target.txt"
+  mkdir -p "$BATS_TMP_DIR/free"
+  ln -s "$OUTSIDE_DIR/target.txt" "$BATS_TMP_DIR/free/link"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded $BATS_TMP_DIR/free/link"
+  [[ "$status" -eq 0 ]]
+  [[ ! -L "$BATS_TMP_DIR/free/link" ]]
+  [[ -e "$OUTSIDE_DIR/target.txt" ]]
+}
+
+@test "refuses all paths when a free path is mixed with an uncommitted worktree path" {
+  mkdir -p "$BATS_TMP_DIR/free"
+  echo "content" > "$BATS_TMP_DIR/free/scratch.txt"
+  echo "content" > "$BATS_GIT_DIR/untracked.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded $BATS_TMP_DIR/free/scratch.txt untracked.txt"
+  [[ "$status" -eq 1 ]]
+  [[ -e "$BATS_TMP_DIR/free/scratch.txt" ]]
+  [[ -e "$BATS_GIT_DIR/untracked.txt" ]]
+}
+
+@test "still refuses an uncommitted worktree file although the worktree sits under /tmp" {
+  echo "content" > "$BATS_GIT_DIR/untracked.txt"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && rm-guarded untracked.txt"
+  [[ "$status" -eq 1 ]]
+  [[ -e "$BATS_GIT_DIR/untracked.txt" ]]
 }
