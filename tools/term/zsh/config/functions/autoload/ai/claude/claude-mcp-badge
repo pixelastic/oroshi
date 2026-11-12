@@ -1,0 +1,18 @@
+# Render the connected MCP servers of a Claude transcript as one colorized string
+# Servers are shown under their raw name, joined by spaces
+# Empty output when no server is connected
+# Usage:
+# $ claude-mcp-badge ~/.claude/projects/foo/abc.jsonl
+setopt local_options err_return
+
+local servers="$(claude-transcript-mcp-list-raw "$1")"
+
+# No connected server: no badge
+[[ "$servers" == "" ]] && return 0
+
+local names=()
+for server in ${(f)servers}; do
+  colorize --reply "$server" "claude-mcp"
+  names+=("$REPLY")
+done
+print -n "${(j: :)names}"

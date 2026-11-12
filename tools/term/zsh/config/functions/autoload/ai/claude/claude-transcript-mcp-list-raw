@@ -1,0 +1,31 @@
+# List the MCP servers connected in a Claude transcript, one raw name per line
+# A server is connected when it has a tool other than its authentication tools
+# Empty output when the transcript is missing, empty, or has no MCP tools
+# Usage:
+# $ claude-transcript-mcp-list-raw ~/.claude/projects/foo/abc.jsonl
+setopt local_options err_return
+
+local transcriptPath="$1"
+
+# No transcript: no servers to list
+[[ ! -f "$transcriptPath" ]] && return 0
+
+# Prefilter with grep: much faster than parsing every line with jq.
+# Tool names look like mcp__<server>__<tool>
+local servers="$(
+  grep --fixed-strings 'deferred_tools_delta' "$transcriptPath" \
+    | jq --raw-output '
+      select(.attachment.type == "deferred_tools_delta")
+      | .attachment.addedNames[]?
+      | select(startswith("mcp__"))
+      | split("__")
+      | select(.[2:] | join("__") | IN("authenticate", "complete_authentication") | not)
+      | .[1]
+    '
+)"
+
+# No connected server: nothing to list
+[[ "$servers" == "" ]] && return 0
+
+# Unique names, in order of first appearance
+print -l ${(u)${(f)servers}}
