@@ -101,7 +101,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "/home/tim/.oroshi/tools/ai/claude/config/statusline"
+    "command": "/home/tim/.oroshi/tools/ai/claude/config/statusline/index.zsh"
   },
   "subagentStatusLine": {
     "type": "command",

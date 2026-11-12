@@ -663,7 +663,7 @@
   "todo-remove",
   "toml-fix",
   "toml-lint",
-  "tools/ai/claude/config/statusline",
+  "tools/ai/claude/config/statusline/index.zsh",
   "tools/ai/claude/deploy",
   "topydo",
   "touch",

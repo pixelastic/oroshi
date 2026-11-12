@@ -58,7 +58,7 @@ EOF
 
 statusline_run() {
   statusline_json "$@" >"${BATS_TMP_DIR}/input.json"
-  bats_run_zsh "${OROSHI_ROOT}/tools/ai/claude/config/statusline < '${BATS_TMP_DIR}/input.json'"
+  bats_run_zsh "${OROSHI_ROOT}/tools/ai/claude/config/statusline/index.zsh < '${BATS_TMP_DIR}/input.json'"
 }
 
 # Mock claude-mcp-badge: prints "MCP" only for the given transcript path
@@ -142,7 +142,7 @@ mock_mcp_badge() {
 }
 
 @test "mcp badge: --dry-run renders without a transcript" {
-  bats_run_zsh "${OROSHI_ROOT}/tools/ai/claude/config/statusline --dry-run"
+  bats_run_zsh "${OROSHI_ROOT}/tools/ai/claude/config/statusline/index.zsh --dry-run"
   [[ "$status" -eq 0 ]]
   [[ "$(bats_strip_ansi "$output")" == "BADGE 51k 0¢ Sonnet 4.6 " ]]
 }
