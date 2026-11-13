@@ -1,27 +1,64 @@
 # Lint a Draft, without any network call. Publishes nothing
+# Checks the length, images and alt text, then the voice with the bluesky-writer prose profile
 # --thread lints each post of a thread, split on the lines of three dashes. Line numbers point at the source file
 # Usage:
 # $ bluesky-post-lint --text-file draft.md   # Stylish output (default)
 # $ bluesky-post-lint --text-file thread.md --thread
 # $ bluesky-post-lint --text "Hello world"
 # $ bluesky-post-lint --json --text-file draft.md   # Unified JSON output
-# Exit 1 if there are violations
+# Exit 1 if there is an error. Warnings and suggestions do not fail
 setopt local_options err_return
 
 zparseopts -E -D \
   -json=flagJson
 local isJson=${#flagJson}
 
+# The node bin gets every flag, the prose lint only needs the text
+local -a binArgs=("$@")
+zparseopts -E -D \
+  -text:=flagText \
+  -text-file:=flagTextFile
+local text="${flagText[2]}"
+local textFile="${flagTextFile[2]}"
+
 local libDir="${functions_source[$0]:A:h:h}/__lib"
-local violations="$(node "${libDir}/bin/bluesky-post-lint.js" "$@")"
+local violations="$(node "${libDir}/bin/bluesky-post-lint.js" "${binArgs[@]}")"
 
 # The bin printed an error and no JSON
 [[ "$violations" == "" ]] && return 1
 
-if [[ $isJson == 1 ]]; then
-  printf '%s\n' "$violations"
-  [[ "$(printf '%s' "$violations" | jq --raw-output 'length')" == "0" ]]
-  return
+# Voice and formatting violations, in the same unified shape
+local proseFile="<text>"
+local proseInput="$text"
+if [[ "$textFile" != "" ]]; then
+  proseFile="${textFile:A}"
+  proseInput="$proseFile"
+fi
+local proseViolations=""
+local proseExit=0
+proseViolations="$(prose-lint --profile bluesky-writer "$proseInput")" || proseExit=$?
+# Vale crashed
+if [[ $proseExit -ge 2 ]]; then
+  echoerr "prose-lint failed"
+  return 1
 fi
 
-printf '%s' "$violations" | json2stylish
+# shellcheck disable=SC2016
+local jqMerge='$bin + ($prose | map({
+  file: $file, code: .rule, level: .severity,
+  line: .line, endLine: .line, column: 1, endColumn: 1, message: .message
+})) | sort_by(.line)'
+violations="$(jq --null-input --compact-output \
+  --argjson bin "$violations" \
+  --argjson prose "$proseViolations" \
+  --arg file "$proseFile" \
+  "$jqMerge")"
+
+local hasError="$(printf '%s' "$violations" | jq 'any(.[]; .level == "error")')"
+
+if [[ $isJson == 1 ]]; then
+  printf '%s\n' "$violations"
+else
+  printf '%s' "$violations" | json2stylish || true
+fi
+[[ "$hasError" == "false" ]]
