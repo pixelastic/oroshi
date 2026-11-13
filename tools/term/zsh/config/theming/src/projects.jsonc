@@ -46,6 +46,12 @@
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/armory"
   },
+  "asheron": {
+    "background": "emerald-8",
+    "foreground": "fuchsia-2",
+    "icon": " ",
+    "path": "~/local/www/projects/asheron"
+  },
   "auctioneer": {
     "background": "cyan-7",
     "foreground": "cyan-1",
